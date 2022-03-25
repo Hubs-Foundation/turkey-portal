@@ -1,0 +1,36 @@
+body {
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+}
+#root {
+  width: 600px;
+}
+h1 {
+  text-align: center;
+}
+
+.hub {
+  display: grid;
+  grid-template: auto auto / 100fr auto;
+  margin: 1em 0;
+  background: #eee;
+  padding: 0.3em;
+  border-radius: 0.5em;
+}
+.hub * {
+  margin: 0.6em 0.2em;
+}
+.hub .name {
+  font-weight: bold;
+}
+.tag {
+  background: #ddd;
+  padding: 0.2em;
+  border-radius: 0.4em;
+  color: white;
+}
+.tag.free { background: #39e; }
+.tag.premium { background: #70c; }
+.tag.creating, .tag.updating { background: #da1; }
+.tag.ready { background: #381; }
