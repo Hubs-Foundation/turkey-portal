@@ -12,6 +12,38 @@ defmodule Mix.Tasks.Prtl.CreateAccount do
   end
 end
 
+defmodule Mix.Tasks.Prtl.ListHubs do
+  @shortdoc "Lists hubs for a user"
+  @moduledoc "mix prtl.list_hubs <fxa_uid>"
+  @requirements ["app.start"]
+  use Mix.Task
+  import Ecto.Query
+
+  def run([fxa_uid]) do
+    account = Prtl.Account |> Prtl.Repo.get_by(fxa_uid: fxa_uid)
+
+    from(h in Prtl.Hub, where: h.account_id == ^account.account_id)
+    |> Prtl.Repo.all()
+    |> IO.inspect()
+  end
+end
+
+defmodule Mix.Tasks.Prtl.ChangeHub do
+  @shortdoc "Changes a hub with values from a json object"
+  @moduledoc "mix prtl.change_hub <subdomain> <json>"
+  @requirements ["app.start"]
+  use Mix.Task
+
+  def run([subdomain, json]) do
+    hub = Prtl.Hub |> Prtl.Repo.get_by(subdomain: subdomain)
+
+    hub
+    |> Prtl.Hub.changeset(Jason.decode!(json))
+    |> Prtl.Repo.update!()
+    |> IO.inspect()
+  end
+end
+
 defmodule Mix.Tasks.Prtl.CreateHub do
   @shortdoc "Creates a hub"
   @moduledoc "mix prtl.createhub <fxa_uid> <hub_name>"
