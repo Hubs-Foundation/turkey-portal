@@ -46,7 +46,7 @@ end
 
 defmodule Mix.Tasks.Prtl.CreateHub do
   @shortdoc "Creates a hub"
-  @moduledoc "mix prtl.createhub <fxa_uid> <hub_name>"
+  @moduledoc "mix prtl.create_hub <fxa_uid> <hub_name>"
   @requirements ["app.start"]
   use Mix.Task
 
@@ -90,7 +90,7 @@ end
 
 defmodule Mix.Tasks.Prtl.DeleteAll do
   @shortdoc "Deletes all hubs and accounts"
-  @moduledoc "mix prtl.deleteall"
+  @moduledoc "mix prtl.delete_all"
   @requirements ["app.start"]
   use Mix.Task
 
