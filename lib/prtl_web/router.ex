@@ -25,6 +25,10 @@ defmodule PrtlWeb.Router do
   #   pipe_through :api
   # end
 
+  scope "/api/v1", PrtlWeb do
+    resources("/hubs", Api.V1.HubController, [:index])
+  end
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put
