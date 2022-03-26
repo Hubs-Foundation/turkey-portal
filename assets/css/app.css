@@ -1,14 +1,13 @@
+@import "./milligram.css";
+
 body {
   font-family: sans-serif;
   display: flex;
   justify-content: center;
+  color: #111;
 }
-#root {
-  width: 600px;
-}
-h1 {
-  text-align: center;
-}
+#root { width: 600px; }
+h1 { text-align: center; }
 
 .hub {
   display: grid;
@@ -18,12 +17,9 @@ h1 {
   padding: 0.3em;
   border-radius: 0.5em;
 }
-.hub * {
-  margin: 0.6em 0.2em;
-}
-.hub .name {
-  font-weight: bold;
-}
+.hub * { margin: 0.6em 0.2em; }
+.hub .name { font-weight: bold; }
+
 .tag {
   background: #ddd;
   padding: 0.2em;
@@ -34,3 +30,15 @@ h1 {
 .tag.premium { background: #70c; }
 .tag.creating, .tag.updating { background: #da1; }
 .tag.ready { background: #381; }
+
+.settings-link-container { text-align: right; }
+.settings-link-container a { text-decoration: none; }
+
+.icon-link { text-decoration: none; }
+
+.hub-form > * { display: block; margin: 0.6em; }
+.hub-form span { display: block; }
+.hub-form input { font-size: 100%; }
+.hub-form label { display: inline; font-weight: normal; margin: 0 0.2em; }
+
+.formchoice-name { text-transform: capitalize; }

@@ -6,7 +6,9 @@ defmodule PrtlWeb.Api.V1.HubView do
   end
 
   defp render_hub(hub) do
-    %{name: hub.name,
+    %{
+      hub_id: hub.hub_id,
+      name: hub.name,
       ccu_limit: hub.ccu_limit,
       storage_limit_mb: hub.storage_limit_mb,
       tier: hub.tier,
