@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { FxaUidContext } from "./FxaUidContext";
 import { useHub, useUpdateHub } from "./hub-hooks";
 import { FormChoice } from "./FormChoice";
+import { format } from "./utils";
 
 export function HubPage() {
   const fxa_uid = useContext(FxaUidContext);
@@ -47,6 +48,7 @@ export function HubPage() {
 
       <FormChoice
         name="storage"
+        title={`Storage (${format(hub.storage_usage_mb)} MB used)`}
         value={hub.storage_limit_mb}
         choices={[1000, 5000, 10000]}
         disabled={hub.tier === "free"}

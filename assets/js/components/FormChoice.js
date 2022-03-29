@@ -1,10 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export function FormChoice({ name, value, choices, disabled, onChange }) {
+import { format } from "./utils";
+
+export function FormChoice({ name, title, value, choices, disabled, onChange }) {
   return (
     <div>
-      <span className="formchoice-name">{name}</span>
+      <span className="formchoice-name">{title || name}</span>
       {choices.map((choice) => (
         <label key={choice}>
           <input
@@ -15,7 +17,7 @@ export function FormChoice({ name, value, choices, disabled, onChange }) {
             disabled={disabled}
             onChange={(e) => onChange(e.target.value)}
           />
-          {choice}
+          {format(choice)}
         </label>
       ))}
     </div>
@@ -24,6 +26,7 @@ export function FormChoice({ name, value, choices, disabled, onChange }) {
 
 FormChoice.propTypes = {
   name: PropTypes.string,
+  title: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   choices: PropTypes.array,
   disabled: PropTypes.bool,
