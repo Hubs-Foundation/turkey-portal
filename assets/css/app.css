@@ -41,4 +41,13 @@ h1 { text-align: center; }
 .hub-form input { font-size: 100%; }
 .hub-form label { display: inline; font-weight: normal; margin: 0 0.2em; }
 
+.hub-form .warning {
+  background: #fe9;
+  display: inline;
+  padding: 0.3em;
+  border-radius: 0.3em;
+  font-size: 10pt;
+}
+
 .formchoice-name { text-transform: capitalize; }
+.formchoice-disabled { color: #888; }
