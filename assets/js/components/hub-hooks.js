@@ -1,39 +1,17 @@
-import { useEffect, useState } from "react";
+import { useQuery, useMutation } from "./utils/query-mutation";
 
 export function useHubs(fxa_uid) {
-  const [hubs, setHubs] = useState([]);
-
-  useEffect(async () => {
-    setHubs(await fetch(`/api/v1/hubs?fxa_uid=${fxa_uid}`).then((r) => r.json()));
-  }, []);
-
-  return hubs;
+  return useQuery(`/api/v1/hubs?fxa_uid=${fxa_uid}`);
 }
 
 export function useHub(fxa_uid, hub_id) {
-  const [hub, setHub] = useState();
-
-  useEffect(async () => {
-    // TODO Replace with fetch for single hub
-    const hubs = await fetch(`/api/v1/hubs?fxa_uid=${fxa_uid}`).then((r) => r.json());
-    setHub(hubs.find((hub) => hub.hub_id.toString() === hub_id));
-  }, []);
-
-  return [hub, setHub];
+  // TODO Replace with proper fetch for single hub
+  return useQuery(
+    `/api/v1/hubs?fxa_uid=${fxa_uid}`,
+     hubs => hubs.find((hub) => hub.hub_id.toString() === hub_id)
+  );
 }
 
-export function useUpdateHub() {
-  const [updating, setUpdating] = useState(false);
-
-  const updateHub = async (fxa_uid, hub_id, hub) => {
-    setUpdating(true);
-    await fetch(`/api/v1/hubs/${hub_id}?fxa_uid=${fxa_uid}`, {
-      headers: { "content-type": "application/json" },
-      method: "PATCH",
-      body: JSON.stringify({ hub: hub }),
-    });
-    setUpdating(false);
-  };
-
-  return [updateHub, updating];
+export function useUpdateHub(fxa_uid, hub_id) {
+  return useMutation(`/api/v1/hubs/${hub_id}?fxa_uid=${fxa_uid}`);
 }

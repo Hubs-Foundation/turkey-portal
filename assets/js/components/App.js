@@ -5,6 +5,7 @@ import { FxaUidContext } from "./FxaUidContext";
 import { IconLink } from "./IconLink";
 import { HomePage } from "./HomePage";
 import { HubPage } from "./HubPage";
+import { LoginMessage } from "./LoginMessage";
 
 export function App() {
   const fxa_uid = new URLSearchParams(location.search).get("fxa_uid");
@@ -14,8 +15,14 @@ export function App() {
         <IconLink to={`/?fxa_uid=${fxa_uid}`} icon="🦃" />
       </h1>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/hubs/:hub_id" element={<HubPage />} />
+        {fxa_uid ? (
+          <>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/hubs/:hub_id" element={<HubPage />} />
+          </>
+        ) : (
+          <Route path="*" element={<LoginMessage />} />
+        )}
       </Routes>
     </FxaUidContext.Provider>
   );

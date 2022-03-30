@@ -6,10 +6,16 @@ body {
   justify-content: center;
   color: #111;
 }
-#root { width: 600px; }
+#root {
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 h1 { text-align: center; }
 
 .hub {
+  width: 100%;
   display: grid;
   grid-template: auto auto / 100fr auto;
   margin: 1em 0;
@@ -36,6 +42,7 @@ h1 { text-align: center; }
 
 .icon-link { text-decoration: none; }
 
+.hub-form { width: 100%; }
 .hub-form > * { display: block; margin: 0.6em; }
 .hub-form span { display: block; }
 .hub-form input { font-size: 100%; }

@@ -4,19 +4,24 @@ import { useParams } from "react-router-dom";
 import { FxaUidContext } from "./FxaUidContext";
 import { useHub, useUpdateHub } from "./hub-hooks";
 import { FormChoice } from "./FormChoice";
+import { Spinner } from "./Spinner";
 
 export function HubPage() {
   const fxa_uid = useContext(FxaUidContext);
   const { hub_id } = useParams();
-  const [hub, setHub] = useHub(fxa_uid, hub_id);
-  const [updateHub, updating] = useUpdateHub();
+  const {data: hub, setData: setHub, loading, error}  = useHub(fxa_uid, hub_id);
+  const {mutate: updateHub, loading: updating} = useUpdateHub(fxa_uid, hub_id);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    updateHub(fxa_uid, hub_id, hub);
+    updateHub(hub);
   };
 
-  if (!hub) return "";
+  if (loading) return <Spinner />
+
+  if (error) return "Unable to load Hub";
+
+  if (!hub) return "Hub not found";
 
   return (
     <form className="hub-form" onSubmit={onSubmit}>
