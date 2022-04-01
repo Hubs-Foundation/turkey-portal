@@ -12,7 +12,10 @@ COPY config/config.exs config/${MIX_ENV}.exs config/
 RUN mix deps.compile
 COPY priv priv
 COPY assets assets
-# RUN mix assets.deploy
+RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
+    && apt-get install nodejs
+RUN cd assets && npm install react react-dom && cd ..
+RUN mix assets.deploy
 RUN mix phx.digest
 COPY lib ./lib
 RUN mix compile
