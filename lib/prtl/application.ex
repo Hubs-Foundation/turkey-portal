@@ -7,6 +7,8 @@ defmodule Prtl.Application do
 
   @impl true
   def start(_type, _args) do
+    {:ok, _} = EctoBootMigration.migrate(:prtl)
+
     children = [
       # Start the Ecto repository
       Prtl.Repo,
