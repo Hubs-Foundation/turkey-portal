@@ -10,6 +10,7 @@ defmodule PrtlWeb.Endpoint do
     signing_salt: "Ke6bG2r4"
   ]
 
+  # Required for LiveDashboard
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
