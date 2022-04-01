@@ -13,6 +13,7 @@ RUN mix deps.compile
 COPY priv priv
 COPY assets assets
 # RUN mix assets.deploy
+RUN mix phx.digest
 COPY lib ./lib
 RUN mix compile
 COPY config/runtime.exs config/
