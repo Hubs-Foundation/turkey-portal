@@ -6,27 +6,28 @@ import { IconLink } from "./IconLink";
 export function Hub(props) {
   return (
     <div className="hub">
-      <div>
-        <span className="name">{props.name}</span>
-        <span className={`tag ${props.tier}`}>{props.tier}</span>
+      <div className="hub-row">
+        <div className="hub-row-group">
+          <span className="name">{props.name}</span>
+          <span className={`tag ${props.tier}`}>{props.tier}</span>
+        </div>
+
+        <div>
+          <span>{props.ccu_limit}CCU</span>
+          <span>{props.storage_limit_mb}MB</span>
+        </div>
       </div>
 
-      <div>
-        <span>{props.ccu_limit}CCU</span>
-        <span>{props.storage_limit_mb}MB</span>
-      </div>
+      <div className="hub-row">
+        <div className="hub-row-group">
+          {props.status === "ready" ? (
+            <a className="domain" href={`//${props.subdomain}.myhubs.net`}>{props.subdomain}.myhubs.net</a>
+          ) : (
+            <span className="domain">{props.subdomain}.myhubs.net</span>
+          )}
+          <span className={`tag ${props.status}`}>{props.status}</span>
+        </div>
 
-      <div>
-        {props.status === "ready" ? (
-          <a href={`//${props.subdomain}.myhubs.net`}>{props.subdomain}.myhubs.net</a>
-        ) : (
-          <span>{props.subdomain}.myhubs.net</span>
-        )}
-
-        <span className={`tag ${props.status}`}>{props.status}</span>
-      </div>
-
-      <div className="settings-link-container">
         <IconLink to={`/hubs/${props.hub_id}?fxa_uid=${props.fxa_uid}`} icon="⚙️" />
       </div>
     </div>
