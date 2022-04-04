@@ -14,6 +14,10 @@ defmodule PrtlWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :jwt_authenticated do
+    plug PrtlWeb.Plugs.Auth
+  end
+
   scope "/", PrtlWeb do
     pipe_through :browser
 
@@ -28,6 +32,11 @@ defmodule PrtlWeb.Router do
 
   scope "/api/v1", PrtlWeb do
     resources("/hubs", Api.V1.HubController, [:index])
+  end
+
+  scope "/api/v1", PrtlWeb do
+    pipe_through :jwt_authenticated
+    resources("/account", Api.V1.AccountController, [:show])
   end
 
   # Enables LiveDashboard only for development
