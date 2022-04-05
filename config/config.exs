@@ -15,6 +15,7 @@ config :prtl, PrtlWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: PrtlWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Prtl.PubSub,
+  # Required for LiveDashboard
   live_view: [signing_salt: "ZgDeMeHP"]
 
 # Configures the mailer
