@@ -1,26 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { format } from "./utils";
+import { formatNumber } from "./utils";
 
 export function FormChoice({ name, title, value, choices, allDisabled, onChange }) {
   return (
     <div>
       <span className="formchoice-name">{title || name}</span>
-      {choices.map((choice) => {
-        const choiceDisabled = choice.disabled || allDisabled;
-        return <label key={choice.value} className={choiceDisabled ? "formchoice-disabled" : ""}>
-          <input
-            type="radio"
-            name={name}
-            value={choice.value}
-            checked={!choiceDisabled && value.toString() === choice.value.toString()}
-            disabled={choiceDisabled}
-            onChange={(e) => onChange(e.target.value)}
-          />
-          {format(choice.value)}
-        </label>
-      })}
+      <div className="formchoice-choices">
+        {choices.map((choice) => {
+          const choiceDisabled = choice.disabled || allDisabled;
+          return <label key={choice.value} className={choiceDisabled ? "formchoice-disabled" : ""}>
+            <input
+              type="radio"
+              name={name}
+              value={choice.value}
+              checked={!choiceDisabled && value.toString() === choice.value.toString()}
+              disabled={choiceDisabled}
+              onChange={(e) => onChange(e.target.value)}
+            />
+            {formatNumber(choice.value)}
+          </label>
+        })}
+      </div>
     </div>
   );
 }

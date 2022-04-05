@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { FxaUidContext } from "./FxaUidContext";
 import { useHub, useUpdateHub } from "./hub-hooks";
 import { FormChoice } from "./FormChoice";
-import { format } from "./utils";
+import { formatNumber } from "./utils";
 
 export function HubPage() {
   const fxa_uid = useContext(FxaUidContext);
@@ -36,7 +36,7 @@ export function HubPage() {
 
       <div>
         <span>Subdomain</span>
-        <span>{hub.subdomain}.myhubs.net</span>
+        <span className="domain">{hub.subdomain}.myhubs.net</span>
       </div>
 
       <FormChoice
@@ -63,7 +63,7 @@ export function HubPage() {
 
       <FormChoice
         name="storage"
-        title={`Storage (${format(hub.storage_usage_mb)} MB used)`}
+        title={`Storage (${formatNumber(hub.storage_usage_mb)} MB used)`}
         value={hub.storage_limit_mb}
         choices={storageChoices}
         allDisabled={isFreeTier}
