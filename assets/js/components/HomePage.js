@@ -3,15 +3,27 @@ import React, { useContext } from "react";
 import { FxaUidContext } from "./FxaUidContext";
 import { useHubs } from "./hub-hooks";
 import { Hub } from "./Hub";
+import { Spinner } from "./Spinner";
 
 export function HomePage() {
   const fxa_uid = useContext(FxaUidContext);
-  const hubs = useHubs(fxa_uid);
+
+  const { data: hubs, loading, error, success } = useHubs(fxa_uid);
+
+  const hasHubs = hubs?.length;
+
   return (
     <>
-      {hubs.map((hub) => (
-        <Hub key={hub.hub_id} fxa_uid={fxa_uid} {...hub} />
-      ))}
+      {loading && <Spinner />}
+      {error && <span>Unable to load Hubs</span>}
+      {success && 
+        (!hasHubs ? (
+          <span>You don't have any hubs</span>
+        ) : (
+          hubs.map((hub) => (
+            <Hub key={hub.hub_id} fxa_uid={fxa_uid} {...hub} />
+          ))
+        ))}
     </>
   );
 }
