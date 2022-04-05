@@ -51,7 +51,7 @@ export function HubPage() {
         title="CCU"
         value={hub.ccu_limit}
         choices={[{value: 25}, {value: 50}, {value: 100}]}
-        disabled={isFreeTier}
+        allDisabled={isFreeTier}
         onChange={(value) => setHub({ ...hub, ccu_limit: value })}
       />
 
@@ -66,7 +66,7 @@ export function HubPage() {
         title={`Storage (${format(hub.storage_usage_mb)} MB used)`}
         value={hub.storage_limit_mb}
         choices={storageChoices}
-        disabled={isFreeTier}
+        allDisabled={isFreeTier}
         onChange={(value) => setHub({ ...hub, storage_limit_mb: value })}
       />
 

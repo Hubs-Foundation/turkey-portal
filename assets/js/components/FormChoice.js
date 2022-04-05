@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 
 import { format } from "./utils";
 
-export function FormChoice({ name, title, value, choices, disabled, onChange }) {
+export function FormChoice({ name, title, value, choices, allDisabled, onChange }) {
   return (
     <div>
       <span className="formchoice-name">{title || name}</span>
       {choices.map((choice) => {
-        const choiceDisabled = choice.disabled || disabled;
+        const choiceDisabled = choice.disabled || allDisabled;
         return <label key={choice.value} className={choiceDisabled ? "formchoice-disabled" : ""}>
           <input
             type="radio"
@@ -33,6 +33,6 @@ FormChoice.propTypes = {
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     disabled: PropTypes.bool,
   })),
-  disabled: PropTypes.bool,
+  allDisabled: PropTypes.bool,
   onChange: PropTypes.func,
 };
