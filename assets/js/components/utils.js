@@ -1,3 +1,3 @@
-export function format(value) {
-  return typeof value === "number" ? value.toLocaleString() : value;
+export function formatNumber(num) {
+  return typeof num === "number" ? num.toLocaleString() : num;
 }

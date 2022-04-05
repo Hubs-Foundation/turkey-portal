@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { format } from "./utils";
+import { formatNumber } from "./utils";
 
 export function FormChoice({ name, title, value, choices, disabled, onChange }) {
   return (
@@ -17,7 +17,7 @@ export function FormChoice({ name, title, value, choices, disabled, onChange }) 
             disabled={disabled}
             onChange={(e) => onChange(e.target.value)}
           />
-          {format(choice)}
+          {formatNumber(choice)}
         </label>
       ))}
     </div>
