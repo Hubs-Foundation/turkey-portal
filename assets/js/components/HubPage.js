@@ -5,6 +5,7 @@ import { FxaUidContext } from "./FxaUidContext";
 import { useHub, useUpdateHub } from "./hub-hooks";
 import { FormChoice } from "./FormChoice";
 import { Spinner } from "./Spinner";
+import { formatNumber } from "./utils";
 
 export function HubPage() {
   const fxa_uid = useContext(FxaUidContext);
@@ -23,6 +24,14 @@ export function HubPage() {
 
   if (!hub) return "Hub not found";
 
+  const storageChoices = [1000, 5000, 10000].map(value => {
+    return {value, disabled: value < hub.storage_usage_mb};
+  });
+
+  const choiceDisabled = storageChoices.some(choice => choice.disabled);
+
+  const isFreeTier = hub.tier === "free";
+
   return (
     <form className="hub-form" onSubmit={onSubmit}>
       <div>
@@ -32,29 +41,37 @@ export function HubPage() {
 
       <div>
         <span>Subdomain</span>
-        <span>{hub.subdomain}.myhubs.net</span>
+        <span className="domain">{hub.subdomain}.myhubs.net</span>
       </div>
 
       <FormChoice
         name="tier"
         value={hub.tier}
-        choices={["free", "premium"]}
+        choices={[{value: "free"}, {value: "premium"}]}
         onChange={(value) => setHub({ ...hub, tier: value })}
       />
 
       <FormChoice
         name="ccu"
+        title="CCU"
         value={hub.ccu_limit}
-        choices={[25, 50, 100]}
-        disabled={hub.tier === "free"}
+        choices={[{value: 25}, {value: 50}, {value: 100}]}
+        allDisabled={isFreeTier}
         onChange={(value) => setHub({ ...hub, ccu_limit: value })}
       />
 
+      {
+        !isFreeTier &&
+        choiceDisabled &&
+        <span className="warning">⚠️ You cannot choose storage options lower than your current usage.</span>
+      }
+
       <FormChoice
         name="storage"
+        title={`Storage (${formatNumber(hub.storage_usage_mb)} MB used)`}
         value={hub.storage_limit_mb}
-        choices={[1000, 5000, 10000]}
-        disabled={hub.tier === "free"}
+        choices={storageChoices}
+        allDisabled={isFreeTier}
         onChange={(value) => setHub({ ...hub, storage_limit_mb: value })}
       />
 
