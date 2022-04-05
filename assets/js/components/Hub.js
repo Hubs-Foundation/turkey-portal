@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { IconLink } from "./IconLink";
+import { formatNumber } from "./utils";
 
 export function Hub(props) {
   return (
@@ -12,8 +13,8 @@ export function Hub(props) {
       </div>
 
       <div>
-        <span>{props.ccu_limit}CCU</span>
-        <span>{props.storage_limit_mb}MB</span>
+        <span>{formatNumber(props.current_ccu)}/{formatNumber(props.ccu_limit)} CCU</span>
+        <span>{formatNumber(props.storage_usage_mb)}/{formatNumber(props.storage_limit_mb)} MB</span>
       </div>
 
       <div>
@@ -36,7 +37,9 @@ export function Hub(props) {
 Hub.propTypes = {
   name: PropTypes.string,
   tier: PropTypes.string,
+  current_ccu: PropTypes.number,
   ccu_limit: PropTypes.number,
+  storage_usage_mb: PropTypes.number,
   storage_limit_mb: PropTypes.number,
   status: PropTypes.string,
   subdomain: PropTypes.string,
