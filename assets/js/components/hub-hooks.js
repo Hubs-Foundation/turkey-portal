@@ -17,7 +17,7 @@ export function useHub(fxa_uid, hub_id) {
   // TODO Replace with proper fetch for single hub
   return useQuery(
     `/api/v1/hubs?fxa_uid=${fxa_uid}`,
-     hubs => addFakeProperties(hubs).find((hub) => hub.hub_id.toString() === hub_id)
+     hubs => addFakeProperties(hubs).find((hub) => hub.hub_id.toString() === hub_id) || {}
   );
 }
 
