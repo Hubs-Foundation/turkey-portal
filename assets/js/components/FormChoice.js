@@ -7,19 +7,21 @@ export function FormChoice({ name, title, value, choices, disabled, onChange }) 
   return (
     <div>
       <span className="formchoice-name">{title || name}</span>
-      {choices.map((choice) => (
-        <label key={choice}>
-          <input
-            type="radio"
-            name={name}
-            value={choice}
-            checked={value.toString() === choice.toString()}
-            disabled={disabled}
-            onChange={(e) => onChange(e.target.value)}
-          />
-          {formatNumber(choice)}
-        </label>
-      ))}
+      <div className="formchoice-choices">
+        {choices.map((choice) => (
+          <label key={choice}>
+            <input
+              type="radio"
+              name={name}
+              value={choice}
+              checked={value.toString() === choice.toString()}
+              disabled={disabled}
+              onChange={(e) => onChange(e.target.value)}
+            />
+            {formatNumber(choice)}
+          </label>
+        ))}
+      </div>
     </div>
   );
 }

@@ -28,7 +28,7 @@ export function HubPage() {
 
       <div>
         <span>Subdomain</span>
-        <span>{hub.subdomain}.myhubs.net</span>
+        <span className="domain">{hub.subdomain}.myhubs.net</span>
       </div>
 
       <FormChoice
