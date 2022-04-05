@@ -1,10 +1,20 @@
 import { useEffect, useState } from "react";
 
+// TODO Remove when the backend actually supplies these values.
+function addFakeProperties(hubs) {
+  for (hub of hubs) {
+    hub.current_ccu = Math.floor(Math.random() * hub.ccu_limit);
+    hub.storage_usage_mb = Math.floor(Math.random() * hub.storage_limit_mb);
+  }
+  return hubs;
+}
+
 export function useHubs(fxa_uid) {
   const [hubs, setHubs] = useState([]);
 
   useEffect(async () => {
-    setHubs(await fetch(`/api/v1/hubs?fxa_uid=${fxa_uid}`).then((r) => r.json()));
+    const hubs = await fetch(`/api/v1/hubs?fxa_uid=${fxa_uid}`).then((r) => r.json());
+    setHubs(addFakeProperties(hubs));
   }, []);
 
   return hubs;
@@ -16,7 +26,7 @@ export function useHub(fxa_uid, hub_id) {
   useEffect(async () => {
     // TODO Replace with fetch for single hub
     const hubs = await fetch(`/api/v1/hubs?fxa_uid=${fxa_uid}`).then((r) => r.json());
-    setHub(hubs.find((hub) => hub.hub_id.toString() === hub_id));
+    setHub(addFakeProperties(hubs).find((hub) => hub.hub_id.toString() === hub_id));
   }, []);
 
   return [hub, setHub];

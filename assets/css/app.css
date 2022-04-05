@@ -28,6 +28,7 @@ h1 { text-align: center; }
   align-items: center;
   width: 100%;
 }
+.hub .hub-stats { white-space: nowrap; }
 .hub .name { font-weight: bold; }
 .hub .name, .hub .domain, .hub-form .domain {
   white-space: nowrap;
