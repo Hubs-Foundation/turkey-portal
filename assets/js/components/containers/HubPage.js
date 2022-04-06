@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 
-import { FxaUidContext } from "./FxaUidContext";
-import { useHub, useUpdateHub } from "./hub-hooks";
-import { Spinner } from "./Spinner";
-import { formatNumber } from "./utils";
-import { HubForm } from "./HubForm";
+import { FxaUidContext } from "../FxaUidContext";
+import { useHub, useUpdateHub } from "../utils/hub-hooks";
+import { Spinner } from "../display/Spinner";
+import { formatNumber } from "../utils/formatNumber";
+import { HubForm } from "../display/HubForm";
 
 export function HubPage() {
   const fxa_uid = useContext(FxaUidContext);

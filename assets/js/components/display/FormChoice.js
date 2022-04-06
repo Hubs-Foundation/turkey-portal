@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { formatNumber } from "./utils";
+import "../../../css/components/FormChoice";
+import { formatNumber } from "../utils/formatNumber";
 
 export function FormChoice({ name, title, value, choices, allDisabled, onChange }) {
   return (

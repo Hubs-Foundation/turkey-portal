@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 
-import { FxaUidContext } from "./FxaUidContext";
-import { useHubs } from "./hub-hooks";
-import { Hub } from "./Hub";
-import { Spinner } from "./Spinner";
+import { FxaUidContext } from "../FxaUidContext";
+import { useHubs } from "../utils/hub-hooks";
+import { Hub } from "../display/Hub";
+import { Spinner } from "../display/Spinner";
 
 export function HomePage() {
   const fxa_uid = useContext(FxaUidContext);

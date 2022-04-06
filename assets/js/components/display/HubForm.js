@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import "../../../css/components/HubForm";
 import { FormChoice } from "./FormChoice";
-import { formatNumber } from "./utils";
+import { formatNumber } from "../utils/formatNumber";
 
 export function HubForm({hub, setHub, updating, onSubmit}) {
   const onFormSubmit = (e) => {

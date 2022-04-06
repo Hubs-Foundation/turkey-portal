@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import "../../../css/components/Hub";
 import { IconLink } from "./IconLink";
-import { formatNumber } from "./utils";
+import { formatNumber } from "../utils/formatNumber";
 
 export function Hub(props) {
   return (

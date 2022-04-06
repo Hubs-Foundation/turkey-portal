@@ -2,10 +2,10 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { FxaUidContext } from "./FxaUidContext";
-import { IconLink } from "./IconLink";
-import { HomePage } from "./HomePage";
-import { HubPage } from "./HubPage";
-import { LoginMessage } from "./LoginMessage";
+import { IconLink } from "./display/IconLink";
+import { HomePage } from "./containers/HomePage";
+import { HubPage } from "./containers/HubPage";
+import { LoginMessage } from "./display/LoginMessage";
 
 export function App() {
   const fxa_uid = new URLSearchParams(location.search).get("fxa_uid");
