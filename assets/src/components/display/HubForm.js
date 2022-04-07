@@ -5,7 +5,7 @@ import "./HubForm.css";
 import { FormChoice } from "../common/FormChoice";
 import { formatNumber } from "../utils/formatNumber";
 
-export function HubForm({hub, setHub, updating, onSubmit}) {
+export function HubForm({hub, setHub, isSubmitting, onSubmit}) {
   const onFormSubmit = (e) => {
     e.preventDefault();
     onSubmit(hub);
@@ -64,7 +64,7 @@ export function HubForm({hub, setHub, updating, onSubmit}) {
       onChange={(value) => setHub({ ...hub, storage_limit_mb: value })}
     />
 
-    <button disabled={updating}>{updating ? "saving" : "save"}</button>
+    <button disabled={isSubmitting}>{isSubmitting ? "saving" : "save"}</button>
   </form>
   );
 }
@@ -72,6 +72,6 @@ export function HubForm({hub, setHub, updating, onSubmit}) {
 HubForm.propTypes = {
   hub: PropTypes.object,
   setHub: PropTypes.func,
-  updating: PropTypes.bool,
+  isSubmitting: PropTypes.bool,
   onSubmit: PropTypes.func,
 };
