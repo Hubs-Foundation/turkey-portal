@@ -24,7 +24,7 @@ defmodule PrtlWeb.Plugs.Auth do
     account = Prtl.Account.find_or_create_account_for_fxa_uid(fxa_uid)
     # free hub create as well
 
-    conn |> put_private(:account, account)
+    conn |> assign(:account, account)
   end
 
   # Not authorized or empty jwt
