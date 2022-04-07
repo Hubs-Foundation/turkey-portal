@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 
 import { FxaUidContext } from "../FxaUidContext";
-import { useHub } from "../store/hubs";
+import { useHub } from "../hooks/hubs";
 import { useUpdateHubMutation } from "../services/hubs";
 import { Spinner } from "../common/Spinner";
 import { HubForm } from "../display/HubForm";

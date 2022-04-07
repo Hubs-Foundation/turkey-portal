@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 
 import { FxaUidContext } from "../FxaUidContext";
-import { useHubs } from "../store/hubs";
+import { useHubs } from "../hooks/hubs";
 import { Hub } from "../display/Hub";
 import { Spinner } from "../common/Spinner";
 
