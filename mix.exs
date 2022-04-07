@@ -37,9 +37,9 @@ defmodule Prtl.MixProject do
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
       {:postgrex, ">= 0.0.0"},
+      {:ecto_boot_migration, "~> 0.3.0"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, "~> 0.17.5"},
       {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.6"},
       {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
@@ -50,8 +50,7 @@ defmodule Prtl.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:reverse_proxy_plug,
-      git: "https://github.com/mozillareality/reverse_proxy_plug.git", branch: "reticulum/master"},
+      {:poison, "~> 5.0"}
     ]
   end
 

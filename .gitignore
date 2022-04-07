@@ -32,3 +32,5 @@ prtl-*.tar
 npm-debug.log
 /assets/node_modules/
 
+package-lock.json
+mix.lock

@@ -3,57 +3,26 @@ import { useParams } from "react-router-dom";
 
 import { FxaUidContext } from "./FxaUidContext";
 import { useHub, useUpdateHub } from "./hub-hooks";
-import { FormChoice } from "./FormChoice";
+import { Spinner } from "./Spinner";
+import { formatNumber } from "./utils";
+import { HubForm } from "./HubForm";
 
 export function HubPage() {
   const fxa_uid = useContext(FxaUidContext);
   const { hub_id } = useParams();
-  const [hub, setHub] = useHub(fxa_uid, hub_id);
-  const [updateHub, updating] = useUpdateHub();
-
-  const onSubmit = (e) => {
-    e.preventDefault();
-    updateHub(fxa_uid, hub_id, hub);
-  };
-
-  if (!hub) return "";
+  const {data: hub, setData: setHub, loading, error, success}  = useHub(fxa_uid, hub_id);
+  const {mutate: updateHub, loading: updating} = useUpdateHub(fxa_uid, hub_id);
 
   return (
-    <form className="hub-form" onSubmit={onSubmit}>
-      <div>
-        <span>Hub Name</span>
-        <input value={hub.name} onChange={(e) => setHub({ ...hub, name: e.target.value })} />
-      </div>
-
-      <div>
-        <span>Subdomain</span>
-        <span>{hub.subdomain}.myhubs.net</span>
-      </div>
-
-      <FormChoice
-        name="tier"
-        value={hub.tier}
-        choices={["free", "premium"]}
-        onChange={(value) => setHub({ ...hub, tier: value })}
-      />
-
-      <FormChoice
-        name="ccu"
-        value={hub.ccu_limit}
-        choices={[25, 50, 100]}
-        disabled={hub.tier === "free"}
-        onChange={(value) => setHub({ ...hub, ccu_limit: value })}
-      />
-
-      <FormChoice
-        name="storage"
-        value={hub.storage_limit_mb}
-        choices={[1000, 5000, 10000]}
-        disabled={hub.tier === "free"}
-        onChange={(value) => setHub({ ...hub, storage_limit_mb: value })}
-      />
-
-      <button disabled={updating}>{updating ? "saving" : "save"}</button>
-    </form>
+    <>
+      {loading && <Spinner />}
+      {error && <span>Unable to load Hub</span>}
+      {success &&
+        (!hub ? (
+          <span>Hub not found</span>
+        ) : (
+          <HubForm hub={hub} setHub={setHub} onSubmit={updateHub} updating={updating}  />
+        ))}
+    </>
   );
 }
