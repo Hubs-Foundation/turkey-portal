@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "./utils/query-mutation";
+import { useQuery, useMutation } from "./query-mutation";
 
 // TODO Remove when the backend actually supplies these values.
 function addFakeProperties(hubs) {

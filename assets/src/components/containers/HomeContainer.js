@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 
-import { FxaUidContext } from "./FxaUidContext";
-import { useHubs } from "./hub-hooks";
-import { Hub } from "./Hub";
-import { Spinner } from "./Spinner";
+import { FxaUidContext } from "../FxaUidContext";
+import { useHubs } from "../utils/hub-hooks";
+import { Hub } from "../display/Hub";
+import { Spinner } from "../common/Spinner";
 
-export function HomePage() {
+export function HomeContainer() {
   const fxa_uid = useContext(FxaUidContext);
 
   const { data: hubs, loading, error, success } = useHubs(fxa_uid);

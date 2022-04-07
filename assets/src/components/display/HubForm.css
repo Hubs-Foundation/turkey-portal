@@ -1,0 +1,22 @@
+.hub-form { width: 100%; }
+.hub-form > * { display: block; margin: 0.6em; }
+.hub-form span { display: block; }
+.hub-form input { font-size: 100%; }
+.hub-form label {
+  display: inline;
+  font-weight: normal;
+  margin: 0 0.2em;
+  white-space: nowrap;
+}
+.hub-form .domain {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hub-form .warning {
+  background: #fe9;
+  display: inline;
+  padding: 0.3em;
+  border-radius: 0.3em;
+  font-size: 10pt;
+}
