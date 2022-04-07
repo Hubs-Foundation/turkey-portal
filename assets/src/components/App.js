@@ -5,6 +5,7 @@ import { FxaUidContext } from "./FxaUidContext";
 import { IconLink } from "./common/IconLink";
 import { HomeContainer } from "./containers/HomeContainer";
 import { HubContainer } from "./containers/HubContainer";
+import { Login } from "./display/Login";
 import { LoginMessage } from "./common/LoginMessage";
 
 export function App() {
@@ -13,6 +14,7 @@ export function App() {
     <FxaUidContext.Provider value={fxa_uid}>
       <h1>
         <IconLink to={`/?fxa_uid=${fxa_uid}`} icon="🦃" />
+        <Login />
       </h1>
       <Routes>
         {fxa_uid ? (

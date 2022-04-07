@@ -10,8 +10,17 @@ import { HubForm } from "../display/HubForm";
 export function HubContainer() {
   const fxa_uid = useContext(FxaUidContext);
   const { hub_id } = useParams();
-  const {data: hub, setData: setHub, loading, error, success}  = useHub(fxa_uid, hub_id);
-  const {mutate: updateHub, loading: updating} = useUpdateHub(fxa_uid, hub_id);
+  const {
+    data: hub,
+    setData: setHub,
+    loading,
+    error,
+    success,
+  } = useHub(fxa_uid, hub_id);
+  const { mutate: updateHub, loading: updating } = useUpdateHub(
+    fxa_uid,
+    hub_id
+  );
 
   return (
     <>
@@ -21,7 +30,12 @@ export function HubContainer() {
         (!hub ? (
           <span>Hub not found</span>
         ) : (
-          <HubForm hub={hub} setHub={setHub} onSubmit={updateHub} updating={updating}  />
+          <HubForm
+            hub={hub}
+            setHub={setHub}
+            onSubmit={updateHub}
+            updating={updating}
+          />
         ))}
     </>
   );
