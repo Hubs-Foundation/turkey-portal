@@ -47,3 +47,6 @@ config :logger, level: :info
 #       force_ssl: [hsts: true]
 #
 # Check `Plug.SSL` for all available options in `force_ssl`.
+
+# Public key for JWT auth
+config :prtl, PrtlWeb.Plugs.Auth, auth_pub_key: "-----BEGIN RSA PUBLIC KEY-----\nMIIBCgKCAQEA3RY0qLmdthY6Q0RZ4oyNQSL035BmYLNdleX1qVpG1zfQeLWf/otg\nc8Ho2w8y5wW2W5vpI4a0aexNV2evgfsZKtx0q5WWwjsr2xy0Ak1zhWTgZD+FoHVG\nJ0xeFse2PnEhrtWalLacTza5RKEJskbNiTTu4fD+UfOCMctlwudNSs+AkmiPSxc8\nnWrZ5BuvdnEXcJOuw0h4oyyUlkmj+Oa/ZQVH44lmPI9Ih0OakXWpIfOob3X0Xqcd\nywlMVI2hzBR3JNodRjyEz33p6E//lY4Iodw9NdcRpohGcxcgQ5vf4r4epLIacr0y\n5w1ZiRyf6BwyqJ6IBpA7yYpws3r9qxmAqwIDAQAB\n-----END RSA PUBLIC KEY-----\n"
