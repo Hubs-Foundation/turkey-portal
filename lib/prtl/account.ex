@@ -11,6 +11,14 @@ defmodule Prtl.Account do
     timestamps()
   end
 
+  @spec changeset(
+          {map, map}
+          | %{
+              :__struct__ => atom | %{:__changeset__ => map, optional(any) => any},
+              optional(atom) => any
+            },
+          :invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}
+        ) :: Ecto.Changeset.t()
   @doc false
   def changeset(account, attrs) do
     account
@@ -21,6 +29,22 @@ defmodule Prtl.Account do
 
   def account_for_fxa_uid(fxa_uid) when is_binary(fxa_uid) do
     Repo.get_by(Prtl.Account, fxa_uid: fxa_uid)
+  end
+
+  def find_or_create_account_for_fxa_uid(fxa_uid) when is_binary(fxa_uid) do
+    account = account_for_fxa_uid(fxa_uid)
+    case account do
+      %Prtl.Account{} -> account
+      nil ->
+        create_account_for_fxa_uid(fxa_uid)
+        # TODO send createHub request to orchestrator, get the email from the cookie
+    end
+  end
+
+  defp create_account_for_fxa_uid(fxa_uid) when is_binary(fxa_uid) do
+    %Prtl.Account{}
+    |> Prtl.Account.changeset(%{fxa_uid: fxa_uid})
+    |> Prtl.Repo.insert!()
   end
 
 end

@@ -9,6 +9,8 @@ defmodule PrtlWeb.Plugs.Auth do
   def call(conn, _options) do
     results = conn |> get_auth_cookie() |> process_and_verify_jwt()
 
+    IO.inspect([results])
+
     conn |> process_jwt(results)
   end
 
@@ -17,17 +19,11 @@ defmodule PrtlWeb.Plugs.Auth do
   end
 
   # Authorized
-  # TODO can the user from the jwt token not match the pattern we expect for it?
   defp process_jwt(conn, %{is_valid: true, claims: claims}) do
     %{"sub" => fxa_uid} = claims
-
-
-    IO.inspect(["inside process_jwt", fxa_uid])
-
     # TODO check expiration?
 
-    account = Prtl.Account.account_for_fxa_uid(fxa_uid)
-    # TODO if no account -> create account
+    account = Prtl.Account.find_or_create_account_for_fxa_uid(fxa_uid)
     # free hub create as well
 
     conn |> put_private(:account, account)
@@ -37,7 +33,7 @@ defmodule PrtlWeb.Plugs.Auth do
   # TODO add redirect to get authenticated to auth server
   defp process_jwt(conn, %{is_valid: false, claims: _claims}) do
     send_resp(conn, 401, "unauthorized")
-    # send redirect header into here
+    # TODO send redirect header to login page here
     |> halt()
   end
 

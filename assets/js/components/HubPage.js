@@ -4,14 +4,22 @@ import { useParams } from "react-router-dom";
 import { FxaUidContext } from "./FxaUidContext";
 import { useHub, useUpdateHub } from "./hub-hooks";
 import { Spinner } from "./Spinner";
-import { formatNumber } from "./utils";
 import { HubForm } from "./HubForm";
 
 export function HubPage() {
   const fxa_uid = useContext(FxaUidContext);
   const { hub_id } = useParams();
-  const {data: hub, setData: setHub, loading, error, success}  = useHub(fxa_uid, hub_id);
-  const {mutate: updateHub, loading: updating} = useUpdateHub(fxa_uid, hub_id);
+  const {
+    data: hub,
+    setData: setHub,
+    loading,
+    error,
+    success,
+  } = useHub(fxa_uid, hub_id);
+  const { mutate: updateHub, loading: updating } = useUpdateHub(
+    fxa_uid,
+    hub_id
+  );
 
   return (
     <>
@@ -21,7 +29,12 @@ export function HubPage() {
         (!hub ? (
           <span>Hub not found</span>
         ) : (
-          <HubForm hub={hub} setHub={setHub} onSubmit={updateHub} updating={updating}  />
+          <HubForm
+            hub={hub}
+            setHub={setHub}
+            onSubmit={updateHub}
+            updating={updating}
+          />
         ))}
     </>
   );
