@@ -9,8 +9,6 @@ defmodule PrtlWeb.Plugs.Auth do
   def call(conn, _options) do
     results = conn |> get_auth_cookie() |> process_and_verify_jwt()
 
-    IO.inspect([results])
-
     conn |> process_jwt(results)
   end
 

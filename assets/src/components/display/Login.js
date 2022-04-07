@@ -8,7 +8,7 @@ function redirect() {
 }
 
 function getAccount() {
-  fetch("http://localhost:4000/api/v1/account");
+  fetch(window.location.origin + "/api/v1/account");
 }
 
 export function Login() {

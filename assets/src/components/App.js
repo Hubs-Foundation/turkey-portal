@@ -5,7 +5,7 @@ import { FxaUidContext } from "./FxaUidContext";
 import { IconLink } from "./common/IconLink";
 import { HomeContainer } from "./containers/HomeContainer";
 import { HubContainer } from "./containers/HubContainer";
-import { Login } from "./Login";
+import { Login } from "./display/Login";
 import { LoginMessage } from "./common/LoginMessage";
 
 export function App() {
