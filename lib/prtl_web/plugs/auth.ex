@@ -1,7 +1,7 @@
 defmodule PrtlWeb.Plugs.Auth do
   import Plug.Conn
 
-  @cookie_name "_turkeyauthcookie"
+  @cookie_name "_turkeyauthtoken"
   @algo "RS256"
 
   def init(default), do: default
