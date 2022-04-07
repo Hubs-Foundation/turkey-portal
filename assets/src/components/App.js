@@ -2,10 +2,10 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { FxaUidContext } from "./FxaUidContext";
-import { IconLink } from "./IconLink";
-import { HomePage } from "./HomePage";
-import { HubPage } from "./HubPage";
-import { LoginMessage } from "./LoginMessage";
+import { IconLink } from "./common/IconLink";
+import { HomeContainer } from "./containers/HomeContainer";
+import { HubContainer } from "./containers/HubContainer";
+import { LoginMessage } from "./common/LoginMessage";
 
 export function App() {
   const fxa_uid = new URLSearchParams(location.search).get("fxa_uid");
@@ -17,8 +17,8 @@ export function App() {
       <Routes>
         {fxa_uid ? (
           <>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/hubs/:hub_id" element={<HubPage />} />
+            <Route path="/" element={<HomeContainer />} />
+            <Route path="/hubs/:hub_id" element={<HubContainer />} />
           </>
         ) : (
           <Route path="*" element={<LoginMessage />} />
