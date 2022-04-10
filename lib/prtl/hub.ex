@@ -92,6 +92,14 @@ defmodule Prtl.Hub do
   end
 
   def delete_hub(hub_id, account) do
-    get_hub(hub_id, account) |> Prtl.Repo.delete!()
+    hub_to_delete = get_hub(hub_id, account)
+
+    case hub_to_delete do
+      %Prtl.Hub{} ->
+        Prtl.Repo.delete!(hub_to_delete)
+
+      nil ->
+        nil
+    end
   end
 end
