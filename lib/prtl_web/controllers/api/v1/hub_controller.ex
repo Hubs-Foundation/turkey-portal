@@ -21,9 +21,7 @@ defmodule PrtlWeb.Api.V1.HubController do
 
   # Create free hub with defaults
   def create(conn, _, account) do
-    IO.inspect(["hit hub controller, create"])
     fxa_email = conn.assigns[:fxa_email]
-
     new_hub = Prtl.Hub.create_default_free_hub(account, fxa_email)
 
     conn |> render("create.json", hub: new_hub)

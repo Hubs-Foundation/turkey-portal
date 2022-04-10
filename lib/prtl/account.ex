@@ -25,8 +25,6 @@ defmodule Prtl.Account do
   def find_or_create_account_for_fxa_uid(fxa_uid) when is_binary(fxa_uid) do
     account = account_for_fxa_uid(fxa_uid)
 
-    IO.inspect(["find or create account for fxauid", account])
-
     case account do
       %Prtl.Account{} ->
         account

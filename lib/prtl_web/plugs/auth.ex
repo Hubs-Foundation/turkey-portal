@@ -22,8 +22,6 @@ defmodule PrtlWeb.Plugs.Auth do
     %{"fxa_email" => fxa_email} = claims
     # TODO check expiration?
 
-    IO.puts(fxa_uid)
-
     account = Prtl.Account.find_or_create_account_for_fxa_uid(fxa_uid)
     # free hub create as well
 
