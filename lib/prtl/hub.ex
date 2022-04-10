@@ -86,4 +86,12 @@ defmodule Prtl.Hub do
     ]
     |> Enum.join("-")
   end
+
+  def get_hub(hub_id, account = %Prtl.Account{}) do
+    Prtl.Hub |> Prtl.Repo.get_by(hub_id: hub_id, account_id: account.account_id)
+  end
+
+  def delete_hub(hub_id, account) do
+    get_hub(hub_id, account) |> Prtl.Repo.delete!()
+  end
 end
