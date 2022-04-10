@@ -36,8 +36,6 @@ defmodule PrtlWeb.Api.V1.HubController do
   def delete(conn, %{"id" => hub_id}, account) do
     deleted_hub = Prtl.Hub.delete_hub(hub_id, account)
 
-    IO.inspect(["deleted hub", deleted_hub])
-
     conn |> render("delete.json", deleted_hub: deleted_hub)
   end
 end
