@@ -22,5 +22,4 @@ defmodule Prtl.Repo.Migrations.CreateShardingIds do
     $$ LANGUAGE PLPGSQL;
     """)
   end
-
 end

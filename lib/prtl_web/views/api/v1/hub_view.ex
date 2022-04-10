@@ -5,6 +5,10 @@ defmodule PrtlWeb.Api.V1.HubView do
     hubs |> Enum.map(&render_hub/1)
   end
 
+  def render("create.json", %{hub: hub}) do
+    hub |> render_hub()
+  end
+
   defp render_hub(hub) do
     %{
       hub_id: hub.hub_id,
