@@ -35,7 +35,7 @@ export function Hub(props) {
           <span className={`tag ${props.status}`}>{props.status}</span>
         </div>
 
-        <IconLink to={`/hubs/${props.hub_id}?fxa_uid=${props.fxa_uid}`} icon="⚙️" />
+        <IconLink to={`/hubs/${props.hub_id}`} icon="⚙️" />
       </div>
     </div>
   );
@@ -50,6 +50,5 @@ Hub.propTypes = {
   storage_limit_mb: PropTypes.number,
   status: PropTypes.string,
   subdomain: PropTypes.string,
-  hub_id: PropTypes.number,
-  fxa_uid: PropTypes.string,
+  hub_id: PropTypes.string,
 };

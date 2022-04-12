@@ -27,7 +27,7 @@ defmodule PrtlWeb.Api.V1.HubView do
 
   defp render_hub(hub) do
     %{
-      hub_id: hub.hub_id,
+      hub_id: hub.hub_id |> to_string,
       name: hub.name,
       ccu_limit: hub.ccu_limit,
       storage_limit_mb: hub.storage_limit_mb,
