@@ -18,8 +18,7 @@ defmodule PrtlWeb.Plugs.Auth do
 
   # Authorized
   defp process_jwt(conn, %{is_valid: true, claims: claims}) do
-    %{"sub" => fxa_uid} = claims
-    %{"fxa_email" => fxa_email} = claims
+    %{"fxa_email" => fxa_email, "sub" => fxa_uid} = claims
     # TODO check expiration?
 
     account = Prtl.Account.find_or_create_account_for_fxa_uid(fxa_uid)
