@@ -12,13 +12,6 @@ defmodule PrtlWeb.Api.V1.HubController do
     conn |> render("show.json", hub: hub)
   end
 
-  def index(conn, %{"fxa_uid" => fxa_uid}, _account) do
-    account = Prtl.Account.account_for_fxa_uid(fxa_uid)
-
-    hubs = Prtl.Hub.hubs_for_account(account)
-    conn |> render("index.json", hubs: hubs)
-  end
-
   # All hubs for 1 account
   def index(conn, %{}, account) do
     hubs = Prtl.Hub.hubs_for_account(account)
@@ -34,6 +27,8 @@ defmodule PrtlWeb.Api.V1.HubController do
   end
 
   def delete(conn, %{"id" => hub_id}, account) do
+    # Todo call to orchestrator to delete the hub
+    # Todo protect this endpoint for development purposes only
     deleted_hub = Prtl.Hub.delete_hub(hub_id, account)
 
     conn |> render("delete.json", deleted_hub: deleted_hub)

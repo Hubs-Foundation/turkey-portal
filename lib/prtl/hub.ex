@@ -49,7 +49,7 @@ defmodule Prtl.Hub do
     |> Repo.all()
   end
 
-  def create_default_free_hub(account = %Prtl.Account{}, _fxa_email) do
+  def create_default_free_hub(%Prtl.Account{} = account, _fxa_email) do
     # TODO replace with request to orchestrator with email for a round trip to get this information.
 
     free_subdomain_and_name = rand_string(10)
@@ -87,11 +87,11 @@ defmodule Prtl.Hub do
     |> Enum.join("-")
   end
 
-  def get_hub(hub_id, account = %Prtl.Account{}) do
+  def get_hub(hub_id, %Prtl.Account{} = account) do
     Prtl.Hub |> Prtl.Repo.get_by(hub_id: hub_id, account_id: account.account_id)
   end
 
-  def delete_hub(hub_id, account) do
+  def delete_hub(hub_id, %Prtl.Account{} = account) do
     hub_to_delete = get_hub(hub_id, account)
 
     case hub_to_delete do
