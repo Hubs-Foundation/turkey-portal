@@ -18,13 +18,15 @@ defmodule PrtlWeb.Plugs.Auth do
 
   # Authorized
   defp process_jwt(conn, %{is_valid: true, claims: claims}) do
-    %{"sub" => fxa_uid} = claims
+    %{"fxa_email" => fxa_email, "sub" => fxa_uid} = claims
     # TODO check expiration?
 
     account = Prtl.Account.find_or_create_account_for_fxa_uid(fxa_uid)
     # free hub create as well
 
-    conn |> assign(:account, account)
+    conn
+    |> assign(:account, account)
+    |> assign(:fxa_email, fxa_email)
   end
 
   # Not authorized or empty jwt
@@ -38,6 +40,7 @@ defmodule PrtlWeb.Plugs.Auth do
   # Returns true if pem verifies the jwt, false if not
   defp process_and_verify_jwt(nil), do: false
   defp process_and_verify_jwt(""), do: false
+
   defp process_and_verify_jwt(jwt) do
     jwk = JOSE.JWK.from_pem(Application.get_env(:prtl, PrtlWeb.Plugs.Auth)[:auth_pub_key])
     {is_verified, jwt_struct, _} = JOSE.JWT.verify_strict(jwk, [@algo], jwt)
@@ -45,10 +48,11 @@ defmodule PrtlWeb.Plugs.Auth do
 
     exp_converted = NaiveDateTime.add(~N[1970-01-01 00:00:00], exp)
 
-    is_valid = case NaiveDateTime.compare(exp_converted, NaiveDateTime.utc_now()) do
-      :lt -> false
-      _ -> is_verified
-    end
+    is_valid =
+      case NaiveDateTime.compare(exp_converted, NaiveDateTime.utc_now()) do
+        :lt -> false
+        _ -> is_verified
+      end
 
     %{is_valid: is_valid, claims: claims}
   end

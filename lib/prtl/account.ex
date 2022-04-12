@@ -24,8 +24,11 @@ defmodule Prtl.Account do
 
   def find_or_create_account_for_fxa_uid(fxa_uid) when is_binary(fxa_uid) do
     account = account_for_fxa_uid(fxa_uid)
+
     case account do
-      %Prtl.Account{} -> account
+      %Prtl.Account{} ->
+        account
+
       nil ->
         create_account_for_fxa_uid(fxa_uid)
         # TODO send createHub request to orchestrator, get the email from the cookie
@@ -37,5 +40,4 @@ defmodule Prtl.Account do
     |> Prtl.Account.changeset(%{fxa_uid: fxa_uid})
     |> Prtl.Repo.insert!()
   end
-
 end
