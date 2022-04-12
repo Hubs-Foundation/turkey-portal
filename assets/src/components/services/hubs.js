@@ -16,21 +16,20 @@ export const hubsApi = createApi({
 
   endpoints: (builder) => ({
     getHubs: builder.query({
-      query: ({fxa_uid}) => `hubs?fxa_uid=${fxa_uid}`,
+      query: () => `hubs`,
       transformResponse: addFakeProperties,
     }),
 
     getHub: builder.query({
-      query: ({fxa_uid}) => `hubs?fxa_uid=${fxa_uid}`,
-      transformResponse: (results, meta, args) => {
-        // TODO Remove this when we have a backend API to retrieve a single hub.
-        return addFakeProperties(results).find(hub => hub.hub_id.toString() === args.hub_id);
+      query: ({hub_id}) => `hubs/${hub_id}`,
+      transformResponse: (results) => {
+        return addFakeProperties([results])[0];
       },
     }),
 
     updateHub: builder.mutation({
-      query: ({fxa_uid, hub_id, hub}) => ({
-        url: `hubs/${hub_id}?fxa_uid=${fxa_uid}`,
+      query: ({hub_id, hub}) => ({
+        url: `hubs/${hub_id}`,
         method: 'PATCH',
         body: hub
       }),

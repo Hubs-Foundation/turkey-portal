@@ -1,9 +1,6 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 
 export function LoginMessage() {
-  const location = useLocation();
-  const returnTo = encodeURIComponent(location.pathname);
-  // TODO Replace this with a real login link.
-  return <span><a href={`/some_login_link?returnTo=${returnTo}`}>Log in</a> to get started</span>;
+  const client = location.origin + location.pathname.replace(/\/$/, "");
+  return <span><a href={`https://auth.myhubs.net/login?idp=fxa&client=${client}`}>Log in</a> to get started</span>;
 }

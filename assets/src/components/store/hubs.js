@@ -7,20 +7,20 @@ const hubsAdapter = createEntityAdapter({
 export const hubsSlice = createSlice({
   name: "hubs",
   initialState: hubsAdapter.getInitialState({
-    initialized: false
+    isInitialized: false
   }),
   reducers: {
     setHub(state, action) {
       hubsAdapter.setOne(state, action.payload);
     },
     setHubs(state, action) {
-      state.initialized = true;
+      state.isInitialized = true;
       hubsAdapter.setAll(state, action.payload);
     },
   }
 });
 
-export const selectInitialized = createSelector(state => state.hubs, state => state.initialized);
+export const selectIsInitialized = createSelector(state => state.hubs, state => state.isInitialized);
 
 export const hubsSelectors = hubsAdapter.getSelectors(state => state.hubs);
 

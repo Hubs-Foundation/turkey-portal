@@ -1,35 +1,38 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import { Provider as StoreProvider } from "react-redux";
 
-import { store } from "./store/store";
-import { FxaUidContext } from "./FxaUidContext";
-import { IconLink } from "./common/IconLink";
+import { useAccount } from "./hooks/account";
 import { HomeContainer } from "./containers/HomeContainer";
 import { HubContainer } from "./containers/HubContainer";
-import { Login } from "./display/Login";
+import { LogOut } from "./display/LogOut";
 import { LoginMessage } from "./common/LoginMessage";
+import { Spinner } from "./common/Spinner";
 
 export function App() {
-  const fxa_uid = new URLSearchParams(location.search).get("fxa_uid");
+  const { account, isLoading, isError, isReady } = useAccount();
+
   return (
-    <FxaUidContext.Provider value={fxa_uid}>
-      <StoreProvider store={store}>
-        <h1>
-          <IconLink to={`/?fxa_uid=${fxa_uid}`} icon="🦃" />
-          <Login />
-        </h1>
-        <Routes>
-          {fxa_uid ? (
+    <>
+      <h1>
+        <a href="/">Turkey</a>
+        {isReady && (isError || account?.isLoggedIn) && <LogOut />}
+      </h1>
+      <Routes>
+        {isReady && account?.isLoggedIn ? (
+          <>
+            <Route path="/" element={<HomeContainer />} />
+            <Route path="/hubs/:hub_id" element={<HubContainer />} />
+          </>
+        ) : (
+          <Route path="*" element={
             <>
-              <Route path="/" element={<HomeContainer />} />
-              <Route path="/hubs/:hub_id" element={<HubContainer />} />
+              {isLoading && <Spinner />}
+              {isError && <span>Unable to retrieve account</span>}
+              {isReady && <LoginMessage />}
             </>
-          ) : (
-            <Route path="*" element={<LoginMessage />} />
-          )}
-        </Routes>
-      </StoreProvider>
-    </FxaUidContext.Provider>
+          } />
+        )}
+      </Routes>
+    </>
   );
 }
