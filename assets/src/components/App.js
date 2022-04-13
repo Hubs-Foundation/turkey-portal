@@ -4,19 +4,20 @@ import { Routes, Route } from "react-router-dom";
 import { useAccount } from "./hooks/account";
 import { HomeContainer } from "./containers/HomeContainer";
 import { HubContainer } from "./containers/HubContainer";
-import { LogOut } from "./display/LogOut";
+import { Header } from "./display/Header";
 import { LoginMessage } from "./common/LoginMessage";
 import { Spinner } from "./common/Spinner";
 
 export function App() {
   const { account, isLoading, isError, isReady } = useAccount();
 
+  // An error could occur due to several reasons, but let's
+  // assume the user just needs to log in again.
+  const isLoggedOut = isError;
+
   return (
     <>
-      <h1>
-        <a href="/">Turkey</a>
-        {isReady && (isError || account?.isLoggedIn) && <LogOut />}
-      </h1>
+      <Header account={account} />
       <Routes>
         {isReady && account?.isLoggedIn ? (
           <>
@@ -29,8 +30,7 @@ export function App() {
             element={
               <>
                 {isLoading && <Spinner />}
-                {isError && <span>Unable to retrieve account</span>}
-                {isReady && <LoginMessage />}
+                {isLoggedOut && <LoginMessage />}
               </>
             }
           />
