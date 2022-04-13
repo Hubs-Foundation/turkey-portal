@@ -6,7 +6,7 @@
   },
   "ava": {
     "require": [
-      "sucrase/register",
+      "./test/helpers/register-sucrase.js",
       "global-jsdom/register"
     ]
   },
