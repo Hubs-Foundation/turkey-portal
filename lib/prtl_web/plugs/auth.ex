@@ -34,7 +34,15 @@ defmodule PrtlWeb.Plugs.Auth do
 
   # Authorized
   defp process_jwt(conn, %{is_valid: true, claims: claims}) do
-    %{"fxa_email" => fxa_email, "sub" => fxa_uid, "fxa_pic" => fxa_pic, "fxa_displayName" => fxa_displayName} = claims
+    IO.inspect([claims])
+
+    %{
+      "fxa_email" => fxa_email,
+      "sub" => fxa_uid,
+      "fxa_pic" => fxa_pic,
+      "fxa_displayName" => fxa_displayName
+    } = claims
+
     # TODO check expiration?
 
     account = Prtl.Account.find_or_create_account_for_fxa_uid(fxa_uid)
@@ -42,16 +50,24 @@ defmodule PrtlWeb.Plugs.Auth do
 
     conn
     |> assign(:account, account)
-    |> assign(:fxa_account_info, %Prtl.FxaAccountInfo{fxa_pic: fxa_pic, fxa_displayName: fxa_displayName, fxa_email: fxa_email})
+    |> assign(:fxa_account_info, %Prtl.FxaAccountInfo{
+      fxa_pic: fxa_pic,
+      fxa_displayName: use_email_if_display_name_blank(fxa_displayName, fxa_email),
+      fxa_email: fxa_email
+    })
   end
 
   # Not authorized or empty jwt
   # TODO add redirect to get authenticated to auth server
   defp process_jwt(conn, %{is_valid: false, claims: _claims}) do
-    send_resp(conn, 401, "unauthorized")
+    conn
+    |> send_resp(401, Jason.encode!(%{error: "unauthorized"}))
     # TODO send redirect header to login page here
     |> halt()
   end
+
+  defp use_email_if_display_name_blank("", fxa_email), do: fxa_email
+  defp use_email_if_display_name_blank(fxa_displayName, _fxa_email), do: fxa_displayName
 
   # Returns true if pem verifies the jwt, false if not
   defp process_and_verify_jwt(nil), do: false
