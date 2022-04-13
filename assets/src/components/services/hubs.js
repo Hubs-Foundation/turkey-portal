@@ -10,9 +10,9 @@ function addFakeProperties(hubs) {
 }
 
 export const hubsApi = createApi({
-  reducerPath: 'hubsApi',
+  reducerPath: "hubsApi",
 
-  baseQuery: fetchBaseQuery({ baseUrl: '/api/v1/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
 
   endpoints: (builder) => ({
     getHubs: builder.query({
@@ -21,20 +21,20 @@ export const hubsApi = createApi({
     }),
 
     getHub: builder.query({
-      query: ({hub_id}) => `hubs/${hub_id}`,
+      query: ({ hub_id }) => `hubs/${hub_id}`,
       transformResponse: (results) => {
         return addFakeProperties([results])[0];
       },
     }),
 
     updateHub: builder.mutation({
-      query: ({hub_id, hub}) => ({
+      query: ({ hub_id, hub }) => ({
         url: `hubs/${hub_id}`,
-        method: 'PATCH',
-        body: hub
+        method: "PATCH",
+        body: hub,
       }),
-    })
-  })
+    }),
+  }),
 });
 
 export const { useGetHubsQuery, useGetHubQuery, useUpdateHubMutation } = hubsApi;

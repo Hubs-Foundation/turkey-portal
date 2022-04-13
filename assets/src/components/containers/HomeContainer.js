@@ -12,13 +12,7 @@ export function HomeContainer() {
       {isLoading && <Spinner />}
       {isError && <span>Unable to load Hubs</span>}
       {isReady &&
-        (!hasHubs ? (
-          <span>You don&apos;t have any hubs</span>
-        ) : (
-          hubs.map((hub) => (
-            <Hub key={hub.hub_id} {...hub} />
-          ))
-        ))}
+        (!hasHubs ? <span>You don&apos;t have any hubs</span> : hubs.map((hub) => <Hub key={hub.hub_id} {...hub} />))}
     </>
   );
 }

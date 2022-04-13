@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const accountSlice = createSlice({
   name: "account",
-  initialState: { 
-    isInitialized: false, 
-    isLoggedIn: false
+  initialState: {
+    isInitialized: false,
+    isLoggedIn: false,
   },
   reducers: {
     setAccount(state, action) {
@@ -13,9 +13,9 @@ export const accountSlice = createSlice({
     logOut(state) {
       state.isLoggedIn = false;
     },
-  }
+  },
 });
 
-export const selectAccount = state => state.account;
+export const selectAccount = (state) => state.account;
 
 export const { setAccount, logOut } = accountSlice.actions;

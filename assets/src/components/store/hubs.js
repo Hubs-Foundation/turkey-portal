@@ -1,13 +1,13 @@
 import { createEntityAdapter, createSlice, createSelector } from "@reduxjs/toolkit";
 
 const hubsAdapter = createEntityAdapter({
-  selectId: hub => hub.hub_id
+  selectId: (hub) => hub.hub_id,
 });
 
 export const hubsSlice = createSlice({
   name: "hubs",
   initialState: hubsAdapter.getInitialState({
-    isInitialized: false
+    isInitialized: false,
   }),
   reducers: {
     setHub(state, action) {
@@ -17,11 +17,14 @@ export const hubsSlice = createSlice({
       state.isInitialized = true;
       hubsAdapter.setAll(state, action.payload);
     },
-  }
+  },
 });
 
-export const selectIsInitialized = createSelector(state => state.hubs, state => state.isInitialized);
+export const selectIsInitialized = createSelector(
+  (state) => state.hubs,
+  (state) => state.isInitialized
+);
 
-export const hubsSelectors = hubsAdapter.getSelectors(state => state.hubs);
+export const hubsSelectors = hubsAdapter.getSelectors((state) => state.hubs);
 
 export const { setHub, setHubs } = hubsSlice.actions;

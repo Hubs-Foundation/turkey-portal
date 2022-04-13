@@ -1,7 +1,16 @@
-.hub-form { width: 100%; }
-.hub-form > * { display: block; margin: 0.6em; }
-.hub-form span { display: block; }
-.hub-form input { font-size: 100%; }
+.hub-form {
+  width: 100%;
+}
+.hub-form > * {
+  display: block;
+  margin: 0.6em;
+}
+.hub-form span {
+  display: block;
+}
+.hub-form input {
+  font-size: 100%;
+}
 .hub-form label {
   display: inline;
   font-weight: normal;

@@ -10,7 +10,7 @@ export const store = configureStore({
     account: accountSlice.reducer,
     hubs: hubsSlice.reducer,
     [accountApi.reducerPath]: accountApi.reducer,
-    [hubsApi.reducerPath]: hubsApi.reducer
+    [hubsApi.reducerPath]: hubsApi.reducer,
   },
-  middleware: getDefaultMiddleware => getDefaultMiddleware().concat(hubsApi.middleware)
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(hubsApi.middleware),
 });
