@@ -30,7 +30,7 @@ defmodule PrtlWeb.Router do
   # end
 
   scope "/", PrtlWeb do
-    resources("/logout", Api.V1.LogoutController, [:index])
+    resources("/logout", LogoutController, [:index])
   end
 
   scope "/api/v1", PrtlWeb do
