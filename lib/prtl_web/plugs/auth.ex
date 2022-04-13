@@ -1,5 +1,21 @@
 defmodule PrtlWeb.Plugs.Auth do
+  @moduledoc """
+  Authenticates a user via JWT cookie supplied by our auth server
+
+  jwt claims format
+  {
+    "exp": 123,
+    "fxa_2fa": false,
+    "fxa_email": "email@email.email",
+    "fxa_pic": "https://profile.stage.mozaws.net/v1/avatar/z",
+    "iat": 123,
+    "iss": "",
+    "sub": "123abc",
+    "fxa_displayName": "Name"
+  }
+  """
   import Plug.Conn
+  import Prtl.FxaAccountInfo
 
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
@@ -18,7 +34,7 @@ defmodule PrtlWeb.Plugs.Auth do
 
   # Authorized
   defp process_jwt(conn, %{is_valid: true, claims: claims}) do
-    %{"fxa_email" => fxa_email, "sub" => fxa_uid} = claims
+    %{"fxa_email" => fxa_email, "sub" => fxa_uid, "fxa_pic" => fxa_pic, "fxa_displayName" => fxa_displayName} = claims
     # TODO check expiration?
 
     account = Prtl.Account.find_or_create_account_for_fxa_uid(fxa_uid)
@@ -26,7 +42,7 @@ defmodule PrtlWeb.Plugs.Auth do
 
     conn
     |> assign(:account, account)
-    |> assign(:fxa_email, fxa_email)
+    |> assign(:fxa_account_info, %Prtl.FxaAccountInfo{fxa_pic: fxa_pic, fxa_displayName: fxa_displayName, fxa_email: fxa_email})
   end
 
   # Not authorized or empty jwt
