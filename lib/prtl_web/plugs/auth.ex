@@ -34,8 +34,6 @@ defmodule PrtlWeb.Plugs.Auth do
 
   # Authorized
   defp process_jwt(conn, %{is_valid: true, claims: claims}) do
-    IO.inspect([claims])
-
     %{
       "fxa_email" => fxa_email,
       "sub" => fxa_uid,
@@ -53,7 +51,8 @@ defmodule PrtlWeb.Plugs.Auth do
     |> assign(:fxa_account_info, %Prtl.FxaAccountInfo{
       fxa_pic: fxa_pic,
       fxa_displayName: use_email_if_display_name_blank(fxa_displayName, fxa_email),
-      fxa_email: fxa_email
+      fxa_email: fxa_email,
+      fxa_uid: fxa_uid
     })
   end
 
@@ -70,8 +69,8 @@ defmodule PrtlWeb.Plugs.Auth do
   defp use_email_if_display_name_blank(fxa_displayName, _fxa_email), do: fxa_displayName
 
   # Returns true if pem verifies the jwt, false if not
-  defp process_and_verify_jwt(nil), do: false
-  defp process_and_verify_jwt(""), do: false
+  defp process_and_verify_jwt(nil), do: %{is_valid: false, claims: %{}}
+  defp process_and_verify_jwt(""), do: %{is_valid: false, claims: %{}}
 
   defp process_and_verify_jwt(jwt) do
     jwk = JOSE.JWK.from_pem(Application.get_env(:prtl, PrtlWeb.Plugs.Auth)[:auth_pub_key])
