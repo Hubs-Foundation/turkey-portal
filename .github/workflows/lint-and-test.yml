@@ -16,7 +16,8 @@ jobs:
         with:
           node-version: 16.x
 
-      - run: |
+      - name: lint-and-test
+        run: |
           cd assets
           npm ci
           npm run lint
