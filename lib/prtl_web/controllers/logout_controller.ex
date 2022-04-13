@@ -1,4 +1,4 @@
-defmodule PrtlWeb.Api.V1.LogoutController do
+defmodule PrtlWeb.LogoutController do
   use PrtlWeb, :controller
 
   def index(conn, _) do
