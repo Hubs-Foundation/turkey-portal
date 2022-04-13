@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
+    "lint": "eslint src test",
     "test": "ava --serial"
   },
   "ava": {
@@ -21,6 +22,8 @@
     "@testing-library/react": "^12.1.4",
     "ava": "^4.1.0",
     "eslint": "^8.12.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "global-jsdom": "^8.4.0",
     "jsdom": "^19.0.0",

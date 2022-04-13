@@ -9,7 +9,7 @@ module.exports = {
   },
   plugins: ["react"],
 
-  extends: ["plugin:react/recommended", "eslint:recommended"],
+  extends: ["plugin:prettier/recommended", "plugin:react/recommended", "eslint:recommended"],
 
   settings: {
     react: {
