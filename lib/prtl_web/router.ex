@@ -29,7 +29,7 @@ defmodule PrtlWeb.Router do
   #   pipe_through :api
   # end
 
-  scope "/api/v1", PrtlWeb do
+  scope "/", PrtlWeb do
     resources("/logout", Api.V1.LogoutController, [:index])
   end
 
