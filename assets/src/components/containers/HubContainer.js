@@ -9,7 +9,7 @@ import { HubForm } from "../display/HubForm";
 export function HubContainer() {
   const { hub_id } = useParams();
 
-  const {hub, hasHub, isLoading, isError, isReady, setHub} = useHub(hub_id);
+  const { hub, hasHub, isLoading, isError, isReady, setHub } = useHub(hub_id);
 
   const [updateHub, { isLoading: isSubmitting }] = useUpdateHubMutation();
 
@@ -25,7 +25,8 @@ export function HubContainer() {
             hub={hub}
             setHub={setHub}
             isSubmitting={isSubmitting}
-            onSubmit={hub => updateHub({hub_id, hub})} />
+            onSubmit={(hub) => updateHub({ hub_id, hub })}
+          />
         ))}
     </>
   );

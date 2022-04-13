@@ -1,3 +1,10 @@
-.formchoice-name { text-transform: capitalize; }
-.formchoice-disabled { color: #888; }
-.formchoice-choices { display: flex; flex-wrap: wrap; }
+.formchoice-name {
+  text-transform: capitalize;
+}
+.formchoice-disabled {
+  color: #888;
+}
+.formchoice-choices {
+  display: flex;
+  flex-wrap: wrap;
+}

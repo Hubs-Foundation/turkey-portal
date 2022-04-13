@@ -24,13 +24,16 @@ export function App() {
             <Route path="/hubs/:hub_id" element={<HubContainer />} />
           </>
         ) : (
-          <Route path="*" element={
-            <>
-              {isLoading && <Spinner />}
-              {isError && <span>Unable to retrieve account</span>}
-              {isReady && <LoginMessage />}
-            </>
-          } />
+          <Route
+            path="*"
+            element={
+              <>
+                {isLoading && <Spinner />}
+                {isError && <span>Unable to retrieve account</span>}
+                {isReady && <LoginMessage />}
+              </>
+            }
+          />
         )}
       </Routes>
     </>
