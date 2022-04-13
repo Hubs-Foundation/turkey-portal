@@ -18,7 +18,6 @@ config :prtl, PrtlWeb.Endpoint,
   # Required for LiveDashboard
   live_view: [signing_salt: "ZgDeMeHP"]
 
-
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails

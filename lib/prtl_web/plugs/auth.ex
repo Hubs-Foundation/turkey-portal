@@ -56,4 +56,6 @@ defmodule PrtlWeb.Plugs.Auth do
 
     %{is_valid: is_valid, claims: claims}
   end
+
+  def get_cookie_name(), do: @cookie_name
 end

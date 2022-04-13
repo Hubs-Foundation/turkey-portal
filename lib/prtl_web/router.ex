@@ -29,6 +29,10 @@ defmodule PrtlWeb.Router do
   #   pipe_through :api
   # end
 
+  scope "/", PrtlWeb do
+    resources("/logout", LogoutController, [:index])
+  end
+
   scope "/api/v1", PrtlWeb do
     pipe_through :jwt_authenticated
 
