@@ -38,7 +38,7 @@ defmodule PrtlWeb.Plugs.Auth do
       "fxa_email" => fxa_email,
       "sub" => fxa_uid,
       "fxa_pic" => fxa_pic,
-      "fxa_displayName" => fxa_displayName
+      "fxa_displayName" => fxa_display_name
     } = claims
 
     # TODO check expiration?
@@ -50,7 +50,7 @@ defmodule PrtlWeb.Plugs.Auth do
     |> assign(:account, account)
     |> assign(:fxa_account_info, %Prtl.FxaAccountInfo{
       fxa_pic: fxa_pic,
-      fxa_displayName: use_email_if_display_name_blank(fxa_displayName, fxa_email),
+      fxa_display_name: use_email_if_display_name_blank(fxa_display_name, fxa_email),
       fxa_email: fxa_email,
       fxa_uid: fxa_uid
     })
@@ -66,7 +66,7 @@ defmodule PrtlWeb.Plugs.Auth do
   end
 
   defp use_email_if_display_name_blank("", fxa_email), do: fxa_email
-  defp use_email_if_display_name_blank(fxa_displayName, _fxa_email), do: fxa_displayName
+  defp use_email_if_display_name_blank(fxa_display_name, _fxa_email), do: fxa_display_name
 
   # Returns true if pem verifies the jwt, false if not
   defp process_and_verify_jwt(nil), do: %{is_valid: false, claims: %{}}
