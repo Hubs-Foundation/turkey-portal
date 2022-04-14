@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import "./Header.css";
 
 function concealEmail(str) {
+  if (!str) return str;
   if (!str.includes("@")) return str;
   return str.replace(/^(\w)\w*(\w)@/, "$1...$2@");
 }
