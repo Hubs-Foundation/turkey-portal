@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import { useGetHubsQuery, useGetHubQuery } from "../services/hubs";
-import { hubsSelectors, selectIsInitialized, setHub, setHubs } from "../store/hubs";
+import { useGetHubsQuery, useGetHubQuery, useUpdateHubMutation } from "../services/hubs";
+import { hubsSelectors, selectIsInitialized, setHub as setHubEntity, setHubs } from "../store/hubs";
+import { selectCurrentHub, setCurrentHub } from "../store/currentHub";
 
 export function useHubs() {
   const dispatch = useDispatch();
@@ -19,15 +20,32 @@ export function useHubs() {
 
 export function useHub(hub_id) {
   const dispatch = useDispatch();
-  const hub = useSelector((state) => hubsSelectors.selectById(state, hub_id));
+  const hubEntity = useSelector((state) => hubsSelectors.selectById(state, hub_id));
 
-  const hasHub = !!hub;
-  const { data, isLoading, isError, isSuccess } = useGetHubQuery({ hub_id }, { skip: hasHub });
+  const hasHubEntity = !!hubEntity;
+  const { data, isLoading, isError, isSuccess } = useGetHubQuery({ hub_id }, { skip: hasHubEntity });
 
-  const dispatchSetHub = (hub) => dispatch(setHub(hub));
-  if (!hasHub && data) dispatchSetHub(data);
+  if (!hasHubEntity && data) dispatch(setHubEntity(data));
 
-  const isReady = isSuccess || hasHub;
+  const currentHub = useSelector(selectCurrentHub);
+  if (hasHubEntity && !currentHub) dispatch(setCurrentHub(hubEntity));
 
-  return { hub, hasHub, isLoading, isError, isReady, setHub: dispatchSetHub };
+  const [submitHub, { isLoading: isSubmitting }] = useUpdateHubMutation();
+
+  const updateHub = async (hub) => {
+    await submitHub(hub);
+    dispatch(setHubEntity(hub));
+  };
+
+  const isReady = isSuccess || currentHub;
+
+  return {
+    hub: currentHub,
+    setHub: (hub) => dispatch(setCurrentHub(hub)),
+    updateHub,
+    isLoading,
+    isError,
+    isReady,
+    isSubmitting,
+  };
 }
