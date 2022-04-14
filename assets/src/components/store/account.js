@@ -7,15 +7,21 @@ export const accountSlice = createSlice({
     isLoggedIn: false,
     profilePicture: "",
     displayName: "",
+    email: "",
   },
   reducers: {
     setAccount(state, action) {
-      state.isLoggedIn = !!action.payload.id;
-      state.profilePicture = action.payload.profile_pic;
-      state.displayName = action.payload.display_name;
+      if (!action.payload) return;
+      state.isLoggedIn = true;
+      state.profilePicture = action.payload.fxa_pic;
+      state.displayName = action.payload.fxa_display_name;
+      state.email = action.payload.fxa_email;
     },
     logOut(state) {
       state.isLoggedIn = false;
+      state.profilePicture = "";
+      state.displayName = "";
+      state.email = "";
     },
   },
 });
