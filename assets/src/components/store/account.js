@@ -5,8 +5,8 @@ export const accountSlice = createSlice({
   initialState: {
     isInitialized: false,
     isLoggedIn: false,
-    profilePicture: null,
-    displayName: null,
+    profilePicture: "",
+    displayName: "",
   },
   reducers: {
     setAccount(state, action) {
