@@ -1,16 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import { useGetHubsQuery, useGetHubQuery, useUpdateHubMutation } from "../services/hubs";
-import { hubsSelectors, selectIsInitialized, setHub as setHubEntity, setHubs } from "../store/hubs";
+import { hubEntitySelectors, selectIsInitialized, setHubEntity, setHubEntities } from "../store/hubs";
 import { selectCurrentHub, setCurrentHub } from "../store/currentHub";
 
 export function useHubs() {
   const dispatch = useDispatch();
-  const hubs = useSelector((state) => hubsSelectors.selectAll(state));
+  const hubs = useSelector((state) => hubEntitySelectors.selectAll(state));
   const isInitialized = useSelector(selectIsInitialized);
   const { data, isLoading, isError, isSuccess } = useGetHubsQuery({}, { skip: isInitialized });
 
-  if (!isInitialized && data) dispatch(setHubs(data));
+  if (!isInitialized && data) dispatch(setHubEntities(data));
 
   const hasHubs = !!hubs.length;
   const isReady = isSuccess || isInitialized;
@@ -20,7 +20,7 @@ export function useHubs() {
 
 export function useHub(hub_id) {
   const dispatch = useDispatch();
-  const hubEntity = useSelector((state) => hubsSelectors.selectById(state, hub_id));
+  const hubEntity = useSelector((state) => hubEntitySelectors.selectById(state, hub_id));
 
   const hasHubEntity = !!hubEntity;
   const { data, isLoading, isError, isSuccess } = useGetHubQuery({ hub_id }, { skip: hasHubEntity });
@@ -40,8 +40,8 @@ export function useHub(hub_id) {
   const isReady = isSuccess || currentHub;
 
   return {
-    hub: currentHub,
-    setHub: (hub) => dispatch(setCurrentHub(hub)),
+    currentHub,
+    setCurrentHub: (hub) => dispatch(setCurrentHub(hub)),
     updateHub,
     isLoading,
     isError,
