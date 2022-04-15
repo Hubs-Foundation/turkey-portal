@@ -26,6 +26,14 @@ defmodule PrtlWeb.Api.V1.HubController do
     conn |> render("create.json", hub: new_hub)
   end
 
+  def update(conn, %{"id" => hub_id} = changeset, account) do
+    hub = Prtl.Hub.get_hub(hub_id, account) # this verifies that the account has a hub with this id
+    case hub do # can do this in the hub.ex
+      nil -> conn |> send_resp(404, Jason.encode!(%{error: "not found"})) |> halt()
+      _ -> Prtl.Hub.update_hub(hub_id, hub, changeset, account)
+    end
+  end
+
   def delete(conn, %{"id" => hub_id}, account) do
     # Todo call to orchestrator to delete the hub
     # Todo protect this endpoint for development purposes only
