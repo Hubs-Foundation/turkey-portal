@@ -13,9 +13,9 @@ export const accountSlice = createSlice({
     setAccount(state, action) {
       if (!action.payload) return;
       state.isLoggedIn = true;
-      state.profilePicture = action.payload.fxa_pic;
-      state.displayName = action.payload.fxa_display_name;
-      state.email = action.payload.fxa_email;
+      state.profilePicture = action.payload.profilePic;
+      state.displayName = action.payload.displayName;
+      state.email = action.payload.email;
     },
     logOut(state) {
       state.isLoggedIn = false;

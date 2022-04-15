@@ -17,7 +17,7 @@ export function Header({ account }) {
       </h1>
       {account && (
         <div className="account">
-          <span title={account.email}>{concealEmail(account.displayName)}</span>
+          <span title={account.email}>{account.displayName || concealEmail(account.email)}</span>
           <img className="account-picture" src={account.profilePicture} />
           {account.isLoggedIn && <a href="/logout">Log Out</a>}
         </div>
