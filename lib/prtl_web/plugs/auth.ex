@@ -15,7 +15,6 @@ defmodule PrtlWeb.Plugs.Auth do
   }
   """
   import Plug.Conn
-  import Prtl.FxaAccountInfo
 
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
@@ -50,9 +49,8 @@ defmodule PrtlWeb.Plugs.Auth do
     |> assign(:account, account)
     |> assign(:fxa_account_info, %Prtl.FxaAccountInfo{
       fxa_pic: fxa_pic,
-      fxa_display_name: use_email_if_display_name_blank(fxa_display_name, fxa_email),
-      fxa_email: fxa_email,
-      fxa_uid: fxa_uid
+      fxa_display_name: fxa_display_name,
+      fxa_email: fxa_email
     })
   end
 
@@ -64,9 +62,6 @@ defmodule PrtlWeb.Plugs.Auth do
     # TODO send redirect header to login page here
     |> halt()
   end
-
-  defp use_email_if_display_name_blank("", fxa_email), do: fxa_email
-  defp use_email_if_display_name_blank(fxa_display_name, _fxa_email), do: fxa_display_name
 
   # Returns true if pem verifies the jwt, false if not
   defp process_and_verify_jwt(nil), do: %{is_valid: false, claims: %{}}
