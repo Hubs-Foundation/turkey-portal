@@ -7,7 +7,7 @@ defmodule PrtlWeb.Api.V1.AccountView do
     %{
       displayName: fxa_account_info.fxa_display_name,
       profilePic: fxa_account_info.fxa_pic,
-      email: fxa_account_info.fxa_email,
+      email: fxa_account_info.fxa_email
     }
   end
 end
