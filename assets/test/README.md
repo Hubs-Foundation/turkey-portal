@@ -1,16 +1,16 @@
 # How the test framework is setup
 
-We use [Ava][ava] as a test runner. Ava is configured to require two node hooks in `package.json`. The first is [Sucrase][suc] which transforms all test code and imports into es6, including JSX transforms. The second is [global-jsdom][gjd], which adds browser globals required by react-dom to the node.js context.
+We use [Jest][jst] as a test runner. Jest also takes care of setting up a test environment with jsdom, transforming code with babel, and it provides assertions and mocking capabilities. We also use [jest-when][jwn] to add mock matching functionality on top of Jest's mocks. 
 
-We use React Router's [`MemoryRouter`][mem] to wrap our React components, and [Testing Library][tsl] to render them. Testing Library also provides a set of helper functions to query into the rendered DOM. We create a new, isolated [JSDOM][jsd] instance every time we render a component, to ensure that they are isolated.
+One quirk of our setup is that we need to ignore CSS imports in our react components, since babel would otherwise attempt to treat them like javascript imports. We do this by specifiying a custom Jest resolver that resolves CSS imports to an empty module.
 
-Tests also use a set of helpers defined in `test/helpers/index.js`, which take care of common initialiation and cleanup tasks, and provide a simple `fetch` mock utility.
+We use React Router's [`MemoryRouter`][mem] to wrap our React components, and [Testing Library][tsl] to render them. Testing Library also provides a set of helper functions to query into the rendered DOM. Since we use React Toolkit, we need to [polyfill][wgf] additional browser APIs that jsdom does not provide; Namely the Request, Response objects.
 
-Tests are currently run serially with Ava's `--serial` flag, since `@testing-library/react` doesn't seem to like the way we're querying the rendered DOM.
+The tests also use a set of helpers defined in `test/helpers/setup.js`, which take care of common initialiation tasks, and provide a utility for mocking specific calls to `fetch`. 
 
-[ava]: https://github.com/avajs/ava
-[suc]: https://github.com/alangpierce/sucrase
-[gjd]: https://github.com/modosc/global-jsdom
+[jst]: https://jestjs.io/
+[jwn]: https://www.npmjs.com/package/jest-when
 [mem]: https://reactrouter.com/docs/en/v6/api#memoryrouter
 [tsl]: https://testing-library.com/docs/react-testing-library/intro
 [jsd]: https://github.com/jsdom/jsdom
+[wgf]: https://www.npmjs.com/package/whatwg-fetch
