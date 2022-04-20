@@ -2,13 +2,7 @@
   "private": true,
   "scripts": {
     "lint": "eslint src test",
-    "test": "ava --serial"
-  },
-  "ava": {
-    "require": [
-      "./test/helpers/register-sucrase.js",
-      "global-jsdom/register"
-    ]
+    "test": "jest"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
@@ -19,14 +13,17 @@
     "react-router-dom": "^6.2.2"
   },
   "devDependencies": {
-    "@testing-library/react": "^12.1.4",
-    "ava": "^4.1.0",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@testing-library/react": "^12.1.5",
+    "babel-jest": "^27.5.1",
     "eslint": "^8.12.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
-    "global-jsdom": "^8.4.0",
-    "jsdom": "^19.0.0",
-    "sucrase": "^3.20.3"
+    "jest": "^27.5.1",
+    "jest-when": "^3.5.1",
+    "react-test-renderer": "^17.0.2",
+    "whatwg-fetch": "^3.6.2"
   }
 }
