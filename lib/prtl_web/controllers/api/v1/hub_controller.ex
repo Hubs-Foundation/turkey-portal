@@ -30,7 +30,8 @@ defmodule PrtlWeb.Api.V1.HubController do
     # this verifies that the account has a hub with this id
     case Prtl.Hub.update_hub(hub_id, json_camel_to_snake(attrs), account) do
       {:ok, _} -> conn |> send_resp(200, "")
-      {:error, _} -> conn |> send_resp(404, Jason.encode!(%{error: :not_found})) |> halt()
+      {:error, err} -> conn |> send_resp(400, Jason.encode!(%{error: err})) |> halt()
+      _ -> conn |> send_resp(404, Jason.encode!(%{error: :not_found})) |> halt()
     end
   end
 

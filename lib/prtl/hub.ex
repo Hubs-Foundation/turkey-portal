@@ -123,7 +123,8 @@ defmodule Prtl.Hub do
          {:ok} <- validate_storage(hub, attrs) do
       form_changeset(hub, attrs) |> Prtl.Repo.update()
     else
-      err -> {:error, err}
+      {:error, err} -> {:error, err}
+      err -> err
     end
   end
 
@@ -134,7 +135,9 @@ defmodule Prtl.Hub do
        ) do
     cur_storage = get_current_storage_usage_mb(hub_to_update.instance_uuid)
 
-    if cur_storage < new_storage_limit_mb do
+    IO.inspect([cur_storage, new_storage_limit_mb, cur_storage < new_storage_limit_mb])
+
+    if cur_storage < String.to_integer(new_storage_limit_mb) do
       {:ok}
     else
       {:error, :usage_over_limit}
