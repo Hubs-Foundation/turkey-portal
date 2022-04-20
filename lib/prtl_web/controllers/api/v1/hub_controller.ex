@@ -26,12 +26,20 @@ defmodule PrtlWeb.Api.V1.HubController do
     conn |> render("create.json", hub: new_hub)
   end
 
-  def update(conn, %{"id" => hub_id} = changeset, account) do
-    hub = Prtl.Hub.get_hub(hub_id, account) # this verifies that the account has a hub with this id
-    case hub do # can do this in the hub.ex
-      nil -> conn |> send_resp(404, Jason.encode!(%{error: "not found"})) |> halt()
-      _ -> Prtl.Hub.update_hub(hub_id, hub, changeset, account)
+  def update(conn, %{"id" => hub_id} = attrs, account) do
+    # this verifies that the account has a hub with this id
+    case Prtl.Hub.update_hub(hub_id, json_camel_to_snake(attrs), account) do
+      {:ok, _} -> conn |> send_resp(200, "")
+      {:error, _} -> conn |> send_resp(404, Jason.encode!(%{error: :not_found})) |> halt()
     end
+  end
+
+  # Takes json camel case keys and converts into json snake case keys
+  # Ex - %{ "storageLimitMb": 5000 } -> %{ "storage_limit_mb": 5000 }
+  defp json_camel_to_snake(json) do
+    json
+    |> Enum.map(fn {k, v} -> { Macro.underscore(k), v } end)
+    |> Enum.into(%{})
   end
 
   def delete(conn, %{"id" => hub_id}, account) do
@@ -41,4 +49,5 @@ defmodule PrtlWeb.Api.V1.HubController do
 
     conn |> render("delete.json", deleted_hub: deleted_hub)
   end
+
 end

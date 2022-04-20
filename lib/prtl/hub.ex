@@ -19,7 +19,6 @@ defmodule Prtl.Hub do
     timestamps()
   end
 
-  @doc false
   def changeset(hub, attrs) do
     hub
     |> cast(attrs, [
@@ -42,6 +41,22 @@ defmodule Prtl.Hub do
     ])
     |> unique_constraint(:subdomain)
     |> unique_constraint(:instance_uuid)
+  end
+
+  def form_changeset(hub, attrs) do
+    hub
+    |> cast(attrs, [
+      :name,
+      :ccu_limit,
+      :storage_limit_mb,
+      :tier
+    ])
+    |> validate_required([
+      :name,
+      :ccu_limit,
+      :storage_limit_mb,
+      :tier
+    ])
   end
 
   def hubs_for_account(%Prtl.Account{} = account) do
@@ -103,23 +118,31 @@ defmodule Prtl.Hub do
     end
   end
 
-  def update_hub(hub_id, %Prtl.Hub{} = hub, changeset, %Prtl.Account{} = account) do
-    hub_to_update = hub
-      |> validate_changeset(changeset)
-      # Todo get help on this
-      |> Ecto.changeset.change()
-  end
-
-  # if not updating storage
-  defp validate_changeset(%Prtl.Hub{} = hub_to_update, _), do: hub_to_update
-  # if updating storage
-  defp validate_changeset(%Prtl.Hub{} = hub_to_update, %{"storage_limit_mb" => new_storage_limit_mb}) do
-    cur_storage = get_current_storage_usage_mb(hub_to_update[:instance_uuid])
-    case cur_storage > new_storage_limit_mb do
-      true -> nil # TODO make an error? "need to delete some assets"
-      false -> hub_to_update
+  def update_hub(hub_id, attrs, %Prtl.Account{} = account) do
+    with %Prtl.Hub{} = hub <- get_hub(hub_id, account),
+         {:ok} <- validate_storage(hub, attrs) do
+      form_changeset(hub, attrs) |> Prtl.Repo.update()
+    else
+      err -> {:error, err}
     end
   end
+
+  # If updating storage
+  defp validate_storage(
+         %Prtl.Hub{} = hub_to_update,
+         %{"storage_limit_mb" => new_storage_limit_mb} = _
+       ) do
+    cur_storage = get_current_storage_usage_mb(hub_to_update.instance_uuid)
+
+    if cur_storage < new_storage_limit_mb do
+      {:ok}
+    else
+      {:error, :usage_over_limit}
+    end
+  end
+
+  # If not updating storage
+  defp validate_storage(%Prtl.Hub{} = hub_to_update, _), do: {:ok}
 
   defp get_current_storage_usage_mb(_instance_uid) do
     # TODO ask orchestrator for current storage useage
