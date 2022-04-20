@@ -120,15 +120,12 @@ defmodule Prtl.Hub do
 
   def update_hub(hub_id, attrs, %Prtl.Account{} = account) do
     with %Prtl.Hub{} = hub <- get_hub(hub_id, account),
-         old_updated_at = hub.updated_at
-
-    {:ok} <-
-      validate_storage(hub, attrs) do
-        form_changeset(hub, attrs) |> Prtl.Repo.update()
-      else
-        {:error, err} -> {:error, err}
-        err -> err
-      end
+         {:ok} <- validate_storage(hub, attrs) do
+      form_changeset(hub, attrs) |> Prtl.Repo.update()
+    else
+      {:error, err} -> {:error, err}
+      err -> err
+    end
   end
 
   # If updating storage
@@ -146,7 +143,7 @@ defmodule Prtl.Hub do
   end
 
   # If not updating storage
-  defp validate_storage(%Prtl.Hub{} = hub_to_update, _), do: {:ok}
+  defp validate_storage(%Prtl.Hub{} = _hub_to_update, _), do: {:ok}
 
   defp get_current_storage_usage_mb(_instance_uid) do
     # TODO ask orchestrator for current storage useage
