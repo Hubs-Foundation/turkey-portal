@@ -39,7 +39,7 @@ defmodule PrtlWeb.Api.V1.HubController do
   # Ex - %{ "storageLimitMb": 5000 } -> %{ "storage_limit_mb": 5000 }
   defp json_camel_to_snake(json) do
     json
-    |> Enum.map(fn {k, v} -> { Macro.underscore(k), v } end)
+    |> Enum.map(fn {k, v} -> {Macro.underscore(k), v} end)
     |> Enum.into(%{})
   end
 
@@ -50,5 +50,4 @@ defmodule PrtlWeb.Api.V1.HubController do
 
     conn |> render("delete.json", deleted_hub: deleted_hub)
   end
-
 end
