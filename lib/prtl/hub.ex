@@ -120,12 +120,15 @@ defmodule Prtl.Hub do
 
   def update_hub(hub_id, attrs, %Prtl.Account{} = account) do
     with %Prtl.Hub{} = hub <- get_hub(hub_id, account),
-         {:ok} <- validate_storage(hub, attrs) do
-      form_changeset(hub, attrs) |> Prtl.Repo.update()
-    else
-      {:error, err} -> {:error, err}
-      err -> err
-    end
+         old_updated_at = hub.updated_at
+
+    {:ok} <-
+      validate_storage(hub, attrs) do
+        form_changeset(hub, attrs) |> Prtl.Repo.update()
+      else
+        {:error, err} -> {:error, err}
+        err -> err
+      end
   end
 
   # If updating storage
@@ -134,8 +137,6 @@ defmodule Prtl.Hub do
          %{"storage_limit_mb" => new_storage_limit_mb} = _
        ) do
     cur_storage = get_current_storage_usage_mb(hub_to_update.instance_uuid)
-
-    IO.inspect([cur_storage, new_storage_limit_mb, cur_storage < new_storage_limit_mb])
 
     if cur_storage < String.to_integer(new_storage_limit_mb) do
       {:ok}
