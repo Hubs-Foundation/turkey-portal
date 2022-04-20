@@ -6,7 +6,7 @@ One quirk of our setup is that we need to ignore CSS imports in our react compon
 
 We use React Router's [`MemoryRouter`][mem] to wrap our React components, and [Testing Library][tsl] to render them. Testing Library also provides a set of helper functions to query into the rendered DOM. Since we use React Toolkit, we need to [polyfill][wgf] additional browser APIs that jsdom does not provide; Namely the Request, Response objects.
 
-The tests also use a set of helpers defined in `test/helpers/setup.js`, which take care of common initialiation tasks, and provide a utility for mocking specific calls to `fetch`. 
+The tests also use a set of helpers defined in `test/helpers/setup.js`, which take care of common initialization tasks, and provide a utility for mocking specific calls to `fetch`. 
 
 [jst]: https://jestjs.io/
 [jwn]: https://www.npmjs.com/package/jest-when
