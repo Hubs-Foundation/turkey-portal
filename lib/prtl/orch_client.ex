@@ -4,6 +4,7 @@ defmodule Prtl.OrchClient do
 
     orch_hub_create_params = %{
       useremail: fxa_email,
+      # TODO Maybe the Orchestrator should generate this and send it back to us instead.
       hub_id: hub.instance_uuid,
       subdomain: hub.subdomain,
       tier: hub.tier,
