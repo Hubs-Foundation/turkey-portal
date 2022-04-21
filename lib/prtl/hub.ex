@@ -131,7 +131,7 @@ defmodule Prtl.Hub do
   # If updating storage
   defp validate_storage(
          %Prtl.Hub{} = hub_to_update,
-         %{"storage_limit_mb" => new_storage_limit_mb} = _
+         %{"storage_limit_mb" => new_storage_limit_mb}
        ) do
     cur_storage = get_current_storage_usage_mb(hub_to_update.instance_uuid)
 

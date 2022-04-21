@@ -40,7 +40,7 @@ defmodule PrtlWeb.Api.V1.HubController do
   defp json_camel_to_snake(json) do
     json
     |> Enum.map(fn {k, v} -> {Macro.underscore(k), v} end)
-    |> Enum.into(%{})
+    |> Map.new()
   end
 
   def delete(conn, %{"id" => hub_id}, account) do
