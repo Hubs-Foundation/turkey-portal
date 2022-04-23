@@ -19,6 +19,10 @@ defmodule PrtlWeb.Plugs.Auth do
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
 
+  # TODO dev_cookie when orchestrator removes reliance on this cookie, remove references from this cookie
+  # but for now we need it for making requests to the orchestrator while developing locally
+  @orch_dev_cookie_name "_turkeyauthcookie"
+
   def init(default), do: default
 
   def call(conn, _options) do
@@ -84,4 +88,7 @@ defmodule PrtlWeb.Plugs.Auth do
   end
 
   def get_cookie_name(), do: @cookie_name
+
+  # TODO dev_cookie remove when no longer reliant on dev cookie
+  def get_orch_dev_cookie_name(), do: @orch_dev_cookie_name
 end

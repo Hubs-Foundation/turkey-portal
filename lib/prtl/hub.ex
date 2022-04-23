@@ -49,23 +49,39 @@ defmodule Prtl.Hub do
     |> Repo.all()
   end
 
-  def create_default_free_hub(%Prtl.Account{} = account, _fxa_email) do
-    # TODO replace with request to orchestrator with email for a round trip to get this information.
+  # def has_hubs(%Prtl.Account{} = account) do
+  #   Repo.exists?(from(h in Prtl.Hub, where: h.account_id == ^account.account_id))
+  # end
 
+  @free_hub_defaults %{
+    tier: :free,
+    ccu_limit: 5,
+    storage_limit_mb: 100
+  }
+
+  def create_default_free_hub(%Prtl.Account{} = account, fxa_email, cookie) do
+    # TODO replace with request to orchestrator with email for a round trip to get this information.
     free_subdomain_and_name = rand_string(10)
 
-    %Prtl.Hub{}
-    |> Prtl.Hub.changeset(%{
+    new_hub_params = %{
       instance_uuid: fake_uuid(),
       name: free_subdomain_and_name,
       subdomain: free_subdomain_and_name,
-      tier: :free,
-      ccu_limit: 5,
-      storage_limit_mb: 100,
       status: :creating
-    })
+    }
+    |> Map.merge(@free_hub_defaults)
+
+    new_hub = %Prtl.Hub{}
+    |> Prtl.Hub.changeset(new_hub_params)
     |> Ecto.Changeset.put_assoc(:account, account)
     |> Prtl.Repo.insert!()
+
+    with {:ok, _} <- Prtl.OrchClient.create_hub(fxa_email, new_hub, cookie) do
+      {:ok, new_hub}
+    else
+      # TODO Should we delete the hub from the db or set status = :error enum?
+      {:error, err} -> {:error, err}
+    end
   end
 
   defp rand_string(len) do

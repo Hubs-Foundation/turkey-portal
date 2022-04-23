@@ -34,7 +34,14 @@ export const hubsApi = createApi({
         body: hub,
       }),
     }),
+    
+    createHub: builder.mutation({
+      query: () => ({
+        url: `hubs`,
+        method: "POST",
+      }),
+    }),
   }),
 });
 
-export const { useGetHubsQuery, useGetHubQuery, useUpdateHubMutation } = hubsApi;
+export const { useGetHubsQuery, useGetHubQuery, useUpdateHubMutation, useCreateHubMutation, } = hubsApi;
