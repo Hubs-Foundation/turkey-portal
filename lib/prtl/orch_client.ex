@@ -12,11 +12,13 @@ defmodule Prtl.OrchClient do
       storage_limit: "#{hub.storage_limit_mb / 1024}"
     }
 
-    resp = HTTPoison.post(
-      "https://#{@orch_host}/hc_instance",
-      Jason.encode!(orch_hub_create_params),
-      [cookie: "_turkeyauthcookie=#{auth_cookie}"]
-    )
+    resp =
+      HTTPoison.post(
+        "https://#{@orch_host}/hc_instance",
+        Jason.encode!(orch_hub_create_params),
+        cookie: "_turkeyauthcookie=#{auth_cookie}"
+      )
+
     IO.inspect(resp)
     resp
   end

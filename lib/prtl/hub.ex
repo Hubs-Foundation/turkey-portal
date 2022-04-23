@@ -63,18 +63,20 @@ defmodule Prtl.Hub do
     # TODO replace with request to orchestrator with email for a round trip to get this information.
     free_subdomain_and_name = rand_string(10)
 
-    new_hub_params = %{
-      instance_uuid: fake_uuid(),
-      name: free_subdomain_and_name,
-      subdomain: free_subdomain_and_name,
-      status: :creating
-    }
-    |> Map.merge(@free_hub_defaults)
+    new_hub_params =
+      %{
+        instance_uuid: fake_uuid(),
+        name: free_subdomain_and_name,
+        subdomain: free_subdomain_and_name,
+        status: :creating
+      }
+      |> Map.merge(@free_hub_defaults)
 
-    new_hub = %Prtl.Hub{}
-    |> Prtl.Hub.changeset(new_hub_params)
-    |> Ecto.Changeset.put_assoc(:account, account)
-    |> Prtl.Repo.insert!()
+    new_hub =
+      %Prtl.Hub{}
+      |> Prtl.Hub.changeset(new_hub_params)
+      |> Ecto.Changeset.put_assoc(:account, account)
+      |> Prtl.Repo.insert!()
 
     with {:ok, _} <- Prtl.OrchClient.create_hub(fxa_email, new_hub, cookie) do
       {:ok, new_hub}
