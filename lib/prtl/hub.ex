@@ -49,10 +49,6 @@ defmodule Prtl.Hub do
     |> Repo.all()
   end
 
-  # def has_hubs(%Prtl.Account{} = account) do
-  #   Repo.exists?(from(h in Prtl.Hub, where: h.account_id == ^account.account_id))
-  # end
-
   @free_hub_defaults %{
     tier: :free,
     ccu_limit: 5,
