@@ -2,8 +2,6 @@ defmodule Prtl.OrchClient do
   @orch_host Application.get_env(:prtl, Prtl.OrchClient)[:orch_host]
 
   def create_hub(fxa_email, %Prtl.Hub{} = hub, auth_cookie) do
-    orch_host = Application.get_env(:prtl, Prtl.OrchClient)[:orch_host]
-
     orch_hub_create_params = %{
       useremail: fxa_email,
       # TODO Maybe the Orchestrator should generate this and send it back to us instead.
@@ -14,10 +12,12 @@ defmodule Prtl.OrchClient do
       storage_limit: "#{hub.storage_limit_mb / 1024}"
     }
 
-    HTTPoison.post(
-      "https://#{orch_host}/hc_instance",
+    resp = HTTPoison.post(
+      "https://#{@orch_host}/hc_instance",
       Jason.encode!(orch_hub_create_params),
-      [cookie: auth_cookie]
+      [cookie: "_turkeyauthcookie=#{auth_cookie}"]
     )
+    IO.inspect(resp)
+    resp
   end
 end
