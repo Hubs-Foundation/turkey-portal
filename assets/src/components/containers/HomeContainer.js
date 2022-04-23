@@ -7,7 +7,7 @@ import { useCreateHubMutation } from "../services/hubs";
 
 export function HomeContainer() {
   const { hubs, hasHubs, isLoading, isError, isReady } = useHubs();
-  const [createHub, status] = useCreateHubMutation();
+  const [createHub] = useCreateHubMutation();
   return (
     <>
       {isLoading && <Spinner />}
