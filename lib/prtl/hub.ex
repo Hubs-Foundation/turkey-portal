@@ -55,7 +55,7 @@ defmodule Prtl.Hub do
     storage_limit_mb: 100
   }
 
-  def create_default_free_hub(%Prtl.Account{} = account, fxa_email, cookie) do
+  def create_default_free_hub(%Prtl.Account{} = account, fxa_email) do
     # TODO replace with request to orchestrator with email for a round trip to get this information.
     free_subdomain_and_name = rand_string(10)
 
@@ -74,7 +74,7 @@ defmodule Prtl.Hub do
       |> Ecto.Changeset.put_assoc(:account, account)
       |> Prtl.Repo.insert!()
 
-    with {:ok, _} <- Prtl.OrchClient.create_hub(fxa_email, new_hub, cookie) do
+    with {:ok, _} <- Prtl.OrchClient.create_hub(fxa_email, new_hub) do
       {:ok, new_hub}
     else
       # TODO Should we delete the hub from the db or set status = :error enum?
