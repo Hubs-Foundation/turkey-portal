@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // TODO Remove when the backend actually supplies these values.
 function addFakeProperties(hubs) {
   for (const hub of hubs) {
+    if (!hub) continue;
     hub.current_ccu = Math.floor(Math.random() * hub.ccu_limit);
     hub.storage_usage_mb = Math.floor(Math.random() * hub.storage_limit_mb);
   }
@@ -28,8 +29,8 @@ export const hubsApi = createApi({
     }),
 
     updateHub: builder.mutation({
-      query: ({ hub_id, hub }) => ({
-        url: `hubs/${hub_id}`,
+      query: (hub) => ({
+        url: `hubs/${hub.hub_id}`,
         method: "PATCH",
         body: hub,
       }),

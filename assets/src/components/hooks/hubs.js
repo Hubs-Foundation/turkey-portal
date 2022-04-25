@@ -1,15 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import { useGetHubsQuery, useGetHubQuery } from "../services/hubs";
-import { hubsSelectors, selectIsInitialized, setHub, setHubs } from "../store/hubs";
+import { useGetHubsQuery, useGetHubQuery, useUpdateHubMutation } from "../services/hubs";
+import { hubEntitySelectors, selectIsInitialized, setHubEntity, setHubEntities } from "../store/hubs";
+import { selectCurrentHub, setCurrentHub } from "../store/currentHub";
 
 export function useHubs() {
   const dispatch = useDispatch();
-  const hubs = useSelector((state) => hubsSelectors.selectAll(state));
+  const hubs = useSelector((state) => hubEntitySelectors.selectAll(state));
   const isInitialized = useSelector(selectIsInitialized);
   const { data, isLoading, isError, isSuccess } = useGetHubsQuery({}, { skip: isInitialized });
 
-  if (!isInitialized && data) dispatch(setHubs(data));
+  if (!isInitialized && data) dispatch(setHubEntities(data));
 
   const hasHubs = !!hubs.length;
   const isReady = isSuccess || isInitialized;
@@ -19,15 +20,32 @@ export function useHubs() {
 
 export function useHub(hub_id) {
   const dispatch = useDispatch();
-  const hub = useSelector((state) => hubsSelectors.selectById(state, hub_id));
+  const hubEntity = useSelector((state) => hubEntitySelectors.selectById(state, hub_id));
 
-  const hasHub = !!hub;
-  const { data, isLoading, isError, isSuccess } = useGetHubQuery({ hub_id }, { skip: hasHub });
+  const hasHubEntity = !!hubEntity;
+  const { data, isLoading, isError, isSuccess } = useGetHubQuery({ hub_id }, { skip: hasHubEntity });
 
-  const dispatchSetHub = (hub) => dispatch(setHub(hub));
-  if (!hasHub && data) dispatchSetHub(data);
+  if (!hasHubEntity && data) dispatch(setHubEntity(data));
 
-  const isReady = isSuccess || hasHub;
+  const currentHub = useSelector(selectCurrentHub);
+  if (hasHubEntity && !currentHub) dispatch(setCurrentHub(hubEntity));
 
-  return { hub, hasHub, isLoading, isError, isReady, setHub: dispatchSetHub };
+  const [submitHub, { isLoading: isSubmitting }] = useUpdateHubMutation();
+
+  const updateHub = async (hub) => {
+    await submitHub(hub);
+    dispatch(setHubEntity(hub));
+  };
+
+  const isReady = isSuccess || currentHub;
+
+  return {
+    currentHub,
+    setCurrentHub: (hub) => dispatch(setCurrentHub(hub)),
+    updateHub,
+    isLoading,
+    isError,
+    isReady,
+    isSubmitting,
+  };
 }
