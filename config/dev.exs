@@ -34,6 +34,13 @@ config :prtl, PrtlWeb.Plugs.Auth,
 
 config :prtl, Prtl.OrchClient, orch_host: "api.dev.myhubs.net"
 
+config :prtl, Prtl.FeatureFlags,
+  create_hubs: true,
+  delete_hubs: true,
+  tier_selection: true,
+  ccu_selection: true,
+  storage_selection: true
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

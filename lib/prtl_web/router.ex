@@ -37,7 +37,18 @@ defmodule PrtlWeb.Router do
     pipe_through :jwt_authenticated
 
     resources("/account", Api.V1.AccountController, [:index])
-    resources("/hubs", Api.V1.HubController, [:index, :create, :delete])
+
+    resources(
+      "/hubs",
+      Api.V1.HubController,
+      Prtl.FeatureFlags.actions_for_flags(
+        always: [:index, :show],
+        flags: [
+          create_hubs: :create,
+          delete_hubs: :delete
+        ]
+      )
+    )
   end
 
   # Enables LiveDashboard only for development
