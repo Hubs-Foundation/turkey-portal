@@ -8,8 +8,8 @@ defmodule Prtl.OrchClient do
       hub_id: hub.instance_uuid,
       subdomain: hub.subdomain,
       tier: hub.tier,
-      ccu_limit: "#{hub.ccu_limit}",
-      storage_limit: "#{hub.storage_limit_mb / 1024}"
+      ccu_limit: hub.ccu_limit |> to_string(),
+      storage_limit: (hub.storage_limit_mb / 1024) |> to_string()
     }
 
     resp =
