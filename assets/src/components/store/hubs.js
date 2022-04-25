@@ -1,30 +1,30 @@
 import { createEntityAdapter, createSlice, createSelector } from "@reduxjs/toolkit";
 
-const hubsAdapter = createEntityAdapter({
-  selectId: (hub) => hub.hub_id,
+const hubEntityAdapter = createEntityAdapter({
+  selectId: (hubEntity) => hubEntity.hub_id,
 });
 
-export const hubsSlice = createSlice({
-  name: "hubs",
-  initialState: hubsAdapter.getInitialState({
+export const hubEntitiesSlice = createSlice({
+  name: "hubEntities",
+  initialState: hubEntityAdapter.getInitialState({
     isInitialized: false,
   }),
   reducers: {
-    setHub(state, action) {
-      hubsAdapter.setOne(state, action.payload);
+    setHubEntity(state, action) {
+      hubEntityAdapter.setOne(state, action.payload);
     },
-    setHubs(state, action) {
+    setHubEntities(state, action) {
       state.isInitialized = true;
-      hubsAdapter.setAll(state, action.payload);
+      hubEntityAdapter.setAll(state, action.payload);
     },
   },
 });
 
 export const selectIsInitialized = createSelector(
-  (state) => state.hubs,
+  (state) => state.hubEntities,
   (state) => state.isInitialized
 );
 
-export const hubsSelectors = hubsAdapter.getSelectors((state) => state.hubs);
+export const hubEntitySelectors = hubEntityAdapter.getSelectors((state) => state.hubEntities);
 
-export const { setHub, setHubs } = hubsSlice.actions;
+export const { setHubEntity, setHubEntities } = hubEntitiesSlice.actions;
