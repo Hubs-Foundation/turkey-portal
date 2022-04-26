@@ -1,18 +1,18 @@
 import Head from 'next/head'
 import styles from '../../styles/Home.module.css'
 import { useState } from 'react'
-import RadioGroup from '../../components/shared/RadioGroup/RadioGroup'
-
-
+import Form from '../../components/shared/Form/Form'
+import Input from '../../components/shared/Input/Input'
 
 export default function Sandbox(props) {
   
+  const initialValues = {
+    email:'',
+    password: '',
+  }
 
-  const [radioForm, setRadioForm] = useState('label_1')
-
-  const handleFormChange = (e) => {
-    const value = e.target.value
-    setRadioForm(value)
+  const submit = (form) => {
+    console.log('form',form)
   }
 
   return (
@@ -25,6 +25,19 @@ export default function Sandbox(props) {
 
       <main>
         create lgin form here.
+        <Form submit={submit} initialValues={initialValues}>
+          <Input
+            label="Email"
+            type="email"
+            name="email"
+          />
+          <Input
+            label="Password"
+            type="password"
+            name="password"
+          />
+        </Form>
+
       </main>
     </div>
   )
