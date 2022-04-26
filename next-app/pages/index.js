@@ -25,12 +25,15 @@ export default function Home({ hubs }) {
         <h1 className={styles.title}>Turkey</h1>
 
         <div className={styles.grid}>
-          {hubs.map((hub) => (
+          { 
+          hubs.length ? hubs.map((hub) => (
             <div key={hub.hub_id} className={styles.card}>
               <h2>{hub.name}</h2>
               {hub.status}
             </div>
-          ))}
+          )): ''
+        
+        }
         </div>
       </main>
     </div>

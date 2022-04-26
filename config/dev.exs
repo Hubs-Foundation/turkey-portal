@@ -2,6 +2,7 @@ import Config
 
 # Configure your database
 config :prtl, Prtl.Repo,
+  port: 5433,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
