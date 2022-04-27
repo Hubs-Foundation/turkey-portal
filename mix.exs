@@ -45,6 +45,7 @@ defmodule Prtl.MixProject do
       {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
       {:swoosh, "~> 1.3"},
       {:jose, "~> 1.11.2"},
+      {:httpoison, "~> 1.8"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.18"},

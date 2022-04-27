@@ -1,5 +1,13 @@
 # Prtl
 
+Dependencies:
+
+Install and start PostgreSQL (https://www.postgresql.org/). In development, use "postgres" for the username and password
+
+Install and use asdf to manage erlang and elixir dependencies: https://asdf-vm.com/
+
+asdf will use the versions specified in the `.tool-versions` file. Just run `asdf install`.
+
 To start your Phoenix server:
 
 - Install dependencies with `mix deps.get`

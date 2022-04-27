@@ -20,10 +20,12 @@ defmodule PrtlWeb.Api.V1.HubController do
 
   # Create free hub with defaults
   def create(conn, _, account) do
-    fxa_email = conn.assigns[:fxa_account_info][:fxa_email]
-    new_hub = Prtl.Hub.create_default_free_hub(account, fxa_email)
+    fxa_email = conn.assigns[:fxa_account_info].fxa_email
 
-    conn |> render("create.json", hub: new_hub)
+    case Prtl.Hub.create_default_free_hub(account, fxa_email) do
+      {:ok, new_hub} -> conn |> render("create.json", hub: new_hub)
+      {:error, err} -> conn |> send_resp(400, Jason.encode!(%{error: err})) |> halt()
+    end
   end
 
   def update(conn, %{"id" => hub_id} = attrs, account) do

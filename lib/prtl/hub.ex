@@ -64,23 +64,37 @@ defmodule Prtl.Hub do
     |> Repo.all()
   end
 
-  def create_default_free_hub(%Prtl.Account{} = account, _fxa_email) do
-    # TODO replace with request to orchestrator with email for a round trip to get this information.
+  @free_hub_defaults %{
+    tier: :free,
+    ccu_limit: 5,
+    storage_limit_mb: 100
+  }
 
+  def create_default_free_hub(%Prtl.Account{} = account, fxa_email) do
+    # TODO replace with request to orchestrator with email for a round trip to get this information.
     free_subdomain_and_name = rand_string(10)
 
-    %Prtl.Hub{}
-    |> Prtl.Hub.changeset(%{
-      instance_uuid: fake_uuid(),
-      name: free_subdomain_and_name,
-      subdomain: free_subdomain_and_name,
-      tier: :free,
-      ccu_limit: 5,
-      storage_limit_mb: 100,
-      status: :creating
-    })
-    |> Ecto.Changeset.put_assoc(:account, account)
-    |> Prtl.Repo.insert!()
+    new_hub_params =
+      %{
+        instance_uuid: fake_uuid(),
+        name: free_subdomain_and_name,
+        subdomain: free_subdomain_and_name,
+        status: :creating
+      }
+      |> Map.merge(@free_hub_defaults)
+
+    new_hub =
+      %Prtl.Hub{}
+      |> Prtl.Hub.changeset(new_hub_params)
+      |> Ecto.Changeset.put_assoc(:account, account)
+      |> Prtl.Repo.insert!()
+
+    with {:ok, _} <- Prtl.OrchClient.create_hub(fxa_email, new_hub) do
+      {:ok, new_hub}
+    else
+      # TODO Should we delete the hub from the db or set status = :error enum?
+      {:error, err} -> {:error, err}
+    end
   end
 
   defp rand_string(len) do
