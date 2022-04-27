@@ -19,7 +19,6 @@ defmodule Prtl.Hub do
     timestamps()
   end
 
-  @doc false
   def changeset(hub, attrs) do
     hub
     |> cast(attrs, [
@@ -42,6 +41,22 @@ defmodule Prtl.Hub do
     ])
     |> unique_constraint(:subdomain)
     |> unique_constraint(:instance_uuid)
+  end
+
+  def form_changeset(hub, attrs) do
+    hub
+    |> cast(attrs, [
+      :name,
+      :ccu_limit,
+      :storage_limit_mb,
+      :tier
+    ])
+    |> validate_required([
+      :name,
+      :ccu_limit,
+      :storage_limit_mb,
+      :tier
+    ])
   end
 
   def hubs_for_account(%Prtl.Account{} = account) do
@@ -115,5 +130,37 @@ defmodule Prtl.Hub do
       nil ->
         nil
     end
+  end
+
+  def update_hub(hub_id, attrs, %Prtl.Account{} = account) do
+    with %Prtl.Hub{} = hub <- get_hub(hub_id, account),
+         {:ok} <- validate_storage(hub, attrs) do
+      form_changeset(hub, attrs) |> Prtl.Repo.update()
+    else
+      {:error, err} -> {:error, err}
+      err -> err
+    end
+  end
+
+  # If updating storage
+  defp validate_storage(
+         %Prtl.Hub{} = hub_to_update,
+         %{"storage_limit_mb" => new_storage_limit_mb}
+       ) do
+    cur_storage = get_current_storage_usage_mb(hub_to_update.instance_uuid)
+
+    if cur_storage < String.to_integer(new_storage_limit_mb) do
+      {:ok}
+    else
+      {:error, :usage_over_limit}
+    end
+  end
+
+  # If not updating storage
+  defp validate_storage(%Prtl.Hub{} = _hub_to_update, _), do: {:ok}
+
+  defp get_current_storage_usage_mb(_instance_uid) do
+    # TODO ask orchestrator for current storage useage
+    50
   end
 end
