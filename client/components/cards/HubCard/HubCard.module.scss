@@ -1,8 +1,6 @@
 @import '../../../styles/boilerplate.scss';
 
-
 .card {
-
   &_wrapper {
     width: 100%;
     margin: 4px;
@@ -15,7 +13,6 @@
   }
 
   &_header {
-    
   }
 
   &_group {
@@ -31,7 +28,4 @@
   &_domain {
     margin-right: 10px;
   }
-
- 
-
 }
