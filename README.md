@@ -1,4 +1,4 @@
-# Prtl
+# Dash
 
 Dependencies:
 
