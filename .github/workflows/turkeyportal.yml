@@ -1,4 +1,4 @@
-name: turkeyportal
+name: turkeydashboard
 on:
   push:
     branches: 
