@@ -11,7 +11,7 @@ export const FormContext = React.createContext({
 type FormPropsT = {
   children: React.ReactNode,
   submit: Function,
-  initialValues: { [char: string]: string }
+  initialValues: { [key: string]: string }
 }
 
 const Form = ({
@@ -39,7 +39,7 @@ const Form = ({
         {children}
       </FormContext.Provider>
 
-      <button type="button" onClick={() => submit?.(form)}>
+      <button type="button" onClick={() => submit(form)}>
         Submit
       </button>
     </form>

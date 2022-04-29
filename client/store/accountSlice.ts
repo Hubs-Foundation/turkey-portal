@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit"
+import { StateT } from './store'
 
 const initialState = {
   isInitialized: false,
@@ -16,9 +17,9 @@ const accountSlice = createSlice({
       if (!action.payload) return
 
       // Initialize Account Values
-      const {profilePic,displayName,email} = action.payload
+      const {profilePicture,displayName,email} = action.payload
       state.isLoggedIn = true
-      state.profilePicture = profilePic
+      state.profilePicture = profilePicture
       state.displayName = displayName
       state.email = email
 
@@ -33,8 +34,8 @@ const accountSlice = createSlice({
 
     },
   },
-});
+})
 
-export const selectAccount = (state) => state.account
+export const selectAccount = (state:StateT) => state.account
 export const { setAccount, logOut } = accountSlice.actions
 export default accountSlice.reducer

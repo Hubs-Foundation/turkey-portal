@@ -4,19 +4,26 @@
  * Note: feel free to break-out into other files if you feel the need
  */
 
+export type TierT = 'free' | 'premium'
+export type StatusT = 'creating' | 'updating' | 'ready'
 
 export type HubT = {
   ccu_limit: number,
   hub_id: string,
   name: string,
-  status: string,
+  status: StatusT,
   storage_limit_mb: number,
   subdomain: string,
-  tier: string
+  tier: TierT
 }
 
 export type AccountT = {
   displayName:string,
   email:string,
-  profilePic: string
+  profilePicture: string
+  isInitialized?: boolean,
+  isLoggedIn?: boolean,
 }
+
+
+

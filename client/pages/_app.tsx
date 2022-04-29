@@ -1,15 +1,34 @@
+import { useEffect, useState } from 'react'
 import '../styles/globals.scss'
 import MainLayout from '../layouts/MainLayout/MainLayout'
 import LoginLayout from '../layouts/LoginLayout/LoginLayout'
 import store from '../store/store'
 import { Provider } from 'react-redux'
 import type { AppProps } from 'next/app'
-
-
-// Todo Work on auth 
-const isLoggedIn = true
+import { AccountT } from '../types/General'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
+
+  const handleChange = () => {
+    const data = store.getState()
+    setAccount(data.account)
+  }
+
+  useEffect(() => {
+    const Store = store.subscribe(handleChange)
+    return () => {
+      Store
+    }
+  }, [])
+  
+  const initialAccount:AccountT = {
+    isInitialized: false,
+    isLoggedIn: false,
+    profilePicture: '',
+    displayName: '',
+    email: ''
+  }
+  const [account, setAccount] = useState(initialAccount)
 
   const LoggedIn = (
     <MainLayout>
@@ -25,7 +44,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <Provider store={store}>
-      {isLoggedIn ? LoggedIn : LoggedOut}
+      {account.isLoggedIn ? LoggedIn : LoggedOut}
     </Provider>
   )
 }

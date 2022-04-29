@@ -2,7 +2,7 @@ import type { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { useEffect } from 'react'
 import Head from "next/head"
 import styles from "../styles/Home.module.css"
-import { setAccount } from '../store/accountSlice'
+import { setAccount,logOut } from '../store/accountSlice'
 import { useDispatch } from 'react-redux'
 import axios from 'axios'
 import { HubT, AccountT } from '../types/General'
@@ -48,6 +48,10 @@ const Home = ({ hubs, account }: HomeProps) => {
     dispatch(setAccount(account))
   }
 
+  const handleLogoutClick = () => {
+    dispatch(logOut())
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -58,7 +62,8 @@ const Home = ({ hubs, account }: HomeProps) => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>Turkey</h1>
-        <button onClick={handleClick}>click me</button>
+        <button onClick={handleClick}>login</button>
+        {/* <button onClick={handleLogoutClick}>log out</button>
 
         <div className={styles.grid}>
           {
@@ -70,7 +75,7 @@ const Home = ({ hubs, account }: HomeProps) => {
             )) : ''
 
           }
-        </div>
+        </div> */}
       </main>
     </div>
   );

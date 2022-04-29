@@ -8,7 +8,7 @@ type RadioButtonPropsT = {
   id: string,
   label:string,
   groupName:string,
-  onChange: FormEventHandler<HTMLDivElement> | undefined
+  onChange: FormEventHandler<HTMLDivElement>
 }
 
 const RadioButton = ({

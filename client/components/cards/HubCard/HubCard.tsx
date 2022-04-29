@@ -12,10 +12,8 @@ type HubCardPropsT = {
 const HubCard = ({name,tier}:HubCardPropsT) => {
   return (
     <div className={styles.card_wrapper}>
-      <div className={styles.card_contianer}>
-
-
-        {/* CARD NNAME TIER STATES  */}
+      <div>
+        {/* CARD NAME TIER STATES  */}
         <div className="flex-justify-between">
 
           {/* NAME / TIER  */}
