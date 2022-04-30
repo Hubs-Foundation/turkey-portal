@@ -40,5 +40,4 @@ defmodule PrtlWeb.Api.V1.HubView do
       status: hub.status
     }
   end
-
 end

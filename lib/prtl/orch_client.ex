@@ -17,6 +17,7 @@ defmodule Prtl.OrchClient do
         "https://#{@orch_host}/hc_instance",
         Jason.encode!(orch_hub_create_params)
       )
+
     IO.inspect(resp)
     resp
   end

@@ -161,6 +161,7 @@ defmodule Prtl.Hub do
       {:error, :usage_over_limit}
     end
   end
+
   # If not updating storage
   defp validate_storage(%Prtl.Hub{} = _hub_to_update, _), do: {:ok}
 
@@ -175,9 +176,9 @@ defmodule Prtl.Hub do
   @domain "dev.myhubs.net"
   defp get_current_ccu(%Prtl.Hub{} = hub) do
     case HTTPoison.get(
-        "https://#{hub.subdomain}.#{@domain}#{@ccu_endpoint}",
-        "x-ret-portal-access-key": @ret_access_key
-      ) do
+           "https://#{hub.subdomain}.#{@domain}#{@ccu_endpoint}",
+           "x-ret-portal-access-key": @ret_access_key
+         ) do
       # Reticulum returned the ccu correctly
       {:ok, %{status_code: 200, body: body}} ->
         %{"count" => count} = Poison.Parser.parse!(body)

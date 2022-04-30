@@ -28,15 +28,17 @@ defmodule Prtl.Account do
     case account do
       %Prtl.Account{} ->
         account
+
       nil ->
         create_account_for_fxa_uid_and_make_default_hub(fxa_uid, email)
     end
   end
 
   defp create_account_for_fxa_uid_and_make_default_hub(fxa_uid, email) when is_binary(fxa_uid) do
-    new_account = %Prtl.Account{}
-    |> Prtl.Account.changeset(%{fxa_uid: fxa_uid})
-    |> Prtl.Repo.insert!()
+    new_account =
+      %Prtl.Account{}
+      |> Prtl.Account.changeset(%{fxa_uid: fxa_uid})
+      |> Prtl.Repo.insert!()
 
     new_account
     |> Prtl.Hub.create_default_free_hub(email)
