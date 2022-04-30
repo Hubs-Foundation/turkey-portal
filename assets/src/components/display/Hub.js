@@ -28,11 +28,11 @@ export function Hub(props) {
       <div className="hub-row">
         <div className="hub-row-group">
           {props.status === "ready" ? (
-            <a className="domain" href={`//${props.subdomain}.myhubs.net`}>
-              {props.subdomain}.myhubs.net
+            <a className="domain" href={`//${props.subdomain}.dev.myhubs.net`}>
+              {props.subdomain}.dev.myhubs.net
             </a>
           ) : (
-            <span className="domain">{props.subdomain}.myhubs.net</span>
+            <span className="domain">{props.subdomain}.dev.myhubs.net</span>
           )}
           <span className={`tag ${props.status}`}>{props.status}</span>
         </div>

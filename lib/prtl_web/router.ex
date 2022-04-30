@@ -38,6 +38,8 @@ defmodule PrtlWeb.Router do
 
     resources("/account", Api.V1.AccountController, [:index])
 
+    get "/hubs/:id/info", Api.V1.HubController, :show_hub_info, as: :show_hub_info
+
     resources(
       "/hubs",
       Api.V1.HubController,

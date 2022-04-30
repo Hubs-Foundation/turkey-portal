@@ -4,6 +4,7 @@ defmodule Prtl.Hub do
   import Ecto.Changeset
   alias Prtl.Repo
 
+  @ret_access_key Application.get_env(:prtl, Prtl.Hub)[:portal_ret_access_key]
   @primary_key {:hub_id, :id, autogenerate: true}
 
   schema "hubs" do
@@ -160,9 +161,27 @@ defmodule Prtl.Hub do
       {:error, :usage_over_limit}
     end
   end
-
   # If not updating storage
   defp validate_storage(%Prtl.Hub{} = _hub_to_update, _), do: {:ok}
+
+  # Returns current CCU and Storage
+  def get_hub_info(%Prtl.Hub{} = hub) do
+    %{"count" => count} = get_current_ccu(hub)
+    %{ccu: count, storage: 20}
+  end
+
+  @presence_endpoint "/api/v1/internal/presence"
+  @domain "dev.myhubs.net"
+  defp get_current_ccu(%Prtl.Hub{} = hub) do
+    case HTTPoison.get(
+        "https://#{hub.subdomain}.#{@domain}#{@presence_endpoint}",
+        "x-ret-portal-access-key": @ret_access_key
+      ) do
+      {:ok, %{status_code: 200, body: body}} -> IO.inspect(Poison.Parser.parse!(body)) # Request went through, do something :)
+      {:ok, %{status_code: _} = response} -> IO.inspect(response) # Request went through, do something :)
+      {:error, reason} -> IO.inspect(reason) # Request failed...
+    end
+  end
 
   defp get_current_storage_usage_mb(_instance_uid) do
     # TODO ask orchestrator for current storage useage

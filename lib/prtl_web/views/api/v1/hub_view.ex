@@ -21,6 +21,10 @@ defmodule PrtlWeb.Api.V1.HubView do
     deleted_hub |> render_deleted_hub()
   end
 
+  def render("hub_info.json", %{hub_info: hub_info}) do
+    hub_info
+  end
+
   defp render_deleted_hub(hub) do
     %{success: true, deleted_hub: render_hub(hub)}
   end
@@ -36,4 +40,5 @@ defmodule PrtlWeb.Api.V1.HubView do
       status: hub.status
     }
   end
+
 end

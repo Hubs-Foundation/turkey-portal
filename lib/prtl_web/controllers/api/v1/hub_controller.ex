@@ -52,4 +52,19 @@ defmodule PrtlWeb.Api.V1.HubController do
 
     conn |> render("delete.json", deleted_hub: deleted_hub)
   end
+
+  def show_hub_info(conn, %{"id" => hub_id}, account) do
+    case Prtl.Hub.get_hub(hub_id, account) do
+      hub = %Prtl.Hub{} ->
+        hub_info = Prtl.Hub.get_hub_info(hub)
+
+        conn
+        |> render("hub_info.json", hub_info: hub_info)
+
+      nil ->
+        conn
+        |> send_resp(404, Jason.encode!(%{error: :not_found}))
+        |> halt()
+    end
+  end
 end
