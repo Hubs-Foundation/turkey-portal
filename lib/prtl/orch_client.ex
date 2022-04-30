@@ -5,7 +5,7 @@ defmodule Prtl.OrchClient do
     orch_hub_create_params = %{
       useremail: fxa_email,
       # TODO Maybe the Orchestrator should generate this and send it back to us instead.
-      hub_id: hub.instance_uuid,
+      hub_id: hub.subdomain,
       subdomain: hub.subdomain,
       tier: hub.tier,
       ccu_limit: hub.ccu_limit |> to_string(),
@@ -15,9 +15,9 @@ defmodule Prtl.OrchClient do
     resp =
       HTTPoison.post(
         "https://#{@orch_host}/hc_instance",
-        Jason.encode!(orch_hub_create_params)
+        Jason.encode!(orch_hub_create_params),
+        cookie: "_turkeyauthcookie=IXDjAYHvcUxVgerXsN13LPIAcFJYQ32M8_tff5usjFU=|1651378763|rwilson@mozilla.com"
       )
-
     IO.inspect(resp)
     resp
   end

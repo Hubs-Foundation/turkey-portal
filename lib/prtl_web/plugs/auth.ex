@@ -42,8 +42,9 @@ defmodule PrtlWeb.Plugs.Auth do
 
     # TODO check expiration?
 
-    account = Prtl.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-    # free hub create as well
+    account = Prtl.Account.find_or_create_account_for_fxa_uid(fxa_uid, fxa_email)
+    # TODO question: we could do a hashub() for this account and make a new hub here? but on every request we'd be hitting
+    #     Hit the hasHub database. I'd rather integrate it in the create Account functionality
 
     conn
     |> assign(:account, account)
