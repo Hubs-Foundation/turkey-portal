@@ -1,8 +1,8 @@
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   width: 100%;
+  display: flex;
+  padding: 1em 0;
+  justify-content: space-between;
 }
 .header h1 {
   margin: 0;
@@ -16,5 +16,5 @@
   margin: 0 0.2em;
 }
 .account-picture {
-  width: 30px;
+  width: 45px;
 }

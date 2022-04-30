@@ -1,0 +1,19 @@
+.top-bar, .nav-bar, .content {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+:is(.top-bar, .nav-bar, .content) > * {
+  width: 100%;
+  max-width: 1000px;
+}
+.top-bar {
+}
+.nav-bar {
+  background: linear-gradient(to right, #095277, #321c64);
+  color: white;
+}
+.content {
+  background: #f5f5f5;
+  flex: 1;
+}

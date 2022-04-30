@@ -1,32 +1,33 @@
 .hub {
   width: 100%;
   margin: 1em 0;
-  background: #eee;
-  padding: 0.3em;
+  background: #fff;
+  padding: 1.0em 0.8em;
   border-radius: 0.5em;
+  box-shadow: 0 3px 10px #ccc;
+  border-left: 20px solid #e0e0e0;
+  display: grid;
+  grid-template: 1fr 1fr / 1fr 1fr 1fr;
+  grid-auto-flow: column;
+  font-size: 14px;
 }
 .hub * {
   margin: 0 0.2em;
 }
-.hub-row {
+.hub > * {
+  margin: 0.3em 0;
+}
+.hub .hub-info {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
-.hub-row > * {
-  margin: 0.5em 0;
-}
-.hub-row-group {
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  width: 100%;
 }
 .hub .hub-stats {
+  color: #868686;
   white-space: nowrap;
 }
 .hub .name {
   font-weight: bold;
+  font-size: 16px;
 }
 .hub .name,
 .hub .domain {
@@ -34,12 +35,21 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.hub .hub-buttons {
+  grid-row: span 2;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
 
 .tag {
   background: #ddd;
-  padding: 0 0.3em;
-  border-radius: 0.4em;
+  padding: 0.2em 0.6em;
+  border-radius: 1em;
   color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
 }
 .tag.free {
   background: #39e;
@@ -56,8 +66,4 @@
 }
 
 @media (max-width: 600px) {
-  .hub-row {
-    flex-direction: column;
-    align-items: flex-start;
-  }
 }
