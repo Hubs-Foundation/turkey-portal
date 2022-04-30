@@ -15,8 +15,7 @@ defmodule Prtl.OrchClient do
     resp =
       HTTPoison.post(
         "https://#{@orch_host}/hc_instance",
-        Jason.encode!(orch_hub_create_params),
-        cookie: "_turkeyauthcookie=IXDjAYHvcUxVgerXsN13LPIAcFJYQ32M8_tff5usjFU=|1651378763|rwilson@mozilla.com"
+        Jason.encode!(orch_hub_create_params)
       )
     IO.inspect(resp)
     resp

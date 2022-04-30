@@ -166,24 +166,36 @@ defmodule Prtl.Hub do
 
   # Returns current CCU and Storage
   def get_hub_info(%Prtl.Hub{} = hub) do
-    %{"count" => count} = get_current_ccu(hub)
-    %{ccu: count, storage: 20}
+    current_ccu = get_current_ccu(hub)
+    current_storage = get_current_storage_usage_mb(hub)
+    %{ccu: current_ccu, storage: current_storage}
   end
 
-  @presence_endpoint "/api/v1/internal/presence"
+  @ccu_endpoint "/api/v1/internal/presence"
   @domain "dev.myhubs.net"
   defp get_current_ccu(%Prtl.Hub{} = hub) do
     case HTTPoison.get(
-        "https://#{hub.subdomain}.#{@domain}#{@presence_endpoint}",
+        "https://#{hub.subdomain}.#{@domain}#{@ccu_endpoint}",
         "x-ret-portal-access-key": @ret_access_key
       ) do
-      {:ok, %{status_code: 200, body: body}} -> IO.inspect(Poison.Parser.parse!(body)) # Request went through, do something :)
-      {:ok, %{status_code: _} = response} -> IO.inspect(response) # Request went through, do something :)
-      {:error, reason} -> IO.inspect(reason) # Request failed...
+      # Reticulum returned the ccu correctly
+      {:ok, %{status_code: 200, body: body}} ->
+        %{"count" => count} = Poison.Parser.parse!(body)
+        count
+
+      # Reticulum completed the request but did not return the ccu
+      {:ok, %{status_code: _} = response} ->
+        IO.inspect(response)
+        -1
+
+      # An error occurred
+      {:error, reason} ->
+        IO.inspect(reason)
+        -1
     end
   end
 
-  defp get_current_storage_usage_mb(_instance_uid) do
+  defp get_current_storage_usage_mb(_hub) do
     # TODO ask orchestrator for current storage useage
     50
   end
