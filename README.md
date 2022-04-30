@@ -8,7 +8,7 @@ Install and use asdf to manage erlang and elixir dependencies: https://asdf-vm.c
 
 asdf will use the versions specified in the `.tool-versions` file. Just run `asdf install`.
 
-To start your Phoenix server:
+Start the Phoenix server:
 
 - Install dependencies with `mix deps.get`
 - Create and migrate your database with `mix ecto.setup`
@@ -16,14 +16,16 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+Paste the following in your browser console to login as a dev user:
 
-## Learn more
+```
+document.cookie='_turkeyauthtoken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMyNTAzNjgwMDAwLCJmeGFfZGlzcGxheU5hbWUiOiJEZXYgVXNlciIsImZ4YV9lbWFpbCI6ImRldi11c2VyQGRldi5sb2NhbCIsImZ4YV9waWMiOiIvaW1hZ2VzL2Rldi11c2VyLnN2ZyIsInN1YiI6ImRldi11c2VyLXVpZCJ9.bP24Jl6pvVMKseRnSVIAxYtkq0XDviMs0zI1JBc1GZ8N-t7INnuJp0i8fwushAJWQ0rBrk-_B7xjZKuUxF4aPw'
+```
 
-- Official website: https://www.phoenixframework.org/
-- Guides: https://hexdocs.pm/phoenix/overview.html
-- Docs: https://hexdocs.pm/phoenix
-- Forum: https://elixirforum.com/c/phoenix-forum
-- Source: https://github.com/phoenixframework/phoenix
+There are a bunch of dev utility tasks defined in `lib/mix/tasks/prtl_tasks.ex`, including a generate_dev_token task if you want to modify the contents of the token. Run `mix prtl` and `mix help prtl.<task_name>` for more info.
 
-noop()
+Create a hub with the create_hub task:
+
+```
+mix prtl.create_hub dev-user-uid "test hub"
+```
