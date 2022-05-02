@@ -62,6 +62,9 @@ config :prtl, Prtl.FeatureFlags,
   ccu_selection: true,
   storage_selection: true
 
+config :cors_plug,
+  origin: ["http://localhost:3000"]
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
