@@ -1,11 +1,13 @@
 import Head from 'next/head'
 import type { GetServerSideProps } from 'next'
 import { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import HubCard from '../../components/cards/HubCard/HubCard'
 import axios from 'axios'
 import { AccountT } from '../../types/General'
 import { getCookie } from 'cookies-next'
 import styles from './dashboard.module.scss'
+import { setAccount } from '../../store/accountSlice'
 
 
 type DashboardPropsT = {
@@ -15,22 +17,28 @@ type DashboardPropsT = {
 export default function Dashboard({ account }: DashboardPropsT) {
 
   const [hubs, setHubs] = useState([])
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    // Add newly validated account to the store
+    dispatch(setAccount(account))
+  }, [account])
 
   useEffect(() => {
 
-    // TODO: figure out how we want to work through CORS here.
-    // this is workin progress...
-    // const AUTH = getCookie('_turkeyauthtoken')
-    // const apiServer = process.env.API_SERVER || "http://localhost:4000"
-    // axios.get(`${apiServer}/api/v1/hubs`, {
-    //   headers: { 
-    //     cookie:AUTH?AUTH:''
-    //    }
-    // })
-    //   .then((response) => {
-    //     console.log('response',response)
-    //     response.data
-    // })
+  // TODO: figure out how we want to work through CORS here.
+  // this is workin progress...
+  const AUTH = getCookie('_turkeyauthtoken')
+  const apiServer = process.env.API_SERVER || "http://localhost:4000"
+  axios.get(`${apiServer}/api/v1/hubs`, {
+    headers: { 
+      cookie:AUTH?AUTH:''
+     }
+  })
+    .then((response) => {
+      console.log('response',response)
+      response.data
+  })
 
 
   }, [])

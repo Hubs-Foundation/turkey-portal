@@ -26,8 +26,8 @@ const HubCard = ({ name, tier }: HubCardPropsT) => {
 
           {/* HUBS STATS */}
           <div className={styles.card_stats}>
-            <div className={styles.card_stat}> 4/5 CCU </div>
-            <div className={styles.card_stat}> 73/100 MB </div>
+            <div className={styles.card_stat}>4/5 CCU</div>
+            <div className={styles.card_stat}>73/100 MB</div>
           </div>
         </div>
 
@@ -41,8 +41,6 @@ const HubCard = ({ name, tier }: HubCardPropsT) => {
 
           <IconLink to={`/`} icon="⚙️" />
         </div>
-
-
       </div>
     </div>
   )

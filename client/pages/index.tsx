@@ -88,6 +88,3 @@ const Home = ({ hubs, account }: HomeProps) => {
 }
 
 export default Home
-
-
-
