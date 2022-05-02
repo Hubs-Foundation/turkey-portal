@@ -1,4 +1,4 @@
-# Prtl
+# Dash
 
 Dependencies:
 
@@ -22,10 +22,10 @@ Paste the following in your browser console to login as a local user:
 document.cookie='_turkeyauthtoken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMyNTAzNjgwMDAwLCJmeGFfZGlzcGxheU5hbWUiOiJMb2NhbCBVc2VyIiwiZnhhX2VtYWlsIjoibG9jYWwtdXNlckB0dXJrZXkubG9jYWwiLCJmeGFfcGljIjoiL2ltYWdlcy9sb2NhbC11c2VyLnN2ZyIsInN1YiI6ImxvY2FsLXVzZXItdWlkIn0.irWtfeGimpmNkwlSmz3bgJdjZYXgdtoigPlbE4U9s3iO9Cpx12jIhmqUe8WmJpqDK7mlLeBIRvTJir1rgGz7Rw'
 ```
 
-There are a bunch of dev utility tasks defined in `lib/mix/tasks/prtl_tasks.ex`, including a `generate_local_token` task, if you want to modify the contents of the token. Run `mix prtl` and `mix help prtl.<task_name>` for more info.
+There are a bunch of dev utility tasks defined in `lib/mix/tasks/dash_tasks.ex`, including a `generate_local_token` task, if you want to modify the contents of the token. Run `mix dash` and `mix help dash.<task_name>` for more info.
 
-Create a hub with the `prtl.create_hub` task:
+Create a hub with the `dash.create_hub` task:
 
 ```
-mix prtl.create_hub local-user-uid "test hub"
+mix dash.create_hub local-user-uid "test hub"
 ```

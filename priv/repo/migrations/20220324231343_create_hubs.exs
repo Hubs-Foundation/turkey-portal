@@ -1,4 +1,4 @@
-defmodule Prtl.Repo.Migrations.CreateHubs do
+defmodule Dash.Repo.Migrations.CreateHubs do
   use Ecto.Migration
 
   def change do
