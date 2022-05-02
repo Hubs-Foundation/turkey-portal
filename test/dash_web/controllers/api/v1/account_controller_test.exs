@@ -1,5 +1,5 @@
-defmodule PrtlWeb.Api.V1.AccountControllerTest do
-  use PrtlWeb.ConnCase
+defmodule DashWeb.Api.V1.AccountControllerTest do
+  use DashWeb.ConnCase
 
   describe "Account API" do
     setup [:clear_auth_config]
@@ -56,7 +56,7 @@ defmodule PrtlWeb.Api.V1.AccountControllerTest do
     private_key = JOSE.JWK.generate_key({:rsa, 512})
 
     {_meta, public_key_str} = private_key |> JOSE.JWK.to_public() |> JOSE.JWK.to_pem()
-    Application.put_env(:prtl, PrtlWeb.Plugs.Auth, %{auth_pub_key: public_key_str})
+    Application.put_env(:dash, DashWeb.Plugs.Auth, %{auth_pub_key: public_key_str})
 
     token_expiry_timestamp = NaiveDateTime.diff(opts[:token_expiry], ~N[1970-01-01 00:00:00])
     jwt = JOSE.JWT.from(Map.merge(%{"exp" => token_expiry_timestamp}, fields))
@@ -68,6 +68,6 @@ defmodule PrtlWeb.Api.V1.AccountControllerTest do
   end
 
   defp clear_auth_config(_) do
-    Application.put_env(:prtl, PrtlWeb.Plugs.Auth, %{})
+    Application.put_env(:dash, DashWeb.Plugs.Auth, %{})
   end
 end

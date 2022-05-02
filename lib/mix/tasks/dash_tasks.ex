@@ -100,9 +100,9 @@ defmodule Mix.Tasks.Dash.DeleteAll do
   end
 end
 
-defmodule Mix.Tasks.Prtl.GenerateLocalToken do
+defmodule Mix.Tasks.Dash.GenerateLocalToken do
   @shortdoc "Generates a JWT token for use in local development. Takes an optional json with claims."
-  @moduledoc "mix prtl.generate_local_token [claims_json]"
+  @moduledoc "mix dash.generate_local_token [claims_json]"
   use Mix.Task
 
   def run(args) when length(args) == 0 do
@@ -165,8 +165,8 @@ defmodule Mix.Tasks.Prtl.GenerateLocalToken do
   end
 end
 
-defmodule Mix.Tasks.Prtl do
-  @shortdoc "Lists all prtl tasks"
+defmodule Mix.Tasks.Dash do
+  @shortdoc "Lists all dash tasks"
   use Mix.Task
 
   def run(_) do
