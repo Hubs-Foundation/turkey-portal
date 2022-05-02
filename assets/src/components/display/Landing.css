@@ -1,0 +1,67 @@
+.landing-container {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(312.02deg, #321c64 0%, #095277 100%);
+}
+.landing {
+  display: grid;
+  grid-template: 1fr / 1fr 1fr;
+  grid-column-gap: 6em;
+  max-width: 1000px;
+  padding: 2em 4em;
+  position: relative;
+  z-index: 2;
+  color: white;
+}
+
+.landing .hero {
+  font-size: 25pt;
+  font-weight: bold;
+}
+.landing h1 {
+  text-align: left;
+}
+.landing p {
+  margin: 4rem 0;
+}
+
+.landing .sign-in-desktop,
+.landing .sign-in-mobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.landing .sign-in-mobile {
+  display: none;
+}
+
+.landing a {
+  padding: 2rem 5rem;
+  font-size: 25pt;
+}
+.landing-container .avatar {
+  position: absolute;
+  right: -70px;
+  top: 120px;
+  transform: rotate(-35deg);
+  z-index: 1;
+}
+
+@media (max-width: 600px) {
+  .landing {
+    display: flex;
+    flex-direction: column;
+    padding: 2em 2em;
+  }
+  .landing .sign-in-mobile {
+    display: block;
+  }
+  .landing .sign-in-desktop {
+    display: none;
+  }
+}

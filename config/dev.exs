@@ -56,7 +56,7 @@ config :prtl, PrtlWeb.Plugs.Auth, auth_pub_key: auth_pub_key
 config :prtl, Prtl.OrchClient, orch_host: "api.dev.myhubs.net"
 
 config :prtl, Prtl.FeatureFlags,
-  create_hubs: true,
+  create_hubs: false,
   delete_hubs: true,
   tier_selection: true,
   ccu_selection: true,

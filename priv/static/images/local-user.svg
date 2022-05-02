@@ -17,5 +17,5 @@
               font-size="4rem">L</text>
           </mask>
         </defs>
-        <circle cx="50" cy="50" r="50" fill="context-fill #B2B2B4" fill-opacity="context-fill-opacity" mask="url(#monogram)"/>
+        <circle cx="50" cy="50" r="50" fill="#B2B2B4" fill-opacity="context-fill-opacity" mask="url(#monogram)"/>
       </svg>
