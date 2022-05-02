@@ -18,7 +18,7 @@ test("App renders hubs for a logged in user", async () => {
     { hub_id: "2", name: "second hub" },
   ]);
 
-  const { findByAltText, findByText, findByTitle } = render(<App />);
+  const { findByAltText, findByText } = render(<App />);
 
   expect(await findByAltText("profile picture")).toBeDefined();
   expect(await findByText("first hub")).toBeDefined();
