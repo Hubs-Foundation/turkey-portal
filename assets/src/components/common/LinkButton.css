@@ -1,5 +1,5 @@
 .link-button {
-  font-weight: bold;
+  display: block;
   min-width: 150px;
   padding: 1em 0;
   border: 1px solid #868686;
@@ -7,7 +7,7 @@
   color: black;
   text-align: center;
   font-size: 12px;
-  display: block;
+  font-weight: bold;
 }
 .link-button:hover {
   color: black;

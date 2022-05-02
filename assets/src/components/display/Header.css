@@ -1,7 +1,7 @@
 .header {
   width: 100%;
-  display: flex;
   padding: 1em 0;
+  display: flex;
   justify-content: space-between;
 }
 .header h1 {
@@ -48,10 +48,10 @@
   margin: 0 0.5em;
 }
 .account-manage {
-  font-size: 10pt;
-  white-space: nowrap;
   display: flex;
   align-items: center;
+  font-size: 10pt;
+  white-space: nowrap;
 }
 .account-manage img {
   width: 15px;

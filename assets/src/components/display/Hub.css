@@ -1,14 +1,14 @@
 .hub {
-  width: 100%;
-  margin: 1em 0;
-  background: #fff;
-  padding: 1.0em 0.8em;
-  border-radius: 0.5em;
-  box-shadow: 0 3px 10px #ccc;
-  border-left: 20px solid #e0e0e0;
   display: grid;
   grid-template: 1fr 1fr / 1fr 1fr 1fr;
   grid-auto-flow: column;
+  width: 100%;
+  margin: 1em 0;
+  padding: 1.0em 0.8em;
+  background: #fff;
+  border-radius: 0.5em;
+  box-shadow: 0 3px 10px #ccc;
+  border-left: 20px solid #e0e0e0;
   font-size: 14px;
 }
 .hub * {
@@ -46,15 +46,15 @@
 }
 
 .tag {
-  background: #ddd;
+  min-width: 60px;
   padding: 0.2em 0.6em;
   border-radius: 1em;
+  background: #ddd;
   color: white;
   font-weight: bold;
-  text-transform: capitalize;
   font-size: 14px;
-  min-width: 60px;
   text-align: center;
+  text-transform: capitalize;
 }
 .tag.mvp {
   text-transform: uppercase;

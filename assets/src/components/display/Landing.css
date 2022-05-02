@@ -1,22 +1,22 @@
 .landing-container {
-  background: linear-gradient(312.02deg, #321c64 0%, #095277 100%);
-  height: 100%;
-  width: 100%;
   display: flex;
   justify-content: center;
   align-items: start;
-  overflow: hidden;
+  height: 100%;
+  width: 100%;
   position: relative;
+  overflow: hidden;
+  background: linear-gradient(312.02deg, #321c64 0%, #095277 100%);
 }
 .landing {
   display: grid;
   grid-template: 1fr / 1fr 1fr;
   grid-column-gap: 6em;
+  max-width: 1000px;
   padding: 2em 4em;
-  color: white;
   position: relative;
   z-index: 2;
-  max-width: 1000px;
+  color: white;
 }
 
 .landing .hero {
@@ -46,9 +46,9 @@
 }
 .landing-container .avatar {
   position: absolute;
-  transform: rotate(-35deg);
   right: -70px;
   top: 120px;
+  transform: rotate(-35deg);
   z-index: 1;
 }
 
