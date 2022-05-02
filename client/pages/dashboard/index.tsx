@@ -9,7 +9,6 @@ import { getCookie } from 'cookies-next'
 import styles from './dashboard.module.scss'
 import { setAccount } from '../../store/accountSlice'
 
-
 type DashboardPropsT = {
   account: AccountT
 }
@@ -22,26 +21,26 @@ export default function Dashboard({ account }: DashboardPropsT) {
   useEffect(() => {
     // Add newly validated account to the store
     dispatch(setAccount(account))
-  }, [account])
+  }, [account, dispatch])
 
-  useEffect(() => {
+  // useEffect(() => {
 
-  // TODO: figure out how we want to work through CORS here.
-  // this is workin progress...
-  const AUTH = getCookie('_turkeyauthtoken')
-  const apiServer = process.env.API_SERVER || "http://localhost:4000"
-  axios.get(`${apiServer}/api/v1/hubs`, {
-    headers: { 
-      cookie:AUTH?AUTH:''
-     }
-  })
-    .then((response) => {
-      console.log('response',response)
-      response.data
-  })
+  // // TODO: figure out how we want to work through CORS here.
+  // // this is workin progress...
+  // const AUTH = getCookie('_turkeyauthtoken')
+  // const apiServer = process.env.API_SERVER || "http://localhost:4000"
+  // axios.get(`${apiServer}/api/v1/hubs`, {
+  //   headers: { 
+  //     cookie:AUTH?AUTH:''
+  //    }
+  // })
+  //   .then((response) => {
+  //     console.log('response',response)
+  //     response.data
+  // })
 
 
-  }, [])
+  // }, [])
 
   return (
     <div className="page_wrapper">

@@ -1,0 +1,28 @@
+@import '../tools/mixins.scss';
+@import '../tools/functions.scss';
+
+@mixin button-base() {
+  @include primary-font(500);
+  @include font-size(14);
+  background: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  vertical-align: middle;
+  box-sizing: border-box;
+  border-radius: 3px;
+  text-transform: capitalize;
+  min-width: 100px;
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+  height: 45px;
+  letter-spacing: 0.44px;
+  line-height: 21px;
+
+  @include mobile-down {
+    min-width: initial;
+    @include font-size(12);
+  }
+}
