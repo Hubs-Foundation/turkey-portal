@@ -7,4 +7,18 @@
   color: black;
   text-align: center;
   font-size: 12px;
+  display: block;
+}
+.link-button:hover {
+  color: black;
+  background: #e7e7e7;
+}
+.link-button.primary {
+  color: white;
+  background-color: #0d73a6;
+  border-color: #0d73a6;
+}
+.link-button.primary:hover {
+  background-color: #2aadef;
+  border-color: #2aadef;
 }

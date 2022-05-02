@@ -41,6 +41,9 @@
   align-items: center;
   justify-content: end;
 }
+.hub .hub-buttons > * {
+  margin: 0 0.5em;
+}
 
 .tag {
   background: #ddd;
@@ -48,14 +51,19 @@
   border-radius: 1em;
   color: white;
   font-weight: bold;
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-size: 14px;
+  min-width: 60px;
+  text-align: center;
+}
+.tag.mvp {
+  text-transform: uppercase;
 }
 .tag.free {
   background: #39e;
 }
-.tag.premium {
-  background: #70c;
+.tag.premium, .tag.mvp {
+  background: #663df5;
 }
 .tag.creating,
 .tag.updating {
@@ -66,4 +74,7 @@
 }
 
 @media (max-width: 600px) {
+  .hub {
+    grid-template: repeat(6, 1fr) / 1fr;
+  }
 }

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import "./Hub.css";
 import { LinkButton } from "../common/LinkButton";
 import { IconDrive, IconUsers } from "../common/icons";
-import { formatNumber } from "../utils/formatNumber";
+import { formatNumber, formatMegabytes } from "../utils/formatNumber";
 
 export function Hub(props) {
   return (
@@ -14,7 +14,7 @@ export function Hub(props) {
         <span className="name">{props.name}</span>
       </div>
 
-      <div className="">
+      <div>
         {props.status === "ready" ? (
           <a className="domain" href={`//${props.subdomain}.myhubs.net`}>
             {props.subdomain}.myhubs.net
@@ -30,12 +30,12 @@ export function Hub(props) {
       </span>
       <span className="hub-stats">
         <IconDrive />
-        {formatNumber(props.storage_usage_mb / 1024)}GB / {formatNumber(props.storage_limit_mb / 1024)}GB
+        {formatMegabytes(props.storage_usage_mb)}/ {formatMegabytes(props.storage_limit_mb)}
       </span>
 
       <div className="hub-buttons">
         <LinkButton to={`/hubs/${props.hub_id}`} text="Hub Settings" />
-        <LinkButton href={`https://google.com/`} text="Admin Panel" />
+        <LinkButton href={`https://${props.subdomain}.myhubs.net/admin`} text="Admin Panel" />
       </div>
     </div>
   );

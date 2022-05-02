@@ -22,3 +22,32 @@ main {
 h1 {
   text-align: center;
 }
+button {
+  background: white;
+  font-weight: bold;
+  min-width: 150px;
+  height: 45px;
+  padding: 1em 0;
+  border: 1px solid #868686;
+  border-radius: 0.8em;
+  color: black;
+  text-align: center;
+  font-size: 12px;
+  line-height: 0;
+  text-transform: none;
+  letter-spacing: normal;
+  font-family: sans-serif;
+  margin: 0;
+}
+button.primary {
+  color: white;
+  background-color: #0d73a6;
+  border-color: #0d73a6;
+}
+button.primary:hover {
+  background-color: #2aadef;
+  border-color: #2aadef;
+}
+*[role=button] {
+  cursor: pointer;
+}

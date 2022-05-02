@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import drive from "./drive.svg";
 import users from "./users.svg";
+import logOut from "./log-out.svg";
+import external from "./external.svg";
 
 import "./Icon.css";
 
@@ -19,4 +21,12 @@ export function IconDrive() {
 
 export function IconUsers() {
   return <img className="icon" src={users} />;
+}
+
+export function IconLogOut() {
+  return <img className="icon" src={logOut} />;
+}
+
+export function IconExternal() {
+  return <img className="icon" src={external} />;
 }
