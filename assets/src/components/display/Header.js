@@ -25,6 +25,7 @@ export function Header({ account }) {
           <img
             tabIndex="0"
             role="button"
+            alt="profile picture"
             className="account-picture"
             src={account.profilePicture}
             onClick={() => setPopoutOpen(!popoutOpen)}

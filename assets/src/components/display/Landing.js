@@ -15,11 +15,7 @@ export function Landing() {
           <h1>Turkey</h1>
           <p className="hero">Sign in with a Firefox account to get started</p>
           <div className="sign-in-mobile">
-            <LinkButton
-              className="primary"
-              href={loginUrl}
-              text="Sign In"
-            />
+            <LinkButton className="primary" href={loginUrl} text="Sign In" />
           </div>
           <p>
             Thank you for taking part in the Hubs closed beta. Please sign in or register with a Firefox account to
@@ -27,11 +23,7 @@ export function Landing() {
           </p>
         </div>
         <div className="sign-in-desktop">
-          <LinkButton
-            className="primary"
-            href={loginUrl}
-            text="Sign In"
-          />
+          <LinkButton className="primary" href={loginUrl} text="Sign In" />
         </div>
       </div>
     </div>
