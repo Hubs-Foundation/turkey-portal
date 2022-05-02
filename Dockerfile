@@ -33,6 +33,6 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 WORKDIR "/app"
 RUN chown nobody /app
-COPY --from=builder --chown=nobody:root /_build/prod/rel/prtl ./
+COPY --from=builder --chown=nobody:root /_build/prod/rel/dash ./
 USER nobody
-CMD /app/bin/prtl start
+CMD /app/bin/dash start
