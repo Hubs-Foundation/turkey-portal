@@ -6,36 +6,46 @@ import { LinkButton } from "../common/LinkButton";
 import { IconDrive, IconUsers } from "../common/icons";
 import { formatNumber, formatMegabytes } from "../utils/formatNumber";
 
-export function Hub(props) {
+export function Hub({
+  tier,
+  name,
+  status,
+  subdomain,
+  current_ccu,
+  ccu_limit,
+  storage_usage_mb,
+  storage_limit_mb,
+  hub_id,
+}) {
   return (
     <div className="hub">
       <div className="hub-info">
-        <span className={`tag ${props.tier}`}>{props.tier}</span>
-        <span className="name">{props.name}</span>
+        <span className={`tag ${tier}`}>{tier}</span>
+        <span className="name">{name}</span>
       </div>
 
       <div>
-        {props.status === "ready" ? (
-          <a className="domain" href={`//${props.subdomain}.myhubs.net`}>
-            {props.subdomain}.myhubs.net
+        {status === "ready" ? (
+          <a className="domain" href={`//${subdomain}.myhubs.net`}>
+            {subdomain}.myhubs.net
           </a>
         ) : (
-          <span className="domain">{props.subdomain}.myhubs.net</span>
+          <span className="domain">{subdomain}.myhubs.net</span>
         )}
       </div>
 
       <span className="hub-stats">
         <IconUsers />
-        {formatNumber(props.current_ccu)} / {formatNumber(props.ccu_limit)}
+        {formatNumber(current_ccu)} / {formatNumber(ccu_limit)}
       </span>
       <span className="hub-stats">
         <IconDrive />
-        {formatMegabytes(props.storage_usage_mb)}/ {formatMegabytes(props.storage_limit_mb)}
+        {formatMegabytes(storage_usage_mb)}/ {formatMegabytes(storage_limit_mb)}
       </span>
 
       <div className="hub-buttons">
-        <LinkButton to={`/hubs/${props.hub_id}`} text="Hub Settings" />
-        <LinkButton href={`https://${props.subdomain}.myhubs.net/admin`} text="Admin Panel" />
+        <LinkButton to={`/hubs/${hub_id}`} text="Hub Settings" />
+        <LinkButton href={`https://${subdomain}.myhubs.net/admin`} text="Admin Panel" />
       </div>
     </div>
   );
