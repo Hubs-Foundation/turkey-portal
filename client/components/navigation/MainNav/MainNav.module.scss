@@ -1,6 +1,6 @@
 @import '../../../styles/boilerplate';
 
-.nav {
+.main_nav {
   &_wrapper {
     height: 80px;
     width: 100%;
@@ -20,5 +20,9 @@
   &_contents {
     display: flex;
   }
+}
+
+.branding_wrapper {
+  width: 300px;
 }
 

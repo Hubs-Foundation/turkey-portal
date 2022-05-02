@@ -3,16 +3,16 @@ import Link from 'next/link'
 
 type MainNavPropsT = {}
 
-const MainNav = ({}:MainNavPropsT) => {
+const MainNav = ({ }: MainNavPropsT) => {
   return (
-    <div className={styles.nav_wrapper}>
-      <div className={styles.nav_container}>
+    <div className={styles.main_nav_wrapper}>
+      <div className={styles.main_nav_container}>
 
         <div className={styles.branding_wrapper}>
           TURKEY
         </div>
 
-        <div className={styles.nav_contents}>
+        <div className={styles.main_nav_contents}>
           <div>user@mozilla.com</div>
           <Link href="#">Log Out</Link>
         </div>

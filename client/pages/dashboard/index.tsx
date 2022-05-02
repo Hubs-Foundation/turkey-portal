@@ -72,6 +72,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { props: { account } }
 
   } catch (error) {
+    console.log('redirecting')
     return {
       redirect: {
         destination: '/login',

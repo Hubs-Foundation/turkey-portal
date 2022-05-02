@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import styles from '../../styles/Home.module.css'
 import { useState } from 'react'
 import RadioGroup from '../../components/shared/RadioGroup/RadioGroup'
 import Form from '../../components/shared/Form/Form'
@@ -28,32 +27,32 @@ export default function Sandbox() {
 
   const [radioForm, setRadioForm] = useState('label_1')
 
-  const handleFormChange = (event:Event) => {
-    const {value }:HTMLInputElement = (event.target as HTMLInputElement)
+  const handleFormChange = (event: Event) => {
+    const { value }: HTMLInputElement = (event.target as HTMLInputElement)
     setRadioForm(value)
   }
 
   const initialValues = {
-    email:'nick',
+    email: 'nick',
     password: '1234',
-    test:'label_1'
+    test: 'label_1'
   }
 
-  const submit = (form:any) => {
-    console.log('form',form)
+  const submit = (form: any) => {
+    console.log('form', form)
   }
 
 
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Sandbox Page</title>
         <meta name="description" content="general profle page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>Sandbox Welcome</h1>
+      <main>
+        <h1>Sandbox Welcome</h1>
         <section>
           <h3>Forms</h3>
           {/* <form > 
@@ -84,7 +83,7 @@ export default function Sandbox() {
               />
             </>
           </Form>
-          
+
         </section>
       </main>
     </div>

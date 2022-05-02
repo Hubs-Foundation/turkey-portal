@@ -9,7 +9,7 @@ type HubCardPropsT = {
   tier: String
 }
 
-const HubCard = ({name,tier}:HubCardPropsT) => {
+const HubCard = ({ name, tier }: HubCardPropsT) => {
   return (
     <div className={styles.card_wrapper}>
       <div>
@@ -19,7 +19,7 @@ const HubCard = ({name,tier}:HubCardPropsT) => {
           {/* NAME / TIER  */}
           <div className={styles.card_group}>
             <div className={styles.card_name}>{name}</div>
-            <Badge 
+            <Badge
               name={'Free'}
             />
           </div>
@@ -36,7 +36,7 @@ const HubCard = ({name,tier}:HubCardPropsT) => {
           {/* DOMAIN */}
           <div className="flex">
             <div className={styles.card_domain}>a2b60d57a6.myhubs.net</div>
-            <Badge type="secondary" name={'Creating'}/>
+            <Badge type="secondary" name={'Creating'} />
           </div>
 
           <IconLink to={`/`} icon="⚙️" />

@@ -20,8 +20,8 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
       Store
     }
   }, [])
-  
-  const initialAccount:AccountT = {
+
+  const initialAccount: AccountT = {
     isInitialized: false,
     isLoggedIn: false,
     profilePicture: '',

@@ -2,11 +2,11 @@ import Link from 'next/link'
 import styles from './IconLink.module.scss'
 
 type IconLinkPropsT = {
-  to:string,
-  icon:string
+  to: string,
+  icon: string
 }
 
-const IconLink = ({to,icon}:IconLinkPropsT) => {
+const IconLink = ({ to, icon }: IconLinkPropsT) => {
   return (
     <div className={styles.icon_link} >
       <Link href={to}>
@@ -15,7 +15,6 @@ const IconLink = ({to,icon}:IconLinkPropsT) => {
     </div>
   )
 }
-
 
 export default IconLink
 

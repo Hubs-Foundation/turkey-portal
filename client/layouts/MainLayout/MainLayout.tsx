@@ -5,10 +5,10 @@ type MainLayoutPropsT = {
   children: React.ReactNode,
 }
 
-const MainLayout = ({children}:MainLayoutPropsT) => {
+const MainLayout = ({ children }: MainLayoutPropsT) => {
   return (
     <div>
-      <MainNav/>
+      <MainNav />
       {children}
     </div>
   )

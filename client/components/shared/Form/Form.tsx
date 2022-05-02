@@ -28,8 +28,6 @@ const Form = ({
     setForm((formState: any) => { return { ...formState, [name]: value } })
   }
 
-  console.log('form', form)
-
   return (
     <form className="Form">
       <FormContext.Provider value={{
