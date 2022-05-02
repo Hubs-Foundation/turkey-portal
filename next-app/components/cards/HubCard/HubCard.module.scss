@@ -1,0 +1,37 @@
+@import '../../../styles/boilerplate.scss';
+
+
+.card {
+
+  &_wrapper {
+    width: 100%;
+    margin: 4px;
+    background: #eee;
+    padding: 20px;
+    border-radius: 8px;
+  }
+
+  &_container {
+  }
+
+  &_header {
+    
+  }
+
+  &_group {
+    display: flex;
+    align-items: center;
+  }
+
+  &_name {
+    font-weight: 700;
+    margin-right: 12px;
+  }
+
+  &_domain {
+    margin-right: 10px;
+  }
+
+ 
+
+}
