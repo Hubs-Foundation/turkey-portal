@@ -1,20 +1,64 @@
 .header {
+  width: 100%;
+  padding: 1em 0;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: 100%;
 }
 .header h1 {
   margin: 0;
 }
 .account {
-  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.account-picture {
+  width: 45px;
+}
+.account-email {
+  white-space: nowrap;
+  font-weight: bold;
+  color: #321c64;
+}
+.account-popout {
+  position: absolute;
+  z-index: 1;
+  top: 55px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 0.3em;
+  box-shadow: 0 3px 10px #666;
+}
+.account-popout > * {
+  margin: 1em;
   display: flex;
   align-items: center;
 }
-.account > * {
-  margin: 0 0.2em;
+.account-details {
+  display: grid;
+  grid-template: auto auto / auto auto;
 }
-.account-picture {
+.account-popout img {
+  grid-row: span 2;
   width: 30px;
+  max-width: none;
+  margin: 0 0.5em;
+}
+.account-manage {
+  display: flex;
+  align-items: center;
+  font-size: 10pt;
+  white-space: nowrap;
+}
+.account-manage img {
+  width: 15px;
+}
+.account-popout hr {
+  margin: 0;
+  height: 1px;
+  border: 0;
+  background: linear-gradient(90deg, #6375F4 0%, #ED2462 52.7%, #F29436 100%);
 }

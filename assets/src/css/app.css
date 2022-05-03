@@ -1,6 +1,10 @@
 @import "../../vendor/milligram.css";
 
+html, body, main {
+  height: 100%;
+}
 body {
+  margin: 0;
   font-family: sans-serif;
   color: #111;
 }
@@ -9,12 +13,41 @@ main {
   justify-content: center;
 }
 #root {
-  max-width: 600px;
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 h1 {
   text-align: center;
+}
+button {
+  min-width: 150px;
+  height: 45px;
+  margin: 0;
+  padding: 1em 0;
+  border: 1px solid #868686;
+  border-radius: 0.8em;
+  background: white;
+  color: black;
+  font-weight: bold;
+  font-size: 12px;
+  font-family: sans-serif;
+  text-align: center;
+  line-height: 0;
+  text-transform: none;
+  letter-spacing: normal;
+}
+button.primary {
+  color: white;
+  background-color: #0d73a6;
+  border-color: #0d73a6;
+}
+button.primary:hover {
+  background-color: #2aadef;
+  border-color: #2aadef;
+}
+*[role=button] {
+  cursor: pointer;
 }

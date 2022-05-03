@@ -1,0 +1,24 @@
+.link-button {
+  display: block;
+  min-width: 150px;
+  padding: 1em 0;
+  border: 1px solid #868686;
+  border-radius: 0.8em;
+  color: black;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+.link-button:hover {
+  color: black;
+  background: #e7e7e7;
+}
+.link-button.primary {
+  color: white;
+  background-color: #0d73a6;
+  border-color: #0d73a6;
+}
+.link-button.primary:hover {
+  background-color: #2aadef;
+  border-color: #2aadef;
+}

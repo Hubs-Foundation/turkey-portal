@@ -1,4 +1,4 @@
-defmodule Prtl.Repo.Migrations.CreateShardingIds do
+defmodule Dash.Repo.Migrations.CreateShardingIds do
   use Ecto.Migration
 
   def up do

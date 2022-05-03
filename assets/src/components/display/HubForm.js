@@ -2,9 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import "./HubForm.css";
-import { FormChoice } from "../common/FormChoice";
-import { formatNumber } from "../utils/formatNumber";
-import { featureIsEnabled, TIER_SELECTION, CCU_SELECTION, STORAGE_SELECTION } from "../utils/feature-flags";
+import { LinkButton } from "../common/LinkButton";
+import { IconDrive, IconUsers } from "../common/icons";
+import { formatMegabytes } from "../utils/formatNumber";
 
 export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
   const onFormSubmit = (e) => {
@@ -12,65 +12,81 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
     onSubmit(hub);
   };
 
-  const storageChoices = [1000, 5000, 10000].map((value) => {
-    return { value, disabled: value < hub.storage_usage_mb };
-  });
-
-  const choiceDisabled = storageChoices.some((choice) => choice.disabled);
-
-  const isFreeTier = hub.tier === "free";
+  const tierChoices = [
+    { tier: "free", disabled: true, ccuLimit: 5, storageLimitMb: 250 },
+    { tier: "mvp", disabled: false, ccuLimit: 30, storageLimitMb: 2000 },
+  ];
 
   return (
-    <form className="hub-form" onSubmit={onFormSubmit}>
-      <div>
-        <span>Hub Name</span>
-        <input value={hub.name} onChange={(e) => setHub({ ...hub, name: e.target.value })} />
+    <div className="hub-form-container">
+      <form className="hub-form" onSubmit={onFormSubmit}>
+        <div>
+          <span className="form-section-title">Hub Name</span>
+          <input type="text" value={hub.name} onChange={(e) => setHub({ ...hub, name: e.target.value })} />
+        </div>
+
+        <div>
+          <span className="form-section-title">Hub Tier</span>
+          {tierChoices.map((tierChoice) => (
+            <label
+              key={tierChoice.tier}
+              className={`tier-choice ${tierChoice.disabled && "disabled"} ${
+                hub.tier === tierChoice.tier && "selected"
+              }`}
+            >
+              <div>
+                <input
+                  type="radio"
+                  name="tier"
+                  disabled={tierChoice.disabled}
+                  checked={hub.tier === tierChoice.tier}
+                  onChange={() => setHub({ ...hub, tier: tierChoice.tier })}
+                />
+                <span className={`tag ${tierChoice.tier}`}>{tierChoice.tier}</span>
+              </div>
+              <div>
+                <IconUsers />
+                <span>{tierChoice.ccuLimit}</span>
+              </div>
+              <div>
+                <IconDrive />
+                <span>{formatMegabytes(tierChoice.storageLimitMb)}</span>
+              </div>
+            </label>
+          ))}
+        </div>
+
+        <div className="web-address">
+          <span className="form-section-title">Web Address (URL)</span>
+          <input type="text" value={hub.subdomain} onChange={(e) => setHub({ ...hub, subdomain: e.target.value })} />
+          <span className="form-section-subtitle">Preview</span>
+          <div>
+            <span className="domain">
+              <span className="subdomain">{hub.subdomain}</span>.myhubs.net
+            </span>
+          </div>
+        </div>
+
+        <hr />
+
+        <div className="form-buttons">
+          <LinkButton to={`/`} text="Back" />
+          <button className="primary" disabled={isSubmitting}>
+            {isSubmitting ? "Updating" : "Update"}
+          </button>
+        </div>
+      </form>
+
+      <div className="hub-form-summary">
+        <span>Summary</span>
+        <span>Tier</span>
+        <span className={`tag ${hub.tier}`}>{hub.tier}</span>
+        <span>People</span>
+        <span>{hub.ccu_limit}</span>
+        <span>Capacity</span>
+        <span>{formatMegabytes(hub.storage_limit_mb)}</span>
       </div>
-
-      <div>
-        <span>Subdomain</span>
-        <span className="domain">{hub.subdomain}.myhubs.net</span>
-      </div>
-
-      {featureIsEnabled(TIER_SELECTION) && (
-        <FormChoice
-          name="tier"
-          value={hub.tier}
-          choices={[{ value: "free" }, { value: "premium" }]}
-          onChange={(value) => setHub({ ...hub, tier: value })}
-        />
-      )}
-
-      {featureIsEnabled(CCU_SELECTION) && (
-        <FormChoice
-          name="ccu"
-          title="CCU"
-          value={hub.ccu_limit}
-          choices={[{ value: 25 }, { value: 50 }, { value: 100 }]}
-          allDisabled={isFreeTier}
-          onChange={(value) => setHub({ ...hub, ccu_limit: value })}
-        />
-      )}
-
-      {featureIsEnabled(STORAGE_SELECTION) && (
-        <>
-          {!isFreeTier && choiceDisabled && (
-            <span className="warning">⚠️ You cannot choose storage options lower than your current usage.</span>
-          )}
-
-          <FormChoice
-            name="storage"
-            title={`Storage (${formatNumber(hub.storage_usage_mb)} MB used)`}
-            value={hub.storage_limit_mb}
-            choices={storageChoices}
-            allDisabled={isFreeTier}
-            onChange={(value) => setHub({ ...hub, storage_limit_mb: value })}
-          />
-        </>
-      )}
-
-      <button disabled={isSubmitting}>{isSubmitting ? "saving" : "save"}</button>
-    </form>
+    </div>
   );
 }
 
