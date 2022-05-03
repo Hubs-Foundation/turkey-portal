@@ -59,8 +59,24 @@ export default function Sandbox() {
 
           <div>
             <Button
+              text='Primary Button' />
+
+            <Button
               active={true}
-              text='Button Test' />
+              text='Active Button' />
+
+            <Button
+              icon='settings'
+              text='Icon Button' />
+
+            <Button
+              disabled={true}
+              text='Disabled' />
+
+            <Button
+              category={ButtonCategoriesE.outline}
+              text='Outline' />
+
           </div>
 
 

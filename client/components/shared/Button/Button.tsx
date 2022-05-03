@@ -1,6 +1,8 @@
 import React, { MouseEventHandler, useEffect, useState } from 'react'
 import { ButtonT, ButtonCategoriesE } from '../../../types/Form'
 import styles from './Button.module.scss'
+import Icon from '../Icon/Icon'
+import { IconT } from '../../../types/General'
 
 type ButtonProps = {
   active?: boolean,
@@ -9,6 +11,7 @@ type ButtonProps = {
   type?: ButtonT,
   category?: ButtonCategoriesE,
   disabled?: boolean,
+  icon?: IconT
   onClick?: MouseEventHandler<HTMLButtonElement>
 }
 
@@ -19,6 +22,7 @@ const Button = ({
   type = 'button',
   category = ButtonCategoriesE.primary,
   disabled,
+  icon,
   onClick
 }: ButtonProps) => {
 
@@ -28,7 +32,7 @@ const Button = ({
     setButtonClass(category)
   }, [category])
 
-  // Need to set generatedscss module class 
+  // Must pull generated SCSS class name
   const setButtonClass = (category: string) => {
     switch (category) {
       case ButtonCategoriesE.primary:
@@ -37,17 +41,29 @@ const Button = ({
       case ButtonCategoriesE.secondary:
         setCategoryClass(styles.button_secondary)
         break
+      case ButtonCategoriesE.outline:
+        setCategoryClass(styles.button_outline)
+        break
     }
   }
 
   return (
     <button
-      className={`${categoryClass} ${active ? 'active' : ''}`}
+      className={`${categoryClass} ${active ? styles.button_primary_active : ''}`}
       id={id}
       aria-label={text}
       type={type}
       disabled={disabled}
       onClick={onClick}>
+      {
+        icon ? (
+          <Icon
+            name={icon}
+            color="currentColor"
+            size={14}
+          />
+        ) : ''
+      }
       {text}
     </button >
   )

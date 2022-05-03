@@ -16,4 +16,5 @@ export type ButtonT = 'button' | 'submit' | 'reset'
 export enum ButtonCategoriesE {
   primary = 'primary',
   secondary = 'secondary',
+  outline = 'outline'
 }

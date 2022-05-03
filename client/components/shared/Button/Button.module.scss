@@ -1,21 +1,30 @@
 @import '../../../styles/boilerplate.scss';
 @import '../../../styles/ui/buttons.scss';
 
-/*-------------------------------
-  PRIMARY BUTTON
+// TODO - THESE ARE ALL PLACE HOLDER STYLES...
 
-  NOTE: TODO - THIS IS ALL PLACE HOLDER STYLES.
+/*-------------------------------
+  PRIMARY BUTTON 
 -------------------------------*/
 .button_primary {
   @include button_base();
   padding: 0px 16px;
-  border-radius: 24px;
+  border-radius: 10px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
   background-color: $teal;
   border: solid 2px $teal;
+  height: 45px;
   color: $white;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
 
-  &:hover:not([disabled='disabled']),
+  &_active {
+    background-color: $peach;
+    border: solid 2px $peach;
+  }
+
+  &:hover:enabled,
   &:focus {
     background-color: transparent;
     border: solid 2px $teal;
@@ -38,4 +47,41 @@
 -------------------------------*/
 .button_secondary {
   background-color: $peach;
+}
+
+// TODO - create secondary style
+/*-------------------------------
+  PRIMARY BUTTON
+-------------------------------*/
+.button_outline {
+  @include button_base();
+  padding: 0px 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+  height: 45px;
+  text-transform: capitalize;
+  background-color: transparent;
+  border: solid 2px $teal;
+  color: $teal;
+
+  &_active {
+    background-color: $peach;
+    border: solid 2px $peach;
+  }
+
+  &:hover:enabled,
+  &:focus {
+    background-color: $teal;
+    border: solid 2px $teal;
+    color: $white;
+  }
+
+  &:disabled,
+  &[disabled] {
+    background-color: $semi-dark-grey;
+    border: solid 2px $semi-dark-grey;
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
 }

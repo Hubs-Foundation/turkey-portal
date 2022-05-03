@@ -55,6 +55,7 @@
   @include primary-font(700);
   line-height: 25px;
   letter-spacing: 0;
+  
   @include tablet-up {
     @include font-size(18);
     letter-spacing: 0;
