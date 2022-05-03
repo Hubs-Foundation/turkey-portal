@@ -1,8 +1,8 @@
 import React, { MouseEventHandler, useEffect, useState } from 'react'
 import { ButtonT, ButtonCategoriesE } from '../../../types/Form'
+import { IconT } from '../../../types/General'
 import styles from './Button.module.scss'
 import Icon from '../Icon/Icon'
-import { IconT } from '../../../types/General'
 
 type ButtonProps = {
   active?: boolean,
