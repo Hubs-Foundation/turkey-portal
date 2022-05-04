@@ -4,7 +4,7 @@ defmodule Dash.Hub do
   import Ecto.Changeset
   alias Dash.Repo
 
-  @ret_access_key Application.get_env(:dash, Dash.Hub)[:portal_ret_access_key]
+  @ret_access_key Application.get_env(:dash, Dash.Hub)[:dashboard_ret_access_key]
   @primary_key {:hub_id, :id, autogenerate: true}
 
   schema "hubs" do
