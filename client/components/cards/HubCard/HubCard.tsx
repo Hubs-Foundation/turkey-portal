@@ -5,13 +5,14 @@ import IconLink from '../../shared/IconLink/IconLink'
 
 
 type HubCardPropsT = {
-  name: String,
-  tier: String
+  name: string,
+  tier: string,
+  classProp: string
 }
 
-const HubCard = ({ name, tier }: HubCardPropsT) => {
+const HubCard = ({ name, tier, classProp }: HubCardPropsT) => {
   return (
-    <div className={styles.card_wrapper}>
+    <div className={`${styles.card_wrapper} ${classProp}`}>
       <div>
         {/* CARD NAME TIER STATES  */}
         <div className="flex-justify-between">

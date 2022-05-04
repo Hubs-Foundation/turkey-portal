@@ -12,7 +12,8 @@ type ButtonProps = {
   category?: ButtonCategoriesE,
   disabled?: boolean,
   icon?: IconT
-  onClick?: MouseEventHandler<HTMLButtonElement>
+  onClick?: MouseEventHandler<HTMLButtonElement>,
+  classProp?: string
 }
 
 const Button = ({
@@ -23,7 +24,8 @@ const Button = ({
   category = ButtonCategoriesE.primary,
   disabled,
   icon,
-  onClick
+  onClick,
+  classProp
 }: ButtonProps) => {
 
   const [categoryClass, setCategoryClass] = useState(styles.button_primary)
@@ -49,7 +51,7 @@ const Button = ({
 
   return (
     <button
-      className={`${categoryClass} ${active ? styles.button_primary_active : ''}`}
+      className={`${categoryClass} ${classProp} ${active ? styles.button_primary_active : ''}`}
       id={id}
       aria-label={text}
       type={type}

@@ -8,7 +8,8 @@ type RadioButtonPropsT = {
   id: string,
   label: string,
   groupName: string,
-  onChange: FormEventHandler<HTMLDivElement>
+  onChange: FormEventHandler<HTMLDivElement>,
+  classProp?: string
 }
 
 const RadioButton = ({
@@ -18,11 +19,12 @@ const RadioButton = ({
   isDisabled = false,
   id,
   groupName,
-  onChange
+  onChange,
+  classProp
 }: RadioButtonPropsT) => {
 
   return (
-    <div className={styles.button_wrapper}>
+    <div className={`${styles.button_wrapper} ${classProp}`}>
       <label htmlFor={id}>{label}</label>
       <input
         id={id}
