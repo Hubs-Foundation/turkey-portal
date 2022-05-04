@@ -131,8 +131,6 @@ defmodule Dash.Hub do
     Dash.Hub |> Dash.Repo.get_by(hub_id: hub_id, account_id: account.account_id)
   end
 
-
-
   def delete_hub(hub_id, %Dash.Account{} = account) do
     hub_to_delete = get_hub(hub_id, account)
 
