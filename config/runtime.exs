@@ -33,6 +33,9 @@ if config_env() == :prod do
   # For sending requests to deployed hub reticulum nodes
   config :dash, Dash.Hubs, dashboard_ret_access_key: System.get_env("DASHBOARD_ACCESS_KEY")
 
+  # A comma-separated list of origins to allow CORS requests
+  config :cors_plug, origin: (System.get_env("CORS_ORIGINS") || "") |> String.split(",")
+
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
   # want to use a different value for prod and you most likely don't want
