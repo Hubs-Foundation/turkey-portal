@@ -42,10 +42,7 @@ defmodule DashWeb.Plugs.Auth do
 
     # TODO check expiration?
 
-    # TODO question: we could do a hashub() for this account and make a new hub here? but on every request we'd be hitting
-    #     Hit the hasHub database. I'd rather integrate it in the create Account functionality
-    account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid, fxa_email)
-    # free hub create as well
+    account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
     conn
     |> assign(:account, account)

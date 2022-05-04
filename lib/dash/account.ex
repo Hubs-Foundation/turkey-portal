@@ -22,7 +22,7 @@ defmodule Dash.Account do
     Repo.get_by(Dash.Account, fxa_uid: fxa_uid)
   end
 
-  def find_or_create_account_for_fxa_uid(fxa_uid, email) when is_binary(fxa_uid) do
+  def find_or_create_account_for_fxa_uid(fxa_uid) when is_binary(fxa_uid) do
     account = account_for_fxa_uid(fxa_uid)
 
     case account do
@@ -30,7 +30,7 @@ defmodule Dash.Account do
         account
 
       nil ->
-        create_account_for_fxa_uid_and_make_default_hub(fxa_uid, email)
+        create_account_for_fxa_uid(fxa_uid)
     end
   end
 
@@ -38,10 +38,5 @@ defmodule Dash.Account do
     %Dash.Account{}
     |> Dash.Account.changeset(%{fxa_uid: fxa_uid})
     |> Dash.Repo.insert!()
-
-    new_account
-    |> Dash.Hub.create_default_free_hub(email)
-
-    new_account
   end
 end

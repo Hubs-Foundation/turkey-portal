@@ -66,8 +66,13 @@ defmodule Dash.Hub do
   end
 
   # Returns a boolean of whether the account has a hub
-  def has_hubs(%Prtl.Account{} = account) do
-    Repo.exists?(from(h in Prtl.Hub, where: h.account_id == ^account.account_id))
+  def has_hubs(%Dash.Account{} = account) do
+    Repo.exists?(from(h in Dash.Hub, where: h.account_id == ^account.account_id))
+  end
+
+  # Checks if account has at least one hub, if not, creates hub
+  def ensure_default_hub(%Dash.Account{} = account, email) do
+    if !has_hubs(account), do: create_default_free_hub(account, email)
   end
 
   @free_hub_defaults %{
@@ -126,6 +131,8 @@ defmodule Dash.Hub do
     Dash.Hub |> Dash.Repo.get_by(hub_id: hub_id, account_id: account.account_id)
   end
 
+
+
   def delete_hub(hub_id, %Dash.Account{} = account) do
     hub_to_delete = get_hub(hub_id, account)
 
@@ -166,7 +173,7 @@ defmodule Dash.Hub do
   defp validate_storage(%Dash.Hub{} = _hub_to_update, _), do: {:ok}
 
   # Returns current CCU and Storage
-  def get_hub_info(%Prtl.Hub{} = hub) do
+  def get_hub_info(%Dash.Hub{} = hub) do
     current_ccu = get_current_ccu(hub)
     current_storage = get_current_storage_usage_mb(hub)
     %{ccu: current_ccu, storage: current_storage}
@@ -174,7 +181,7 @@ defmodule Dash.Hub do
 
   @ccu_endpoint "/api/v1/internal/presence"
   @domain "dev.myhubs.net"
-  defp get_current_ccu(%Prtl.Hub{} = hub) do
+  defp get_current_ccu(%Dash.Hub{} = hub) do
     case HTTPoison.get(
            "https://#{hub.subdomain}.#{@domain}#{@ccu_endpoint}",
            "x-ret-portal-access-key": @ret_access_key
