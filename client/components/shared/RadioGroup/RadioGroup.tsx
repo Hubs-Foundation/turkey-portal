@@ -5,17 +5,18 @@ import { RadioGroupOptionT } from '../../../types/Form'
 
 type RadioGroupPropsT = {
   options: RadioGroupOptionT[],
-  name: string
+  name: string,
+  classProp?: string
 }
 
 // onChange
-const RadioGroup = ({ options = [], name }: RadioGroupPropsT) => {
+const RadioGroup = ({ options = [], name, classProp }: RadioGroupPropsT) => {
   const formContext = useContext(FormContext)
   // Get data and methods from form context
   const { form, handleFormChange } = formContext
 
   return (
-    <div>
+    <div className={classProp}>
       {options.map((option) => {
         return (
           <RadioButton

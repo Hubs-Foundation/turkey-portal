@@ -9,7 +9,6 @@ import { getCookie } from 'cookies-next'
 import styles from './dashboard.module.scss'
 import { setAccount } from '../../store/accountSlice'
 
-
 type DashboardPropsT = {
   account: AccountT
 }

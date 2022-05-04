@@ -1,4 +1,4 @@
-import { useContext, ChangeEventHandler } from 'react'
+import { useContext } from 'react'
 import { FormContext } from '../Form/Form'
 import styles from './Input.module.scss'
 import { InputT } from '../../../types/Form'
@@ -6,10 +6,11 @@ import { InputT } from '../../../types/Form'
 type InputProps = {
   label: string,
   name: string,
-  type: InputT
+  type: InputT,
+  classProp?: string
 }
 
-const Input = ({ label, type, name }: InputProps) => {
+const Input = ({ label, type, name, classProp }: InputProps) => {
 
   const formContext = useContext(FormContext)
   // Get data and methods from form context
@@ -17,7 +18,7 @@ const Input = ({ label, type, name }: InputProps) => {
 
 
   return (
-    <div className={styles.input_wrapper}>
+    <div className={`${styles.input_wrapper} ${classProp}`}>
       {
         form && (
           <>

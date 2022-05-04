@@ -3,6 +3,8 @@ import { useState } from 'react'
 import RadioGroup from '../../components/shared/RadioGroup/RadioGroup'
 import Form from '../../components/shared/Form/Form'
 import Input from '../../components/shared/Input/Input'
+import Button from '../../components/shared/Button/Button'
+import { ButtonCategoriesE } from '../../types/Form'
 
 /**
  * NOTE: this page is for testing and showing.. Storybook will mostly take
@@ -54,6 +56,30 @@ export default function Sandbox() {
       <main>
         <h1>Sandbox Welcome</h1>
         <section>
+
+          <div>
+            <Button
+              text='Primary Button' />
+
+            <Button
+              active={true}
+              text='Active Button' />
+
+            <Button
+              icon='settings'
+              text='Icon Button' />
+
+            <Button
+              disabled={true}
+              text='Disabled' />
+
+            <Button
+              category={ButtonCategoriesE.outline}
+              text='Outline' />
+
+          </div>
+
+
           <h3>Forms</h3>
           {/* <form > 
             <RadioGroup
