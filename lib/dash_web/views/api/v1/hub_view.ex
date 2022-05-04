@@ -21,8 +21,8 @@ defmodule DashWeb.Api.V1.HubView do
     deleted_hub |> render_deleted_hub()
   end
 
-  def render("hub_info.json", %{hub_info: hub_info}) do
-    hub_info
+  def render("hub_usage_stats.json", %{hub_usage_stats: hub_usage_stats}) do
+    hub_usage_stats
   end
 
   defp render_deleted_hub(hub) do

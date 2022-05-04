@@ -4,7 +4,7 @@ defmodule Dash.Hub do
   import Ecto.Changeset
   alias Dash.Repo
 
-  @ret_access_key Application.get_env(:prtl, Prtl.Hub)[:portal_ret_access_key]
+  @ret_access_key Application.get_env(:dash, Dash.Hub)[:portal_ret_access_key]
   @primary_key {:hub_id, :id, autogenerate: true}
 
   schema "hubs" do
@@ -171,8 +171,17 @@ defmodule Dash.Hub do
   defp validate_storage(%Dash.Hub{} = _hub_to_update, _), do: {:ok}
 
   # Returns current CCU and Storage
-  def get_hub_info(%Dash.Hub{} = hub) do
-    current_ccu = get_current_ccu(hub)
+  def get_hub_usage_stats(%Dash.Hub{} = hub) do
+    current_ccu =
+      case get_current_ccu(hub) do
+        {:ok, ccu} ->
+          ccu
+
+        {:error, error} ->
+          IO.inspect(["Error getting ccu", error])
+          nil
+      end
+
     current_storage = get_current_storage_usage_mb(hub)
     %{ccu: current_ccu, storage: current_storage}
   end
@@ -187,22 +196,22 @@ defmodule Dash.Hub do
       # Reticulum returned the ccu correctly
       {:ok, %{status_code: 200, body: body}} ->
         %{"count" => count} = Poison.Parser.parse!(body)
-        count
+        {:ok, count}
 
       # Reticulum completed the request but did not return the ccu
       {:ok, %{status_code: _} = response} ->
         IO.inspect(response)
-        -1
+        {:error, :no_ccu_returned}
 
       # An error occurred
       {:error, reason} ->
         IO.inspect(reason)
-        -1
+        {:error, reason}
     end
   end
 
   defp get_current_storage_usage_mb(_hub) do
-    # TODO ask orchestrator for current storage useage
+    # TODO ask orchestrator for current storage usage
     50
   end
 end

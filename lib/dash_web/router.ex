@@ -38,7 +38,7 @@ defmodule DashWeb.Router do
 
     resources("/account", Api.V1.AccountController, [:index])
 
-    get "/hubs/:id/info", Api.V1.HubController, :show_hub_info, as: :show_hub_info
+    get "/hubs/:id/stats", Api.V1.HubController, :show_hub_usage_stats, as: :show_hub_usage_stats
 
     resources(
       "/hubs",
