@@ -17,6 +17,11 @@ export const hubEntitiesSlice = createSlice({
       state.isInitialized = true;
       hubEntityAdapter.setAll(state, action.payload);
     },
+    setHubUsageStats(state, action) {
+      const { id, ...changes } = action.payload
+      console.log(changes)
+      hubEntityAdapter.updateOne(state, {id, changes})
+    }
   },
 });
 
@@ -27,4 +32,4 @@ export const selectIsInitialized = createSelector(
 
 export const hubEntitySelectors = hubEntityAdapter.getSelectors((state) => state.hubEntities);
 
-export const { setHubEntity, setHubEntities } = hubEntitiesSlice.actions;
+export const { setHubEntity, setHubEntities, setHubUsageStats } = hubEntitiesSlice.actions;

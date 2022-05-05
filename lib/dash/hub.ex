@@ -187,6 +187,8 @@ defmodule Dash.Hub do
   end
 
   @ccu_endpoint "/api/v1/internal/presence"
+
+  # TODO make this an environment variable before merging final PR for this
   @domain "dev.myhubs.net"
   defp get_current_ccu(%Dash.Hub{} = hub) do
     case HTTPoison.get(
@@ -201,7 +203,7 @@ defmodule Dash.Hub do
       # Reticulum completed the request but did not return the ccu
       {:ok, %{status_code: _} = response} ->
         IO.inspect(response)
-        {:error, :no_ccu_returned}
+        {:error, :ret_completed_request_but_no_ccu_returned}
 
       # An error occurred
       {:error, reason} ->

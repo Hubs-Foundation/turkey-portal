@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import { useGetHubsQuery, useGetHubQuery, useUpdateHubMutation } from "../services/hubs";
-import { hubEntitySelectors, selectIsInitialized, setHubEntity, setHubEntities } from "../store/hubs";
+import { useGetHubsQuery, useGetHubQuery, useUpdateHubMutation, useGetHubUsageStatsMutation } from "../services/hubs";
+import { hubEntitySelectors, selectIsInitialized, setHubEntity, setHubEntities, setHubUsageStats } from "../store/hubs";
 import { selectCurrentHub, setCurrentHub } from "../store/currentHub";
 
 export function useHubs() {
@@ -16,6 +16,18 @@ export function useHubs() {
   const isReady = isSuccess || isInitialized;
 
   return { hubs, hasHubs, isLoading, isError, isReady };
+}
+
+function setUsageStats() {
+  const dispatch = useDispatch();
+  const hubs = useSelector((state) => hubEntitySelectors.selectAll(state));
+  
+  hubs.map(hub => new Promise((resolve, reject) => {
+    const { data } = useGetHubUsageStatsMutation(hub)
+    console.log("SETUSAGESTATS(): hub id", hub.hub_id)
+    console.log(data)
+    if (data) resolve(dispatch(setHubUsageStats({id: hub.hub_id, data})))
+  }))
 }
 
 export function useHub(hub_id) {
