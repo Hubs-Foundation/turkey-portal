@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect, useState } from 'react'
+import { PropsWithChildren, useEffect, useState, Children } from 'react'
 import PropTypes from 'prop-types'
 
 const propTypes = {
@@ -12,10 +12,11 @@ type FadeInPropsT = PropTypes.InferProps<typeof propTypes>
 export default function FadeIn(props: PropsWithChildren<FadeInPropsT>) {
   const [maxIsVisible, setMaxIsVisible] = useState(0)
   const { isVisible, classProp, onComplete } = props
+  const arrayChildren = Children.toArray(props.children)
 
   useEffect(() => {
     // Get Number of children to fade in
-    let count = React.Children.count(props.children)
+    let count = Children.count(arrayChildren)
 
     // Animate all children out
     if (!isVisible) count = 0
@@ -39,12 +40,12 @@ export default function FadeIn(props: PropsWithChildren<FadeInPropsT>) {
     maxIsVisible,
     isVisible,
     onComplete,
-    props
+    arrayChildren
   ])
 
   return (
     <div className={classProp ? classProp : ''}>
-      {React.Children.map(props.children, (child, i) => {
+      {Children.map(arrayChildren, (child, i) => {
         return (
           <div
             style={{
