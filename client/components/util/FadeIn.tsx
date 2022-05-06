@@ -1,53 +1,52 @@
-import React, { JSXElementConstructor, PropsWithChildren, useEffect, useState } from 'react'
+import React, { PropsWithChildren, useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 
-type FadeInPropsT = {
-  wrapperTag?: JSXElementConstructor<any>
-  childTag?: JSXElementConstructor<any>
-  className?: string
-  childClassName?: string
-  visible?: boolean
-  onComplete?: () => any
+const propTypes = {
+  classProp: PropTypes.string,
+  isVisible: PropTypes.bool.isRequired,
+  onComplete: PropTypes.func
 }
+
+type FadeInPropsT = PropTypes.InferProps<typeof propTypes>
 
 export default function FadeIn(props: PropsWithChildren<FadeInPropsT>) {
   const [maxIsVisible, setMaxIsVisible] = useState(0)
-  const visible = typeof props.visible === 'undefined' ? true : props.visible
-  const WrapperTag = props.wrapperTag || 'div'
-  const ChildTag = props.childTag || 'div'
+  const { isVisible, classProp, onComplete } = props
 
   useEffect(() => {
+    // Get Number of children to fade in
     let count = React.Children.count(props.children)
 
     // Animate all children out
-    if (!visible) count = 0
+    if (!isVisible) count = 0
 
-    // Done updating maxVisible, notify when animation is done
+    // Fire (optional) callback when all visible 
     if (count === maxIsVisible) {
       const timeout = setTimeout(() => {
-        if (props.onComplete) props.onComplete()
+        if (onComplete) onComplete()
       }, 500)
       return () => clearTimeout(timeout)
     }
 
-    // Move maxIsVisible toward count
-    const increment = count > maxIsVisible ? 1 : -1
+    // Increment or decrement MaxIsVisible
+    const addOrSubtractOne = count > maxIsVisible ? 1 : -1
     const timeout = setTimeout(() => {
-      setMaxIsVisible((state) => state + increment)
+      setMaxIsVisible((state) => state + addOrSubtractOne)
     }, 50)
 
     return () => clearTimeout(timeout)
   }, [
     maxIsVisible,
-    visible,
+    isVisible,
+    onComplete,
     props
   ])
 
   return (
-    <WrapperTag className={props.className}>
+    <div className={classProp ? classProp : ''}>
       {React.Children.map(props.children, (child, i) => {
         return (
-          <ChildTag
-            className={props.childClassName}
+          <div
             style={{
               transition: `opacity 500ms, transform 500ms`,
               transform: maxIsVisible > i ? "none" : "translateY(20px)",
@@ -55,9 +54,9 @@ export default function FadeIn(props: PropsWithChildren<FadeInPropsT>) {
             }}
           >
             {child}
-          </ChildTag>
+          </div>
         )
       })}
-    </WrapperTag>
+    </div>
   )
 }
