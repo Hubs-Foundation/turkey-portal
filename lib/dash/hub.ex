@@ -4,6 +4,10 @@ defmodule Dash.Hub do
   import Ecto.Changeset
   alias Dash.Repo
 
+  defmodule UsageStats do
+    defstruct [:ccu, :storage_mb]
+  end
+
   @ret_access_key Application.get_env(:dash, Dash.Hub)[:dashboard_ret_access_key]
   @primary_key {:hub_id, :id, autogenerate: true}
 
@@ -183,16 +187,23 @@ defmodule Dash.Hub do
       end
 
     current_storage = get_current_storage_usage_mb(hub)
-    %{ccu: current_ccu, storage: current_storage}
+
+    %UsageStats{ccu: current_ccu, storage_mb: current_storage}
   end
 
-  @ccu_endpoint "/api/v1/internal/presence"
-  # TODO make domain an environment variable before merging final PR for this
-  @domain "dev.myhubs.net"
+  @ret_host_prefix "hc-"
+  @ret_internal_port "4000"
+  defp get_hub_internal_host_url(%Dash.Hub{} = hub) do
+    # TODO when we fix the hub_uid bug with orchestrator update hub.subdomain to the fix
+    "http://#{@ret_host_prefix}#{hub.subdomain}:#{@ret_internal_port}"
+  end
+
+  @ccu_endpoint "/api-internal/v1/presence"
   defp get_current_ccu(%Dash.Hub{} = hub) do
     case HTTPoison.get(
-           "https://#{hub.subdomain}.#{@domain}#{@ccu_endpoint}",
-           "x-ret-portal-access-key": @ret_access_key
+           get_hub_internal_host_url(hub) <> @ccu_endpoint,
+           "x-ret-dashboard-access-key": @ret_access_key,
+           hackney: [:insecure]
          ) do
       # Reticulum returned the ccu correctly
       {:ok, %{status_code: 200, body: body}} ->
