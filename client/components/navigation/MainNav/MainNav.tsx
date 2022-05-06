@@ -35,7 +35,7 @@ const MainNav = ({ classProp }: MainNavPropsT) => {
           cta={(
             <div className={styles.main_nav_account}>
               {account.profilePic && (
-                <Image alt="logo" width="50" height="50" src={account.profilePic} />
+                <Image alt="profile picture" width="50" height="50" src={account.profilePic} />
               )}
             </div>)}
           content={(<div>some account stuff here</div>)}
