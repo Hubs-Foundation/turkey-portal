@@ -1,32 +1,37 @@
-// // ---------------------------------
-// //  Colors
-// // ---------------------------------
+// -----------------
+//   Font Setup
+// -----------------
+$font-size-base: 16; // base size in px
+$primary-font: 'Roboto';
+$secondary-font: 'Helvetica Neue';
+
+// ---------------------------------
+//  Colors
+// ---------------------------------
 
 // ---- Primary Brand Colors ---------------------
 $black: #231f20;
-$dark-teal: #1C7F8D;
+$dark-teal: #1c7f8d;
 
 // ---- Accent Colors ---------------------
 $teal: #23a2b3;
-$light-teal: rgba($teal, .1);
-$pink: #D83A94;
-$blue-neon: #4D4DFF;
-$yellow-neon: #F1EA57;
-$peach: #D96868;
-$tan: #E5DFD8;
+$light-teal: rgba($teal, 0.1);
+$pink: #d83a94;
+$blue-neon: #4d4dff;
+$yellow-neon: #f1ea57;
+$peach: #d96868;
+$tan: #e5dfd8;
 
 // ---- Utility Colors  ---------------------
-$white: #FFFFFF;
+$white: #ffffff;
 $off-white: #e9e9e9;
 $grey: #918f90;
 $semi-dark-grey: #767474;
 $dark-grey: #393536;
-$red: #D42828;
-$green: #3DC278;
+$red: #d42828;
+$green: #3dc278;
 $loading-grey: #f8f8f8;
 $light-grey: #f8f8f8;
-
-
 
 // ---- Break Points ---------------------
 $breakpoint-mobile: 580px;

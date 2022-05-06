@@ -1,4 +1,4 @@
-import React, { useState, ChangeEventHandler, ChangeEvent } from 'react'
+import React, { useState, ChangeEventHandler, ChangeEvent, ReactNode } from 'react'
 
 const initialForm: { [char: string]: string } = {}
 const initialFormHandler: ChangeEventHandler<HTMLInputElement> = (event: ChangeEvent) => { }
@@ -9,15 +9,17 @@ export const FormContext = React.createContext({
 })
 
 type FormPropsT = {
-  children: React.ReactNode,
+  children: ReactNode,
   submit: Function,
-  initialValues: { [key: string]: string }
+  initialValues: { [key: string]: string },
+  classProp?: string
 }
 
 const Form = ({
   children,
   submit = () => { },
-  initialValues
+  initialValues,
+  classProp
 }: FormPropsT) => {
 
   const [form, setForm] = useState(initialValues)
@@ -29,7 +31,7 @@ const Form = ({
   }
 
   return (
-    <form className="Form">
+    <form className={classProp} >
       <FormContext.Provider value={{
         form,
         handleFormChange

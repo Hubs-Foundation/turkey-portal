@@ -51,7 +51,8 @@ defmodule Dash.MixProject do
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:poison, "~> 5.0"}
+      {:poison, "~> 5.0"},
+      {:cors_plug, "~> 3.0"}
     ]
   end
 

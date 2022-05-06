@@ -9,7 +9,6 @@ import { getCookie } from 'cookies-next'
 import styles from './dashboard.module.scss'
 import { setAccount } from '../../store/accountSlice'
 
-
 type DashboardPropsT = {
   account: AccountT
 }
@@ -30,11 +29,7 @@ export default function Dashboard({ account }: DashboardPropsT) {
   // this is workin progress...
   const AUTH = getCookie('_turkeyauthtoken')
   const apiServer = process.env.API_SERVER || "http://localhost:4000"
-  axios.get(`${apiServer}/api/v1/hubs`, {
-    headers: { 
-      cookie:AUTH?AUTH:''
-     }
-  })
+  axios.get(`${apiServer}/api/v1/hubs`, { withCredentials: true })
     .then((response) => {
       console.log('response',response)
       response.data
