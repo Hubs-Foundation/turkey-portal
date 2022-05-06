@@ -17,8 +17,12 @@ defmodule DashWeb.Router do
     plug DashWeb.Plugs.Auth
   end
 
+  pipeline :basic_auth do
+    plug DashWeb.Plugs.BasicAuth
+  end
+
   scope "/", DashWeb do
-    pipe_through :browser
+    pipe_through [:basic_auth, :browser]
 
     get "/", PageController, :index
     get "/hubs/*path", PageController, :index
@@ -30,11 +34,12 @@ defmodule DashWeb.Router do
   # end
 
   scope "/", DashWeb do
+    pipe_through :basic_auth
     resources("/logout", LogoutController, [:index])
   end
 
   scope "/api/v1", DashWeb do
-    pipe_through :jwt_authenticated
+    pipe_through [:basic_auth, :jwt_authenticated]
 
     resources("/account", Api.V1.AccountController, [:index])
 
@@ -81,7 +86,7 @@ defmodule DashWeb.Router do
   end
 
   scope "/", DashWeb do
-    pipe_through :browser
+    pipe_through [:basic_auth, :browser]
     get "/*path", PageController, :not_found
   end
 end
