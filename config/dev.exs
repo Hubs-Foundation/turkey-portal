@@ -55,7 +55,7 @@ config :dash, DashWeb.Plugs.Auth, auth_pub_key: auth_pub_key
 
 config :dash, DashWeb.Plugs.BasicAuth,
   # Disable BasicAuth by default in local dev, since it's a bit annoying.
-  disabled: false,
+  disabled: true,
   username: "local",
   password: "pass"
 
