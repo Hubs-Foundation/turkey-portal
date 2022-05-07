@@ -8,7 +8,7 @@ defmodule DashWeb.Plugs.BasicAuth do
   def init(default), do: default
 
   def call(conn, _options) do
-    basic_auth_enabled = !Application.get_env(:dash, __MODULE__)[:disabled]
+    basic_auth_enabled = Application.get_env(:dash, __MODULE__)[:enabled] !== false
 
     if basic_auth_enabled do
       perform_basic_auth(conn)
