@@ -45,6 +45,7 @@ export function Hub({
 
       <div className="hub-buttons">
         <LinkButton to={`/hubs/${hub_id}`} text="Hub Settings" />
+        {/* TODO change hardcoded value for domain*/}
         <LinkButton href={`https://${subdomain}.myhubs.net/admin`} text="Admin Panel" />
       </div>
     </div>
