@@ -19,7 +19,7 @@ export type HubT = {
 export type AccountT = {
   displayName: string
   email: string
-  profilePicture: string
+  profilePic: string
   isInitialized?: boolean
   isLoggedIn?: boolean
 }

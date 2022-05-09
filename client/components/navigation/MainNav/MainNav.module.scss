@@ -4,25 +4,42 @@
   &_wrapper {
     height: 80px;
     width: 100%;
-    background: $green;
-    padding: 20px 10px;
+    background: $white;
+    padding: 20px 80px;
     display: flex;
-    flex-direction: column;
     justify-content: center;
+    border-bottom: solid 1px $grey;
   }
 
   &_container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 1440px;
+    width: 100%;
   }
 
   &_contents {
     display: flex;
+    align-items: center;
+  }
+
+  &_links {
+    margin-left: 50px;
+  }
+
+  &_link {
+    @include font-size(14);
+    font-weight: 700;
+    border-bottom: solid $black 2px;
+    padding-bottom: 0;
+  }
+
+  &_account {
+    display: flex;
+    margin: 10px;
   }
 }
 
-.branding_wrapper {
-  width: 300px;
-}
+
 

@@ -6,11 +6,6 @@
   font-size: rem($size);
 }
 
-@mixin primary-font($weight: 300) {
-  font-family: $primary-font, $secondary-font;
-  font-weight: $weight;
-}
-
 @mixin primary-font($weight: 400) {
   font-family: $primary-font, $secondary-font;
   font-weight: $weight;

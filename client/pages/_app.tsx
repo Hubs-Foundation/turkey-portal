@@ -24,7 +24,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   const initialAccount: AccountT = {
     isInitialized: false,
     isLoggedIn: false,
-    profilePicture: '',
+    profilePic: '',
     displayName: '',
     email: ''
   }

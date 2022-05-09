@@ -7,7 +7,7 @@ import IconLink from '../../shared/IconLink/IconLink'
 type HubCardPropsT = {
   name: string,
   tier: string,
-  classProp: string
+  classProp?: string
 }
 
 const HubCard = ({ name, tier, classProp }: HubCardPropsT) => {

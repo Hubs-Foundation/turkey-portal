@@ -2,7 +2,7 @@
 //   Font Setup
 // -----------------
 $font-size-base: 16; // base size in px
-$primary-font: 'Roboto';
+$primary-font: 'Open Sans';
 $secondary-font: 'Helvetica Neue';
 
 // ---------------------------------
@@ -41,3 +41,8 @@ $breakpoint-desktop: 1024px;
 $breakpoint-desktop-large: 1220px;
 $breakpoint-hd: 1312px;
 $container-max-width: 1440px;
+
+// ---- Misc ---------------------
+$drop-shadow: 0 3px 8px rgba($black, 0.1);
+$drop-shadow-light: 0 3px 8px rgba($black, 0.05);
+
