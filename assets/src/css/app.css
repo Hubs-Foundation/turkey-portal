@@ -1,12 +1,26 @@
+@import "/fonts/poppins/poppins.css";
 @import "../../vendor/milligram.css";
 
+/*
+The error pages are static, non-React pages,
+but we want to share fonts and base styles with them,
+so we're including their css here.
+ */
+@import "./error-page.css";
+
+:root {
+  --base-font: 'Poppins', sans-serif;
+}
 html, body, main {
   height: 100%;
 }
 body {
   margin: 0;
-  font-family: sans-serif;
+  font-family: var(--base-font);
   color: #111;
+}
+input {
+  font-family: var(--base-font);
 }
 main {
   display: flex;
@@ -18,6 +32,9 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+a {
+  text-decoration: underline;
 }
 h1 {
   text-align: center;
@@ -33,7 +50,7 @@ button {
   color: black;
   font-weight: bold;
   font-size: 12px;
-  font-family: sans-serif;
+  font-family: var(--base-font);
   text-align: center;
   line-height: 0;
   text-transform: none;

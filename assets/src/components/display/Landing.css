@@ -23,8 +23,8 @@
   font-size: 25pt;
   font-weight: bold;
 }
-.landing h1 {
-  text-align: left;
+.landing .logo {
+  height: 60px;
 }
 .landing p {
   margin: 4rem 0;
@@ -52,14 +52,14 @@
   z-index: 1;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .landing {
     display: flex;
     flex-direction: column;
     padding: 2em 2em;
   }
   .landing .sign-in-mobile {
-    display: block;
+    display: flex;
   }
   .landing .sign-in-desktop {
     display: none;

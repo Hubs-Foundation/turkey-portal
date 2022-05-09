@@ -4,6 +4,11 @@ defmodule Dash.Hub do
   import Ecto.Changeset
   alias Dash.Repo
 
+  defmodule UsageStats do
+    defstruct [:ccu, :storage_mb]
+  end
+
+  @ret_access_key Application.get_env(:dash, Dash.Hub)[:dashboard_ret_access_key]
   @primary_key {:hub_id, :id, autogenerate: true}
 
   schema "hubs" do
@@ -62,6 +67,16 @@ defmodule Dash.Hub do
   def hubs_for_account(%Dash.Account{} = account) do
     from(h in Dash.Hub, where: h.account_id == ^account.account_id)
     |> Repo.all()
+  end
+
+  # Returns a boolean of whether the account has a hub
+  def has_hubs(%Dash.Account{} = account) do
+    Repo.exists?(from(h in Dash.Hub, where: h.account_id == ^account.account_id))
+  end
+
+  # Checks if account has at least one hub, if not, creates hub
+  def ensure_default_hub(%Dash.Account{} = account, email) do
+    if !has_hubs(account), do: create_default_free_hub(account, email)
   end
 
   @free_hub_defaults %{
@@ -159,8 +174,56 @@ defmodule Dash.Hub do
   # If not updating storage
   defp validate_storage(%Dash.Hub{} = _hub_to_update, _), do: {:ok}
 
-  defp get_current_storage_usage_mb(_instance_uid) do
-    # TODO ask orchestrator for current storage useage
+  # Returns current CCU and Storage
+  def get_hub_usage_stats(%Dash.Hub{} = hub) do
+    current_ccu =
+      case get_current_ccu(hub) do
+        {:ok, ccu} ->
+          ccu
+
+        {:error, error} ->
+          IO.inspect(["Error getting ccu", error])
+          nil
+      end
+
+    current_storage = get_current_storage_usage_mb(hub)
+
+    %UsageStats{ccu: current_ccu, storage_mb: current_storage}
+  end
+
+  @ret_host_prefix "hc-"
+  @ret_internal_port "4000"
+  defp get_hub_internal_host_url(%Dash.Hub{} = hub) do
+    # TODO when we fix the hub_uid bug with orchestrator update hub.subdomain to the fix
+    "http://#{@ret_host_prefix}#{hub.subdomain}:#{@ret_internal_port}"
+  end
+
+  @ccu_endpoint "/api-internal/v1/presence"
+  defp get_current_ccu(%Dash.Hub{} = hub) do
+    case HTTPoison.get(
+           get_hub_internal_host_url(hub) <> @ccu_endpoint,
+           "x-ret-dashboard-access-key": @ret_access_key,
+           hackney: [:insecure]
+         ) do
+      # Reticulum returned the ccu correctly
+      {:ok, %{status_code: 200, body: body}} ->
+        %{"count" => count} = Poison.Parser.parse!(body)
+        {:ok, count}
+
+      # Reticulum completed the request but did not return the ccu
+      {:ok, %{status_code: _} = response} ->
+        IO.inspect(response)
+        {:error, :no_ccu_returned}
+
+      # An error occurred
+      {:error, reason} ->
+        IO.inspect(reason)
+        {:error, reason}
+    end
+  end
+
+  defp get_current_storage_usage_mb(_hub) do
+    # TODO ask orchestrator for current storage usage
     50
   end
 end
