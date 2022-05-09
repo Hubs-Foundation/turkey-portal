@@ -34,7 +34,6 @@ mix dash.create_hub local-user-uid "test hub"
 
 ## Production environment variables
 
-- ORCH_HOST - Host for the orchestrator API.
 - DASHBOARD_ACCESS_KEY - Access key for communicating with reticulum. Should be a strong secret that is shared with reticulum.
 - CORS_ORIGINS - Comma separated list of origins to allow CORS requests.
 - SECRET_KEY_BASE - Base secret key. This should be a strong cryptographcially generated secret.
