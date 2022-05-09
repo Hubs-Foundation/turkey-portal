@@ -33,6 +33,11 @@ if config_env() == :prod do
   # For sending requests to deployed hub reticulum nodes
   config :dash, Dash.Hubs, dashboard_ret_access_key: System.get_env("DASHBOARD_ACCESS_KEY")
 
+  # Credentials for site-wide basic auth
+  config :dash, DashWeb.Plugs.BasicAuth,
+    username: System.get_env("BASIC_AUTH_USERNAME"),
+    password: System.get_env("BASIC_AUTH_PASSWORD")
+
   # A comma-separated list of origins to allow CORS requests
   config :cors_plug, origin: (System.get_env("CORS_ORIGINS") || "") |> String.split(",")
 

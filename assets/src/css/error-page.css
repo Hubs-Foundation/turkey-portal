@@ -1,0 +1,12 @@
+.error-page {
+  margin: 2em;
+  min-width: 500px;
+}
+.error-page h1 {
+  font-weight: bold;
+  font-size: 26pt;
+  text-align: left;
+}
+.error-page .logo {
+  margin-bottom: 3em;
+}
