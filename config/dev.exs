@@ -53,7 +53,7 @@ config :dash, DashWeb.Endpoint,
 
 config :dash, DashWeb.Plugs.Auth, auth_pub_key: auth_pub_key
 
-config :dash, Dash.OrchClient, orch_host: "api.dev.myhubs.net"
+config :dash, Dash.OrchClient, orch_host: ""
 
 config :dash, Dash.FeatureFlags,
   create_hubs: false,
