@@ -1,12 +1,14 @@
 import styles from './PageHeading.module.scss'
-type PageHeadingProps = {
+
+type PageHeadingPropsT = {
   title: string,
   classProp?: string
 }
+
 const PageHeading = ({
   title = 'Page Title',
   classProp = ''
-}: PageHeadingProps) => {
+}: PageHeadingPropsT) => {
   return (
     <div className={`${classProp} ${styles.header_wrapper}`}>
       <div className={styles.header_container}>
