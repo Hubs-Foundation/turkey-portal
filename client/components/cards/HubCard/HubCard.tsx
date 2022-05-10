@@ -21,7 +21,7 @@ type HubCardPropsT = {
 
 const HubCard = ({ name, tier, hubId, ccuLimit, status, storageLimitMb, subdomain, classProp = '' }: HubCardPropsT) => {
 
-	// TODO configure status states
+	// TODO configure status states..
 	const router = useRouter()
 	const handleSettingClick = () => {
 		router.push({
