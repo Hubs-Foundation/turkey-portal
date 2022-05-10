@@ -20,10 +20,9 @@ a {
 
 .page_wrapper {
   display: flex;
-  flex:1;
+  flex: 1;
   flex-direction: column;
   height: calc(100vh - 80px);
-	background-color: $light-grey;
+  background-color: $light-grey;
   overflow: scroll;
 }
-
