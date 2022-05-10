@@ -57,6 +57,7 @@ export default function Dashboard({ account }: DashboardPropsT) {
                   key={hub.hub_id}
                   name={hub.name}
                   tier={hub.tier}
+                  hubId={hub.hub_id}
                   ccuLimit={hub.ccu_limit}
                   status={hub.status}
                   storageLimitMb={hub.storage_limit_mb}

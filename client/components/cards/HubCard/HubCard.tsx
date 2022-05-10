@@ -11,6 +11,7 @@ import { ButtonCategoriesE } from '../../../types/Form'
 type HubCardPropsT = {
 	name: string,
 	tier: TierT,
+	hubId: string,
 	ccuLimit: number,
 	status: StatusT,
 	storageLimitMb: number,
@@ -18,12 +19,14 @@ type HubCardPropsT = {
 	classProp?: string
 }
 
-const HubCard = ({ name, tier, ccuLimit, status, storageLimitMb, subdomain, classProp = '' }: HubCardPropsT) => {
+const HubCard = ({ name, tier, hubId, ccuLimit, status, storageLimitMb, subdomain, classProp = '' }: HubCardPropsT) => {
 
 	const router = useRouter()
-
 	const handleSettingClick = () => {
-		router.push(`/hubs/${subdomain}`)
+		router.push({
+			pathname: '/hubs/[hub_id]',
+			query: { hub_id: hubId },
+		})
 	}
 
 	return (
