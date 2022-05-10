@@ -19,7 +19,7 @@ const Form = ({
   children,
   submit = () => { },
   initialValues,
-  classProp
+  classProp = ''
 }: FormPropsT) => {
 
   const [form, setForm] = useState(initialValues)

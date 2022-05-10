@@ -9,7 +9,7 @@ type MainNavPropsT = {
   classProp: string
 }
 
-const MainNav = ({ classProp }: MainNavPropsT) => {
+const MainNav = ({ classProp = '' }: MainNavPropsT) => {
 
   const account = useSelector(selectAccount)
 

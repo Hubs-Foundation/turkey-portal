@@ -25,7 +25,7 @@ const Button = ({
   disabled,
   icon,
   onClick,
-  classProp
+  classProp = ''
 }: ButtonProps) => {
 
   const [categoryClass, setCategoryClass] = useState(styles.button_primary)

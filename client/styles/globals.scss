@@ -6,6 +6,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: $primary-font;
+  font-size: 16px;
 }
 
 a {
@@ -18,5 +19,11 @@ a {
 }
 
 .page_wrapper {
-  padding: 20px;
+  display: flex;
+  flex:1;
+  flex-direction: column;
+	background-color: $light-grey;
+  height: calc(100vh - 80px);
+  overflow: scroll;
 }
+

@@ -1,0 +1,25 @@
+@import '../../../styles/boilerplate.scss';
+
+.header {
+  &_wrapper {
+    width: 100%;
+    height: 65px;
+    background: linear-gradient(to right, #095277, #321c64);
+    display: flex;
+    justify-content: center;
+    padding: 0 20px;
+  }
+
+  &_container {
+    max-width: 1440px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  &_title {
+    @include h2();
+    color: $white;
+    margin: 0;
+  }
+}

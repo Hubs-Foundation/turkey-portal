@@ -1,50 +1,87 @@
-import PropTypes from 'prop-types'
+import { useRouter } from 'next/router'
 import styles from './HubCard.module.scss'
 import Badge from '../../shared/Badge/Badge'
-import IconLink from '../../shared/IconLink/IconLink'
-
+import Button from '../../shared/Button/Button'
+import Icon from '../../shared/Icon/Icon'
+import ExternalLink from '../../shared/ExternalLink/ExternalLink'
+import IconButton from '../../shared/IconButton/IconButton'
+import { TierT, StatusT } from '../../../types/General'
+import { ButtonCategoriesE } from '../../../types/Form'
 
 type HubCardPropsT = {
-  name: string,
-  tier: string,
-  classProp?: string
+	name: string,
+	tier: TierT,
+	ccuLimit: number,
+	status: StatusT,
+	storageLimitMb: number,
+	subdomain: string,
+	classProp?: string
 }
 
-const HubCard = ({ name, tier, classProp }: HubCardPropsT) => {
-  return (
-    <div className={`${styles.card_wrapper} ${classProp}`}>
-      <div>
-        {/* CARD NAME TIER STATES  */}
-        <div className="flex-justify-between">
+const HubCard = ({ name, tier, ccuLimit, status, storageLimitMb, subdomain, classProp = '' }: HubCardPropsT) => {
 
-          {/* NAME / TIER  */}
-          <div className={styles.card_group}>
-            <div className={styles.card_name}>{name}</div>
-            <Badge
-              name={'Free'}
-            />
-          </div>
+	const router = useRouter()
 
-          {/* HUBS STATS */}
-          <div className={styles.card_stats}>
-            <div className={styles.card_stat}>4/5 CCU</div>
-            <div className={styles.card_stat}>73/100 MB</div>
-          </div>
-        </div>
+	const handleSettingClick = () => {
+		router.push(`/hubs/${subdomain}`)
+	}
 
-        <div className="flex-justify-between">
+	return (
+		<div className={`${styles.card_wrapper} ${classProp}`}>
+			{/* CARD NAME TIER STATES  */}
+			<div className="flex-justify-between">
 
-          {/* DOMAIN */}
-          <div className="flex">
-            <div className={styles.card_domain}>a2b60d57a6.myhubs.net</div>
-            <Badge type="secondary" name={'Creating'} />
-          </div>
+				{/* NAME / TIER  */}
+				<div className={styles.card_group}>
+					<div className="flex-align-center margin-bottom-10">
+						<Badge name={tier} />
+						<div className={styles.card_name}>{name}</div>
+					</div>
 
-          <IconLink to={`/`} icon="⚙️" />
-        </div>
-      </div>
-    </div>
-  )
+					<div className={styles.card_domain}>
+						<ExternalLink
+							icon="external-link"
+							target='_blank'
+							href={`${subdomain}.myhubs.net`}>
+							{subdomain}.myhubs.net
+						</ExternalLink>
+						<IconButton icon="copy" />
+					</div>
+				</div>
+
+				{/* HUBS STATS */}
+				<div className={styles.card_stats}>
+					<div className={`${styles.card_stat} margin-bottom-10`}>
+						<Icon name="users" color="currentColor" />
+						<span className="margin-left-5">4/{ccuLimit} CCU</span>
+					</div>
+					<div className={styles.card_stat}>
+						<Icon name="hard-drive" color="currentColor" />
+						<span className="margin-left-5">73/{storageLimitMb} MB</span>
+					</div>
+				</div>
+
+				{/* CARD ACTIONS  */}
+				<div className={styles.card_actions_wrapper}>
+					<Button
+						onClick={handleSettingClick}
+						classProp="margin-right-15"
+						text="Hub Settings"
+						category={ButtonCategoriesE.outline}
+					/>
+					<ExternalLink
+						target='_blank'
+						href={`https://${subdomain}.myhubs.net/admin`}>
+						<Button
+							text="Admin Panel"
+							category={ButtonCategoriesE.outline}
+						/>
+					</ExternalLink>
+				</div>
+
+			</div>
+		</div>
+	)
 }
 
 export default HubCard
