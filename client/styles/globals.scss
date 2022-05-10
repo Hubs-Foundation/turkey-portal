@@ -22,8 +22,8 @@ a {
   display: flex;
   flex:1;
   flex-direction: column;
-	background-color: $light-grey;
   height: calc(100vh - 80px);
+	background-color: $light-grey;
   overflow: scroll;
 }
 
