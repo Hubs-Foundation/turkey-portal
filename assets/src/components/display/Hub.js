@@ -40,7 +40,7 @@ export function Hub({
       </span>
       <span className="hub-stats">
         <IconDrive />
-        {formatMegabytes(storage_usage_mb)}/ {formatMegabytes(storage_limit_mb)}
+        {formatMegabytes(storage_usage_mb)} / {formatMegabytes(storage_limit_mb)}
       </span>
 
       <div className="hub-buttons">

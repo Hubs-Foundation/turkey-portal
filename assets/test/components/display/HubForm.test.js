@@ -4,7 +4,7 @@ import { render } from "../../helpers/setup";
 import { HubForm } from "../../../src/components/display/HubForm";
 
 test("Hub form free tier is disabled", async () => {
-  const hub = { tier: "premium", ccu_limit: 10, storage_limit_mb: 10 };
+  const hub = { tier: "mvp", ccu_limit: 10, storage_limit_mb: 10 };
 
   const { findByRole } = render(<HubForm hub={hub} />);
 
@@ -13,10 +13,10 @@ test("Hub form free tier is disabled", async () => {
 });
 
 test("Hub form mvp tier is enabled", async () => {
-  const hub = { tier: "premium", ccu_limit: 10, storage_limit_mb: 10 };
+  const hub = { tier: "mvp", ccu_limit: 10, storage_limit_mb: 10 };
 
   const { findByRole } = render(<HubForm hub={hub} />);
 
-  const freeTier = await findByRole("radio", { name: "mvp 30 2GB" });
+  const freeTier = await findByRole("radio", { name: "mvp 25 2GB" });
   expect(freeTier.disabled).toBe(false);
 });

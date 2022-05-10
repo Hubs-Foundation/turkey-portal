@@ -24,11 +24,11 @@ defmodule DashWeb.Api.V1.HubController do
     conn |> render("index.json", hubs: hubs)
   end
 
-  # Create free hub with defaults
+  # Create hub with defaults
   def create(conn, _, account) do
     fxa_email = conn.assigns[:fxa_account_info].fxa_email
 
-    case Hub.create_default_free_hub(account, fxa_email) do
+    case Hub.create_default_hub(account, fxa_email) do
       {:ok, new_hub} -> conn |> render("create.json", hub: new_hub)
       {:error, err} -> conn |> send_resp(400, Jason.encode!(%{error: err})) |> halt()
     end
