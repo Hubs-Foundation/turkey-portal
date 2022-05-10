@@ -18,7 +18,7 @@ defmodule Dash.Hub do
     field :status, Ecto.Enum, values: [:creating, :updating, :ready]
     field :storage_limit_mb, :integer
     field :subdomain, :string
-    field :tier, Ecto.Enum, values: [:free, :premium]
+    field :tier, Ecto.Enum, values: [:free, :mvp]
     belongs_to :account, Dash.Account, references: :account_id
 
     timestamps()
@@ -76,27 +76,27 @@ defmodule Dash.Hub do
 
   # Checks if account has at least one hub, if not, creates hub
   def ensure_default_hub(%Dash.Account{} = account, email) do
-    if !has_hubs(account), do: create_default_free_hub(account, email)
+    if !has_hubs(account), do: create_default_hub(account, email)
   end
 
-  @free_hub_defaults %{
-    tier: :free,
-    ccu_limit: 5,
-    storage_limit_mb: 100
+  @hub_defaults %{
+    tier: :mvp,
+    ccu_limit: 25,
+    storage_limit_mb: 2000
   }
 
-  def create_default_free_hub(%Dash.Account{} = account, fxa_email) do
+  def create_default_hub(%Dash.Account{} = account, fxa_email) do
     # TODO replace with request to orchestrator with email for a round trip to get this information.
-    free_subdomain_and_name = rand_string(10)
+    subdomain_and_name = rand_string(10)
 
     new_hub_params =
       %{
         instance_uuid: fake_uuid(),
-        name: free_subdomain_and_name,
-        subdomain: free_subdomain_and_name,
+        name: subdomain_and_name,
+        subdomain: subdomain_and_name,
         status: :creating
       }
-      |> Map.merge(@free_hub_defaults)
+      |> Map.merge(@hub_defaults)
 
     new_hub =
       %Dash.Hub{}
