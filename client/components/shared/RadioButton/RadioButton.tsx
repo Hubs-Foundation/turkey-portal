@@ -20,7 +20,7 @@ const RadioButton = ({
   id,
   groupName,
   onChange,
-  classProp
+  classProp = ''
 }: RadioButtonPropsT) => {
 
   return (

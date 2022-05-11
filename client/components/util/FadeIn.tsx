@@ -11,7 +11,7 @@ type FadeInPropsT = PropTypes.InferProps<typeof propTypes>
 
 export default function FadeIn(props: PropsWithChildren<FadeInPropsT>) {
   const [maxIsVisible, setMaxIsVisible] = useState(0)
-  const { isVisible, classProp, onComplete } = props
+  const { isVisible, classProp = '', onComplete } = props
   const arrayChildren = Children.toArray(props.children)
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function FadeIn(props: PropsWithChildren<FadeInPropsT>) {
   ])
 
   return (
-    <div className={classProp ? classProp : ''}>
+    <div className={`${classProp}`}>
       {Children.map(arrayChildren, (child, i) => {
         return (
           <div

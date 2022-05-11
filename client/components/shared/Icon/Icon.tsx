@@ -12,7 +12,7 @@ const Icon = ({
   name,
   color = '#000000',
   size = 20,
-  classProp
+  classProp = ''
 }: IconProps) => {
 
   return (

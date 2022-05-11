@@ -10,7 +10,7 @@ type DropdownProps = {
   alignment?: AlignmentT
 }
 
-const Dropdown = ({ cta, content, classProp, alignment }: DropdownProps) => {
+const Dropdown = ({ cta, content, classProp = '', alignment }: DropdownProps) => {
 
   const [isOpen, setIsOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(false)

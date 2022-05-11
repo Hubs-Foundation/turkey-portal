@@ -1,0 +1,12 @@
+@import '../../styles/boilerplate.scss';
+
+.main {
+  padding: 20px;
+	display: flex;
+	justify-content: center;
+}
+
+.cards_wrapper{
+	width: 100%;
+	max-width: 1440px;
+}
