@@ -43,6 +43,7 @@ const HubCard = ({ name, tier, hubId, ccuLimit, status, storageLimitMb, subdomai
           </div>
 
           <div className={styles.card_domain}>
+            {/* TODO: Replace the hardcoded ".myhubs.net" to an environment variable */}
             <ExternalLink
               icon="external-link"
               target='_blank'

@@ -38,7 +38,7 @@ export default function Dashboard({ account }: DashboardPropsT) {
 
       <Head>
         <title>Dashboard Page</title>
-        <meta name="description" content="general profle page" />
+        <meta name="description" content="general profile page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -54,13 +54,13 @@ export default function Dashboard({ account }: DashboardPropsT) {
             hubs.map((hub) => {
               return (
                 <HubCard
-                  key={hub.hub_id}
+                  key={hub.hubId}
                   name={hub.name}
                   tier={hub.tier}
-                  hubId={hub.hub_id}
-                  ccuLimit={hub.ccu_limit}
+                  hubId={hub.hubId}
+                  ccuLimit={hub.ccuLimit}
                   status={hub.status}
-                  storageLimitMb={hub.storage_limit_mb}
+                  storageLimitMb={hub.storageLimitMb}
                   subdomain={hub.subdomain}
                 />
               )

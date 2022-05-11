@@ -7,11 +7,11 @@ export type TierT = 'free' | 'premium'
 export type StatusT = 'creating' | 'updating' | 'ready'
 
 export type HubT = {
-  ccu_limit: number
-  hub_id: string
+  ccuLimit: number
+  hubId: string
   name: string
   status: StatusT
-  storage_limit_mb: number
+  storageLimitMb: number
   subdomain: string
   tier: TierT
 }
