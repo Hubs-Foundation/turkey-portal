@@ -4,8 +4,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 function addFakeProperties(hubs) {
   for (const hub of hubs) {
     if (!hub) continue;
-    hub.current_ccu = Math.floor(Math.random() * hub.ccu_limit);
-    hub.storage_usage_mb = Math.floor(Math.random() * hub.storage_limit_mb);
+    hub.currentCcu = Math.floor(Math.random() * hub.ccuLimit);
+    hub.storageUsageMb = Math.floor(Math.random() * hub.storageLimitMb);
   }
   return hubs;
 }
@@ -22,7 +22,7 @@ export const hubsApi = createApi({
     }),
 
     getHub: builder.query({
-      query: ({ hub_id }) => `hubs/${hub_id}`,
+      query: ({ hubId }) => `hubs/${hubId}`,
       transformResponse: (results) => {
         return addFakeProperties([results])[0];
       },
@@ -30,7 +30,7 @@ export const hubsApi = createApi({
 
     updateHub: builder.mutation({
       query: (hub) => ({
-        url: `hubs/${hub.hub_id}`,
+        url: `hubs/${hub.hubId}`,
         method: "PATCH",
         body: hub,
       }),

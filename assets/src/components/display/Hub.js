@@ -11,11 +11,11 @@ export function Hub({
   name,
   status,
   subdomain,
-  current_ccu,
-  ccu_limit,
-  storage_usage_mb,
-  storage_limit_mb,
-  hub_id,
+  currentCcu,
+  ccuLimit,
+  storageUsageMb,
+  storageLimitMb,
+  hubId,
 }) {
   return (
     <div className="hub">
@@ -36,15 +36,15 @@ export function Hub({
 
       <span className="hub-stats">
         <IconUsers />
-        {formatNumber(current_ccu)} / {formatNumber(ccu_limit)}
+        {formatNumber(currentCcu)} / {formatNumber(ccuLimit)}
       </span>
       <span className="hub-stats">
         <IconDrive />
-        {formatMegabytes(storage_usage_mb)} / {formatMegabytes(storage_limit_mb)}
+        {formatMegabytes(storageUsageMb)} / {formatMegabytes(storageLimitMb)}
       </span>
 
       <div className="hub-buttons">
-        <LinkButton to={`/hubs/${hub_id}`} text="Hub Settings" />
+        <LinkButton to={`/hubs/${hubId}`} text="Hub Settings" />
         {/* TODO change hardcoded value for domain*/}
         <LinkButton href={`https://${subdomain}.myhubs.net/admin`} text="Admin Panel" />
       </div>
@@ -55,11 +55,11 @@ export function Hub({
 Hub.propTypes = {
   name: PropTypes.string,
   tier: PropTypes.string,
-  current_ccu: PropTypes.number,
-  ccu_limit: PropTypes.number,
-  storage_usage_mb: PropTypes.number,
-  storage_limit_mb: PropTypes.number,
+  currentCcu: PropTypes.number,
+  ccuLimit: PropTypes.number,
+  storageUsageMb: PropTypes.number,
+  storageLimitMb: PropTypes.number,
   status: PropTypes.string,
   subdomain: PropTypes.string,
-  hub_id: PropTypes.string,
+  hubId: PropTypes.string,
 };

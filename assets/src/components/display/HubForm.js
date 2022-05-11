@@ -82,9 +82,9 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
         <span>Tier</span>
         <span className={`tag ${hub.tier}`}>{hub.tier}</span>
         <span>People</span>
-        <span>{hub.ccu_limit}</span>
+        <span>{hub.ccuLimit}</span>
         <span>Capacity</span>
-        <span>{formatMegabytes(hub.storage_limit_mb)}</span>
+        <span>{formatMegabytes(hub.storageLimitMb)}</span>
       </div>
     </div>
   );
