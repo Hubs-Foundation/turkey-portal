@@ -18,12 +18,12 @@ export function useHubs() {
   return { hubs, hasHubs, isLoading, isError, isReady };
 }
 
-export function useHub(hub_id) {
+export function useHub(hubId) {
   const dispatch = useDispatch();
-  const hubEntity = useSelector((state) => hubEntitySelectors.selectById(state, hub_id));
+  const hubEntity = useSelector((state) => hubEntitySelectors.selectById(state, hubId));
 
   const hasHubEntity = !!hubEntity;
-  const { data, isLoading, isError, isSuccess } = useGetHubQuery({ hub_id }, { skip: hasHubEntity });
+  const { data, isLoading, isError, isSuccess } = useGetHubQuery({ hubId }, { skip: hasHubEntity });
 
   if (!hasHubEntity && data) dispatch(setHubEntity(data));
 

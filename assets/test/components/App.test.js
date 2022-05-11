@@ -14,8 +14,8 @@ test("App renders prompt to log in", async () => {
 test("App renders hubs for a logged in user", async () => {
   mockFetch("/api/v1/account", { email: "testuser@example.com" });
   mockFetch("/api/v1/hubs", [
-    { hub_id: "1", name: "first hub" },
-    { hub_id: "2", name: "second hub" },
+    { hubId: "1", name: "first hub" },
+    { hubId: "2", name: "second hub" },
   ]);
 
   const { findByAltText, findByText } = render(<App />);

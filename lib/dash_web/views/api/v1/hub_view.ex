@@ -34,10 +34,10 @@ defmodule DashWeb.Api.V1.HubView do
 
   defp render_hub(hub) do
     %{
-      hub_id: hub.hub_id |> to_string,
+      hubId: hub.hub_id |> to_string,
       name: hub.name,
-      ccu_limit: hub.ccu_limit,
-      storage_limit_mb: hub.storage_limit_mb,
+      ccuLimit: hub.ccu_limit,
+      storageLimitMb: hub.storage_limit_mb,
       tier: hub.tier,
       subdomain: hub.subdomain,
       status: hub.status
