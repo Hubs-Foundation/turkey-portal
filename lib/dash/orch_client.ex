@@ -14,7 +14,7 @@ defmodule Dash.OrchClient do
 
     resp =
       HTTPoison.post(
-        "https://#{@orch_host}/hc_instance",
+        "http://#{@orch_host}/hc_instance",
         Jason.encode!(orch_hub_create_params)
       )
 
