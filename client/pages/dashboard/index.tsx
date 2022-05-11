@@ -4,10 +4,11 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import HubCard from '../../components/cards/HubCard/HubCard'
 import axios from 'axios'
-import { AccountT } from '../../types/General'
+import { AccountT, HubT } from '../../types/General'
 import { getCookie } from 'cookies-next'
 import styles from './dashboard.module.scss'
 import { setAccount } from '../../store/accountSlice'
+import PageHeading from '../../components/shared/PageHeading/PageHeading'
 
 type DashboardPropsT = {
   account: AccountT
@@ -15,8 +16,9 @@ type DashboardPropsT = {
 
 export default function Dashboard({ account }: DashboardPropsT) {
 
-  const [hubs, setHubs] = useState([])
   const dispatch = useDispatch()
+  const hubsInit: HubT[] = []
+  const [hubs, setHubs] = useState(hubsInit)
 
   useEffect(() => {
     // Add newly validated account to the store
@@ -24,18 +26,11 @@ export default function Dashboard({ account }: DashboardPropsT) {
   }, [account])
 
   useEffect(() => {
-
-  // TODO: figure out how we want to work through CORS here.
-  // this is workin progress...
-  const AUTH = getCookie('_turkeyauthtoken')
-  const apiServer = process.env.API_SERVER || "http://localhost:4000"
-  axios.get(`${apiServer}/api/v1/hubs`, { withCredentials: true })
-    .then((response) => {
-      console.log('response',response)
-      response.data
-  })
-
-
+    const apiServer = process.env.API_SERVER || "http://localhost:4000"
+    axios.get(`${apiServer}/api/v1/hubs`, { withCredentials: true })
+      .then((response) => {
+        setHubs(response.data)
+      })
   }, [])
 
   return (
@@ -43,18 +38,36 @@ export default function Dashboard({ account }: DashboardPropsT) {
 
       <Head>
         <title>Dashboard Page</title>
-        <meta name="description" content="general profle page" />
+        <meta name="description" content="general profile page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1>Dashboard {account.displayName}</h1>
-        <section>
-          <HubCard
-            name={'Test Hub'}
-            tier={'Free'}
-          />
-        </section>
+      <PageHeading
+        title="Dashboard"
+      />
+
+      <main className={styles.main}>
+
+        {/* Hub Cards  */}
+        <div className={styles.cards_wrapper}>
+          {hubs.length && (
+            hubs.map((hub) => {
+              return (
+                <HubCard
+                  key={hub.hubId}
+                  name={hub.name}
+                  tier={hub.tier}
+                  hubId={hub.hubId}
+                  ccuLimit={hub.ccuLimit}
+                  status={hub.status}
+                  storageLimitMb={hub.storageLimitMb}
+                  subdomain={hub.subdomain}
+                />
+              )
+            })
+          )}
+        </div>
+
       </main>
     </div>
   )
@@ -75,7 +88,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return { props: { account } }
 
   } catch (error) {
-    console.log('redirecting')
     return {
       redirect: {
         destination: '/login',

@@ -1,7 +1,7 @@
 import { createEntityAdapter, createSlice, createSelector } from "@reduxjs/toolkit";
 
 const hubEntityAdapter = createEntityAdapter({
-  selectId: (hubEntity) => hubEntity.hub_id,
+  selectId: (hubEntity) => hubEntity.hubId,
 });
 
 export const hubEntitiesSlice = createSlice({

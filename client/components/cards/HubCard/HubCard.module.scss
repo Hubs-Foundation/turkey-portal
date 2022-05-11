@@ -3,23 +3,35 @@
 .card {
   &_wrapper {
     width: 100%;
-    margin: 4px;
-    background: #eee;
+    max-width: 1440px;
     padding: 20px;
     border-radius: 8px;
+    box-shadow: $drop-shadow;
+    border-left: 20px solid $accent-grey;
   }
 
-  &_group {
+  &_stat {
+    @include font-size(14);
     display: flex;
     align-items: center;
+    color:$grey;
   }
 
   &_name {
+    @include font-size(16);
     font-weight: 700;
-    margin-right: 12px;
+    line-height: 18px;
+    color: $black;
+    margin-left: 10px;
   }
 
   &_domain {
-    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+  }
+
+  &_actions_wrapper {
+    display: flex;
+    align-items: center;
   }
 }

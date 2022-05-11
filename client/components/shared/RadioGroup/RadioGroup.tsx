@@ -10,7 +10,7 @@ type RadioGroupPropsT = {
 }
 
 // onChange
-const RadioGroup = ({ options = [], name, classProp }: RadioGroupPropsT) => {
+const RadioGroup = ({ options = [], name, classProp = '' }: RadioGroupPropsT) => {
   const formContext = useContext(FormContext)
   // Get data and methods from form context
   const { form, handleFormChange } = formContext

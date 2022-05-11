@@ -9,7 +9,7 @@ const propTypes = {
 
 type BadgePropsT = PropTypes.InferProps<typeof propTypes>
 
-const Badge = ({ name, type = 'primary', classProp }: BadgePropsT) => {
+const Badge = ({ name, type = 'primary', classProp = '' }: BadgePropsT) => {
   return (
     <div className={`${(type === 'primary') ? styles.badge_primary : styles.badge_secondary} ${classProp}`}>
       {name}

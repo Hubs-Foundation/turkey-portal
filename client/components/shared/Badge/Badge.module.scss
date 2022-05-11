@@ -2,13 +2,20 @@
 
 .badge {
   &_primary,&_secondary {
-    padding: 4px;
-    border-radius: 4px;
-    font-size: 12px;
+    @include font-size(16);
+    font-weight: 600;
+    line-height: 18px;
+    text-transform: capitalize;
+    letter-spacing: .5px;
+    padding: 2px 12px;
+    border-radius: 56px;
+    height: 28px;
+    display: flex;
+    align-items: center;
   }
 
   &_primary {
-    background-color: $teal;
+    background-color: $blue;
     color: $white;
   }
 
