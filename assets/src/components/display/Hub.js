@@ -6,17 +6,7 @@ import { LinkButton } from "../common/LinkButton";
 import { IconDrive, IconUsers } from "../common/icons";
 import { formatNumber, formatMegabytes } from "../utils/formatNumber";
 
-export function Hub({
-  tier,
-  name,
-  status,
-  subdomain,
-  currentCcu,
-  ccuLimit,
-  storageUsageMb,
-  storageLimitMb,
-  hubId,
-}) {
+export function Hub({ tier, name, status, subdomain, currentCcu, ccuLimit, storageUsageMb, storageLimitMb, hubId }) {
   return (
     <div className="hub">
       <div className="hub-info">
