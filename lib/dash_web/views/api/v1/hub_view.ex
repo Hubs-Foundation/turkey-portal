@@ -23,8 +23,8 @@ defmodule DashWeb.Api.V1.HubView do
 
   def render("hub_usage_stats.json", %{hub_usage_stats: %Dash.Hub.UsageStats{} = hub_usage_stats}) do
     %{
-      ccu: hub_usage_stats.ccu,
-      storageMb: hub_usage_stats.storage_mb
+      currentCcu: hub_usage_stats.current_ccu,
+      currentStorageMb: hub_usage_stats.current_storage_mb
     }
   end
 
@@ -40,7 +40,9 @@ defmodule DashWeb.Api.V1.HubView do
       storage_limit_mb: hub.storage_limit_mb,
       tier: hub.tier,
       subdomain: hub.subdomain,
-      status: hub.status
+      status: hub.status,
+      currentCcu: hub.ccu,
+      currentStorage: hub.storage
     }
   end
 end
