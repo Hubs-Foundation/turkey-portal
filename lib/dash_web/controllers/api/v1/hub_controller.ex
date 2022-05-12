@@ -15,14 +15,19 @@ defmodule DashWeb.Api.V1.HubController do
   end
 
   # All hubs for 1 account
-  def index(conn, %{}, account) do
+  # Accepts query param "usageStats" to include usageStats in get request
+  def index(conn, params, account) do
     # Check that this account has at least one hub
     Hub.ensure_default_hub(account, conn.assigns[:fxa_account_info].fxa_email)
 
-    hubs = Hub.get_hubs_for_account_with_usage_stats(account)
+    hubs = case params do
+      %{"usageStats" => _} -> Hub.hubs_for_account_with_usage_stats(account)
+      _ -> Hub.hubs_for_account(account)
+    end
 
     conn |> render("index.json", hubs: hubs)
   end
+
 
   # Create hub with defaults
   def create(conn, _, account) do

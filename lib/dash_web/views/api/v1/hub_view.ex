@@ -29,10 +29,16 @@ defmodule DashWeb.Api.V1.HubView do
   end
 
   defp render_deleted_hub(hub) do
-    %{success: true, deleted_hub: render_hub(hub)}
+    %{success: true, deletedHub: render_hub(hub)}
   end
 
   defp render_hub(hub) do
+    # Returns usage stats if hub argument
+    maybe_include_usage_stats = case hub do
+      %{current_ccu: ccu, current_storage_mb: storage} -> %{currentCcu: ccu, currentStorage: storage}
+      _ -> %{}
+    end
+
     %{
       hubId: hub.hub_id |> to_string,
       name: hub.name,
@@ -41,8 +47,7 @@ defmodule DashWeb.Api.V1.HubView do
       tier: hub.tier,
       subdomain: hub.subdomain,
       status: hub.status,
-      currentCcu: hub.ccu,
-      currentStorage: hub.storage
     }
+    |> Map.merge(maybe_include_usage_stats)
   end
 end

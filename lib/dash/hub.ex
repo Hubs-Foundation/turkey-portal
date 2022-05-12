@@ -64,14 +64,14 @@ defmodule Dash.Hub do
     ])
   end
 
-  defp hubs_for_account(%Dash.Account{} = account) do
+  def hubs_for_account(%Dash.Account{} = account) do
     from(h in Dash.Hub, where: h.account_id == ^account.account_id)
     |> Repo.all()
   end
 
-  def get_hubs_for_account_with_usage_stats(%Dash.Account{} = account) do
+  def hubs_for_account_with_usage_stats(%Dash.Account{} = account) do
     hubs = hubs_for_account(account)
-    Enum.map(hubs, fn h -> h ++ get_hub_usage_stats(h) end)
+    Enum.map(hubs, fn h -> Map.merge(h, get_hub_usage_stats(h)) end)
   end
 
   # Returns a boolean of whether the account has a hub
@@ -181,19 +181,20 @@ defmodule Dash.Hub do
 
   # Returns current CCU and Storage
   def get_hub_usage_stats(%Dash.Hub{} = hub) do
-    current_ccu =
-      case get_current_ccu(hub) do
-        {:ok, ccu} ->
-          ccu
+    # current_ccu =
+    #   case get_current_ccu(hub) do
+    #     {:ok, ccu} ->
+    #       ccu
 
-        {:error, error} ->
-          IO.inspect(["Error getting ccu", error])
-          nil
-      end
+    #     {:error, error} ->
+    #       IO.inspect(["Error getting ccu", error])
+    #       nil
+    #   end
 
-    current_storage_mb = get_current_storage_usage_mb(hub)
+    # current_storage_mb = get_current_storage_usage_mb(hub)
 
-    %UsageStats{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
+    # %UsageStats{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
+    %UsageStats{current_ccu: 10, current_storage_mb: 10}
   end
 
   @ret_host_prefix "hc-"
