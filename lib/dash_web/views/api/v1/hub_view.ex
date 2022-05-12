@@ -33,7 +33,7 @@ defmodule DashWeb.Api.V1.HubView do
   end
 
   defp render_hub(hub) do
-    # Returns usage stats if hub argument
+    # Returns usage stats if included in hubs keys
     maybe_include_usage_stats =
       case hub do
         %{current_ccu: ccu, current_storage_mb: storage} ->
