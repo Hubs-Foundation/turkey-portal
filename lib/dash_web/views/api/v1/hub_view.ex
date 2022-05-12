@@ -34,10 +34,14 @@ defmodule DashWeb.Api.V1.HubView do
 
   defp render_hub(hub) do
     # Returns usage stats if hub argument
-    maybe_include_usage_stats = case hub do
-      %{current_ccu: ccu, current_storage_mb: storage} -> %{currentCcu: ccu, currentStorage: storage}
-      _ -> %{}
-    end
+    maybe_include_usage_stats =
+      case hub do
+        %{current_ccu: ccu, current_storage_mb: storage} ->
+          %{currentCcu: ccu, currentStorage: storage}
+
+        _ ->
+          %{}
+      end
 
     %{
       hubId: hub.hub_id |> to_string,
@@ -46,7 +50,7 @@ defmodule DashWeb.Api.V1.HubView do
       storageLimitMb: hub.storage_limit_mb,
       tier: hub.tier,
       subdomain: hub.subdomain,
-      status: hub.status,
+      status: hub.status
     }
     |> Map.merge(maybe_include_usage_stats)
   end

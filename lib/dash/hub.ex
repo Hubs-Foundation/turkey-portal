@@ -181,20 +181,19 @@ defmodule Dash.Hub do
 
   # Returns current CCU and Storage
   def get_hub_usage_stats(%Dash.Hub{} = hub) do
-    # current_ccu =
-    #   case get_current_ccu(hub) do
-    #     {:ok, ccu} ->
-    #       ccu
+    current_ccu =
+      case get_current_ccu(hub) do
+        {:ok, ccu} ->
+          ccu
 
-    #     {:error, error} ->
-    #       IO.inspect(["Error getting ccu", error])
-    #       nil
-    #   end
+        {:error, error} ->
+          IO.inspect(["Error getting ccu", error])
+          nil
+      end
 
-    # current_storage_mb = get_current_storage_usage_mb(hub)
+    current_storage_mb = get_current_storage_usage_mb(hub)
 
-    # %UsageStats{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
-    %UsageStats{current_ccu: 10, current_storage_mb: 10}
+    %UsageStats{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
   end
 
   @ret_host_prefix "hc-"

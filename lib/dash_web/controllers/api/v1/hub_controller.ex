@@ -20,14 +20,14 @@ defmodule DashWeb.Api.V1.HubController do
     # Check that this account has at least one hub
     Hub.ensure_default_hub(account, conn.assigns[:fxa_account_info].fxa_email)
 
-    hubs = case params do
-      %{"usageStats" => _} -> Hub.hubs_for_account_with_usage_stats(account)
-      _ -> Hub.hubs_for_account(account)
-    end
+    hubs =
+      case params do
+        %{"usageStats" => _} -> Hub.hubs_for_account_with_usage_stats(account)
+        _ -> Hub.hubs_for_account(account)
+      end
 
     conn |> render("index.json", hubs: hubs)
   end
-
 
   # Create hub with defaults
   def create(conn, _, account) do
