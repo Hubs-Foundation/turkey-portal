@@ -19,7 +19,7 @@ defmodule DashWeb.Api.V1.HubController do
     # Check that this account has at least one hub
     Hub.ensure_default_hub(account, conn.assigns[:fxa_account_info].fxa_email)
 
-    hubs = Hub.hubs_for_account(account)
+    hubs = Hub.hubs_with_usage_stats_for_account(account)
 
     conn |> render("index.json", hubs: hubs)
   end
@@ -57,21 +57,5 @@ defmodule DashWeb.Api.V1.HubController do
     deleted_hub = Hub.delete_hub(hub_id, account)
 
     conn |> render("delete.json", deleted_hub: deleted_hub)
-  end
-
-  # Get the CCU and Storage of a specific hub
-  def show_hub_usage_stats(conn, %{"id" => hub_id}, account) do
-    case Hub.get_hub(hub_id, account) do
-      hub = %Hub{} ->
-        hub_usage_stats = Hub.get_hub_usage_stats(hub)
-
-        conn
-        |> render("hub_usage_stats.json", hub_usage_stats: hub_usage_stats)
-
-      nil ->
-        conn
-        |> send_resp(404, Jason.encode!(%{error: :not_found}))
-        |> halt()
-    end
   end
 end
