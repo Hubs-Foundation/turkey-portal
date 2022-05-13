@@ -180,7 +180,7 @@ defmodule Dash.Hub do
   defp validate_storage(%Dash.Hub{} = _hub_to_update, _), do: {:ok}
 
   # Returns current CCU and Storage
-  def get_hub_usage_stats(%Dash.Hub{} = hub) do
+  defp get_hub_usage_stats(%Dash.Hub{} = hub) do
     current_ccu =
       case get_current_ccu(hub) do
         {:ok, ccu} ->
