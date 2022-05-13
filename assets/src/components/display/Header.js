@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
-import { IconLogOut, IconExternal } from "../common/icons";
 import "./Header.css";
+import { IconLogOut, IconExternal } from "../common/icons";
+import logoBlack from "../../images/logo-black.svg";
 
 export function Header({ account }) {
   const [popoutOpen, setPopoutOpen] = useState(false);
@@ -17,7 +19,9 @@ export function Header({ account }) {
   return (
     <div className="header">
       <h1>
-        <a href="/">Turkey</a>
+        <Link to="/">
+          <img alt="Mozilla Hubs logo" src={logoBlack} />
+        </Link>
       </h1>
 
       {account && (

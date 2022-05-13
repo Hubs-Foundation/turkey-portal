@@ -3,6 +3,7 @@ import React from "react";
 import "./Landing.css";
 import { LinkButton } from "../common/LinkButton";
 import { Avatar } from "../common/Avatar";
+import logoWhite from "../../images/logo-white.svg";
 
 export function Landing() {
   const client = location.origin + location.pathname.replace(/\/$/, "");
@@ -12,7 +13,7 @@ export function Landing() {
       <Avatar />
       <div className="landing">
         <div>
-          <h1>Turkey</h1>
+          <img alt="Mozilla Hubs logo" className="logo" src={logoWhite} />
           <p className="hero">Sign in with a Firefox account to get started</p>
           <div className="sign-in-mobile">
             <LinkButton className="primary" href={loginUrl} text="Sign In" />

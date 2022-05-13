@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { useRouter } from 'next/router'
 import styles from './HubCard.module.scss'
 import Badge from '../../shared/Badge/Badge'
@@ -23,12 +24,12 @@ const HubCard = ({ name, tier, hubId, ccuLimit, status, storageLimitMb, subdomai
 
   // TODO configure status states
   const router = useRouter()
-  const handleSettingClick = () => {
+  const handleSettingClick = useCallback(() => {
     router.push({
       pathname: '/hubs/[hub_id]',
       query: { hub_id: hubId },
     })
-  }
+  },[hubId])
 
   return (
     <div className={`${styles.card_wrapper} ${classProp}`}>

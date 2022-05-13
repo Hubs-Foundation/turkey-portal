@@ -6,8 +6,8 @@ import { Spinner } from "../common/Spinner";
 import { HubForm } from "../display/HubForm";
 
 export function HubContainer() {
-  const { hub_id } = useParams();
-  const { currentHub, setCurrentHub, updateHub, isLoading, isError, isReady, isSubmitting } = useHub(hub_id);
+  const { hubId } = useParams();
+  const { currentHub, setCurrentHub, updateHub, isLoading, isError, isReady, isSubmitting } = useHub(hubId);
 
   return (
     <>

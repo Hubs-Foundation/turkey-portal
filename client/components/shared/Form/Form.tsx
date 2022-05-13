@@ -1,4 +1,7 @@
 import React, { useState, ChangeEventHandler, ChangeEvent, ReactNode } from 'react'
+import Button from '../Button/Button'
+import { ButtonCategoriesE } from '../../../types/Form'
+import styles from './Form.module.scss'
 
 const initialForm: { [char: string]: string } = {}
 const initialFormHandler: ChangeEventHandler<HTMLInputElement> = (event: ChangeEvent) => { }
@@ -11,6 +14,7 @@ export const FormContext = React.createContext({
 type FormPropsT = {
   children: ReactNode,
   submit: Function,
+  cancelClick?: Function,
   initialValues: { [key: string]: string },
   classProp?: string
 }
@@ -18,6 +22,7 @@ type FormPropsT = {
 const Form = ({
   children,
   submit = () => { },
+  cancelClick,
   initialValues,
   classProp = ''
 }: FormPropsT) => {
@@ -30,6 +35,10 @@ const Form = ({
     setForm((formState: any) => { return { ...formState, [name]: value } })
   }
 
+  const handleCancelClick = () => {
+    cancelClick && cancelClick()
+  }
+
   return (
     <form className={classProp} >
       <FormContext.Provider value={{
@@ -39,9 +48,23 @@ const Form = ({
         {children}
       </FormContext.Provider>
 
-      <button type="button" onClick={() => submit(form)}>
-        Submit
-      </button>
+      <div className={styles.actions_wrapper}>
+        {
+          cancelClick && (
+            <Button 
+              onClick={handleCancelClick}
+              category={ButtonCategoriesE.outline}
+              text="Back"
+            />
+          )
+        }
+        
+        <Button 
+          onClick={() => submit(form)}
+          category={ButtonCategoriesE.primary}
+          text="Submit"
+        />
+      </div>
     </form>
   )
 }

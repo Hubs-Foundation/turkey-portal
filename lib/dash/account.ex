@@ -31,7 +31,6 @@ defmodule Dash.Account do
 
       nil ->
         create_account_for_fxa_uid(fxa_uid)
-        # TODO send createHub request to orchestrator, get the email from the cookie
     end
   end
 

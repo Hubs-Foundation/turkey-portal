@@ -28,10 +28,13 @@ if config_env() == :prod do
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
     socket_options: maybe_ipv6
 
-  # Host for the Orchestrator
-  config :dash, Dash.OrchClient, orch_host: System.get_env("ORCH_HOST")
   # For sending requests to deployed hub reticulum nodes
   config :dash, Dash.Hubs, dashboard_ret_access_key: System.get_env("DASHBOARD_ACCESS_KEY")
+
+  # Credentials for site-wide basic auth
+  config :dash, DashWeb.Plugs.BasicAuth,
+    username: System.get_env("BASIC_AUTH_USERNAME"),
+    password: System.get_env("BASIC_AUTH_PASSWORD")
 
   # A comma-separated list of origins to allow CORS requests
   config :cors_plug, origin: (System.get_env("CORS_ORIGINS") || "") |> String.split(",")

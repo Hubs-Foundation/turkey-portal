@@ -5,7 +5,7 @@ defmodule Dash.OrchClient do
     orch_hub_create_params = %{
       useremail: fxa_email,
       # TODO Maybe the Orchestrator should generate this and send it back to us instead.
-      hub_id: hub.instance_uuid,
+      hub_id: hub.subdomain,
       subdomain: hub.subdomain,
       tier: hub.tier,
       ccu_limit: hub.ccu_limit |> to_string(),
@@ -14,7 +14,7 @@ defmodule Dash.OrchClient do
 
     resp =
       HTTPoison.post(
-        "https://#{@orch_host}/hc_instance",
+        "http://#{@orch_host}/hc_instance",
         Jason.encode!(orch_hub_create_params)
       )
 

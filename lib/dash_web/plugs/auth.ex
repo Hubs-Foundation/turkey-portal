@@ -43,7 +43,6 @@ defmodule DashWeb.Plugs.Auth do
     # TODO check expiration?
 
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-    # free hub create as well
 
     conn
     |> assign(:account, account)

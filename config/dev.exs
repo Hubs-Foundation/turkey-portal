@@ -53,7 +53,13 @@ config :dash, DashWeb.Endpoint,
 
 config :dash, DashWeb.Plugs.Auth, auth_pub_key: auth_pub_key
 
-config :dash, Dash.OrchClient, orch_host: "api.dev.myhubs.net"
+config :dash, DashWeb.Plugs.BasicAuth,
+  # Disable BasicAuth by default in local dev, since it's a bit annoying.
+  enabled: false,
+  username: "local",
+  password: "pass"
+
+config :dash, Dash.OrchClient, orch_host: ""
 
 config :dash, Dash.FeatureFlags,
   create_hubs: false,

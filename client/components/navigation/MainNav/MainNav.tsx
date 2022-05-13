@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import styles from './MainNav.module.scss'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -5,6 +6,8 @@ import { selectAccount } from '../../../store/accountSlice'
 import { useSelector } from 'react-redux'
 import Dropdown from '../../shared/Dropdown/Dropdown'
 import ExternalLink from '../../shared/ExternalLink/ExternalLink'
+import InternalLink from '../../shared/InternalLink/InternalLink'
+import { dropdownT } from '../../../types/General'
 
 type MainNavPropsT = {
   classProp: string
@@ -13,43 +16,56 @@ type MainNavPropsT = {
 const MainNav = ({ classProp = '' }: MainNavPropsT) => {
 
   const account = useSelector(selectAccount)
+  const dropdownRef = useRef<dropdownT>(null)
 
-  const old = (
-    <div className="account-popout">
-      <div className="account-details">
-        <Image alt="profile picture" width="30" height="30" src={account.profilePic} />
-        <span className="account-email">local-user@turkey.local</span>
-        <a className="account-manage" href="https://accounts.stage.mozaws.net/settings" target="_blank" rel="noreferrer">Manage your Firefox Account
-          {/* <img className="icon" src="/assets/external-RGDL6E4I.svg"> */}
-        </a>
-      </div>
-      <hr />
-      <div>
-        {/* <img className="icon" src="/assets/log-out-ONPRGT7M.svg"> */}
-        <a href="/logout">Sign Out</a>
-      </div>
-    </div>
-  )
-
+  /**
+   * Dropdown Content 
+   */
   const DropdownContent = (
-    <div className="padding-5">
-      <div className={styles.account_details_wrapper}>
-        <Image alt="profile picture" width="30" height="30" src={account.profilePic} />
+    <>
+      {/* Go To Firefox Account  */}
+      <div className={`padding-10 ${styles.account_details_wrapper}`}>
+        <Image 
+          alt="profile picture" 
+          width="30" 
+          height="30"
+          src={account.profilePic} 
+        />
         <div className={styles.account_details}>
           <div className={styles.account_details_title}> {account.email}</div>
           <ExternalLink
             classProp={styles.account_manage_link}
             icon="external-link"
             target='_blank'
-            href={'#'}>
+            href={'#'}
+            onClick={()=>{
+              dropdownRef.current?.closeDropdown()
+            }}>
             Manage your Firefox Account
           </ExternalLink>
         </div>
       </div>
-    </div>
+
+      <hr className='dropdown-hr' />
+
+      {/* Sign Out  */}
+      <div className={`padding-10 ${styles.account_details_wrapper}`}>
+        <InternalLink
+          href="/login"
+          icon='log-out'
+          onClick={()=>{
+            dropdownRef.current?.closeDropdown()
+          }}
+        >Sign Out
+        </InternalLink>
+      </div>
+    </>
   )
 
 
+  /**
+   * Main Nav JSX
+   */
   return (
     <div className={`${styles.main_nav_wrapper} ${classProp}`}>
       <div className={styles.main_nav_container}>
@@ -68,6 +84,7 @@ const MainNav = ({ classProp = '' }: MainNavPropsT) => {
 
         {/* Account information  */}
         <Dropdown
+          ref={dropdownRef}
           alignment='right'
           cta={(
             <div className={styles.main_nav_account}>

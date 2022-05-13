@@ -9,6 +9,17 @@ export type RadioGroupOptionT = {
   groupName: string
 }
 
+export type HubGroupOptionT = {
+  value: number | string
+  users: number
+  size: string
+  labelType: 'primary' | 'secondary'
+  id: string
+  label: string
+  groupName: string
+}
+
+
 export type InputT = 'text' | 'password' | 'email' | 'number' | 'tel'
 
 export type ButtonT = 'button' | 'submit' | 'reset'

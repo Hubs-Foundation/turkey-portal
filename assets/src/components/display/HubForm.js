@@ -14,7 +14,7 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
 
   const tierChoices = [
     { tier: "free", disabled: true, ccuLimit: 5, storageLimitMb: 250 },
-    { tier: "mvp", disabled: false, ccuLimit: 30, storageLimitMb: 2000 },
+    { tier: "mvp", disabled: false, ccuLimit: 25, storageLimitMb: 2000 },
   ];
 
   return (
@@ -82,9 +82,9 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
         <span>Tier</span>
         <span className={`tag ${hub.tier}`}>{hub.tier}</span>
         <span>People</span>
-        <span>{hub.ccu_limit}</span>
+        <span>{hub.ccuLimit}</span>
         <span>Capacity</span>
-        <span>{formatMegabytes(hub.storage_limit_mb)}</span>
+        <span>{formatMegabytes(hub.storageLimitMb)}</span>
       </div>
     </div>
   );

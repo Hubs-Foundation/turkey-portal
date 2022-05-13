@@ -4,6 +4,11 @@ defmodule Dash.Hub do
   import Ecto.Changeset
   alias Dash.Repo
 
+  defmodule UsageStats do
+    defstruct [:ccu, :storage_mb]
+  end
+
+  @ret_access_key Application.get_env(:dash, Dash.Hub)[:dashboard_ret_access_key]
   @primary_key {:hub_id, :id, autogenerate: true}
 
   schema "hubs" do
@@ -13,7 +18,7 @@ defmodule Dash.Hub do
     field :status, Ecto.Enum, values: [:creating, :updating, :ready]
     field :storage_limit_mb, :integer
     field :subdomain, :string
-    field :tier, Ecto.Enum, values: [:free, :premium]
+    field :tier, Ecto.Enum, values: [:free, :mvp]
     belongs_to :account, Dash.Account, references: :account_id
 
     timestamps()
@@ -64,24 +69,34 @@ defmodule Dash.Hub do
     |> Repo.all()
   end
 
-  @free_hub_defaults %{
-    tier: :free,
-    ccu_limit: 5,
-    storage_limit_mb: 100
+  # Returns a boolean of whether the account has a hub
+  def has_hubs(%Dash.Account{} = account) do
+    Repo.exists?(from(h in Dash.Hub, where: h.account_id == ^account.account_id))
+  end
+
+  # Checks if account has at least one hub, if not, creates hub
+  def ensure_default_hub(%Dash.Account{} = account, email) do
+    if !has_hubs(account), do: create_default_hub(account, email)
+  end
+
+  @hub_defaults %{
+    tier: :mvp,
+    ccu_limit: 25,
+    storage_limit_mb: 2000
   }
 
-  def create_default_free_hub(%Dash.Account{} = account, fxa_email) do
+  def create_default_hub(%Dash.Account{} = account, fxa_email) do
     # TODO replace with request to orchestrator with email for a round trip to get this information.
-    free_subdomain_and_name = rand_string(10)
+    subdomain_and_name = rand_string(10)
 
     new_hub_params =
       %{
         instance_uuid: fake_uuid(),
-        name: free_subdomain_and_name,
-        subdomain: free_subdomain_and_name,
+        name: subdomain_and_name,
+        subdomain: subdomain_and_name,
         status: :creating
       }
-      |> Map.merge(@free_hub_defaults)
+      |> Map.merge(@hub_defaults)
 
     new_hub =
       %Dash.Hub{}
@@ -159,8 +174,56 @@ defmodule Dash.Hub do
   # If not updating storage
   defp validate_storage(%Dash.Hub{} = _hub_to_update, _), do: {:ok}
 
-  defp get_current_storage_usage_mb(_instance_uid) do
-    # TODO ask orchestrator for current storage useage
+  # Returns current CCU and Storage
+  def get_hub_usage_stats(%Dash.Hub{} = hub) do
+    current_ccu =
+      case get_current_ccu(hub) do
+        {:ok, ccu} ->
+          ccu
+
+        {:error, error} ->
+          IO.inspect(["Error getting ccu", error])
+          nil
+      end
+
+    current_storage = get_current_storage_usage_mb(hub)
+
+    %UsageStats{ccu: current_ccu, storage_mb: current_storage}
+  end
+
+  @ret_host_prefix "hc-"
+  @ret_internal_port "4000"
+  defp get_hub_internal_host_url(%Dash.Hub{} = hub) do
+    # TODO when we fix the hub_uid bug with orchestrator update hub.subdomain to the fix
+    "http://#{@ret_host_prefix}#{hub.subdomain}:#{@ret_internal_port}"
+  end
+
+  @ccu_endpoint "/api-internal/v1/presence"
+  defp get_current_ccu(%Dash.Hub{} = hub) do
+    case HTTPoison.get(
+           get_hub_internal_host_url(hub) <> @ccu_endpoint,
+           "x-ret-dashboard-access-key": @ret_access_key,
+           hackney: [:insecure]
+         ) do
+      # Reticulum returned the ccu correctly
+      {:ok, %{status_code: 200, body: body}} ->
+        %{"count" => count} = Poison.Parser.parse!(body)
+        {:ok, count}
+
+      # Reticulum completed the request but did not return the ccu
+      {:ok, %{status_code: _} = response} ->
+        IO.inspect(response)
+        {:error, :no_ccu_returned}
+
+      # An error occurred
+      {:error, reason} ->
+        IO.inspect(reason)
+        {:error, reason}
+    end
+  end
+
+  defp get_current_storage_usage_mb(_hub) do
+    # TODO ask orchestrator for current storage usage
     50
   end
 end

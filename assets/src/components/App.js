@@ -31,7 +31,7 @@ export function App() {
           content={
             <Routes>
               <Route path="/" element={<HomeContainer />} />
-              <Route path="/hubs/:hub_id" element={<HubContainer />} />
+              <Route path="/hubs/:hubId" element={<HubContainer />} />
             </Routes>
           }
         />
