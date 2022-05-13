@@ -5,7 +5,7 @@ defmodule Dash.Hub do
   alias Dash.Repo
 
   defmodule UsageStats do
-    defstruct [:ccu, :storage_mb]
+    defstruct [:current_ccu, :current_storage_mb]
   end
 
   @ret_access_key Application.get_env(:dash, Dash.Hub)[:dashboard_ret_access_key]
@@ -64,9 +64,14 @@ defmodule Dash.Hub do
     ])
   end
 
-  def hubs_for_account(%Dash.Account{} = account) do
+  defp hubs_for_account(%Dash.Account{} = account) do
     from(h in Dash.Hub, where: h.account_id == ^account.account_id)
     |> Repo.all()
+  end
+
+  def hubs_with_usage_stats_for_account(%Dash.Account{} = account) do
+    hubs = hubs_for_account(account)
+    Enum.map(hubs, fn h -> Map.merge(h, get_hub_usage_stats(h)) end)
   end
 
   # Returns a boolean of whether the account has a hub
@@ -175,7 +180,7 @@ defmodule Dash.Hub do
   defp validate_storage(%Dash.Hub{} = _hub_to_update, _), do: {:ok}
 
   # Returns current CCU and Storage
-  def get_hub_usage_stats(%Dash.Hub{} = hub) do
+  defp get_hub_usage_stats(%Dash.Hub{} = hub) do
     current_ccu =
       case get_current_ccu(hub) do
         {:ok, ccu} ->
@@ -186,9 +191,9 @@ defmodule Dash.Hub do
           nil
       end
 
-    current_storage = get_current_storage_usage_mb(hub)
+    current_storage_mb = get_current_storage_usage_mb(hub)
 
-    %UsageStats{ccu: current_ccu, storage_mb: current_storage}
+    %UsageStats{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
   end
 
   @ret_host_prefix "hc-"
