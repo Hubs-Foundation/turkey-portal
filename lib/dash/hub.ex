@@ -64,12 +64,12 @@ defmodule Dash.Hub do
     ])
   end
 
-  def hubs_for_account(%Dash.Account{} = account) do
+  defp hubs_for_account(%Dash.Account{} = account) do
     from(h in Dash.Hub, where: h.account_id == ^account.account_id)
     |> Repo.all()
   end
 
-  def hubs_for_account_with_usage_stats(%Dash.Account{} = account) do
+  def hubs_with_usage_stats_for_account(%Dash.Account{} = account) do
     hubs = hubs_for_account(account)
     Enum.map(hubs, fn h -> Map.merge(h, get_hub_usage_stats(h)) end)
   end
