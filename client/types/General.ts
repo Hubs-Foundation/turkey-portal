@@ -5,7 +5,7 @@
 
 export type TierT = 'free' | 'premium'
 export type StatusT = 'creating' | 'updating' | 'ready'
-export type PrimitiveT = 'number' | 'string' | 'boolean' | 'bigint' | 'symbol' | 'undefined' | 'null'
+export type PrimitiveT = number | string | boolean | bigint | symbol | undefined | null
 
 export type HubT = {
   ccuLimit: number
