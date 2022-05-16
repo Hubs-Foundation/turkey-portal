@@ -104,7 +104,7 @@ const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, stat
         </div>
 
       </div>
-    </div >
+    </div>
   )
 }
 

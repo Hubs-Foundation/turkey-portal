@@ -9,7 +9,6 @@ type HubOptionGroupPropsT = {
   classProp?: string
 }
 
-// onChange
 const HubOptionGroup = ({ options = [], name, classProp = '' }: HubOptionGroupPropsT) => {
   const formContext = useContext(FormContext)
   // Get data and methods from form context
