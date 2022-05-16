@@ -1,6 +1,8 @@
 defmodule Dash.ApprovedEmail do
   use Ecto.Schema
-  import Ecto.Changeset
+  import Ecto.{Changeset, Query}
+
+  alias Dash.{ApprovedEmail, Repo}
 
   schema "approved_emails" do
     field :email_hash, :string
@@ -24,14 +26,40 @@ defmodule Dash.ApprovedEmail do
     }
 
     new_approved_email =
-      %Dash.ApprovedEmail{}
-      |> Dash.ApprovedEmail.changeset(new_approved_email_params)
-      |> Dash.Repo.insert!()
+      %ApprovedEmail{}
+      |> ApprovedEmail.changeset(new_approved_email_params)
+      |> Repo.insert!()
 
     case new_approved_email do
-      %Dash.ApprovedEmail{} = new_approved_email -> IO.puts("Added #{email}")
+      %ApprovedEmail{} = _new_approved_email -> IO.puts("Added #{email}")
       _ -> IO.puts("ERROR: could not add #{email}")
     end
+  end
+
+  def delete(list_of_emails) when is_list(list_of_emails),
+    do: Enum.each(list_of_emails, &delete/1)
+
+  def delete(email) when is_binary(email) do
+    hashed_email_to_delete = hash_email(email)
+
+    email_to_delete =
+      ApprovedEmail
+      |> Repo.get_by(from e in ApprovedEmail, where: e.email_hash == ^hashed_email_to_delete)
+
+    case email_to_delete do
+      %ApprovedEmail{} ->
+        Repo.delete!(email_to_delete)
+        IO.puts("deleted email: #{email}")
+
+      nil ->
+        nil
+        IO.puts("ERROR: couldn't find email to delete: #{email}")
+    end
+  end
+
+  def has_email(email) when is_binary(email) do
+    hashed_email = hash_email(email)
+    Repo.exists?(from e in ApprovedEmail, where: e.email_hash == ^hashed_email)
   end
 
   def hash_email(email) do
