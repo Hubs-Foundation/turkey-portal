@@ -1,9 +1,10 @@
 import React, { useState, ChangeEventHandler, ChangeEvent, ReactNode } from 'react'
 import Button from '../Button/Button'
 import { ButtonCategoriesE } from '../../../types/Form'
+import { PrimitiveT } from '../../../types/General'
 import styles from './Form.module.scss'
 
-const initialForm: { [char: string]: string } = {}
+const initialForm: { [key: string]: PrimitiveT } = {}
 const initialFormHandler: ChangeEventHandler<HTMLInputElement> = (event: ChangeEvent) => { }
 
 export const FormContext = React.createContext({
@@ -15,7 +16,7 @@ type FormPropsT = {
   children: ReactNode,
   submit: Function,
   cancelClick?: Function,
-  initialValues: { [key: string]: string },
+  initialValues: { [key: string]: PrimitiveT },
   classProp?: string
 }
 

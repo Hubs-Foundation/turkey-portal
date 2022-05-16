@@ -87,4 +87,5 @@ const Dropdown = forwardRef(({ cta, content, classProp = '', alignment }: Dropdo
   )
 })
 
+Dropdown.displayName = 'Dropdown'
 export default Dropdown

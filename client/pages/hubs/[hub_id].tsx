@@ -34,7 +34,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
   const initialValues = {
     name: '',
     address: addressPreview,
-    tier: 'free'
+    tier: 'free',
   }
 
   const radioFormOptions: HubGroupOptionT[] = [
