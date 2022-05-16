@@ -13,10 +13,10 @@ type HubDetailsViewPropsT = {}
 
 const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
   const router = useRouter()
-  const [addressPreview, setAddressPreview] = useState('12345')
+  const [addressPreview, setAddressPreview] = useState('mockurl')
 
   const handleFormSubmit = (data: any) => {
-    console.log('data', data)
+    // TODO : submit form to DB
   }
 
   const handleCancelClick = () => {
@@ -26,17 +26,18 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
   }
 
   const handleAddresschange = useCallback((address:string) => {
-    console.log('address:',address)
     setAddressPreview(address)
     },[],
   )
 
+  // Mock Data 
   const initialValues = {
     name: '',
     address: addressPreview,
     tier: 'free',
   }
 
+  // Mock Data 
   const radioFormOptions: HubGroupOptionT[] = [
     {
       label: 'Free',
@@ -89,7 +90,6 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
                 />
 
                 <div className={styles.address_wrapper}>
-
                   <Input
                     onChange={handleAddresschange}
                     classProp='margin-bottom-10'
@@ -97,19 +97,14 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
                     name="address"
                     info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
                   />
-
-                  {/* TODO: Replace the hardcoded ".myhubs.net" to an environment variable */}
-                  <div className={styles.address_preview}><b>{addressPreview}</b>.myhubs.net</div>
-
+                  <div className={styles.address_preview}><b>{addressPreview}</b>.{process.env.NEXT_PUBLIC_HUB_URL}</div>
                 </div>
-
               </>
             </Form>
 
           </div>
           <div className={styles.summary_wrapper}>
             <h3 className={styles.summary_title}>Summary</h3>
-
             <ul className={styles.summary_attributes}>
               <li>Tier: <Badge name='MVP' type='secondary'/></li>
               <li>People: 25</li>

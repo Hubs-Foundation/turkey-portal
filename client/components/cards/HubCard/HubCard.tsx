@@ -33,6 +33,31 @@ const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, stat
     })
   }, [hubId, router])
 
+  /**
+   * Hub Loading State
+   */
+  const LoadingHub = (
+    <div className='flex-align-center'>
+      <Spinner size={18} />
+      <span className='u-font-14 margin-left-10'><span className='u-capitalize'>{status}</span> your hub...</span>
+    </div>
+  )
+
+  /**
+   * Hub External Link
+   */
+  const HubLink = (
+    <div className={styles.card_domain}>
+      <ExternalLink
+        icon="external-link"
+        target='_blank'
+        href={`${subdomain}.${process.env.NEXT_PUBLIC_HUB_URL}`}>
+        {subdomain}.{process.env.NEXT_PUBLIC_HUB_URL}
+      </ExternalLink>
+      <IconButton icon="copy" />
+    </div>
+  )
+
   return (
     <div className={`${styles.card_wrapper} ${classProp}`}>
       {/* CARD NAME TIER STATES  */}
@@ -45,26 +70,7 @@ const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, stat
             <div className={styles.card_name}>{name}</div>
           </div>
 
-          {/* TODO: Replace the hardcoded ".myhubs.net" to an environment variable */}
-          {
-            status !== 'ready' ? (
-              <div className='flex-align-center'>
-                <Spinner size={18} />
-                <span className='u-font-14 margin-left-10'><span className='u-capitalize'>{status}</span> your hub...</span>
-              </div>
-            ) : (
-              <div className={styles.card_domain}>
-                <ExternalLink
-                  icon="external-link"
-                  target='_blank'
-                  href={`${subdomain}.myhubs.net`}>
-                  {subdomain}.myhubs.net
-                </ExternalLink>
-                <IconButton icon="copy" />
-              </div>
-            )
-          }
-
+          {status !== 'ready' ? LoadingHub : HubLink}
         </div>
 
         {/* HUBS STATS */}
@@ -89,7 +95,7 @@ const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, stat
           />
           <ExternalLink
             target='_blank'
-            href={`https://${subdomain}.myhubs.net/admin`}>
+            href={`https://${subdomain}.${process.env.NEXT_PUBLIC_HUB_URL}/admin`}>
             <Button
               text="Admin Panel"
               category={ButtonCategoriesE.outline}
@@ -98,7 +104,7 @@ const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, stat
         </div>
 
       </div>
-    </div>
+    </div >
   )
 }
 

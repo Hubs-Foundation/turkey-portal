@@ -4,6 +4,9 @@ const nextConfig = {
   images: {
     domains: ['localhost'],// TODO Add other servers
   },
+  env: {
+    NEXT_PUBLIC_HUB_URL: "myhubs.net"
+  }
 }
 
 module.exports = nextConfig
