@@ -205,6 +205,7 @@ defmodule Dash.Hub do
 
   @ret_internal_scope "/api-internal/v1/"
   defp fetch_hub_internal_endpoint(%Dash.Hub{} = hub, endpoint) do
+    # Make the http client module configurable so that we can mock it out in tests.
     http_client = Application.get_env(:dash, Dash.Hub)[:http_client] || HTTPoison
 
     http_client.get(
@@ -242,9 +243,11 @@ defmodule Dash.Hub do
         {:ok, storage_mb}
 
       {:ok, _} ->
+        # TODO Log and error here when we introduce Logger
         {:error, :no_storage_returned}
 
       {:error, reason} ->
+        # TODO Log and error here when we introduce Logger
         {:error, reason}
     end
   end
