@@ -20,6 +20,8 @@ config :dash, DashWeb.Endpoint,
   secret_key_base: "+Zm3JIfo2DSCREfgIyagAsR48QVEh/l6LR+jDuNaLqVDByGe7U5GTdNHZ0lOWHsw",
   server: false
 
+config :dash, DashWeb.Plugs.BasicAuth, enabled: false
+
 # In test we don't send emails.
 config :dash, Dash.Mailer, adapter: Swoosh.Adapters.Test
 
