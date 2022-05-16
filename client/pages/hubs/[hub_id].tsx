@@ -97,7 +97,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
                     name="address"
                     info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
                   />
-                  <div className={styles.address_preview}><b>{addressPreview}</b>.{process.env.NEXT_PUBLIC_HUB_URL}</div>
+                  <div className={styles.address_preview}><b>{addressPreview}</b>.{process.env.HUB_URL_ROOT}</div>
                 </div>
               </>
             </Form>

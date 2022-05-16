@@ -51,8 +51,8 @@ const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, stat
       <ExternalLink
         icon="external-link"
         target='_blank'
-        href={`${subdomain}.${process.env.NEXT_PUBLIC_HUB_URL}`}>
-        {subdomain}.{process.env.NEXT_PUBLIC_HUB_URL}
+        href={`${subdomain}.${process.env.HUB_URL_ROOT}`}>
+        {subdomain}.{process.env.HUB_URL_ROOT}
       </ExternalLink>
       <IconButton icon="copy" />
     </div>
@@ -95,7 +95,7 @@ const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, stat
           />
           <ExternalLink
             target='_blank'
-            href={`https://${subdomain}.${process.env.NEXT_PUBLIC_HUB_URL}/admin`}>
+            href={`https://${subdomain}.${process.env.HUB_URL_ROOT}/admin`}>
             <Button
               text="Admin Panel"
               category={ButtonCategoriesE.outline}
