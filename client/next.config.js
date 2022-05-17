@@ -5,7 +5,7 @@ const nextConfig = {
     domains: ['localhost'],// TODO Add other servers
   },
   env: {
-    HUB_URL_ROOT: "myhubs.net"
+    DOMAIN: "myhubs.net"
   }
 }
 
