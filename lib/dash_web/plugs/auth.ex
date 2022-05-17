@@ -16,6 +16,8 @@ defmodule DashWeb.Plugs.Auth do
   """
   import Plug.Conn
 
+  alias Dash.ApprovedEmail
+
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
 
@@ -24,11 +26,26 @@ defmodule DashWeb.Plugs.Auth do
   def call(conn, _options) do
     results = conn |> get_auth_cookie() |> process_and_verify_jwt()
 
-    conn |> process_jwt(results)
+    conn |> process_jwt(results) |> check_if_approved_email()
   end
 
   defp get_auth_cookie(conn) do
     conn.req_cookies[@cookie_name]
+  end
+
+  defp check_if_approved_email(conn) do
+    email = conn.assigns[:fxa_account_info].fxa_email
+
+    if(!ApprovedEmail.has_email(email)) do
+      conn
+      |> put_root_layout({DashWeb.LayoutView, :root})
+      |> put_layout({DashWeb.LayoutView, :app})
+      |> put_view(DashWeb.PageView)
+      |> render("401_unapproved_email.html")
+      |> halt()
+    else
+      conn
+    end
   end
 
   # Authorized
