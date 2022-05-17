@@ -5,6 +5,8 @@ defmodule DashWeb.Plugs.ApprovedEmailAuth do
   import Plug.Conn
   import Phoenix.Controller
 
+  alias Dash.ApprovedEmail
+
   def init(default), do: default
 
   def call(conn, _options) do
@@ -22,11 +24,13 @@ defmodule DashWeb.Plugs.ApprovedEmailAuth do
     email = conn.assigns[:fxa_account_info].fxa_email
 
     if(!ApprovedEmail.has_email(email)) do
+      IO.puts("not approved email")
       conn
+      |> put_status(401)
       |> put_root_layout({DashWeb.LayoutView, :root})
       |> put_layout({DashWeb.LayoutView, :app})
       |> put_view(DashWeb.PageView)
-      |> render("401_unapproved_email.html")
+      |> render("401.html")
       |> halt()
     else
       conn

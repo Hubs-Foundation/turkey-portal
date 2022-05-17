@@ -16,8 +16,6 @@ defmodule DashWeb.Plugs.Auth do
   """
   import Plug.Conn
 
-  alias Dash.ApprovedEmail
-
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
 
@@ -26,7 +24,7 @@ defmodule DashWeb.Plugs.Auth do
   def call(conn, _options) do
     results = conn |> get_auth_cookie() |> process_and_verify_jwt()
 
-    conn |> process_jwt(results) |> check_if_approved_email()
+    conn |> process_jwt(results)
   end
 
   defp get_auth_cookie(conn) do
