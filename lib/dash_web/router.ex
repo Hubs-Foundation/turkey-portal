@@ -21,8 +21,12 @@ defmodule DashWeb.Router do
     plug DashWeb.Plugs.BasicAuth
   end
 
+  pipeline :approved_email_auth do
+    plug DashWeb.Plugs.ApprovedEmailAuth
+  end
+
   scope "/", DashWeb do
-    pipe_through [:basic_auth, :browser]
+    pipe_through [:basic_auth, :approved_email_auth, :browser]
 
     get "/", PageController, :index
     get "/hubs/*path", PageController, :index
@@ -34,7 +38,7 @@ defmodule DashWeb.Router do
   # end
 
   scope "/", DashWeb do
-    pipe_through :basic_auth
+    pipe_through [:basic_auth, :approved_email_auth]
     resources("/logout", LogoutController, [:index])
   end
 

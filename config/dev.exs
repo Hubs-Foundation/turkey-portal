@@ -59,6 +59,8 @@ config :dash, DashWeb.Plugs.BasicAuth,
   username: "local",
   password: "pass"
 
+config :dash, DashWeb.Plugs.ApprovedEmailAuth, enabled: true
+
 config :dash, Dash.OrchClient, orch_host: ""
 
 config :dash, Dash.FeatureFlags,

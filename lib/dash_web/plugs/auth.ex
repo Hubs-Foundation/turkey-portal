@@ -33,21 +33,6 @@ defmodule DashWeb.Plugs.Auth do
     conn.req_cookies[@cookie_name]
   end
 
-  defp check_if_approved_email(conn) do
-    email = conn.assigns[:fxa_account_info].fxa_email
-
-    if(!ApprovedEmail.has_email(email)) do
-      conn
-      |> put_root_layout({DashWeb.LayoutView, :root})
-      |> put_layout({DashWeb.LayoutView, :app})
-      |> put_view(DashWeb.PageView)
-      |> render("401_unapproved_email.html")
-      |> halt()
-    else
-      conn
-    end
-  end
-
   # Authorized
   defp process_jwt(conn, %{is_valid: true, claims: claims}) do
     %{
