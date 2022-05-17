@@ -9,6 +9,16 @@ type HubOptionGroupPropsT = {
   classProp?: string
 }
 
+export type HubGroupOptionT = {
+  value: number | string
+  users: number
+  size: string
+  labelType: 'primary' | 'secondary'
+  id: string
+  label: string
+  groupName: string
+}
+
 const HubOptionGroup = ({ options = [], name, classProp = '' }: HubOptionGroupPropsT) => {
   const formContext = useContext(FormContext)
   // Get data and methods from form context

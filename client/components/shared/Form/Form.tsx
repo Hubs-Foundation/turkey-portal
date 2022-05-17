@@ -1,10 +1,9 @@
 import React, { useState, ChangeEventHandler, ChangeEvent, ReactNode } from 'react'
 import Button from '../Button/Button'
 import { ButtonCategoriesE } from '../../../types/Form'
-import { PrimitiveT } from '../../../types/General'
 import styles from './Form.module.scss'
 
-const initialForm: { [key: string]: PrimitiveT } = {}
+const initialForm: { [key: string]: string | number | readonly string[] | undefined } = {}
 const initialFormHandler: ChangeEventHandler<HTMLInputElement> = (event: ChangeEvent) => { }
 
 export const FormContext = React.createContext({
@@ -16,7 +15,7 @@ type FormPropsT = {
   children: ReactNode,
   submit: Function,
   cancelClick?: Function,
-  initialValues: { [key: string]: PrimitiveT },
+  initialValues: { [key: string]: string | number | readonly string[] | undefined },
   classProp?: string
 }
 
@@ -52,15 +51,15 @@ const Form = ({
       <div className={styles.actions_wrapper}>
         {
           cancelClick && (
-            <Button 
+            <Button
               onClick={handleCancelClick}
               category={ButtonCategoriesE.outline}
               text="Back"
             />
           )
         }
-        
-        <Button 
+
+        <Button
           onClick={() => submit(form)}
           category={ButtonCategoriesE.primary}
           text="Submit"
@@ -69,6 +68,5 @@ const Form = ({
     </form>
   )
 }
-
 
 export default Form

@@ -70,18 +70,25 @@ const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, stat
             <div className={styles.card_name}>{name}</div>
           </div>
 
-          {status !== 'ready' ? LoadingHub : HubLink}
+          {/* TODO: Error Handeling design*/}
+          {status === 'creating' || status === 'updating' ? LoadingHub : HubLink}
         </div>
 
         {/* HUBS STATS */}
         <div className={styles.card_stats}>
           <div className={`${styles.card_stat} margin-bottom-10`}>
             <Icon name="users" color="currentColor" />
-            <span className="margin-left-5">{currentCcu ? currentCcu : 0}/{ccuLimit} CCU</span>
+            {/* TODO: Working with design to establish all the 'Hub states' this includes 
+            hubs creation / update phases, data points and error handeling, related todo
+            is also to impliment Websocket for data point updates.  */}
+
+            {/* TODO: Error Handeling design*/}
+            <span className="margin-left-5">{currentCcu}/{ccuLimit} CCU</span>
           </div>
           <div className={styles.card_stat}>
             <Icon name="hard-drive" color="currentColor" />
-            <span className="margin-left-5">{currentStorage ? currentStorage : 0}/{storageLimitMb} MB</span>
+            {/* TODO: Error Handeling design*/}
+            <span className="margin-left-5">{currentStorage}/{storageLimitMb} MB</span>
           </div>
         </div>
 

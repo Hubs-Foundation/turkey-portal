@@ -50,7 +50,7 @@ export default function Dashboard({ account }: DashboardPropsT) {
 
         {/* Hub Cards  */}
         <div className={styles.cards_wrapper}>
-          {hubs.length && (
+          {hubs.length ? (
             hubs.map((hub) => {
               return (
                 <HubCard
@@ -67,7 +67,7 @@ export default function Dashboard({ account }: DashboardPropsT) {
                 />
               )
             })
-          )}
+          ):''}
         </div>
 
       </main>

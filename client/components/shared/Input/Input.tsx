@@ -1,4 +1,4 @@
-import { useContext, ChangeEventHandler, ChangeEvent} from 'react'
+import { useContext, ChangeEventHandler, ChangeEvent } from 'react'
 import { FormContext } from '../Form/Form'
 import styles from './Input.module.scss'
 import { InputT } from '../../../types/Form'
@@ -7,12 +7,12 @@ type InputProps = {
   label: string,
   name: string,
   type?: InputT,
-  info?:string,
+  info?: string,
   classProp?: string,
-  onChange?:Function
+  onChange?: Function
 }
 
-const Input = ({ label, type = 'text', name,info, classProp = '', onChange }: InputProps) => {
+const Input = ({ label, type = 'text', name, info, classProp = '', onChange }: InputProps) => {
 
   const formContext = useContext(FormContext)
   // Get data and methods from form context
@@ -37,12 +37,11 @@ const Input = ({ label, type = 'text', name,info, classProp = '', onChange }: In
               onChange={relayChange}
             />
             {
-              info ? <span className={styles.info}>{info}</span>:''
+              info ? <span className={styles.info}>{info}</span> : ''
             }
           </>
         )
       }
-
     </div>
   )
 }

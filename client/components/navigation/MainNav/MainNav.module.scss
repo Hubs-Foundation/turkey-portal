@@ -44,13 +44,13 @@
 .account {
   &_details {
     margin-left: 10px;
+
     &_wrapper {
       display: flex;
     }
 
     &_title {
-      @include font-size(14);
-      font-weight:600;
+      @include h5()
     }
   }
 
@@ -58,6 +58,3 @@
     @include font-size(14)
   }
 }
-
-
-

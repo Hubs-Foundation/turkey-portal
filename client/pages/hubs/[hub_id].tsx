@@ -6,7 +6,7 @@ import Form from '../../components/shared/Form/Form'
 import Input from '../../components/shared/Input/Input'
 import HubOptionGroup from '../../components/shared/HubOptionGroup/HubOptionGroup'
 import styles from './[hub_id].module.scss'
-import { HubGroupOptionT } from '../../types/Form'
+import { HubGroupOptionT } from '../../components/shared/HubOptionGroup/HubOptionGroup'// just used for mock data for now.
 import Badge from '../../components/shared/Badge/Badge'
 
 type HubDetailsViewPropsT = {}

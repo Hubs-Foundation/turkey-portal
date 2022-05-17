@@ -22,7 +22,7 @@ const ExternalLink = ({
 }: ExternalLinkProps) => {
 
   return (
-    <a href={href} target={target} className={`${classProp} ${styles.link}`} onClick={()=>{onClick}}>
+    <a href={href} target={target} className={`${classProp} ${styles.link}`} onClick={(e) => { onClick && onClick(e) }}>
       {children}
       {icon && <Icon name={icon} color="currentColor" size={16} />}
     </a>
