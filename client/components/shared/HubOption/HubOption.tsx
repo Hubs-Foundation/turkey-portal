@@ -46,7 +46,7 @@ const HubOption = ({
         />
         <Badge
           classProp="margin-left-10"
-          type={labelType}
+          category={labelType}
           name={label}
         />
       </div>

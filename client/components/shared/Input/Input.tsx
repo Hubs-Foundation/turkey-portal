@@ -26,7 +26,7 @@ const Input = ({ label, type = 'text', name, info, classProp = '', onChange }: I
   return (
     <div className={`${styles.input_wrapper} ${classProp}`}>
       {
-        form && (
+        Object.keys(form).length != 0 && (
           <>
             <label>{label}</label>
             <input

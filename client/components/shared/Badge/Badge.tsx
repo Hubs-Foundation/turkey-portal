@@ -3,15 +3,15 @@ import styles from './Badge.module.scss'
 
 const propTypes = {
   name: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(['primary', 'secondary']),
+  category: PropTypes.oneOf(['primary', 'secondary']),
   classProp: PropTypes.string
 }
 
 type BadgePropsT = PropTypes.InferProps<typeof propTypes>
 
-const Badge = ({ name, type = 'primary', classProp = '' }: BadgePropsT) => {
+const Badge = ({ name, category = 'primary', classProp = '' }: BadgePropsT) => {
   return (
-    <span className={`${(type === 'primary') ? styles.badge_primary : styles.badge_secondary} ${classProp}`}>
+    <span className={`${(category === 'primary') ? styles.badge_primary : styles.badge_secondary} ${classProp}`}>
       {name}
     </span>
   )
