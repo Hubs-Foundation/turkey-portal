@@ -47,7 +47,7 @@ const Home = ({ hubs, account }: HomeProps) => {
   useEffect(() => {
     console.log('hubs', hubs)
     console.log('account', account)
-  }, [hubs])
+  }, [hubs, account])
 
   const handleClick = () => {
     dispatch(setAccount(account))

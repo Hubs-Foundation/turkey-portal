@@ -1,4 +1,27 @@
 // ---------------------------------
+//   Quick Typograpjhy
+// ---------------------------------
+.u-font-12 {
+  @include font-size(12);
+}
+
+.u-font-14 {
+  @include font-size(14);
+}
+
+.u-font-16 {
+  @include font-size(16);
+}
+
+.u-font-18 {
+  @include font-size(18);
+}
+
+.u-capitalize {
+  text-transform: capitalize;
+}
+
+// ---------------------------------
 //   Visibility
 // ---------------------------------
 
@@ -115,6 +138,10 @@
 .u-right-absolute {
   position: absolute;
   right: 0
+}
+
+.u-width-100 {
+  width: 100%;
 }
 
 /**
@@ -302,3 +329,4 @@ MARGIN
     margin-left: 20px;
   }
 }
+

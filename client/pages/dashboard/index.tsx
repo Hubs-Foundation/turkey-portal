@@ -23,7 +23,7 @@ export default function Dashboard({ account }: DashboardPropsT) {
   useEffect(() => {
     // Add newly validated account to the store
     dispatch(setAccount(account))
-  }, [account])
+  }, [account, dispatch])
 
   useEffect(() => {
     const apiServer = process.env.API_SERVER || "http://localhost:4000"
@@ -50,7 +50,7 @@ export default function Dashboard({ account }: DashboardPropsT) {
 
         {/* Hub Cards  */}
         <div className={styles.cards_wrapper}>
-          {hubs.length && (
+          {hubs.length ? (
             hubs.map((hub) => {
               return (
                 <HubCard
@@ -62,10 +62,12 @@ export default function Dashboard({ account }: DashboardPropsT) {
                   status={hub.status}
                   storageLimitMb={hub.storageLimitMb}
                   subdomain={hub.subdomain}
+                  currentCcu={hub.currentCcu}
+                  currentStorage={hub.currentStorage}
                 />
               )
             })
-          )}
+          ):''}
         </div>
 
       </main>

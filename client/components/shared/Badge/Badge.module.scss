@@ -2,16 +2,14 @@
 
 .badge {
   &_primary,&_secondary {
-    @include font-size(16);
+    @include font-size(14);
     font-weight: 600;
     line-height: 18px;
     text-transform: capitalize;
     letter-spacing: .5px;
-    padding: 2px 12px;
+    padding: 5px 12px;
     border-radius: 56px;
     height: 28px;
-    display: flex;
-    align-items: center;
   }
 
   &_primary {
@@ -20,7 +18,7 @@
   }
 
   &_secondary {
-    background-color: $pink;
-    color: $black;
+    background-color: $purple;
+    color: $white;
   }
 };

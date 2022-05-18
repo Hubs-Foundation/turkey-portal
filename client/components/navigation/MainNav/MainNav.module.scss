@@ -41,5 +41,20 @@
   }
 }
 
+.account {
+  &_details {
+    margin-left: 10px;
 
+    &_wrapper {
+      display: flex;
+    }
 
+    &_title {
+      @include h5()
+    }
+  }
+
+  &_manage_link {
+    @include font-size(14)
+  }
+}
