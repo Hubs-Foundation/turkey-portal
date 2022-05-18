@@ -29,7 +29,7 @@ if config_env() == :prod do
     socket_options: maybe_ipv6
 
   # For sending requests to deployed hub reticulum nodes
-  config :dash, Dash.Hubs, dashboard_ret_access_key: System.get_env("DASHBOARD_ACCESS_KEY")
+  config :dash, Dash.Hub, dashboard_ret_access_key: System.get_env("DASHBOARD_ACCESS_KEY")
 
   # Credentials for site-wide basic auth
   config :dash, DashWeb.Plugs.BasicAuth,

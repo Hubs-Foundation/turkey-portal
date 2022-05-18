@@ -40,6 +40,7 @@ defmodule Dash.MixProject do
       {:ecto_boot_migration, "~> 0.3.0"},
       {:phoenix_html, "~> 3.0"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:mox, "~> 1.0", only: :test},
       {:floki, ">= 0.30.0", only: :test},
       {:phoenix_live_dashboard, "~> 0.6"},
       {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},

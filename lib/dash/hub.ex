@@ -4,10 +4,6 @@ defmodule Dash.Hub do
   import Ecto.Changeset
   alias Dash.Repo
 
-  defmodule UsageStats do
-    defstruct [:current_ccu, :current_storage_mb]
-  end
-
   @ret_access_key Application.get_env(:dash, Dash.Hub)[:dashboard_ret_access_key]
   @primary_key {:hub_id, :id, autogenerate: true}
 
@@ -191,25 +187,37 @@ defmodule Dash.Hub do
           nil
       end
 
-    current_storage_mb = get_current_storage_usage_mb(hub)
+    current_storage_mb =
+      case get_current_storage_usage_mb(hub) do
+        {:ok, storage_mb} -> storage_mb
+        {:error, _} -> nil
+      end
 
-    %UsageStats{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
+    %{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
   end
 
   @ret_host_prefix "hc-"
   @ret_internal_port "4000"
   defp get_hub_internal_host_url(%Dash.Hub{} = hub) do
     # TODO when we fix the hub_uid bug with orchestrator update hub.subdomain to the fix
-    "http://#{@ret_host_prefix}#{hub.subdomain}:#{@ret_internal_port}"
+    "https://#{@ret_host_prefix}#{hub.subdomain}:#{@ret_internal_port}"
   end
 
-  @ccu_endpoint "/api-internal/v1/presence"
+  @ret_internal_scope "/api-internal/v1/"
+  defp fetch_hub_internal_endpoint(%Dash.Hub{} = hub, endpoint) do
+    # Make the http client module configurable so that we can mock it out in tests.
+    http_client = Application.get_env(:dash, Dash.Hub)[:http_client] || HTTPoison
+
+    http_client.get(
+      get_hub_internal_host_url(hub) <> @ret_internal_scope <> endpoint,
+      %{"x-ret-dashboard-access-key" => @ret_access_key},
+      hackney: [:insecure]
+    )
+  end
+
+  @ccu_endpoint "presence"
   defp get_current_ccu(%Dash.Hub{} = hub) do
-    case HTTPoison.get(
-           get_hub_internal_host_url(hub) <> @ccu_endpoint,
-           "x-ret-dashboard-access-key": @ret_access_key,
-           hackney: [:insecure]
-         ) do
+    case fetch_hub_internal_endpoint(hub, @ccu_endpoint) do
       # Reticulum returned the ccu correctly
       {:ok, %{status_code: 200, body: body}} ->
         %{"count" => count} = Poison.Parser.parse!(body)
@@ -227,8 +235,20 @@ defmodule Dash.Hub do
     end
   end
 
-  defp get_current_storage_usage_mb(_hub) do
-    # TODO ask orchestrator for current storage usage
-    50
+  @storage_endpoint "storage"
+  defp get_current_storage_usage_mb(%Dash.Hub{} = hub) do
+    case fetch_hub_internal_endpoint(hub, @storage_endpoint) do
+      {:ok, %{status_code: 200, body: body}} ->
+        %{"storage_mb" => storage_mb} = Poison.Parser.parse!(body)
+        {:ok, storage_mb}
+
+      {:ok, _} ->
+        # TODO Log and error here when we introduce Logger
+        {:error, :no_storage_returned}
+
+      {:error, reason} ->
+        # TODO Log and error here when we introduce Logger
+        {:error, reason}
+    end
   end
 end
