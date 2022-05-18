@@ -14,26 +14,31 @@ defmodule DashWeb.Plugs.ApprovedEmailAuth do
     approved_email_auth_enabled = Application.get_env(:dash, __MODULE__)[:enabled] !== false
 
     if approved_email_auth_enabled do
-      check_if_approved_email(conn)
+      check_if_approved_email(conn, conn.assigns[:fxa_account_info])
     else
       conn
     end
   end
 
-  defp check_if_approved_email(conn) do
-    email = conn.assigns[:fxa_account_info].fxa_email
+  defp check_if_approved_email(conn, fxa_account_info) when is_map(fxa_account_info) do
+    email = fxa_account_info.fxa_email
 
     if(!ApprovedEmail.has_email(email)) do
       IO.puts("not approved email")
+
       conn
-      |> put_status(401)
-      |> put_root_layout({DashWeb.LayoutView, :root})
-      |> put_layout({DashWeb.LayoutView, :app})
-      |> put_view(DashWeb.PageView)
-      |> render("401.html")
+      # |> put_status(401)
+      # |> redirect(to: "/unauthorized")
+      # |> put_root_layout({DashWeb.LayoutView, :root})
+      # |> put_layout({DashWeb.LayoutView, :app})
+      # |> put_view(DashWeb.PageView)
+      # |> render("401.html")
+      |> send_resp(401, Jason.encode!(%{error: :unauthorized}))
       |> halt()
     else
       conn
     end
   end
+
+  defp check_if_approved_email(conn, _), do: conn
 end

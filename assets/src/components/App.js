@@ -9,14 +9,21 @@ import { Layout } from "./display/Layout";
 import { Header } from "./display/Header";
 import { Nav } from "./display/Nav";
 import { Spinner } from "./common/Spinner";
+import { UserNotFound } from "./display/UserNotFound"
 
 export function App() {
-  const { account, isLoading, isError, isReady } = useAccount();
+  let { account, isLoading, isError, isUnauthorized, isReady } = useAccount();
   const location = useLocation();
 
   // An error could occur due to several reasons, but let's
   // assume the user just needs to log in again.
-  const isLoggedOut = isError;
+  let isLoggedOut = isError;
+
+  // Handle unauthorized email and serve UserNotFoundPage
+  if (isUnauthorized) {
+    isLoggedOut = false;
+    isError = false;
+  }
 
   const title = location.pathname.startsWith("/hubs/") ? "Hub Settings" : "Dashboard";
 
@@ -24,6 +31,7 @@ export function App() {
     <>
       {isLoading && <Spinner />}
       {isLoggedOut && <Landing />}
+      {isUnauthorized && <UserNotFound />}
       {isReady && (
         <Layout
           top={<Header account={account} />}

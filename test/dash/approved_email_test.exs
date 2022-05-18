@@ -71,6 +71,5 @@ defmodule Dash.ApprovedEmailTest do
       assert ApprovedEmail.has_email(@email1) === false &&
                ApprovedEmail.has_email(@email2) === false
     end
-
   end
 end
