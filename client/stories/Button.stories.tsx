@@ -11,7 +11,7 @@ export default {
   argTypes: {
     category: {
       control: {
-        type: 'select', options: [ButtonCategoriesE.primary, ButtonCategoriesE.secondary]
+        type: 'select', options: [ButtonCategoriesE.primary, ButtonCategoriesE.secondary, ButtonCategoriesE.outline]
       }
     }
   },
@@ -48,4 +48,12 @@ Icon.args = {
   text: 'Icon',
   category: ButtonCategoriesE.primary,
   icon: 'star'
+}
+
+// DISABLED BUTTON 
+export const Disabled = Template.bind({})
+Disabled.args = {
+  text: 'Disabled',
+  category: ButtonCategoriesE.primary,
+  disabled: true
 }
