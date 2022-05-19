@@ -42,8 +42,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
       conn
       |> put_test_token()
-      |> put_req_header("content-type", "application/json")
-      |> patch("/api/v1/hubs/#{hub.hub_id}", Jason.encode!(%{name: "new name"}))
+      |> patch_hub(hub, %{name: "new name"})
       |> response(200)
 
       %{"name" => "new name"} =
@@ -60,8 +59,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
       conn
       |> put_test_token()
-      |> put_req_header("content-type", "application/json")
-      |> patch("/api/v1/hubs/#{hub.hub_id}", Jason.encode!(%{storageLimitMb: 10000}))
+      |> patch_hub(hub, %{storageLimitMb: 10000})
       |> response(200)
 
       %{"storageLimitMb" => 100} =
@@ -78,9 +76,14 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
       conn
       |> put_test_token()
-      |> put_req_header("content-type", "application/json")
-      |> patch("/api/v1/hubs/#{hub.hub_id}", Jason.encode!(%{name: long_name}))
+      |> patch_hub(hub, %{name: long_name})
       |> response(400)
     end
+  end
+
+  defp patch_hub(conn, %Dash.Hub{} = hub, %{} = body) do
+    conn
+    |> put_req_header("content-type", "application/json")
+    |> patch("/api/v1/hubs/#{hub.hub_id}", Jason.encode!(body))
   end
 end
