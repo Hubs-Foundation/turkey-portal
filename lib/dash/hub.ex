@@ -46,12 +46,8 @@ defmodule Dash.Hub do
 
   def form_changeset(hub, attrs) do
     hub
-    |> cast(attrs, [
-      :name
-    ])
-    |> validate_required([
-      :name
-    ])
+    |> cast(attrs, [:name])
+    |> validate_length(:name, min: 1, max: 24)
   end
 
   defp hubs_for_account(%Dash.Account{} = account) do

@@ -70,5 +70,17 @@ defmodule DashWeb.Api.V1.HubControllerTest do
         |> get("/api/v1/hubs/#{hub.hub_id}")
         |> json_response(200)
     end
+
+    test "should error if name contains too many characters", %{conn: conn} do
+      %{hub: hub} = create_test_account_and_hub()
+
+      long_name = 1..50 |> Enum.map(fn _ -> "a" end) |> Enum.join("")
+
+      conn
+      |> put_test_token()
+      |> put_req_header("content-type", "application/json")
+      |> patch("/api/v1/hubs/#{hub.hub_id}", Jason.encode!(%{name: long_name}))
+      |> response(400)
+    end
   end
 end
