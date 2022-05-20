@@ -12,7 +12,7 @@ type HubOptionPropsT = {
   isDisabled?: boolean,
   id: string,
   label: string,
-  labelType: 'primary' | 'secondary',
+  labelCategory: 'primary' | 'secondary',
   groupName: string,
   onChange: FormEventHandler<HTMLDivElement>,
   classProp?: string
@@ -20,7 +20,7 @@ type HubOptionPropsT = {
 
 const HubOption = ({
   label,
-  labelType,
+  labelCategory,
   value,
   users,
   size,
@@ -46,7 +46,7 @@ const HubOption = ({
         />
         <Badge
           classProp="margin-left-10"
-          type={labelType}
+          category={labelCategory}
           name={label}
         />
       </div>

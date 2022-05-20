@@ -106,7 +106,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
           <div className={styles.summary_wrapper}>
             <h3 className={styles.summary_title}>Summary</h3>
             <ul className={styles.summary_attributes}>
-              <li>Tier: <Badge name='MVP' type='secondary'/></li>
+              <li>Tier: <Badge name="MVP" category="secondary"/></li>
               <li>People: 25</li>
               <li>Capacity: 2GB</li>
             </ul>
