@@ -44,7 +44,7 @@ defmodule Dash.ApprovedEmail do
 
     email_to_delete =
       ApprovedEmail
-      |> Repo.get_by(from e in ApprovedEmail, where: e.email_hash == ^hashed_email_to_delete)
+      |> Repo.get_by(email_hash: hashed_email_to_delete)
 
     case email_to_delete do
       %ApprovedEmail{} ->

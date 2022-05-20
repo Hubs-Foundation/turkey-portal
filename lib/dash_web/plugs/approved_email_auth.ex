@@ -24,16 +24,9 @@ defmodule DashWeb.Plugs.ApprovedEmailAuth do
     email = fxa_account_info.fxa_email
 
     if(!ApprovedEmail.has_email(email)) do
-      IO.puts("not approved email")
-
       conn
-      # |> put_status(401)
-      # |> redirect(to: "/unauthorized")
-      # |> put_root_layout({DashWeb.LayoutView, :root})
-      # |> put_layout({DashWeb.LayoutView, :app})
-      # |> put_view(DashWeb.PageView)
-      # |> render("401.html")
-      |> send_resp(401, Jason.encode!(%{error: :unauthorized}))
+      |> DashWeb.LogoutController.remove_cookies()
+      |> send_resp(403, Jason.encode!(%{error: :user_not_found}))
       |> halt()
     else
       conn

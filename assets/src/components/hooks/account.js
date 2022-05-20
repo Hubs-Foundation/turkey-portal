@@ -10,7 +10,7 @@ export function useAccount() {
   const { data, error, isLoading, isError, isSuccess } = useGetAccountQuery({}, { skip: account.isInitialized });
 
   // Manage unauthorized email
-  const isUnauthorized = isError && error?.status === 401;
+  const isUnauthorized = isError && error?.status === 403;
 
   if (!account.isInitialized && data) dispatch(setAccount(data));
 
