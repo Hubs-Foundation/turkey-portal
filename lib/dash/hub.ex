@@ -9,7 +9,6 @@ defmodule Dash.Hub do
 
   schema "hubs" do
     field :ccu_limit, :integer
-    field :instance_uuid, Ecto.UUID
     field :name, :string
     field :status, Ecto.Enum, values: [:creating, :updating, :ready]
     field :storage_limit_mb, :integer
@@ -23,7 +22,6 @@ defmodule Dash.Hub do
   def changeset(hub, attrs) do
     hub
     |> cast(attrs, [
-      :instance_uuid,
       :name,
       :ccu_limit,
       :storage_limit_mb,
@@ -32,7 +30,6 @@ defmodule Dash.Hub do
       :status
     ])
     |> validate_required([
-      :instance_uuid,
       :name,
       :ccu_limit,
       :storage_limit_mb,
@@ -41,7 +38,6 @@ defmodule Dash.Hub do
       :status
     ])
     |> unique_constraint(:subdomain)
-    |> unique_constraint(:instance_uuid)
   end
 
   def form_changeset(hub, attrs) do
@@ -82,7 +78,6 @@ defmodule Dash.Hub do
 
     new_hub_params =
       %{
-        instance_uuid: fake_uuid(),
         name: subdomain_and_name,
         subdomain: subdomain_and_name,
         status: :creating
@@ -109,17 +104,6 @@ defmodule Dash.Hub do
     1..len
     |> Enum.map(fn _ -> chars |> Enum.take_random(1) end)
     |> Enum.join("")
-  end
-
-  defp fake_uuid() do
-    [
-      rand_string(8),
-      rand_string(4),
-      rand_string(4),
-      rand_string(4),
-      rand_string(12)
-    ]
-    |> Enum.join("-")
   end
 
   def get_hub(hub_id, %Dash.Account{} = account) do

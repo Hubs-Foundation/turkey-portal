@@ -55,7 +55,6 @@ defmodule Mix.Tasks.Dash.CreateHub do
 
     %Dash.Hub{}
     |> Dash.Hub.changeset(%{
-      instance_uuid: fake_uuid(),
       name: hub_name,
       subdomain: rand_string(10),
       tier: :free,
@@ -74,17 +73,6 @@ defmodule Mix.Tasks.Dash.CreateHub do
     1..len
     |> Enum.map(fn _ -> chars |> Enum.take_random(1) end)
     |> Enum.join("")
-  end
-
-  defp fake_uuid() do
-    [
-      rand_string(8),
-      rand_string(4),
-      rand_string(4),
-      rand_string(4),
-      rand_string(12)
-    ]
-    |> Enum.join("-")
   end
 end
 

@@ -39,7 +39,6 @@ defmodule DashWeb.TestHelpers do
     hub =
       %Dash.Hub{}
       |> Dash.Hub.changeset(%{
-        instance_uuid: "db810793-d738-5ca8-ea16-8dd699ef39e2",
         name: "test hub",
         ccu_limit: 20,
         storage_limit_mb: 100,

@@ -4,8 +4,7 @@ defmodule Dash.OrchClient do
   def create_hub(fxa_email, %Dash.Hub{} = hub) do
     orch_hub_create_params = %{
       useremail: fxa_email,
-      # TODO Maybe the Orchestrator should generate this and send it back to us instead.
-      hub_id: hub.subdomain,
+      hub_id: hub.hub_id,
       subdomain: hub.subdomain,
       tier: hub.tier,
       ccu_limit: hub.ccu_limit |> to_string(),
