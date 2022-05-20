@@ -20,4 +20,8 @@ defmodule Dash.TokenTestHelper do
 
     conn |> put_req_cookie("_turkeyauthtoken", jwt_str)
   end
+
+  def clear_auth_config() do
+    Application.put_env(:dash, DashWeb.Plugs.Auth, %{})
+  end
 end

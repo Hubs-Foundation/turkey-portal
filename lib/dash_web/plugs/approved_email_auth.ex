@@ -3,7 +3,6 @@ defmodule DashWeb.Plugs.ApprovedEmailAuth do
   An auth plug for checking if an authenticated user's email address is on the approved list.
   """
   import Plug.Conn
-  import Phoenix.Controller
 
   alias Dash.ApprovedEmail
 
@@ -26,7 +25,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuth do
     if(!ApprovedEmail.has_email(email)) do
       conn
       |> DashWeb.LogoutController.remove_cookies()
-      |> send_resp(403, Jason.encode!(%{error: :user_not_found}))
+      |> send_resp(403, Jason.encode!(%{error: :forbidden}))
       |> halt()
     else
       conn

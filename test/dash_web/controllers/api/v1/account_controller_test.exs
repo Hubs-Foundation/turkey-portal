@@ -4,7 +4,10 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
   alias Dash.TokenTestHelper
 
   describe "Account API" do
-    setup [:clear_auth_config]
+    setup do
+      TokenTestHelper.clear_auth_config()
+      Application.put_env(:dash, DashWeb.Plugs.ApprovedEmailAuth, enabled: false)
+    end
 
     test "should error for unauthorized users", %{conn: conn} do
       conn = get(conn, "/api/v1/account")
@@ -52,9 +55,5 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
 
       assert json_response(conn, 200)["email"] === "email@fake.com"
     end
-  end
-
-  defp clear_auth_config(_) do
-    Application.put_env(:dash, DashWeb.Plugs.Auth, %{})
   end
 end
