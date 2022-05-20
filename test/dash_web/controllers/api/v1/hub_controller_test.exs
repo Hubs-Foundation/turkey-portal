@@ -5,6 +5,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   setup_all do
     Mox.defmock(Dash.HttpMock, for: HTTPoison.Base)
     merge_module_config(:dash, Dash.Hub, %{:http_client => Dash.HttpMock})
+    Application.put_env(:dash, DashWeb.Plugs.ApprovedEmailAuth, enabled: false)
 
     on_exit(fn ->
       merge_module_config(:dash, Dash.Hub, %{:http_client => nil})

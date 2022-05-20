@@ -14,6 +14,9 @@ defmodule DashWeb.TestHelpers do
     token_expiry: ~N[3000-01-01 00:00:00],
     unverified: false
   ]
+  def get_test_email() do
+    @test_email
+  end
 
   def put_test_token(conn, opts \\ []) do
     opts = Keyword.merge(@default_token_opts, opts)
@@ -57,5 +60,9 @@ defmodule DashWeb.TestHelpers do
   def merge_module_config(app, key, configs) do
     current_config = Application.get_env(app, key, %{})
     Application.put_env(app, key, Map.merge(current_config, configs))
+  end
+
+  def clear_auth_config() do
+    Application.put_env(:dash, DashWeb.Plugs.Auth, %{})
   end
 end

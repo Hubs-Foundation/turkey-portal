@@ -1,13 +1,13 @@
 defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
   use DashWeb.ConnCase
   import DashWeb.TestHelpers
-  alias Dash.{ApprovedEmail, Repo, TokenTestHelper}
+  alias Dash.{ApprovedEmail, Repo}
 
   describe "Approved Email Auth Plugs Test" do
     setup do
       # Explicitly get a connection before each test
       :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
-      TokenTestHelper.clear_auth_config()
+      clear_auth_config()
       Application.put_env(:dash, DashWeb.Plugs.ApprovedEmailAuth, enabled: true)
       Application.put_env(:dash, DashWeb.Plugs.BasicAuth, enabled: false)
     end
@@ -39,14 +39,16 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
 
     # if email on the conn and it's authorized, should do nothing to the conn
     test "should respond with 200 if user is on ApprovedEmailList and authorized", %{conn: conn} do
-      ApprovedEmail.add(@test_email)
+      email = get_test_email()
+
+      ApprovedEmail.add(email)
 
       conn =
         conn
         |> put_test_token(@valid_expiration)
         |> get("/api/v1/account")
 
-      assert json_response(conn, 200)["email"] === @test_email
+      assert json_response(conn, 200)["email"] === email
     end
 
     test "should respond with 403, if user is not on ApprovedEmailList", %{conn: conn} do
