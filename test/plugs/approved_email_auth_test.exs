@@ -33,7 +33,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
         )
         |> get("/api/v1/account")
 
-      assert ApprovedEmail.has_email(@email1) === false && response(conn, 200)
+      assert response(conn, 200)
     end
 
     # if no token/email on the conn, should do nothing to the conn
@@ -58,7 +58,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
         )
         |> get("/api/v1/account")
 
-      assert ApprovedEmail.has_email(@email1) === true && json_response(conn, 200)["email"] === @email1
+      assert json_response(conn, 200)["email"] === @email1
     end
 
     test "should respond with 403, if user is not on ApprovedEmailList", %{conn: conn} do
@@ -70,8 +70,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
         )
         |> get("/api/v1/account")
 
-      assert ApprovedEmail.has_email(@email1) === false && conn.halted &&
-               response(conn, 403) == Jason.encode!(%{error: "forbidden"})
+      assert response(conn, 403) == Jason.encode!(%{error: "forbidden"}) && conn.halted
     end
   end
 end
