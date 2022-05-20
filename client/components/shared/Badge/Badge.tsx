@@ -11,9 +11,9 @@ type BadgePropsT = PropTypes.InferProps<typeof propTypes>
 
 const Badge = ({ name, type = 'primary', classProp = '' }: BadgePropsT) => {
   return (
-    <div className={`${(type === 'primary') ? styles.badge_primary : styles.badge_secondary} ${classProp}`}>
+    <span className={`${(type === 'primary') ? styles.badge_primary : styles.badge_secondary} ${classProp}`}>
       {name}
-    </div>
+    </span>
   )
 }
 

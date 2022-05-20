@@ -1,4 +1,4 @@
-import { ReactNode, useState, useRef, useEffect } from 'react'
+import { ReactNode, useState, useRef, useEffect, useCallback, useImperativeHandle, forwardRef } from 'react'
 import styles from './Dropdown.module.scss'
 import FadeIn from '../../util/FadeIn'
 
@@ -10,16 +10,42 @@ type DropdownProps = {
   alignment?: AlignmentT
 }
 
-const Dropdown = ({ cta, content, classProp = '', alignment }: DropdownProps) => {
+const Dropdown = forwardRef(({ cta, content, classProp = '', alignment }: DropdownProps, ref) => {
 
   const [isOpen, setIsOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
-  const ref = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
+  /**
+   * Exposed Component API
+   */
+  useImperativeHandle(ref, () => {
+    return {
+      closeDropdown: closeDropdown,
+      openDropdown: openDropdown,
+      toggleDropdown: toggleDropdown
+    }
+  })
+
+  const closeDropdown = () => {
+    setIsOpen(false)
+  }
+
+  const openDropdown = () => {
+    setIsOpen(true)
+  }
+
+  const toggleDropdown = () => {
+    setIsOpen((state) => !state)
+  }
+
+  /**
+   * Setup Click Listener
+   */
   useEffect(() => {
     const checkIfClickedOutside = (e: MouseEvent) => {
-      // If open and target not in component, close component.
-      if (isOpen && ref.current && !ref.current.contains(e.target as Node)) {
+      // If dropdown open and target not in component, close dropdown.
+      if (isOpen && containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setIsOpen(false)
       }
     }
@@ -28,21 +54,22 @@ const Dropdown = ({ cta, content, classProp = '', alignment }: DropdownProps) =>
     return () => document.removeEventListener('mousedown', checkIfClickedOutside)
   }, [isOpen])
 
-  const handleOpen = () => {
+  const handleOpen =  useCallback(() => {
     setIsVisible((state) => !state)
     setIsOpen((state) => !state)
-  }
+  },[])
 
-  const handleClose = () => {
+  const handleClose =  useCallback(() => {
     setIsOpen((state) => !state)
-  }
+  },[])
 
-  const handleOnComplete = () => {
+  const handleOnComplete = useCallback(() => {
     if (!isOpen) setIsVisible(false)
-  }
+  }, [isOpen])
+
 
   return (
-    <div ref={ref} className={`${classProp} ${styles.dropdown_wrapper}`}>
+    <div ref={containerRef} className={`${classProp} ${styles.dropdown_wrapper}`}>
       {/* CTA */}
       <div onClick={isVisible ? handleClose : handleOpen}>
         {cta}
@@ -56,9 +83,9 @@ const Dropdown = ({ cta, content, classProp = '', alignment }: DropdownProps) =>
           </div>
         )}
       </FadeIn>
-
     </div>
   )
-}
+})
 
+Dropdown.displayName = 'Dropdown'
 export default Dropdown

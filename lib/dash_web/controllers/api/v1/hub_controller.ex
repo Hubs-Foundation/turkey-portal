@@ -37,9 +37,17 @@ defmodule DashWeb.Api.V1.HubController do
   def update(conn, %{"id" => hub_id} = attrs, account) do
     # this verifies that the account has a hub with this id
     case Hub.update_hub(hub_id, json_camel_to_snake(attrs), account) do
-      {:ok, _} -> conn |> send_resp(200, "")
-      {:error, err} -> conn |> send_resp(400, Jason.encode!(%{error: err})) |> halt()
-      _ -> conn |> send_resp(404, Jason.encode!(%{error: :not_found})) |> halt()
+      {:ok, _} ->
+        conn |> send_resp(200, "")
+
+      {:error, %Ecto.Changeset{}} ->
+        conn |> send_resp(400, Jason.encode!(%{error: :invalid_input})) |> halt()
+
+      {:error, err} ->
+        conn |> send_resp(400, Jason.encode!(%{error: err})) |> halt()
+
+      _ ->
+        conn |> send_resp(404, Jason.encode!(%{error: :not_found})) |> halt()
     end
   end
 

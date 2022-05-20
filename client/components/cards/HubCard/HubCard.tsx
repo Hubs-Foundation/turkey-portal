@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { useRouter } from 'next/router'
 import styles from './HubCard.module.scss'
 import Badge from '../../shared/Badge/Badge'
@@ -5,6 +6,7 @@ import Button from '../../shared/Button/Button'
 import Icon from '../../shared/Icon/Icon'
 import ExternalLink from '../../shared/ExternalLink/ExternalLink'
 import IconButton from '../../shared/IconButton/IconButton'
+import Spinner from '../../shared/Spinner/Spinner'
 import { TierT, StatusT } from '../../../types/General'
 import { ButtonCategoriesE } from '../../../types/Form'
 
@@ -12,6 +14,8 @@ type HubCardPropsT = {
   name: string,
   tier: TierT,
   hubId: string,
+  currentCcu: number
+  currentStorage: number
   ccuLimit: number,
   status: StatusT,
   storageLimitMb: number,
@@ -19,16 +23,40 @@ type HubCardPropsT = {
   classProp?: string
 }
 
-const HubCard = ({ name, tier, hubId, ccuLimit, status, storageLimitMb, subdomain, classProp = '' }: HubCardPropsT) => {
+const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, status, storageLimitMb, subdomain, classProp = '' }: HubCardPropsT) => {
 
-  // TODO configure status states
   const router = useRouter()
-  const handleSettingClick = () => {
+  const handleSettingClick = useCallback(() => {
     router.push({
       pathname: '/hubs/[hub_id]',
       query: { hub_id: hubId },
     })
-  }
+  }, [hubId, router])
+
+  /**
+   * Hub Loading State
+   */
+  const LoadingHub = (
+    <div className='flex-align-center'>
+      <Spinner size={18} />
+      <span className='u-font-14 margin-left-10'><span className='u-capitalize'>{status}</span> your hub...</span>
+    </div>
+  )
+
+  /**
+   * Hub External Link
+   */
+  const HubLink = (
+    <div className={styles.card_domain}>
+      <ExternalLink
+        icon="external-link"
+        target='_blank'
+        href={`${subdomain}.${process.env.HUB_ROOT_DOMAIN}`}>
+        {subdomain}.{process.env.HUB_ROOT_DOMAIN}
+      </ExternalLink>
+      <IconButton icon="copy" />
+    </div>
+  )
 
   return (
     <div className={`${styles.card_wrapper} ${classProp}`}>
@@ -42,27 +70,25 @@ const HubCard = ({ name, tier, hubId, ccuLimit, status, storageLimitMb, subdomai
             <div className={styles.card_name}>{name}</div>
           </div>
 
-          <div className={styles.card_domain}>
-            {/* TODO: Replace the hardcoded ".myhubs.net" to an environment variable */}
-            <ExternalLink
-              icon="external-link"
-              target='_blank'
-              href={`${subdomain}.myhubs.net`}>
-              {subdomain}.myhubs.net
-            </ExternalLink>
-            <IconButton icon="copy" />
-          </div>
+          {/* TODO: Error Handeling design*/}
+          {status === 'creating' || status === 'updating' ? LoadingHub : HubLink}
         </div>
 
         {/* HUBS STATS */}
         <div className={styles.card_stats}>
           <div className={`${styles.card_stat} margin-bottom-10`}>
             <Icon name="users" color="currentColor" />
-            <span className="margin-left-5">4/{ccuLimit} CCU</span>
+            {/* TODO: Working with design to establish all the 'Hub states' this includes 
+            hubs creation / update phases, data points and error handeling, related todo
+            is also to impliment Websocket for data point updates.  */}
+
+            {/* TODO: Error Handeling design*/}
+            <span className="margin-left-5">{currentCcu}/{ccuLimit} CCU</span>
           </div>
           <div className={styles.card_stat}>
             <Icon name="hard-drive" color="currentColor" />
-            <span className="margin-left-5">73/{storageLimitMb} MB</span>
+            {/* TODO: Error Handeling design*/}
+            <span className="margin-left-5">{currentStorage}/{storageLimitMb} MB</span>
           </div>
         </div>
 
@@ -76,7 +102,7 @@ const HubCard = ({ name, tier, hubId, ccuLimit, status, storageLimitMb, subdomai
           />
           <ExternalLink
             target='_blank'
-            href={`https://${subdomain}.myhubs.net/admin`}>
+            href={`https://${subdomain}.${process.env.HUB_ROOT_DOMAIN}/admin`}>
             <Button
               text="Admin Panel"
               category={ButtonCategoriesE.outline}

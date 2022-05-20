@@ -1,0 +1,66 @@
+@import '../../styles/boilerplate.scss';
+
+.settings {
+  &_grid_wrapper {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 60% auto;
+    align-items: start;
+    column-gap: 10px;
+    row-gap: 10px;
+    max-width: 1040px;
+    width: 100%;
+
+    @include tablet-down() {
+      grid-template-columns: 100%;
+      grid-template-rows: 100% 100%;
+    }
+  }
+
+  &_form_wrapper {
+    background-color: $white;
+    border-radius: 8px;
+    border: 1px solid $grey;
+    padding: 30px;
+  }
+}
+
+.address {
+  &_wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &_preview {
+    @include font-size(14);
+    margin-top: 34px;
+  }
+}
+
+.summary {
+  &_wrapper {
+    background-color: $white;
+    border-radius: 8px;
+    border: 1px solid $grey;
+    padding: 30px;
+
+    @include tablet-down() {
+      order: -1;
+    }
+  }
+
+  &_title {
+    @include h3();
+    margin: 0 0 10px 0;
+  }
+
+  &_attributes {
+    padding: 0;
+    margin: 0;
+
+    li {
+      list-style: none;
+      margin-bottom: 10px;
+    }
+  }
+}

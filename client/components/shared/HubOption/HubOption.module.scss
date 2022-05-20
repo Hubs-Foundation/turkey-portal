@@ -1,0 +1,38 @@
+@import '../../../styles/boilerplate.scss';
+
+.button {
+  &_wrapper {
+    padding: 20px;
+    margin: 20px 0 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: solid 1px $off-white;
+    border-radius: 4px;
+    outline: 1px solid $off-white;
+    outline-color: $off-white;
+    background-color: $off-white;
+    outline-width: 2px;
+    outline-offset: 5px;
+
+    &_active {
+      background-color: $light-blue;
+      outline-color: $blue;
+      outline-width: 2px;
+      outline-offset: 5px;
+    }
+  }
+
+  &_input {
+    width: 120px;
+  }
+};
+
+.attribute {
+  &_wrapper {
+    @include font-size(18);
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+}

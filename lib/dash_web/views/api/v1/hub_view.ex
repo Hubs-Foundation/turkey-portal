@@ -21,13 +21,6 @@ defmodule DashWeb.Api.V1.HubView do
     deleted_hub |> render_deleted_hub()
   end
 
-  def render("hub_usage_stats.json", %{hub_usage_stats: %Dash.Hub.UsageStats{} = hub_usage_stats}) do
-    %{
-      currentCcu: hub_usage_stats.current_ccu,
-      currentStorageMb: hub_usage_stats.current_storage_mb
-    }
-  end
-
   defp render_deleted_hub(hub) do
     %{success: true, deletedHub: render_hub(hub)}
   end
@@ -37,7 +30,7 @@ defmodule DashWeb.Api.V1.HubView do
     maybe_include_usage_stats =
       case hub do
         %{current_ccu: ccu, current_storage_mb: storage} ->
-          %{currentCcu: ccu, currentStorage: storage}
+          %{currentCcu: ccu, currentStorageMb: storage}
 
         _ ->
           %{}

@@ -51,7 +51,7 @@ defmodule DashWeb.Router do
       "/hubs",
       Api.V1.HubController,
       Dash.FeatureFlags.actions_for_flags(
-        always: [:index, :show],
+        always: [:index, :show, :update],
         flags: [
           create_hubs: :create,
           delete_hubs: :delete

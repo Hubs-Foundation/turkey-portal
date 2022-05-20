@@ -20,7 +20,7 @@ defmodule Dash.FeatureFlags do
   end
 
   defp get_flags() do
-    Application.get_env(:dash, Dash.FeatureFlags)
+    Application.get_env(:dash, Dash.FeatureFlags, %{})
   end
 
   defp snake_to_camel(str) do

@@ -1,5 +1,6 @@
 defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
   use DashWeb.ConnCase
+  import DashWeb.TestHelpers
   alias Dash.{ApprovedEmail, Repo, TokenTestHelper}
 
   describe "Approved Email Auth Plugs Test" do
@@ -11,13 +12,6 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
       Application.put_env(:dash, DashWeb.Plugs.BasicAuth, enabled: false)
     end
 
-    @email1 "email1@email.com"
-    @email1_test_token %{
-      "sub" => "fake-uid",
-      "fxa_email" => @email1,
-      "fxa_pic" => "https://fake.com/pic.jpg",
-      "fxa_displayName" => "Faker McFakerson"
-    }
     @valid_expiration token_expiry: ~N[3000-01-01 00:00:00]
 
     # Disabled test
@@ -27,10 +21,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
 
       conn =
         conn
-        |> TokenTestHelper.put_test_token(
-          @email1_test_token,
-          @valid_expiration
-        )
+        |> put_test_token(@valid_expiration)
         |> get("/api/v1/account")
 
       assert response(conn, 200)
@@ -48,26 +39,20 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
 
     # if email on the conn and it's authorized, should do nothing to the conn
     test "should respond with 200 if user is on ApprovedEmailList and authorized", %{conn: conn} do
-      ApprovedEmail.add(@email1)
+      ApprovedEmail.add(@test_email)
 
       conn =
         conn
-        |> TokenTestHelper.put_test_token(
-          @email1_test_token,
-          @valid_expiration
-        )
+        |> put_test_token(@valid_expiration)
         |> get("/api/v1/account")
 
-      assert json_response(conn, 200)["email"] === @email1
+      assert json_response(conn, 200)["email"] === @test_email
     end
 
     test "should respond with 403, if user is not on ApprovedEmailList", %{conn: conn} do
       conn =
         conn
-        |> TokenTestHelper.put_test_token(
-          @email1_test_token,
-          @valid_expiration
-        )
+        |> put_test_token(@valid_expiration)
         |> get("/api/v1/account")
 
       assert response(conn, 403) == Jason.encode!(%{error: "forbidden"}) && conn.halted
