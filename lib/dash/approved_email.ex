@@ -1,6 +1,7 @@
 defmodule Dash.ApprovedEmail do
   use Ecto.Schema
   import Ecto.{Changeset, Query}
+  require Logger
 
   alias Dash.{ApprovedEmail, Repo}
 
@@ -31,8 +32,8 @@ defmodule Dash.ApprovedEmail do
       |> Repo.insert!()
 
     case new_approved_email do
-      %ApprovedEmail{} = _new_approved_email -> IO.puts("Added #{email}")
-      _ -> IO.puts("ERROR: could not add #{email}")
+      %ApprovedEmail{} = _new_approved_email -> Logger.info("Added email: #{email}")
+      _ -> Logger.error("ERROR: could not add #{email}")
     end
   end
 
@@ -49,11 +50,11 @@ defmodule Dash.ApprovedEmail do
     case email_to_delete do
       %ApprovedEmail{} ->
         Repo.delete!(email_to_delete)
-        IO.puts("deleted email: #{email}")
+        Logger.info("Deleted email: #{email}")
 
       nil ->
         nil
-        IO.puts("ERROR: couldn't find email to delete: #{email}")
+        Logger.error("ERROR: couldn't find email to delete: #{email}")
     end
   end
 
