@@ -24,7 +24,6 @@ defmodule DashWeb.Plugs.ApprovedEmailAuth do
 
     if(!ApprovedEmail.has_email(email)) do
       conn
-      |> DashWeb.LogoutController.remove_cookies()
       |> send_resp(403, Jason.encode!(%{error: :forbidden}))
       |> halt()
     else

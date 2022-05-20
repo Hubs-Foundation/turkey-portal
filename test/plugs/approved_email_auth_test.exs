@@ -3,7 +3,19 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
   import DashWeb.TestHelpers
   alias Dash.{ApprovedEmail, Repo}
 
-  describe "Approved Email Auth Plugs Test" do
+  setup_all do
+    # For /api/v1/hubs request setup
+    Mox.defmock(Dash.HttpMock, for: HTTPoison.Base)
+    merge_module_config(:dash, Dash.Hub, %{:http_client => Dash.HttpMock})
+
+    on_exit(fn ->
+      # For /api/v1/hubs request
+      merge_module_config(:dash, Dash.Hub, %{:http_client => nil})
+    end)
+  end
+
+  describe "ApprovedEmailAuth Plug" do
+
     setup do
       # Explicitly get a connection before each test
       :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
@@ -14,15 +26,16 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
 
     @valid_expiration token_expiry: ~N[3000-01-01 00:00:00]
 
-    # Disabled test
-    # Should not be enabled when disabled env
     test "ApprovedEmails should not be enabled when disabled", %{conn: conn} do
       Application.put_env(:dash, DashWeb.Plugs.ApprovedEmailAuth, enabled: false)
 
       conn =
         conn
         |> put_test_token(@valid_expiration)
-        |> get("/api/v1/account")
+        |> get("/api/v1/hubs")
+
+
+      IO.inspect(conn)
 
       assert response(conn, 200)
     end
@@ -31,7 +44,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
     test "should give 401 for unauthorized users by passing ApprovedEmailAuth and NOT a 403", %{
       conn: conn
     } do
-      conn = get(conn, "/api/v1/account")
+      conn = get(conn, "/api/v1/hubs")
 
       # Passes through ApprovedEmailAuth without responding with a 403
       assert response(conn, 401) == Jason.encode!(%{error: "unauthorized"})
@@ -46,16 +59,18 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
       conn =
         conn
         |> put_test_token(@valid_expiration)
-        |> get("/api/v1/account")
+        |> get("/api/v1/hubs")
 
-      assert json_response(conn, 200)["email"] === email
+      IO.inspect(conn)
+
+      assert response(conn, 200)
     end
 
     test "should respond with 403, if user is not on ApprovedEmailList", %{conn: conn} do
       conn =
         conn
         |> put_test_token(@valid_expiration)
-        |> get("/api/v1/account")
+        |> get("/api/v1/hubs")
 
       assert response(conn, 403) == Jason.encode!(%{error: "forbidden"}) && conn.halted
     end

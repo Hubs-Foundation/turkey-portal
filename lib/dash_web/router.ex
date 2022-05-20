@@ -43,9 +43,13 @@ defmodule DashWeb.Router do
   end
 
   scope "/api/v1", DashWeb do
-    pipe_through [:basic_auth, :jwt_authenticated, :approved_email_auth]
+    pipe_through [:basic_auth, :jwt_authenticated]
 
     resources("/account", Api.V1.AccountController, [:index])
+  end
+
+  scope "/api/v1", DashWeb do
+    pipe_through [:basic_auth, :jwt_authenticated, :approved_email_auth]
 
     resources(
       "/hubs",
@@ -59,7 +63,6 @@ defmodule DashWeb.Router do
       )
     )
   end
-
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put
