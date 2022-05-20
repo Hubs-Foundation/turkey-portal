@@ -39,12 +39,12 @@ defmodule DashWeb.TestHelpers do
     hub =
       %Dash.Hub{}
       |> Dash.Hub.changeset(%{
-        instance_uuid: "db810793-d738-5ca8-ea16-8dd699ef39e2",
+        instance_uuid: Dash.Utils.fake_uuid(),
         name: "test hub",
         ccu_limit: 20,
         storage_limit_mb: 100,
         tier: :mvp,
-        subdomain: "test-subdomain",
+        subdomain: "test-subdomain-#{Dash.Utils.rand_string(10)}",
         status: :ready
       })
       |> Ecto.Changeset.put_assoc(:account, account)
@@ -54,7 +54,7 @@ defmodule DashWeb.TestHelpers do
   end
 
   def merge_module_config(app, key, configs) do
-    current_config = Application.get_env(app, key, %{})
-    Application.put_env(app, key, Map.merge(current_config, configs))
+    current_config = Application.get_env(app, key, [])
+    Application.put_env(app, key, Keyword.merge(current_config, configs))
   end
 end
