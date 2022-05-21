@@ -3,14 +3,15 @@ import PropTypes from "prop-types";
 
 import "./Hub.css";
 import { LinkButton } from "../common/LinkButton";
+import { Spinner } from "../common/Spinner";
 import { IconDrive, IconUsers } from "../common/icons";
 import { formatNumber, formatMegabytes } from "../utils/formatNumber";
 
 export function Hub({ tier, name, status, subdomain, currentCcu, ccuLimit, storageUsageMb, storageLimitMb, hubId }) {
   return (
-    <div className="hub">
+    <div className={`hub ${status}`}>
       <div className="hub-info">
-        <span className={`tag ${tier}`}>{tier}</span>
+        {tier && <span className={`tag ${tier}`}>{tier}</span>}
         <span className="name">{name}</span>
       </div>
 
@@ -20,24 +21,29 @@ export function Hub({ tier, name, status, subdomain, currentCcu, ccuLimit, stora
             {subdomain}.myhubs.net
           </a>
         ) : (
-          <span className="domain">{subdomain}.myhubs.net</span>
+          <span className="domain">
+            <Spinner />
+            Building your new hub...
+          </span>
         )}
       </div>
 
       <span className="hub-stats">
         <IconUsers />
-        {formatNumber(currentCcu)} / {formatNumber(ccuLimit)}
+        {status === "ready" ? `${formatNumber(currentCcu)} / ${formatNumber(ccuLimit)}` : "-"}
       </span>
       <span className="hub-stats">
         <IconDrive />
-        {formatMegabytes(storageUsageMb)} / {formatMegabytes(storageLimitMb)}
+        {status === "ready" ? `${formatMegabytes(storageUsageMb)} / ${formatMegabytes(storageLimitMb)}` : "-"}
       </span>
 
-      <div className="hub-buttons">
-        <LinkButton to={`/hubs/${hubId}`} text="Hub Settings" />
-        {/* TODO change hardcoded value for domain*/}
-        <LinkButton href={`https://${subdomain}.myhubs.net/admin`} text="Admin Panel" />
-      </div>
+      {status === "ready" && (
+        <div className="hub-buttons">
+          <LinkButton to={`/hubs/${hubId}`} text="Hub Settings" />
+          {/* TODO change hardcoded value for domain*/}
+          <LinkButton href={`https://${subdomain}.myhubs.net/admin`} text="Admin Panel" />
+        </div>
+      )}
     </div>
   );
 }

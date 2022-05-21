@@ -96,6 +96,7 @@ defmodule Dash.Hub do
       |> Dash.Repo.insert!()
 
     with {:ok, _} <- Dash.OrchClient.create_hub(fxa_email, new_hub) do
+      new_hub = new_hub |> change(status: :ready) |> Dash.Repo.update!()
       {:ok, new_hub}
     else
       # TODO Should we delete the hub from the db or set status = :error enum?

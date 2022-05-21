@@ -1,5 +1,8 @@
 import React from "react";
 
+import "./Spinner.css";
+import { IconSpinner } from "../common/icons";
+
 export function Spinner() {
-  return <span>Loading...</span>;
+  return <IconSpinner className="spinner" />;
 }
