@@ -12,19 +12,22 @@ export function Landing() {
     <div className="landing-container">
       <Avatar />
       <div className="landing">
-        <div>
+        <div className="landing-content">
           <img alt="Mozilla Hubs logo" className="logo" src={logoWhite} />
-          <p className="hero">Sign in with a Firefox account to get started</p>
-          <div className="sign-in-mobile">
-            <LinkButton className="primary" href={loginUrl} text="Sign In" />
-          </div>
+          <p className="hero">Sign in with a Firefox Account to get started</p>
           <p>
-            Thank you for taking part in the Hubs closed beta. Please sign in or register with a Firefox account to
-            access your new Hubs dashboard.
+            Thank you for taking part in the Hubs closed beta.
+            <br />
+            Please sign in or register with a Firefox account to access your new Hubs dashboard.
           </p>
+          <div>
+            <LinkButton href={loginUrl} text="Sign In / Register" />
+          </div>
         </div>
-        <div className="sign-in-desktop">
-          <LinkButton className="primary" href={loginUrl} text="Sign In" />
+        <div className="footer">
+          {/* TODO Get the proper links here */}
+          <a href="https://github.com/mozilla/hubs/blob/master/PRIVACY.md">Privacy policy</a>
+          <a href="https://github.com/mozilla/hubs/blob/master/TERMS.md">Terms and Conditions</a>
         </div>
       </div>
     </div>
