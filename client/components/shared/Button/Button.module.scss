@@ -1,25 +1,39 @@
 @import '../../../styles/boilerplate.scss';
 @import '../../../styles/ui/buttons.scss';
 
-// TODO - THESE ARE ALL PLACE HOLDER STYLES...
+@mixin rect_button_base() {
+  @include button_base();
+  padding: 0px 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+  height: 45px;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover:enabled,
+  &:focus {
+    background-color: transparent;
+  }
+
+  &:disabled,
+  &[disabled] {
+    &:hover {
+      cursor: not-allowed;
+    }
+  }
+}
 
 /*-------------------------------
   PRIMARY BUTTON 
 -------------------------------*/
 .button_primary {
-  @include button_base();
-  padding: 0px 16px;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
+  @include rect_button_base();
   background-color: $blue;
   border: solid 2px $blue;
-  height: 45px;
   color: $white;
-  text-transform: capitalize;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
+
   &_active {
     background-color: $peach;
     border: solid 2px $peach;
@@ -27,7 +41,6 @@
 
   &:hover:enabled,
   &:focus {
-    background-color: transparent;
     border: solid 2px $blue;
     color: $blue;
   }
@@ -36,31 +49,41 @@
   &[disabled] {
     background-color: $semi-dark-grey;
     border: solid 2px $semi-dark-grey;
-    &:hover {
-      cursor: not-allowed;
-    }
   }
 }
 
-// TODO - create secondary style
 /*-------------------------------
-  PRIMARY BUTTON
+  SECONDARY BUTTON
 -------------------------------*/
 .button_secondary {
+  @include rect_button_base();
   background-color: $peach;
+  border: solid 2px $peach;
+  color: $white;
+
+  &_active {
+    background-color: $peach;
+    border: solid 2px $peach;
+  }
+
+  &:hover:enabled,
+  &:focus {
+    border: solid 2px $peach;
+    color: $peach;
+  }
+
+  &:disabled,
+  &[disabled] {
+    background-color: $semi-dark-grey;
+    border: solid 2px $semi-dark-grey;
+  }
 }
 
-// TODO - create outline style
 /*-------------------------------
-  PRIMARY BUTTON
+  OUTLINE BUTTON
 -------------------------------*/
 .button_outline {
-  @include button_base();
-  padding: 0px 16px;
-  border-radius: 10px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
-  height: 45px;
-  text-transform: capitalize;
+  @include rect_button_base();
   background-color: transparent;
   border: solid 2px $grey;
   color: $black;
@@ -81,8 +104,5 @@
   &[disabled] {
     background-color: $semi-dark-grey;
     border: solid 2px $semi-dark-grey;
-    &:hover {
-      cursor: not-allowed;
-    }
   }
 }

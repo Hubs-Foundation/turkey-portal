@@ -4,7 +4,7 @@ import { IconT } from '../../../types/General'
 import styles from './Button.module.scss'
 import Icon from '../Icon/Icon'
 
-type ButtonProps = {
+export type ButtonPropsT = {
   active?: boolean,
   id?: string,
   text: string,
@@ -26,7 +26,7 @@ const Button = ({
   icon,
   onClick,
   classProp = ''
-}: ButtonProps) => {
+}: ButtonPropsT) => {
 
   const [categoryClass, setCategoryClass] = useState(styles.button_primary)
 
