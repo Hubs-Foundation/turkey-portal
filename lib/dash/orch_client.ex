@@ -13,12 +13,24 @@ defmodule Dash.OrchClient do
     }
 
     resp =
-      HTTPoison.post(
+      get_http_client().post(
         "http://#{@orch_host}/hc_instance",
         Jason.encode!(orch_hub_create_params)
       )
 
     IO.inspect(resp)
     resp
+  end
+
+  def update_subdomain(%Dash.Hub{} = hub) do
+    get_http_client().patch(
+      "http://#{@orch_host}/hc_instance/#{hub.hub_id}",
+      Jason.encode!(%{subdomain: hub.subdomain})
+    )
+  end
+
+  defp get_http_client() do
+    # Make the http client module configurable so that we can mock it out in tests.
+    Application.get_env(:dash, Dash.Hub)[:http_client] || HTTPoison
   end
 end
