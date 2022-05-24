@@ -15,6 +15,7 @@ export const hubEntitiesSlice = createSlice({
       hubEntityAdapter.setOne(state, action.payload);
     },
     setHubEntities(state, action) {
+      console.log("ARE YOUF IRING??")
       state.isInitialized = true;
       hubEntityAdapter.setAll(state, action.payload);
     },
