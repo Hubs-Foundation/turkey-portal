@@ -98,10 +98,7 @@ export default function Sandbox() {
                 type="email"
                 name="email"
                 errorMessage='you broke it'
-                validator={(value:string | number | readonly string[] | undefined) => {
-                  const stringValue = value?.toString()
-                  return stringValue?.length
-                }}
+                validator={}
               />
               <Input
                 label="Password"
