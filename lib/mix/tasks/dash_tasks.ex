@@ -55,7 +55,6 @@ defmodule Mix.Tasks.Dash.CreateHub do
 
     %Dash.Hub{}
     |> Dash.Hub.changeset(%{
-      instance_uuid: Dash.Utils.fake_uuid(),
       name: hub_name,
       subdomain: Dash.Utils.rand_string(10),
       tier: :free,
