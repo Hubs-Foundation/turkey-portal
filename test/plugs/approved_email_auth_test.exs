@@ -2,6 +2,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
   use DashWeb.ConnCase
   import DashWeb.TestHelpers
   alias Dash.{ApprovedEmail, Repo}
+  alias DashWeb.Api.V1.HubControllerTest
 
   setup_all do
     # For /api/v1/hubs request setup
@@ -29,6 +30,9 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
     test "ApprovedEmails should not be enabled when disabled", %{conn: conn} do
       Application.put_env(:dash, DashWeb.Plugs.ApprovedEmailAuth, enabled: false)
 
+      HubControllerTest.mock_hubs_get()
+      HubControllerTest.mock_orch_post()
+
       conn =
         conn
         |> put_test_token(@valid_expiration)
@@ -52,6 +56,9 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
 
     # if email on the conn and it's authorized, should do nothing to the conn
     test "should respond with 200 if user is on ApprovedEmailList and authorized", %{conn: conn} do
+      HubControllerTest.mock_hubs_get()
+      HubControllerTest.mock_orch_post()
+
       email = get_test_email()
 
       ApprovedEmail.add(email)
@@ -60,8 +67,6 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
         conn
         |> put_test_token(@valid_expiration)
         |> get("/api/v1/hubs")
-
-      IO.inspect(conn)
 
       assert response(conn, 200)
     end

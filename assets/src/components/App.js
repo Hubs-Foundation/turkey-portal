@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { useAccount } from "./hooks/account";
 import { HomeContainer } from "./containers/HomeContainer";
@@ -9,21 +10,17 @@ import { Layout } from "./display/Layout";
 import { Header } from "./display/Header";
 import { Nav } from "./display/Nav";
 import { Spinner } from "./common/Spinner";
-import { UserNotFound } from "./display/UserNotFound"
+import { UserNotFound } from "./display/UserNotFound";
+// import { selectIsForbidden } from "./store/hubs";
 
 export function App() {
-  let { account, isLoading, isError, isUnauthorized, isReady } = useAccount();
+  let { account, isLoading, isError, isReady } = useAccount();
   const location = useLocation();
+  const isForbidden = useSelector((state) => state.hubEntities.isForbidden);
 
   // An error could occur due to several reasons, but let's
   // assume the user just needs to log in again.
   let isLoggedOut = isError;
-
-  // Handle unauthorized email and serve UserNotFoundPage
-  if (isUnauthorized) {
-    isLoggedOut = false;
-    isError = false;
-  }
 
   const title = location.pathname.startsWith("/hubs/") ? "Hub Settings" : "Dashboard";
 
@@ -31,18 +28,14 @@ export function App() {
     <>
       {isLoading && <Spinner />}
       {isLoggedOut && <Landing />}
-      {isUnauthorized && <UserNotFound />}
+      {isForbidden && <UserNotFound />}
       {isReady && (
-        <Layout
-          top={<Header account={account} />}
-          nav={<Nav title={title} />}
-          content={
-            <Routes>
-              <Route path="/" element={<HomeContainer />} />
-              <Route path="/hubs/:hubId" element={<HubContainer />} />
-            </Routes>
-          }
-        />
+        <Layout title={title}>
+          <Routes>
+            <Route path="/" element={<HomeContainer />} />
+            <Route path="/hubs/:hubId" element={<HubContainer />} />
+          </Routes>
+        </Layout>
       )}
     </>
   );

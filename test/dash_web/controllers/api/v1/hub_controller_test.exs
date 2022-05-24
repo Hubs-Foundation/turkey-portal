@@ -14,16 +14,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
   describe "Hub API" do
     test "should fetch and return usage stats for hubs", %{conn: conn} do
-      Dash.HttpMock
-      |> Mox.expect(:get, 2, fn url, _headers, _options ->
-        cond do
-          url =~ ~r/presence$/ ->
-            {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{count: 3})}}
-
-          url =~ ~r/storage$/ ->
-            {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{storage_mb: 10})}}
-        end
-      end)
+      mock_hubs_get()
 
       create_test_account_and_hub()
 
@@ -86,5 +77,25 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     conn
     |> put_req_header("content-type", "application/json")
     |> patch("/api/v1/hubs/#{hub.hub_id}", Jason.encode!(body))
+  end
+
+  def mock_hubs_get() do
+    Dash.HttpMock
+    |> Mox.expect(:get, 2, fn url, _headers, _options ->
+      cond do
+        url =~ ~r/presence$/ ->
+          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{count: 3})}}
+
+        url =~ ~r/storage$/ ->
+          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{storage_mb: 10})}}
+      end
+    end)
+  end
+
+  def mock_orch_post() do
+    Dash.HttpMock
+    |> Mox.expect(:post, fn _url, _body ->
+      {:ok, %HTTPoison.Response{status_code: 200}}
+    end)
   end
 end
