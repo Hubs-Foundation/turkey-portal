@@ -10,7 +10,7 @@ import InternalLink from '../../shared/InternalLink/InternalLink'
 import { dropdownT } from '../../../types/General'
 
 type MainNavPropsT = {
-  classProp: string
+  classProp?: string
 }
 
 const MainNav = ({ classProp = '' }: MainNavPropsT) => {

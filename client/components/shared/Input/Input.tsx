@@ -1,4 +1,4 @@
-import { useContext, ChangeEventHandler, ChangeEvent } from 'react'
+import { useContext, ChangeEventHandler, ChangeEvent, useState, useEffect } from 'react'
 import { FormContext } from '../Form/Form'
 import styles from './Input.module.scss'
 import { InputT } from '../../../types/Form'
@@ -9,35 +9,69 @@ type InputProps = {
   type?: InputT,
   info?: string,
   classProp?: string,
-  onChange?: Function
+  onChange?: Function,
+  validator?: Function
+  required?: boolean
+  errorMessage?: string
 }
 
-const Input = ({ label, type = 'text', name, info, classProp = '', onChange }: InputProps) => {
+const Input = ({ label, type = 'text', name, info, classProp = '', onChange, validator, required = false, errorMessage='Invaid Input' }: InputProps) => {
 
   const formContext = useContext(FormContext)
-  // Get data and methods from form context
   const { form, handleFormChange } = formContext
+  const [isValid, setIsValid] = useState(true)
+  const [isDirty, setIsDirty] = useState<boolean>(false)
+  const [initialValue, setInitialValue] = useState(Object.keys(form).length != 0 ? form[name] : '')
+  const [currentValue, setCurrentValue] = useState(Object.keys(form).length != 0 ? form[name] : '')
 
+
+
+  /**
+   * Bifercates Prop and Context handlers
+   * @param event 
+   */
   const relayChange: ChangeEventHandler<HTMLInputElement> = (event: ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value
+    setIsDirty(initialValue !== newValue)
     handleFormChange(event)
-    onChange && onChange(event.target.value)
+    setCurrentValue(newValue)
+    onChange && onChange(newValue)
   }
 
+
+  useEffect(() => {
+
+    if (validator) {
+      setIsValid(validator(currentValue))
+    }
+
+  }, [currentValue])
+
+
+ 
   return (
     <div className={`${styles.input_wrapper} ${classProp}`}>
       {
         Object.keys(form).length != 0 && (
           <>
-            <label>{label}</label>
+            <label>{label} {`${isDirty}`}</label>
             <input
+              required={required}
               placeholder={label}
               type={type}
               name={name}
               value={form[name]}
               onChange={relayChange}
             />
+
+            {/* Addition Input Information  */}
             {
-              info ? <span className={styles.info}>{info}</span> : ''
+              info && isValid ? <span className={styles.info}>{info}</span> : ''
+            }
+
+            {/* Input Error Message  */}
+            {
+              !isValid ? <span className={styles.info}>{errorMessage}</span> : ''
             }
           </>
         )
