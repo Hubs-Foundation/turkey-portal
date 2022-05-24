@@ -9,12 +9,11 @@ import { Landing } from "./display/Landing";
 import { Layout } from "./display/Layout";
 import { Spinner } from "./common/Spinner";
 import { UserNotFound } from "./display/UserNotFound";
-// import { selectIsForbidden } from "./store/hubs";
 
 export function App() {
   let { isLoading, isError, isReady } = useAccount();
-  const location = useLocation();
   const isForbidden = useSelector((state) => state.hubEntities.isForbidden);
+  const location = useLocation();
 
   // An error could occur due to several reasons, but let's
   // assume the user just needs to log in again.

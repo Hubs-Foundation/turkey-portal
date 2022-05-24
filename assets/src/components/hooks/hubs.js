@@ -11,7 +11,7 @@ export function useHubs() {
   const { data, error, isLoading, isError, isSuccess } = useGetHubsQuery({}, { skip: isInitialized });
 
   // Manage unauthorized email
-  const isForbidden = isError && error?.status === 403
+  const isForbidden = isError && error?.status === 403;
   if (isForbidden) dispatch(setForbidden());
 
   if (!isInitialized && data) dispatch(setHubEntities(data));
