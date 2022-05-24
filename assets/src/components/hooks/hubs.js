@@ -10,10 +10,9 @@ export function useHubs() {
   const isInitialized = useSelector(selectIsInitialized);
   const { data, error, isLoading, isError, isSuccess } = useGetHubsQuery({}, { skip: isInitialized });
 
-  console.log(isInitialized);
-
   // Manage unauthorized email
-  if (isError && error?.status === 403) dispatch(setForbidden());
+  const isForbidden = isError && error?.status === 403
+  if (isForbidden) dispatch(setForbidden());
 
   if (!isInitialized && data) dispatch(setHubEntities(data));
 

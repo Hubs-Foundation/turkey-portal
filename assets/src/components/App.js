@@ -7,14 +7,12 @@ import { HomeContainer } from "./containers/HomeContainer";
 import { HubContainer } from "./containers/HubContainer";
 import { Landing } from "./display/Landing";
 import { Layout } from "./display/Layout";
-import { Header } from "./display/Header";
-import { Nav } from "./display/Nav";
 import { Spinner } from "./common/Spinner";
 import { UserNotFound } from "./display/UserNotFound";
 // import { selectIsForbidden } from "./store/hubs";
 
 export function App() {
-  let { account, isLoading, isError, isReady } = useAccount();
+  let { isLoading, isError, isReady } = useAccount();
   const location = useLocation();
   const isForbidden = useSelector((state) => state.hubEntities.isForbidden);
 
@@ -22,19 +20,22 @@ export function App() {
   // assume the user just needs to log in again.
   let isLoggedOut = isError;
 
-  const title = location.pathname.startsWith("/hubs/") ? "Hub Settings" : "Dashboard";
+  const title = isForbidden ? "" : location.pathname.startsWith("/hubs/") ? "Hub Settings" : "Dashboard";
 
   return (
     <>
       {isLoading && <Spinner />}
       {isLoggedOut && <Landing />}
-      {isForbidden && <UserNotFound />}
       {isReady && (
         <Layout title={title}>
-          <Routes>
-            <Route path="/" element={<HomeContainer />} />
-            <Route path="/hubs/:hubId" element={<HubContainer />} />
-          </Routes>
+          {isForbidden ? (
+            <UserNotFound />
+          ) : (
+            <Routes>
+              <Route path="/" element={<HomeContainer />} />
+              <Route path="/hubs/:hubId" element={<HubContainer />} />
+            </Routes>
+          )}
         </Layout>
       )}
     </>

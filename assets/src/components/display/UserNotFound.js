@@ -1,9 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
-import { Layout } from "./Layout";
 import "./UserNotFound.css";
-import logoBlack from "../../images/logo-black.svg";
 
 export function UserNotFound() {
   return (
