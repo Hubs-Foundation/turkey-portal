@@ -15,19 +15,18 @@ export const hubEntitiesSlice = createSlice({
       hubEntityAdapter.setOne(state, action.payload);
     },
     setHubEntities(state, action) {
-      console.log("ARE YOUF IRING??")
       state.isInitialized = true;
       hubEntityAdapter.setAll(state, action.payload);
     },
     setForbidden(state, action) {
-      return {...state, isForbidden: true}
+      return { ...state, isForbidden: action.payload };
     },
   },
 });
 
 export const selectIsInitialized = createSelector(
   (state) => state.hubEntities,
-  (state) => state.isInitialized,
+  (state) => state.isInitialized
 );
 
 export const hubEntitySelectors = hubEntityAdapter.getSelectors((state) => state.hubEntities);

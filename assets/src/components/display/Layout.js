@@ -5,14 +5,14 @@ import "./Layout.css";
 import { Header } from "./Header";
 import { Nav } from "./Nav";
 
-export function Layout({ title, children }) {
+export function Layout({ children }) {
   return (
     <>
       <div className="top-bar">
         <Header />
       </div>
       <div className="nav-bar">
-        <Nav title={title} />
+        <Nav />
       </div>
       <div className="content">{children}</div>
     </>
@@ -21,5 +21,4 @@ export function Layout({ title, children }) {
 
 Layout.propTypes = {
   children: PropTypes.node,
-  title: PropTypes.string,
 };

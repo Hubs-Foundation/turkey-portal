@@ -12,14 +12,13 @@ export function useHubs() {
 
   // Manage unauthorized email
   const isForbidden = isError && error?.status === 403;
-  if (isForbidden) dispatch(setForbidden());
 
   if (!isInitialized && data) dispatch(setHubEntities(data));
 
   const hasHubs = !!hubs.length;
   const isReady = isSuccess || isInitialized;
 
-  return { hubs, hasHubs, isLoading, isError, isReady };
+  return { hubs, hasHubs, isLoading, isError, isReady, isForbidden };
 }
 
 export function useHub(hubId) {
@@ -32,7 +31,7 @@ export function useHub(hubId) {
   if (!hasHubEntity && data) dispatch(setHubEntity(data));
 
   // Manage unauthorized email
-  if (isError && error?.status === 403) setForbidden();
+  const isForbidden = isError && error?.status === 403;
 
   const currentHub = useSelector(selectCurrentHub);
   if (hasHubEntity && !currentHub) dispatch(setCurrentHub(hubEntity));
@@ -54,5 +53,6 @@ export function useHub(hubId) {
     isError,
     isReady,
     isSubmitting,
+    isForbidden
   };
 }
