@@ -37,8 +37,6 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
         |> put_test_token(@valid_expiration)
         |> get("/api/v1/hubs")
 
-      IO.inspect(conn)
-
       assert response(conn, 200)
     end
 
