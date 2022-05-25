@@ -18,7 +18,8 @@ export function App() {
   // assume the user just needs to log in again.
   const isLoggedOut = isError;
 
-  const title = location.pathname.startsWith("/hubs/") ? "Hub Settings" : "Dashboard";
+  const isHubSettings = location.pathname.startsWith("/hubs/");
+  const title = isHubSettings ? "Hub Settings" : "Dashboard";
 
   return (
     <>
@@ -27,7 +28,7 @@ export function App() {
       {isReady && (
         <Layout
           top={<Header account={account} />}
-          nav={<Nav title={title} />}
+          nav={<Nav title={title} showBackButton={isHubSettings} />}
           content={
             <Routes>
               <Route path="/" element={<HomeContainer />} />

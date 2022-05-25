@@ -2,10 +2,17 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import "./Nav.css";
+import { Link } from "react-router-dom";
+import { IconBackButton } from "../common/icons";
 
-export function Nav({ title }) {
+export function Nav({ showBackButton, title }) {
   return (
-    <div>
+    <div className="nav">
+      {showBackButton && (
+        <Link to={"/"}>
+          <IconBackButton />
+        </Link>
+      )}
       <h2>{title}</h2>
     </div>
   );
@@ -13,4 +20,5 @@ export function Nav({ title }) {
 
 Nav.propTypes = {
   title: PropTypes.string,
+  showBackButton: PropTypes.bool,
 };
