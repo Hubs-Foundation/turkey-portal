@@ -63,6 +63,7 @@ defmodule DashWeb.Router do
       )
     )
   end
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put

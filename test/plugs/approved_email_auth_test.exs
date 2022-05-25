@@ -16,7 +16,6 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
   end
 
   describe "ApprovedEmailAuth Plug" do
-
     setup do
       # Explicitly get a connection before each test
       :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
@@ -37,7 +36,6 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
         conn
         |> put_test_token(@valid_expiration)
         |> get("/api/v1/hubs")
-
 
       IO.inspect(conn)
 
