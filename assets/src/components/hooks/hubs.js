@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import { useGetHubsQuery, useGetHubQuery, useUpdateHubMutation } from "../services/hubs";
-import { hubEntitySelectors, selectIsInitialized, setHubEntity, setHubEntities, setForbidden } from "../store/hubs";
+import { hubEntitySelectors, selectIsInitialized, setHubEntity, setHubEntities } from "../store/hubs";
 import { selectCurrentHub, setCurrentHub } from "../store/currentHub";
 
 export function useHubs() {
@@ -53,6 +53,6 @@ export function useHub(hubId) {
     isError,
     isReady,
     isSubmitting,
-    isForbidden
+    isForbidden,
   };
 }

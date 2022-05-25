@@ -12,5 +12,5 @@ export function useAccount() {
 
   const isReady = isSuccess || account.isInitialized;
 
-  return { account, isLoading, isError, isReady, };
+  return { account, isLoading, isError, isReady };
 }
