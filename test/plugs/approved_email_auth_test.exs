@@ -7,11 +7,13 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
   setup_all do
     # For /api/v1/hubs request setup
     Mox.defmock(Dash.HttpMock, for: HTTPoison.Base)
-    merge_module_config(:dash, Dash.Hub, %{:http_client => Dash.HttpMock})
+    merge_module_config(:dash, Dash.Hub, http_client: Dash.HttpMock)
+    merge_module_config(:dash, Dash.OrchClient, http_client: Dash.HttpMock)
 
     on_exit(fn ->
       # For /api/v1/hubs request
-      merge_module_config(:dash, Dash.Hub, %{:http_client => nil})
+      merge_module_config(:dash, Dash.Hub, http_client: nil)
+      merge_module_config(:dash, Dash.OrchClient, http_client: nil)
     end)
   end
 
