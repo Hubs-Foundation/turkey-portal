@@ -20,6 +20,10 @@
 .hub-form input[type="text"]:focus {
   border-color: #bbb;
 }
+.hub-form input[type="text"]:invalid {
+  border: 0;
+  outline: 2px solid #920b27;
+}
 .hub-form label {
   display: inline;
   margin: 0 0.2em;
@@ -46,6 +50,7 @@
   align-items: center;
   margin: 0;
   margin-bottom: 1.5em;
+  margin-top: 0.5em;
   padding: 1em;
   background: #eee;
   border-radius: 0.2em;
@@ -77,8 +82,17 @@
 }
 .hub-form .form-section-title {
   display: block;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.2em;
   font-weight: bold;
+}
+.hub-form .form-section-subtitle {
+  display: block;
+  padding-bottom: 0.5em;
+  font-size: 9pt;
+  color: #737373;
+}
+.hub-form .form-section-subtitle.invalid {
+  color: #920b27;
 }
 .hub-form .form-buttons {
   display: flex;
@@ -95,6 +109,9 @@
 .hub-form .web-address > * {
   display: flex;
   align-items: center;
+}
+.hub-form .web-address-header {
+  display: block;
 }
 .hub-form .subdomain {
   font-weight: bold;
@@ -113,6 +130,9 @@
   background: white;
   border: 1px solid #ddd;
   border-radius: 0.5em;
+}
+.hub-form-summary-value {
+  font-weight: bold;
 }
 .hub-form-summary > *:first-child {
   grid-column: span 2;
