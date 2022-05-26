@@ -9,7 +9,6 @@ defmodule Dash.Hub do
 
   schema "hubs" do
     field :ccu_limit, :integer
-    field :instance_uuid, Ecto.UUID
     field :name, :string
     field :status, Ecto.Enum, values: [:creating, :updating, :ready]
     field :storage_limit_mb, :integer
@@ -23,7 +22,6 @@ defmodule Dash.Hub do
   def changeset(hub, attrs) do
     hub
     |> cast(attrs, [
-      :instance_uuid,
       :name,
       :ccu_limit,
       :storage_limit_mb,
@@ -32,7 +30,6 @@ defmodule Dash.Hub do
       :status
     ])
     |> validate_required([
-      :instance_uuid,
       :name,
       :ccu_limit,
       :storage_limit_mb,
@@ -41,13 +38,17 @@ defmodule Dash.Hub do
       :status
     ])
     |> unique_constraint(:subdomain)
-    |> unique_constraint(:instance_uuid)
   end
 
   def form_changeset(hub, attrs) do
     hub
-    |> cast(attrs, [:name])
+    |> cast(attrs, [:name, :subdomain])
     |> validate_length(:name, min: 1, max: 24)
+    |> validate_length(:subdomain, min: 1, max: 63)
+    |> validate_format(:subdomain, ~r/^[a-z0-9]/i)
+    |> validate_format(:subdomain, ~r/^[a-z0-9-]+$/i)
+    |> validate_format(:subdomain, ~r/[a-z0-9]$/i)
+    |> unique_constraint(:subdomain)
   end
 
   defp hubs_for_account(%Dash.Account{} = account) do
@@ -78,13 +79,13 @@ defmodule Dash.Hub do
   }
 
   def create_default_hub(%Dash.Account{} = account, fxa_email) do
-    # TODO replace with request to orchestrator with email for a round trip to get this information.
-    subdomain = rand_string(10)
+    # TODO These random strings are not very pleasant.
+    # Maybe use a friendlier name generator instead?
+    subdomain = Dash.Utils.rand_string(10)
 
     new_hub_params =
       %{
-        instance_uuid: fake_uuid(),
-        subdomain: subdomain,
+        subdomain: subdomain_and_name,
         status: :creating
       }
       |> Map.merge(@hub_defaults)
@@ -96,31 +97,13 @@ defmodule Dash.Hub do
       |> Dash.Repo.insert!()
 
     with {:ok, _} <- Dash.OrchClient.create_hub(fxa_email, new_hub) do
+      # TODO Wait for hub to be fully available, before setting status to :ready
       new_hub = new_hub |> change(status: :ready) |> Dash.Repo.update!()
       {:ok, new_hub}
     else
       # TODO Should we delete the hub from the db or set status = :error enum?
       {:error, err} -> {:error, err}
     end
-  end
-
-  defp rand_string(len) do
-    chars = "0123456789abcdef" |> String.graphemes()
-
-    1..len
-    |> Enum.map(fn _ -> chars |> Enum.take_random(1) end)
-    |> Enum.join("")
-  end
-
-  defp fake_uuid() do
-    [
-      rand_string(8),
-      rand_string(4),
-      rand_string(4),
-      rand_string(4),
-      rand_string(12)
-    ]
-    |> Enum.join("-")
   end
 
   def get_hub(hub_id, %Dash.Account{} = account) do
@@ -140,11 +123,30 @@ defmodule Dash.Hub do
   end
 
   def update_hub(hub_id, attrs, %Dash.Account{} = account) do
-    with %Dash.Hub{} = hub <- get_hub(hub_id, account) do
-      form_changeset(hub, attrs) |> Dash.Repo.update()
+    with %Dash.Hub{} = hub <- get_hub(hub_id, account),
+         {:ok, updated_hub} <- form_changeset(hub, attrs) |> Dash.Repo.update() do
+      if hub.subdomain != updated_hub.subdomain do
+        update_subdomain(hub, updated_hub)
+      else
+        {:ok, updated_hub}
+      end
     else
-      {:error, err} -> {:error, err}
-      err -> err
+      _err ->
+        # TODO Add logging here
+        {:error, :update_hub_failed}
+    end
+  end
+
+  defp update_subdomain(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do
+    case Dash.OrchClient.update_subdomain(updated_hub) do
+      {:ok, _} ->
+        {:ok, updated_hub}
+
+      {:error, _} ->
+        # TODO Add logging here
+        # Revert the subdomain back to the previous one, since the orchestrator request failed.
+        updated_hub |> form_changeset(%{subdomain: previous_hub.subdomain}) |> Dash.Repo.update()
+        {:error, :subdomain_update_failed}
     end
   end
 
@@ -169,6 +171,7 @@ defmodule Dash.Hub do
     %{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
   end
 
+  # TODO Move reticulum requests into a RetClient module.
   @ret_host_prefix "hc-"
   @ret_internal_port "4000"
   defp get_hub_internal_host_url(%Dash.Hub{} = hub) do

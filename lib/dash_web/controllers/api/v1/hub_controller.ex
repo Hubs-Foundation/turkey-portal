@@ -40,14 +40,11 @@ defmodule DashWeb.Api.V1.HubController do
       {:ok, _} ->
         conn |> send_resp(200, "")
 
-      {:error, %Ecto.Changeset{}} ->
-        conn |> send_resp(400, Jason.encode!(%{error: :invalid_input})) |> halt()
+      {:error, :subdomain_update_failed = err} ->
+        conn |> send_resp(500, Jason.encode!(%{error: err})) |> halt()
 
       {:error, err} ->
         conn |> send_resp(400, Jason.encode!(%{error: err})) |> halt()
-
-      _ ->
-        conn |> send_resp(404, Jason.encode!(%{error: :not_found})) |> halt()
     end
   end
 
