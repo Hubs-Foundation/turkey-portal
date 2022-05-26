@@ -4,5 +4,9 @@ import "./Spinner.css";
 import { IconSpinner } from "../common/icons";
 
 export function Spinner() {
-  return <IconSpinner className="spinner" />;
+  return (
+    <div className="spinner-container">
+      <IconSpinner className="spinner" />
+    </div>
+  );
 }
