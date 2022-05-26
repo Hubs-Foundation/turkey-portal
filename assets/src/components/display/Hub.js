@@ -9,6 +9,9 @@ import { formatNumber, formatMegabytes } from "../utils/formatNumber";
 import { READY } from "../utils/hub-constants";
 
 export function Hub({ tier, name, status, subdomain, currentCcu, ccuLimit, storageUsageMb, storageLimitMb, hubId }) {
+  const ccu = `${formatNumber(currentCcu)} / ${formatNumber(ccuLimit)}`;
+  const storage = `${formatMegabytes(storageUsageMb)} / ${formatMegabytes(storageLimitMb)}`;
+
   return (
     <div className={`hub ${status}`}>
       <div className="hub-info">
@@ -16,34 +19,43 @@ export function Hub({ tier, name, status, subdomain, currentCcu, ccuLimit, stora
         <span className="name">{name}</span>
       </div>
 
-      <div>
-        {status === READY ? (
-          <a className="domain" href={`//${subdomain}.myhubs.net`}>
-            {subdomain}.myhubs.net
-          </a>
-        ) : (
-          <span className="domain">
-            <Spinner isInline />
-            Building your new hub...
+      {status === READY ? (
+        <>
+          <div>
+            <a className="domain" href={`//${subdomain}.myhubs.net`}>
+              {subdomain}.myhubs.net
+            </a>
+          </div>
+
+          <span className="hub-stats">
+            <IconUsers /> {ccu}
           </span>
-        )}
-      </div>
+          <span className="hub-stats">
+            <IconDrive /> {storage}
+          </span>
 
-      <span className="hub-stats">
-        <IconUsers />
-        {status === READY ? `${formatNumber(currentCcu)} / ${formatNumber(ccuLimit)}` : "-"}
-      </span>
-      <span className="hub-stats">
-        <IconDrive />
-        {status === READY ? `${formatMegabytes(storageUsageMb)} / ${formatMegabytes(storageLimitMb)}` : "-"}
-      </span>
+          <div className="hub-buttons">
+            <LinkButton to={`/hubs/${hubId}`} text="Hub Settings" />
+            {/* TODO change hardcoded value for domain*/}
+            <LinkButton href={`https://${subdomain}.myhubs.net/admin`} text="Admin Panel" />
+          </div>
+        </>
+      ) : (
+        <>
+          <div>
+            <span className="domain">
+              <Spinner isInline />
+              Building your new hub...
+            </span>
+          </div>
 
-      {status === READY && (
-        <div className="hub-buttons">
-          <LinkButton to={`/hubs/${hubId}`} text="Hub Settings" />
-          {/* TODO change hardcoded value for domain*/}
-          <LinkButton href={`https://${subdomain}.myhubs.net/admin`} text="Admin Panel" />
-        </div>
+          <span className="hub-stats">
+            <IconUsers /> -
+          </span>
+          <span className="hub-stats">
+            <IconDrive /> -
+          </span>
+        </>
       )}
     </div>
   );
