@@ -1,8 +1,8 @@
 import Head from 'next/head'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import RadioGroup from '../../components/shared/RadioGroup/RadioGroup'
 import Form from '../../components/shared/Form/Form'
-import Input from '../../components/shared/Input/Input'
+import Input, { InputInterfaceT } from '../../components/shared/Input/Input'
 import Button from '../../components/shared/Button/Button'
 import { ButtonCategoriesE } from '../../types/Form'
 
@@ -27,7 +27,13 @@ export default function Sandbox() {
     }
   ]
 
+
   const [radioForm, setRadioForm] = useState('label_1')
+  const passwordInput = useRef<InputInterfaceT>(null)
+
+  const testing = () => {
+    console.log('diry:',passwordInput.current?.isDirty())
+  }
 
   const handleFormChange = (event: Event) => {
     const { value }: HTMLInputElement = (event.target as HTMLInputElement)
@@ -67,7 +73,8 @@ export default function Sandbox() {
 
             <Button
               icon='settings'
-              text='Icon Button' />
+              text='Icon Button' 
+              onClick={testing}/>
 
             <Button
               disabled={true}
@@ -94,16 +101,18 @@ export default function Sandbox() {
           <Form submit={submit} initialValues={initialValues}>
             <>
               <Input
+                required={true}
                 label="Email"
                 type="email"
                 name="email"
                 errorMessage='you broke it'
-                validator={}
               />
               <Input
-                label="Password"
-                type="password"
+                required={true}
+                label="Testing"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 name="password"
+                ref={passwordInput}
               />
               <RadioGroup
                 name="test"

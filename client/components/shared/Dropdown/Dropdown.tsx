@@ -2,6 +2,10 @@ import { ReactNode, useState, useRef, useEffect, useCallback, useImperativeHandl
 import styles from './Dropdown.module.scss'
 import FadeIn from '../../util/FadeIn'
 
+export type dropdownT = {
+  closeDropdown: Function
+}
+
 type AlignmentT = 'left' | 'right'
 type DropdownProps = {
   cta: ReactNode,
@@ -54,14 +58,14 @@ const Dropdown = forwardRef(({ cta, content, classProp = '', alignment }: Dropdo
     return () => document.removeEventListener('mousedown', checkIfClickedOutside)
   }, [isOpen])
 
-  const handleOpen =  useCallback(() => {
+  const handleOpen = useCallback(() => {
     setIsVisible((state) => !state)
     setIsOpen((state) => !state)
-  },[])
+  }, [])
 
-  const handleClose =  useCallback(() => {
+  const handleClose = useCallback(() => {
     setIsOpen((state) => !state)
-  },[])
+  }, [])
 
   const handleOnComplete = useCallback(() => {
     if (!isOpen) setIsVisible(false)
