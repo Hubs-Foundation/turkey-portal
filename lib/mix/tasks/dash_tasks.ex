@@ -58,10 +58,10 @@ defmodule Mix.Tasks.Dash.CreateHub do
       instance_uuid: fake_uuid(),
       name: hub_name,
       subdomain: rand_string(10),
-      tier: :free,
+      tier: :mvp,
       ccu_limit: 5,
       storage_limit_mb: 100,
-      status: :creating
+      status: :ready
     })
     |> Ecto.Changeset.put_assoc(:account, account)
     |> Dash.Repo.insert!()

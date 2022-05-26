@@ -59,7 +59,7 @@ config :dash, DashWeb.Plugs.BasicAuth,
   username: "local",
   password: "pass"
 
-config :dash, Dash.OrchClient, orch_host: ""
+config :dash, Dash.OrchClient, orch_host: "turkey-orch.local"
 
 config :dash, Dash.FeatureFlags,
   create_hubs: false,
