@@ -85,7 +85,7 @@ defmodule Dash.Hub do
 
     new_hub_params =
       %{
-        subdomain: subdomain_and_name,
+        subdomain: subdomain,
         status: :creating
       }
       |> Map.merge(@hub_defaults)
