@@ -71,6 +71,7 @@ defmodule Dash.Hub do
   end
 
   @hub_defaults %{
+    name: "Untitled Hub",
     tier: :mvp,
     ccu_limit: 25,
     storage_limit_mb: 2000
@@ -78,13 +79,12 @@ defmodule Dash.Hub do
 
   def create_default_hub(%Dash.Account{} = account, fxa_email) do
     # TODO replace with request to orchestrator with email for a round trip to get this information.
-    subdomain_and_name = rand_string(10)
+    subdomain = rand_string(10)
 
     new_hub_params =
       %{
         instance_uuid: fake_uuid(),
-        name: subdomain_and_name,
-        subdomain: subdomain_and_name,
+        subdomain: subdomain,
         status: :creating
       }
       |> Map.merge(@hub_defaults)
