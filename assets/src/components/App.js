@@ -30,7 +30,7 @@ export function App() {
           nav={<Nav title={title} />}
           content={
             <Routes>
-              <Route path="/" element={<HomeContainer accountHasHubs={account.hasHubs} />} />
+              <Route path="/" element={<HomeContainer />} />
               <Route path="/hubs/:hubId" element={<HubContainer />} />
             </Routes>
           }
