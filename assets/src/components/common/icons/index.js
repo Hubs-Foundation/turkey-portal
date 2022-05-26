@@ -10,34 +10,27 @@ import external from "./external.svg";
 
 import "./Icon.css";
 
-export function Icon({ src }) {
-  return <img className="icon" src={src} />;
-}
-Icon.propTypes = {
-  src: PropTypes.string.isRequired,
-};
-
 export function IconDrive() {
-  return <img className="icon" src={drive} />;
+  return <img alt="storage" className="icon" src={drive} />;
 }
 
 export function IconUsers() {
-  return <img className="icon" src={users} />;
+  return <img alt="users" className="icon" src={users} />;
 }
 
 export function IconClock() {
-  return <img className="icon" src={clock} />;
+  return <img alt="clock icon" className="icon" src={clock} />;
 }
 
 export function IconSpinner({ className }) {
-  return <img className={`icon ${className}`} src={spinner} />;
+  return <img alt="loading" className={`icon ${className}`} src={spinner} />;
 }
 IconSpinner.propTypes = { className: PropTypes.string };
 
 export function IconLogOut() {
-  return <img className="icon" src={logOut} />;
+  return <img alt="sign out" className="icon" src={logOut} />;
 }
 
 export function IconExternal() {
-  return <img className="icon" src={external} />;
+  return <img alt="external link" className="icon" src={external} />;
 }

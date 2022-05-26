@@ -38,7 +38,7 @@ export function Header({ account }) {
           {popoutOpen && (
             <div className="account-popout">
               <div className="account-details">
-                <img src={account.profilePicture} />
+                <img alt="profile picture" src={account.profilePicture} />
                 <span className="account-email">{account.email}</span>
                 {/* TODO Pull domain from some configuration */}
                 <a
