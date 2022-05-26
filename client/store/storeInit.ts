@@ -21,8 +21,6 @@ const initAccountData = () => {
     })
 }
 
-
-
 /**
    * Initialize All Store data here
    */

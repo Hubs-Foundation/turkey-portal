@@ -29,7 +29,6 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
   useEffect(() => {
     const { hub_id } = router.query
     getHub(`${hub_id}`).then((hub) => {
-      console.log("hub",hub)
       setLoading(false)
       setHub(hub)
       setInitialFormValues({
@@ -43,9 +42,9 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
 
 
   const handleFormSubmit = (data: any) => {
-    // TODO : submit form to 
+    // TODO : submit form to DB
     const { hub_id } = router.query
-    updateHub(`${hub_id}`).then(()=>{})
+    updateHub(`${hub_id}`).then(() => { })
   }
 
   const handleCancelClick = () => {
@@ -138,8 +137,8 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
                 </ul>
               </div>
             </div>
-          </main> 
-        ): <div>Put loading skeleton here</div> 
+          </main>
+        ) : <div>Put loading skeleton here</div>
       }
     </div>
   )
