@@ -22,7 +22,7 @@ export function Hub({ tier, name, status, subdomain, currentCcu, ccuLimit, stora
           </a>
         ) : (
           <span className="domain">
-            <Spinner />
+            <Spinner isInline />
             Building your new hub...
           </span>
         )}
