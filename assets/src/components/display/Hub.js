@@ -6,6 +6,7 @@ import { LinkButton } from "../common/LinkButton";
 import { Spinner } from "../common/Spinner";
 import { IconDrive, IconUsers } from "../common/icons";
 import { formatNumber, formatMegabytes } from "../utils/formatNumber";
+import { READY } from "../utils/hub-constants";
 
 export function Hub({ tier, name, status, subdomain, currentCcu, ccuLimit, storageUsageMb, storageLimitMb, hubId }) {
   return (
@@ -16,7 +17,7 @@ export function Hub({ tier, name, status, subdomain, currentCcu, ccuLimit, stora
       </div>
 
       <div>
-        {status === "ready" ? (
+        {status === READY ? (
           <a className="domain" href={`//${subdomain}.myhubs.net`}>
             {subdomain}.myhubs.net
           </a>
@@ -30,14 +31,14 @@ export function Hub({ tier, name, status, subdomain, currentCcu, ccuLimit, stora
 
       <span className="hub-stats">
         <IconUsers />
-        {status === "ready" ? `${formatNumber(currentCcu)} / ${formatNumber(ccuLimit)}` : "-"}
+        {status === READY ? `${formatNumber(currentCcu)} / ${formatNumber(ccuLimit)}` : "-"}
       </span>
       <span className="hub-stats">
         <IconDrive />
-        {status === "ready" ? `${formatMegabytes(storageUsageMb)} / ${formatMegabytes(storageLimitMb)}` : "-"}
+        {status === READY ? `${formatMegabytes(storageUsageMb)} / ${formatMegabytes(storageLimitMb)}` : "-"}
       </span>
 
-      {status === "ready" && (
+      {status === READY && (
         <div className="hub-buttons">
           <LinkButton to={`/hubs/${hubId}`} text="Hub Settings" />
           {/* TODO change hardcoded value for domain*/}

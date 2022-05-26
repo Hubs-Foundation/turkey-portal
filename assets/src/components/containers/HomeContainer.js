@@ -9,11 +9,12 @@ import { useCreateHubMutation } from "../services/hubs";
 import { selectAccount } from "../store/account";
 import { featureIsEnabled, CREATE_HUBS } from "../utils/feature-flags";
 import { HubBuilding } from "../display/HubBuilding";
+import { CREATING } from "../utils/hub-constants";
 
 function HubLoading({ isBuildingHub }) {
   return isBuildingHub ? (
     <>
-      <Hub name="Untitled Hub" status="creating" />
+      <Hub name="Untitled Hub" status={CREATING} />
       <HubBuilding />
     </>
   ) : (
