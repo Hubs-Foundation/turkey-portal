@@ -55,36 +55,16 @@ defmodule Mix.Tasks.Dash.CreateHub do
 
     %Dash.Hub{}
     |> Dash.Hub.changeset(%{
-      instance_uuid: fake_uuid(),
       name: hub_name,
-      subdomain: rand_string(10),
-      tier: :free,
+      subdomain: Dash.Utils.rand_string(10),
+      tier: :mvp,
       ccu_limit: 5,
       storage_limit_mb: 100,
-      status: :creating
+      status: :ready
     })
     |> Ecto.Changeset.put_assoc(:account, account)
     |> Dash.Repo.insert!()
     |> IO.inspect()
-  end
-
-  defp rand_string(len) do
-    chars = "0123456789abcdef" |> String.graphemes()
-
-    1..len
-    |> Enum.map(fn _ -> chars |> Enum.take_random(1) end)
-    |> Enum.join("")
-  end
-
-  defp fake_uuid() do
-    [
-      rand_string(8),
-      rand_string(4),
-      rand_string(4),
-      rand_string(4),
-      rand_string(12)
-    ]
-    |> Enum.join("-")
   end
 end
 

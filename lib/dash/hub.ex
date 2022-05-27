@@ -4,16 +4,11 @@ defmodule Dash.Hub do
   import Ecto.Changeset
   alias Dash.Repo
 
-  defmodule UsageStats do
-    defstruct [:current_ccu, :current_storage_mb]
-  end
-
   @ret_access_key Application.get_env(:dash, Dash.Hub)[:dashboard_ret_access_key]
   @primary_key {:hub_id, :id, autogenerate: true}
 
   schema "hubs" do
     field :ccu_limit, :integer
-    field :instance_uuid, Ecto.UUID
     field :name, :string
     field :status, Ecto.Enum, values: [:creating, :updating, :ready]
     field :storage_limit_mb, :integer
@@ -27,7 +22,6 @@ defmodule Dash.Hub do
   def changeset(hub, attrs) do
     hub
     |> cast(attrs, [
-      :instance_uuid,
       :name,
       :ccu_limit,
       :storage_limit_mb,
@@ -36,7 +30,6 @@ defmodule Dash.Hub do
       :status
     ])
     |> validate_required([
-      :instance_uuid,
       :name,
       :ccu_limit,
       :storage_limit_mb,
@@ -45,23 +38,17 @@ defmodule Dash.Hub do
       :status
     ])
     |> unique_constraint(:subdomain)
-    |> unique_constraint(:instance_uuid)
   end
 
   def form_changeset(hub, attrs) do
     hub
-    |> cast(attrs, [
-      :name,
-      :ccu_limit,
-      :storage_limit_mb,
-      :tier
-    ])
-    |> validate_required([
-      :name,
-      :ccu_limit,
-      :storage_limit_mb,
-      :tier
-    ])
+    |> cast(attrs, [:name, :subdomain])
+    |> validate_length(:name, min: 1, max: 24)
+    |> validate_length(:subdomain, min: 1, max: 63)
+    |> validate_format(:subdomain, ~r/^[a-z0-9]/i)
+    |> validate_format(:subdomain, ~r/^[a-z0-9-]+$/i)
+    |> validate_format(:subdomain, ~r/[a-z0-9]$/i)
+    |> unique_constraint(:subdomain)
   end
 
   defp hubs_for_account(%Dash.Account{} = account) do
@@ -85,20 +72,20 @@ defmodule Dash.Hub do
   end
 
   @hub_defaults %{
+    name: "Untitled Hub",
     tier: :mvp,
     ccu_limit: 25,
     storage_limit_mb: 2000
   }
 
   def create_default_hub(%Dash.Account{} = account, fxa_email) do
-    # TODO replace with request to orchestrator with email for a round trip to get this information.
-    subdomain_and_name = rand_string(10)
+    # TODO These random strings are not very pleasant.
+    # Maybe use a friendlier name generator instead?
+    subdomain = Dash.Utils.rand_string(10)
 
     new_hub_params =
       %{
-        instance_uuid: fake_uuid(),
-        name: subdomain_and_name,
-        subdomain: subdomain_and_name,
+        subdomain: subdomain,
         status: :creating
       }
       |> Map.merge(@hub_defaults)
@@ -110,30 +97,13 @@ defmodule Dash.Hub do
       |> Dash.Repo.insert!()
 
     with {:ok, _} <- Dash.OrchClient.create_hub(fxa_email, new_hub) do
+      # TODO Wait for hub to be fully available, before setting status to :ready
+      new_hub = new_hub |> change(status: :ready) |> Dash.Repo.update!()
       {:ok, new_hub}
     else
       # TODO Should we delete the hub from the db or set status = :error enum?
       {:error, err} -> {:error, err}
     end
-  end
-
-  defp rand_string(len) do
-    chars = "0123456789abcdef" |> String.graphemes()
-
-    1..len
-    |> Enum.map(fn _ -> chars |> Enum.take_random(1) end)
-    |> Enum.join("")
-  end
-
-  defp fake_uuid() do
-    [
-      rand_string(8),
-      rand_string(4),
-      rand_string(4),
-      rand_string(4),
-      rand_string(12)
-    ]
-    |> Enum.join("-")
   end
 
   def get_hub(hub_id, %Dash.Account{} = account) do
@@ -154,30 +124,31 @@ defmodule Dash.Hub do
 
   def update_hub(hub_id, attrs, %Dash.Account{} = account) do
     with %Dash.Hub{} = hub <- get_hub(hub_id, account),
-         {:ok} <- validate_storage(hub, attrs) do
-      form_changeset(hub, attrs) |> Dash.Repo.update()
+         {:ok, updated_hub} <- form_changeset(hub, attrs) |> Dash.Repo.update() do
+      if hub.subdomain != updated_hub.subdomain do
+        update_subdomain(hub, updated_hub)
+      else
+        {:ok, updated_hub}
+      end
     else
-      {:error, err} -> {:error, err}
-      err -> err
+      _err ->
+        # TODO Add logging here
+        {:error, :update_hub_failed}
     end
   end
 
-  # If updating storage
-  defp validate_storage(
-         %Dash.Hub{} = hub_to_update,
-         %{"storage_limit_mb" => new_storage_limit_mb}
-       ) do
-    cur_storage = get_current_storage_usage_mb(hub_to_update.instance_uuid)
+  defp update_subdomain(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do
+    case Dash.OrchClient.update_subdomain(updated_hub) do
+      {:ok, _} ->
+        {:ok, updated_hub}
 
-    if cur_storage < String.to_integer(new_storage_limit_mb) do
-      {:ok}
-    else
-      {:error, :usage_over_limit}
+      {:error, _} ->
+        # TODO Add logging here
+        # Revert the subdomain back to the previous one, since the orchestrator request failed.
+        updated_hub |> form_changeset(%{subdomain: previous_hub.subdomain}) |> Dash.Repo.update()
+        {:error, :subdomain_update_failed}
     end
   end
-
-  # If not updating storage
-  defp validate_storage(%Dash.Hub{} = _hub_to_update, _), do: {:ok}
 
   # Returns current CCU and Storage
   defp get_hub_usage_stats(%Dash.Hub{} = hub) do
@@ -191,25 +162,38 @@ defmodule Dash.Hub do
           nil
       end
 
-    current_storage_mb = get_current_storage_usage_mb(hub)
+    current_storage_mb =
+      case get_current_storage_usage_mb(hub) do
+        {:ok, storage_mb} -> storage_mb
+        {:error, _} -> nil
+      end
 
-    %UsageStats{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
+    %{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
   end
 
+  # TODO Move reticulum requests into a RetClient module.
   @ret_host_prefix "hc-"
   @ret_internal_port "4000"
   defp get_hub_internal_host_url(%Dash.Hub{} = hub) do
     # TODO when we fix the hub_uid bug with orchestrator update hub.subdomain to the fix
-    "http://#{@ret_host_prefix}#{hub.subdomain}:#{@ret_internal_port}"
+    "https://#{@ret_host_prefix}#{hub.subdomain}:#{@ret_internal_port}"
   end
 
-  @ccu_endpoint "/api-internal/v1/presence"
+  @ret_internal_scope "/api-internal/v1/"
+  defp fetch_hub_internal_endpoint(%Dash.Hub{} = hub, endpoint) do
+    # Make the http client module configurable so that we can mock it out in tests.
+    http_client = Application.get_env(:dash, Dash.Hub)[:http_client] || HTTPoison
+
+    http_client.get(
+      get_hub_internal_host_url(hub) <> @ret_internal_scope <> endpoint,
+      %{"x-ret-dashboard-access-key" => @ret_access_key},
+      hackney: [:insecure]
+    )
+  end
+
+  @ccu_endpoint "presence"
   defp get_current_ccu(%Dash.Hub{} = hub) do
-    case HTTPoison.get(
-           get_hub_internal_host_url(hub) <> @ccu_endpoint,
-           "x-ret-dashboard-access-key": @ret_access_key,
-           hackney: [:insecure]
-         ) do
+    case fetch_hub_internal_endpoint(hub, @ccu_endpoint) do
       # Reticulum returned the ccu correctly
       {:ok, %{status_code: 200, body: body}} ->
         %{"count" => count} = Poison.Parser.parse!(body)
@@ -227,8 +211,20 @@ defmodule Dash.Hub do
     end
   end
 
-  defp get_current_storage_usage_mb(_hub) do
-    # TODO ask orchestrator for current storage usage
-    50
+  @storage_endpoint "storage"
+  defp get_current_storage_usage_mb(%Dash.Hub{} = hub) do
+    case fetch_hub_internal_endpoint(hub, @storage_endpoint) do
+      {:ok, %{status_code: 200, body: body}} ->
+        %{"storage_mb" => storage_mb} = Poison.Parser.parse!(body)
+        {:ok, storage_mb}
+
+      {:ok, _} ->
+        # TODO Log and error here when we introduce Logger
+        {:error, :no_storage_returned}
+
+      {:error, reason} ->
+        # TODO Log and error here when we introduce Logger
+        {:error, reason}
+    end
   end
 end
