@@ -37,5 +37,5 @@ export function IconExternal() {
 }
 
 export function IconBackButton() {
-  return <img className="icon" src={backButton} />;
+  return <img alt="back" className="icon" src={backButton} />;
 }
