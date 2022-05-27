@@ -17,6 +17,6 @@ test("Hub form mvp tier is enabled", async () => {
 
   const { findByRole } = render(<HubForm hub={hub} />);
 
-  const mvpTier = await findByRole("radio", { name: "mvp users 25 storage 2GB" });
+  const mvpTier = await findByRole("radio", { name: "mvp users - storage -" });
   expect(mvpTier.disabled).toBe(false);
 });
