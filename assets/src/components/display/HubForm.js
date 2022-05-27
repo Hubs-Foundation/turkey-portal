@@ -6,8 +6,36 @@ import { LinkButton } from "../common/LinkButton";
 import { IconDrive, IconUsers } from "../common/icons";
 import { formatMegabytes } from "../utils/formatNumber";
 
-export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
+function HubNickname({ hub, setHub }) {
   const [nameValidity, setNameValidity] = useState({ valid: true });
+
+  return (
+    <div>
+      <span className="form-section-title">Hub Nickname</span>
+      {nameValidity.valid || nameValidity.valueMissing ? (
+        <span className="form-section-subtitle">For use within the dashboard area only</span>
+      ) : (
+        <span className="form-section-subtitle invalid">Hub name too long (24 characters max)</span>
+      )}
+      <input
+        type="text"
+        value={hub.name}
+        required
+        pattern=".{1,24}"
+        onChange={(e) => {
+          setNameValidity(e.target.validity);
+          setHub({ ...hub, name: e.target.value });
+        }}
+      />
+    </div>
+  );
+}
+HubNickname.propTypes = {
+  hub: PropTypes.object,
+  setHub: PropTypes.func,
+};
+
+export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
   const onFormSubmit = (e) => {
     e.preventDefault();
     onSubmit(hub);
@@ -21,26 +49,7 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
   return (
     <div className="hub-form-container">
       <form className="hub-form" onSubmit={onFormSubmit}>
-        <div>
-          <span className="form-section-title">Hub Nickname</span>
-          {nameValidity.valid || nameValidity.valueMissing ? (
-            <span className="form-section-subtitle">For use within the dashboard area only</span>
-          ) : (
-            nameValidity.patternMismatch && (
-              <span className="form-section-subtitle invalid">Hub name too long (24 characters max)</span>
-            )
-          )}
-          <input
-            type="text"
-            value={hub.name}
-            required
-            pattern=".{1,24}"
-            onChange={(e) => {
-              setNameValidity(e.target.validity);
-              setHub({ ...hub, name: e.target.value });
-            }}
-          />
-        </div>
+        <HubNickname hub={hub} setHub={setHub} />
 
         <div>
           <span className="form-section-title">Hub Tier</span>
