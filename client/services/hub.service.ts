@@ -8,10 +8,16 @@ const API_PATH = '/api/v1/hubs'
  * @returns Hubs[]
  */
 export const getHubs = async () => {
-  return axios.get(`${API_SERVER}${API_PATH}`, { withCredentials: true })
-    .then((response) => {
-      return response.data
-    })
+  try {
+    return axios.get(`${API_SERVER}${API_PATH}`, { withCredentials: true })
+      .then((response) => {
+        return response.data
+      })
+  } catch (error) {
+    // TODO: Make game plan for error handling 
+    console.log('Error', error)
+  }
+
 }
 
 /**
@@ -19,11 +25,18 @@ export const getHubs = async () => {
  * @param hubId string
  * @returns Hub{}
  */
-export const getHub = async (hubId:string) => {
-  return axios.get(`${API_SERVER}${API_PATH}/${hubId}`, { withCredentials: true })
-    .then((response) => {
-      return response.data
-    })
+export const getHub = async (hubId: string) => {
+
+  try {
+    return axios.get(`${API_SERVER}${API_PATH}/${hubId}`, { withCredentials: true })
+      .then((response) => {
+        return response.data
+      })
+  } catch (error) {
+    // TODO: Make game plan for error handling 
+    console.log('Error', error)
+  }
+
 }
 
 /**
@@ -34,10 +47,10 @@ export const getHub = async (hubId:string) => {
  * Update Hub By Id
  * @param hubId string
  */
- export const updateHub = async (hubId:string) => {}
+export const updateHub = async (hubId: string) => { }
 
- /**
- * Delete Hub By Id
- * @param hubId string
- */
-  export const deleteHub = async (hubId:string) => {}
+/**
+* Delete Hub By Id
+* @param hubId string
+*/
+export const deleteHub = async (hubId: string) => { }

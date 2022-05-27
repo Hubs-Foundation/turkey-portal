@@ -2,6 +2,7 @@ import { useContext, ChangeEventHandler, ChangeEvent, useState, useEffect, useRe
 import { FormContext } from '../Form/Form'
 import styles from './Input.module.scss'
 import { InputT } from '../../../types/Form'
+import FadeIn from '../../util/FadeIn'
 
 /**
  * Methods available to access the component
@@ -31,7 +32,7 @@ const Input = forwardRef(({
   label,
   type = 'text',
   name,
-  info,
+  info = '',
   classProp = '',
   onChange,
   validator = () => true,
@@ -44,7 +45,7 @@ const Input = forwardRef(({
 
   const formContext = useContext(FormContext)
   const { form, handleFormChange } = formContext
-  const [isValid, setIsValid] = useState<boolean>(true)
+  const [isValid, setIsValid] = useState<boolean>(false)
   const [isDirty, setIsDirty] = useState<boolean>(false)
   const [initialValue, setInitialValue] = useState(Object.keys(form).length != 0 ? form[name] : '')
   const [currentValue, setCurrentValue] = useState(Object.keys(form).length != 0 ? form[name] : '')
@@ -56,26 +57,26 @@ const Input = forwardRef(({
   */
   useImperativeHandle(ref, () => {
     return {
-      focusInput: focusInput,
+      focusInput: () => inputRef.current?.focus(),
       isDirty: () => isDirty
     }
   })
 
-
-  const focusInput = () => {
-    inputRef.current?.focus()
-  }
-
   /**
-   * Bifercates Prop and Context handlers
+   * Bifurcates Prop and Context handlers
    * @param event 
    */
   const relayChange: ChangeEventHandler<HTMLInputElement> = (event: ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value
-    setIsDirty(initialValue !== newValue)
-    handleFormChange(event)
     setCurrentValue(newValue)
+
+    // Handle Context and prop event handlers
+    handleFormChange(event)
     onChange && onChange(newValue)
+
+    // If initial value was empty any change makes form dirty
+    const isDirty = initialValue === '' ? true : initialValue !== newValue
+    setIsDirty(isDirty)
   }
 
   /**
@@ -89,18 +90,25 @@ const Input = forwardRef(({
     const isValid = valid && validator(currentValue)
 
     // Prop error message takes precedence 
-    if (!isValid && validationMessage) setCurrentErrorMessage(errorMessage ? errorMessage : validationMessage)
+    if (!isValid) {
+      const message = errorMessage ? errorMessage : validationMessage
+      message ? setCurrentErrorMessage(message) : ''
+    }
     setIsValid(isValid)
 
   }, [currentValue])
 
 
   return (
-    <div className={`${styles.input_wrapper}  ${!isValid ? styles.input_error : null} ${classProp}`}>
+    <div className={`${styles.input_wrapper}  ${!isValid && isDirty ? styles.input_error : null} ${classProp}`}>
       {
         Object.keys(form).length != 0 && (
           <>
             <label>{label}</label>
+            
+            {/* Addition Input Information  */}
+            <span className={styles.info}>{info}</span> 
+
             <input
               ref={inputRef}
               required={required}
@@ -114,14 +122,13 @@ const Input = forwardRef(({
               minLength={minLength}
             />
 
-            {/* Addition Input Information  */}
-            {
-              info && isValid ? <span className={styles.info}>{info}</span> : ''
-            }
-
             {/* Input Error Message  */}
             {
-              !isValid ? <span className={styles.info}>{currentErrorMessage}</span> : ''
+              <FadeIn isVisible={isDirty && !isValid} >
+                <span className={styles.error_message}>
+                  {currentErrorMessage}
+                </span>
+              </FadeIn>
             }
           </>
         )

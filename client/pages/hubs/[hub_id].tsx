@@ -26,6 +26,9 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
     tier: '',
   })
 
+  /**
+   * Get Hub By ID
+   */
   useEffect(() => {
     const { hub_id } = router.query
     getHub(`${hub_id}`).then((hub) => {
@@ -138,7 +141,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
               </div>
             </div>
           </main>
-        ) : <div>Put loading skeleton here</div>
+        ) : <div>TODO :: Put loading skeleton here</div>
       }
     </div>
   )

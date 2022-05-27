@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import { useRouter } from "next/router"
 import Button from '../../components/shared/Button/Button'
 import ExternalLink from '../../components/shared/ExternalLink/ExternalLink'
 
@@ -9,8 +8,7 @@ export default function Login({ }: LoginPropsT) {
 
   // TODO: this is not correct, need to connect with brian on how to update
   // the backend for this.
-  const router = useRouter()
-  const apiServer = process.env.API_SERVER || "http://localhost:4000"
+  const apiServer = process.env.API_SERVER || 'http://localhost:4000'
   const loginUrl = `https://auth.myhubs.net/login?idp=fxa&client=${apiServer}`
 
   return (

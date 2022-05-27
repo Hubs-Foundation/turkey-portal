@@ -28,8 +28,14 @@
   }
 }
 
+.error_message {
+  @include font-size(12);
+  color: $red;
+  margin-bottom: 5px; 
+}
+
 .info {
   @include font-size(12);
-  margin-top: 5px;
+  margin-bottom: 5px;
   color: $grey;
 }

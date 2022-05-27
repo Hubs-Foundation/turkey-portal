@@ -24,7 +24,7 @@ export default function Sandbox() {
       value: 'label_2',
       groupName: 'test',
       id: 'label_2',
-    }
+    },
   ]
 
 
@@ -43,7 +43,8 @@ export default function Sandbox() {
   const initialValues = {
     email: 'nick',
     password: '1234',
-    test: 'label_1'
+    test: 'label_1',
+    name: ''
   }
 
   const submit = (form: any) => {
@@ -112,7 +113,13 @@ export default function Sandbox() {
                 label="Testing"
                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 name="password"
+                info='this is great'
                 ref={passwordInput}
+              />
+               <Input
+                required={true}
+                label="Name"
+                name="name"
               />
               <RadioGroup
                 name="test"

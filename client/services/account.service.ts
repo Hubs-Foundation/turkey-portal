@@ -8,12 +8,18 @@ const API_PATH = '/api/v1/account'
  */
 export const getAccount = async (headers?: AxiosRequestHeaders) => {
   const credentials = { withCredentials: true }
-  const ContextHeaders = { headers: { ...headers as AxiosRequestHeaders } }
-  const config = headers ? ContextHeaders : credentials
-  
-  return axios.get(`${API_SERVER}${API_PATH}`, config)
-    .then((response) => {
-      return response.data
-    })
+  const contextHeaders = { headers: { ...headers as AxiosRequestHeaders } }
+  const config = headers ? contextHeaders : credentials
+
+  try {
+    return axios.get(`${API_SERVER}${API_PATH}`, config)
+      .then((response) => {
+        return response.data
+      })
+  } catch (error) {
+    // TODO: Make game plan for error handling 
+    console.log('Error', error)
+  }
+
 }
 

@@ -1,11 +1,10 @@
 import Head from 'next/head'
 import type { GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import HubCard from '../../components/cards/HubCard/HubCard'
 import { AccountT, HubT } from '../../types/General'
 import styles from './dashboard.module.scss'
-import { getHubs, getHub } from '../../services/hub.service'
+import { getHubs } from '../../services/hub.service'
 import PageHeading from '../../components/shared/PageHeading/PageHeading'
 import { requireAuthentication } from '../../services/routeGuard.service'
 
@@ -13,13 +12,14 @@ type DashboardPropsT = {}
 
 const Dashboard = ({ }: DashboardPropsT) => {
 
-  const dispatch = useDispatch()
   const hubsInit: HubT[] = []
   const [hubs, setHubs] = useState(hubsInit)
 
+  /**
+   * Get All Hubs
+   */
   useEffect(() => {
     getHubs().then((hubs) => {
-      console.log('hubs',hubs)
       setHubs(hubs)
     }) 
   }, [])
