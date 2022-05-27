@@ -17,7 +17,6 @@ export default function Login({ }: LoginPropsT) {
       <Head>
         <title>Login Page</title>
         <meta name="description" content="login profle page" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>

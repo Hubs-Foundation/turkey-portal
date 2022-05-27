@@ -6,6 +6,7 @@ import type { AppProps } from 'next/app'
 import { LoggedOutRoutsE } from '../types/Routs'
 import MainLayout from '../layouts/MainLayout/MainLayout'
 import LoginLayout from '../layouts/LoginLayout/LoginLayout'
+import Head from 'next/head'
 import '../styles/globals.scss'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
@@ -27,13 +28,20 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   useEffect(() => {
     // If On a "logged out page" don't try to init store data
-    if (showLoggedOutUi) return
-    initStoreData()
+    if (!showLoggedOutUi) initStoreData()
+
   }, [showLoggedOutUi])
 
 
   return (
     <Provider store={store}>
+      <Head>
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+      </Head>
+
       {showLoggedOutUi ? LoggedOut : LoggedIn}
     </Provider>
   )

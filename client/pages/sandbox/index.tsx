@@ -57,7 +57,6 @@ export default function Sandbox() {
       <Head>
         <title>Sandbox Page</title>
         <meta name="description" content="general profle page" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
@@ -106,7 +105,7 @@ export default function Sandbox() {
                 label="Email"
                 type="email"
                 name="email"
-                errorMessage='you broke it'
+                customErrorMessage='you broke it'
               />
               <Input
                 required={true}

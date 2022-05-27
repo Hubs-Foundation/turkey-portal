@@ -21,16 +21,15 @@ const Dashboard = ({ }: DashboardPropsT) => {
   useEffect(() => {
     getHubs().then((hubs) => {
       setHubs(hubs)
-    }) 
+    })
   }, [])
 
   return (
     <div className="page_wrapper">
 
       <Head>
-        <title>Dashboard Page</title>
+        <title>Dashboard</title>
         <meta name="description" content="general profile page" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <PageHeading
@@ -71,7 +70,7 @@ export default Dashboard
 
 export const getServerSideProps = requireAuthentication((context: GetServerSidePropsContext, account: AccountT) => {
   // Your normal `getServerSideProps` code here
-  return { props: { } }
+  return { props: {} }
 })
 
 

@@ -22,7 +22,7 @@ type InputProps = {
   onChange?: Function,
   validator?: Function
   required?: boolean
-  errorMessage?: string
+  customErrorMessage?: string
   pattern?: string
   maxLength?: number
   minLength?: number,
@@ -37,7 +37,7 @@ const Input = forwardRef(({
   onChange,
   validator = () => true,
   required = false,
-  errorMessage,
+  customErrorMessage,
   pattern,
   maxLength,
   minLength,
@@ -87,17 +87,26 @@ const Input = forwardRef(({
     const valid = input?.validity.valid
     const validationMessage = input?.validationMessage
     // Validate against html and js validators
-    const isValid = valid && validator(currentValue)
+    const validation = valid && validator(currentValue)
 
     // Prop error message takes precedence 
-    if (!isValid) {
-      const message = errorMessage ? errorMessage : validationMessage
+    if (!validation) {
+      const message = customErrorMessage ? customErrorMessage : validationMessage
       message ? setCurrentErrorMessage(message) : ''
     }
-    setIsValid(isValid)
+    setIsValid(validation)
 
   }, [currentValue])
 
+
+  /**
+   * Get Validation: Exclude Initial False State
+   */
+  const getValidation = () => {
+    if (!isDirty) return true
+    if (isDirty && !isValid) return false
+    return true
+  }
 
   return (
     <div className={`${styles.input_wrapper}  ${!isValid && isDirty ? styles.input_error : null} ${classProp}`}>
@@ -105,30 +114,37 @@ const Input = forwardRef(({
         Object.keys(form).length != 0 && (
           <>
             <label>{label}</label>
-            
-            {/* Addition Input Information  */}
-            <span className={styles.info}>{info}</span> 
 
             <input
               ref={inputRef}
-              required={required}
-              placeholder={label}
-              pattern={pattern}
               type={type}
               name={name}
               value={form[name]}
+              required={required}
+              placeholder={label}
               onChange={relayChange}
               maxLength={maxLength}
               minLength={minLength}
+              pattern={pattern}
             />
 
-            {/* Input Error Message  */}
+            {/* Error Message */}
             {
-              <FadeIn isVisible={isDirty && !isValid} >
+              isDirty && !isValid ? (
                 <span className={styles.error_message}>
                   {currentErrorMessage}
                 </span>
-              </FadeIn>
+              ) : ''
+
+            }
+
+            {/* Addition Input Information  */}
+            {
+              info.length && getValidation() ? (
+                <span className={styles.info}>
+                  {info}
+                </span>
+              ) : ''
             }
           </>
         )
@@ -137,4 +153,5 @@ const Input = forwardRef(({
   )
 })
 
+Input.displayName = 'Input'
 export default Input

@@ -66,7 +66,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
   const radioFormOptions: HubGroupOptionT[] = [
     {
       label: 'Free',
-      labelType: 'primary',
+      labelCategory: 'primary',
       value: 'free',
       size: '250MB',
       users: 5,
@@ -75,7 +75,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
     },
     {
       label: 'MVP 2',
-      labelType: 'secondary',
+      labelCategory: 'secondary',
       value: 'mvp',
       size: '2GB',
       users: 25,
@@ -89,7 +89,6 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
       <Head>
         <title>Hub Details View</title>
         <meta name="description" content="detailed information about a Hub" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <PageHeading
