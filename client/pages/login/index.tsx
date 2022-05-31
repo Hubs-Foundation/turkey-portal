@@ -7,7 +7,10 @@ type LoginPropsT = {}
 export default function Login({ }: LoginPropsT) {
 
   // TODO: this is not correct, need to connect with brian on how to update
-  // the backend for this.
+  // the backend for this. -NG
+  
+  // This looks close enough for now. We still haven't finalized this in MVP2. Probably the main change would be 
+  // to make auth.myhubs.net configurable with an environment variable. - BP
   const apiServer = process.env.API_SERVER || 'http://localhost:4000'
   const loginUrl = `https://auth.myhubs.net/login?idp=fxa&client=${apiServer}`
 

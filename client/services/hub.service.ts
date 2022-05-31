@@ -1,5 +1,4 @@
 import axios from 'axios'
-const API_SERVER = process.env.API_SERVER || "http://localhost:4000"
 const API_PATH = '/api/v1/hubs'
 
 
@@ -9,7 +8,7 @@ const API_PATH = '/api/v1/hubs'
  */
 export const getHubs = async () => {
   try {
-    return axios.get(`${API_SERVER}${API_PATH}`, { withCredentials: true })
+    return axios.get(`${process.env.API_SERVER }${API_PATH}`, { withCredentials: true })
       .then((response) => {
         return response.data
       })
@@ -27,7 +26,7 @@ export const getHubs = async () => {
  */
 export const getHub = async (hubId: string) => {
   try {
-    return axios.get(`${API_SERVER}${API_PATH}/${hubId}`, { withCredentials: true })
+    return axios.get(`${process.env.API_SERVER }${API_PATH}/${hubId}`, { withCredentials: true })
       .then((response) => {
         return response.data
       })
