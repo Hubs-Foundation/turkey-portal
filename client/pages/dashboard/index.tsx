@@ -9,6 +9,7 @@ import { getHubs } from '../../services/hub.service'
 import PageHeading from '../../components/shared/PageHeading/PageHeading'
 import { requireAuthentication } from '../../services/routeGuard.service'
 
+
 type DashboardPropsT = {}
 
 const Dashboard = ({ }: DashboardPropsT) => {
@@ -70,7 +71,7 @@ const Dashboard = ({ }: DashboardPropsT) => {
 export default Dashboard
 
 
-export const getServerSideProps = requireAuthentication((context: GetServerSidePropsContext, account: AccountT) => {
+export const getServerSideProps = requireAuthentication((context: GetServerSidePropsContext ) => {
   // Your normal `getServerSideProps` code here
   return { props: {} }
 })

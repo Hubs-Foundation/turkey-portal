@@ -330,3 +330,25 @@ MARGIN
   }
 }
 
+
+// ---------------------------------
+//   Animation
+// ---------------------------------
+.u-pulse-gray {
+  background-color: $grey;
+  animation-name: pulse_grey;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes pulse_grey {
+  0% {
+    background-color: $off-white;
+  }
+  50% {
+    background-color: $accent-grey;
+  }
+  100% {
+    background-color: $off-white;
+  }
+}

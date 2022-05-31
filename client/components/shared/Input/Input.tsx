@@ -84,7 +84,7 @@ const Input = forwardRef(({
    */
   useEffect(() => {
     const input = inputRef.current
-    if(!input) return
+    if (!input) return
 
     const valid = input?.validity.valid
     const validationMessage = input?.validationMessage
@@ -112,7 +112,10 @@ const Input = forwardRef(({
       {
         Object.keys(form).length != 0 && (
           <>
-            <label>{label}</label>
+            <label>
+              {label}
+              <span>  {required ? '*' : ''}</span>
+            </label>
 
             <input
               ref={inputRef}

@@ -1,18 +1,20 @@
 import Head from 'next/head'
+import type { GetServerSidePropsContext } from 'next'
 import Button from '../../components/shared/Button/Button'
 import ExternalLink from '../../components/shared/ExternalLink/ExternalLink'
+import { checkLoggedIn } from '../../services/routeGuard.service'
+
 
 type LoginPropsT = {}
 
-export default function Login({ }: LoginPropsT) {
+const Login = ({ }: LoginPropsT) => {
 
   // TODO: this is not correct, need to connect with brian on how to update
   // the backend for this. -NG
-  
+
   // This looks close enough for now. We still haven't finalized this in MVP2. Probably the main change would be 
   // to make auth.myhubs.net configurable with an environment variable. - BP
-  const apiServer = process.env.API_SERVER || 'http://localhost:4000'
-  const loginUrl = `https://auth.myhubs.net/login?idp=fxa&client=${apiServer}`
+  const loginUrl = `https://auth.myhubs.net/login?idp=fxa&client=${process.env.API_SERVER}`
 
   return (
     <div className="page_wrapper">
@@ -33,3 +35,10 @@ export default function Login({ }: LoginPropsT) {
     </div>
   )
 }
+
+export default Login
+
+export const getServerSideProps = checkLoggedIn((context: GetServerSidePropsContext) => {
+  // Your normal `getServerSideProps` code here
+  return { props: {} }
+})

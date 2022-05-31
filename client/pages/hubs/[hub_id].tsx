@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react'
+import { useCallback, useState, useEffect,useContext } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import PageHeading from '../../components/shared/PageHeading/PageHeading'
@@ -13,6 +13,8 @@ import { AccountT, HubT } from '../../types/General'
 import { HubGroupOptionT } from '../../components/shared/HubOptionGroup/HubOptionGroup'// just used for mock data for now.
 import { getHub, updateHub } from '../../services/hub.service'
 import { requireAuthentication } from '../../services/routeGuard.service'
+import { FormContext } from '../../components/shared/Form/Form'
+
 
 type HubDetailsViewPropsT = {}
 
@@ -26,6 +28,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
     address: '',
     tier: '',
   })
+  const formContext = useContext(FormContext)
 
   /**
    * Get Hub By ID
@@ -36,6 +39,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
       console.log('hub', hub)
       setLoading(false)
       setHub(hub)
+      setAddressPreview(hub.subdomain)
       setInitialFormValues({
         name: hub.name,
         address: hub.subdomain,
@@ -60,6 +64,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
 
   const handleAddresschange = useCallback((address: string) => {
     setAddressPreview(address)
+    console.log('formContext',formContext.form)
   }, [],
   )
 
@@ -111,6 +116,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
                     <Input
                       label="Hub Name"
                       name="name"
+                      required={true}
                     />
 
                     <HubOptionGroup
@@ -125,6 +131,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
                         label="Web Address (URL)"
                         name="address"
                         info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
+                        required={true}
                       />
                       <div className={styles.address_preview}><b>{addressPreview}</b>.{process.env.HUB_ROOT_DOMAIN}</div>
                     </div>
@@ -147,6 +154,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
             <div className={styles.skeleton_container}>
               <SkeletonCard qty={3} category='square' />
               <SkeletonCard qty={3} category='square' />
+              <SkeletonCard qty={3} category='square' />
             </div>
           </div>
         )
@@ -157,7 +165,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
 
 export default HubDetailsView
 
-export const getServerSideProps = requireAuthentication((context: GetServerSidePropsContext, account: AccountT) => {
+export const getServerSideProps = requireAuthentication((context: GetServerSidePropsContext) => {
   // Your normal `getServerSideProps` code here
   return { props: {} }
 })
