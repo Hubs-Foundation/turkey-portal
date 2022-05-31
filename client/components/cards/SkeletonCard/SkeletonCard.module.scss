@@ -1,0 +1,47 @@
+@import '../../../styles/boilerplate.scss';
+
+.card {
+  border-radius: 8px;
+  background-color: $grey;
+  animation-name: pulse;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+
+  &_wrapper{
+    &.square_wrapper {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    &.row_wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+.row {
+  width: 100%;
+  height: 80px;
+  margin-bottom: 20px;
+}
+
+.square {
+  height: 250px;
+  flex-grow: 1;
+  margin: 20px;
+}
+
+
+@keyframes pulse {
+  0% {
+    background-color: $off-white;
+  }
+  50% {
+    background-color: $accent-grey;
+  }
+  100% {
+    background-color: $off-white;
+
+  }
+}

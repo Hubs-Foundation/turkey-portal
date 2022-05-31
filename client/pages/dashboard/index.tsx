@@ -2,6 +2,7 @@ import Head from 'next/head'
 import type { GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
 import HubCard from '../../components/cards/HubCard/HubCard'
+import SkeletonCard from '../../components/cards/SkeletonCard/SkeletonCard'
 import { AccountT, HubT } from '../../types/General'
 import styles from './dashboard.module.scss'
 import { getHubs } from '../../services/hub.service'
@@ -41,23 +42,24 @@ const Dashboard = ({ }: DashboardPropsT) => {
         {/* Hub Cards  */}
         <div className={styles.cards_wrapper}>
           {hubs.length ? (
-            hubs.map((hub) => {
+            hubs.map(({ hubId, name, tier, ccuLimit, status, storageLimitMb, subdomain, currentCcu, currentStorage }) => {
               return (
                 <HubCard
-                  key={hub.hubId}
-                  name={hub.name}
-                  tier={hub.tier}
-                  hubId={hub.hubId}
-                  ccuLimit={hub.ccuLimit}
-                  status={hub.status}
-                  storageLimitMb={hub.storageLimitMb}
-                  subdomain={hub.subdomain}
-                  currentCcu={hub.currentCcu}
-                  currentStorage={hub.currentStorage}
+                  key={hubId}
+                  name={name}
+                  tier={tier}
+                  hubId={hubId}
+                  ccuLimit={ccuLimit}
+                  status={status}
+                  storageLimitMb={storageLimitMb}
+                  subdomain={subdomain}
+                  currentCcu={currentCcu}
+                  currentStorage={currentStorage}
                 />
               )
             })
-          ) : ''}
+          ) : (<SkeletonCard qty={3} category='row' />)
+          }
         </div>
 
       </main>

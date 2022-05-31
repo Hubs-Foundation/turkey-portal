@@ -5,6 +5,7 @@ import PageHeading from '../../components/shared/PageHeading/PageHeading'
 import Form from '../../components/shared/Form/Form'
 import Input from '../../components/shared/Input/Input'
 import HubOptionGroup from '../../components/shared/HubOptionGroup/HubOptionGroup'
+import SkeletonCard from '../../components/cards/SkeletonCard/SkeletonCard'
 import styles from './[hub_id].module.scss'
 import Badge from '../../components/shared/Badge/Badge'
 import type { GetServerSidePropsContext } from 'next'
@@ -32,6 +33,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
   useEffect(() => {
     const { hub_id } = router.query
     getHub(`${hub_id}`).then((hub) => {
+      console.log('hub', hub)
       setLoading(false)
       setHub(hub)
       setInitialFormValues({
@@ -134,13 +136,20 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
                 <h3 className={styles.summary_title}>Summary</h3>
                 <ul className={styles.summary_attributes}>
                   <li>Tier: <Badge name={hub.tier} category={hub.tier === 'free' ? 'primary' : 'secondary'} /></li>
-                  <li>People: 25</li> {/* TODO: we need this info still  */}
-                  <li>Capacity: {hub.currentStorage}</li>
+                  <li>People: {hub.ccuLimit}</li>
+                  <li>Capacity: {hub.currentStorage ? hub.currentStorage : 'Creating'}</li> {/* TODO: what do we do with no storage here  */}
                 </ul>
               </div>
             </div>
           </main>
-        ) : <div>TODO :: Put loading skeleton here</div>
+        ) : (
+          <div className="flex-justify-center">
+            <div className={styles.skeleton_container}>
+              <SkeletonCard qty={3} category='square' />
+              <SkeletonCard qty={3} category='square' />
+            </div>
+          </div>
+        )
       }
     </div>
   )
