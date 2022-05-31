@@ -84,6 +84,8 @@ const Input = forwardRef(({
    */
   useEffect(() => {
     const input = inputRef.current
+    if(!input) return
+
     const valid = input?.validity.valid
     const validationMessage = input?.validationMessage
     // Validate against html and js validators
@@ -100,16 +102,13 @@ const Input = forwardRef(({
 
 
   /**
-   * Get Validation: Exclude Initial False State
+   * Error UI logic
    */
-  const getValidation = () => {
-    if (!isDirty) return true
-    if (isDirty && !isValid) return false
-    return true
-  }
+  const showError = isDirty && !isValid
+  const showInfo = info.length && !showError
 
   return (
-    <div className={`${styles.input_wrapper}  ${!isValid && isDirty ? styles.input_error : null} ${classProp}`}>
+    <div className={`${styles.input_wrapper}  ${showError ? styles.input_error : null} ${classProp}`}>
       {
         Object.keys(form).length != 0 && (
           <>
@@ -130,7 +129,7 @@ const Input = forwardRef(({
 
             {/* Error Message */}
             {
-              isDirty && !isValid ? (
+              showError ? (
                 <span className={styles.error_message}>
                   {currentErrorMessage}
                 </span>
@@ -138,9 +137,9 @@ const Input = forwardRef(({
 
             }
 
-            {/* Addition Input Information  */}
+            {/* Additional Input Information  */}
             {
-              info.length && getValidation() ? (
+              showInfo ? (
                 <span className={styles.info}>
                   {info}
                 </span>
