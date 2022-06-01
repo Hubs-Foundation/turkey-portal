@@ -8,7 +8,6 @@ export const hubEntitiesSlice = createSlice({
   name: "hubEntities",
   initialState: hubEntityAdapter.getInitialState({
     isInitialized: false,
-    isForbidden: false,
   }),
   reducers: {
     setHubEntity(state, action) {
@@ -18,9 +17,6 @@ export const hubEntitiesSlice = createSlice({
       state.isInitialized = true;
       hubEntityAdapter.setAll(state, action.payload);
     },
-    setForbidden(state, action) {
-      state.isForbidden = action.payload;
-    },
   },
 });
 
@@ -28,8 +24,6 @@ export const selectIsInitialized = createSelector(
   (state) => state.hubEntities,
   (state) => state.isInitialized
 );
-
-export const selectIsForbidden = (state) => state.hubEntities.isForbidden;
 
 export const hubEntitySelectors = hubEntityAdapter.getSelectors((state) => state.hubEntities);
 

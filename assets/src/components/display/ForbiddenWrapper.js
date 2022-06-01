@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 
+import { useHubs } from "../hooks/hubs";
 import { UserNotFound } from "./UserNotFound";
-import { selectIsForbidden } from "../store/hubs";
+import { Spinner } from "../common/Spinner";
 
 export function ForbiddenWrapper({ children }) {
-  const isForbidden = useSelector(selectIsForbidden);
-  return <>{isForbidden ? <UserNotFound /> : children}</>;
+  const { isLoading, isForbidden } = useHubs();
+  return <>{isLoading ? <Spinner /> : isForbidden ? <UserNotFound /> : children}</>;
 }
 
 ForbiddenWrapper.propTypes = {
