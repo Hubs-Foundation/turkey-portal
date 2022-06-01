@@ -6,14 +6,14 @@ import { LinkButton } from "../common/LinkButton";
 import { CopyButton } from "../common/CopyButton";
 import { Spinner } from "../common/Spinner";
 import { IconDrive, IconUsers, IconExternal } from "../common/icons";
-import { CLUSTER } from "../utils/app-config";
+import { CLUSTER_DOMAIN } from "../utils/app-config";
 import { formatNumber, formatMegabytes } from "../utils/formatNumber";
 import { READY } from "../utils/hub-constants";
 
 export function Hub({ tier, name, status, subdomain, currentCcu, storageUsageMb, hubId }) {
   const ccu = `${formatNumber(currentCcu)}`;
   const storage = `${formatMegabytes(storageUsageMb)}`;
-  const domain = `${subdomain}.${CLUSTER}`;
+  const domain = `${subdomain}.${CLUSTER_DOMAIN}`;
   const hubUrl = `https://${domain}`;
 
   return (

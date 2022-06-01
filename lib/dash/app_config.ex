@@ -3,11 +3,11 @@ defmodule Dash.AppConfig do
 
   def to_json() do
     Jason.encode!(%{
-      CLUSTER: cluster()
+      CLUSTER_DOMAIN: cluster_domain()
     })
   end
 
-  def cluster() do
+  def cluster_domain() do
     Application.get_env(:dash, __MODULE__)[:host]
     |> String.split(".")
     |> Enum.drop(1)
