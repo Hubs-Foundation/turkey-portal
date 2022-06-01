@@ -30,7 +30,7 @@ export function requireAuthentication(gssp: Function): GetServerSideProps {
  * @param gssp 
  * @returns GetServerSideProps
  */
- export function checkLoggedIn(gssp: Function): GetServerSideProps {
+export function checkLoggedIn(gssp: Function): GetServerSideProps {
 
   return async (context) => {
     const { req } = context
@@ -46,7 +46,7 @@ export function requireAuthentication(gssp: Function): GetServerSideProps {
         }
       }
     } catch (error) {
-      return await gssp(context);
+      return await gssp(context)
     }
   }
 }
