@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import '../styles/globals.scss'
 import store from 'store/store'
 import { Provider } from 'react-redux'
 import type { AppProps } from 'next/app'

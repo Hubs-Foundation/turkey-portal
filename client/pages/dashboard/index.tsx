@@ -42,19 +42,19 @@ const Dashboard = ({ }: DashboardPropsT) => {
         {/* Hub Cards  */}
         <div className={styles.cards_wrapper}>
           {hubs.length ? (
-            hubs.map(({ hubId, name, tier, ccuLimit, status, storageLimitMb, subdomain, currentCcu, currentStorage }) => {
+            hubs.map((hub) => {
               return (
                 <HubCard
-                  key={hubId}
-                  name={name}
-                  tier={tier}
-                  hubId={hubId}
-                  ccuLimit={ccuLimit}
-                  status={status}
-                  storageLimitMb={storageLimitMb}
-                  subdomain={subdomain}
-                  currentCcu={currentCcu}
-                  currentStorage={currentStorage}
+                  key={hub.hubId}
+                  name={hub.name}
+                  tier={hub.tier}
+                  hubId={hub.hubId}
+                  ccuLimit={hub.ccuLimit}
+                  status={hub.status}
+                  storageLimitMb={hub.storageLimitMb}
+                  subdomain={hub.subdomain}
+                  currentCcu={hub.currentCcu}
+                  currentStorage={hub.currentStorage}
                 />
               )
             })
@@ -70,7 +70,7 @@ const Dashboard = ({ }: DashboardPropsT) => {
 export default Dashboard
 
 
-export const getServerSideProps = requireAuthentication((context: GetServerSidePropsContext ) => {
+export const getServerSideProps = requireAuthentication((context: GetServerSidePropsContext) => {
   // Your normal `getServerSideProps` code here
   return { props: {} }
 })
