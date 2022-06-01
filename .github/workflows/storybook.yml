@@ -13,5 +13,7 @@ jobs:
       - name: Deploy Storybook
         run: |
           cd client
-          npm ci
-          npm run deploy-storybook
+          npm install
+          npm run deploy-storybook -- --ci
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
