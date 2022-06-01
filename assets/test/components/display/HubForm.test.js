@@ -8,7 +8,7 @@ test("Hub form free tier is disabled", async () => {
 
   const { findByRole } = render(<HubForm hub={hub} />);
 
-  const freeTier = await findByRole("radio", { name: "free 5 250MB" });
+  const freeTier = await findByRole("radio", { name: "free users 5 storage 250MB" });
   expect(freeTier.disabled).toBe(true);
 });
 
@@ -17,6 +17,6 @@ test("Hub form mvp tier is enabled", async () => {
 
   const { findByRole } = render(<HubForm hub={hub} />);
 
-  const freeTier = await findByRole("radio", { name: "mvp 25 2GB" });
-  expect(freeTier.disabled).toBe(false);
+  const mvpTier = await findByRole("radio", { name: "mvp users 25 storage 2GB" });
+  expect(mvpTier.disabled).toBe(false);
 });

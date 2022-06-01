@@ -31,8 +31,12 @@
   font-weight: bold;
   font-size: 16px;
 }
+.hub.creating .name {
+  color: #868686;
+}
 .hub .name,
 .hub .domain {
+  display: flex;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

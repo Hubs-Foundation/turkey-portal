@@ -61,7 +61,7 @@ config :dash, DashWeb.Plugs.BasicAuth,
 
 config :dash, DashWeb.Plugs.ApprovedEmailAuth, enabled: false
 
-config :dash, Dash.OrchClient, orch_host: ""
+config :dash, Dash.OrchClient, orch_host: "turkey-orch.local"
 
 config :dash, Dash.FeatureFlags,
   create_hubs: false,
