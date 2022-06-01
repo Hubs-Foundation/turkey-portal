@@ -1,6 +1,8 @@
 import Head from 'next/head'
 import Button from '../../components/shared/Button/Button'
 import ExternalLink from '../../components/shared/ExternalLink/ExternalLink'
+import { API_SERVER } from 'config'
+
 
 type LoginPropsT = {}
 
@@ -11,8 +13,7 @@ export default function Login({ }: LoginPropsT) {
   
   // This looks close enough for now. We still haven't finalized this in MVP2. Probably the main change would be 
   // to make auth.myhubs.net configurable with an environment variable. - BP
-  const apiServer = process.env.API_SERVER || 'http://localhost:4000'
-  const loginUrl = `https://auth.myhubs.net/login?idp=fxa&client=${apiServer}`
+  const loginUrl = `https://auth.myhubs.net/login?idp=fxa&client=${API_SERVER}`
 
   return (
     <div className="page_wrapper">

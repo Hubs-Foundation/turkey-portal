@@ -12,6 +12,7 @@ import { AccountT, HubT } from '../../types/General'
 import { HubGroupOptionT } from '../../components/shared/HubOptionGroup/HubOptionGroup'// just used for mock data for now.
 import { getHub, updateHub } from '../../services/hub.service'
 import { requireAuthentication } from '../../services/routeGuard.service'
+import { HUB_ROOT_DOMAIN } from 'config'
 
 type HubDetailsViewPropsT = {}
 
@@ -124,7 +125,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
                         name="address"
                         info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
                       />
-                      <div className={styles.address_preview}><b>{addressPreview}</b>.{process.env.HUB_ROOT_DOMAIN}</div>
+                      <div className={styles.address_preview}><b>{addressPreview}</b>.{HUB_ROOT_DOMAIN}</div>
                     </div>
                   </>
                 </Form>

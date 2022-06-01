@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { RootStateT } from './store'
+import { API_SERVER } from 'config'
 
 const initialState = {
   isInitialized: false,
@@ -17,10 +18,9 @@ const accountSlice = createSlice({
       if (!action.payload) return
 
       // Initialize Account Values
-      const apiServer = process.env.API_SERVER || 'http://localhost:4000'
       const { profilePic, displayName, email } = action.payload
       state.isLoggedIn = true
-      state.profilePic = apiServer + profilePic
+      state.profilePic = API_SERVER + profilePic
       state.displayName = displayName
       state.email = email
     },
