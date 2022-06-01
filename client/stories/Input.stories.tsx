@@ -28,5 +28,6 @@ Light.args = {
   label: 'First Name',
   name: 'firstName',
   type: 'text',
-  info: 'Additional Input Information'
+  info: 'Additional Input Information',
+  required: true
 }

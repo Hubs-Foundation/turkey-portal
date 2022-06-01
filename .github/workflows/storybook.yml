@@ -10,10 +10,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2.3.1
         
-      - name: Deploy Storybook
+      - name: Deploy storybook to Github Pages
         run: |
-          cd client
-          npm install
+          cd client 
+          npm install 
           npm run deploy-storybook -- --ci
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: MyCompany:${{ secrets.GITHUB_TOKEN }}
