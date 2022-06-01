@@ -11,6 +11,11 @@
     "build-storybook": "build-storybook",
     "deploy-storybook": "storybook-to-ghpages --source-branch=main"
   },
+  "storybook-deployer": {
+    "gitUsername": "nickgrato",
+    "gitEmail": "ngrato@gmail.com",
+    "commitMessage": "Deploy Storybook [skip ci]"
+  },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
     "axios": "^0.27.1",
