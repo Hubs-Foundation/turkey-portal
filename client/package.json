@@ -14,7 +14,7 @@
   "storybook-deployer": {
     "gitUsername": "nickgrato",
     "gitEmail": "ngrato@gmail.com",
-    "commitMessage": "Deploy Storybook [skip ci]"
+    "commitMessage": "Deploy Storybook"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
