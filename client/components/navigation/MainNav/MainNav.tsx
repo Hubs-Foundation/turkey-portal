@@ -4,13 +4,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { selectAccount } from '../../../store/accountSlice'
 import { useSelector } from 'react-redux'
-import Dropdown from '../../shared/Dropdown/Dropdown'
+import Dropdown, { dropdownT } from '../../shared/Dropdown/Dropdown'
 import ExternalLink from '../../shared/ExternalLink/ExternalLink'
 import InternalLink from '../../shared/InternalLink/InternalLink'
-import { dropdownT } from '../../../types/General'
 
 type MainNavPropsT = {
-  classProp: string
+  classProp?: string
 }
 
 const MainNav = ({ classProp = '' }: MainNavPropsT) => {
@@ -25,11 +24,11 @@ const MainNav = ({ classProp = '' }: MainNavPropsT) => {
     <>
       {/* Go To Firefox Account  */}
       <div className={`padding-10 ${styles.account_details_wrapper}`}>
-        <Image 
-          alt="profile picture" 
-          width="30" 
+        <Image
+          alt="profile picture"
+          width="30"
           height="30"
-          src={account.profilePic} 
+          src={account.profilePic}
         />
         <div className={styles.account_details}>
           <div className={styles.account_details_title}> {account.email}</div>
@@ -38,7 +37,7 @@ const MainNav = ({ classProp = '' }: MainNavPropsT) => {
             icon="external-link"
             target='_blank'
             href={'#'}
-            onClick={()=>{
+            onClick={() => {
               dropdownRef.current?.closeDropdown()
             }}>
             Manage your Firefox Account
@@ -53,7 +52,7 @@ const MainNav = ({ classProp = '' }: MainNavPropsT) => {
         <InternalLink
           href="/login"
           icon='log-out'
-          onClick={()=>{
+          onClick={() => {
             dropdownRef.current?.closeDropdown()
           }}
         >Sign Out

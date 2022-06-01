@@ -12,7 +12,7 @@ export type HubGroupOptionT = {
   value: number | string
   users: number
   size: string
-  labelType: 'primary' | 'secondary'
+  labelCategory: 'primary' | 'secondary'
   id: string
   label: string
   groupName: string
@@ -31,7 +31,7 @@ const HubOptionGroup = ({ options = [], name, classProp = '' }: HubOptionGroupPr
             checked={option.value === form[name]}
             key={option.id}
             label={option.label}
-            labelType={option.labelType}
+            labelCategory={option.labelCategory}
             value={option.value}
             size={option.size}
             users={option.users}

@@ -1,45 +1,35 @@
 import Head from 'next/head'
-import type { GetServerSideProps } from 'next'
+import type { GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import HubCard from '../../components/cards/HubCard/HubCard'
-import axios from 'axios'
 import { AccountT, HubT } from '../../types/General'
-import { getCookie } from 'cookies-next'
 import styles from './dashboard.module.scss'
-import { setAccount } from '../../store/accountSlice'
+import { getHubs } from '../../services/hub.service'
 import PageHeading from '../../components/shared/PageHeading/PageHeading'
+import { requireAuthentication } from '../../services/routeGuard.service'
 
-type DashboardPropsT = {
-  account: AccountT
-}
+type DashboardPropsT = {}
 
-export default function Dashboard({ account }: DashboardPropsT) {
+const Dashboard = ({ }: DashboardPropsT) => {
 
-  const dispatch = useDispatch()
   const hubsInit: HubT[] = []
   const [hubs, setHubs] = useState(hubsInit)
 
+  /**
+   * Get All Hubs
+   */
   useEffect(() => {
-    // Add newly validated account to the store
-    dispatch(setAccount(account))
-  }, [account, dispatch])
-
-  useEffect(() => {
-    const apiServer = process.env.API_SERVER || "http://localhost:4000"
-    axios.get(`${apiServer}/api/v1/hubs`, { withCredentials: true })
-      .then((response) => {
-        setHubs(response.data)
-      })
+    getHubs().then((hubs) => {
+      setHubs(hubs)
+    })
   }, [])
 
   return (
     <div className="page_wrapper">
 
       <Head>
-        <title>Dashboard Page</title>
+        <title>Dashboard</title>
         <meta name="description" content="general profile page" />
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <PageHeading
@@ -67,7 +57,7 @@ export default function Dashboard({ account }: DashboardPropsT) {
                 />
               )
             })
-          ):''}
+          ) : ''}
         </div>
 
       </main>
@@ -75,26 +65,12 @@ export default function Dashboard({ account }: DashboardPropsT) {
   )
 }
 
+export default Dashboard
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { req } = context
-  const apiServer = process.env.API_SERVER || "http://localhost:4000"
-  const headers: any = req.headers
 
-  try {
-    const account = await axios.get(`${apiServer}/api/v1/account`, {
-      headers: { ...headers }
-    })
-      .then((response) => response.data)
+export const getServerSideProps = requireAuthentication((context: GetServerSidePropsContext, account: AccountT) => {
+  // Your normal `getServerSideProps` code here
+  return { props: {} }
+})
 
-    return { props: { account } }
 
-  } catch (error) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      }
-    }
-  }
-}

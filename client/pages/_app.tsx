@@ -1,34 +1,18 @@
-import { useEffect, useState } from 'react'
-import '../styles/globals.scss'
-import MainLayout from '../layouts/MainLayout/MainLayout'
-import LoginLayout from '../layouts/LoginLayout/LoginLayout'
+import { useEffect } from 'react'
 import store from '../store/store'
+import initStoreData from '../store/storeInit'
 import { Provider } from 'react-redux'
 import type { AppProps } from 'next/app'
-import { AccountT } from '../types/General'
+import { LoggedOutRoutsE } from '../types/Routes'
+import MainLayout from '../layouts/MainLayout/MainLayout'
+import LoginLayout from '../layouts/LoginLayout/LoginLayout'
+import Head from 'next/head'
+import '../styles/globals.scss'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
 
-  const handleChange = () => {
-    const data = store.getState()
-    setAccount(data.account)
-  }
-
-  useEffect(() => {
-    const Store = store.subscribe(handleChange)
-    return () => {
-      Store
-    }
-  }, [])
-
-  const initialAccount: AccountT = {
-    isInitialized: false,
-    isLoggedIn: false,
-    profilePic: '',
-    displayName: '',
-    email: ''
-  }
-  const [account, setAccount] = useState(initialAccount)
+  // Check if a logged out route
+  const showLoggedOutUi = Component.name in LoggedOutRoutsE
 
   const LoggedIn = (
     <MainLayout>
@@ -42,9 +26,23 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     </LoginLayout>
   )
 
+  useEffect(() => {
+    // If On a "logged out page" don't try to init store data
+    if (!showLoggedOutUi) initStoreData()
+
+  }, [showLoggedOutUi])
+
+
   return (
     <Provider store={store}>
-      {account.isLoggedIn ? LoggedIn : LoggedOut}
+      <Head>
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+      </Head>
+
+      {showLoggedOutUi ? LoggedOut : LoggedIn}
     </Provider>
   )
 }
