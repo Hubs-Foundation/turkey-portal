@@ -2,7 +2,7 @@ name: Storybook
 on:
   push:
     branches:
-      - main
+      - may-comp-lib
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -15,5 +15,4 @@ jobs:
           cd client 
           npm install 
           npm run deploy-storybook -- --ci
-        env:
-          GH_TOKEN: MyCompany:${{ secrets.GITHUB_TOKEN }}
+        
