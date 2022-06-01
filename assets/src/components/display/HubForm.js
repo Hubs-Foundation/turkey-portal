@@ -8,6 +8,7 @@ import { formatMegabytes } from "../utils/formatNumber";
 
 function HubNickname({ hub, setHub }) {
   const [nameValidity, setNameValidity] = useState({ valid: true });
+  const max24Characters = ".{1,24}";
 
   return (
     <div>
@@ -21,7 +22,7 @@ function HubNickname({ hub, setHub }) {
         type="text"
         value={hub.name}
         required
-        pattern=".{1,24}"
+        pattern={max24Characters}
         onChange={(e) => {
           setNameValidity(e.target.validity);
           setHub({ ...hub, name: e.target.value });
