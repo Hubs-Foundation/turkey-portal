@@ -1,9 +1,10 @@
 defmodule DashWeb.TestHelpers do
   import Phoenix.ConnTest
 
+  @test_email "email@fake.com"
   @default_token_claims %{
     "sub" => "fake-uid",
-    "fxa_email" => "email@fake.com",
+    "fxa_email" => @test_email,
     "fxa_pic" => "https://fake.com/pic.jpg",
     "fxa_displayName" => "Faker McFakerson"
   }
@@ -13,6 +14,9 @@ defmodule DashWeb.TestHelpers do
     token_expiry: ~N[3000-01-01 00:00:00],
     unverified: false
   ]
+  def get_test_email() do
+    @test_email
+  end
 
   def put_test_token(conn, opts \\ []) do
     opts = Keyword.merge(@default_token_opts, opts)
@@ -55,5 +59,17 @@ defmodule DashWeb.TestHelpers do
   def merge_module_config(app, key, configs) do
     current_config = Application.get_env(app, key, [])
     Application.put_env(app, key, Keyword.merge(current_config, configs))
+  end
+
+  def clear_auth_config() do
+    Application.put_env(:dash, DashWeb.Plugs.Auth, %{})
+  end
+
+  def setup_mocks_for_hubs() do
+    merge_module_config(:dash, Dash.Hub, http_client: Dash.HttpMock)
+    merge_module_config(:dash, Dash.OrchClient, http_client: Dash.HttpMock)
+  end
+
+  def exit_mocks_for_hubs() do
   end
 end

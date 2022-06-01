@@ -5,13 +5,11 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   import Plug.Conn.Status, only: [code: 1]
 
   setup_all context do
-    Mox.defmock(Dash.HttpMock, for: HTTPoison.Base)
-    merge_module_config(:dash, Dash.Hub, http_client: Dash.HttpMock)
-    merge_module_config(:dash, Dash.OrchClient, http_client: Dash.HttpMock)
+    setup_mocks_for_hubs()
+    Application.put_env(:dash, DashWeb.Plugs.ApprovedEmailAuth, enabled: false)
 
     on_exit(fn ->
-      merge_module_config(:dash, Dash.Hub, http_client: nil)
-      merge_module_config(:dash, Dash.OrchClient, http_client: nil)
+      exit_mocks_for_hubs()
     end)
 
     verify_on_exit!(context)
@@ -19,17 +17,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
   describe "Hub API" do
     test "should fetch and return usage stats for hubs", %{conn: conn} do
-      Dash.HttpMock
-      |> Mox.expect(:get, 2, fn url, _headers, _options ->
-        cond do
-          url =~ ~r/\/presence$/ ->
-            {:ok, %HTTPoison.Response{status_code: code(:ok), body: Poison.encode!(%{count: 3})}}
-
-          url =~ ~r/\/storage$/ ->
-            {:ok,
-             %HTTPoison.Response{status_code: code(:ok), body: Poison.encode!(%{storage_mb: 10})}}
-        end
-      end)
+      mock_hubs_get()
 
       create_test_account_and_hub()
 
@@ -153,5 +141,25 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
   defp patch_subdomain(conn, hub, subdomain, expected_status: expected_status) do
     conn |> patch_hub(hub, %{subdomain: subdomain}, expected_status: expected_status)
+  end
+
+  def mock_hubs_get() do
+    Dash.HttpMock
+    |> Mox.expect(:get, 2, fn url, _headers, _options ->
+      cond do
+        url =~ ~r/presence$/ ->
+          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{count: 3})}}
+
+        url =~ ~r/storage$/ ->
+          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{storage_mb: 10})}}
+      end
+    end)
+  end
+
+  def mock_orch_post() do
+    Dash.HttpMock
+    |> Mox.expect(:post, fn _url, _body ->
+      {:ok, %HTTPoison.Response{status_code: 200}}
+    end)
   end
 end
