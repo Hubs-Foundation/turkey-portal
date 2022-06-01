@@ -1,12 +1,7 @@
 defmodule Dash.ApprovedEmailTest do
-  use ExUnit.Case
+  use Dash.DataCase
   alias Dash.{ApprovedEmail, Repo}
   import Ecto.Query
-
-  setup do
-    # Explicitly get a connection before each test
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
-  end
 
   describe "Approved Emails" do
     @email1 "email1@email.com"
@@ -70,6 +65,11 @@ defmodule Dash.ApprovedEmailTest do
 
       assert ApprovedEmail.has_email(@email1) === false &&
                ApprovedEmail.has_email(@email2) === false
+    end
+
+    test "should error when trying to add duplicate emails" do
+      ApprovedEmail.add(@email1)
+      assert {:error, %Ecto.Changeset{}} = ApprovedEmail.add(@email1)
     end
   end
 end

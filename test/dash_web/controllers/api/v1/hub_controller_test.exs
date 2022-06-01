@@ -5,14 +5,11 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   import Plug.Conn.Status, only: [code: 1]
 
   setup_all context do
-    Mox.defmock(Dash.HttpMock, for: HTTPoison.Base)
-    merge_module_config(:dash, Dash.Hub, http_client: Dash.HttpMock)
-    merge_module_config(:dash, Dash.OrchClient, http_client: Dash.HttpMock)
+    setup_mocks_for_hubs()
     Application.put_env(:dash, DashWeb.Plugs.ApprovedEmailAuth, enabled: false)
 
     on_exit(fn ->
-      merge_module_config(:dash, Dash.Hub, http_client: nil)
-      merge_module_config(:dash, Dash.OrchClient, http_client: nil)
+      exit_mocks_for_hubs()
     end)
 
     verify_on_exit!(context)

@@ -26,14 +26,19 @@ defmodule Dash.ApprovedEmail do
       email_hash: hash_email(email)
     }
 
-    new_approved_email =
+    approved_email_tuple =
       %ApprovedEmail{}
       |> ApprovedEmail.changeset(new_approved_email_params)
-      |> Repo.insert!()
+      |> Repo.insert()
 
-    case new_approved_email do
-      %ApprovedEmail{} = _new_approved_email -> Logger.info("Added email: #{email}")
-      _ -> Logger.error("ERROR: could not add #{email}")
+    case approved_email_tuple do
+      {:ok, _approved_email} ->
+        Logger.info("Added email")
+
+      {:error, error} ->
+        Logger.error("ERROR: Could not add email.")
+        # Return tuple for tests
+        {:error, error}
     end
   end
 
@@ -50,11 +55,10 @@ defmodule Dash.ApprovedEmail do
     case email_to_delete do
       %ApprovedEmail{} ->
         Repo.delete!(email_to_delete)
-        Logger.info("Deleted email: #{email}")
+        Logger.info("Deleted email")
 
       nil ->
-        nil
-        Logger.error("ERROR: couldn't find email to delete: #{email}")
+        Logger.error("ERROR: couldn't find email to delete")
     end
   end
 

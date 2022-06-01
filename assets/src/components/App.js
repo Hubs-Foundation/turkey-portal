@@ -7,6 +7,7 @@ import { HubContainer } from "./containers/HubContainer";
 import { Landing } from "./display/Landing";
 import { Spinner } from "./common/Spinner";
 import { Layout } from "./display/Layout";
+import { ForbiddenWrapper } from "./display/ForbiddenWrapper";
 
 export function App() {
   let { isLoading, isError, isReady } = useAccount();
@@ -20,10 +21,12 @@ export function App() {
       {isLoggedOut && <Landing />}
       {isReady && (
         <Layout>
-          <Routes>
-            <Route path="/" element={<HomeContainer />} />
-            <Route path="/hubs/:hubId" element={<HubContainer />} />
-          </Routes>
+          <ForbiddenWrapper>
+            <Routes>
+              <Route path="/" element={<HomeContainer />} />
+              <Route path="/hubs/:hubId" element={<HubContainer />} />
+            </Routes>
+          </ForbiddenWrapper>
         </Layout>
       )}
     </>

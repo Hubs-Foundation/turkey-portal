@@ -31,5 +31,6 @@ defmodule DashWeb.Plugs.ApprovedEmailAuth do
     end
   end
 
+  # Allow unauthenticated requests to pass because we do not know who the user is and what email they're using
   defp check_if_approved_email(conn, _), do: conn
 end

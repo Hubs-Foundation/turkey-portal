@@ -5,10 +5,11 @@ import { useSelector } from "react-redux";
 import "./Header.css";
 import { IconLogOut, IconExternal } from "../common/icons";
 import logoBlack from "../../images/logo-black.svg";
+import { selectAccount } from "../store/account";
 
 export function Header() {
   const [popoutOpen, setPopoutOpen] = useState(false);
-  const account = useSelector((state) => state.account);
+  const account = useSelector(selectAccount);
 
   useEffect(() => {
     const closePopout = () => setPopoutOpen(false);

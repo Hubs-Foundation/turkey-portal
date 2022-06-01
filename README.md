@@ -16,7 +16,9 @@ asdf will use the versions specified in the `.tool-versions` file. Just run `asd
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-Paste the following in your browser console to login as a local user (email: "local-user@turkey.local"):
+Paste the following in your browser console to login as a local user.
+
+The email associated with this token is "local-user@turkey.local".
 
 ```
 document.cookie='_turkeyauthtoken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMyNTAzNjgwMDAwLCJmeGFfZGlzcGxheU5hbWUiOiJMb2NhbCBVc2VyIiwiZnhhX2VtYWlsIjoibG9jYWwtdXNlckB0dXJrZXkubG9jYWwiLCJmeGFfcGljIjoiL2ltYWdlcy9sb2NhbC11c2VyLnN2ZyIsInN1YiI6ImxvY2FsLXVzZXItdWlkIn0.irWtfeGimpmNkwlSmz3bgJdjZYXgdtoigPlbE4U9s3iO9Cpx12jIhmqUe8WmJpqDK7mlLeBIRvTJir1rgGz7Rw;path=/;max-age=31536000'

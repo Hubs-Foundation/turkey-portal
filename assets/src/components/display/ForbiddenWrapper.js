@@ -1,11 +1,12 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
 import { UserNotFound } from "./UserNotFound";
+import { selectIsForbidden } from "../store/hubs";
 
 export function ForbiddenWrapper({ children }) {
-  const isForbidden = useSelector((state) => state.hubEntities.isForbidden);
+  const isForbidden = useSelector(selectIsForbidden);
   return <>{isForbidden ? <UserNotFound /> : children}</>;
 }
 

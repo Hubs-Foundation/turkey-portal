@@ -1,29 +1,22 @@
 defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
   use DashWeb.ConnCase
   import DashWeb.TestHelpers
-  alias Dash.{ApprovedEmail, Repo}
+  alias Dash.ApprovedEmail
   alias DashWeb.Api.V1.HubControllerTest
 
   setup_all do
-    # For /api/v1/hubs request setup
-    Mox.defmock(Dash.HttpMock, for: HTTPoison.Base)
-    merge_module_config(:dash, Dash.Hub, http_client: Dash.HttpMock)
-    merge_module_config(:dash, Dash.OrchClient, http_client: Dash.HttpMock)
+    setup_mocks_for_hubs()
 
     on_exit(fn ->
-      # For /api/v1/hubs request
-      merge_module_config(:dash, Dash.Hub, http_client: nil)
-      merge_module_config(:dash, Dash.OrchClient, http_client: nil)
+      exit_mocks_for_hubs()
     end)
   end
 
   describe "ApprovedEmailAuth Plug" do
     setup do
       # Explicitly get a connection before each test
-      :ok = Ecto.Adapters.SQL.Sandbox.checkout(Repo)
       clear_auth_config()
       Application.put_env(:dash, DashWeb.Plugs.ApprovedEmailAuth, enabled: true)
-      Application.put_env(:dash, DashWeb.Plugs.BasicAuth, enabled: false)
     end
 
     @valid_expiration token_expiry: ~N[3000-01-01 00:00:00]
