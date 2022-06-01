@@ -13,4 +13,5 @@ jobs:
       - name: Deploy Storybook
         run: |
           cd client
+          npm ci
           npm run deploy-storybook
