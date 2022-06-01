@@ -1,10 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import "./HubForm.css";
 import { LinkButton } from "../common/LinkButton";
 import { IconDrive, IconUsers } from "../common/icons";
 import { formatMegabytes } from "../utils/formatNumber";
+
+function HubNickname({ hub, setHub }) {
+  const [nameValidity, setNameValidity] = useState({ valid: true });
+  const max24Characters = ".{1,24}";
+
+  return (
+    <div>
+      <span className="form-section-title">Hub Nickname</span>
+      {nameValidity.valid || nameValidity.valueMissing ? (
+        <span className="form-section-subtitle">For use within the dashboard area only</span>
+      ) : (
+        <span className="form-section-subtitle invalid">Hub name too long (24 characters max)</span>
+      )}
+      <input
+        type="text"
+        value={hub.name}
+        required
+        pattern={max24Characters}
+        onChange={(e) => {
+          setNameValidity(e.target.validity);
+          setHub({ ...hub, name: e.target.value });
+        }}
+      />
+    </div>
+  );
+}
+HubNickname.propTypes = {
+  hub: PropTypes.object,
+  setHub: PropTypes.func,
+};
 
 export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
   const onFormSubmit = (e) => {
@@ -14,19 +44,17 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
 
   const tierChoices = [
     { tier: "free", disabled: true, ccuLimit: 5, storageLimitMb: 250 },
-    { tier: "mvp", disabled: false, ccuLimit: 25, storageLimitMb: 2000 },
+    { tier: "mvp", disabled: false, ccuLimit: null, storageLimitMb: null },
   ];
 
   return (
     <div className="hub-form-container">
       <form className="hub-form" onSubmit={onFormSubmit}>
-        <div>
-          <span className="form-section-title">Hub Name</span>
-          <input type="text" value={hub.name} onChange={(e) => setHub({ ...hub, name: e.target.value })} />
-        </div>
+        <HubNickname hub={hub} setHub={setHub} />
 
         <div>
           <span className="form-section-title">Hub Tier</span>
+          <span className="form-section-subtitle">Hub tiers vary in visitor capacity and asset storage space</span>
           {tierChoices.map((tierChoice) => (
             <label
               key={tierChoice.tier}
@@ -46,7 +74,7 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
               </div>
               <div>
                 <IconUsers />
-                <span>{tierChoice.ccuLimit}</span>
+                <span>{tierChoice.ccuLimit || "-"}</span>
               </div>
               <div>
                 <IconDrive />
@@ -57,10 +85,15 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
         </div>
 
         <div className="web-address">
-          <span className="form-section-title">Web Address (URL)</span>
-          <input type="text" value={hub.subdomain} onChange={(e) => setHub({ ...hub, subdomain: e.target.value })} />
-          <span className="form-section-subtitle">Preview</span>
-          <div>
+          <div className="web-address-header">
+            <span className="form-section-title">Web Address (URL)</span>
+            <span className="form-section-subtitle">
+              Supports letters (a to z), digits (0 to 9), and hyphens&nbsp;(-)
+            </span>
+          </div>
+          <div className="web-address-input">
+            <input type="text" value={hub.subdomain} onChange={(e) => setHub({ ...hub, subdomain: e.target.value })} />
+            &nbsp;
             <span className="domain">
               <span className="subdomain">{hub.subdomain}</span>.myhubs.net
             </span>
@@ -82,9 +115,9 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
         <span>Tier</span>
         <span className={`tag ${hub.tier}`}>{hub.tier}</span>
         <span>People</span>
-        <span>{hub.ccuLimit}</span>
+        <span className="hub-form-summary-value">-</span>
         <span>Capacity</span>
-        <span>{formatMegabytes(hub.storageLimitMb)}</span>
+        <span className="hub-form-summary-value">-</span>
       </div>
     </div>
   );

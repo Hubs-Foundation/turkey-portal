@@ -1,21 +1,26 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
 import "./Nav.css";
+import { Link } from "react-router-dom";
+import { IconBackButton } from "../common/icons";
+import { useHubs } from "../hooks/hubs";
 
 export function Nav() {
-  const isForbidden = useSelector((state) => state.hubEntities.isForbidden);
+  const { isLoading, isForbidden } = useHubs();
   const location = useLocation();
-  const title = isForbidden ? "" : location.pathname.startsWith("/hubs/") ? "Hub Settings" : "Dashboard";
+  const isHubsSettings = location.pathname.startsWith("/hubs/");
+  const isAllowed = !isLoading && !isForbidden;
+  const title = isAllowed ? (isHubsSettings ? "Hub Settings" : "Dashboard") : "";
+  const showBackButton = isAllowed && isHubsSettings;
   return (
-    <div>
+    <div className="nav">
+      {showBackButton && (
+        <Link to={"/"}>
+          <IconBackButton />
+        </Link>
+      )}
       <h2>{title}</h2>
     </div>
   );
 }
-
-Nav.propTypes = {
-  title: PropTypes.string,
-};

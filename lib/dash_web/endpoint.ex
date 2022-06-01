@@ -21,6 +21,11 @@ defmodule DashWeb.Endpoint do
     at: "/",
     from: :dash,
     gzip: false,
+    cache_control_for_etags:
+      if(Mix.env() === :prod,
+        do: "public, max-age=31536000",
+        else: "public"
+      ),
     only: ~w(assets fonts images favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the

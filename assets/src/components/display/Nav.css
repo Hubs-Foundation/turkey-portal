@@ -1,4 +1,13 @@
-h2 {
+.nav,
+.nav a {
+  display: flex;
+  align-items: center;
+}
+.nav .icon {
+  height: 23px;
+}
+.nav h2 {
+  display: inline;
   margin: 0;
   padding: 0.5em 0;
   font-size: 28px;

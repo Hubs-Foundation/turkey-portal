@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
 import { useGetHubsQuery, useGetHubQuery, useUpdateHubMutation } from "../services/hubs";
-import { hubEntitySelectors, selectIsInitialized, setHubEntity, setHubEntities, setForbidden } from "../store/hubs";
+import { hubEntitySelectors, selectIsInitialized, setHubEntity, setHubEntities } from "../store/hubs";
 import { selectCurrentHub, setCurrentHub } from "../store/currentHub";
 
 export function useHubs() {
@@ -11,12 +11,16 @@ export function useHubs() {
   const isInitialized = useSelector(selectIsInitialized);
   const { data, error, isLoading, isError, isSuccess } = useGetHubsQuery({}, { skip: isInitialized });
 
+  // TODO isForbidden should probably be an isAllowed property of the accounts API response.
   // Manage unauthorized email
-  const isForbidden = isError && error?.status === 403;
+  const isForbidden = isError && error.status === 403;
 
-  if (!isInitialized && data) dispatch(setHubEntities(data));
-
-  useEffect(() => dispatch(setForbidden(isForbidden)), [isForbidden]);
+  const shouldUpdateHubEntities = !isInitialized && data;
+  useEffect(() => {
+    if (shouldUpdateHubEntities) {
+      dispatch(setHubEntities(data));
+    }
+  }, [shouldUpdateHubEntities]);
 
   const hasHubs = !!hubs.length;
   const isReady = isSuccess || isInitialized;
@@ -38,8 +42,6 @@ export function useHub(hubId) {
 
   const currentHub = useSelector(selectCurrentHub);
   if (hasHubEntity && !currentHub) dispatch(setCurrentHub(hubEntity));
-
-  useEffect(() => dispatch(setForbidden(isForbidden)), [isForbidden]);
 
   const [submitHub, { isLoading: isSubmitting }] = useUpdateHubMutation();
 

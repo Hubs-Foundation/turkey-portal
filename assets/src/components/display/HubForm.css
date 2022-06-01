@@ -20,6 +20,10 @@
 .hub-form input[type="text"]:focus {
   border-color: #bbb;
 }
+.hub-form input[type="text"]:invalid {
+  border: 0;
+  outline: 2px solid #920b27;
+}
 .hub-form label {
   display: inline;
   margin: 0 0.2em;
@@ -46,6 +50,7 @@
   align-items: center;
   margin: 0;
   margin-bottom: 1.5em;
+  margin-top: 0.5em;
   padding: 1em;
   background: #eee;
   border-radius: 0.2em;
@@ -77,8 +82,17 @@
 }
 .hub-form .form-section-title {
   display: block;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.2em;
   font-weight: bold;
+}
+.hub-form .form-section-subtitle {
+  display: block;
+  padding-bottom: 0.5em;
+  font-size: 9pt;
+  color: #737373;
+}
+.hub-form .form-section-subtitle.invalid {
+  color: #920b27;
 }
 .hub-form .form-buttons {
   display: flex;
@@ -88,13 +102,19 @@
 
 .hub-form .web-address {
   display: grid;
-  grid-template: 1fr 1fr / 1fr 1fr;
+  grid-template: 1fr 1fr / 1fr;
   grid-auto-flow: column;
   margin-top: 3em;
 }
 .hub-form .web-address > * {
   display: flex;
   align-items: center;
+}
+.hub-form .web-address-header {
+  display: block;
+}
+.hub-form .web-address-input {
+  flex-wrap: wrap;
 }
 .hub-form .subdomain {
   font-weight: bold;
@@ -103,16 +123,21 @@
 .hub-form-summary {
   display: grid;
   grid-template: 1.5fr 1fr 1fr 1fr / 1fr 1fr;
-  grid-gap: 0.5em;
+  grid-gap: 1em;
+  grid-column-gap: 2em;
   align-items: start;
   justify-items: start;
   position: sticky;
   top: 1em;
   margin-left: 1em;
   padding: 1em;
+  padding-right: 3em;
   background: white;
   border: 1px solid #ddd;
   border-radius: 0.5em;
+}
+.hub-form-summary-value {
+  font-weight: bold;
 }
 .hub-form-summary > *:first-child {
   grid-column: span 2;
@@ -125,11 +150,8 @@
   align-items: start;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .hub-form-summary {
     display: none;
-  }
-  .hub-form .web-address {
-    grid-template: repeat(4, 1fr) / 1fr;
   }
 }

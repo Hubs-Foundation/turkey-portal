@@ -7,6 +7,7 @@ import clock from "./clock.svg";
 import spinner from "./spinner.svg";
 import logOut from "./log-out.svg";
 import external from "./external.svg";
+import backButton from "./back-button.svg";
 
 import "./Icon.css";
 
@@ -33,4 +34,8 @@ export function IconLogOut() {
 
 export function IconExternal() {
   return <img alt="external link" className="icon" src={external} />;
+}
+
+export function IconBackButton() {
+  return <img alt="back" className="icon" src={backButton} />;
 }
