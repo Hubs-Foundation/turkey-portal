@@ -102,7 +102,7 @@
 
 .hub-form .web-address {
   display: grid;
-  grid-template: 1fr 1fr / 1fr 1fr;
+  grid-template: 1fr 1fr / 1fr;
   grid-auto-flow: column;
   margin-top: 3em;
 }
@@ -113,6 +113,9 @@
 .hub-form .web-address-header {
   display: block;
 }
+.hub-form .web-address-input {
+  flex-wrap: wrap;
+}
 .hub-form .subdomain {
   font-weight: bold;
 }
@@ -120,13 +123,15 @@
 .hub-form-summary {
   display: grid;
   grid-template: 1.5fr 1fr 1fr 1fr / 1fr 1fr;
-  grid-gap: 0.5em;
+  grid-gap: 1em;
+  grid-column-gap: 2em;
   align-items: start;
   justify-items: start;
   position: sticky;
   top: 1em;
   margin-left: 1em;
   padding: 1em;
+  padding-right: 3em;
   background: white;
   border: 1px solid #ddd;
   border-radius: 0.5em;
@@ -145,11 +150,8 @@
   align-items: start;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .hub-form-summary {
     display: none;
-  }
-  .hub-form .web-address {
-    grid-template: repeat(4, 1fr) / 1fr;
   }
 }

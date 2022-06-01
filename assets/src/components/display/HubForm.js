@@ -87,9 +87,11 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
         <div className="web-address">
           <div className="web-address-header">
             <span className="form-section-title">Web Address (URL)</span>
-            <span className="form-section-subtitle">Supports letters (a to z), digits (0 to 9), and hyphens (-)</span>
+            <span className="form-section-subtitle">
+              Supports letters (a to z), digits (0 to 9), and hyphens&nbsp;(-)
+            </span>
           </div>
-          <div>
+          <div className="web-address-input">
             <input type="text" value={hub.subdomain} onChange={(e) => setHub({ ...hub, subdomain: e.target.value })} />
             &nbsp;
             <span className="domain">
@@ -113,9 +115,9 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
         <span>Tier</span>
         <span className={`tag ${hub.tier}`}>{hub.tier}</span>
         <span>People</span>
-        <span className="hub-form-summary-value">Unlimited</span>
+        <span className="hub-form-summary-value">-</span>
         <span>Capacity</span>
-        <span className="hub-form-summary-value">Unlimited</span>
+        <span className="hub-form-summary-value">-</span>
       </div>
     </div>
   );

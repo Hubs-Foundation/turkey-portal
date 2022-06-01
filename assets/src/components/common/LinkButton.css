@@ -24,3 +24,9 @@
   background-color: #2aadef;
   border-color: #2aadef;
 }
+
+@media (max-width: 800px) {
+  .link-button {
+    min-width: 100px;
+  }
+}
