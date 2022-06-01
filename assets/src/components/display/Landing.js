@@ -7,6 +7,7 @@ import logoWhite from "../../images/logo-white.svg";
 
 export function Landing() {
   const client = location.origin + location.pathname.replace(/\/$/, "");
+  // TODO Use the CLUSTER app config value here, assuming the auth server on the dev cluster is functional.
   const loginUrl = `https://auth.myhubs.net/login?idp=fxa&client=${client}`;
   return (
     <div className="landing-container">

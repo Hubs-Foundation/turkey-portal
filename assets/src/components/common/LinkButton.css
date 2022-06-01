@@ -5,6 +5,7 @@
   border: 1px solid #868686;
   border-radius: 0.8em;
   color: black;
+  stroke: black;
   text-align: center;
   font-size: 12px;
   font-weight: bold;
@@ -23,6 +24,13 @@
 .link-button.primary:hover {
   background-color: #2aadef;
   border-color: #2aadef;
+}
+.link-button .link-button-icon {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  margin-left: 0.5em;
+  vertical-align: text-top;
 }
 
 @media (max-width: 800px) {

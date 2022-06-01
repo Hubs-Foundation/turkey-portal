@@ -8,6 +8,7 @@ import spinner from "./spinner.svg";
 import logOut from "./log-out.svg";
 import external from "./external.svg";
 import backButton from "./back-button.svg";
+import copy from "./copy.svg";
 
 import "./Icon.css";
 
@@ -32,10 +33,19 @@ export function IconLogOut() {
   return <img alt="sign out" className="icon" src={logOut} />;
 }
 
-export function IconExternal() {
-  return <img alt="external link" className="icon" src={external} />;
+export function IconExternal({ className }) {
+  return (
+    <svg alt="external link" className={`icon ${className}`}>
+      <use href={`${external}#external`} />
+    </svg>
+  );
 }
+IconExternal.propTypes = { className: PropTypes.string };
 
 export function IconBackButton() {
   return <img alt="back" className="icon" src={backButton} />;
+}
+
+export function IconCopy() {
+  return <img alt="copy" className="icon" src={copy} />;
 }

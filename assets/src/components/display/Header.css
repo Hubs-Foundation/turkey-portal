@@ -54,8 +54,9 @@
   font-size: 10pt;
   white-space: nowrap;
 }
-.account-manage img {
+.account-manage .icon {
   width: 15px;
+  height: 15px;
 }
 .account-popout hr {
   margin: 0;
