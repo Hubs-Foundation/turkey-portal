@@ -16,4 +16,4 @@ jobs:
           npm install 
           npm run deploy-storybook -- --ci
         env:
-          GH_TOKEN: MyCompany:${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: Dashboard:${{ secrets.GITHUB_TOKEN }}
