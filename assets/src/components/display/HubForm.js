@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import "./HubForm.css";
+import { CLUSTER_DOMAIN } from "../utils/app-config";
 import { LinkButton } from "../common/LinkButton";
 import { IconDrive, IconUsers } from "../common/icons";
 import { formatMegabytes } from "../utils/formatNumber";
@@ -95,7 +96,7 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
             <input type="text" value={hub.subdomain} onChange={(e) => setHub({ ...hub, subdomain: e.target.value })} />
             &nbsp;
             <span className="domain">
-              <span className="subdomain">{hub.subdomain}</span>.myhubs.net
+              <span className="subdomain">{hub.subdomain}</span>.{CLUSTER_DOMAIN}
             </span>
           </div>
         </div>

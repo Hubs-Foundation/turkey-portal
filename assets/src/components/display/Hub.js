@@ -3,14 +3,18 @@ import PropTypes from "prop-types";
 
 import "./Hub.css";
 import { LinkButton } from "../common/LinkButton";
+import { CopyButton } from "../common/CopyButton";
 import { Spinner } from "../common/Spinner";
-import { IconDrive, IconUsers } from "../common/icons";
+import { IconDrive, IconUsers, IconExternal } from "../common/icons";
+import { CLUSTER_DOMAIN } from "../utils/app-config";
 import { formatNumber, formatMegabytes } from "../utils/formatNumber";
 import { READY } from "../utils/hub-constants";
 
-export function Hub({ tier, name, status, subdomain, currentCcu, ccuLimit, storageUsageMb, storageLimitMb, hubId }) {
-  const ccu = `${formatNumber(currentCcu)} / ${formatNumber(ccuLimit)}`;
-  const storage = `${formatMegabytes(storageUsageMb)} / ${formatMegabytes(storageLimitMb)}`;
+export function Hub({ tier, name, status, subdomain, currentCcu, storageUsageMb, hubId }) {
+  const ccu = `${formatNumber(currentCcu)}`;
+  const storage = `${formatMegabytes(storageUsageMb)}`;
+  const domain = `${subdomain}.${CLUSTER_DOMAIN}`;
+  const hubUrl = `https://${domain}`;
 
   return (
     <div className={`hub ${status}`}>
@@ -22,9 +26,10 @@ export function Hub({ tier, name, status, subdomain, currentCcu, ccuLimit, stora
       {status === READY ? (
         <>
           <div>
-            <a className="domain" href={`//${subdomain}.myhubs.net`}>
-              {subdomain}.myhubs.net
+            <a className="domain" href={hubUrl} target="_blank" rel="noreferrer">
+              {domain} <IconExternal className="domain-icon" />
             </a>
+            <CopyButton text={hubUrl} />
           </div>
 
           <span className="hub-stats">
@@ -36,8 +41,7 @@ export function Hub({ tier, name, status, subdomain, currentCcu, ccuLimit, stora
 
           <div className="hub-buttons">
             <LinkButton to={`/hubs/${hubId}`} text="Hub Settings" />
-            {/* TODO change hardcoded value for domain*/}
-            <LinkButton href={`https://${subdomain}.myhubs.net/admin`} text="Admin Panel" />
+            <LinkButton href={`${hubUrl}/admin`} text="Admin Panel" isExternal />
           </div>
         </>
       ) : (
@@ -65,9 +69,7 @@ Hub.propTypes = {
   name: PropTypes.string,
   tier: PropTypes.string,
   currentCcu: PropTypes.number,
-  ccuLimit: PropTypes.number,
   storageUsageMb: PropTypes.number,
-  storageLimitMb: PropTypes.number,
   status: PropTypes.string,
   subdomain: PropTypes.string,
   hubId: PropTypes.string,

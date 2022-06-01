@@ -34,6 +34,7 @@ main {
   align-items: center;
 }
 a {
+  color: #007AB8;
   text-decoration: underline;
 }
 h1 {
@@ -64,6 +65,10 @@ button.primary {
 button.primary:hover {
   background-color: #2aadef;
   border-color: #2aadef;
+}
+button:focus-visible {
+  outline: 2px solid highlight;
+  outline: 2px solid -webkit-focus-ring-color;
 }
 *[role=button] {
   cursor: pointer;

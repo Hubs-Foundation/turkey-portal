@@ -51,6 +51,8 @@ config :dash, DashWeb.Endpoint,
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
+config :dash, Dash.AppConfig, host: "dashboard.cluster.turkey.local"
+
 config :dash, DashWeb.Plugs.Auth, auth_pub_key: auth_pub_key
 
 config :dash, DashWeb.Plugs.BasicAuth,

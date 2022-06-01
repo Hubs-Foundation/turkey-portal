@@ -123,15 +123,15 @@
 .hub-form-summary {
   display: grid;
   grid-template: 1.5fr 1fr 1fr 1fr / 1fr 1fr;
-  grid-gap: 1em;
-  grid-column-gap: 2em;
+  grid-gap: 0.5em;
+  grid-column-gap: 1em;
   align-items: start;
   justify-items: start;
   position: sticky;
   top: 1em;
   margin-left: 1em;
   padding: 1em;
-  padding-right: 3em;
+  padding-right: 2em;
   background: white;
   border: 1px solid #ddd;
   border-radius: 0.5em;
@@ -146,6 +146,7 @@
 
 .hub-form-container {
   display: grid;
+  grid-template: 1fr / 1fr auto;
   grid-auto-flow: column;
   align-items: start;
 }

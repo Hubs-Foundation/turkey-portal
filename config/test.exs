@@ -20,6 +20,8 @@ config :dash, DashWeb.Endpoint,
   secret_key_base: "+Zm3JIfo2DSCREfgIyagAsR48QVEh/l6LR+jDuNaLqVDByGe7U5GTdNHZ0lOWHsw",
   server: false
 
+config :dash, Dash.AppConfig, host: "dashboard.cluster.turkey.local"
+
 config :dash, DashWeb.Plugs.BasicAuth, enabled: false
 
 config :dash, DashWeb.Plugs.ApprovedEmailAuth, enabled: false
