@@ -1,7 +1,7 @@
 import { ReactNode, HTMLAttributeAnchorTarget } from 'react'
 import styles from './ExternalLink.module.scss'
-import { IconT } from '../../../types/General'
-import Icon from '../Icon/Icon'
+import { IconT } from 'types/General'
+import Icon from '@Icon'
 
 type ExternalLinkProps = {
   href: string

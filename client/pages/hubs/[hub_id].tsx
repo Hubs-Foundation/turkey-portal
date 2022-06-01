@@ -1,19 +1,19 @@
-import { useCallback, useState, useEffect,useContext } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Head from 'next/head'
-import PageHeading from '../../components/shared/PageHeading/PageHeading'
-import Form from '../../components/shared/Form/Form'
-import Input from '../../components/shared/Input/Input'
-import HubOptionGroup from '../../components/shared/HubOptionGroup/HubOptionGroup'
-import SkeletonCard from '../../components/cards/SkeletonCard/SkeletonCard'
 import styles from './[hub_id].module.scss'
-import Badge from '../../components/shared/Badge/Badge'
 import type { GetServerSidePropsContext } from 'next'
-import { HubT } from '../../types/General'
-import { HubGroupOptionT } from '../../components/shared/HubOptionGroup/HubOptionGroup'// just used for mock data for now.
-import { getHub, updateHub } from '../../services/hub.service'
-import { requireAuthentication } from '../../services/routeGuard.service'
+import { HubT } from 'types/General'
+import { HubGroupOptionT } from '@Components/shared/HubOptionGroup/HubOptionGroup'// just used for mock data for now.
+import { getHub, updateHub } from 'services/hub.service'
+import { requireAuthentication } from 'services/routeGuard.service'
 import { HUB_ROOT_DOMAIN } from 'config'
+import Head from 'next/head'
+import PageHeading from '@PageHeading'
+import Form from '@Form'
+import Input from '@Input'
+import Badge from '@Badge'
+import HubOptionGroup from '@Components/shared/HubOptionGroup/HubOptionGroup'
+import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard'
 
 type HubDetailsViewPropsT = {}
 

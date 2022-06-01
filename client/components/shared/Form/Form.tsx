@@ -1,7 +1,8 @@
 import React, { useState, ChangeEventHandler, ChangeEvent, ReactNode } from 'react'
-import Button from '../Button/Button'
-import { ButtonCategoriesE } from '../../../types/Form'
+import Button from '@/Button'
+import { ButtonCategoriesE } from 'types/Form'
 import styles from './Form.module.scss'
+
 
 const initialForm: { [key: string]: string | number | readonly string[] | undefined } = {}
 const initialFormHandler: ChangeEventHandler<HTMLInputElement> = (event: ChangeEvent) => { }

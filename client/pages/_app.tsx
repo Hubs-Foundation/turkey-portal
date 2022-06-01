@@ -1,13 +1,13 @@
 import { useEffect } from 'react'
-import store from '../store/store'
-import initStoreData from '../store/storeInit'
+import '../styles/globals.scss'
+import store from 'store/store'
 import { Provider } from 'react-redux'
 import type { AppProps } from 'next/app'
-import { LoggedOutRoutsE } from '../types/Routes'
-import MainLayout from '../layouts/MainLayout/MainLayout'
-import LoginLayout from '../layouts/LoginLayout/LoginLayout'
+import { LoggedOutRoutsE } from 'types/Routes'
+import initStoreData from 'store/storeInit'
 import Head from 'next/head'
-import '../styles/globals.scss'
+import MainLayout from 'layouts/MainLayout/MainLayout'
+import LoginLayout from 'layouts/LoginLayout/LoginLayout'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
 

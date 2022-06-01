@@ -4,7 +4,7 @@ import Head from "next/head"
 import { setAccount, logOut } from '../store/accountSlice'
 import { useDispatch } from 'react-redux'
 import axios from 'axios'
-import { HubT, AccountT } from '../types/General'
+import { HubT, AccountT } from 'types/General'
 import { API_SERVER } from 'config'
 
 const fetchData = async (context: GetServerSidePropsContext, resource: string) => {

@@ -11,8 +11,8 @@ const SkeletonCard = ({ category, qty = 1 }: SkeletonCardPropsT) => {
   return (
     <div className={`${styles.card_wrapper} ${category === 'square' ? styles.square_wrapper : styles.row_wrapper}`}>
       {
-        [...Array(qty)].map(() => {
-          return <div className={`${styles.card} pulse ${category === 'square' ? styles.square : styles.row}`}></div>
+        [...Array(qty)].map((arr,i) => {
+          return <div key={i} className={`${styles.card} pulse ${category === 'square' ? styles.square : styles.row}`}></div>
         })
       }
     </div>

@@ -1,8 +1,7 @@
 import { useContext, ChangeEventHandler, ChangeEvent, useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
-import { FormContext } from '../Form/Form'
+import { FormContext } from '@Form'
 import styles from './Input.module.scss'
-import { InputT } from '../../../types/Form'
-import FadeIn from '../../util/FadeIn'
+import { InputT } from 'types/Form'
 
 /**
  * Methods available to access the component
