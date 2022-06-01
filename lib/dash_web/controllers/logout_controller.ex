@@ -6,12 +6,17 @@ defmodule DashWeb.LogoutController do
 
   def index(conn, _) do
     conn
+    |> remove_cookies()
+    |> redirect(to: "/")
+  end
+
+  def remove_cookies(conn) do
+    conn
     |> delete_resp_cookie(DashWeb.Plugs.Auth.get_cookie_name(),
       domain: ".#{conn.host |> String.split(".") |> Enum.take(-2) |> Enum.join(".")}"
     )
     |> delete_resp_cookie(@temp_auth_cookie_name,
       domain: ".#{conn.host |> String.split(".") |> Enum.take(-2) |> Enum.join(".")}"
     )
-    |> redirect(to: "/")
   end
 end

@@ -29,6 +29,7 @@ export function HomeContainer() {
   const account = useSelector(selectAccount);
   const { hubs, hasHubs, isLoading, isError, isReady } = useHubs();
   const [createHub] = useCreateHubMutation();
+
   return (
     <div>
       {isLoading && <HubLoading isBuildingHub={!account.hasHubs} />}

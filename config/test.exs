@@ -22,6 +22,8 @@ config :dash, DashWeb.Endpoint,
 
 config :dash, DashWeb.Plugs.BasicAuth, enabled: false
 
+config :dash, DashWeb.Plugs.ApprovedEmailAuth, enabled: false
+
 # In test we don't send emails.
 config :dash, Dash.Mailer, adapter: Swoosh.Adapters.Test
 

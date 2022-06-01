@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import "./Header.css";
 import { IconLogOut, IconExternal } from "../common/icons";
 import logoBlack from "../../images/logo-black.svg";
+import { selectAccount } from "../store/account";
 
-export function Header({ account }) {
+export function Header() {
   const [popoutOpen, setPopoutOpen] = useState(false);
+  const account = useSelector(selectAccount);
 
   useEffect(() => {
     const closePopout = () => setPopoutOpen(false);
@@ -65,7 +67,3 @@ export function Header({ account }) {
     </div>
   );
 }
-
-Header.propTypes = {
-  account: PropTypes.object,
-};
