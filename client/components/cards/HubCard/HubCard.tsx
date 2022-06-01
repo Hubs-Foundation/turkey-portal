@@ -9,6 +9,7 @@ import IconButton from '../../shared/IconButton/IconButton'
 import Spinner from '../../shared/Spinner/Spinner'
 import { TierT, StatusT } from '../../../types/General'
 import { ButtonCategoriesE } from '../../../types/Form'
+import { HUB_ROOT_DOMAIN } from 'config'
 
 type HubCardPropsT = {
   name: string,
@@ -51,8 +52,8 @@ const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, stat
       <ExternalLink
         icon="external-link"
         target='_blank'
-        href={`${subdomain}.${process.env.HUB_ROOT_DOMAIN}`}>
-        {subdomain}.{process.env.HUB_ROOT_DOMAIN}
+        href={`${subdomain}.${HUB_ROOT_DOMAIN}`}>
+        {subdomain}.{HUB_ROOT_DOMAIN}
       </ExternalLink>
       <IconButton icon="copy" />
     </div>
@@ -102,7 +103,7 @@ const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, stat
           />
           <ExternalLink
             target='_blank'
-            href={`https://${subdomain}.${process.env.HUB_ROOT_DOMAIN}/admin`}>
+            href={`https://${subdomain}.${HUB_ROOT_DOMAIN}/admin`}>
             <Button
               text="Admin Panel"
               category={ButtonCategoriesE.outline}

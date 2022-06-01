@@ -1,5 +1,7 @@
 import axios, { AxiosRequestHeaders } from 'axios'
 const API_PATH = '/api/v1/account'
+import { API_SERVER } from 'config'
+
 
 /**
  * Get Account
@@ -11,7 +13,7 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
   const config = headers ? contextHeaders : credentials
 
   try {
-    return axios.get(`${process.env.API_SERVER}${API_PATH}`, config)
+    return axios.get(`${API_SERVER}${API_PATH}`, config)
       .then((response) => {
         return response.data
       })

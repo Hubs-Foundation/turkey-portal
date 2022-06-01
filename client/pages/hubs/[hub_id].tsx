@@ -9,12 +9,11 @@ import SkeletonCard from '../../components/cards/SkeletonCard/SkeletonCard'
 import styles from './[hub_id].module.scss'
 import Badge from '../../components/shared/Badge/Badge'
 import type { GetServerSidePropsContext } from 'next'
-import { AccountT, HubT } from '../../types/General'
+import { HubT } from '../../types/General'
 import { HubGroupOptionT } from '../../components/shared/HubOptionGroup/HubOptionGroup'// just used for mock data for now.
 import { getHub, updateHub } from '../../services/hub.service'
 import { requireAuthentication } from '../../services/routeGuard.service'
-import { FormContext } from '../../components/shared/Form/Form'
-
+import { HUB_ROOT_DOMAIN } from 'config'
 
 type HubDetailsViewPropsT = {}
 
@@ -28,7 +27,6 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
     address: '',
     tier: '',
   })
-  const formContext = useContext(FormContext)
 
   /**
    * Get Hub By ID
@@ -64,7 +62,6 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
 
   const handleAddresschange = useCallback((address: string) => {
     setAddressPreview(address)
-    console.log('formContext',formContext.form)
   }, [],
   )
 
@@ -133,7 +130,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
                         info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
                         required={true}
                       />
-                      <div className={styles.address_preview}><b>{addressPreview}</b>.{process.env.HUB_ROOT_DOMAIN}</div>
+                      <div className={styles.address_preview}><b>{addressPreview}</b>.{HUB_ROOT_DOMAIN}</div>
                     </div>
                   </>
                 </Form>
