@@ -2,9 +2,8 @@ defmodule Dash.Hub do
   use Ecto.Schema
   import Ecto.Query
   import Ecto.Changeset
-  alias Dash.Repo
+  alias Dash.{Repo, RetClient}
 
-  @ret_access_key Application.get_env(:dash, Dash.Hub)[:dashboard_ret_access_key]
   @primary_key {:hub_id, :id, autogenerate: true}
 
   schema "hubs" do
@@ -94,7 +93,7 @@ defmodule Dash.Hub do
       %Dash.Hub{}
       |> Dash.Hub.changeset(new_hub_params)
       |> Ecto.Changeset.put_assoc(:account, account)
-      |> Dash.Repo.insert!()
+      |> Repo.insert!()
 
     with {:ok, _} <- Dash.OrchClient.create_hub(fxa_email, new_hub) do
       # TODO Wait for hub to be fully available, before setting status to :ready
@@ -107,7 +106,7 @@ defmodule Dash.Hub do
   end
 
   def get_hub(hub_id, %Dash.Account{} = account) do
-    Dash.Hub |> Dash.Repo.get_by(hub_id: hub_id, account_id: account.account_id)
+    Dash.Hub |> Repo.get_by(hub_id: hub_id, account_id: account.account_id)
   end
 
   def delete_hub(hub_id, %Dash.Account{} = account) do
@@ -153,7 +152,7 @@ defmodule Dash.Hub do
   # Returns current CCU and Storage
   defp get_hub_usage_stats(%Dash.Hub{} = hub) do
     current_ccu =
-      case get_current_ccu(hub) do
+      case RetClient.get_current_ccu(hub) do
         {:ok, ccu} ->
           ccu
 
@@ -163,69 +162,11 @@ defmodule Dash.Hub do
       end
 
     current_storage_mb =
-      case get_current_storage_usage_mb(hub) do
+      case RetClient.get_current_storage_usage_mb(hub) do
         {:ok, storage_mb} -> storage_mb
         {:error, _} -> nil
       end
 
     %{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
-  end
-
-  # TODO Move reticulum requests into a RetClient module.
-  @ret_host_prefix "ret.hc-"
-  @ret_host_postfix ".svc.cluster.local"
-  @ret_internal_port "4000"
-  defp get_hub_internal_host_url(%Dash.Hub{} = hub) do
-    # TODO when we fix the hub_uid bug with orchestrator update hub.subdomain to the fix
-    "https://#{@ret_host_prefix}#{hub.hub_id}#{@ret_host_postfix}:#{@ret_internal_port}"
-  end
-
-  @ret_internal_scope "/api-internal/v1/"
-  defp fetch_hub_internal_endpoint(%Dash.Hub{} = hub, endpoint) do
-    # Make the http client module configurable so that we can mock it out in tests.
-    http_client = Application.get_env(:dash, Dash.Hub)[:http_client] || HTTPoison
-
-    http_client.get(
-      get_hub_internal_host_url(hub) <> @ret_internal_scope <> endpoint,
-      %{"x-ret-dashboard-access-key" => @ret_access_key},
-      hackney: [:insecure]
-    )
-  end
-
-  @ccu_endpoint "presence"
-  defp get_current_ccu(%Dash.Hub{} = hub) do
-    case fetch_hub_internal_endpoint(hub, @ccu_endpoint) do
-      # Reticulum returned the ccu correctly
-      {:ok, %{status_code: 200, body: body}} ->
-        %{"count" => count} = Poison.Parser.parse!(body)
-        {:ok, count}
-
-      # Reticulum completed the request but did not return the ccu
-      {:ok, %{status_code: _} = response} ->
-        IO.inspect(response)
-        {:error, :no_ccu_returned}
-
-      # An error occurred
-      {:error, reason} ->
-        IO.inspect(reason)
-        {:error, reason}
-    end
-  end
-
-  @storage_endpoint "storage"
-  defp get_current_storage_usage_mb(%Dash.Hub{} = hub) do
-    case fetch_hub_internal_endpoint(hub, @storage_endpoint) do
-      {:ok, %{status_code: 200, body: body}} ->
-        %{"storage_mb" => storage_mb} = Poison.Parser.parse!(body)
-        {:ok, storage_mb}
-
-      {:ok, _} ->
-        # TODO Log and error here when we introduce Logger
-        {:error, :no_storage_returned}
-
-      {:error, reason} ->
-        # TODO Log and error here when we introduce Logger
-        {:error, reason}
-    end
   end
 end
