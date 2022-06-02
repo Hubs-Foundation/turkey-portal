@@ -149,31 +149,28 @@ defmodule Dash.Hub do
     end
   end
 
-  @dev_ccu Application.get_env(:dash, Dash.RetClient)[:ccu]
-  @dev_storage_mb Application.get_env(:dash, Dash.RetClient)[:storage_mb]
-
-  defp get_hub_usage_stats(%Dash.Hub{} = _hub)
-       when is_integer(@dev_ccu) and is_integer(@dev_storage_mb),
-       do: %{current_ccu: @dev_ccu, current_storage_mb: @dev_storage_mb}
-
   # Returns current CCU and Storage
   defp get_hub_usage_stats(%Dash.Hub{} = hub) do
-    current_ccu =
-      case RetClient.get_current_ccu(hub) do
-        {:ok, ccu} ->
-          ccu
+    if Mix.env() === :prod do
+      current_ccu =
+        case RetClient.get_current_ccu(hub) do
+          {:ok, ccu} ->
+            ccu
 
-        {:error, error} ->
-          IO.inspect(["Error getting ccu", error])
-          nil
-      end
+          {:error, error} ->
+            IO.inspect(["Error getting ccu", error])
+            nil
+        end
 
-    current_storage_mb =
-      case RetClient.get_current_storage_usage_mb(hub) do
-        {:ok, storage_mb} -> storage_mb
-        {:error, _} -> nil
-      end
+      current_storage_mb =
+        case RetClient.get_current_storage_usage_mb(hub) do
+          {:ok, storage_mb} -> storage_mb
+          {:error, _} -> nil
+        end
 
-    %{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
+      %{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
+    else
+      %{current_ccu: 10, current_storage_mb: 20}
+    end
   end
 end
