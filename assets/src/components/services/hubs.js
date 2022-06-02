@@ -7,7 +7,7 @@ export const hubsApi = createApi({
 
   endpoints: (builder) => ({
     getHubs: builder.query({
-      query: () => `hubs`
+      query: () => `hubs`,
     }),
 
     getHub: builder.query({
