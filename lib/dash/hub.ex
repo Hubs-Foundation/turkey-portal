@@ -172,11 +172,12 @@ defmodule Dash.Hub do
   end
 
   # TODO Move reticulum requests into a RetClient module.
-  @ret_host_prefix "hc-"
+  @ret_host_prefix "ret.hc-"
+  @ret_host_postfix ".svc.cluster.local"
   @ret_internal_port "4000"
   defp get_hub_internal_host_url(%Dash.Hub{} = hub) do
     # TODO when we fix the hub_uid bug with orchestrator update hub.subdomain to the fix
-    "https://#{@ret_host_prefix}#{hub.subdomain}:#{@ret_internal_port}"
+    "https://#{@ret_host_prefix}#{hub.hub_id}#{@ret_host_postfix}:#{@ret_internal_port}"
   end
 
   @ret_internal_scope "/api-internal/v1/"
