@@ -32,6 +32,10 @@ config :dash, Dash.Repo,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
+config :dash, Dash.RetClient,
+  ccu: 10,
+  storage_mb: 20
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #

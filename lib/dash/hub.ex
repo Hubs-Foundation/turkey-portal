@@ -149,6 +149,13 @@ defmodule Dash.Hub do
     end
   end
 
+  @dev_ccu Application.get_env(:dash, Dash.RetClient)[:ccu]
+  @dev_storage_mb Application.get_env(:dash, Dash.RetClient)[:storage_mb]
+
+  defp get_hub_usage_stats(%Dash.Hub{} = _hub)
+       when is_integer(@dev_ccu) and is_integer(@dev_storage_mb),
+       do: %{current_ccu: @dev_ccu, current_storage_mb: @dev_storage_mb}
+
   # Returns current CCU and Storage
   defp get_hub_usage_stats(%Dash.Hub{} = hub) do
     current_ccu =
