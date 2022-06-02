@@ -1,6 +1,6 @@
 import { ReactNode, useState, useRef, useEffect, useCallback, useImperativeHandle, forwardRef } from 'react'
 import styles from './Dropdown.module.scss'
-import FadeIn from '@Components/util/FadeIn'
+import FadeIn from '@Util/FadeIn'
 
 export type dropdownT = {
   closeDropdown: Function

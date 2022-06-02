@@ -1,11 +1,11 @@
-import React from 'react'
-import styles from './SkeletonCard.module.scss'
-import './SkeletonCard.module.scss'
+import React from 'react';
+import styles from './SkeletonCard.module.scss';
+import './SkeletonCard.module.scss';
 
 type SkeletonCardPropsT = {
-  category: 'square' | 'row'
-  qty: number
-}
+  category: 'square' | 'row';
+  qty: number;
+};
 
 /**
  * Skeleton Card: This card is used to create faux loading ui of widgets and rows. Stack
@@ -27,10 +27,10 @@ const SkeletonCard = ({ category, qty = 1 }: SkeletonCardPropsT) => {
               category === 'square' ? styles.square : styles.row
             }`}
           ></div>
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
-export default SkeletonCard
+export default SkeletonCard;

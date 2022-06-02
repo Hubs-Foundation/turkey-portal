@@ -6,7 +6,6 @@
       "@Cards/*": ["components/cards/*"],
       "@Navigation/*": ["components/navigation/*"],
       "@Util/*": ["components/util/*"],
-      "@Components/*": ["components/*"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],

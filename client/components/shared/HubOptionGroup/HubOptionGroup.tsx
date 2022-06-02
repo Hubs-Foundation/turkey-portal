@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { FormContext } from '../Form/Form'
-import HubOption from '@Components/shared/HubOption/HubOption'
+import HubOption from '@Shared/HubOption/HubOption'
 
 type HubOptionGroupPropsT = {
   options: HubGroupOptionT[],
