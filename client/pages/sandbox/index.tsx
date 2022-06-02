@@ -1,9 +1,9 @@
 import Head from 'next/head'
 import { useState, useRef } from 'react'
-import RadioGroup from '@RadioGroup'
-import Form from '@Form'
-import Input, { InputInterfaceT } from '@Input'
-import Button from '@Button'
+import RadioGroup from '@Shared/RadioGroup/RadioGroup'
+import Form from '@Shared/Form/Form'
+import Input, { InputInterfaceT } from '@Shared/Input/Input'
+import Button from '@Shared/Button/Button'
 import { ButtonCategoriesE } from 'types/Form'
 
 /**

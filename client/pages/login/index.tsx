@@ -2,8 +2,8 @@ import Head from 'next/head'
 import type { GetServerSidePropsContext } from 'next'
 import { checkLoggedIn } from 'services/routeGuard.service'
 import { API_SERVER } from 'config'
-import Button from '@Button'
-import ExternalLink from '@ExternalLink'
+import Button from '@Shared/Button/Button'
+import ExternalLink from '@Shared/ExternalLink/ExternalLink'
 
 type LoginPropsT = {}
 

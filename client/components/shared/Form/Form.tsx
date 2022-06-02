@@ -1,5 +1,5 @@
 import React, { useState, ChangeEventHandler, ChangeEvent, ReactNode } from 'react'
-import Button from '@Button'
+import Button from '@Shared/Button/Button'
 import { ButtonCategoriesE } from 'types/Form'
 import styles from './Form.module.scss'
 

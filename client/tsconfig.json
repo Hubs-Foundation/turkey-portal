@@ -2,20 +2,10 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@Button": ["components/shared/Button/Button"],
-      "@Badge": ["components/shared/Badge/Badge"],
-      "@Dropdown": ["components/shared/Dropdown/Dropdown"],
-      "@ExternalLink": ["components/shared/ExternalLink/ExternalLink"],
-      "@Form": ["components/shared/Form/Form"],
-      "@Icon": ["components/shared/Icon/Icon"],
-      "@IconButton": ["components/shared/IconButton/IconButton"],
-      "@Input": ["components/shared/Input/Input"],
-      "@InternalLink": ["components/shared/InternalLink/InternalLink"],
-      "@PageHeading": ["components/shared/PageHeading/PageHeading"],
-      "@RadioButton": ["components/shared/RadioButton/RadioButton"],
-      "@RadioGroup": ["components/shared/RadioGroup/RadioGroup"],
-      "@Spinner": ["components/shared/Spinner/Spinner"],
+      "@Shared/*": ["components/shared/*"],
       "@Cards/*": ["components/cards/*"],
+      "@Navigation/*": ["components/navigation/*"],
+      "@Util/*": ["components/util/*"],
       "@Components/*": ["components/*"]
     },
     "target": "es5",

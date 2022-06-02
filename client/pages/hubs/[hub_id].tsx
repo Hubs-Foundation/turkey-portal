@@ -3,21 +3,21 @@ import { useRouter } from 'next/router'
 import styles from './[hub_id].module.scss'
 import type { GetServerSidePropsContext } from 'next'
 import { HubT } from 'types/General'
-import { HubGroupOptionT } from '@Components/shared/HubOptionGroup/HubOptionGroup'// just used for mock data for now.
+import { HubGroupOptionT } from '@Shared/HubOptionGroup/HubOptionGroup' // just used for mock data for now.
 import { getHub, updateHub } from 'services/hub.service'
 import { requireAuthentication } from 'services/routeGuard.service'
 import { HUB_ROOT_DOMAIN } from 'config'
 import Head from 'next/head'
-import PageHeading from '@PageHeading'
-import Form from '@Form'
-import Input from '@Input'
-import Badge from '@Badge'
-import HubOptionGroup from '@Components/shared/HubOptionGroup/HubOptionGroup'
+import PageHeading from '@Shared/PageHeading/PageHeading'
+import Form from '@Shared/Form/Form'
+import Input from '@Shared/Input/Input'
+import Badge from '@Shared/Badge/Badge'
+import HubOptionGroup from '@Shared/HubOptionGroup/HubOptionGroup'
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard'
 
 type HubDetailsViewPropsT = {}
 
-const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
+const HubDetailsView = ({}: HubDetailsViewPropsT) => {
   const router = useRouter()
   const [addressPreview, setAddressPreview] = useState('mockurl')
   const [hub, setHub] = useState<HubT>()
@@ -27,31 +27,28 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
     address: '',
     tier: '',
   })
+  const { hub_id } = router.query
 
   /**
    * Get Hub By ID
    */
   useEffect(() => {
-    const { hub_id } = router.query
     getHub(`${hub_id}`).then((hub) => {
-      console.log('hub', hub)
       setLoading(false)
       setHub(hub)
       setAddressPreview(hub.subdomain)
       setInitialFormValues({
         name: hub.name,
         address: hub.subdomain,
-        tier: hub.tier
+        tier: hub.tier,
       })
-
     })
-  }, [])
-
+  }, [hub_id])
 
   const handleFormSubmit = (data: any) => {
     // TODO : submit form to DB
     const { hub_id } = router.query
-    updateHub(`${hub_id}`).then(() => { })
+    updateHub(`${hub_id}`).then(() => {})
   }
 
   const handleCancelClick = () => {
@@ -62,11 +59,9 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
 
   const handleAddresschange = useCallback((address: string) => {
     setAddressPreview(address)
-  }, [],
-  )
+  }, [])
 
-
-  // Mock Data 
+  // Mock Data
   const radioFormOptions: HubGroupOptionT[] = [
     {
       label: 'Free',
@@ -85,7 +80,7 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
       users: 25,
       groupName: 'tier',
       id: 'mvpOption',
-    }
+    },
   ]
 
   return (
@@ -95,74 +90,76 @@ const HubDetailsView = ({ }: HubDetailsViewPropsT) => {
         <meta name="description" content="detailed information about a Hub" />
       </Head>
 
-      <PageHeading
-        title="Hub Settings"
-      />
+      <PageHeading title="Hub Settings" />
 
-      {
-        !loading && hub != undefined ? (
-          <main className='flex-justify-center margin-10'>
-            <div className={styles.settings_grid_wrapper}>
-              <div className={styles.settings_form_wrapper}>
+      {!loading && hub != undefined ? (
+        <main className="flex-justify-center margin-10">
+          <div className={styles.settings_grid_wrapper}>
+            <div className={styles.settings_form_wrapper}>
+              <Form
+                initialValues={initialFormValues}
+                submit={handleFormSubmit}
+                cancelClick={handleCancelClick}
+              >
+                <>
+                  <Input label="Hub Name" name="name" required={true} />
 
-                <Form
-                  initialValues={initialFormValues}
-                  submit={handleFormSubmit}
-                  cancelClick={handleCancelClick}>
-                  <>
+                  <HubOptionGroup name="tier" options={radioFormOptions} />
+
+                  <div className={styles.address_wrapper}>
                     <Input
-                      label="Hub Name"
-                      name="name"
+                      onChange={handleAddresschange}
+                      classProp="margin-bottom-10"
+                      label="Web Address (URL)"
+                      name="address"
+                      info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
                       required={true}
                     />
-
-                    <HubOptionGroup
-                      name="tier"
-                      options={radioFormOptions}
-                    />
-
-                    <div className={styles.address_wrapper}>
-                      <Input
-                        onChange={handleAddresschange}
-                        classProp='margin-bottom-10'
-                        label="Web Address (URL)"
-                        name="address"
-                        info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
-                        required={true}
-                      />
-                      <div className={styles.address_preview}><b>{addressPreview}</b>.{HUB_ROOT_DOMAIN}</div>
+                    <div className={styles.address_preview}>
+                      <b>{addressPreview}</b>.{HUB_ROOT_DOMAIN}
                     </div>
-                  </>
-                </Form>
-
-              </div>
-              <div className={styles.summary_wrapper}>
-                <h3 className={styles.summary_title}>Summary</h3>
-                <ul className={styles.summary_attributes}>
-                  <li>Tier: <Badge name={hub.tier} category={hub.tier === 'free' ? 'primary' : 'secondary'} /></li>
-                  <li>People: {hub.ccuLimit}</li>
-                  <li>Capacity: {hub.currentStorage ? hub.currentStorage : 'Creating'}</li> {/* TODO: what do we do with no storage here  */}
-                </ul>
-              </div>
+                  </div>
+                </>
+              </Form>
             </div>
-          </main>
-        ) : (
-          <div className="flex-justify-center">
-            <div className={styles.skeleton_container}>
-              <SkeletonCard qty={3} category='square' />
-              <SkeletonCard qty={3} category='square' />
-              <SkeletonCard qty={3} category='square' />
+            <div className={styles.summary_wrapper}>
+              <h3 className={styles.summary_title}>Summary</h3>
+              <ul className={styles.summary_attributes}>
+                <li>
+                  Tier:{' '}
+                  <Badge
+                    name={hub.tier}
+                    category={hub.tier === 'free' ? 'primary' : 'secondary'}
+                  />
+                </li>
+                <li>People: {hub.ccuLimit}</li>
+                <li>
+                  Capacity:{' '}
+                  {hub.currentStorage ? hub.currentStorage : 'Creating'}
+                </li>{' '}
+                {/* TODO: what do we do with no storage here  */}
+              </ul>
             </div>
           </div>
-        )
-      }
+        </main>
+      ) : (
+        <div className="flex-justify-center">
+          <div className={styles.skeleton_container}>
+            <SkeletonCard qty={3} category="square" />
+            <SkeletonCard qty={3} category="square" />
+            <SkeletonCard qty={3} category="square" />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
 
 export default HubDetailsView
 
-export const getServerSideProps = requireAuthentication((context: GetServerSidePropsContext) => {
-  // Your normal `getServerSideProps` code here
-  return { props: {} }
-})
+export const getServerSideProps = requireAuthentication(
+  (context: GetServerSidePropsContext) => {
+    // Your normal `getServerSideProps` code here
+    return { props: {} }
+  }
+)

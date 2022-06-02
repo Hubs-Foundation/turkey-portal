@@ -2,7 +2,7 @@ import React, { MouseEventHandler, useEffect, useState } from 'react'
 import { ButtonT, ButtonCategoriesE } from 'types/Form'
 import { IconT } from 'types/General'
 import styles from './Button.module.scss'
-import Icon from '@Icon'
+import Icon from '@Shared/Icon/Icon'
 
 export type ButtonPropsT = {
   active?: boolean,

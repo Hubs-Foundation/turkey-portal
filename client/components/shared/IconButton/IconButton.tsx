@@ -2,7 +2,7 @@ import React, { MouseEventHandler } from 'react'
 import { ButtonT } from 'types/Form'
 import { IconT } from 'types/General'
 import styles from './IconButton.module.scss'
-import Icon from '@Icon'
+import Icon from '@Shared/Icon/Icon'
 
 type IconButtonProps = {
   active?: boolean,

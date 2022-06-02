@@ -4,9 +4,9 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { selectAccount } from 'store/accountSlice'
 import { useSelector } from 'react-redux'
-import Dropdown, { dropdownT } from '@Dropdown'
-import ExternalLink from '@ExternalLink'
-import InternalLink from '@InternalLink'
+import Dropdown, { dropdownT } from '@Shared/Dropdown/Dropdown'
+import ExternalLink from '@Shared/ExternalLink/ExternalLink'
+import InternalLink from '@Shared/InternalLink/InternalLink'
 
 type MainNavPropsT = {
   classProp?: string

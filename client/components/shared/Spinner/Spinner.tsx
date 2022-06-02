@@ -1,5 +1,5 @@
 import React from 'react'
-import Icon from '@Icon'
+import Icon from '@Shared/Icon/Icon'
 import styles from './Spinner.module.scss'
 
 type SpinnerPropsT = {
