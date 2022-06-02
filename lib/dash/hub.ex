@@ -151,7 +151,9 @@ defmodule Dash.Hub do
 
   # Returns current CCU and Storage
   defp get_hub_usage_stats(%Dash.Hub{} = hub) do
-    if Mix.env() === :prod do
+    if Mix.env() === :dev do
+      %{current_ccu: 10, current_storage_mb: 20}
+    else
       current_ccu =
         case RetClient.get_current_ccu(hub) do
           {:ok, ccu} ->
@@ -169,8 +171,6 @@ defmodule Dash.Hub do
         end
 
       %{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
-    else
-      %{current_ccu: 10, current_storage_mb: 20}
     end
   end
 end
