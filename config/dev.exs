@@ -23,6 +23,8 @@ auth_pub_key =
         "-----END RSA PUBLIC KEY-----\n"
   end
 
+config :dash, Dash.Hub, use_fake_hub_stats: true
+
 # Configure your database
 config :dash, Dash.Repo,
   username: "postgres",

@@ -1,5 +1,5 @@
 defmodule Dash.RetClient do
-  @ret_access_key Application.get_env(:dash, Dash.Hub)[:dashboard_ret_access_key]
+  @ret_access_key Application.get_env(:dash, Dash.RetClient)[:dashboard_ret_access_key]
 
   @ret_host_prefix "ret.hc-"
   @ret_host_postfix ".svc.cluster.local"
