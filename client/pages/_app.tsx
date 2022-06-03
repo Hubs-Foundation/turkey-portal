@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
-import store from '../store/store'
-import initStoreData from '../store/storeInit'
+import store from 'store/store'
 import { Provider } from 'react-redux'
 import type { AppProps } from 'next/app'
-import { LoggedOutRoutsE } from '../types/Routes'
-import MainLayout from '../layouts/MainLayout/MainLayout'
-import LoginLayout from '../layouts/LoginLayout/LoginLayout'
+import { LoggedOutRoutsE } from 'types/Routes'
+import initStoreData from 'store/storeInit'
 import Head from 'next/head'
+import MainLayout from 'layouts/MainLayout/MainLayout'
+import LoginLayout from 'layouts/LoginLayout/LoginLayout'
 import '../styles/globals.scss'
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
@@ -41,7 +41,6 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
       </Head>
-
       {showLoggedOutUi ? LoggedOut : LoggedIn}
     </Provider>
   )

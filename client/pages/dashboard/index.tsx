@@ -1,12 +1,13 @@
 import Head from 'next/head'
 import type { GetServerSidePropsContext } from 'next'
 import { useEffect, useState } from 'react'
-import HubCard from '../../components/cards/HubCard/HubCard'
-import { AccountT, HubT } from '../../types/General'
+import { HubT } from 'types/General'
 import styles from './dashboard.module.scss'
-import { getHubs } from '../../services/hub.service'
-import PageHeading from '../../components/shared/PageHeading/PageHeading'
-import { requireAuthentication } from '../../services/routeGuard.service'
+import PageHeading from '@Shared/PageHeading/PageHeading'
+import HubCard from '@Cards/HubCard/HubCard'
+import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard'
+import { requireAuthentication } from 'services/routeGuard.service'
+import { getHubs } from 'services/hub.service'
 
 type DashboardPropsT = {}
 
@@ -57,7 +58,8 @@ const Dashboard = ({ }: DashboardPropsT) => {
                 />
               )
             })
-          ) : ''}
+          ) : (<SkeletonCard qty={3} category='row' />)
+          }
         </div>
 
       </main>
@@ -68,7 +70,7 @@ const Dashboard = ({ }: DashboardPropsT) => {
 export default Dashboard
 
 
-export const getServerSideProps = requireAuthentication((context: GetServerSidePropsContext, account: AccountT) => {
+export const getServerSideProps = requireAuthentication((context: GetServerSidePropsContext) => {
   // Your normal `getServerSideProps` code here
   return { props: {} }
 })

@@ -1,0 +1,50 @@
+@import 'styles/boilerplate.scss';
+
+.card {
+  border-radius: 8px;
+
+  &_wrapper {
+    :global(.pulse) {
+      background-color: $grey;
+      animation-name: pulse;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+    }
+
+    &.square_wrapper {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    &.row_wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+.row {
+  height: 80px;
+  margin: 20px;
+}
+
+.square {
+  height: 250px;
+  flex-grow: 1;
+  margin: 20px;
+}
+
+
+@keyframes pulse {
+  0% {
+    background-color: $off-white;
+  }
+
+  50% {
+    background-color: $grey;
+  }
+
+  100% {
+    background-color: $off-white;
+  }
+}

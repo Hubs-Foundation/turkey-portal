@@ -1,8 +1,8 @@
 import { ReactNode } from 'react'
 import styles from './InternalLink.module.scss'
-import { IconT } from '../../../types/General'
+import { IconT } from 'types/General'
 import Link from 'next/link'
-import Icon from '../Icon/Icon'
+import Icon from '@Shared/Icon/Icon'
 
 type InternalLinkProps = {
   href: string

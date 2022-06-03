@@ -1,7 +1,7 @@
 import styles from './HubOption.module.scss'
 import { FormEventHandler } from 'react'
-import Badge from '../Badge/Badge'
-import Icon from '../Icon/Icon'
+import Badge from '@Shared/Badge/Badge'
+import Icon from '@Shared/Icon/Icon'
 
 
 type HubOptionPropsT = {

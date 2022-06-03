@@ -1,4 +1,4 @@
-import { IconT } from '../../../types/General'
+import { IconT } from 'types/General'
 import styles from './Icon.module.scss'
 
 type IconProps = {

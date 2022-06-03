@@ -1,7 +1,7 @@
 import { useContext } from 'react'
-import { FormContext } from '../Form/Form'
-import RadioButton from '../RadioButton/RadioButton'
-import { RadioGroupOptionT } from '../../../types/Form'
+import { FormContext } from '@Shared/Form/Form'
+import RadioButton from '@Shared/RadioButton/RadioButton'
+import { RadioGroupOptionT } from 'types/Form'
 
 type RadioGroupPropsT = {
   options: RadioGroupOptionT[],

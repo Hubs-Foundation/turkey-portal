@@ -17,8 +17,8 @@ export const getHubs = async () => {
     // TODO: Make game plan for error handling 
     console.log('Error', error)
   }
-
 }
+
 
 /**
  * Get Hub By Id
@@ -26,7 +26,6 @@ export const getHubs = async () => {
  * @returns Hub{}
  */
 export const getHub = async (hubId: string) => {
-
   try {
     return axios.get(`${API_SERVER}${API_PATH}/${hubId}`, { withCredentials: true })
       .then((response) => {
@@ -36,8 +35,8 @@ export const getHub = async (hubId: string) => {
     // TODO: Make game plan for error handling 
     console.log('Error', error)
   }
-
 }
+
 
 /**
  * TODO: UPDATE AND DELETE

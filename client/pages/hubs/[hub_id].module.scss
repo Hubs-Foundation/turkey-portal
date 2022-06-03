@@ -25,6 +25,13 @@
   }
 }
 
+.skeleton {
+  &_container {
+    max-width: 1040px;
+    width: 100%;
+  }
+}
+
 .address {
   &_wrapper {
     display: flex;

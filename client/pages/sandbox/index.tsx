@@ -1,10 +1,10 @@
 import Head from 'next/head'
-import { useState, useRef, useEffect } from 'react'
-import RadioGroup from '../../components/shared/RadioGroup/RadioGroup'
-import Form from '../../components/shared/Form/Form'
-import Input, { InputInterfaceT } from '../../components/shared/Input/Input'
-import Button from '../../components/shared/Button/Button'
-import { ButtonCategoriesE } from '../../types/Form'
+import { useState, useRef } from 'react'
+import RadioGroup from '@Shared/RadioGroup/RadioGroup'
+import Form from '@Shared/Form/Form'
+import Input, { InputInterfaceT } from '@Shared/Input/Input'
+import Button from '@Shared/Button/Button'
+import { ButtonCategoriesE } from 'types/Form'
 
 /**
  * NOTE: this page is for testing and showing.. Storybook will mostly take

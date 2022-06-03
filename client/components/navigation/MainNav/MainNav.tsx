@@ -2,11 +2,11 @@ import { useRef } from 'react'
 import styles from './MainNav.module.scss'
 import Link from 'next/link'
 import Image from 'next/image'
-import { selectAccount } from '../../../store/accountSlice'
+import { selectAccount } from 'store/accountSlice'
 import { useSelector } from 'react-redux'
-import Dropdown, { dropdownT } from '../../shared/Dropdown/Dropdown'
-import ExternalLink from '../../shared/ExternalLink/ExternalLink'
-import InternalLink from '../../shared/InternalLink/InternalLink'
+import Dropdown, { dropdownT } from '@Shared/Dropdown/Dropdown'
+import ExternalLink from '@Shared/ExternalLink/ExternalLink'
+import InternalLink from '@Shared/InternalLink/InternalLink'
 
 type MainNavPropsT = {
   classProp?: string

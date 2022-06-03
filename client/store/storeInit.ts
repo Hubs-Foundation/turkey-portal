@@ -1,7 +1,7 @@
 import store from './store'
-import { AccountT } from '../types/General'
-import { setAccount } from '../store/accountSlice'
-import { getAccount } from '../services/account.service'
+import { AccountT } from 'types/General'
+import { setAccount } from './accountSlice'
+import { getAccount } from 'services/account.service'
 
 /**
   * Init Account Store Data

@@ -1,5 +1,5 @@
 import React from 'react'
-import MainNav from '../../components/navigation/MainNav/MainNav'
+import MainNav from '@Navigation/MainNav/MainNav'
 
 type MainLayoutPropsT = {
   children: React.ReactNode,

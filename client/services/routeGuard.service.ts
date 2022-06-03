@@ -23,3 +23,30 @@ export function requireAuthentication(gssp: Function): GetServerSideProps {
     }
   }
 }
+
+
+/**
+ * Route User If Logged in and visits login/signup page
+ * @param gssp 
+ * @returns GetServerSideProps
+ */
+export function checkLoggedIn(gssp: Function): GetServerSideProps {
+
+  return async (context) => {
+    const { req } = context
+
+    try {
+      await getAccount(req.headers as AxiosRequestHeaders)
+
+      // If Authenticated Redirect to Dashboard.
+      return {
+        redirect: {
+          destination: '/dashboard',
+          permanent: false,
+        }
+      }
+    } catch (error) {
+      return await gssp(context)
+    }
+  }
+}
