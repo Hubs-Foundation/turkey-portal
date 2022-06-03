@@ -151,7 +151,7 @@ defmodule Dash.Hub do
 
   # Returns current CCU and Storage
   defp get_hub_usage_stats(%Dash.Hub{} = hub) do
-    if Application.get_env(:dash, Dash.Hub)[:skip_http_client] === true do
+    if Application.get_env(:dash, Dash.Hub)[:use_fake_hub_stats] === true do
       %{current_ccu: 10, current_storage_mb: 20}
     else
       current_ccu =
