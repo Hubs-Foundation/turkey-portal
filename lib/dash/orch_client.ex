@@ -1,5 +1,8 @@
 defmodule Dash.OrchClient do
-  @orch_host Application.get_env(:dash, Dash.OrchClient)[:orch_host]
+  @moduledoc """
+  Orchestrator manages hub instances and their infrastructure.
+  This module handles requests to Orchestrator to make changes to create/update specific hub instances.
+  """
 
   def create_hub(fxa_email, %Dash.Hub{} = hub) do
     orch_hub_create_params = %{
@@ -13,7 +16,7 @@ defmodule Dash.OrchClient do
 
     resp =
       get_http_client().post(
-        "http://#{@orch_host}/hc_instance",
+        "http://#{get_orch_host()}/hc_instance",
         Jason.encode!(orch_hub_create_params)
       )
 
@@ -22,7 +25,7 @@ defmodule Dash.OrchClient do
 
   def update_subdomain(%Dash.Hub{} = hub) do
     get_http_client().patch(
-      "http://#{@orch_host}/hc_instance/#{hub.hub_id}",
+      "http://#{get_orch_host()}/hc_instance/#{hub.hub_id}",
       Jason.encode!(%{subdomain: hub.subdomain})
     )
   end
@@ -30,5 +33,9 @@ defmodule Dash.OrchClient do
   defp get_http_client() do
     # Make the http client module configurable so that we can mock it out in tests.
     Application.get_env(:dash, Dash.Hub)[:http_client] || HTTPoison
+  end
+
+  defp get_orch_host() do
+    Application.get_env(:dash, Dash.OrchClient)[:orch_host]
   end
 end
