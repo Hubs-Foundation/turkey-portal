@@ -4,13 +4,13 @@ import { useLocation } from "react-router-dom";
 import "./Nav.css";
 import { Link } from "react-router-dom";
 import { IconBackButton } from "../common/icons";
-import { useHubs } from "../hooks/hubs";
+import { useAccount } from "../hooks/account";
 
 export function Nav() {
-  const { isLoading, isForbidden } = useHubs();
+  const { isLoading, account } = useAccount();
   const location = useLocation();
   const isHubsSettings = location.pathname.startsWith("/hubs/");
-  const isAllowed = !isLoading && !isForbidden;
+  const isAllowed = !isLoading && !account.isForbidden;
   const title = isAllowed ? (isHubsSettings ? "Hub Settings" : "Dashboard") : "";
   const showBackButton = isAllowed && isHubsSettings;
   return (

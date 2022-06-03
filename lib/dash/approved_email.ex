@@ -62,6 +62,10 @@ defmodule Dash.ApprovedEmail do
     end
   end
 
+  def is_forbidden(email) do
+    is_enabled() and !has_email(email)
+  end
+
   def has_email(email) when is_binary(email) do
     hashed_email = hash_email(email)
     Repo.exists?(from e in ApprovedEmail, where: e.email_hash == ^hashed_email)
@@ -69,6 +73,10 @@ defmodule Dash.ApprovedEmail do
 
   def hash_email(email) do
     email |> String.downcase() |> hash()
+  end
+
+  defp is_enabled() do
+    Application.get_env(:dash, __MODULE__)[:enabled] !== false
   end
 
   defp hash(plaintext, key \\ default_secret_key()) do
