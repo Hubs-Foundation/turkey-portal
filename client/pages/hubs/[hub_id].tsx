@@ -92,7 +92,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
 
       <PageHeading title="Hub Settings" />
 
-      {!loading && hub != undefined ? (
+      {!loading && hub !== undefined ? (
         <main className="flex-justify-center margin-10">
           <div className={styles.settings_grid_wrapper}>
             <div className={styles.settings_form_wrapper}>

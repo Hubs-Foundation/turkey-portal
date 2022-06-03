@@ -38,7 +38,7 @@ export function checkLoggedIn(gssp: Function): GetServerSideProps {
     try {
       await getAccount(req.headers as AxiosRequestHeaders)
 
-      // If Athenticated Redirect to Dashboard.
+      // If Authenticated Redirect to Dashboard.
       return {
         redirect: {
           destination: '/dashboard',
