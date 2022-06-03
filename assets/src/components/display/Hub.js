@@ -10,9 +10,9 @@ import { CLUSTER_DOMAIN } from "../utils/app-config";
 import { formatNumber, formatMegabytes } from "../utils/formatNumber";
 import { READY } from "../utils/hub-constants";
 
-export function Hub({ tier, name, status, subdomain, currentCcu, storageUsageMb, hubId }) {
+export function Hub({ tier, name, status, subdomain, currentCcu, currentStorageMb, hubId }) {
   const ccu = `${formatNumber(currentCcu)}`;
-  const storage = `${formatMegabytes(storageUsageMb)}`;
+  const storage = `${formatMegabytes(currentStorageMb)}`;
   const domain = `${subdomain}.${CLUSTER_DOMAIN}`;
   const hubUrl = `https://${domain}`;
 
