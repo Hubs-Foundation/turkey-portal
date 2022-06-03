@@ -7,6 +7,20 @@ module.exports = {
     "../stories/**/*.stories.@(js|jsx|ts|tsx)"
   ],
   webpackFinal: async (config) => {
+
+    config.resolve.modules = [
+      path.resolve(__dirname, ".."),
+      "node_modules",
+    ]
+
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@Shared": path.resolve(__dirname, "../components/shared"),
+      "@Cards": path.resolve(__dirname, "../components/cards"),
+      "@Navigation": path.resolve(__dirname, "../components/navigation"),
+      "@Util": path.resolve(__dirname, "../components/util")
+    };
+
     config.module.rules.push(
       {
         test: /\.s(a|c)ss$/,
