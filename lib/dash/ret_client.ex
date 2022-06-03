@@ -1,5 +1,7 @@
 defmodule Dash.RetClient do
-  @ret_access_key Application.get_env(:dash, Dash.RetClient)[:dashboard_ret_access_key]
+  @moduledoc """
+  This module handles requests to specific hub instance's reticulum backend.
+  """
 
   @ret_host_prefix "ret.hc-"
   @ret_host_postfix ".svc.cluster.local"
@@ -15,7 +17,7 @@ defmodule Dash.RetClient do
 
     http_client.get(
       ret_host_url(hub) <> @ret_internal_scope <> endpoint,
-      [{"x-ret-dashboard-access-key", @ret_access_key}],
+      [{"x-ret-dashboard-access-key", get_ret_access_key()}],
       hackney: [:insecure]
     )
   end
@@ -55,5 +57,9 @@ defmodule Dash.RetClient do
         # TODO Log and error here when we introduce Logger
         {:error, reason}
     end
+  end
+
+  defp get_ret_access_key() do
+    Application.get_env(:dash, Dash.RetClient)[:dashboard_ret_access_key]
   end
 end
