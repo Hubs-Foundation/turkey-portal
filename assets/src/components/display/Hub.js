@@ -69,7 +69,7 @@ Hub.propTypes = {
   name: PropTypes.string,
   tier: PropTypes.string,
   currentCcu: PropTypes.number,
-  storageUsageMb: PropTypes.number,
+  currentStorageMb: PropTypes.number,
   status: PropTypes.string,
   subdomain: PropTypes.string,
   hubId: PropTypes.string,
