@@ -1,7 +1,6 @@
 defmodule Dash.RetClient do
   @ret_access_key Application.get_env(:dash, Dash.Hub)[:dashboard_ret_access_key]
 
-  # TODO Move reticulum requests into a RetClient module.
   @ret_host_prefix "ret.hc-"
   @ret_host_postfix ".svc.cluster.local"
   @ret_internal_port "4000"
