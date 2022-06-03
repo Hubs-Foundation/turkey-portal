@@ -15,7 +15,7 @@ defmodule Dash.RetClient do
 
     http_client.get(
       ret_host_url(hub) <> @ret_internal_scope <> endpoint,
-      %{"x-ret-dashboard-access-key" => @ret_access_key},
+      [{"x-ret-dashboard-access-key", @ret_access_key}],
       hackney: [:insecure]
     )
   end
