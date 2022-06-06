@@ -19,7 +19,7 @@ const MainNav = ({ classProp = '' }: MainNavPropsT) => {
   const dropdownRef = useRef<dropdownT>(null);
   const router = useRouter();
 
-  const onlogOutClick = useCallback(async () => {
+  const onLogOutClick = useCallback(async () => {
     dropdownRef.current?.closeDropdown();
     await logOut();
     router.push({
@@ -60,7 +60,7 @@ const MainNav = ({ classProp = '' }: MainNavPropsT) => {
 
       {/* Sign Out  */}
       <div className={`padding-10 ${styles.account_details_wrapper}`}>
-        <Button icon="log-out" text="Sign Out" onClick={onlogOutClick} />
+        <Button icon="log-out" text="Sign Out" onClick={onLogOutClick} />
       </div>
     </>
   );

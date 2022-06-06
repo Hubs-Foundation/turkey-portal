@@ -17,7 +17,7 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
     });
   } catch (error) {
     // TODO: Make game plan for error handling
-    console.log('Error', error);
+    console.error('Error', error);
   }
 };
 
@@ -34,6 +34,6 @@ export const logOut = async () => {
       });
   } catch (error) {
     // TODO: Make game plan for error handling
-    console.log('Error', error);
+    console.error('Error', error);
   }
 };

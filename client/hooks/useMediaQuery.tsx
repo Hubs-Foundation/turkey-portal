@@ -1,6 +1,22 @@
 import { useState, useEffect } from 'react';
+const mobileBreak = 580;
+const tabletBreak = 768;
+const desktopBreak = 1024;
 
-// Base MediaQuery Hook
+/**
+ * React Hook Media Queries are used when you need to track window size outside of the SCSS ecosystem.
+ * Simply import hook and use its boolean response to track if a specific media query is being met. This can
+ * be used to add or remove a CSS class or render or remove a component in the JSX.
+ */
+
+/**
+ * Base MediaQuery Hook
+ *
+ * Use this hook to create custom media query hooks. Please use pre-calibrated hooks below (ie 'useMobileDown' ) unless
+ * absolutely necessary to create your own hook.
+ * @param query
+ * @returns
+ */
 const useMediaQuery = (query: string) => {
   const [matches, setMatches] = useState(false);
 
@@ -23,27 +39,27 @@ export default useMediaQuery;
  * Mobile
  */
 export const useMobileDown = () => {
-  return useMediaQuery('(max-width: 580px)');
+  return useMediaQuery(`(max-width: ${mobileBreak})`);
 };
 
 /**
  * Tablet
  */
 export const useTabletDown = () => {
-  return useMediaQuery('(max-width: 768px)');
+  return useMediaQuery(`(max-width: ${tabletBreak})`);
 };
 
 export const useTabletUp = () => {
-  return useMediaQuery('(min-width: 768px)');
+  return useMediaQuery(`(min-width: ${tabletBreak})`);
 };
 
 /**
  * Desktop
  */
 export const useDesktopDown = () => {
-  return useMediaQuery('(max-width: 1024px)');
+  return useMediaQuery(`(max-width: ${desktopBreak})`);
 };
 
-export const usDesktoptUp = () => {
-  return useMediaQuery('(min-width: 1024px)');
+export const usDesktopUp = () => {
+  return useMediaQuery(`(min-width: ${desktopBreak})`);
 };

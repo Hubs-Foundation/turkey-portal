@@ -15,7 +15,7 @@ export const getHubs = async () => {
       });
   } catch (error) {
     // TODO: Make game plan for error handling
-    console.log('Error', error);
+    console.error('Error', error);
   }
 };
 
@@ -33,7 +33,7 @@ export const getHub = async (hubId: string) => {
       });
   } catch (error) {
     // TODO: Make game plan for error handling
-    console.log('Error', error);
+    console.error('Error', error);
   }
 };
 

@@ -5,7 +5,7 @@ const SideNav = () => {
   return (
     <div className={styles.nav_wrapper}>
       <div className={styles.nav_container}>
-        {/* TODO: work with design and product to get actualy navigation
+        {/* TODO: work with design and product to get the actual navigation design
         this is a place holder.  */}
         <ul>
           <li>
