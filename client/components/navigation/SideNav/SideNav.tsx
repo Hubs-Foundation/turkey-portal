@@ -1,7 +1,37 @@
-import React from 'react'
+import React from 'react';
+import styles from './SideNav.module.scss';
 
-export const SideNav = () => {
+const SideNav = () => {
   return (
-    <div>SideNav</div>
-  )
-}
+    <div className={styles.nav_wrapper}>
+      <div className={styles.nav_container}>
+        {/* TODO: work with design and product to get the actual navigation design
+        this is a place holder.  */}
+        <ul>
+          <li>
+            <a className={styles.nav_link} href="#">
+              My Hubs
+            </a>
+          </li>
+          <li>
+            <a className={styles.nav_link} href="#">
+              Privacy
+            </a>
+          </li>
+          <li>
+            <a className={styles.nav_link} href="#">
+              Some Link
+            </a>
+          </li>
+          <li>
+            <a className={styles.nav_link} href="#">
+              Another Placeholder
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default SideNav;
