@@ -21,4 +21,4 @@ To add or edit the import path aliases refer to [tsconfig.json](https://github.c
 
 ## Media Queries ( React Hooks )
 
-Classic media queries are avaible for SCSS styling. However, sometimes you will need access to media queries within the JavaScript of your React Component. That's where React Hook Media Queries come in. See [useMediaQuery.tsx](https://github.com/mozilla/turkey-portal/blob/main/client/hooks/useMediaQuery.tsx).
+Classic media queries are available for SCSS styling. However, sometimes you will need access to media queries within the JavaScript of your React Component. That's where React Hook Media Queries come in. See [useMediaQuery.tsx](https://github.com/mozilla/turkey-portal/blob/main/client/hooks/useMediaQuery.tsx).
