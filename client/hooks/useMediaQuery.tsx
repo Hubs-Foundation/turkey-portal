@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-// Base MediaQuery Hooke
+// Base MediaQuery Hook
 const useMediaQuery = (query: string) => {
   const [matches, setMatches] = useState(false);
 
