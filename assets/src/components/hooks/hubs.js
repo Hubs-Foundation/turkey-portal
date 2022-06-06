@@ -9,11 +9,7 @@ export function useHubs() {
   const dispatch = useDispatch();
   const hubs = useSelector((state) => hubEntitySelectors.selectAll(state));
   const isInitialized = useSelector(selectIsInitialized);
-  const { data, error, isLoading, isError, isSuccess } = useGetHubsQuery({}, { skip: isInitialized });
-
-  // TODO isForbidden should probably be an isAllowed property of the accounts API response.
-  // Manage unauthorized email
-  const isForbidden = isError && error.status === 403;
+  const { data, isLoading, isError, isSuccess } = useGetHubsQuery({}, { skip: isInitialized });
 
   const shouldUpdateHubEntities = !isInitialized && data;
   useEffect(() => {
@@ -25,7 +21,7 @@ export function useHubs() {
   const hasHubs = !!hubs.length;
   const isReady = isSuccess || isInitialized;
 
-  return { hubs, hasHubs, isLoading, isError, isReady, isForbidden };
+  return { hubs, hasHubs, isLoading, isError, isReady };
 }
 
 export function useHub(hubId) {
@@ -33,12 +29,9 @@ export function useHub(hubId) {
   const hubEntity = useSelector((state) => hubEntitySelectors.selectById(state, hubId));
 
   const hasHubEntity = !!hubEntity;
-  const { data, error, isLoading, isError, isSuccess } = useGetHubQuery({ hubId }, { skip: hasHubEntity });
+  const { data, isLoading, isError, isSuccess } = useGetHubQuery({ hubId }, { skip: hasHubEntity });
 
   if (!hasHubEntity && data) dispatch(setHubEntity(data));
-
-  // Manage unauthorized email
-  const isForbidden = isError && error.status === 403;
 
   const currentHub = useSelector(selectCurrentHub);
   if (hasHubEntity && !currentHub) dispatch(setCurrentHub(hubEntity));
@@ -60,6 +53,5 @@ export function useHub(hubId) {
     isError,
     isReady,
     isSubmitting,
-    isForbidden,
   };
 }

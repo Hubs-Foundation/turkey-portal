@@ -5,6 +5,7 @@ export const accountSlice = createSlice({
   initialState: {
     isInitialized: false,
     isLoggedIn: false,
+    isForbidden: false,
     hasHubs: false,
     profilePicture: "",
     displayName: "",
@@ -18,9 +19,11 @@ export const accountSlice = createSlice({
       state.profilePicture = action.payload.profilePic;
       state.displayName = action.payload.displayName;
       state.email = action.payload.email;
+      state.isForbidden = action.payload.isForbidden;
     },
     logOut(state) {
       state.isLoggedIn = false;
+      state.isForbidden = false;
       state.hasHubs = false;
       state.profilePicture = "";
       state.displayName = "";
