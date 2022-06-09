@@ -29,8 +29,8 @@ config :dash, Dash.ApprovedEmail, enabled: false
 # In test we don't send emails.
 config :dash, Dash.Mailer, adapter: Swoosh.Adapters.Test
 
-# Print only warnings and errors during test
-config :logger, level: :warn
+# Print only logs that are critical and above
+config :logger, level: :critical
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime

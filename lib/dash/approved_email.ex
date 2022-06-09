@@ -36,7 +36,7 @@ defmodule Dash.ApprovedEmail do
         Logger.info("Added email")
 
       {:error, error} ->
-        Logger.error("ERROR: Could not add email.")
+        Logger.error("Could not add email.")
         # Return tuple for tests
         {:error, error}
     end
@@ -58,7 +58,7 @@ defmodule Dash.ApprovedEmail do
         Logger.info("Deleted email")
 
       nil ->
-        Logger.error("ERROR: couldn't find email to delete")
+        Logger.error("Couldn't find email to delete")
     end
   end
 
