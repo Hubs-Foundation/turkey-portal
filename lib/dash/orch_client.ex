@@ -22,8 +22,11 @@ defmodule Dash.OrchClient do
 
   def update_subdomain(%Dash.Hub{} = hub) do
     get_http_client().patch(
-      "http://#{get_orch_host()}/hc_instance/#{hub.hub_id}",
-      Jason.encode!(%{subdomain: hub.subdomain})
+      "http://#{get_orch_host()}/hc_instance",
+      Jason.encode!(%{
+        hub_id: hub.hub_id |> to_string,
+        subdomain: hub.subdomain
+      })
     )
   end
 

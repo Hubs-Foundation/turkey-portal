@@ -71,5 +71,7 @@ defmodule DashWeb.TestHelpers do
   end
 
   def exit_mocks_for_hubs() do
+    merge_module_config(:dash, Dash.Hub, http_client: nil)
+    merge_module_config(:dash, Dash.OrchClient, http_client: nil)
   end
 end
