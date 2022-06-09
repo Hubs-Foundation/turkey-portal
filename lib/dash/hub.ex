@@ -65,6 +65,14 @@ defmodule Dash.Hub do
     Repo.exists?(from(h in Dash.Hub, where: h.account_id == ^account.account_id))
   end
 
+  # TODO hacky for ready state
+  def has_creating_hubs(%Dash.Account{} = account) do
+    has_hubs(account) &&
+      Repo.exists?(
+        from(h in Dash.Hub, where: h.account_id == ^account.account_id and h.status == ^"creating")
+      )
+  end
+
   # Checks if account has at least one hub, if not, creates hub
   def ensure_default_hub(%Dash.Account{} = account, email) do
     if !has_hubs(account), do: create_default_hub(account, email)
@@ -119,6 +127,10 @@ defmodule Dash.Hub do
       nil ->
         nil
     end
+  end
+
+  def set_hub_to_ready(%Dash.Hub{} = hub) do
+    hub |> change(status: :ready) |> Dash.Repo.update!()
   end
 
   def update_hub(hub_id, attrs, %Dash.Account{} = account) do
