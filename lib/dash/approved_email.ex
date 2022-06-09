@@ -75,7 +75,8 @@ defmodule Dash.ApprovedEmail do
     email |> String.downcase() |> hash()
   end
 
-  defp is_enabled() do
+  def is_enabled() do
+    # Default to enabled, unless the config is explicitly set to false.
     Application.get_env(:dash, __MODULE__)[:enabled] !== false
   end
 

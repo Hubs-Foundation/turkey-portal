@@ -6,7 +6,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
   setup_all context do
     setup_mocks_for_hubs()
-    Application.put_env(:dash, DashWeb.Plugs.ApprovedEmailAuth, enabled: false)
 
     on_exit(fn ->
       exit_mocks_for_hubs()

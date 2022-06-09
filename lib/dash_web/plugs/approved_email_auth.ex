@@ -9,10 +9,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuth do
   def init(default), do: default
 
   def call(conn, _options) do
-    # Default to enabled, unless the config is explicitly set to false.
-    approved_email_auth_enabled = Application.get_env(:dash, __MODULE__)[:enabled] !== false
-
-    if approved_email_auth_enabled do
+    if Dash.ApprovedEmail.is_enabled() do
       check_if_approved_email(conn, conn.assigns[:fxa_account_info])
     else
       conn
