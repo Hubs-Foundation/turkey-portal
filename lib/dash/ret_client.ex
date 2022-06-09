@@ -76,8 +76,7 @@ defmodule Dash.RetClient do
   @wait_ms 5000
   def wait_until_ready_state(%Dash.Hub{} = hub) do
     retry with: constant_backoff(@wait_ms) |> expiry(@timeout_ms) do
-      # fetch_health_endpoint(hub)
-      case HTTPoison.get("http://localhost:3000/health") do
+      case fetch_health_endpoint(hub) do
         {:ok, %{status_code: 200}} ->
           :ok
 
