@@ -7,22 +7,20 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
   setup_all do
     setup_mocks_for_hubs()
 
-    on_exit(fn ->
-      exit_mocks_for_hubs()
-    end)
+    on_exit(fn -> exit_mocks_for_hubs() end)
   end
 
   describe "ApprovedEmailAuth Plug" do
     setup do
-      # Explicitly get a connection before each test
       clear_auth_config()
-      Application.put_env(:dash, DashWeb.Plugs.ApprovedEmailAuth, enabled: true)
+      Application.put_env(:dash, Dash.ApprovedEmail, enabled: true)
+      on_exit(fn -> Application.put_env(:dash, Dash.ApprovedEmail, enabled: false) end)
     end
 
     @valid_expiration token_expiry: ~N[3000-01-01 00:00:00]
 
     test "ApprovedEmails should not be enabled when disabled", %{conn: conn} do
-      Application.put_env(:dash, DashWeb.Plugs.ApprovedEmailAuth, enabled: false)
+      Application.put_env(:dash, Dash.ApprovedEmail, enabled: false)
 
       HubControllerTest.mock_hubs_get()
       HubControllerTest.mock_orch_post()
