@@ -17,26 +17,13 @@ defmodule DashWeb.Api.V1.HubController do
   # All hubs for 1 account
   def index(conn, %{}, account) do
     # Check that this account has at least one hub
-    Hub.ensure_default_hub(account, conn.assigns[:fxa_account_info].fxa_email)
+    case Hub.ensure_default_hub_is_ready(account, conn.assigns[:fxa_account_info].fxa_email) do
+      {:ok} ->
+        hubs = Hub.hubs_with_usage_stats_for_account(account)
+        conn |> render("index.json", hubs: hubs)
 
-    hubs = Hub.hubs_with_usage_stats_for_account(account)
-
-    # TODO hacky way to handle creating state
-    # Will always have a hub available because of the ensure_default_hub above
-    hub = Enum.at(hubs, 0)
-
-    if hub.status === :creating do
-      case Dash.RetClient.wait_until_ready_state(hub) do
-        {:ok} ->
-          Hub.set_hub_to_ready(hub)
-          hubs = Hub.hubs_with_usage_stats_for_account(account)
-          conn |> render("index.json", hubs: hubs)
-
-        {:error, err} ->
-          conn |> send_resp(500, Jason.encode!(%{error: err})) |> halt()
-      end
-    else
-      conn |> render("index.json", hubs: hubs)
+      {:error, err} ->
+        conn |> send_resp(500, Jason.encode!(%{error: err})) |> halt()
     end
   end
 
@@ -79,18 +66,4 @@ defmodule DashWeb.Api.V1.HubController do
 
     conn |> render("delete.json", deleted_hub: deleted_hub)
   end
-
-  # def wait_until_ready(conn, %{"id" => hub_id}, account) do
-  #   hub = Hub.get_hub(hub_id, account)
-  #   IO.puts("wait until ready")
-
-  #   case Dash.RetClient.wait_until_ready_state(hub) do
-  #     {:ok} ->
-  #       ready_hub = Hub.set_hub_to_ready(hub)
-  #       conn |> render("show.json", ready_hub)
-
-  #     {:error, err} ->
-  #       conn |> send_resp(500, Jason.encode!(%{error: err})) |> halt()
-  #   end
-  # end
 end

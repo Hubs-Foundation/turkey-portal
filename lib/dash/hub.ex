@@ -74,8 +74,27 @@ defmodule Dash.Hub do
   end
 
   # Checks if account has at least one hub, if not, creates hub
-  def ensure_default_hub(%Dash.Account{} = account, email) do
+  # Will wait for hub to be ready before
+  def ensure_default_hub_is_ready(%Dash.Account{} = account, email) do
     if !has_hubs(account), do: create_default_hub(account, email)
+
+    if has_creating_hubs(account) do
+      hubs = hubs_for_account(account)
+
+      # TODO For MVP2 we expect 1 hub
+      hub = Enum.at(hubs, 0)
+
+      case Dash.RetClient.wait_until_ready_state(hub) do
+        {:ok} ->
+          set_hub_to_ready(hub)
+          {:ok}
+
+        {:error, err} ->
+          {:error, err}
+      end
+    else
+      {:ok}
+    end
   end
 
   @hub_defaults %{

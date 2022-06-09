@@ -51,9 +51,6 @@ defmodule DashWeb.Router do
   scope "/api/v1", DashWeb do
     pipe_through [:basic_auth, :jwt_authenticated, :approved_email_auth]
 
-    # get "/hubs/:id/wait_until_ready", Api.V1.HubController, :wait_until_ready,
-    #   as: :wait_until_ready
-
     resources(
       "/hubs",
       Api.V1.HubController,

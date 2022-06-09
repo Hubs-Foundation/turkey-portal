@@ -20,7 +20,7 @@ defmodule Dash.MixProject do
   def application do
     [
       mod: {Dash.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :retry]
     ]
   end
 
@@ -53,7 +53,8 @@ defmodule Dash.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:poison, "~> 5.0"},
-      {:cors_plug, "~> 3.0"}
+      {:cors_plug, "~> 3.0"},
+      {:retry, "~> 0.15"}
     ]
   end
 
