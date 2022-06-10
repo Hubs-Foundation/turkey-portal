@@ -30,6 +30,13 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
   }, [router]);
 
   /**
+   * Handle Menu Click
+   */
+  const handleMobileMenuClick = useCallback(() => {
+    MobileMenuClick();
+  }, [MobileMenuClick]);
+
+  /**
    * Dropdown Content
    */
   const DropdownContent = (
@@ -66,11 +73,6 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
       </div>
     </>
   );
-
-  const handleMobileMenuClick = () => {
-    // show monbile menu ..
-    MobileMenuClick();
-  };
 
   /**
    * Main Nav JSX

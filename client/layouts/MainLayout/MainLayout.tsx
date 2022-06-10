@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useTabletUp } from 'hooks/useMediaQuery';
 import MainNav from '@Navigation/MainNav/MainNav';
 import SideNav from '@Navigation/SideNav/SideNav';
@@ -13,9 +13,9 @@ const MainLayout = ({ children }: MainLayoutPropsT) => {
   const tabletUp = useTabletUp();
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-  const toggleMobileNav = () => {
+  const toggleMobileNav = useCallback(() => {
     setIsMobileMenuOpen((state) => !state);
-  };
+  },[]);
 
   return (
     <div>
