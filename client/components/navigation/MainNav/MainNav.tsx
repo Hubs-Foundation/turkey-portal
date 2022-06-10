@@ -9,12 +9,14 @@ import { useSelector } from 'react-redux';
 import Dropdown, { dropdownT } from '@Shared/Dropdown/Dropdown';
 import ExternalLink from '@Shared/ExternalLink/ExternalLink';
 import Button from '@Shared/Button/Button';
+import IconButton from '@Shared/IconButton/IconButton';
 
 type MainNavPropsT = {
   classProp?: string;
+  MobileMenuClick: Function;
 };
 
-const MainNav = ({ classProp = '' }: MainNavPropsT) => {
+const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
   const account = useSelector(selectAccount);
   const dropdownRef = useRef<dropdownT>(null);
   const router = useRouter();
@@ -65,6 +67,11 @@ const MainNav = ({ classProp = '' }: MainNavPropsT) => {
     </>
   );
 
+  const handleMobileMenuClick = () => {
+    // show monbile menu ..
+    MobileMenuClick();
+  };
+
   /**
    * Main Nav JSX
    */
@@ -73,8 +80,17 @@ const MainNav = ({ classProp = '' }: MainNavPropsT) => {
       <div className={styles.main_nav_container}>
         {/* Main navigation links / logo */}
         <div className={styles.main_nav_contents}>
+          {/* Mobile Menu */}
+          <IconButton
+            icon="menu"
+            onClick={handleMobileMenuClick}
+            size={30}
+            classProp={styles.mobile_menu}
+          />
+
           {/* Logo */}
           <Image width="86" height="58" src="/hubs_black.svg" alt="hubs logo" />
+
           {/* Links  */}
           <div className={styles.main_nav_links}>
             <div className={styles.main_nav_link}>

@@ -12,7 +12,8 @@ type IconButtonProps = {
   disabled?: boolean,
   icon: IconT
   onClick?: MouseEventHandler<HTMLButtonElement>,
-  classProp?: string
+  classProp?: string,
+  size?:number
 }
 
 const IconButton = ({
@@ -23,7 +24,8 @@ const IconButton = ({
   disabled,
   icon,
   onClick,
-  classProp = ''
+  classProp = '',
+  size = 20
 }: IconButtonProps) => {
 
 
@@ -38,7 +40,7 @@ const IconButton = ({
       <Icon
         name={icon}
         color="currentColor"
-        size={20}
+        size={size}
       />
     </button >
   )

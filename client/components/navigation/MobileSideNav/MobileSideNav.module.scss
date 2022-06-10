@@ -1,0 +1,49 @@
+@import 'styles/boilerplate';
+
+.nav {
+
+  &_open {
+    width: 100%;
+  }
+
+  &_closed {
+    width: 0;
+  }
+
+  &_wrapper {
+    height: 100%;
+    background-color: $accent-grey;
+    box-shadow: $drop-shadow-right;
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+
+  &_container {
+    ul {
+      list-style-type: none;
+    }
+
+    li {
+      padding: 20px 0;
+    }
+  }
+
+  &_link {
+    @include primary-font(700);
+    color: $black;
+
+    &:hover {
+      color: $blue;
+    }
+  }
+
+}
+
+.menu_button {
+  margin-left: 30px;
+}

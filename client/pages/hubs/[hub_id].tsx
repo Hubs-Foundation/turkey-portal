@@ -36,7 +36,6 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
    */
   useEffect(() => {
     getHub(`${hub_id}`).then((hub) => {
-      console.log('hub', hub);
       setLoading(false);
       setHub(hub);
       setAddressPreview(hub.subdomain);
@@ -72,7 +71,6 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
     };
 
     updateHub(`${hub_id}`, updatedHub).then((resp) => {
-      console.log('resp',resp)
       toast.success(`Hub: ${name} has been updated!`);
     });
   };
