@@ -1,6 +1,7 @@
 import axios from 'axios';
 const API_PATH = '/api/v1/hubs';
 import { API_SERVER } from 'config';
+import { UpdateHubT } from 'types/General';
 
 /**
  * Get All Hubs
@@ -45,7 +46,17 @@ export const getHub = async (hubId: string) => {
  * Update Hub By Id
  * @param hubId string
  */
-export const updateHub = async (hubId: string) => {};
+export const updateHub = async (hubId: string, hub: UpdateHubT) => {
+  if (!hub) return;
+
+  try {
+    return axios.patch(`${API_SERVER}${API_PATH}/${hubId}`, hub, {
+      withCredentials: true,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 /**
  * Delete Hub By Id

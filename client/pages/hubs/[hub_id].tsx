@@ -1,65 +1,91 @@
-import { useCallback, useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import styles from './[hub_id].module.scss'
-import type { GetServerSidePropsContext } from 'next'
-import { HubT } from 'types/General'
-import { HubGroupOptionT } from '@Shared/HubOptionGroup/HubOptionGroup' // just used for mock data for now.
-import { getHub, updateHub } from 'services/hub.service'
-import { requireAuthentication } from 'services/routeGuard.service'
-import { HUB_ROOT_DOMAIN } from 'config'
-import Head from 'next/head'
-import PageHeading from '@Shared/PageHeading/PageHeading'
-import Form from '@Shared/Form/Form'
-import Input from '@Shared/Input/Input'
-import Badge from '@Shared/Badge/Badge'
-import HubOptionGroup from '@Shared/HubOptionGroup/HubOptionGroup'
-import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard'
+import { useCallback, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import styles from './[hub_id].module.scss';
+import type { GetServerSidePropsContext } from 'next';
+import { HubT, UpdateHubT } from 'types/General';
+import { HubGroupOptionT } from '@Shared/HubOptionGroup/HubOptionGroup'; // just used for mock data for now.
+import { getHub, updateHub } from 'services/hub.service';
+import { requireAuthentication } from 'services/routeGuard.service';
+import { HUB_ROOT_DOMAIN } from 'config';
+import Head from 'next/head';
+import PageHeading from '@Shared/PageHeading/PageHeading';
+import Form from '@Shared/Form/Form';
+import Input from '@Shared/Input/Input';
+import Badge from '@Shared/Badge/Badge';
+import HubOptionGroup from '@Shared/HubOptionGroup/HubOptionGroup';
+import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-type HubDetailsViewPropsT = {}
+type HubDetailsViewPropsT = {};
 
 const HubDetailsView = ({}: HubDetailsViewPropsT) => {
-  const router = useRouter()
-  const [addressPreview, setAddressPreview] = useState('mockurl')
-  const [hub, setHub] = useState<HubT>()
-  const [loading, setLoading] = useState(true)
+  const router = useRouter();
+  const [addressPreview, setAddressPreview] = useState('mockurl');
+  const [hub, setHub] = useState<HubT>();
+  const [loading, setLoading] = useState(true);
   const [initialFormValues, setInitialFormValues] = useState({
     name: '',
     address: '',
     tier: '',
-  })
-  const { hub_id } = router.query
+  });
+  const { hub_id } = router.query;
 
   /**
    * Get Hub By ID
    */
   useEffect(() => {
     getHub(`${hub_id}`).then((hub) => {
-      setLoading(false)
-      setHub(hub)
-      setAddressPreview(hub.subdomain)
+      console.log('hub', hub);
+      setLoading(false);
+      setHub(hub);
+      setAddressPreview(hub.subdomain);
       setInitialFormValues({
         name: hub.name,
         address: hub.subdomain,
         tier: hub.tier,
-      })
-    })
-  }, [hub_id])
+      });
+    });
+  }, [hub_id]);
 
-  const handleFormSubmit = (data: any) => {
-    // TODO : submit form to DB
-    const { hub_id } = router.query
-    updateHub(`${hub_id}`).then(() => {})
-  }
+  const handleFormSubmit = ({ name, tier, subdomain }: HubT) => {
+    if (!hub) return;
+
+    const {
+      ccuLimit,
+      status,
+      storageLimitMb,
+    } = hub;
+    const { hub_id } = router.query;
+
+    /**
+     * Update Date from from
+     * keep all other data as is
+     */
+    const updatedHub: UpdateHubT = {
+      name,
+      ccuLimit,
+      status,
+      storageLimitMb,
+      subdomain,
+      tier,
+    };
+
+    updateHub(`${hub_id}`, updatedHub).then((resp) => {
+      console.log('resp',resp)
+      toast.success(`Hub: ${name} has been updated!`);
+    });
+  };
 
   const handleCancelClick = () => {
     router.push({
       pathname: '/dashboard',
-    })
-  }
+    });
+  };
 
   const handleAddresschange = useCallback((address: string) => {
-    setAddressPreview(address)
-  }, [])
+    setAddressPreview(address);
+  }, []);
 
   // Mock Data
   const radioFormOptions: HubGroupOptionT[] = [
@@ -81,7 +107,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
       groupName: 'tier',
       id: 'mvpOption',
     },
-  ]
+  ];
 
   return (
     <div className="page_wrapper">
@@ -135,7 +161,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
                 <li>People: {hub.ccuLimit}</li>
                 <li>
                   Capacity:{' '}
-                  {hub.currentStorage ? hub.currentStorage : 'Creating'}
+                  {hub.currentStorageMb ? hub.currentStorageMb : 'Creating'}
                 </li>{' '}
                 {/* TODO: what do we do with no storage here  */}
               </ul>
@@ -151,15 +177,16 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
           </div>
         </div>
       )}
+      <ToastContainer />
     </div>
-  )
-}
+  );
+};
 
-export default HubDetailsView
+export default HubDetailsView;
 
 export const getServerSideProps = requireAuthentication(
   (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
-    return { props: {} }
+    return { props: {} };
   }
-)
+);
