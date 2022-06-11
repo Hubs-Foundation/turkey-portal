@@ -29,6 +29,10 @@ config :dash, Dash.ApprovedEmail, enabled: false
 # In test we don't send emails.
 config :dash, Dash.Mailer, adapter: Swoosh.Adapters.Test
 
+config :dash, Dash.RetClient,
+  timeout_ms: 5_000,
+  wait_ms: 1000
+
 # Print only logs that are critical and above
 config :logger, level: :critical
 

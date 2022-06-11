@@ -73,11 +73,8 @@ defmodule Dash.RetClient do
     end
   end
 
-  # Timeout after five minutes
-  @timeout_ms 300_000
-  @wait_ms 5000
   def wait_until_ready_state(%Dash.Hub{} = hub) do
-    retry with: constant_backoff(@wait_ms) |> expiry(@timeout_ms) do
+    retry with: constant_backoff(get_wait_ms()) |> expiry(get_timeout_ms()) do
       case fetch_health_endpoint(hub) do
         {:ok, %{status_code: 200}} ->
           :ok
@@ -102,5 +99,13 @@ defmodule Dash.RetClient do
 
   defp get_ret_access_key() do
     Application.get_env(:dash, Dash.RetClient)[:dashboard_ret_access_key]
+  end
+
+  defp get_timeout_ms() do
+    Application.get_env(:dash, Dash.RetClient)[:timeout_ms]
+  end
+
+  defp get_wait_ms() do
+    Application.get_env(:dash, Dash.RetClient)[:wait_ms]
   end
 end

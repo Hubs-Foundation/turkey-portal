@@ -112,6 +112,12 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       %{"subdomain" => final_subdomain} = get_hub(conn, hub)
       assert final_subdomain =~ "test-subdomain"
     end
+
+    test "testing whatever" do
+      
+
+
+    end
   end
 
   defp mock_orch_patch(opts \\ [response: :ok, status_code: :ok]) do
@@ -142,10 +148,19 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     conn |> patch_hub(hub, %{subdomain: subdomain}, expected_status: expected_status)
   end
 
-  def mock_hubs_get() do
+  def mock_hubs_get(opts \\ [health_ms_until_200: 0, expect_calls: 2]) do
+    now = Time.utc_now()
+    until_200 = Time.add(now, opts[:health_ms_until_200], :millisecond)
+
     Dash.HttpMock
-    |> Mox.expect(:get, 2, fn url, _headers, _options ->
+    |> Mox.expect(:get, opts[:expect_calls], fn url, _headers, _options ->
       cond do
+        url =~ ~r/health$/ ->
+          if Time.diff(now, until_200) >= 0 do
+            {:ok, %HTTPoison.Response{status_code: 200}}
+          else
+            {:ok, %HTTPoison.Response{status_code: 500}}
+          end
         url =~ ~r/presence$/ ->
           {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{count: 3})}}
 
