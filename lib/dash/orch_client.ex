@@ -14,13 +14,10 @@ defmodule Dash.OrchClient do
       storage_limit: (hub.storage_limit_mb / 1024) |> to_string()
     }
 
-    resp =
-      get_http_client().post(
-        "http://#{get_orch_host()}/hc_instance",
-        Jason.encode!(orch_hub_create_params)
-      )
-
-    IO.inspect(resp)
+    get_http_client().post(
+      "http://#{get_orch_host()}/hc_instance",
+      Jason.encode!(orch_hub_create_params)
+    )
   end
 
   def update_subdomain(%Dash.Hub{} = hub) do

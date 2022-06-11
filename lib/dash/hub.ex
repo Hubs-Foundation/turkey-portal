@@ -2,6 +2,7 @@ defmodule Dash.Hub do
   use Ecto.Schema
   import Ecto.Query
   import Ecto.Changeset
+  require Logger
   alias Dash.{Repo, RetClient}
 
   @primary_key {:hub_id, :id, autogenerate: true}
@@ -122,13 +123,16 @@ defmodule Dash.Hub do
       |> Ecto.Changeset.put_assoc(:account, account)
       |> Repo.insert!()
 
-    with {:ok, _} <- Dash.OrchClient.create_hub(fxa_email, new_hub) do
-      # TODO Wait for hub to be fully available, before setting status to :ready
-      new_hub = new_hub |> change(status: :ready) |> Dash.Repo.update!()
-      {:ok, new_hub}
-    else
-      # TODO Should we delete the hub from the db or set status = :error enum?
-      {:error, err} -> {:error, err}
+    case Dash.OrchClient.create_hub(fxa_email, new_hub) do
+      {:ok, _} ->
+        # TODO Wait for hub to be fully available, before setting status to :ready
+        new_hub = new_hub |> change(status: :ready) |> Dash.Repo.update!()
+        {:ok, new_hub}
+
+      {:error, err} ->
+        Logger.error("Failed to create default hub #{inspect(err)}")
+        # TODO Should we delete the hub from the db or set status = :error enum?
+        {:error, err}
     end
   end
 
@@ -161,8 +165,8 @@ defmodule Dash.Hub do
         {:ok, updated_hub}
       end
     else
-      _err ->
-        # TODO Add logging here
+      err ->
+        Logger.error("Failed to update hub. #{inspect(err)}")
         {:error, :update_hub_failed}
     end
   end
@@ -172,8 +176,8 @@ defmodule Dash.Hub do
       {:ok, _} ->
         {:ok, updated_hub}
 
-      {:error, _} ->
-        # TODO Add logging here
+      {:error, err} ->
+        Logger.error("Failed to update subdomain. #{inspect(err)}")
         # Revert the subdomain back to the previous one, since the orchestrator request failed.
         updated_hub |> form_changeset(%{subdomain: previous_hub.subdomain}) |> Dash.Repo.update()
         {:error, :subdomain_update_failed}
@@ -185,22 +189,8 @@ defmodule Dash.Hub do
     if Application.get_env(:dash, Dash.Hub)[:use_fake_hub_stats] === true do
       %{current_ccu: 10, current_storage_mb: 20}
     else
-      current_ccu =
-        case RetClient.get_current_ccu(hub) do
-          {:ok, ccu} ->
-            ccu
-
-          {:error, error} ->
-            IO.inspect(["Error getting ccu", error])
-            nil
-        end
-
-      current_storage_mb =
-        case RetClient.get_current_storage_usage_mb(hub) do
-          {:ok, storage_mb} -> storage_mb
-          {:error, _} -> nil
-        end
-
+      current_ccu = RetClient.get_current_ccu(hub)
+      current_storage_mb = RetClient.get_current_storage_usage_mb(hub)
       %{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
     end
   end

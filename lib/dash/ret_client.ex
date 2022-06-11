@@ -5,6 +5,8 @@ defmodule Dash.RetClient do
   require Logger
   use Retry
 
+  require Logger
+
   @ret_host_prefix "ret.hc-"
   @ret_host_postfix ".svc.cluster.local"
   @ret_internal_port "4000"
@@ -40,17 +42,17 @@ defmodule Dash.RetClient do
       # Reticulum returned the ccu correctly
       {:ok, %{status_code: 200, body: body}} ->
         %{"count" => count} = Poison.Parser.parse!(body)
-        {:ok, count}
+        count
 
       # Reticulum completed the request but did not return the ccu
-      {:ok, %{status_code: _} = response} ->
-        IO.inspect(response)
-        {:error, :no_ccu_returned}
+      {:ok, %{status_code: status_code}} ->
+        Logger.error("Failed to retrieve reticulum CCU. Status code: #{status_code}")
+        nil
 
       # An error occurred
       {:error, reason} ->
-        IO.inspect(reason)
-        {:error, reason}
+        Logger.error("Failed to retrieve reticulum CCU. Reason: #{reason}")
+        nil
     end
   end
 
@@ -59,15 +61,15 @@ defmodule Dash.RetClient do
     case fetch_ret_internal_endpoint(hub, @storage_endpoint) do
       {:ok, %{status_code: 200, body: body}} ->
         %{"storage_mb" => storage_mb} = Poison.Parser.parse!(body)
-        {:ok, storage_mb}
+        storage_mb
 
-      {:ok, _} ->
-        # TODO Log and error here when we introduce Logger
-        {:error, :no_storage_returned}
+      {:ok, %{status_code: status_code}} ->
+        Logger.error("Failed to retrieve reticulum storage usage. Status code: #{status_code}")
+        nil
 
       {:error, reason} ->
-        # TODO Log and error here when we introduce Logger
-        {:error, reason}
+        Logger.error("Failed to retrieve reticulum storage usage. Reason: #{reason}")
+        nil
     end
   end
 

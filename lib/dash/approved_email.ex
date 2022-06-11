@@ -36,7 +36,7 @@ defmodule Dash.ApprovedEmail do
         Logger.info("Added email")
 
       {:error, error} ->
-        Logger.error("ERROR: Could not add email.")
+        Logger.error("Could not add email.")
         # Return tuple for tests
         {:error, error}
     end
@@ -58,7 +58,7 @@ defmodule Dash.ApprovedEmail do
         Logger.info("Deleted email")
 
       nil ->
-        Logger.error("ERROR: couldn't find email to delete")
+        Logger.error("Couldn't find email to delete")
     end
   end
 
@@ -75,7 +75,8 @@ defmodule Dash.ApprovedEmail do
     email |> String.downcase() |> hash()
   end
 
-  defp is_enabled() do
+  def is_enabled() do
+    # Default to enabled, unless the config is explicitly set to false.
     Application.get_env(:dash, __MODULE__)[:enabled] !== false
   end
 
