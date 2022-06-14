@@ -24,6 +24,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
 
       HubControllerTest.mock_hubs_get()
       HubControllerTest.mock_orch_post()
+      HubControllerTest.mock_hubs_wait_on_health()
 
       conn =
         conn
@@ -47,6 +48,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
     test "should respond with 200 if user is on ApprovedEmailList and authorized", %{conn: conn} do
       HubControllerTest.mock_hubs_get()
       HubControllerTest.mock_orch_post()
+      HubControllerTest.mock_hubs_wait_on_health()
 
       email = get_test_email()
 

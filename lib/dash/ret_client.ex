@@ -101,11 +101,11 @@ defmodule Dash.RetClient do
     Application.get_env(:dash, Dash.RetClient)[:dashboard_ret_access_key]
   end
 
-  defp get_timeout_ms() do
+  def get_timeout_ms() do
     Application.get_env(:dash, Dash.RetClient)[:timeout_ms]
   end
 
-  defp get_wait_ms() do
+  def get_wait_ms() do
     Application.get_env(:dash, Dash.RetClient)[:wait_ms]
   end
 end

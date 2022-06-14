@@ -30,8 +30,8 @@ config :dash, Dash.ApprovedEmail, enabled: false
 config :dash, Dash.Mailer, adapter: Swoosh.Adapters.Test
 
 config :dash, Dash.RetClient,
-  timeout_ms: 5_000,
-  wait_ms: 1000
+  timeout_ms: 3_000,
+  wait_ms: 500
 
 # Print only logs that are critical and above
 config :logger, level: :critical

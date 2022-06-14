@@ -124,14 +124,20 @@ defmodule Dash.Hub do
       |> Repo.insert!()
 
     case Dash.OrchClient.create_hub(fxa_email, new_hub) do
-      {:ok, _} ->
-        # TODO Wait for hub to be fully available, before setting status to :ready
-        new_hub = new_hub |> change(status: :ready) |> Dash.Repo.update!()
+      {:ok, %{status_code: 200}} ->
+        {:ok, new_hub}
+
+      {:ok, %{status_code: status_code} = resp} ->
+        Logger.warn(
+          "Creating default hub Orch request returned status code #{status_code} and response #{resp}"
+        )
+
         {:ok, new_hub}
 
       {:error, err} ->
         Logger.error("Failed to create default hub #{inspect(err)}")
         # TODO Should we delete the hub from the db or set status = :error enum?
+        new_hub |> change(status: :error) |> Dash.Repo.update!()
         {:error, err}
     end
   end
