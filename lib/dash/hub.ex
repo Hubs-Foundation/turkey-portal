@@ -66,7 +66,7 @@ defmodule Dash.Hub do
     Repo.exists?(from(h in Dash.Hub, where: h.account_id == ^account.account_id))
   end
 
-  # TODO hacky for ready state
+  # TODO EA remove
   def has_creating_hubs(%Dash.Account{} = account) do
     has_hubs(account) &&
       Repo.exists?(
@@ -79,6 +79,7 @@ defmodule Dash.Hub do
   def ensure_default_hub_is_ready(%Dash.Account{} = account, email) do
     if !has_hubs(account), do: create_default_hub(account, email)
 
+    # TODO EA make own hub controller endpoint for waiting_until_ready_state
     if has_creating_hubs(account) do
       hubs = hubs_for_account(account)
 
