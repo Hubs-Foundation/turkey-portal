@@ -20,7 +20,6 @@ const Dashboard = ({}: DashboardPropsT) => {
    */
   useEffect(() => {
     getHubs().then((hubs) => {
-      console.log('hubs', hubs);
       setHubs(hubs);
     });
   }, []);

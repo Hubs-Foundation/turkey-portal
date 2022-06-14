@@ -22,7 +22,7 @@ type HubDetailsViewPropsT = {};
 const HubDetailsView = ({}: HubDetailsViewPropsT) => {
   const router = useRouter();
   const [addressPreview, setAddressPreview] = useState('mockurl');
-  const [hub, setHub] = useState<HubT>();
+  const [hub, setHub] = useState<HubT | null>(null);
   const [loading, setLoading] = useState(true);
   const [initialFormValues, setInitialFormValues] = useState({
     name: '',
@@ -48,14 +48,24 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
   }, [hub_id]);
 
   const handleFormSubmit = ({ name, tier, subdomain }: HubT) => {
-    if (!hub) return;
+    setLoading(true);
+    if (!hub) {
+      // TODO: set up error logger
+      toast.error('Sorry, there was an error locating this Hub.', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'colored',
+      });
+      setLoading(false);
 
-    const {
-      ccuLimit,
-      status,
-      storageLimitMb,
-    } = hub;
-    const { hub_id } = router.query;
+      return;
+    }
+
+    const { ccuLimit, status, storageLimitMb, hubId } = hub;
 
     /**
      * Update Date from from
@@ -70,8 +80,12 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
       tier,
     };
 
-    updateHub(`${hub_id}`, updatedHub).then((resp) => {
-      toast.success(`Hub: ${name} has been updated!`);
+    updateHub(`${hubId}`, updatedHub).then((resp) => {
+      resp?.status === 200
+        ? toast.success(`Hub: ${name} has been updated!`)
+        : toast.error('Sorry, there was an error updating this Hub.');
+
+      setLoading(false);
     });
   };
 
@@ -116,7 +130,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
 
       <PageHeading title="Hub Settings" />
 
-      {!loading && hub !== undefined ? (
+      {!loading && hub !== null ? (
         <main className="flex-justify-center margin-10">
           <div className={styles.settings_grid_wrapper}>
             <div className={styles.settings_form_wrapper}>
@@ -158,10 +172,10 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
                 </li>
                 <li>People: {hub.ccuLimit}</li>
                 <li>
+                  {/* TODO: what do we do with no storage here  */}
                   Capacity:{' '}
                   {hub.currentStorageMb ? hub.currentStorageMb : 'Creating'}
                 </li>{' '}
-                {/* TODO: what do we do with no storage here  */}
               </ul>
             </div>
           </div>
