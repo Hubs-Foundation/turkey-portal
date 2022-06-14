@@ -39,27 +39,27 @@ export default useMediaQuery;
  * Mobile
  */
 export const useMobileDown = () => {
-  return useMediaQuery(`(max-width: ${mobileBreak})`);
+  return useMediaQuery(`(max-width: ${mobileBreak}px)`);
 };
 
 /**
  * Tablet
  */
 export const useTabletDown = () => {
-  return useMediaQuery(`(max-width: ${tabletBreak})`);
+  return useMediaQuery(`(max-width: ${tabletBreak}px)`);
 };
 
 export const useTabletUp = () => {
-  return useMediaQuery(`(min-width: ${tabletBreak})`);
+  return useMediaQuery(`(min-width: ${tabletBreak}px)`);
 };
 
 /**
  * Desktop
  */
 export const useDesktopDown = () => {
-  return useMediaQuery(`(max-width: ${desktopBreak})`);
+  return useMediaQuery(`(max-width: ${desktopBreak}px)`);
 };
 
 export const usDesktopUp = () => {
-  return useMediaQuery(`(min-width: ${desktopBreak})`);
+  return useMediaQuery(`(min-width: ${desktopBreak}px)`);
 };

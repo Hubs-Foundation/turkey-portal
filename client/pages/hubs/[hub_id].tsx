@@ -1,65 +1,103 @@
-import { useCallback, useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import styles from './[hub_id].module.scss'
-import type { GetServerSidePropsContext } from 'next'
-import { HubT } from 'types/General'
-import { HubGroupOptionT } from '@Shared/HubOptionGroup/HubOptionGroup' // just used for mock data for now.
-import { getHub, updateHub } from 'services/hub.service'
-import { requireAuthentication } from 'services/routeGuard.service'
-import { HUB_ROOT_DOMAIN } from 'config'
-import Head from 'next/head'
-import PageHeading from '@Shared/PageHeading/PageHeading'
-import Form from '@Shared/Form/Form'
-import Input from '@Shared/Input/Input'
-import Badge from '@Shared/Badge/Badge'
-import HubOptionGroup from '@Shared/HubOptionGroup/HubOptionGroup'
-import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard'
+import { useCallback, useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import styles from './[hub_id].module.scss';
+import type { GetServerSidePropsContext } from 'next';
+import { HubT, UpdateHubT } from 'types/General';
+import { HubGroupOptionT } from '@Shared/HubOptionGroup/HubOptionGroup'; // just used for mock data for now.
+import { getHub, updateHub } from 'services/hub.service';
+import { requireAuthentication } from 'services/routeGuard.service';
+import { HUB_ROOT_DOMAIN } from 'config';
+import Head from 'next/head';
+import PageHeading from '@Shared/PageHeading/PageHeading';
+import Form from '@Shared/Form/Form';
+import Input from '@Shared/Input/Input';
+import Badge from '@Shared/Badge/Badge';
+import HubOptionGroup from '@Shared/HubOptionGroup/HubOptionGroup';
+import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-type HubDetailsViewPropsT = {}
+type HubDetailsViewPropsT = {};
 
 const HubDetailsView = ({}: HubDetailsViewPropsT) => {
-  const router = useRouter()
-  const [addressPreview, setAddressPreview] = useState('mockurl')
-  const [hub, setHub] = useState<HubT>()
-  const [loading, setLoading] = useState(true)
+  const router = useRouter();
+  const [addressPreview, setAddressPreview] = useState('mockurl');
+  const [hub, setHub] = useState<HubT | null>(null);
+  const [loading, setLoading] = useState(true);
   const [initialFormValues, setInitialFormValues] = useState({
     name: '',
     address: '',
     tier: '',
-  })
-  const { hub_id } = router.query
+  });
+  const { hub_id } = router.query;
 
   /**
    * Get Hub By ID
    */
   useEffect(() => {
     getHub(`${hub_id}`).then((hub) => {
-      setLoading(false)
-      setHub(hub)
-      setAddressPreview(hub.subdomain)
+      setLoading(false);
+      setHub(hub);
+      setAddressPreview(hub.subdomain);
       setInitialFormValues({
         name: hub.name,
         address: hub.subdomain,
         tier: hub.tier,
-      })
-    })
-  }, [hub_id])
+      });
+    });
+  }, [hub_id]);
 
-  const handleFormSubmit = (data: any) => {
-    // TODO : submit form to DB
-    const { hub_id } = router.query
-    updateHub(`${hub_id}`).then(() => {})
-  }
+  const handleFormSubmit = ({ name, tier, subdomain }: HubT) => {
+    setLoading(true);
+    if (!hub) {
+      // TODO: set up error logger
+      toast.error('Sorry, there was an error locating this Hub.', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: 'colored',
+      });
+      setLoading(false);
+
+      return;
+    }
+
+    const { ccuLimit, status, storageLimitMb, hubId } = hub;
+
+    /**
+     * Update Date from from
+     * keep all other data as is
+     */
+    const updatedHub: UpdateHubT = {
+      name,
+      ccuLimit,
+      status,
+      storageLimitMb,
+      subdomain,
+      tier,
+    };
+
+    updateHub(`${hubId}`, updatedHub).then((resp) => {
+      resp?.status === 200
+        ? toast.success(`Hub: ${name} has been updated!`)
+        : toast.error('Sorry, there was an error updating this Hub.');
+
+      setLoading(false);
+    });
+  };
 
   const handleCancelClick = () => {
     router.push({
       pathname: '/dashboard',
-    })
-  }
+    });
+  };
 
   const handleAddresschange = useCallback((address: string) => {
-    setAddressPreview(address)
-  }, [])
+    setAddressPreview(address);
+  }, []);
 
   // Mock Data
   const radioFormOptions: HubGroupOptionT[] = [
@@ -81,7 +119,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
       groupName: 'tier',
       id: 'mvpOption',
     },
-  ]
+  ];
 
   return (
     <div className="page_wrapper">
@@ -92,7 +130,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
 
       <PageHeading title="Hub Settings" />
 
-      {!loading && hub !== undefined ? (
+      {!loading && hub !== null ? (
         <main className="flex-justify-center margin-10">
           <div className={styles.settings_grid_wrapper}>
             <div className={styles.settings_form_wrapper}>
@@ -134,10 +172,10 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
                 </li>
                 <li>People: {hub.ccuLimit}</li>
                 <li>
+                  {/* TODO: what do we do with no storage here  */}
                   Capacity:{' '}
-                  {hub.currentStorage ? hub.currentStorage : 'Creating'}
+                  {hub.currentStorageMb ? hub.currentStorageMb : 'Creating'}
                 </li>{' '}
-                {/* TODO: what do we do with no storage here  */}
               </ul>
             </div>
           </div>
@@ -151,15 +189,16 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
           </div>
         </div>
       )}
+      <ToastContainer />
     </div>
-  )
-}
+  );
+};
 
-export default HubDetailsView
+export default HubDetailsView;
 
 export const getServerSideProps = requireAuthentication(
   (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
-    return { props: {} }
+    return { props: {} };
   }
-)
+);

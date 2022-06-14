@@ -1,48 +1,60 @@
-import { useCallback } from 'react'
-import { useRouter } from 'next/router'
-import styles from './HubCard.module.scss'
-import Badge from '@Shared/Badge/Badge'
-import Button from '@Shared/Button/Button'
-import Icon from '@Shared/Icon/Icon'
-import ExternalLink from '@Shared/ExternalLink/ExternalLink'
-import IconButton from '@Shared/IconButton/IconButton'
-import Spinner from '@Shared/Spinner/Spinner'
-import { TierT, StatusT } from 'types/General'
-import { ButtonCategoriesE } from 'types/Form'
-import { HUB_ROOT_DOMAIN } from 'config'
+import { useCallback } from 'react';
+import { useRouter } from 'next/router';
+import styles from './HubCard.module.scss';
+import Badge from '@Shared/Badge/Badge';
+import Button from '@Shared/Button/Button';
+import Icon from '@Shared/Icon/Icon';
+import ExternalLink from '@Shared/ExternalLink/ExternalLink';
+import IconButton from '@Shared/IconButton/IconButton';
+import Spinner from '@Shared/Spinner/Spinner';
+import { TierT, StatusT } from 'types/General';
+import { ButtonCategoriesE } from 'types/Form';
+import { HUB_ROOT_DOMAIN } from 'config';
 
 type HubCardPropsT = {
-  name: string,
-  tier: TierT,
-  hubId: string,
-  currentCcu: number
-  currentStorage: number
-  ccuLimit: number,
-  status: StatusT,
-  storageLimitMb: number,
-  subdomain: string,
-  classProp?: string
-}
+  name: string;
+  tier: TierT;
+  hubId: string;
+  currentCcu: number | null;
+  currentStorageMb: number | null;
+  ccuLimit: number;
+  status: StatusT;
+  storageLimitMb: number;
+  subdomain: string;
+  classProp?: string;
+};
 
-const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, status, storageLimitMb, subdomain, classProp = '' }: HubCardPropsT) => {
-
-  const router = useRouter()
+const HubCard = ({
+  name,
+  tier,
+  hubId,
+  currentCcu,
+  currentStorageMb,
+  ccuLimit,
+  status,
+  storageLimitMb,
+  subdomain,
+  classProp = '',
+}: HubCardPropsT) => {
+  const router = useRouter();
   const handleSettingClick = useCallback(() => {
     router.push({
       pathname: '/hubs/[hub_id]',
       query: { hub_id: hubId },
-    })
-  }, [hubId, router])
+    });
+  }, [hubId, router]);
 
   /**
    * Hub Loading State
    */
   const LoadingHub = (
-    <div className='flex-align-center'>
+    <div className="flex-align-center">
       <Spinner size={18} />
-      <span className='u-font-14 margin-left-10'><span className='u-capitalize'>{status}</span> your hub...</span>
+      <span className="u-font-14 margin-left-10">
+        <span className="u-capitalize">{status}</span> your hub...
+      </span>
     </div>
-  )
+  );
 
   /**
    * Hub External Link
@@ -51,19 +63,19 @@ const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, stat
     <div className={styles.card_domain}>
       <ExternalLink
         icon="external-link"
-        target='_blank'
-        href={`${subdomain}.${HUB_ROOT_DOMAIN}`}>
+        target="_blank"
+        href={`${subdomain}.${HUB_ROOT_DOMAIN}`}
+      >
         {subdomain}.{HUB_ROOT_DOMAIN}
       </ExternalLink>
       <IconButton icon="copy" />
     </div>
-  )
+  );
 
   return (
     <div className={`${styles.card_wrapper} ${classProp}`}>
       {/* CARD NAME TIER STATES  */}
       <div className="flex-justify-between">
-
         {/* NAME / TIER  */}
         <div className={styles.card_group}>
           <div className="flex-align-center margin-bottom-10">
@@ -72,7 +84,9 @@ const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, stat
           </div>
 
           {/* TODO: Error Handeling design*/}
-          {status === 'creating' || status === 'updating' ? LoadingHub : HubLink}
+          {status === 'creating' || status === 'updating'
+            ? LoadingHub
+            : HubLink}
         </div>
 
         {/* HUBS STATS */}
@@ -84,12 +98,16 @@ const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, stat
             is also to impliment Websocket for data point updates.  */}
 
             {/* TODO: Error Handeling design*/}
-            <span className="margin-left-5">{currentCcu}/{ccuLimit} CCU</span>
+            <span className="margin-left-5">
+              {currentCcu}/{ccuLimit} CCU
+            </span>
           </div>
           <div className={styles.card_stat}>
             <Icon name="hard-drive" color="currentColor" />
             {/* TODO: Error Handeling design*/}
-            <span className="margin-left-5">{currentStorage}/{storageLimitMb} MB</span>
+            <span className="margin-left-5">
+              {currentStorageMb}/{storageLimitMb} MB
+            </span>
           </div>
         </div>
 
@@ -102,18 +120,15 @@ const HubCard = ({ name, tier, hubId, currentCcu, currentStorage, ccuLimit, stat
             category={ButtonCategoriesE.outline}
           />
           <ExternalLink
-            target='_blank'
-            href={`https://${subdomain}.${HUB_ROOT_DOMAIN}/admin`}>
-            <Button
-              text="Admin Panel"
-              category={ButtonCategoriesE.outline}
-            />
+            target="_blank"
+            href={`https://${subdomain}.${HUB_ROOT_DOMAIN}/admin`}
+          >
+            <Button text="Admin Panel" category={ButtonCategoriesE.outline} />
           </ExternalLink>
         </div>
-
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HubCard
+export default HubCard;
