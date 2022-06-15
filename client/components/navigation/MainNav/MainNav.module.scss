@@ -1,4 +1,4 @@
-@import 'styles/boilerplate';
+@use 'styles/boilerplate' as *;
 
 .main_nav {
   &_wrapper {

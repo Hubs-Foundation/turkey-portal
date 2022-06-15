@@ -1,4 +1,4 @@
-@import 'styles/boilerplate.scss';
+@use 'styles/boilerplate.scss' as *;
 
 .input {
   &_wrapper {

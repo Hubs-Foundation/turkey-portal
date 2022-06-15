@@ -1,6 +1,6 @@
-@import './boilerplate.scss';
-@import './core/utility.scss';
-@import './ui/dropdown.scss';
+@use './boilerplate.scss' as *;
+@use './core/utility.scss' as *;
+@use './ui/dropdown.scss' as *;
 
 html,
 body {

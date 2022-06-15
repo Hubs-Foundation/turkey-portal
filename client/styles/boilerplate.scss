@@ -4,19 +4,19 @@
   that do not output CSS when compiled.
 
   Include this file in components to pull in theme
-  variables, functions, and mixins for use in scoped
+  variables, functions, and mixins for forward in scoped
   styling.
 
   TODO : Break this up better so that variables/mixins/function are being imported to css modules only
   and utility classes and styles are being imported to the global style sheet so that in
-  the TSX code we can use utilities there...
+  the TSX code we can forward utilities there...
 
 */
 
 
 // tools
-@import 'core/variables';
-@import 'core/flex';
-@import 'tools/functions';
-@import 'tools/media-queries';
-@import 'tools/mixins';
+@forward 'core/variables';
+@forward 'core/flex';
+@forward 'tools/functions';
+@forward 'tools/media-queries';
+@forward 'tools/mixins';
