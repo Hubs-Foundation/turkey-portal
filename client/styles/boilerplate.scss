@@ -15,8 +15,8 @@
 
 
 // tools
-@import 'core/variables';
-@import 'core/flex';
-@import 'tools/functions';
-@import 'tools/media-queries';
-@import 'tools/mixins';
+@forward 'core/variables';
+@forward 'core/flex';
+@forward 'tools/functions';
+@forward 'tools/media-queries';
+@forward 'tools/mixins';

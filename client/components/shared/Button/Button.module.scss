@@ -1,5 +1,5 @@
-@import 'styles/boilerplate.scss';
-@import '../../../styles/ui/buttons.scss';
+@use 'styles/boilerplate.scss' as *;
+@use '../../../styles/ui/buttons.scss' as *;
 
 @mixin rect_button_base() {
   @include button_base();

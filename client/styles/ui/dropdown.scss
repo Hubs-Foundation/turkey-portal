@@ -1,4 +1,4 @@
-@import '../boilerplate.scss';
+@use '../boilerplate.scss' as *;
 
 .dropdown-hr {
   border:0;
