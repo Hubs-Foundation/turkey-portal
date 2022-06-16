@@ -38,8 +38,8 @@ defmodule Dash.RetClient do
         nil
 
       # An error occurred
-      {:error, reason} ->
-        Logger.error("Failed to retrieve reticulum CCU. Reason: #{reason}")
+      {:error, err} ->
+        Logger.error("Failed to retrieve reticulum CCU. Error: #{inspect(err)}")
         nil
     end
   end
@@ -55,8 +55,8 @@ defmodule Dash.RetClient do
         Logger.error("Failed to retrieve reticulum storage usage. Status code: #{status_code}")
         nil
 
-      {:error, reason} ->
-        Logger.error("Failed to retrieve reticulum storage usage. Reason: #{reason}")
+      {:error, err} ->
+        Logger.error("Failed to retrieve reticulum storage usage. Error: #{inspect(err)}")
         nil
     end
   end
