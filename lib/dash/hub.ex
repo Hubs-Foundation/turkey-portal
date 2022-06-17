@@ -130,14 +130,13 @@ defmodule Dash.Hub do
 
       {:ok, %{status_code: status_code} = resp} ->
         Logger.warn(
-          "Creating default hub Orch request returned status code #{status_code} and response #{resp}"
+          "Creating default hub Orch request returned status code #{status_code} and response #{inspect(resp)}"
         )
 
         {:ok, new_hub}
 
       {:error, err} ->
         Logger.error("Failed to create default hub #{inspect(err)}")
-        # TODO Should we delete the hub from the db or set status = :error enum?
         new_hub |> change(status: :error) |> Dash.Repo.update!()
         {:error, err}
     end
