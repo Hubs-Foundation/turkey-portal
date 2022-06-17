@@ -1,4 +1,4 @@
-@import 'styles/boilerplate';
+@use 'styles/boilerplate' as *;
 
 .main_nav {
   &_wrapper {
@@ -9,6 +9,10 @@
     display: flex;
     justify-content: center;
     border-bottom: solid 1px $accent-grey;
+
+    @include tablet-down {
+      padding: 10px;
+    }
   }
 
   &_container {
@@ -38,6 +42,17 @@
   &_account {
     display: flex;
     margin: 10px;
+  }
+}
+
+.mobile {
+  &_menu {
+    display: none;
+    margin-right: 20px;
+
+    @include tablet-down {
+      display: block;
+    }
   }
 }
 

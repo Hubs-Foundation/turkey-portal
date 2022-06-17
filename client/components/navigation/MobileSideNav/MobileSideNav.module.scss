@@ -1,12 +1,26 @@
-@use 'styles/boilerplate' as *;
+@use 'styles/boilerplate'as *;
 
 .nav {
+
+  &_open {
+    width: 100%;
+  }
+
+  &_closed {
+    width: 0;
+  }
+
   &_wrapper {
-    width: 300px;
-    height: calc(100vh - 80px);
+    height: 100%;
     background-color: $accent-grey;
     box-shadow: $drop-shadow-right;
     z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
   }
 
   &_container {
@@ -28,4 +42,8 @@
     }
   }
 
+}
+
+.menu_button {
+  margin-left: 30px;
 }
