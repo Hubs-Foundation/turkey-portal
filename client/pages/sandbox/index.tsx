@@ -5,6 +5,7 @@ import Form from '@Shared/Form/Form'
 import Input, { InputInterfaceT } from '@Shared/Input/Input'
 import Button from '@Shared/Button/Button'
 import { ButtonCategoriesE } from 'types/Form'
+import styles from './sandbox.module.scss';
 
 /**
  * NOTE: this page is for testing and showing.. Storybook will mostly take
@@ -53,7 +54,7 @@ export default function Sandbox() {
 
 
   return (
-    <div>
+    <div className={styles.page}>
       <Head>
         <title>Sandbox Page</title>
         <meta name="description" content="general profle page" />

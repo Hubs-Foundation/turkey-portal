@@ -3,7 +3,7 @@
 @use '../tools/media-queries.scss' as *;
 
 @mixin button-base() {
-  @include primary-font(500);
+  @include primary-font(600);
   @include font-size(14);
   background: none;
   outline: none;
@@ -14,7 +14,7 @@
   text-align: center;
   position: relative;
   letter-spacing: 0.44px;
-  line-height: 21px;
+  line-height: 24px;
   min-width: 100px;
 
   @include mobile-down {
