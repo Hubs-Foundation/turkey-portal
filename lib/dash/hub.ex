@@ -70,7 +70,7 @@ defmodule Dash.Hub do
   def has_creating_hubs(%Dash.Account{} = account) do
     has_hubs(account) &&
       Repo.exists?(
-        from(h in Dash.Hub, where: h.account_id == ^account.account_id and h.status == ^"creating")
+        from(h in Dash.Hub, where: h.account_id == ^account.account_id and h.status == :creating)
       )
   end
 
@@ -86,7 +86,7 @@ defmodule Dash.Hub do
       # TODO For MVP2 we expect 1 hub
       hub = Enum.at(hubs, 0)
 
-      case Dash.RetClient.wait_until_ready_state(hub) do
+      case Dash.RetClient.wait_until_healthy(hub) do
         {:ok} ->
           set_hub_to_ready(hub)
           {:ok}

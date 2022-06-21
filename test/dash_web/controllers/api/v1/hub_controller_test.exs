@@ -3,6 +3,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   import DashWeb.TestHelpers
   import Mox
   import Plug.Conn.Status, only: [code: 1]
+  require Logger
 
   setup_all context do
     setup_mocks_for_hubs()
@@ -112,19 +113,21 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       %{"subdomain" => final_subdomain} = get_hub(conn, hub)
       assert final_subdomain =~ "test-subdomain"
     end
+  end
 
-    # Wait for hub :ready state tests
-    test "should call ret /health endpoint 3 times", %{conn: conn} do
+  describe "Hub Ready state tests" do
+    test "should call ret /health endpoint at least 1 time", %{conn: conn} do
+      # TODO To refine test make this test call /health endpoint 3 times
       mock_hubs_get()
       mock_orch_post()
 
-      expect_calls = 3
-      time_until_ready_ms = expect_calls * Dash.RetClient.get_wait_ms()
+      max_expected_calls = 3
+      time_until_ready_ms = max_expected_calls * Dash.RetClient.get_wait_ms()
 
       # expected_calls+1 to factor in first check
       mock_hubs_wait_on_health(
-        health_ms_until_200: time_until_ready_ms,
-        expect_calls: expect_calls + 1
+        time_until_healthy_ms: time_until_ready_ms,
+        max_expected_calls: max_expected_calls + 1
       )
 
       [%{"status" => status} = _hub] = get_hubs(conn)
@@ -135,18 +138,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     test "should return error if /health timeout is reached", %{conn: conn} do
       mock_hubs_get()
       mock_orch_post()
-
-      timeout = Dash.RetClient.get_timeout_ms()
-      wait = Dash.RetClient.get_wait_ms()
-
-      # Ensure expected_calls is higher than actual calls so mock does not throw error and hits timeout
-      expect_calls = trunc(timeout / wait) + 2
-      time_until_ready_ms = timeout + 1000
-      # expected_calls+1 to factor in first check
-      mock_hubs_wait_on_health(
-        health_ms_until_200: time_until_ready_ms,
-        expect_calls: expect_calls + 1
-      )
+      stub_hubs_fail_health_check()
 
       body =
         conn
@@ -158,26 +150,30 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
   end
 
-  test "should call /health endpoint ONLY once, if hubs is already ready", %{conn: conn} do
-    mock_hubs_get()
-    mock_orch_post()
+  describe "Hub ready state tests with exact calls" do
+    setup :verify_on_exit!
 
-    mock_hubs_wait_on_health(health_ms_until_200: 0, expect_calls: 1)
+    test "should call /health endpoint ONLY once, if hubs is already ready", %{conn: conn} do
+      # TODO To refine tests move these tests to own module that has setup :verify_on_exit!
+      mock_hubs_get()
+      mock_orch_post()
 
-    [%{"status" => status} = _hub] = get_hubs(conn)
-    assert status =~ "ready"
-  end
+      mock_hubs_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
 
-  @tag marked: true
-  test "should NOT call ret /health endpoint, if hubs for account is ready", %{conn: conn} do
-    mock_hubs_get()
-    mock_hubs_wait_on_health(health_ms_until_200: 0, expect_calls: 0)
+      [%{"status" => status} = _hub] = get_hubs(conn)
+      assert status =~ "ready"
+    end
 
-    %{hub: hub} = create_test_account_and_hub()
-    assert hub.status == :ready
+    test "should NOT call ret /health endpoint, if hubs for account is ready", %{conn: conn} do
+      mock_hubs_get()
+      mock_hubs_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 0)
 
-    [%{"status" => status} = _hub] = get_hubs(conn)
-    assert status =~ "ready"
+      %{hub: hub} = create_test_account_and_hub()
+      assert hub.status == :ready
+
+      [%{"status" => status} = _hub] = get_hubs(conn)
+      assert status =~ "ready"
+    end
   end
 
   # Mocks and Setup Helpers
@@ -217,16 +213,20 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     conn |> patch_hub(hub, %{subdomain: subdomain}, expected_status: expected_status)
   end
 
-  def mock_hubs_wait_on_health(opts \\ [health_ms_until_200: 0, expect_calls: 1]) do
-    until_200 = Time.add(Time.utc_now(), opts[:health_ms_until_200], :millisecond)
+  # Used only in /health tests
+  defp mock_hubs_wait_on_health(
+         time_until_healthy_ms: time_until_healthy_ms,
+         max_expected_calls: max_expected_calls
+       ) do
+    until_healthy = Time.add(Time.utc_now(), time_until_healthy_ms, :millisecond)
 
     Dash.HttpMock
-    |> Mox.expect(:get, opts[:expect_calls], fn url, _headers ->
+    |> Mox.expect(:get, max_expected_calls, fn url, _headers ->
       now = Time.utc_now()
 
       cond do
         url =~ ~r/health$/ ->
-          if Time.diff(now, until_200) >= 0 do
+          if Time.diff(now, until_healthy, :millisecond) >= 0 do
             {:ok, %HTTPoison.Response{status_code: 200}}
           else
             {:ok, %HTTPoison.Response{status_code: 500}}
@@ -235,23 +235,18 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end)
   end
 
-  def mock_hubs_get() do
+  defp stub_hubs_fail_health_check() do
     Dash.HttpMock
-    |> Mox.expect(:get, 2, fn url, _headers, _options ->
+    |> Mox.stub(:get, fn url, _headers ->
       cond do
-        url =~ ~r/presence$/ ->
-          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{count: 3})}}
+        url =~ ~r/health$/ ->
+          {:ok, %HTTPoison.Response{status_code: 500}}
 
-        url =~ ~r/storage$/ ->
-          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{storage_mb: 10})}}
+        true ->
+          Logger.warn(
+            "Inside test, hit stub set up in stub_hub_fail_health_check/0, but GET request URL did not match /health, did you mean to do that?"
+          )
       end
-    end)
-  end
-
-  def mock_orch_post() do
-    Dash.HttpMock
-    |> Mox.expect(:post, fn _url, _body ->
-      {:ok, %HTTPoison.Response{status_code: 200}}
     end)
   end
 end

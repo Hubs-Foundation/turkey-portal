@@ -2,7 +2,6 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
   use DashWeb.ConnCase
   import DashWeb.TestHelpers
   alias Dash.ApprovedEmail
-  alias DashWeb.Api.V1.HubControllerTest
 
   setup_all do
     setup_mocks_for_hubs()
@@ -22,9 +21,9 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
     test "ApprovedEmails should not be enabled when disabled", %{conn: conn} do
       Application.put_env(:dash, Dash.ApprovedEmail, enabled: false)
 
-      HubControllerTest.mock_hubs_get()
-      HubControllerTest.mock_orch_post()
-      HubControllerTest.mock_hubs_wait_on_health()
+      mock_hubs_get()
+      mock_orch_post()
+      stub_hubs_success_health_check()
 
       conn =
         conn
@@ -46,9 +45,9 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
 
     # if email on the conn and it's authorized, should do nothing to the conn
     test "should respond with 200 if user is on ApprovedEmailList and authorized", %{conn: conn} do
-      HubControllerTest.mock_hubs_get()
-      HubControllerTest.mock_orch_post()
-      HubControllerTest.mock_hubs_wait_on_health()
+      mock_hubs_get()
+      mock_orch_post()
+      stub_hubs_success_health_check()
 
       email = get_test_email()
 

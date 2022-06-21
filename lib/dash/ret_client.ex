@@ -5,8 +5,6 @@ defmodule Dash.RetClient do
   require Logger
   use Retry
 
-  require Logger
-
   @ret_host_prefix "ret.hc-"
   @ret_host_postfix ".svc.cluster.local"
   @ret_internal_port "4000"
@@ -17,7 +15,7 @@ defmodule Dash.RetClient do
   @ret_internal_scope "/api-internal/v1/"
   defp fetch_ret_internal_endpoint(%Dash.Hub{} = hub, endpoint) do
     # Make the http client module configurable so that we can mock it out in tests.
-    http_client = Application.get_env(:dash, Dash.Hub)[:http_client] || HTTPoison
+    http_client = get_http_client() || HTTPoison
 
     http_client.get(
       ret_host_url(hub) <> @ret_internal_scope <> endpoint,
@@ -28,7 +26,7 @@ defmodule Dash.RetClient do
 
   @health_endpoint "/health"
   defp fetch_health_endpoint(%Dash.Hub{} = hub) do
-    http_client = Application.get_env(:dash, Dash.Hub)[:http_client] || HTTPoison
+    http_client = get_http_client() || HTTPoison
 
     http_client.get(
       ret_host_url(hub) <> @health_endpoint,
@@ -73,7 +71,7 @@ defmodule Dash.RetClient do
     end
   end
 
-  def wait_until_ready_state(%Dash.Hub{} = hub) do
+  def wait_until_healthy(%Dash.Hub{} = hub) do
     retry with: constant_backoff(get_wait_ms()) |> expiry(get_timeout_ms()) do
       case fetch_health_endpoint(hub) do
         {:ok, %{status_code: 200}} ->
@@ -107,5 +105,9 @@ defmodule Dash.RetClient do
 
   def get_wait_ms() do
     Application.get_env(:dash, Dash.RetClient)[:wait_ms]
+  end
+
+  def get_http_client() do
+    Application.get_env(:dash, Dash.Hub)[:http_client]
   end
 end
