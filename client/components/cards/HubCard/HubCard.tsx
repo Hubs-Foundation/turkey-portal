@@ -123,7 +123,10 @@ const HubCard = ({
             target="_blank"
             href={`https://${subdomain}.${HUB_ROOT_DOMAIN}/admin`}
           >
-            <Button text="Admin Panel" category={ButtonCategoriesE.PRIMARY_OUTLINE} />
+            <Button
+              text="Admin Panel"
+              category={ButtonCategoriesE.PRIMARY_OUTLINE}
+            />
           </ExternalLink>
         </div>
       </div>

@@ -20,6 +20,7 @@ const MainLayout = ({ children }: MainLayoutPropsT) => {
   }, []);
 
   return (
+    // TODO: set theme ( dark / light ) from system and set context via service)
     <main data-theme={themeContext.theme}>
       <MainNav MobileMenuClick={toggleMobileNav} />
       <section className={styles.page_wrapper}>

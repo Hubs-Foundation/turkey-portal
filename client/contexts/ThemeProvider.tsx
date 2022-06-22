@@ -15,7 +15,6 @@ export const ThemeContext = createContext({
 });
 
 const ThemeProvider = ({ children }: ThemeProviderkProps) => {
-  // Check if a logged out route
   const [theme, setTheme] = useState<ThemeE>(ThemeE.light);
 
   const handleThemeChange = (value: ThemeE): void => {
@@ -25,7 +24,7 @@ const ThemeProvider = ({ children }: ThemeProviderkProps) => {
   return (
     <ThemeContext.Provider
       value={{
-        'theme':theme,
+        theme: theme,
         handleThemeChange,
       }}
     >

@@ -3,10 +3,8 @@
 
 @mixin rect_button_base() {
   @include button_base();
-  // padding: 0px 16px;
   border-radius: 20px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
-  // height: 45px;
   text-transform: capitalize;
   display: flex;
   align-items: center;
@@ -73,7 +71,7 @@
   &:focus {
     background-color: $interaction-primary-alt-active;
     border: solid 2px $interaction-primary-active;
-    color:$interaction-primary-active;
+    color: $interaction-primary-active;
   }
 
   &:disabled,
@@ -103,7 +101,7 @@
   &:focus {
     background-color: $interaction-primary-alt-active;
     border: solid 2px$interaction-primary-alt-active;
-    color:$interaction-primary-active;
+    color: $interaction-primary-active;
   }
 
   &:disabled,
@@ -210,10 +208,11 @@
   &_small {
     padding: 6px 12px;
   }
+
   &_medium {
     padding: 8px 16px;
-
   }
+
   &_large {
     padding: 12px 18px;
   }
