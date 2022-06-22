@@ -38,7 +38,7 @@ const Button = ({
   const setButtonClass = (category: string) => {
     switch (category) {
       case ButtonCategoriesE.primary:
-        setCategoryClass(styles.button_primary)
+        setCategoryClass(styles.button_primary_solid)
         break
       case ButtonCategoriesE.secondary:
         setCategoryClass(styles.button_secondary)
