@@ -6,6 +6,8 @@ import { CLUSTER_DOMAIN } from "../utils/app-config";
 import { LinkButton } from "../common/LinkButton";
 import { IconDrive, IconUsers } from "../common/icons";
 import { formatMegabytes } from "../utils/formatNumber";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function HubNickname({ hub, setHub }) {
   const [nameValidity, setNameValidity] = useState({ valid: true });
@@ -38,15 +40,30 @@ HubNickname.propTypes = {
 };
 
 export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
-  const onFormSubmit = (e) => {
-    e.preventDefault();
-    onSubmit(hub);
-  };
-
   const tierChoices = [
     { tier: "free", disabled: true, ccuLimit: 5, storageLimitMb: 250 },
     { tier: "mvp", disabled: false, ccuLimit: null, storageLimitMb: null },
   ];
+
+  const toastConfig = {
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "colored",
+  };
+
+  const onFormSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(hub).then((resp) => {
+      const errorMessage = "There was an error updating your hub";
+      const successMessage = "Hub has been updated";
+
+      resp.error ? toast.error(errorMessage, toastConfig) : toast.success(successMessage, toastConfig);
+    });
+  };
 
   return (
     <div className="hub-form-container">
@@ -120,6 +137,7 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
         <span>Capacity</span>
         <span className="hub-form-summary-value">-</span>
       </div>
+      <ToastContainer />
     </div>
   );
 }
