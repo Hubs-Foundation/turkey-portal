@@ -4,6 +4,10 @@ defmodule Dash.OrchClient do
   This module handles requests to Orchestrator to make changes to create/update specific hub instances.
   """
 
+  defp orch_hub_endpoint() do
+    "https://#{get_orch_host()}/hc_instance"
+  end
+
   def create_hub(fxa_email, %Dash.Hub{} = hub) do
     orch_hub_create_params = %{
       useremail: fxa_email,
@@ -15,18 +19,20 @@ defmodule Dash.OrchClient do
     }
 
     get_http_client().post(
-      "http://#{get_orch_host()}/hc_instance",
-      Jason.encode!(orch_hub_create_params)
+      orch_hub_endpoint(),
+      Jason.encode!(orch_hub_create_params),
+      hackney: [:insecure]
     )
   end
 
   def update_subdomain(%Dash.Hub{} = hub) do
     get_http_client().patch(
-      "http://#{get_orch_host()}/hc_instance",
+      orch_hub_endpoint(),
       Jason.encode!(%{
         hub_id: hub.hub_id |> to_string,
         subdomain: hub.subdomain
-      })
+      }),
+      hackney: [:insecure]
     )
   end
 
