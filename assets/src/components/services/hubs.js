@@ -19,6 +19,10 @@ export const hubsApi = createApi({
         url: `hubs/${hub.hubId}`,
         method: "PATCH",
         body: hub,
+        headers: {
+          'content-type': 'text/plain',
+        },
+        validateStatus: (response) => response.status === 200
       }),
     }),
 

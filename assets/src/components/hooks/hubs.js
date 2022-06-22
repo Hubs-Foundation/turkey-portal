@@ -38,9 +38,12 @@ export function useHub(hubId) {
 
   const [submitHub, { isLoading: isSubmitting }] = useUpdateHubMutation();
 
-  const updateHub = async (hub) => {
-    await submitHub(hub);
-    dispatch(setHubEntity(hub));
+  const updateHub = (hub) => {
+    return submitHub(hub).then(resp => {
+      if (!resp.error) dispatch(setHubEntity(hub));
+      console.log('resp',resp)
+      return resp
+    });
   };
 
   const isReady = isSuccess || currentHub;
