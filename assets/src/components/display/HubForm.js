@@ -76,7 +76,9 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
           {tierChoices.map((tierChoice) => (
             <label
               key={tierChoice.tier}
-              className={`tier-choice ${tierChoice.disabled && "disabled"} ${hub.tier === tierChoice.tier && "selected"}`}
+              className={`tier-choice ${tierChoice.disabled && "disabled"} ${
+                hub.tier === tierChoice.tier && "selected"
+              }`}
             >
               <div>
                 <input
