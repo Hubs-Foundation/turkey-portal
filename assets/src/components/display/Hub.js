@@ -8,7 +8,7 @@ import { Spinner } from "../common/Spinner";
 import { IconDrive, IconUsers, IconExternal } from "../common/icons";
 import { CLUSTER_DOMAIN } from "../utils/app-config";
 import { formatNumber, formatMegabytes } from "../utils/formatNumber";
-import { READY } from "../utils/hub-constants";
+import { READY, CREATING } from "../utils/hub-constants";
 
 export function Hub({ tier, name, status, subdomain, currentCcu, currentStorageMb, hubId }) {
   const ccu = `${formatNumber(currentCcu)}`;
@@ -49,7 +49,7 @@ export function Hub({ tier, name, status, subdomain, currentCcu, currentStorageM
           <div>
             <span className="domain">
               <Spinner isInline />
-              Building your new hub...
+              {status === CREATING ? "Building your new hub..." : "Updating your hub..."}
             </span>
           </div>
 

@@ -10,7 +10,7 @@ defmodule Dash.Hub do
   schema "hubs" do
     field :ccu_limit, :integer
     field :name, :string
-    field :status, Ecto.Enum, values: [:creating, :updating, :ready]
+    field :status, Ecto.Enum, values: [:creating, :updating, :ready, :subdomain_error]
     field :storage_limit_mb, :integer
     field :subdomain, :string
     field :tier, Ecto.Enum, values: [:free, :mvp]
@@ -167,8 +167,9 @@ defmodule Dash.Hub do
          {:ok, updated_hub} <- form_changeset(hub, attrs) |> Dash.Repo.update() do
       if hub.subdomain != updated_hub.subdomain do
         update_subdomain(hub, updated_hub)
+        {:ok}
       else
-        {:ok, updated_hub}
+        {:ok}
       end
     else
       err ->
@@ -178,15 +179,44 @@ defmodule Dash.Hub do
   end
 
   defp update_subdomain(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do
-    case Dash.OrchClient.update_subdomain(updated_hub) do
-      {:ok, _} ->
-        {:ok, updated_hub}
+    # This async task runs in the background, asynchronously, under the TaskSupervisor.
+    # It needs to be able to handle success and failure scenarios in a self-contained manner.
+    Task.Supervisor.async(Dash.TaskSupervisor, fn ->
+      updated_hub = updated_hub |> Ecto.Changeset.change(status: :updating) |> Dash.Repo.update!()
 
-      {:error, err} ->
-        Logger.error("Failed to update subdomain. #{inspect(err)}")
-        # Revert the subdomain back to the previous one, since the orchestrator request failed.
-        updated_hub |> form_changeset(%{subdomain: previous_hub.subdomain}) |> Dash.Repo.update()
-        {:error, :subdomain_update_failed}
+      with {:ok, %{status_code: status_code}} when status_code < 400 <-
+             Dash.OrchClient.update_subdomain(updated_hub),
+           {:ok} <- Dash.RetClient.wait_until_healthy(updated_hub) do
+        set_hub_to_ready(updated_hub)
+      else
+        err ->
+          Logger.error(
+            "Failed to update subdomain. Reverting subdomain. Hub ID: #{updated_hub.hub_id}. Error: #{inspect(err)}"
+          )
+
+          try_revert_subdomain(previous_hub, updated_hub)
+      end
+    end)
+  end
+
+  defp try_revert_subdomain(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do
+    try do
+      # If the subdomain update failed, we assume that the hub instance will still be available
+      # at the previous subdomain, so we revert it and set it to ready.
+      updated_hub
+      |> form_changeset(%{subdomain: previous_hub.subdomain})
+      |> change(status: :ready)
+      |> Dash.Repo.update!()
+    rescue
+      err ->
+        Logger.error(
+          "Subdomain could not be reverted. Hub ID: #{updated_hub.hub_id} Error: #{inspect(err)}"
+        )
+
+        # Even the revert failed, possibly because the previous subdomain has now been taken by another user.
+        # TODO We should handle this better in the future by reserving the previous subdomain,
+        # while updating to a new subdomain, so that it cannot be taken during an update.
+        updated_hub |> change(status: :subdomain_error) |> Dash.Repo.update!()
     end
   end
 
