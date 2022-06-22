@@ -6,8 +6,8 @@ import { CLUSTER_DOMAIN } from "../utils/app-config";
 import { LinkButton } from "../common/LinkButton";
 import { IconDrive, IconUsers } from "../common/icons";
 import { formatMegabytes } from "../utils/formatNumber";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function HubNickname({ hub, setHub }) {
   const [nameValidity, setNameValidity] = useState({ valid: true });
@@ -40,7 +40,6 @@ HubNickname.propTypes = {
 };
 
 export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
-
   const tierChoices = [
     { tier: "free", disabled: true, ccuLimit: 5, storageLimitMb: 250 },
     { tier: "mvp", disabled: false, ccuLimit: null, storageLimitMb: null },
@@ -59,8 +58,8 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
   const onFormSubmit = (e) => {
     e.preventDefault();
     onSubmit(hub).then(resp => {
-      const errorMessage = 'There was an error updating your hub';
-      const succesMessage = 'Hub has been updated';
+      const errorMessage = "There was an error updating your hub";
+      const succesMessage = "Hub has been updated";
 
       resp.error ? toast.error(errorMessage, toastConfig) : toast.success(succesMessage, toastConfig);
     });
@@ -77,8 +76,7 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
           {tierChoices.map((tierChoice) => (
             <label
               key={tierChoice.tier}
-              className={`tier-choice ${tierChoice.disabled && "disabled"} ${hub.tier === tierChoice.tier && "selected"
-                }`}
+              className={`tier-choice ${tierChoice.disabled && "disabled"} ${hub.tier === tierChoice.tier && "selected"}`}
             >
               <div>
                 <input
