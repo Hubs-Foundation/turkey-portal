@@ -43,3 +43,4 @@ Run `mix dash` and `mix help dash.<task_name>` for more info.
 - SECRET_KEY_BASE - Base secret key. This should be a strong cryptographcially generated secret.
 - BASIC_AUTH_USERNAME - Username for site-wide basic auth.
 - BASIC_AUTH_PASSWORD - Password for site-wide basic auth.
+- AUTH_PUBLIC_KEY - Public key for JWT auth provided by auth server. Used in authentication.
