@@ -68,6 +68,14 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
+  # Public key for JWT auth
+  config :dash, DashWeb.Plugs.Auth,
+    auth_pub_key:
+      System.get_env("AUTH_PUBLIC_KEY") ||
+        raise("""
+        Environment variable AUTH_PUBLIC_KEY is missing. Used in JWT authentication.
+        """)
+
   # ## Using releases
   #
   # If you are doing OTP releases, you need to instruct Phoenix
