@@ -46,18 +46,18 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
   ];
 
   const toastConfig = {
-    position: 'top-center',
+    position: "top-center",
     autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
     draggable: true,
-    theme: 'colored',
-  }
+    theme: "colored",
+  };
 
   const onFormSubmit = (e) => {
     e.preventDefault();
-    onSubmit(hub).then(resp => {
+    onSubmit(hub).then((resp) => {
       const errorMessage = "There was an error updating your hub";
       const succesMessage = "Hub has been updated";
 
