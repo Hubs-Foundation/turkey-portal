@@ -97,7 +97,7 @@ defmodule DashWeb.TestHelpers do
 
   def mock_orch_post() do
     Dash.HttpMock
-    |> Mox.expect(:post, fn _url, _body ->
+    |> Mox.expect(:post, fn _url, _body, _opts ->
       {:ok, %HTTPoison.Response{status_code: 200}}
     end)
   end

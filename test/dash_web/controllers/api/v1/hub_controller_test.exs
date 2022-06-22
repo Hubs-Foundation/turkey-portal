@@ -179,7 +179,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   # Mocks and Setup Helpers
 
   defp mock_orch_patch(opts \\ [response: :ok, status_code: :ok]) do
-    Mox.expect(Dash.HttpMock, :patch, 1, fn url, _body ->
+    Mox.expect(Dash.HttpMock, :patch, 1, fn url, _body, _opts ->
       cond do
         url =~ ~r/\/hc_instance$/ ->
           {opts[:response], %HTTPoison.Response{status_code: code(opts[:status_code])}}
