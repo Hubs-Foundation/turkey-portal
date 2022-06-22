@@ -117,13 +117,13 @@ const HubCard = ({
             onClick={handleSettingClick}
             classProp="margin-right-15"
             text="Hub Settings"
-            category={ButtonCategoriesE.outline}
+            category={ButtonCategoriesE.PRIMARY_OUTLINE}
           />
           <ExternalLink
             target="_blank"
             href={`https://${subdomain}.${HUB_ROOT_DOMAIN}/admin`}
           >
-            <Button text="Admin Panel" category={ButtonCategoriesE.outline} />
+            <Button text="Admin Panel" category={ButtonCategoriesE.PRIMARY_OUTLINE} />
           </ExternalLink>
         </div>
       </div>

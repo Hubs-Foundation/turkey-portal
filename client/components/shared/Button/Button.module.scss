@@ -3,10 +3,10 @@
 
 @mixin rect_button_base() {
   @include button_base();
-  padding: 0px 16px;
+  // padding: 0px 16px;
   border-radius: 20px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05);
-  height: 45px;
+  // height: 45px;
   text-transform: capitalize;
   display: flex;
   align-items: center;
@@ -53,148 +53,168 @@
   }
 }
 
-// /*-------------------------------
-//   OUTLINE BUTTON
-// -------------------------------*/
-// .button_outline_primary {
-//   @include rect_button_base();
-//   background-color: transparent;
-//   border: solid 2px $primary;
-//   color: $primary;
+/*-------------------------------
+  OUTLINE BUTTON
+-------------------------------*/
+.button_primary_outline {
+  @include rect_button_base();
+  background-color: transparent;
+  border: solid 2px $interaction-primary;
+  color: $interaction-primary;
 
-//   &:hover:enabled {
-//     background-color: $primary-alt-hover;
-//     border: solid 2px $primary-hover;
-//   }
+  &:hover:enabled {
+    background-color: $interaction-primary-alt-hover;
+    border: solid 2px $interaction-primary-hover;
+    color: $interaction-primary-hover;
 
-//   &_active,
-//   &:focus {
-//     background-color: $primary-alt-active;
-//     border: solid 2px $primary-active;
-//     color: $primary-active;
-//   }
+  }
 
-//   &:disabled,
-//   &[disabled] {
-//     background-color: transparent;
-//     border: solid 2px $disabled;
-//   }
-// }
+  &_active,
+  &:focus {
+    background-color: $interaction-primary-alt-active;
+    border: solid 2px $interaction-primary-active;
+    color:$interaction-primary-active;
+  }
 
-
-// /*-------------------------------
-//   CLEAR BUTTON
-// -------------------------------*/
-// .button_clear_primary {
-//   @include rect_button_base();
-//   background-color: transparent;
-//   border: transparent;
-//   color: $primary;
-
-//   &:hover:enabled {
-//     background-color: $secondary-alt-hover;
-//     border: solid 2px $secondary-hover;
-//   }
-
-//   &_active,
-//   &:focus {
-//     background-color: secondaryy-alt-active;
-//     border: solid 2px $secondary-active;
-//     color: $secondary-active;
-//   }
-
-//   &:disabled,
-//   &[disabled] {
-//     background-color: transparent;
-//     border: solid 2px $disabled;
-//   }
-// }
-
-
-
-// /******************************
-//         PRIMARY BUTTONS
-// ******************************/
-
-// /*-------------------------------
-//   SOLID BUTTON
-// -------------------------------*/
-// .button_solid_secondary {
-//   @include rect_button_base();
-//   background-color: $secondary;
-//   border: solid 2px $secondary;
-//   color: $white;
-
-//   &:hover:enabled {
-//     background-color: $primary-hover;
-//     border: solid 2px $primary-hover;
-//   }
-
-//   &_active,
-//   &:focus {
-//     border: solid 2px $secondary-active;
-//     color: $secondary-active;
-//   }
-
-//   &:disabled,
-//   &[disabled] {
-//     background-color: $disabled;
-//     border: solid 2px $disabled;
-//   }
-// }
-
-// /*-------------------------------
-//   OUTLINE BUTTON
-// -------------------------------*/
-// .button_outline_secondary {
-//   @include rect_button_base();
-//   background-color: transparent;
-//   border: solid 2px $secondary;
-//   color: $secondary;
-
-//   &:hover:enabled {
-//     background-color: $secondary-alt-hover;
-//     border: solid 2px $secondary-hover;
-//   }
-
-//   &_active,
-//   &:focus {
-//     background-color: secondaryy-alt-active;
-//     border: solid 2px $secondary-active;
-//     color: $secondary-active;
-//   }
-
-//   &:disabled,
-//   &[disabled] {
-//     background-color: transparent;
-//     border: solid 2px $disabled;
-//   }
-// }
+  &:disabled,
+  &[disabled] {
+    background-color: transparent;
+    border: solid 2px $interaction-primary-alt-disabled;
+    color: $text-subtitle;
+  }
+}
 
 // /*-------------------------------
 //   CLEAR BUTTON
 // -------------------------------*/
-// .button_clear_secondary {
-//   @include rect_button_base();
-//   background-color: transparent;
-//   border: transparent;
-//   color: $primary;
+.button_primary_clear {
+  @include rect_button_base();
+  background-color: transparent;
+  border: 0;
+  color: $interaction-primary;
 
-//   &:hover:enabled {
-//     background-color: $secondary-alt-hover;
-//     border: solid 2px $secondary-hover;
-//   }
+  &:hover:enabled {
+    background-color: $interaction-primary-alt-hover;
+    border: solid 2px $interaction-primary-alt-hover;
+    color: $interaction-primary-hover;
+  }
 
-//   &_active,
-//   &:focus {
-//     background-color: secondaryy-alt-active;
-//     border: solid 2px $secondary-active;
-//     color: $secondary-active;
-//   }
+  &_active,
+  &:focus {
+    background-color: $interaction-primary-alt-active;
+    border: solid 2px$interaction-primary-alt-active;
+    color:$interaction-primary-active;
+  }
 
-//   &:disabled,
-//   &[disabled] {
-//     background-color: transparent;
-//     border: solid 2px $disabled;
-//   }
-// }
+  &:disabled,
+  &[disabled] {
+    background-color: transparent;
+    border: solid 2px $interaction-primary-alt-disabled;
+    color: $text-subtitle;
+  }
+}
+
+
+
+/******************************
+      SECONDARY BUTTONS
+******************************/
+
+/*-------------------------------
+  SOLID BUTTON 
+-------------------------------*/
+.button_secondary_solid {
+  @include rect_button_base();
+  background-color: $interaction-secondary;
+  border: solid 2px $interaction-secondary;
+  color: $text-subtitle;
+
+  &:hover:enabled {
+    background-color: $interaction-secondary-hover;
+    border: solid 2px $interaction-secondary-hover;
+  }
+
+  &_active,
+  &:focus {
+    border: solid 2px $interaction-secondary-active;
+    background-color: $interaction-secondary-active;
+  }
+
+  &:disabled,
+  &[disabled] {
+    background-color: $interaction-secondary-disabled;
+    border: solid 2px $interaction-secondary-disabled;
+  }
+}
+
+/*-------------------------------
+  OUTLINE BUTTON
+-------------------------------*/
+.button_secondary_outline {
+  @include rect_button_base();
+  background-color: transparent;
+  border: solid 2px $interaction-secondary;
+  color: $text-subtitle;
+
+  &:hover:enabled {
+    background-color: $interaction-secondary-alt-hover;
+    border: solid 2px $interaction-secondary-hover;
+  }
+
+  &_active,
+  &:focus {
+    background-color: $interaction-secondary-alt-active;
+    border: solid 2px $interaction-secondary-active;
+  }
+
+  &:disabled,
+  &[disabled] {
+    background-color: transparent;
+    border: solid 2px $interaction-secondary-alt-disabled;
+  }
+}
+
+/*-------------------------------
+  CLEAR BUTTON
+-------------------------------*/
+.button_secondary_clear {
+  @include rect_button_base();
+  background-color: transparent;
+  border: 0;
+  color: $text-subtitle;
+
+  &:hover:enabled {
+    background-color: $interaction-secondary-alt-hover;
+    border: solid 2px $interaction-secondary-alt-hover;
+  }
+
+  &_active,
+  &:focus {
+    background-color: $interaction-secondary-alt-active;
+    border: solid 2px$interaction-secondary-alt-active;
+  }
+
+  &:disabled,
+  &[disabled] {
+    background-color: transparent;
+    border: solid 2px $interaction-secondary-alt-disabled;
+  }
+}
+
+
+/*-------------------------------
+  SIZES
+-------------------------------*/
+
+.size {
+  &_small {
+    padding: 6px 12px;
+  }
+  &_medium {
+    padding: 8px 16px;
+
+  }
+  &_large {
+    padding: 12px 18px;
+  }
+}
