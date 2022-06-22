@@ -59,9 +59,9 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
     e.preventDefault();
     onSubmit(hub).then((resp) => {
       const errorMessage = "There was an error updating your hub";
-      const succesMessage = "Hub has been updated";
+      const successMessage = "Hub has been updated";
 
-      resp.error ? toast.error(errorMessage, toastConfig) : toast.success(succesMessage, toastConfig);
+      resp.error ? toast.error(errorMessage, toastConfig) : toast.success(successMessage, toastConfig);
     });
   };
 
