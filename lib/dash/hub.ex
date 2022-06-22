@@ -66,9 +66,37 @@ defmodule Dash.Hub do
     Repo.exists?(from(h in Dash.Hub, where: h.account_id == ^account.account_id))
   end
 
+  # TODO EA remove
+  def has_creating_hubs(%Dash.Account{} = account) do
+    has_hubs(account) &&
+      Repo.exists?(
+        from(h in Dash.Hub, where: h.account_id == ^account.account_id and h.status == :creating)
+      )
+  end
+
   # Checks if account has at least one hub, if not, creates hub
-  def ensure_default_hub(%Dash.Account{} = account, email) do
+  # Will wait for hub to be ready before
+  def ensure_default_hub_is_ready(%Dash.Account{} = account, email) do
     if !has_hubs(account), do: create_default_hub(account, email)
+
+    # TODO EA make own hub controller endpoint for waiting_until_ready_state
+    if has_creating_hubs(account) do
+      hubs = hubs_for_account(account)
+
+      # TODO For MVP2 we expect 1 hub
+      hub = Enum.at(hubs, 0)
+
+      case Dash.RetClient.wait_until_healthy(hub) do
+        {:ok} ->
+          set_hub_to_ready(hub)
+          {:ok}
+
+        {:error, err} ->
+          {:error, err}
+      end
+    else
+      {:ok}
+    end
   end
 
   @hub_defaults %{
@@ -97,14 +125,19 @@ defmodule Dash.Hub do
       |> Repo.insert!()
 
     case Dash.OrchClient.create_hub(fxa_email, new_hub) do
-      {:ok, _} ->
-        # TODO Wait for hub to be fully available, before setting status to :ready
-        new_hub = new_hub |> change(status: :ready) |> Dash.Repo.update!()
+      {:ok, %{status_code: 200}} ->
+        {:ok, new_hub}
+
+      {:ok, %{status_code: status_code} = resp} ->
+        Logger.warn(
+          "Creating default hub Orch request returned status code #{status_code} and response #{inspect(resp)}"
+        )
+
         {:ok, new_hub}
 
       {:error, err} ->
         Logger.error("Failed to create default hub #{inspect(err)}")
-        # TODO Should we delete the hub from the db or set status = :error enum?
+        new_hub |> change(status: :error) |> Dash.Repo.update!()
         {:error, err}
     end
   end
@@ -123,6 +156,10 @@ defmodule Dash.Hub do
       nil ->
         nil
     end
+  end
+
+  def set_hub_to_ready(%Dash.Hub{} = hub) do
+    hub |> change(status: :ready) |> Dash.Repo.update!()
   end
 
   def update_hub(hub_id, attrs, %Dash.Account{} = account) do

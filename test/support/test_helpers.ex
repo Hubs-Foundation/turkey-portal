@@ -1,5 +1,6 @@
 defmodule DashWeb.TestHelpers do
   import Phoenix.ConnTest
+  require Logger
 
   @test_email "email@fake.com"
   @default_token_claims %{
@@ -73,5 +74,46 @@ defmodule DashWeb.TestHelpers do
   def exit_mocks_for_hubs() do
     merge_module_config(:dash, Dash.Hub, http_client: nil)
     merge_module_config(:dash, Dash.OrchClient, http_client: nil)
+  end
+
+  # Required mocks for GET hubs requests
+  def mock_hubs_get() do
+    Dash.HttpMock
+    |> Mox.expect(:get, 2, fn url, _headers, _options ->
+      cond do
+        url =~ ~r/presence$/ ->
+          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{count: 3})}}
+
+        url =~ ~r/storage$/ ->
+          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{storage_mb: 10})}}
+
+        true ->
+          Logger.warn(
+            "Inside test, hit set up in mock_hubs_get/0, but GET request URL did not match either condition, did you mean to do that?"
+          )
+      end
+    end)
+  end
+
+  def mock_orch_post() do
+    Dash.HttpMock
+    |> Mox.expect(:post, fn _url, _body ->
+      {:ok, %HTTPoison.Response{status_code: 200}}
+    end)
+  end
+
+  def stub_hubs_success_health_check() do
+    Dash.HttpMock
+    |> Mox.stub(:get, fn url, _headers ->
+      cond do
+        url =~ ~r/health$/ ->
+          {:ok, %HTTPoison.Response{status_code: 200}}
+
+        true ->
+          Logger.warn(
+            "Inside test, hit set up in stub_hubs_success_health_check/0, but GET request URL did not match /health, did you mean to do that?"
+          )
+      end
+    end)
   end
 end

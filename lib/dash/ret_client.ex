@@ -2,8 +2,8 @@ defmodule Dash.RetClient do
   @moduledoc """
   This module handles requests to specific hub instance's reticulum backend.
   """
-
   require Logger
+  use Retry
 
   @ret_host_prefix "ret.hc-"
   @ret_host_postfix ".svc.cluster.local"
@@ -15,11 +15,21 @@ defmodule Dash.RetClient do
   @ret_internal_scope "/api-internal/v1/"
   defp fetch_ret_internal_endpoint(%Dash.Hub{} = hub, endpoint) do
     # Make the http client module configurable so that we can mock it out in tests.
-    http_client = Application.get_env(:dash, Dash.Hub)[:http_client] || HTTPoison
+    http_client = get_http_client() || HTTPoison
 
     http_client.get(
       ret_host_url(hub) <> @ret_internal_scope <> endpoint,
       [{"x-ret-dashboard-access-key", get_ret_access_key()}],
+      hackney: [:insecure]
+    )
+  end
+
+  @health_endpoint "/health"
+  defp fetch_health_endpoint(%Dash.Hub{} = hub) do
+    http_client = get_http_client() || HTTPoison
+
+    http_client.get(
+      ret_host_url(hub) <> @health_endpoint,
       hackney: [:insecure]
     )
   end
@@ -61,7 +71,43 @@ defmodule Dash.RetClient do
     end
   end
 
+  def wait_until_healthy(%Dash.Hub{} = hub) do
+    retry with: constant_backoff(get_wait_ms()) |> expiry(get_timeout_ms()) do
+      case fetch_health_endpoint(hub) do
+        {:ok, %{status_code: 200}} ->
+          :ok
+
+        {:ok, _} ->
+          # Ret server successfully responded, not ready yet
+          :error
+
+        {:error, reason} ->
+          # Something went wrong reaching Ret server
+          Logger.error("Error getting health endpoint. #{inspect(reason)}")
+          :error
+      end
+    after
+      _ -> {:ok}
+    else
+      _ ->
+        Logger.error("Failed getting /health in retry loop. Likely timed out.")
+        {:error, :wait_for_ready_state_timed_out}
+    end
+  end
+
   defp get_ret_access_key() do
     Application.get_env(:dash, Dash.RetClient)[:dashboard_ret_access_key]
+  end
+
+  def get_timeout_ms() do
+    Application.get_env(:dash, Dash.RetClient)[:timeout_ms]
+  end
+
+  def get_wait_ms() do
+    Application.get_env(:dash, Dash.RetClient)[:wait_ms]
+  end
+
+  def get_http_client() do
+    Application.get_env(:dash, Dash.Hub)[:http_client]
   end
 end

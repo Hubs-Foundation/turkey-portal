@@ -32,7 +32,7 @@ export function HomeContainer() {
 
   return (
     <div>
-      {isLoading && <HubLoading isBuildingHub={!account.hasHubs} />}
+      {isLoading ? <HubLoading isBuildingHub={!account.hasHubs || account.hasCreatingHubs} /> : ""}
       {isError && <span>Unable to load Hubs</span>}
       {isReady &&
         (!hasHubs ? <span>You don&apos;t have any hubs</span> : hubs.map((hub) => <Hub key={hub.hubId} {...hub} />))}

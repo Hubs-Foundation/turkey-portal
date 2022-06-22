@@ -74,6 +74,10 @@ config :dash, Dash.FeatureFlags,
   ccu_selection: true,
   storage_selection: true
 
+config :dash, Dash.RetClient,
+  timeout_ms: 300_000,
+  wait_ms: 5000
+
 config :cors_plug,
   origin: ["http://localhost:3000"]
 

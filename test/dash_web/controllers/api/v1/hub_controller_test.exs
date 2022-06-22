@@ -3,6 +3,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   import DashWeb.TestHelpers
   import Mox
   import Plug.Conn.Status, only: [code: 1]
+  require Logger
 
   setup_all context do
     setup_mocks_for_hubs()
@@ -114,6 +115,69 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
   end
 
+  describe "Hub Ready state tests" do
+    test "should call ret /health endpoint at least 1 time", %{conn: conn} do
+      # TODO To refine test make this test call /health endpoint 3 times
+      mock_hubs_get()
+      mock_orch_post()
+
+      max_expected_calls = 3
+      time_until_ready_ms = max_expected_calls * Dash.RetClient.get_wait_ms()
+
+      # expected_calls+1 to factor in first check
+      mock_hubs_wait_on_health(
+        time_until_healthy_ms: time_until_ready_ms,
+        max_expected_calls: max_expected_calls + 1
+      )
+
+      [%{"status" => status} = _hub] = get_hubs(conn)
+
+      assert status =~ "ready"
+    end
+
+    test "should return error if /health timeout is reached", %{conn: conn} do
+      mock_hubs_get()
+      mock_orch_post()
+      stub_hubs_fail_health_check()
+
+      body =
+        conn
+        |> put_test_token()
+        |> get("/api/v1/hubs")
+        |> response(500)
+
+      assert body =~ "wait_for_ready_state_timed_out"
+    end
+  end
+
+  describe "Hub ready state tests with exact calls" do
+    setup :verify_on_exit!
+
+    test "should call /health endpoint ONLY once, if hubs is already ready", %{conn: conn} do
+      # TODO To refine tests move these tests to own module that has setup :verify_on_exit!
+      mock_hubs_get()
+      mock_orch_post()
+
+      mock_hubs_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
+
+      [%{"status" => status} = _hub] = get_hubs(conn)
+      assert status =~ "ready"
+    end
+
+    test "should NOT call ret /health endpoint, if hubs for account is ready", %{conn: conn} do
+      mock_hubs_get()
+      mock_hubs_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 0)
+
+      %{hub: hub} = create_test_account_and_hub()
+      assert hub.status == :ready
+
+      [%{"status" => status} = _hub] = get_hubs(conn)
+      assert status =~ "ready"
+    end
+  end
+
+  # Mocks and Setup Helpers
+
   defp mock_orch_patch(opts \\ [response: :ok, status_code: :ok]) do
     Mox.expect(Dash.HttpMock, :patch, 1, fn url, _body ->
       cond do
@@ -121,6 +185,13 @@ defmodule DashWeb.Api.V1.HubControllerTest do
           {opts[:response], %HTTPoison.Response{status_code: code(opts[:status_code])}}
       end
     end)
+  end
+
+  defp get_hubs(conn) do
+    conn
+    |> put_test_token()
+    |> get("/api/v1/hubs")
+    |> json_response(:ok)
   end
 
   defp get_hub(conn, hub) do
@@ -142,23 +213,40 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     conn |> patch_hub(hub, %{subdomain: subdomain}, expected_status: expected_status)
   end
 
-  def mock_hubs_get() do
-    Dash.HttpMock
-    |> Mox.expect(:get, 2, fn url, _headers, _options ->
-      cond do
-        url =~ ~r/presence$/ ->
-          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{count: 3})}}
+  # Used only in /health tests
+  defp mock_hubs_wait_on_health(
+         time_until_healthy_ms: time_until_healthy_ms,
+         max_expected_calls: max_expected_calls
+       ) do
+    until_healthy = Time.add(Time.utc_now(), time_until_healthy_ms, :millisecond)
 
-        url =~ ~r/storage$/ ->
-          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{storage_mb: 10})}}
+    Dash.HttpMock
+    |> Mox.expect(:get, max_expected_calls, fn url, _headers ->
+      now = Time.utc_now()
+
+      cond do
+        url =~ ~r/health$/ ->
+          if Time.diff(now, until_healthy, :millisecond) >= 0 do
+            {:ok, %HTTPoison.Response{status_code: 200}}
+          else
+            {:ok, %HTTPoison.Response{status_code: 500}}
+          end
       end
     end)
   end
 
-  def mock_orch_post() do
+  defp stub_hubs_fail_health_check() do
     Dash.HttpMock
-    |> Mox.expect(:post, fn _url, _body ->
-      {:ok, %HTTPoison.Response{status_code: 200}}
+    |> Mox.stub(:get, fn url, _headers ->
+      cond do
+        url =~ ~r/health$/ ->
+          {:ok, %HTTPoison.Response{status_code: 500}}
+
+        true ->
+          Logger.warn(
+            "Inside test, hit stub set up in stub_hub_fail_health_check/0, but GET request URL did not match /health, did you mean to do that?"
+          )
+      end
     end)
   end
 end

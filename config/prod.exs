@@ -55,6 +55,10 @@ config :dash, DashWeb.Plugs.Auth,
 
 config :dash, Dash.OrchClient, orch_host: "turkeyorch:888"
 
+config :dash, Dash.RetClient,
+  timeout_ms: 300_000,
+  wait_ms: 2000
+
 config :dash, Dash.FeatureFlags,
   create_hubs: false,
   delete_hubs: false,
