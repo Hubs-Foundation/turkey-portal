@@ -65,6 +65,7 @@ export default function Sandbox() {
             <Button
               category={ButtonCategoriesE.PRIMARY_SOLID}
               text={ButtonCategoriesE.PRIMARY_SOLID}
+              active={true}
               size={ButtonSizesE.SMALL}
             />
             <div className="margin-10"></div>
@@ -89,6 +90,7 @@ export default function Sandbox() {
               size={ButtonSizesE.LARGE}
               iconPlacedRight={true}
               icon="arrow-right"
+              active={true}
             />
             <div className="margin-10"></div>
 
