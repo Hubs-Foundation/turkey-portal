@@ -64,6 +64,42 @@ export default function Sandbox() {
           <div>
             <Button
               category={ButtonCategoriesE.PRIMARY_SOLID}
+              icon="arrow-down"
+              size={ButtonSizesE.SMALL}
+            />
+
+            <Button
+              category={ButtonCategoriesE.PRIMARY_SOLID}
+              icon="arrow-left"
+              size={ButtonSizesE.MEDIUM}
+            />
+
+            <Button
+              category={ButtonCategoriesE.PRIMARY_SOLID}
+              icon="arrow-left"
+              size={ButtonSizesE.LARGE}
+            />
+
+            <Button
+              category={ButtonCategoriesE.PRIMARY_OUTLINE}
+              icon="arrow-left"
+              size={ButtonSizesE.SMALL}
+            />
+
+            <Button
+              category={ButtonCategoriesE.PRIMARY_OUTLINE}
+              icon="arrow-left"
+              size={ButtonSizesE.MEDIUM}
+            />
+
+            <Button
+              category={ButtonCategoriesE.PRIMARY_OUTLINE}
+              icon="arrow-left"
+              size={ButtonSizesE.LARGE}
+            />
+
+            <Button
+              category={ButtonCategoriesE.PRIMARY_SOLID}
               text={ButtonCategoriesE.PRIMARY_SOLID}
               active={true}
               size={ButtonSizesE.SMALL}

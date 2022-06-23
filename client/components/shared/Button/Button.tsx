@@ -7,7 +7,7 @@ import Icon from '@Shared/Icon/Icon';
 export type ButtonPropsT = {
   active?: boolean;
   id?: string;
-  text: string;
+  text?: string;
   type?: ButtonT;
   category?: ButtonCategoriesE;
   size?: ButtonSizesE;
@@ -33,34 +33,10 @@ const Button = ({
 }: ButtonPropsT) => {
   const [categoryClass, setCategoryClass] = useState<string>();
   const [categoryActiveClass, setCategoryActiveClass] = useState<string>();
-  const [sizeClass, setSizeClass] = useState(styles.size_medium);
 
   useEffect(() => {
     setButtonClass(category);
   }, [category]);
-
-  useEffect(() => {
-    setButtonSize(size);
-  }, [size]);
-
-  /**
-   * Get Button Size Class
-   * @param size : ButtonSizesE
-   */
-  const setButtonSize = (size: string) => {
-    const { SMALL, MEDIUM, LARGE } = ButtonSizesE;
-    switch (size) {
-      case SMALL:
-        setSizeClass(styles.size_small);
-        break;
-      case MEDIUM:
-        setSizeClass(styles.size_medium);
-        break;
-      case LARGE:
-        setSizeClass(styles.size_large);
-        break;
-    }
-  };
 
   /**
    * Get Button Category Class
@@ -109,9 +85,9 @@ const Button = ({
 
   return (
     <button
-      className={`${categoryClass} ${sizeClass} ${classProp} ${
-        active ? categoryActiveClass : ''
-      }`}
+      className={`${categoryClass} ${styles[size]} ${
+        !text && styles[size + '_round']
+      } ${classProp} ${active ? categoryActiveClass : ''}`}
       id={id}
       aria-label={text}
       type={type}
@@ -120,7 +96,12 @@ const Button = ({
     >
       {/* Left Icon  */}
       {icon && !iconPlacedRight ? (
-        <Icon name={icon} color="currentColor" size={20} />
+        <Icon
+          name={icon}
+          color="currentColor"
+          size={24}
+          classProp={text ? 'margin-right-10' : ''}
+        />
       ) : (
         ''
       )}
@@ -128,7 +109,12 @@ const Button = ({
       {text}
       {/* Right Icon  */}
       {icon && iconPlacedRight ? (
-        <Icon name={icon} color="currentColor" size={20} />
+        <Icon
+          name={icon}
+          color="currentColor"
+          size={24}
+          classProp={text ? 'margin-left-10' : ''}
+        />
       ) : (
         ''
       )}

@@ -204,16 +204,26 @@
   SIZES
 -------------------------------*/
 
-.size {
-  &_small {
-    padding: 6px 12px;
-  }
+.small {
+  padding: 6px 12px;
 
-  &_medium {
-    padding: 8px 16px;
+  &_round {
+    padding: 6px;
   }
+}
 
-  &_large {
-    padding: 12px 18px;
+.medium {
+  padding: 8px 16px;
+
+  &_round {
+    padding: 8px;
+  }
+}
+
+.large {
+  padding: 12px 18px;
+
+  &_round {
+    padding: 12px;
   }
 }
