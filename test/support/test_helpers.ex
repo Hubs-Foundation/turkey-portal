@@ -38,7 +38,7 @@ defmodule DashWeb.TestHelpers do
     conn |> put_req_cookie("_turkeyauthtoken", jwt_str)
   end
 
-  def create_test_account_and_hub() do
+  def create_test_account_and_hub(opts \\ []) do
     account = Dash.Account.find_or_create_account_for_fxa_uid("fake-uid")
 
     hub =
@@ -48,7 +48,7 @@ defmodule DashWeb.TestHelpers do
         ccu_limit: 20,
         storage_limit_mb: 100,
         tier: :mvp,
-        subdomain: "test-subdomain-#{Dash.Utils.rand_string(10)}",
+        subdomain: opts[:subdomain] || "test-subdomain-#{Dash.Utils.rand_string(10)}",
         status: :ready
       })
       |> Ecto.Changeset.put_assoc(:account, account)
