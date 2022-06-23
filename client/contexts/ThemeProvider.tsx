@@ -1,6 +1,6 @@
 import { useState, createContext, ReactNode } from 'react';
 
-type ThemeProviderkProps = {
+type ThemeProviderProps = {
   children?: ReactNode;
 };
 
@@ -10,11 +10,11 @@ export enum ThemeE {
 }
 
 export const ThemeContext = createContext({
-  theme: ThemeE.dark,
+  theme: ThemeE.light,
   handleThemeChange: (value: ThemeE) => {},
 });
 
-const ThemeProvider = ({ children }: ThemeProviderkProps) => {
+const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setTheme] = useState<ThemeE>(ThemeE.light);
 
   const handleThemeChange = (value: ThemeE): void => {
