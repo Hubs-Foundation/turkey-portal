@@ -79,13 +79,16 @@ defmodule DashWeb.TestHelpers do
   # Required mocks for GET hubs requests
   def mock_hubs_get() do
     Dash.HttpMock
-    |> Mox.expect(:get, 2, fn url, _headers, _options ->
+    |> Mox.stub(:get, fn url, _headers, _options ->
       cond do
         url =~ ~r/presence$/ ->
           {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{count: 3})}}
 
         url =~ ~r/storage$/ ->
           {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{storage_mb: 10})}}
+
+        url =~ ~r/health$/ ->
+          {:ok, %HTTPoison.Response{status_code: 200}}
 
         true ->
           Logger.warn(
@@ -97,23 +100,8 @@ defmodule DashWeb.TestHelpers do
 
   def mock_orch_post() do
     Dash.HttpMock
-    |> Mox.expect(:post, fn _url, _body, _opts ->
+    |> Mox.expect(:post, fn _url, _body, _headers, _opts ->
       {:ok, %HTTPoison.Response{status_code: 200}}
-    end)
-  end
-
-  def stub_hubs_success_health_check() do
-    Dash.HttpMock
-    |> Mox.stub(:get, fn url, _headers ->
-      cond do
-        url =~ ~r/health$/ ->
-          {:ok, %HTTPoison.Response{status_code: 200}}
-
-        true ->
-          Logger.warn(
-            "Inside test, hit set up in stub_hubs_success_health_check/0, but GET request URL did not match /health, did you mean to do that?"
-          )
-      end
     end)
   end
 end

@@ -10,7 +10,7 @@ defmodule Dash.OrchClientTest do
   end
 
   test "should patch subdomain with the correct API shape" do
-    Mox.expect(Dash.HttpMock, :patch, 1, fn url, body_str, _opts ->
+    Mox.expect(Dash.HttpMock, :patch, 1, fn url, body_str, _headers, _opts ->
       assert url =~ ~r/\/hc_instance$/
 
       body = Jason.decode!(body_str)

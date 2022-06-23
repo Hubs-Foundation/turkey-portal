@@ -30,6 +30,7 @@ defmodule Dash.RetClient do
 
     http_client.get(
       ret_host_url(hub) <> @health_endpoint,
+      [],
       hackney: [:insecure]
     )
   end
