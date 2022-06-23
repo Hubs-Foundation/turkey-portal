@@ -21,6 +21,7 @@ defmodule Dash.OrchClient do
     get_http_client().post(
       orch_hub_endpoint(),
       Jason.encode!(orch_hub_create_params),
+      [],
       hackney: [:insecure]
     )
   end
@@ -32,6 +33,7 @@ defmodule Dash.OrchClient do
         hub_id: hub.hub_id |> to_string,
         subdomain: hub.subdomain
       }),
+      [],
       hackney: [:insecure]
     )
   end
