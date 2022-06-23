@@ -49,7 +49,8 @@ export function Hub({ tier, name, status, subdomain, currentCcu, currentStorageM
           <div>
             <span className="domain">
               <Spinner isInline />
-              {status === CREATING ? "Building your new hub..." : "Updating your hub..."}
+              {status === CREATING ? "Building your new hub..." : ""}
+              {status === UPDATING ? "Updating your hub..." : ""}
             </span>
           </div>
 
