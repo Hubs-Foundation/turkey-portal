@@ -4,9 +4,8 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
   alias Dash.ApprovedEmail
 
   setup_all do
-    setup_mocks_for_hubs()
-
-    on_exit(fn -> exit_mocks_for_hubs() end)
+    setup_http_mocks()
+    on_exit(fn -> exit_http_mocks() end)
   end
 
   describe "ApprovedEmailAuth Plug" do

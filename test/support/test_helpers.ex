@@ -66,12 +66,12 @@ defmodule DashWeb.TestHelpers do
     Application.put_env(:dash, DashWeb.Plugs.Auth, %{})
   end
 
-  def setup_mocks_for_hubs() do
+  def setup_http_mocks() do
     merge_module_config(:dash, Dash.Hub, http_client: Dash.HttpMock)
     merge_module_config(:dash, Dash.OrchClient, http_client: Dash.HttpMock)
   end
 
-  def exit_mocks_for_hubs() do
+  def exit_http_mocks() do
     merge_module_config(:dash, Dash.Hub, http_client: nil)
     merge_module_config(:dash, Dash.OrchClient, http_client: nil)
   end
