@@ -1,3 +1,3 @@
-export const READY = "ready";
-export const CREATING = "creating";
-export const UPDATING = "updating";
+export const STATUS_READY = "ready";
+export const STATUS_CREATING = "creating";
+export const STATUS_UPDATING = "updating";
