@@ -1,7 +1,8 @@
-import React from 'react'
-import { ComponentStory, ComponentMeta } from '@storybook/react'
-import { ButtonCategoriesE } from '../types/Form'
-import Button from '../components/shared/Button/Button'
+import React from 'react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ButtonCategoriesE, ButtonSizesE } from '../types/Form';
+import Button from '../components/shared/Button/Button';
+import '../styles/globals.scss';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
@@ -11,49 +12,67 @@ export default {
   argTypes: {
     category: {
       control: {
-        type: 'select', options: [ButtonCategoriesE.PRIMARY_SOLID, ButtonCategoriesE.SECONDARY_SOLID, ButtonCategoriesE.PRIMARY_OUTLINE]
-      }
-    }
+        type: 'select',
+        options: [
+          ButtonCategoriesE.PRIMARY_SOLID,
+          ButtonCategoriesE.PRIMARY_CLEAR,
+          ButtonCategoriesE.PRIMARY_OUTLINE,
+          ButtonCategoriesE.SECONDARY_SOLID,
+          ButtonCategoriesE.SECONDARY_CLEAR,
+          ButtonCategoriesE.SECONDARY_OUTLINE,
+        ],
+      },
+    },
+    size: {
+      control: {
+        type: 'select',
+        options: [ButtonSizesE.SMALL, ButtonSizesE.MEDIUM, ButtonSizesE.LARGE],
+      },
+    },
+    icon: {
+      control: {
+        type: 'select',
+        options: ['', 'star', 'arrow-left', 'arrow-right'],
+      },
+    },
+    iconPlacedRight: {
+      control: {
+        type: 'boolean',
+        options: [false, true],
+      },
+    },
+    disabled: {
+      control: {
+        type: 'boolean',
+        options: [false, true],
+      },
+    },
+    active: {
+      control: {
+        type: 'boolean',
+        options: [false, true],
+      },
+    },
   },
-} as ComponentMeta<typeof Button>
+} as ComponentMeta<typeof Button>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />
+const Template: ComponentStory<typeof Button> = (args) => (
+  <>
+    <main data-theme="light" style={{ padding: '20px' }}>
+      <h3>Light Theme</h3>
+      <Button {...args} />
+    </main>
+    <main data-theme="dark" style={{ background: '#000000', padding: '20px' }}>
+      <h3 style={{ color: '#ffffff' }}>Dark Theme</h3>
+      <Button {...args} />
+    </main>
+  </>
+);
 
-
-// PRIMARY BUTTON 
-export const Primary = Template.bind({})
-Primary.args = {
-  text: 'Primary',
-  category: ButtonCategoriesE.PRIMARY_SOLID
-}
-
-// SECONDARY BUTTON 
-export const Secondary = Template.bind({})
-Secondary.args = {
-  text: 'Secondary',
-  category: ButtonCategoriesE.SECONDARY_SOLID
-}
-
-// OUTLINE BUTTON 
-export const Outline = Template.bind({})
-Outline.args = {
-  text: 'Outline',
-  category: ButtonCategoriesE.PRIMARY_OUTLINE
-}
-
-// OUTLINE BUTTON 
-export const Icon = Template.bind({})
-Icon.args = {
-  text: 'Icon',
+// PRIMARY BUTTON
+export const Main = Template.bind({});
+Main.args = {
+  text: 'Main Button',
   category: ButtonCategoriesE.PRIMARY_SOLID,
-  icon: 'star'
-}
-
-// DISABLED BUTTON 
-export const Disabled = Template.bind({})
-Disabled.args = {
-  text: 'Disabled',
-  category: ButtonCategoriesE.PRIMARY_SOLID,
-  disabled: true
-}
+};
