@@ -18,7 +18,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
   describe "Hub API" do
     test "should fetch and return usage stats for hubs", %{conn: conn} do
-      mock_hubs_get()
+      stub_ret_get()
 
       create_test_account_and_hub()
 
@@ -57,8 +57,8 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
   describe "Subdomain updates" do
     test "should submit subdomain change to orchestrator", %{conn: conn} do
-      mock_hubs_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
-      mock_orch_patch()
+      expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
+      expect_orch_patch()
 
       %{hub: hub} = create_test_account_and_hub()
       assert hub.subdomain =~ "test-subdomain"
@@ -68,8 +68,8 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should error on duplicate subdomains", %{conn: conn} do
-      mock_hubs_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
-      mock_orch_patch()
+      expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
+      expect_orch_patch()
 
       %{hub: hub_one} = create_test_account_and_hub()
       %{hub: hub_two} = create_test_account_and_hub()
@@ -80,7 +80,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should error on invalid subdomains", %{conn: conn} do
-      mock_orch_patch()
+      expect_orch_patch()
 
       %{hub: hub} = create_test_account_and_hub()
       assert hub.subdomain =~ "test-subdomain"
@@ -108,7 +108,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should revert subdomain if orch subdomain update request fails", %{conn: conn} do
-      mock_orch_patch(response: :error, status_code: :service_unavailable)
+      expect_orch_patch(response: :error, status_code: :service_unavailable)
 
       %{hub: hub} = create_test_account_and_hub()
       assert hub.subdomain =~ "test-subdomain"
@@ -120,7 +120,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should revert subdomain if orch returns an error", %{conn: conn} do
-      mock_orch_patch(response: :ok, status_code: :internal_server_error)
+      expect_orch_patch(response: :ok, status_code: :internal_server_error)
 
       %{hub: hub} = create_test_account_and_hub()
       assert hub.subdomain =~ "test-subdomain"
@@ -132,33 +132,33 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should set status to updating while waiting for subdomain change", %{conn: conn} do
-      mock_hubs_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
-      mock_orch_patch_with_pausing(self())
+      expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
+      stub_orch_patch_with_pausing(self())
 
       %{hub: hub} = create_test_account_and_hub()
 
       conn |> patch_subdomain(hub, "new-subdomain", expected_status: :ok)
-      mock_pid = wait_for_orch_patch()
+      stub_pid = wait_for_orch_patch()
 
       assert %{"status" => "updating"} = get_hub(conn, hub)
 
-      send(mock_pid, {:continue})
+      send(stub_pid, {:continue})
       assert %{"status" => "ready"} = get_hub(conn, hub)
     end
 
     test "should set error status if previous subdomain is taken after subdomain update fails", %{
       conn: conn
     } do
-      mock_orch_patch_with_pausing(self(), response: :error, status_code: :service_unavailable)
+      stub_orch_patch_with_pausing(self(), response: :error, status_code: :service_unavailable)
 
       %{hub: hub} = create_test_account_and_hub(subdomain: "test-subdomain")
 
       conn |> patch_subdomain(hub, "new-subdomain", expected_status: :ok)
-      mock_pid = wait_for_orch_patch()
+      stub_pid = wait_for_orch_patch()
 
       create_test_account_and_hub(subdomain: "test-subdomain")
 
-      send(mock_pid, {:continue})
+      send(stub_pid, {:continue})
       assert_hub_status(conn, hub, "subdomain_error")
     end
   end
@@ -170,13 +170,13 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       time_until_healthy_ms = max_expected_calls * Dash.RetClient.get_wait_ms()
 
       # expected_calls+1 to factor in first check
-      mock_hubs_wait_on_health(
+      expect_ret_wait_on_health(
         time_until_healthy_ms: time_until_healthy_ms,
         max_expected_calls: max_expected_calls + 1
       )
 
-      mock_hubs_get()
-      mock_orch_post()
+      stub_ret_get()
+      expect_orch_post()
 
       [%{"status" => status} = _hub] = get_hubs(conn)
 
@@ -184,9 +184,9 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should return error if /health timeout is reached", %{conn: conn} do
-      mock_hubs_get()
-      mock_orch_post()
-      stub_hubs_fail_health_check()
+      stub_ret_get()
+      expect_orch_post()
+      stub_ret_fail_health_check()
 
       body =
         conn
@@ -203,18 +203,18 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
     test "should call /health endpoint ONLY once, if hubs is already ready", %{conn: conn} do
       # TODO To refine tests move these tests to own module that has setup :verify_on_exit!
-      mock_hubs_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
+      expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
 
-      mock_hubs_get()
-      mock_orch_post()
+      stub_ret_get()
+      expect_orch_post()
 
       [%{"status" => status} = _hub] = get_hubs(conn)
       assert status =~ "ready"
     end
 
     test "should NOT call ret /health endpoint, if hubs for account is ready", %{conn: conn} do
-      mock_hubs_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 0)
-      mock_hubs_get()
+      expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 0)
+      stub_ret_get()
 
       %{hub: hub} = create_test_account_and_hub()
       assert hub.status == :ready
@@ -242,7 +242,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
   end
 
-  defp mock_orch_patch_with_pausing(parent, opts \\ [response: :ok, status_code: :ok]) do
+  defp stub_orch_patch_with_pausing(parent, opts \\ [response: :ok, status_code: :ok]) do
     Mox.stub(Dash.HttpMock, :patch, fn url, _body, _headers, _opts ->
       cond do
         url =~ ~r/\/hc_instance$/ ->
@@ -254,11 +254,11 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   end
 
   defp wait_for_orch_patch() do
-    receive do: ({:patch_received, mock_pid} -> mock_pid),
+    receive do: ({:patch_received, stub_pid} -> stub_pid),
             after: (1000 -> flunk("orch patch not received"))
   end
 
-  defp mock_orch_patch(opts \\ [response: :ok, status_code: :ok]) do
+  defp expect_orch_patch(opts \\ [response: :ok, status_code: :ok]) do
     Mox.expect(Dash.HttpMock, :patch, 1, fn url, _body, _headers, _opts ->
       cond do
         url =~ ~r/\/hc_instance$/ ->
@@ -294,7 +294,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   end
 
   # Used only in /health tests
-  defp mock_hubs_wait_on_health(
+  defp expect_ret_wait_on_health(
          time_until_healthy_ms: time_until_healthy_ms,
          max_expected_calls: max_expected_calls
        ) do
@@ -315,7 +315,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end)
   end
 
-  defp stub_hubs_fail_health_check() do
+  defp stub_ret_fail_health_check() do
     Dash.HttpMock
     |> Mox.stub(:get, fn url, _headers, _opts ->
       cond do
