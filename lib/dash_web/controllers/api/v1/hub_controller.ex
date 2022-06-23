@@ -43,9 +43,6 @@ defmodule DashWeb.Api.V1.HubController do
       {:ok} ->
         conn |> send_resp(200, "")
 
-      {:error, :subdomain_update_failed = err} ->
-        conn |> send_resp(500, Jason.encode!(%{error: err})) |> halt()
-
       {:error, err} ->
         conn |> send_resp(400, Jason.encode!(%{error: err})) |> halt()
     end

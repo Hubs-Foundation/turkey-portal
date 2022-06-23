@@ -52,6 +52,8 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   end
 
   describe "Subdomain updates" do
+    setup [:verify_on_exit!]
+
     test "should submit subdomain change to orchestrator", %{conn: conn} do
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       expect_orch_patch()
@@ -76,8 +78,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should error on invalid subdomains", %{conn: conn} do
-      expect_orch_patch()
-
       %{hub: hub} = create_test_account_and_hub()
       assert hub.subdomain =~ "test-subdomain"
 
@@ -155,7 +155,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       create_test_account_and_hub(subdomain: "test-subdomain")
 
       send(stub_pid, {:continue})
-      assert_hub_status(conn, hub, "subdomain_error")
+      retry_and_assert_hub_status(conn, hub, "subdomain_error")
     end
   end
 
@@ -222,7 +222,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
   # Mocks and Setup Helpers
 
-  defp assert_hub_status(conn, hub, expected_status) do
+  defp retry_and_assert_hub_status(conn, hub, expected_status) do
     retry with: constant_backoff(10) |> expiry(2000) do
       %{"status" => status} = get_hub(conn, hub)
 
