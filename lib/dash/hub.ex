@@ -83,7 +83,7 @@ defmodule Dash.Hub do
     if has_creating_hubs(account) do
       hubs = hubs_for_account(account)
 
-      # TODO For MVP2 we expect 1 hub
+      # TODO EA For MVP2 we expect 1 hub
       hub = Enum.at(hubs, 0)
 
       case Dash.RetClient.wait_until_healthy(hub) do
@@ -107,8 +107,6 @@ defmodule Dash.Hub do
   }
 
   def create_default_hub(%Dash.Account{} = account, fxa_email) do
-    # TODO These random strings are not very pleasant.
-    # Maybe use a friendlier name generator instead?
     subdomain = Dash.Utils.rand_string(10)
 
     new_hub_params =
@@ -214,7 +212,7 @@ defmodule Dash.Hub do
         )
 
         # Even the revert failed, possibly because the previous subdomain has now been taken by another user.
-        # TODO We should handle this better in the future by reserving the previous subdomain,
+        # TODO EA We should handle this better in the future by reserving the previous subdomain,
         # while updating to a new subdomain, so that it cannot be taken during an update.
         updated_hub |> change(status: :subdomain_error) |> Dash.Repo.update!()
     end

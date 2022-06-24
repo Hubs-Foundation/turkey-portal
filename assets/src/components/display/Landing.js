@@ -1,14 +1,14 @@
 import React from "react";
 
 import "./Landing.css";
+import { AUTH_SERVER } from "../utils/app-config";
 import { LinkButton } from "../common/LinkButton";
 import { Avatar } from "../common/Avatar";
 import logoWhite from "../../images/logo-white.svg";
 
 export function Landing() {
   const client = location.origin + location.pathname.replace(/\/$/, "");
-  // TODO Use the CLUSTER_DOMAIN app config value here, assuming the auth server on the dev cluster is functional.
-  const loginUrl = `https://auth.myhubs.net/login?idp=fxa&client=${client}`;
+  const loginUrl = `https://${AUTH_SERVER}/login?idp=fxa&client=${client}`;
   return (
     <div className="landing-container">
       <Avatar />
@@ -26,9 +26,8 @@ export function Landing() {
           </div>
         </div>
         <div className="footer">
-          {/* TODO Get the proper links here */}
-          <a href="https://github.com/mozilla/hubs/blob/master/PRIVACY.md">Privacy policy</a>
-          <a href="https://github.com/mozilla/hubs/blob/master/TERMS.md">Terms and Conditions</a>
+          <a href="https://www.mozilla.org/en-US/privacy/hubs/">Privacy policy</a>
+          <a href="https://www.mozilla.org/en-US/about/legal/terms/hubs/">Terms and Conditions</a>
         </div>
       </div>
     </div>
