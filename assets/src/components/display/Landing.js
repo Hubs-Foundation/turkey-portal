@@ -26,8 +26,8 @@ export function Landing() {
           </div>
         </div>
         <div className="footer">
-          <a href="https://www.mozilla.org/en-US/privacy/hubs/">Privacy policy</a>
-          <a href="https://www.mozilla.org/en-US/about/legal/terms/hubs/">Terms and Conditions</a>
+          <a href="https://www.mozilla.org/privacy/hubs/">Privacy policy</a>
+          <a href="https://www.mozilla.org/about/legal/terms/hubs/">Terms and Conditions</a>
         </div>
       </div>
     </div>
