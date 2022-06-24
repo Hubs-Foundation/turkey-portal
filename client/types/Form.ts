@@ -14,12 +14,12 @@ export type InputT = 'text' | 'password' | 'email' | 'number' | 'tel'
 export type ButtonT = 'button' | 'submit' | 'reset'
 
 export enum ButtonCategoriesE {
-  PRIMARY_SOLID = 'primarySolid',
-  PRIMARY_OUTLINE = 'primaryOutline',
-  PRIMARY_CLEAR = 'primaryClear',
-  SECONDARY_SOLID = 'secondarySolid',
-  SECONDARY_OUTLINE = 'secondaryOutline',
-  SECONDARY_CLEAR = 'secondaryClear',
+  PRIMARY_SOLID = 'primary_solid',
+  PRIMARY_OUTLINE = 'primary_outline',
+  PRIMARY_CLEAR = 'primary_clear',
+  SECONDARY_SOLID = 'secondary_solid',
+  SECONDARY_OUTLINE = 'secondary_outline',
+  SECONDARY_CLEAR = 'secondary_clear',
 }
 
 export enum ButtonSizesE {
