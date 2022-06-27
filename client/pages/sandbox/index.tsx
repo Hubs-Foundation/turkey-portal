@@ -32,7 +32,7 @@ export default function Sandbox() {
   const passwordInput = useRef<InputInterfaceT>(null);
 
   const testing = () => {
-    console.log('diry:', passwordInput.current?.isDirty());
+    console.log('dirty:', passwordInput.current?.isDirty());
   };
 
   const handleFormChange = (event: Event) => {
