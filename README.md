@@ -44,3 +44,5 @@ Run `mix dash` and `mix help dash.<task_name>` for more info.
 - BASIC_AUTH_USERNAME - Username for site-wide basic auth.
 - BASIC_AUTH_PASSWORD - Password for site-wide basic auth.
 - AUTH_PUBLIC_KEY - Public key for JWT auth provided by auth server. Used in authentication.
+- AUTH_SERVER - Server used for login links. e.g. "auth.myhubs.net"
+- FXA_SERVER - Firefox Accounts server used for account management links. e.g. "accounts.firefox.com"

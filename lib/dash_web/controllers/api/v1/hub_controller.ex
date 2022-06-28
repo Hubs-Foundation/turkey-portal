@@ -57,8 +57,7 @@ defmodule DashWeb.Api.V1.HubController do
   end
 
   def delete(conn, %{"id" => hub_id}, account) do
-    # Todo call to orchestrator to delete the hub
-    # Todo protect this endpoint for development purposes only
+    # TODO EA call to orchestrator to delete the hub
     deleted_hub = Hub.delete_hub(hub_id, account)
 
     conn |> render("delete.json", deleted_hub: deleted_hub)

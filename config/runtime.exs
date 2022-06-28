@@ -54,7 +54,10 @@ if config_env() == :prod do
   host = System.get_env("PHX_HOST") || "example.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
-  config :dash, Dash.AppConfig, host: host
+  config :dash, Dash.AppConfig,
+    host: host,
+    auth_server: System.get_env("AUTH_SERVER"),
+    fxa_server: System.get_env("FXA_SERVER")
 
   config :dash, DashWeb.Endpoint,
     url: [host: host, port: 443],
