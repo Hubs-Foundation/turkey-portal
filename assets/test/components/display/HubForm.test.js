@@ -4,7 +4,7 @@ import { render } from "../../helpers/setup";
 import { HubForm } from "../../../src/components/display/HubForm";
 
 test("Hub form free tier is disabled", async () => {
-  const hub = { tier: "mvp", ccuLimit: 10, storageLimitMb: 10 };
+  const hub = { subdomain: "test", tier: "mvp", ccuLimit: 10, storageLimitMb: 10 };
 
   const { findByRole } = render(<HubForm hub={hub} />);
 
@@ -13,7 +13,7 @@ test("Hub form free tier is disabled", async () => {
 });
 
 test("Hub form mvp tier is enabled", async () => {
-  const hub = { tier: "mvp", ccuLimit: 10, storageLimitMb: 10 };
+  const hub = { subdomain: "test", tier: "mvp", ccuLimit: 10, storageLimitMb: 10 };
 
   const { findByRole } = render(<HubForm hub={hub} />);
 
