@@ -10,6 +10,9 @@ defmodule Dash.RetClient do
   @ret_internal_port "4000"
   defp ret_host_url(%Dash.Hub{} = hub) do
     "https://#{@ret_host_prefix}#{hub.hub_id}#{@ret_host_postfix}:#{@ret_internal_port}"
+
+    # TODO fix before merge
+    "http://localhost:3000"
   end
 
   @ret_internal_scope "/api-internal/v1/"
