@@ -54,6 +54,17 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   describe "Subdomain updates" do
     setup [:verify_on_exit!]
 
+    test "subdomain should always be lower case", %{conn: conn} do
+      expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
+      expect_orch_patch()
+
+      %{hub: hub} = create_test_account_and_hub()
+      assert hub.subdomain =~ "test-subdomain"
+
+      conn |> patch_subdomain(hub, "NEW-subdomain", expected_status: :ok)
+      %{"subdomain" => "new-subdomain"} = get_hub(conn, hub)
+    end
+
     test "should submit subdomain change to orchestrator", %{conn: conn} do
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       expect_orch_patch()
@@ -80,6 +91,9 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     test "should error on invalid subdomains", %{conn: conn} do
       %{hub: hub} = create_test_account_and_hub()
       assert hub.subdomain =~ "test-subdomain"
+
+      short_subdomain = "aa"
+      conn |> patch_subdomain(hub, short_subdomain, expected_status: :bad_request)
 
       long_subdomain = String.duplicate("a", 64)
       conn |> patch_subdomain(hub, long_subdomain, expected_status: :bad_request)

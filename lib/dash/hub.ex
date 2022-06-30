@@ -44,10 +44,10 @@ defmodule Dash.Hub do
     hub
     |> cast(attrs, [:name, :subdomain])
     |> validate_length(:name, min: 1, max: 24)
-    |> validate_length(:subdomain, min: 1, max: 63)
-    |> validate_format(:subdomain, ~r/^[a-z0-9]/i)
-    |> validate_format(:subdomain, ~r/^[a-z0-9-]+$/i)
-    |> validate_format(:subdomain, ~r/[a-z0-9]$/i)
+    |> validate_length(:subdomain, min: 3, max: 63)
+    |> validate_format(:subdomain, ~r/^[a-z0-9]/)
+    |> validate_format(:subdomain, ~r/^[a-z0-9-]+$/)
+    |> validate_format(:subdomain, ~r/[a-z0-9]$/)
     |> unique_constraint(:subdomain)
   end
 
@@ -161,6 +161,13 @@ defmodule Dash.Hub do
   end
 
   def update_hub(hub_id, attrs, %Dash.Account{} = account) do
+    attrs =
+      if attrs["subdomain"] do
+        Map.merge(attrs, %{"subdomain" => attrs["subdomain"] |> String.downcase()})
+      else
+        attrs
+      end
+
     with %Dash.Hub{} = hub <- get_hub(hub_id, account),
          {:ok, updated_hub} <- form_changeset(hub, attrs) |> Dash.Repo.update() do
       if hub.subdomain != updated_hub.subdomain do
