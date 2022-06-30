@@ -1,9 +1,9 @@
-import { useEffect, ReactNode, useContext } from 'react';
+import { useEffect, useCallback, ReactNode, useContext, useState } from 'react';
 import initStoreData from 'store/storeInit';
-import MainLayout from 'layouts/MainLayout/MainLayout';
-import LoginLayout from 'layouts/LoginLayout/LoginLayout';
-import { LoggedOutRoutsE } from 'types/Routes';
+import { LoggedOutRoutesE } from 'types/Routes';
 import { ThemeContext } from 'contexts/ThemeProvider';
+import MainNav from '@Navigation/MainNav/MainNav';
+import styles from './LayoutWrapper.module.scss';
 
 type LayoutWrapperProps = {
   children: ReactNode;
@@ -12,19 +12,29 @@ type LayoutWrapperProps = {
 
 const LayoutWrapper = ({ children, componentName }: LayoutWrapperProps) => {
   // Check if a logged out route
-  const showLoggedOutUi = componentName in LoggedOutRoutsE;
+  const showLoggedOutUi = componentName in LoggedOutRoutesE;
   const themeContext = useContext(ThemeContext);
-  const LoggedIn = <MainLayout>{children}</MainLayout>;
-  const LoggedOut = <LoginLayout>{children}</LoginLayout>;
+  const toggleMobileNav = useCallback(() => {
+    // Place holder - not sure if we need this: waiting on UX/UI
+  }, []);
 
   useEffect(() => {
-    // If On a "logged out page" don't try to init store data
+    // If on one of the "logged out pages" don't try to init store data
     if (!showLoggedOutUi) initStoreData();
   }, [showLoggedOutUi]);
 
   return (
     <main data-theme={themeContext.theme}>
-      {showLoggedOutUi ? LoggedOut : LoggedIn}
+      {!showLoggedOutUi ? <MainNav MobileMenuClick={toggleMobileNav} /> : null}
+      <div
+        className={
+          showLoggedOutUi
+            ? styles.logged_out_page_wrapper
+            : styles.logged_in_page_wrapper
+        }
+      >
+        {children}
+      </div>
     </main>
   );
 };

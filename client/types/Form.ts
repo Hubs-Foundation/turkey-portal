@@ -13,6 +13,10 @@ export type InputT = 'text' | 'password' | 'email' | 'number' | 'tel'
 
 export type ButtonT = 'button' | 'submit' | 'reset'
 
+/**
+ * Enums are formatted in snake_case so that we can use the mapped
+ * value as a SCSS value.
+ */
 export enum ButtonCategoriesE {
   PRIMARY_SOLID = 'primary_solid',
   PRIMARY_OUTLINE = 'primary_outline',
