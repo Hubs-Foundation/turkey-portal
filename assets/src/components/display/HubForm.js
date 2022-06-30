@@ -1,33 +1,47 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
+import debounce from "lodash.debounce";
 
 import "./HubForm.css";
 import { CLUSTER_DOMAIN } from "../utils/app-config";
 import { LinkButton } from "../common/LinkButton";
+import { Spinner } from "../common/Spinner";
 import { IconDrive, IconUsers, IconValid, IconInvalid } from "../common/icons";
 import { formatMegabytes } from "../utils/formatNumber";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function HubNickname({ hub, setHub }) {
-  const [nameValidity, setNameValidity] = useState({ valid: true });
-  const max24Characters = ".{1,24}";
+function HubNickname({ hub, setHub, onValidationUpdate }) {
+  const [validationMessage, setValidationMessage] = useState("");
+
+  function validate(name) {
+    const trimmedName = name.trim();
+
+    let newValidationMessage = "";
+    if (trimmedName.length === 0) {
+      newValidationMessage = "Hub nickname is required";
+    } else if (trimmedName.length >= 24) {
+      newValidationMessage = "Hub nickname too long (24 characters max)";
+    }
+
+    setValidationMessage(newValidationMessage);
+    onValidationUpdate(newValidationMessage);
+  }
 
   return (
     <div>
       <span className="form-section-title">Hub Nickname</span>
-      {nameValidity.valid || nameValidity.valueMissing ? (
-        <span className="form-section-subtitle">For use within the dashboard area only</span>
+      {validationMessage ? (
+        <span className="form-section-subtitle invalid">{validationMessage}</span>
       ) : (
-        <span className="form-section-subtitle invalid">Hub name too long (24 characters max)</span>
+        <span className="form-section-subtitle">For use within the dashboard area only</span>
       )}
       <input
         type="text"
         value={hub.name}
-        required
-        pattern={max24Characters}
+        className={validationMessage === "" ? "" : "invalid"}
         onChange={(e) => {
-          setNameValidity(e.target.validity);
+          validate(e.target.value);
           setHub({ ...hub, name: e.target.value });
         }}
       />
@@ -37,45 +51,81 @@ function HubNickname({ hub, setHub }) {
 HubNickname.propTypes = {
   hub: PropTypes.object,
   setHub: PropTypes.func,
+  onValidationUpdate: PropTypes.func,
 };
 
-function HubWebAddress({ hub, setHub }) {
-  const [subdomainValidity, setSubdomainValidity] = useState({ valid: true });
+function HubWebAddress({ hub, setHub, onValidationUpdate }) {
+  const [validationMessage, setValidationMessage] = useState("");
+  const [validating, setValidating] = useState(false);
 
-  let validationMessage = "";
-  if (hub.subdomain.length < 3) {
-    validationMessage = "Must be at least 3 characters";
-  } else if (hub.subdomain.startsWith("-") || hub.subdomain.endsWith("-")) {
-    validationMessage = "Cannot start or end with a hyphen (-)";
-  } else if (/[^a-zA-Z0-9-]+/.test(hub.subdomain)) {
-    validationMessage = "Only supports letters (a to z), digits (0 to 9), and hyphens (-)";
+  function setAndEmitValidation(message) {
+    setValidationMessage(message);
+    onValidationUpdate(message);
   }
+
+  const debounceWaitMs = 100;
+  const validate = useCallback(
+    debounce(async function (subdomain) {
+      let clientValidationMessage = "";
+      if (subdomain.length < 3) {
+        clientValidationMessage = "Must be at least 3 characters";
+      } else if (subdomain.startsWith("-") || subdomain.endsWith("-")) {
+        clientValidationMessage = "Cannot start or end with a hyphen (-)";
+      } else if (/[^a-zA-Z0-9-]+/.test(subdomain)) {
+        clientValidationMessage = "Only supports letters (a to z), digits (0 to 9), and hyphens (-)";
+      }
+
+      if (clientValidationMessage === "") {
+        const result = await fetch("/api/v1/hubs/validate_subdomain", {
+          method: "post",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            excludedHubId: hub.hubId,
+            subdomain,
+          }),
+        }).then((r) => r.json());
+
+        if (result.success) {
+          setAndEmitValidation("");
+        } else {
+          setAndEmitValidation("Web address unavailable");
+        }
+      } else {
+        setAndEmitValidation(clientValidationMessage);
+      }
+
+      setValidating(false);
+    }, debounceWaitMs),
+    [hub.hubId]
+  );
 
   return (
     <div className="web-address">
       <div className="web-address-header">
         <span className="form-section-title">Web Address (URL)</span>
-        {subdomainValidity.valid ? (
+        {validationMessage ? (
+          <span className="form-section-subtitle invalid">{validationMessage}</span>
+        ) : (
           <span className="form-section-subtitle">
             Supports letters (a to z), digits (0 to 9), and hyphens&nbsp;(-)
           </span>
-        ) : (
-          <span className="form-section-subtitle invalid">{validationMessage}</span>
         )}
       </div>
       <div className="web-address-input">
         <input
           type="text"
+          className={validationMessage === "" ? "" : "invalid"}
           value={hub.subdomain}
-          required
-          pattern="[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]"
-          maxLength="63"
           onChange={(e) => {
-            setSubdomainValidity(e.target.validity);
             setHub({ ...hub, subdomain: e.target.value });
+
+            // Emit a message so that the form cannot be submitted during validation.
+            onValidationUpdate("validating");
+            setValidating(true);
+            validate(e.target.value);
           }}
         />
-        {subdomainValidity.valid ? <IconValid /> : <IconInvalid />}
+        {validating ? <Spinner isInline={true} /> : validationMessage ? <IconInvalid /> : <IconValid />}
         <span className="domain">
           <span className="subdomain">{hub.subdomain.toLowerCase()}</span>.{CLUSTER_DOMAIN}
         </span>
@@ -86,11 +136,11 @@ function HubWebAddress({ hub, setHub }) {
 HubWebAddress.propTypes = {
   hub: PropTypes.object,
   setHub: PropTypes.func,
+  onValidationUpdate: PropTypes.func,
 };
 
 export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
-  const [isValid, setIsValid] = useState(false);
-  const formRef = useRef();
+  const [inputValidation, setInputValidation] = useState({});
 
   const tierChoices = [
     { tier: "free", disabled: true, ccuLimit: 5, storageLimitMb: 250 },
@@ -107,6 +157,10 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
     theme: "colored",
   };
 
+  const updateInputValidation = (updatedValidation) => {
+    setInputValidation((inputValidation) => ({ ...inputValidation, ...updatedValidation }));
+  };
+
   const onFormSubmit = (e) => {
     e.preventDefault();
     onSubmit(hub).then((resp) => {
@@ -117,21 +171,17 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
     });
   };
 
-  const submitEnabled = !isSubmitting && isValid;
+  const allInputsValid = Object.values(inputValidation).every((message) => message === "");
+  const submitEnabled = !isSubmitting && allInputsValid;
 
   return (
     <div className="hub-form-container">
-      <form
-        className="hub-form"
-        ref={formRef}
-        onChange={() => {
-          if (formRef.current) {
-            setIsValid(formRef.current.checkValidity());
-          }
-        }}
-        onSubmit={onFormSubmit}
-      >
-        <HubNickname hub={hub} setHub={setHub} />
+      <form className="hub-form" onSubmit={onFormSubmit}>
+        <HubNickname
+          hub={hub}
+          setHub={setHub}
+          onValidationUpdate={(message) => updateInputValidation({ nickname: message })}
+        />
 
         <div>
           <span className="form-section-title">Hub Tier</span>
@@ -165,7 +215,11 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
           ))}
         </div>
 
-        <HubWebAddress hub={hub} setHub={setHub} />
+        <HubWebAddress
+          hub={hub}
+          setHub={setHub}
+          onValidationUpdate={(message) => updateInputValidation({ subdomain: message })}
+        />
 
         <hr />
 

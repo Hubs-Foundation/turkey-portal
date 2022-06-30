@@ -173,6 +173,30 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
   end
 
+  describe "Subdomain validation" do
+    test "returns an error for duplicate subdomains", %{conn: conn} do
+      create_test_account_and_hub(subdomain: "test-subdomain-one")
+      %{hub: current_hub} = create_test_account_and_hub(subdomain: "test-subdomain-two")
+
+      %{"error" => "subdomain_taken"} =
+        conn |> post_validate_subdomain(current_hub.hub_id, "test-subdomain-one")
+    end
+
+    test "returns success for new subdomains", %{conn: conn} do
+      %{hub: current_hub} = create_test_account_and_hub(subdomain: "test-subdomain-one")
+
+      %{"success" => true} =
+        conn |> post_validate_subdomain(current_hub.hub_id, "test-subdomain-two")
+    end
+
+    test "returns success when validating own subdomain", %{conn: conn} do
+      %{hub: current_hub} = create_test_account_and_hub(subdomain: "test-subdomain-one")
+
+      %{"success" => true} =
+        conn |> post_validate_subdomain(current_hub.hub_id, "test-subdomain-one")
+    end
+  end
+
   describe "Hub Ready state tests" do
     test "should call ret /health endpoint at least 1 time", %{conn: conn} do
       # TODO To refine test make this test call /health endpoint 3 times
@@ -301,6 +325,18 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
   defp patch_subdomain(conn, hub, subdomain, expected_status: expected_status) do
     conn |> patch_hub(hub, %{subdomain: subdomain}, expected_status: expected_status)
+  end
+
+  defp post_validate_subdomain(conn, excluded_hub_id, subdomain) do
+    conn
+    |> put_test_token()
+    |> put_req_header("content-type", "application/json")
+    |> post(
+      "/api/v1/hubs/validate_subdomain",
+      Jason.encode!(%{excludedHubId: excluded_hub_id, subdomain: subdomain})
+    )
+    |> response(:ok)
+    |> Jason.decode!()
   end
 
   # Used only in /health tests

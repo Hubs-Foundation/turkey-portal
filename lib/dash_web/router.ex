@@ -62,6 +62,8 @@ defmodule DashWeb.Router do
         ]
       )
     )
+
+    post "/hubs/validate_subdomain", Api.V1.HubController, :validate_subdomain
   end
 
   # Enables LiveDashboard only for development

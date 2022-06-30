@@ -62,4 +62,18 @@ defmodule DashWeb.Api.V1.HubController do
 
     conn |> render("delete.json", deleted_hub: deleted_hub)
   end
+
+  def validate_subdomain(
+        conn,
+        %{"excludedHubId" => excluded_hub_id, "subdomain" => subdomain},
+        _account
+      ) do
+    case Hub.validate_subdomain(excluded_hub_id, subdomain) do
+      {:ok} ->
+        conn |> send_resp(200, Jason.encode!(%{success: true}))
+
+      {:error, err} ->
+        conn |> send_resp(200, Jason.encode!(%{error: err}))
+    end
+  end
 end

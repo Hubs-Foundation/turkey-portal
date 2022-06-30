@@ -20,7 +20,7 @@
 .hub-form input[type="text"]:focus {
   border-color: #bbb;
 }
-.hub-form input[type="text"]:invalid {
+.hub-form input[type="text"].invalid {
   border: 0;
   outline: 2px solid #920b27;
 }
