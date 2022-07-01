@@ -168,13 +168,17 @@ defmodule Dash.Hub do
         attrs
       end
 
-    with %Dash.Hub{} = hub <- get_hub(hub_id, account),
+    with %Dash.Hub{status: :ready} = hub <- get_hub(hub_id, account),
          {:ok, updated_hub} <- form_changeset(hub, attrs) |> Dash.Repo.update() do
       if hub.subdomain != updated_hub.subdomain do
-        update_subdomain(hub, updated_hub)
-        {:ok}
+        updated_hub =
+          updated_hub |> Ecto.Changeset.change(status: :updating) |> Dash.Repo.update!()
+
+        start_subdomain_update(hub, updated_hub)
+
+        {:ok, updated_hub}
       else
-        {:ok}
+        {:ok, updated_hub}
       end
     else
       err ->
@@ -193,12 +197,10 @@ defmodule Dash.Hub do
     end
   end
 
-  defp update_subdomain(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do
+  defp start_subdomain_update(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do
     # This async task runs in the background, asynchronously, under the TaskSupervisor.
     # It needs to be able to handle success and failure scenarios in a self-contained manner.
     Task.Supervisor.async(Dash.TaskSupervisor, fn ->
-      updated_hub = updated_hub |> Ecto.Changeset.change(status: :updating) |> Dash.Repo.update!()
-
       with {:ok, %{status_code: status_code}} when status_code < 400 <-
              Dash.OrchClient.update_subdomain(updated_hub),
            {:ok} <- Dash.RetClient.wait_until_healthy(updated_hub) do

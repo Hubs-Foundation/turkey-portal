@@ -1,7 +1,6 @@
 import React from "react";
 
 import { IconClock } from "../common/icons";
-import "./HubBuilding.css";
 
 export function HubBuilding() {
   return (

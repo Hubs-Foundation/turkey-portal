@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import debounce from "lodash.debounce";
+import { useNavigate } from "react-router-dom";
 
 import "./HubForm.css";
 import { CLUSTER_DOMAIN } from "../utils/app-config";
@@ -8,7 +9,7 @@ import { LinkButton } from "../common/LinkButton";
 import { Spinner } from "../common/Spinner";
 import { IconDrive, IconUsers, IconValid, IconInvalid } from "../common/icons";
 import { formatMegabytes } from "../utils/formatNumber";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast, Slide } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function HubNickname({ hub, setHub, onValidationUpdate }) {
@@ -140,6 +141,7 @@ HubWebAddress.propTypes = {
 };
 
 export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
+  const navigate = useNavigate();
   const [inputValidation, setInputValidation] = useState({});
 
   const tierChoices = [
@@ -150,10 +152,10 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
   const toastConfig = {
     position: "top-center",
     autoClose: 5000,
-    hideProgressBar: false,
+    hideProgressBar: true,
     closeOnClick: true,
     pauseOnHover: true,
-    draggable: true,
+    transition: Slide,
     theme: "colored",
   };
 
@@ -165,9 +167,12 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
     e.preventDefault();
     onSubmit(hub).then((resp) => {
       const errorMessage = "There was an error updating your hub";
-      const successMessage = "Hub has been updated";
 
-      resp.error ? toast.error(errorMessage, toastConfig) : toast.success(successMessage, toastConfig);
+      if (resp.error) {
+        toast.error(errorMessage, toastConfig);
+      } else {
+        navigate("/");
+      }
     });
   };
 
