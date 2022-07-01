@@ -5,7 +5,18 @@ defmodule Dash.Hub do
   require Logger
   alias Dash.{Repo, RetClient}
 
-  @whole_reserved_subdomains ["dashboard", "dash", "admin", "hubs", "email", "mail", "auth", "dev", "api"]
+  @whole_reserved_subdomains [
+    "dashboard",
+    "dash",
+    "admin",
+    "hubs",
+    "email",
+    "mail",
+    "auth",
+    "dev",
+    "api"
+  ]
+
   @partial_reserved_subdomains ["mozilla"]
   @denied_subdomains_pattern (@partial_reserved_subdomains ++
                                 Dash.SubdomainDenyList.naughty_words())
