@@ -9,6 +9,8 @@ import logOut from "./log-out.svg";
 import external from "./external.svg";
 import backButton from "./back-button.svg";
 import copy from "./copy.svg";
+import valid from "./valid.svg";
+import invalid from "./invalid.svg";
 
 import "./Icon.css";
 
@@ -48,4 +50,12 @@ export function IconBackButton() {
 
 export function IconCopy() {
   return <img alt="copy" className="icon" src={copy} />;
+}
+
+export function IconValid() {
+  return <img alt="valid" className="icon" src={valid} />;
+}
+
+export function IconInvalid() {
+  return <img alt="invalid" className="icon" src={invalid} />;
 }

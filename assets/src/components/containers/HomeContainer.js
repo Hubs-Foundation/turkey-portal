@@ -9,12 +9,12 @@ import { useCreateHubMutation } from "../services/hubs";
 import { selectAccount } from "../store/account";
 import { featureIsEnabled, CREATE_HUBS } from "../utils/feature-flags";
 import { HubBuilding } from "../display/HubBuilding";
-import { CREATING } from "../utils/hub-constants";
+import { STATUS_CREATING } from "../utils/hub-constants";
 
 function HubLoading({ isBuildingHub }) {
   return isBuildingHub ? (
     <>
-      <Hub name="Untitled Hub" status={CREATING} />
+      <Hub name="Untitled Hub" status={STATUS_CREATING} />
       <HubBuilding />
     </>
   ) : (
@@ -32,7 +32,7 @@ export function HomeContainer() {
 
   return (
     <div>
-      {isLoading && <HubLoading isBuildingHub={!account.hasHubs} />}
+      {isLoading ? <HubLoading isBuildingHub={!account.hasHubs || account.hasCreatingHubs} /> : ""}
       {isError && <span>Unable to load Hubs</span>}
       {isReady &&
         (!hasHubs ? <span>You don&apos;t have any hubs</span> : hubs.map((hub) => <Hub key={hub.hubId} {...hub} />))}

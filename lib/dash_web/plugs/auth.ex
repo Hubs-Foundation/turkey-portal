@@ -40,8 +40,6 @@ defmodule DashWeb.Plugs.Auth do
       "fxa_displayName" => fxa_display_name
     } = claims
 
-    # TODO check expiration?
-
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
     conn
@@ -54,11 +52,9 @@ defmodule DashWeb.Plugs.Auth do
   end
 
   # Not authorized or empty jwt
-  # TODO add redirect to get authenticated to auth server
   defp process_jwt(conn, %{is_valid: false, claims: _claims}) do
     conn
     |> send_resp(401, Jason.encode!(%{error: "unauthorized"}))
-    # TODO send redirect header to login page here
     |> halt()
   end
 

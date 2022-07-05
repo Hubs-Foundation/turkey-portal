@@ -1,38 +1,12 @@
-import { useEffect, useContext } from 'react';
 import store from 'store/store';
 import { Provider } from 'react-redux';
 import type { AppProps } from 'next/app';
-import { LoggedOutRoutsE } from 'types/Routes';
-import initStoreData from 'store/storeInit';
 import Head from 'next/head';
-import MainLayout from 'layouts/MainLayout/MainLayout';
-import LoginLayout from 'layouts/LoginLayout/LoginLayout';
+import LayoutWrapper from 'layouts/LayoutWrapper/LayoutWrapper';
 import '../styles/globals.scss';
-import ThemeProvider from 'contexts/ThemeProvider'
-
-
+import ThemeProvider from 'contexts/ThemeProvider';
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  // Check if a logged out route
-  const showLoggedOutUi = Component.name in LoggedOutRoutsE;
-  
-  const LoggedIn = (
-    <MainLayout>
-      <Component {...pageProps} />
-    </MainLayout>
-  );
-
-  const LoggedOut = (
-    <LoginLayout>
-      <Component {...pageProps} />
-    </LoginLayout>
-  );
-
-  useEffect(() => {
-    // If On a "logged out page" don't try to init store data
-    if (!showLoggedOutUi) initStoreData();
-  }, [showLoggedOutUi]);
-
   return (
     <Provider store={store}>
       <ThemeProvider>
@@ -56,7 +30,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
             href="/favicon-16x16.png"
           />
         </Head>
-        {showLoggedOutUi ? LoggedOut : LoggedIn}
+        <LayoutWrapper componentName={Component.name}>
+          <Component {...pageProps} />
+        </LayoutWrapper>
       </ThemeProvider>
     </Provider>
   );

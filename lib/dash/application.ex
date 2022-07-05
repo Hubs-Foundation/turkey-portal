@@ -14,6 +14,8 @@ defmodule Dash.Application do
       Dash.Repo,
       # Start the Telemetry supervisor
       DashWeb.Telemetry,
+      # Supervisor for async tasks
+      {Task.Supervisor, name: Dash.TaskSupervisor},
       # Start the PubSub system
       {Phoenix.PubSub, name: Dash.PubSub},
       # Start the Endpoint (http/https)

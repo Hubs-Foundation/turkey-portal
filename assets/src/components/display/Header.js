@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import "./Header.css";
+import { FXA_SERVER } from "../utils/app-config";
 import { IconLogOut, IconExternal } from "../common/icons";
 import logoBlack from "../../images/logo-black.svg";
 import { selectAccount } from "../store/account";
@@ -43,12 +44,7 @@ export function Header() {
                 <img alt="profile picture" src={account.profilePicture} />
                 <span className="account-email">{account.email}</span>
                 {/* TODO Pull domain from some configuration */}
-                <a
-                  className="account-manage"
-                  href="https://accounts.stage.mozaws.net/settings"
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a className="account-manage" href={`https://${FXA_SERVER}/settings`} target="_blank" rel="noreferrer">
                   Manage your Firefox Account
                   <IconExternal />
                 </a>

@@ -54,7 +54,10 @@ if config_env() == :prod do
   host = System.get_env("PHX_HOST") || "example.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
-  config :dash, Dash.AppConfig, host: host
+  config :dash, Dash.AppConfig,
+    host: host,
+    auth_server: System.get_env("AUTH_SERVER"),
+    fxa_server: System.get_env("FXA_SERVER")
 
   config :dash, DashWeb.Endpoint,
     url: [host: host, port: 443],
@@ -67,6 +70,14 @@ if config_env() == :prod do
       port: port
     ],
     secret_key_base: secret_key_base
+
+  # Public key for JWT auth
+  config :dash, DashWeb.Plugs.Auth,
+    auth_pub_key:
+      System.get_env("AUTH_PUBLIC_KEY") ||
+        raise("""
+        Environment variable AUTH_PUBLIC_KEY is missing. Used in JWT authentication.
+        """)
 
   # ## Using releases
   #

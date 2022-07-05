@@ -5,17 +5,17 @@ type ThemeProviderProps = {
 };
 
 export enum ThemeE {
-  light = 'light',
-  dark = 'dark',
+  LIGHT = 'light',
+  DARK = 'dark',
 }
 
 export const ThemeContext = createContext({
-  theme: ThemeE.light,
+  theme: ThemeE.LIGHT,
   handleThemeChange: (value: ThemeE) => {},
 });
 
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState<ThemeE>(ThemeE.light);
+  const [theme, setTheme] = useState<ThemeE>(ThemeE.LIGHT);
 
   const handleThemeChange = (value: ThemeE): void => {
     setTheme(value);

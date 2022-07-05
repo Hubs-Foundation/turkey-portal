@@ -10,7 +10,7 @@ defmodule Dash.Hub do
   schema "hubs" do
     field :ccu_limit, :integer
     field :name, :string
-    field :status, Ecto.Enum, values: [:creating, :updating, :ready]
+    field :status, Ecto.Enum, values: [:creating, :updating, :ready, :subdomain_error]
     field :storage_limit_mb, :integer
     field :subdomain, :string
     field :tier, Ecto.Enum, values: [:free, :mvp]
@@ -44,10 +44,10 @@ defmodule Dash.Hub do
     hub
     |> cast(attrs, [:name, :subdomain])
     |> validate_length(:name, min: 1, max: 24)
-    |> validate_length(:subdomain, min: 1, max: 63)
-    |> validate_format(:subdomain, ~r/^[a-z0-9]/i)
-    |> validate_format(:subdomain, ~r/^[a-z0-9-]+$/i)
-    |> validate_format(:subdomain, ~r/[a-z0-9]$/i)
+    |> validate_length(:subdomain, min: 3, max: 63)
+    |> validate_format(:subdomain, ~r/^[a-z0-9]/)
+    |> validate_format(:subdomain, ~r/^[a-z0-9-]+$/)
+    |> validate_format(:subdomain, ~r/[a-z0-9]$/)
     |> unique_constraint(:subdomain)
   end
 
@@ -66,9 +66,37 @@ defmodule Dash.Hub do
     Repo.exists?(from(h in Dash.Hub, where: h.account_id == ^account.account_id))
   end
 
+  # TODO EA remove
+  def has_creating_hubs(%Dash.Account{} = account) do
+    has_hubs(account) &&
+      Repo.exists?(
+        from(h in Dash.Hub, where: h.account_id == ^account.account_id and h.status == :creating)
+      )
+  end
+
   # Checks if account has at least one hub, if not, creates hub
-  def ensure_default_hub(%Dash.Account{} = account, email) do
+  # Will wait for hub to be ready before
+  def ensure_default_hub_is_ready(%Dash.Account{} = account, email) do
     if !has_hubs(account), do: create_default_hub(account, email)
+
+    # TODO EA make own hub controller endpoint for waiting_until_ready_state
+    if has_creating_hubs(account) do
+      hubs = hubs_for_account(account)
+
+      # TODO EA For MVP2 we expect 1 hub
+      hub = Enum.at(hubs, 0)
+
+      case Dash.RetClient.wait_until_healthy(hub) do
+        {:ok} ->
+          set_hub_to_ready(hub)
+          {:ok}
+
+        {:error, err} ->
+          {:error, err}
+      end
+    else
+      {:ok}
+    end
   end
 
   @hub_defaults %{
@@ -79,8 +107,6 @@ defmodule Dash.Hub do
   }
 
   def create_default_hub(%Dash.Account{} = account, fxa_email) do
-    # TODO These random strings are not very pleasant.
-    # Maybe use a friendlier name generator instead?
     subdomain = Dash.Utils.rand_string(10)
 
     new_hub_params =
@@ -97,14 +123,19 @@ defmodule Dash.Hub do
       |> Repo.insert!()
 
     case Dash.OrchClient.create_hub(fxa_email, new_hub) do
-      {:ok, _} ->
-        # TODO Wait for hub to be fully available, before setting status to :ready
-        new_hub = new_hub |> change(status: :ready) |> Dash.Repo.update!()
+      {:ok, %{status_code: 200}} ->
+        {:ok, new_hub}
+
+      {:ok, %{status_code: status_code} = resp} ->
+        Logger.warn(
+          "Creating default hub Orch request returned status code #{status_code} and response #{inspect(resp)}"
+        )
+
         {:ok, new_hub}
 
       {:error, err} ->
         Logger.error("Failed to create default hub #{inspect(err)}")
-        # TODO Should we delete the hub from the db or set status = :error enum?
+        new_hub |> change(status: :error) |> Dash.Repo.update!()
         {:error, err}
     end
   end
@@ -125,13 +156,25 @@ defmodule Dash.Hub do
     end
   end
 
+  def set_hub_to_ready(%Dash.Hub{} = hub) do
+    hub |> change(status: :ready) |> Dash.Repo.update!()
+  end
+
   def update_hub(hub_id, attrs, %Dash.Account{} = account) do
+    attrs =
+      if attrs["subdomain"] do
+        Map.merge(attrs, %{"subdomain" => attrs["subdomain"] |> String.downcase()})
+      else
+        attrs
+      end
+
     with %Dash.Hub{} = hub <- get_hub(hub_id, account),
          {:ok, updated_hub} <- form_changeset(hub, attrs) |> Dash.Repo.update() do
       if hub.subdomain != updated_hub.subdomain do
         update_subdomain(hub, updated_hub)
+        {:ok}
       else
-        {:ok, updated_hub}
+        {:ok}
       end
     else
       err ->
@@ -141,15 +184,44 @@ defmodule Dash.Hub do
   end
 
   defp update_subdomain(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do
-    case Dash.OrchClient.update_subdomain(updated_hub) do
-      {:ok, _} ->
-        {:ok, updated_hub}
+    # This async task runs in the background, asynchronously, under the TaskSupervisor.
+    # It needs to be able to handle success and failure scenarios in a self-contained manner.
+    Task.Supervisor.async(Dash.TaskSupervisor, fn ->
+      updated_hub = updated_hub |> Ecto.Changeset.change(status: :updating) |> Dash.Repo.update!()
 
-      {:error, err} ->
-        Logger.error("Failed to update subdomain. #{inspect(err)}")
-        # Revert the subdomain back to the previous one, since the orchestrator request failed.
-        updated_hub |> form_changeset(%{subdomain: previous_hub.subdomain}) |> Dash.Repo.update()
-        {:error, :subdomain_update_failed}
+      with {:ok, %{status_code: status_code}} when status_code < 400 <-
+             Dash.OrchClient.update_subdomain(updated_hub),
+           {:ok} <- Dash.RetClient.wait_until_healthy(updated_hub) do
+        set_hub_to_ready(updated_hub)
+      else
+        err ->
+          Logger.error(
+            "Failed to update subdomain. Reverting subdomain. Hub ID: #{updated_hub.hub_id}. Error: #{inspect(err)}"
+          )
+
+          try_revert_subdomain(previous_hub, updated_hub)
+      end
+    end)
+  end
+
+  defp try_revert_subdomain(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do
+    try do
+      # If the subdomain update failed, we assume that the hub instance will still be available
+      # at the previous subdomain, so we revert it and set it to ready.
+      updated_hub
+      |> form_changeset(%{subdomain: previous_hub.subdomain})
+      |> change(status: :ready)
+      |> Dash.Repo.update!()
+    rescue
+      err ->
+        Logger.error(
+          "Subdomain could not be reverted. Hub ID: #{updated_hub.hub_id} Error: #{inspect(err)}"
+        )
+
+        # Even the revert failed, possibly because the previous subdomain has now been taken by another user.
+        # TODO EA We should handle this better in the future by reserving the previous subdomain,
+        # while updating to a new subdomain, so that it cannot be taken during an update.
+        updated_hub |> change(status: :subdomain_error) |> Dash.Repo.update!()
     end
   end
 

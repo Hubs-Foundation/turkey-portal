@@ -1,5 +1,6 @@
 defmodule DashWeb.TestHelpers do
   import Phoenix.ConnTest
+  require Logger
 
   @test_email "email@fake.com"
   @default_token_claims %{
@@ -37,7 +38,7 @@ defmodule DashWeb.TestHelpers do
     conn |> put_req_cookie("_turkeyauthtoken", jwt_str)
   end
 
-  def create_test_account_and_hub() do
+  def create_test_account_and_hub(opts \\ []) do
     account = Dash.Account.find_or_create_account_for_fxa_uid("fake-uid")
 
     hub =
@@ -47,7 +48,7 @@ defmodule DashWeb.TestHelpers do
         ccu_limit: 20,
         storage_limit_mb: 100,
         tier: :mvp,
-        subdomain: "test-subdomain-#{Dash.Utils.rand_string(10)}",
+        subdomain: opts[:subdomain] || "test-subdomain-#{Dash.Utils.rand_string(10)}",
         status: :ready
       })
       |> Ecto.Changeset.put_assoc(:account, account)
@@ -65,13 +66,42 @@ defmodule DashWeb.TestHelpers do
     Application.put_env(:dash, DashWeb.Plugs.Auth, %{})
   end
 
-  def setup_mocks_for_hubs() do
+  def setup_http_mocks() do
     merge_module_config(:dash, Dash.Hub, http_client: Dash.HttpMock)
     merge_module_config(:dash, Dash.OrchClient, http_client: Dash.HttpMock)
   end
 
-  def exit_mocks_for_hubs() do
+  def exit_http_mocks() do
     merge_module_config(:dash, Dash.Hub, http_client: nil)
     merge_module_config(:dash, Dash.OrchClient, http_client: nil)
+  end
+
+  # Required mocks for GET reticulum requests
+  def stub_ret_get() do
+    Dash.HttpMock
+    |> Mox.stub(:get, fn url, _headers, _options ->
+      cond do
+        url =~ ~r/presence$/ ->
+          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{count: 3})}}
+
+        url =~ ~r/storage$/ ->
+          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{storage_mb: 10})}}
+
+        url =~ ~r/health$/ ->
+          {:ok, %HTTPoison.Response{status_code: 200}}
+
+        true ->
+          Logger.warn(
+            "Inside test, hit set up in stub_ret_get/0, but GET request URL did not match either condition, did you mean to do that?"
+          )
+      end
+    end)
+  end
+
+  def expect_orch_post() do
+    Dash.HttpMock
+    |> Mox.expect(:post, fn _url, _body, _headers, _opts ->
+      {:ok, %HTTPoison.Response{status_code: 200}}
+    end)
   end
 end

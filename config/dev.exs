@@ -53,7 +53,10 @@ config :dash, DashWeb.Endpoint,
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
-config :dash, Dash.AppConfig, host: "dashboard.cluster.turkey.local"
+config :dash, Dash.AppConfig,
+  host: "dashboard.cluster.turkey.local",
+  auth_server: "auth.turkey.local",
+  fxa_server: "fxa.turkey.local"
 
 config :dash, DashWeb.Plugs.Auth, auth_pub_key: auth_pub_key
 
@@ -73,6 +76,10 @@ config :dash, Dash.FeatureFlags,
   tier_selection: true,
   ccu_selection: true,
   storage_selection: true
+
+config :dash, Dash.RetClient,
+  timeout_ms: 300_000,
+  wait_ms: 5000
 
 config :cors_plug,
   origin: ["http://localhost:3000"]

@@ -7,6 +7,7 @@ export const accountSlice = createSlice({
     isLoggedIn: false,
     isForbidden: false,
     hasHubs: false,
+    hasCreatingHubs: false,
     profilePicture: "",
     displayName: "",
     email: "",
@@ -20,6 +21,7 @@ export const accountSlice = createSlice({
       state.displayName = action.payload.displayName;
       state.email = action.payload.email;
       state.isForbidden = action.payload.isForbidden;
+      state.hasCreatingHubs = action.payload.hasCreatingHubs;
     },
     logOut(state) {
       state.isLoggedIn = false;
@@ -28,6 +30,7 @@ export const accountSlice = createSlice({
       state.profilePicture = "";
       state.displayName = "";
       state.email = "";
+      state.hasCreatingHubs = false;
     },
   },
 });

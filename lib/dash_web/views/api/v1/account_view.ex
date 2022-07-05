@@ -6,6 +6,7 @@ defmodule DashWeb.Api.V1.AccountView do
   def render("index.json", %{
         fxa_account_info: %Dash.FxaAccountInfo{} = fxa_account_info,
         has_hubs: has_hubs,
+        has_creating_hubs: has_creating_hubs,
         is_forbidden: is_forbidden
       }) do
     %{
@@ -13,6 +14,7 @@ defmodule DashWeb.Api.V1.AccountView do
       profilePic: fxa_account_info.fxa_pic,
       email: fxa_account_info.fxa_email,
       hasHubs: has_hubs,
+      hasCreatingHubs: has_creating_hubs,
       isForbidden: is_forbidden
     }
   end

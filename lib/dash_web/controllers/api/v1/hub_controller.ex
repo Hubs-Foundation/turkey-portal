@@ -17,11 +17,14 @@ defmodule DashWeb.Api.V1.HubController do
   # All hubs for 1 account
   def index(conn, %{}, account) do
     # Check that this account has at least one hub
-    Hub.ensure_default_hub(account, conn.assigns[:fxa_account_info].fxa_email)
+    case Hub.ensure_default_hub_is_ready(account, conn.assigns[:fxa_account_info].fxa_email) do
+      {:ok} ->
+        hubs = Hub.hubs_with_usage_stats_for_account(account)
+        conn |> render("index.json", hubs: hubs)
 
-    hubs = Hub.hubs_with_usage_stats_for_account(account)
-
-    conn |> render("index.json", hubs: hubs)
+      {:error, err} ->
+        conn |> send_resp(500, Jason.encode!(%{error: err})) |> halt()
+    end
   end
 
   # Create hub with defaults
@@ -37,11 +40,8 @@ defmodule DashWeb.Api.V1.HubController do
   def update(conn, %{"id" => hub_id} = attrs, account) do
     # this verifies that the account has a hub with this id
     case Hub.update_hub(hub_id, json_camel_to_snake(attrs), account) do
-      {:ok, _} ->
+      {:ok} ->
         conn |> send_resp(200, "")
-
-      {:error, :subdomain_update_failed = err} ->
-        conn |> send_resp(500, Jason.encode!(%{error: err})) |> halt()
 
       {:error, err} ->
         conn |> send_resp(400, Jason.encode!(%{error: err})) |> halt()
@@ -57,8 +57,7 @@ defmodule DashWeb.Api.V1.HubController do
   end
 
   def delete(conn, %{"id" => hub_id}, account) do
-    # Todo call to orchestrator to delete the hub
-    # Todo protect this endpoint for development purposes only
+    # TODO EA call to orchestrator to delete the hub
     deleted_hub = Hub.delete_hub(hub_id, account)
 
     conn |> render("delete.json", deleted_hub: deleted_hub)
