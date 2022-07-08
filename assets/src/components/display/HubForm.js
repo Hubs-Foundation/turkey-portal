@@ -58,42 +58,47 @@ HubNickname.propTypes = {
 function HubWebAddress({ hub, setHub, onValidityUpdate }) {
   const [validity, setValidity] = useState({ isValidating: false, isValid: true, message: "" });
 
-  function setAndEmitValidity(newValidity) {
+  function updateAndEmitValidity(validityUpdate) {
+    const newValidity = { ...validity, ...validityUpdate };
     setValidity(newValidity);
     onValidityUpdate(newValidity);
   }
 
   const validate = useMemo(() => {
-    const debounceWaitMs = 100;
-    return debounce(async function (subdomain) {
-      let clientValidationMessage = "";
-      if (subdomain.length < 3) {
-        clientValidationMessage = "Must be at least 3 characters";
-      } else if (subdomain.startsWith("-") || subdomain.endsWith("-")) {
-        clientValidationMessage = "Cannot start or end with a hyphen (-)";
-      } else if (/[^a-zA-Z0-9-]+/.test(subdomain)) {
-        clientValidationMessage = "Only supports letters (a to z), digits (0 to 9), and hyphens (-)";
-      }
-
-      if (clientValidationMessage === "") {
-        const result = await fetch("/api/v1/hubs/validate_subdomain", {
-          method: "post",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({
-            excludedHubId: hub.hubId,
-            subdomain,
-          }),
-        }).then((r) => r.json());
-
-        if (result.success) {
-          setAndEmitValidity({ isValidating: false, isValid: true, message: "" });
-        } else {
-          setAndEmitValidity({ isValidating: false, isValid: false, message: "Web address unavailable" });
+    const debounceWaitMs = 200;
+    return debounce(
+      async function (subdomain) {
+        let clientValidationMessage = "";
+        if (subdomain.length < 3) {
+          clientValidationMessage = "Must be at least 3 characters";
+        } else if (subdomain.startsWith("-") || subdomain.endsWith("-")) {
+          clientValidationMessage = "Cannot start or end with a hyphen (-)";
+        } else if (/[^a-zA-Z0-9-]+/.test(subdomain)) {
+          clientValidationMessage = "Only supports letters (a to z), digits (0 to 9), and hyphens (-)";
         }
-      } else {
-        setAndEmitValidity({ isValidating: false, isValid: false, message: clientValidationMessage });
-      }
-    }, debounceWaitMs);
+
+        if (clientValidationMessage === "") {
+          const result = await fetch("/api/v1/hubs/validate_subdomain", {
+            method: "post",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+              excludedHubId: hub.hubId,
+              subdomain,
+            }),
+          }).then((r) => r.json());
+
+          if (result.success) {
+            updateAndEmitValidity({ isValidating: false, isValid: true, message: "" });
+          } else {
+            updateAndEmitValidity({ isValidating: false, isValid: false, message: "Web address unavailable" });
+          }
+        } else {
+          updateAndEmitValidity({ isValidating: false, isValid: false, message: clientValidationMessage });
+        }
+      },
+      debounceWaitMs,
+      { leading: true, trailing: true }
+    );
   }, [hub.hubId]);
 
   return (
@@ -116,7 +121,7 @@ function HubWebAddress({ hub, setHub, onValidityUpdate }) {
           onChange={(e) => {
             setHub({ ...hub, subdomain: e.target.value });
 
-            setAndEmitValidity({ isValidating: true, isValid: true, message: "" });
+            updateAndEmitValidity({ isValidating: true });
             validate(e.target.value);
           }}
         />
