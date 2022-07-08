@@ -76,6 +76,16 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       %{"subdomain" => "new-subdomain"} = get_hub(conn, hub)
     end
 
+    test "should not submit subdomain orchestrator if subdomain hasn't changed", %{conn: conn} do
+      expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 0)
+      expect_orch_patch(expected_calls: 0)
+
+      %{hub: hub} = create_test_account_and_hub(subdomain: "test-subdomain")
+
+      conn |> patch_subdomain(hub, "test-subdomain", expected_status: :ok)
+      %{"subdomain" => "test-subdomain"} = get_hub(conn, hub)
+    end
+
     test "should error on duplicate subdomains", %{conn: conn} do
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       expect_orch_patch()
@@ -292,8 +302,10 @@ defmodule DashWeb.Api.V1.HubControllerTest do
             after: (1000 -> flunk("orch patch not received"))
   end
 
-  defp expect_orch_patch(opts \\ [response: :ok, status_code: :ok]) do
-    Mox.expect(Dash.HttpMock, :patch, 1, fn url, _body, _headers, _opts ->
+  defp expect_orch_patch(opts \\ [expected_calls: 1, response: :ok, status_code: :ok]) do
+    expected_calls = Keyword.get(opts, :expected_calls, 1)
+
+    Mox.expect(Dash.HttpMock, :patch, expected_calls, fn url, _body, _headers, _opts ->
       cond do
         url =~ ~r/\/hc_instance$/ ->
           {opts[:response], %HTTPoison.Response{status_code: code(opts[:status_code])}}
