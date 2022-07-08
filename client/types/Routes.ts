@@ -1,3 +1,3 @@
-export enum LoggedOutRoutsE {
+export enum LoggedOutRoutesE {
   Login = 'Login'
 }

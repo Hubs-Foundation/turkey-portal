@@ -3,10 +3,9 @@
 @use '../tools/media-queries.scss' as *;
 
 @mixin button-base() {
-  @include primary-font(500);
+  @include primary-font(600);
   @include font-size(14);
   background: none;
-  outline: none;
   cursor: pointer;
   vertical-align: middle;
   box-sizing: border-box;
@@ -14,8 +13,7 @@
   text-align: center;
   position: relative;
   letter-spacing: 0.44px;
-  line-height: 21px;
-  min-width: 100px;
+  line-height: 24px;
 
   @include mobile-down {
     min-width: initial;

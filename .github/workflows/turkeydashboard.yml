@@ -9,7 +9,8 @@ jobs:
   turkeyGitops:
     uses: mozilla/hubs-ops/.github/workflows/turkeyGitops.yml@master
     with:
-      registry: mozillareality
+      registry: mozilla
       dockerfile: Dockerfile
+      DOCKER_HUB_USR: mzcshubs
     secrets:
-      DOCKER_HUB_PWD: ${{ secrets.DOCKER_HUB_PWD }}
+      DOCKER_HUB_PWD: ${{ secrets.DOCKER_HUB_PWD_MOZ }}
