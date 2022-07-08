@@ -183,6 +183,16 @@ defmodule Dash.Hub do
     end
   end
 
+  def validate_subdomain(excluded_hub_id, subdomain) do
+    if Repo.exists?(
+         from(h in Dash.Hub, where: h.hub_id != ^excluded_hub_id and h.subdomain == ^subdomain)
+       ) do
+      {:error, :subdomain_taken}
+    else
+      {:ok}
+    end
+  end
+
   defp update_subdomain(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do
     # This async task runs in the background, asynchronously, under the TaskSupervisor.
     # It needs to be able to handle success and failure scenarios in a self-contained manner.
