@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import debounce from "lodash.debounce";
 
@@ -63,9 +63,9 @@ function HubWebAddress({ hub, setHub, onValidityUpdate }) {
     onValidityUpdate(newValidity);
   }
 
-  const debounceWaitMs = 100;
-  const validate = useCallback(
-    debounce(async function (subdomain) {
+  const validate = useMemo(() => {
+    const debounceWaitMs = 100;
+    return debounce(async function (subdomain) {
       let clientValidationMessage = "";
       if (subdomain.length < 3) {
         clientValidationMessage = "Must be at least 3 characters";
@@ -93,9 +93,8 @@ function HubWebAddress({ hub, setHub, onValidityUpdate }) {
       } else {
         setAndEmitValidity({ isValidating: false, isValid: false, message: clientValidationMessage });
       }
-    }, debounceWaitMs),
-    [hub.hubId]
-  );
+    }, debounceWaitMs);
+  }, [hub.hubId]);
 
   return (
     <div className="web-address">
