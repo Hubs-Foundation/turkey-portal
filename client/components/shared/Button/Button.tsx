@@ -1,74 +1,77 @@
-import React, { MouseEventHandler, useEffect, useState } from 'react'
-import { ButtonT, ButtonCategoriesE } from 'types/Form'
-import { IconT } from 'types/General'
-import styles from './Button.module.scss'
-import Icon from '@Shared/Icon/Icon'
+import React, { MouseEventHandler, useEffect, useState } from 'react';
+import { ButtonT, ButtonCategoriesE, ButtonSizesE } from 'types/Form';
+import { IconT } from 'types/General';
+import styles from './Button.module.scss';
+import Icon from '@Shared/Icon/Icon';
 
 export type ButtonPropsT = {
-  active?: boolean,
-  id?: string,
-  text: string,
-  type?: ButtonT,
-  category?: ButtonCategoriesE,
-  disabled?: boolean,
-  icon?: IconT
-  onClick?: MouseEventHandler<HTMLButtonElement>,
-  classProp?: string
-}
+  active?: boolean;
+  id?: string;
+  text?: string;
+  type?: ButtonT;
+  category?: ButtonCategoriesE;
+  size?: ButtonSizesE;
+  disabled?: boolean;
+  icon?: IconT;
+  iconPlacedRight?: boolean;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  classProp?: string;
+};
 
 const Button = ({
   active,
   id,
   text,
   type = 'button',
-  category = ButtonCategoriesE.primary,
+  category = ButtonCategoriesE.PRIMARY_SOLID,
+  size = ButtonSizesE.MEDIUM,
   disabled,
   icon,
   onClick,
-  classProp = ''
+  iconPlacedRight = false,
+  classProp = '',
 }: ButtonPropsT) => {
-
-  const [categoryClass, setCategoryClass] = useState(styles.button_primary)
-
-  useEffect(() => {
-    setButtonClass(category)
-  }, [category])
-
-  // Must pull generated SCSS class name
-  const setButtonClass = (category: string) => {
-    switch (category) {
-      case ButtonCategoriesE.primary:
-        setCategoryClass(styles.button_primary)
-        break
-      case ButtonCategoriesE.secondary:
-        setCategoryClass(styles.button_secondary)
-        break
-      case ButtonCategoriesE.outline:
-        setCategoryClass(styles.button_outline)
-        break
-    }
-  }
-
   return (
     <button
-      className={`${categoryClass} ${classProp} ${active ? styles.button_primary_active : ''}`}
+      className={`
+        ${styles['button_' + category]} 
+        ${styles[size]} 
+        ${!text && styles[size + '_round']} 
+        ${classProp} 
+        ${active && styles['button_' + category + '_active']}
+      `}
       id={id}
       aria-label={text}
       type={type}
       disabled={disabled}
-      onClick={onClick}>
-      {
-        icon ? (
-          <Icon
-            name={icon}
-            color="currentColor"
-            size={14}
-          />
-        ) : ''
-      }
+      onClick={onClick}
+    >
+      {/* Left Icon  */}
+      {icon && !iconPlacedRight ? (
+        <Icon
+          name={icon}
+          color="currentColor"
+          size={24}
+          classProp={text ? 'margin-right-10' : ''}
+        />
+      ) : (
+        ''
+      )}
+      {/* Button Text  */}
       {text}
-    </button >
-  )
-}
+      {/* Right Icon  */}
+      {icon && iconPlacedRight ? (
+        <Icon
+          name={icon}
+          color="currentColor"
+          size={24}
+          classProp={text ? 'margin-left-10' : ''}
+        />
+      ) : (
+        ''
+      )}
+    </button>
+  );
+};
 
-export default Button
+export default Button;

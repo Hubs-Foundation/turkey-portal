@@ -1,19 +1,21 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+const HUBS_TAG = "Hubs";
+
 export const hubsApi = createApi({
   reducerPath: "hubsApi",
   baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/" }),
-  tagTypes: ["Hubs"],
+  tagTypes: [HUBS_TAG],
 
   endpoints: (builder) => ({
     getHubs: builder.query({
       query: () => `hubs`,
-      providesTags: ["Hubs"],
+      providesTags: [HUBS_TAG],
     }),
 
     getHub: builder.query({
       query: ({ hubId }) => `hubs/${hubId}`,
-      providesTags: ["Hubs"],
+      providesTags: [HUBS_TAG],
     }),
 
     updateHub: builder.mutation({
@@ -22,7 +24,7 @@ export const hubsApi = createApi({
         method: "PATCH",
         body: hub,
       }),
-      invalidatesTags: ["Hubs"],
+      invalidatesTags: [HUBS_TAG],
     }),
 
     createHub: builder.mutation({

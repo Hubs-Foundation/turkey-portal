@@ -76,7 +76,7 @@ defmodule DashWeb.Api.V1.HubController do
         conn |> send_resp(200, Jason.encode!(%{success: true}))
 
       {:error, err} ->
-        conn |> send_resp(200, Jason.encode!(%{error: err}))
+        conn |> send_resp(200, Jason.encode!(%{success: false, error: err}))
     end
   end
 end

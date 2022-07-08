@@ -54,7 +54,7 @@ const Form = ({
           cancelClick && (
             <Button
               onClick={handleCancelClick}
-              category={ButtonCategoriesE.outline}
+              category={ButtonCategoriesE.PRIMARY_OUTLINE}
               text="Back"
             />
           )
@@ -62,7 +62,7 @@ const Form = ({
 
         <Button
           onClick={() => submit(form)}
-          category={ButtonCategoriesE.primary}
+          category={ButtonCategoriesE.PRIMARY_SOLID}
           text="Submit"
         />
       </div>
