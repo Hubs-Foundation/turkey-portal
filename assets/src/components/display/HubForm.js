@@ -11,8 +11,8 @@ import { formatMegabytes } from "../utils/formatNumber";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function HubNickname({ hub, setHub, onValidationUpdate }) {
-  const [validationMessage, setValidationMessage] = useState("");
+function HubNickname({ hub, setHub, onValidityUpdate }) {
+  const [validity, setValidity] = useState({ isValidating: false, isValid: true, message: "" });
 
   function validate(name) {
     const trimmedName = name.trim();
@@ -24,22 +24,23 @@ function HubNickname({ hub, setHub, onValidationUpdate }) {
       newValidationMessage = "Hub nickname too long (24 characters max)";
     }
 
-    setValidationMessage(newValidationMessage);
-    onValidationUpdate(newValidationMessage);
+    const newValidity = { isValidating: false, isValid: newValidationMessage === "", message: newValidationMessage };
+    setValidity(newValidity);
+    onValidityUpdate(newValidity);
   }
 
   return (
     <div>
       <span className="form-section-title">Hub Nickname</span>
-      {validationMessage ? (
-        <span className="form-section-subtitle invalid">{validationMessage}</span>
-      ) : (
+      {validity.isValid ? (
         <span className="form-section-subtitle">For use within the dashboard area only</span>
+      ) : (
+        <span className="form-section-subtitle invalid">{validity.message}</span>
       )}
       <input
         type="text"
         value={hub.name}
-        className={validationMessage === "" ? "" : "invalid"}
+        className={validity.isValid ? "" : "invalid"}
         onChange={(e) => {
           validate(e.target.value);
           setHub({ ...hub, name: e.target.value });
@@ -51,16 +52,15 @@ function HubNickname({ hub, setHub, onValidationUpdate }) {
 HubNickname.propTypes = {
   hub: PropTypes.object,
   setHub: PropTypes.func,
-  onValidationUpdate: PropTypes.func,
+  onValidityUpdate: PropTypes.func,
 };
 
-function HubWebAddress({ hub, setHub, onValidationUpdate }) {
-  const [validationMessage, setValidationMessage] = useState("");
-  const [validating, setValidating] = useState(false);
+function HubWebAddress({ hub, setHub, onValidityUpdate }) {
+  const [validity, setValidity] = useState({ isValidating: false, isValid: true, message: "" });
 
-  function setAndEmitValidation(message) {
-    setValidationMessage(message);
-    onValidationUpdate(message);
+  function setAndEmitValidity(newValidity) {
+    setValidity(newValidity);
+    onValidityUpdate(newValidity);
   }
 
   const debounceWaitMs = 100;
@@ -86,15 +86,13 @@ function HubWebAddress({ hub, setHub, onValidationUpdate }) {
         }).then((r) => r.json());
 
         if (result.success) {
-          setAndEmitValidation("");
+          setAndEmitValidity({ isValidating: false, isValid: true, message: "" });
         } else {
-          setAndEmitValidation("Web address unavailable");
+          setAndEmitValidity({ isValidating: false, isValid: false, message: "Web address unavailable" });
         }
       } else {
-        setAndEmitValidation(clientValidationMessage);
+        setAndEmitValidity({ isValidating: false, isValid: false, message: clientValidationMessage });
       }
-
-      setValidating(false);
     }, debounceWaitMs),
     [hub.hubId]
   );
@@ -103,29 +101,27 @@ function HubWebAddress({ hub, setHub, onValidationUpdate }) {
     <div className="web-address">
       <div className="web-address-header">
         <span className="form-section-title">Web Address (URL)</span>
-        {validationMessage ? (
-          <span className="form-section-subtitle invalid">{validationMessage}</span>
-        ) : (
+        {validity.isValid ? (
           <span className="form-section-subtitle">
             Supports letters (a to z), digits (0 to 9), and hyphens&nbsp;(-)
           </span>
+        ) : (
+          <span className="form-section-subtitle invalid">{validity.message}</span>
         )}
       </div>
       <div className="web-address-input">
         <input
           type="text"
-          className={validationMessage === "" ? "" : "invalid"}
+          className={validity.isValid ? "" : "invalid"}
           value={hub.subdomain}
           onChange={(e) => {
             setHub({ ...hub, subdomain: e.target.value });
 
-            // Emit a message so that the form cannot be submitted during validation.
-            onValidationUpdate("validating");
-            setValidating(true);
+            setAndEmitValidity({ isValidating: true, isValid: true, message: "" });
             validate(e.target.value);
           }}
         />
-        {validating ? <Spinner isInline={true} /> : validationMessage ? <IconInvalid /> : <IconValid />}
+        {validity.isValidating ? <Spinner isInline={true} /> : validity.isValid ? <IconValid /> : <IconInvalid />}
         <span className="domain">
           <span className="subdomain">{hub.subdomain.toLowerCase()}</span>.{CLUSTER_DOMAIN}
         </span>
@@ -136,11 +132,11 @@ function HubWebAddress({ hub, setHub, onValidationUpdate }) {
 HubWebAddress.propTypes = {
   hub: PropTypes.object,
   setHub: PropTypes.func,
-  onValidationUpdate: PropTypes.func,
+  onValidityUpdate: PropTypes.func,
 };
 
 export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
-  const [inputValidation, setInputValidation] = useState({});
+  const [inputValidities, setInputValidities] = useState({});
 
   const tierChoices = [
     { tier: "free", disabled: true, ccuLimit: 5, storageLimitMb: 250 },
@@ -157,8 +153,8 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
     theme: "colored",
   };
 
-  const updateInputValidation = (updatedValidation) => {
-    setInputValidation((inputValidation) => ({ ...inputValidation, ...updatedValidation }));
+  const updateInputValidation = (updatedValidity) => {
+    setInputValidities((currentValidities) => ({ ...currentValidities, ...updatedValidity }));
   };
 
   const onFormSubmit = (e) => {
@@ -171,8 +167,10 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
     });
   };
 
-  const allInputsValid = Object.values(inputValidation).every((message) => message === "");
-  const submitEnabled = !isSubmitting && allInputsValid;
+  const inputValidityValues = Object.values(inputValidities);
+  const everyInputIsValid = inputValidityValues.every((inputValidity) => inputValidity.isValid);
+  const noInputsAreValidating = inputValidityValues.every((inputValidity) => !inputValidity.isValidating);
+  const submitEnabled = !isSubmitting && noInputsAreValidating && everyInputIsValid;
 
   return (
     <div className="hub-form-container">
@@ -180,7 +178,7 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
         <HubNickname
           hub={hub}
           setHub={setHub}
-          onValidationUpdate={(message) => updateInputValidation({ nickname: message })}
+          onValidityUpdate={(validity) => updateInputValidation({ nickname: validity })}
         />
 
         <div>
@@ -218,7 +216,7 @@ export function HubForm({ hub, setHub, isSubmitting, onSubmit }) {
         <HubWebAddress
           hub={hub}
           setHub={setHub}
-          onValidationUpdate={(message) => updateInputValidation({ subdomain: message })}
+          onValidityUpdate={(validity) => updateInputValidation({ subdomain: validity })}
         />
 
         <hr />
