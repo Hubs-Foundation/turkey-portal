@@ -1,27 +1,23 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 
 import { useGetHubsQuery, useGetHubQuery, useUpdateHubMutation } from "../services/hubs";
-import { hubEntitySelectors, selectIsInitialized, setHubEntity, setHubEntities } from "../store/hubs";
+import { hubEntitySelectors, setHubEntity, setHubEntities } from "../store/hubs";
 import { selectCurrentHub, setCurrentHub } from "../store/currentHub";
+import { useEffect } from "react";
 
 export function useHubs() {
   const dispatch = useDispatch();
   const hubs = useSelector((state) => hubEntitySelectors.selectAll(state));
-  const isInitialized = useSelector(selectIsInitialized);
-  const { data, isLoading, isError, isSuccess } = useGetHubsQuery({}, { skip: isInitialized });
+  const { data, isLoading, isError, isSuccess, refetch } = useGetHubsQuery({});
 
-  const shouldUpdateHubEntities = !isInitialized && data;
   useEffect(() => {
-    if (shouldUpdateHubEntities) {
-      dispatch(setHubEntities(data));
-    }
-  }, [shouldUpdateHubEntities]);
+    if (data) dispatch(setHubEntities(data));
+  }, [data]);
 
   const hasHubs = !!hubs.length;
-  const isReady = isSuccess || isInitialized;
+  const isReady = isSuccess;
 
-  return { hubs, hasHubs, isLoading, isError, isReady };
+  return { hubs, hasHubs, isLoading, isError, isReady, refetchHubs: refetch };
 }
 
 export function useHub(hubId) {
@@ -31,7 +27,9 @@ export function useHub(hubId) {
   const hasHubEntity = !!hubEntity;
   const { data, isLoading, isError, isSuccess } = useGetHubQuery({ hubId }, { skip: hasHubEntity });
 
-  if (!hasHubEntity && data) dispatch(setHubEntity(data));
+  useEffect(() => {
+    if (!hasHubEntity && data) dispatch(setHubEntity(data));
+  }, [hasHubEntity, data]);
 
   const currentHub = useSelector(selectCurrentHub);
   if (hasHubEntity && !currentHub) dispatch(setCurrentHub(hubEntity));
@@ -40,7 +38,10 @@ export function useHub(hubId) {
 
   const updateHub = (hub) => {
     return submitHub(hub).then((resp) => {
-      if (!resp.error) dispatch(setHubEntity(hub));
+      if (!resp.error) {
+        const updatedHub = resp.data;
+        dispatch(setHubEntity(updatedHub));
+      }
       return resp;
     });
   };

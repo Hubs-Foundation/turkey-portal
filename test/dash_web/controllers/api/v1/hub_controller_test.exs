@@ -157,7 +157,9 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
       %{hub: hub} = create_test_account_and_hub()
 
-      conn |> patch_subdomain(hub, "new-subdomain", expected_status: :ok)
+      %{"status" => "updating"} =
+        conn |> patch_subdomain(hub, "new-subdomain", expected_status: :ok)
+
       stub_pid = wait_for_orch_patch()
 
       assert %{"status" => "updating"} = get_hub(conn, hub)
@@ -180,6 +182,24 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
       send(stub_pid, {:continue})
       retry_and_assert_hub_status(conn, hub, "subdomain_error")
+    end
+
+    test "should not allow updates while hub is already updating", %{conn: conn} do
+      expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
+      stub_orch_patch_with_pausing(self())
+
+      %{hub: hub} = create_test_account_and_hub(subdomain: "test-subdomain")
+
+      conn |> patch_subdomain(hub, "new-subdomain", expected_status: :ok)
+      stub_pid = wait_for_orch_patch()
+
+      assert %{"status" => "updating"} = get_hub(conn, hub)
+
+      %{"error" => "update_hub_failed"} =
+        conn |> patch_subdomain(hub, "another-subdomain", expected_status: :bad_request)
+
+      send(stub_pid, {:continue})
+      assert %{"subdomain" => "new-subdomain"} = get_hub(conn, hub)
     end
   end
 
@@ -332,7 +352,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     |> put_test_token()
     |> put_req_header("content-type", "application/json")
     |> patch("/api/v1/hubs/#{hub.hub_id}", Jason.encode!(body))
-    |> response(expected_status)
+    |> json_response(expected_status)
   end
 
   defp patch_subdomain(conn, hub, subdomain, expected_status: expected_status) do
