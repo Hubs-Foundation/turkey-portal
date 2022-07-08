@@ -5,6 +5,37 @@ defmodule Dash.Hub do
   require Logger
   alias Dash.{Repo, RetClient}
 
+  @whole_reserved_subdomains [
+    "dashboard",
+    "dash",
+    "admin",
+    "hubs",
+    "email",
+    "mail",
+    "auth",
+    "dev",
+    "api"
+  ]
+
+  @partial_reserved_subdomains [
+    "mozilla",
+    "mozi11a",
+    "mozi1la",
+    "mozil1a",
+    "m0zilla",
+    "m0zi11a",
+    "m0zi1la",
+    "m0zil1a"
+  ]
+  @denied_subdomains_pattern (@partial_reserved_subdomains ++
+                                Dash.SubdomainDenyList.naughty_words())
+                             |> Enum.map(&Regex.escape/1)
+                             |> Enum.join("|")
+  @denied_subdomains_regex Regex.compile!(
+                             "(?:#{@denied_subdomains_pattern})",
+                             "iu"
+                           )
+
   @primary_key {:hub_id, :id, autogenerate: true}
 
   schema "hubs" do
@@ -44,11 +75,24 @@ defmodule Dash.Hub do
     hub
     |> cast(attrs, [:name, :subdomain])
     |> validate_length(:name, min: 1, max: 24)
+    |> validate_required(:subdomain)
     |> validate_length(:subdomain, min: 3, max: 63)
     |> validate_format(:subdomain, ~r/^[a-z0-9]/)
     |> validate_format(:subdomain, ~r/^[a-z0-9-]+$/)
     |> validate_format(:subdomain, ~r/[a-z0-9]$/)
+    |> validate_change(
+      :subdomain,
+      &deny_reserved_and_naughty_subdomain/2
+    )
     |> unique_constraint(:subdomain)
+  end
+
+  defp deny_reserved_and_naughty_subdomain(:subdomain, subdomain) do
+    if is_denied_subdomain(subdomain) do
+      [subdomain: "denied"]
+    else
+      []
+    end
   end
 
   defp hubs_for_account(%Dash.Account{} = account) do
@@ -163,7 +207,7 @@ defmodule Dash.Hub do
   def update_hub(hub_id, attrs, %Dash.Account{} = account) do
     attrs =
       if attrs["subdomain"] do
-        Map.merge(attrs, %{"subdomain" => attrs["subdomain"] |> String.downcase()})
+        Map.put(attrs, "subdomain", attrs["subdomain"] |> String.downcase())
       else
         attrs
       end
@@ -188,13 +232,31 @@ defmodule Dash.Hub do
   end
 
   def validate_subdomain(excluded_hub_id, subdomain) do
-    if Repo.exists?(
-         from(h in Dash.Hub, where: h.hub_id != ^excluded_hub_id and h.subdomain == ^subdomain)
-       ) do
-      {:error, :subdomain_taken}
-    else
-      {:ok}
+    downcased_subdomain = subdomain |> String.downcase()
+
+    cond do
+      is_denied_subdomain(downcased_subdomain) ->
+        {:error, :subdomain_denied}
+
+      subdomain_exists(excluded_hub_id, downcased_subdomain) ->
+        {:error, :subdomain_taken}
+
+      true ->
+        {:ok}
     end
+  end
+
+  defp is_denied_subdomain(subdomain) do
+    Enum.member?(@whole_reserved_subdomains, subdomain) or
+      Regex.match?(@denied_subdomains_regex, subdomain)
+  end
+
+  defp subdomain_exists(excluded_hub_id, subdomain) do
+    Repo.exists?(
+      from(h in Dash.Hub,
+        where: h.hub_id != ^excluded_hub_id and h.subdomain == ^subdomain
+      )
+    )
   end
 
   defp start_subdomain_update(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do

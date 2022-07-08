@@ -6,11 +6,12 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   import Plug.Conn.Status, only: [code: 1]
   require Logger
 
-  setup_all context do
+  setup_all do
     setup_http_mocks()
     on_exit(fn -> exit_http_mocks() end)
-    verify_on_exit!(context)
   end
+
+  setup [:verify_on_exit!]
 
   describe "Hub API" do
     test "should fetch and return usage stats for hubs", %{conn: conn} do
@@ -52,8 +53,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   end
 
   describe "Subdomain updates" do
-    setup [:verify_on_exit!]
-
     test "subdomain should always be lower case", %{conn: conn} do
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       expect_orch_patch()
@@ -98,30 +97,50 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       conn |> patch_subdomain(hub_two, "new-subdomain", expected_status: :bad_request)
     end
 
+    test "should allow valid subdomains", %{conn: conn} do
+      stub_ret_health_check()
+      stub_orch_patch()
+
+      %{hub: hub} = create_test_account_and_hub()
+
+      # These should not be caught by our deny list
+      valid_subdomains = [
+        "devoid",
+        "authors",
+        "chainmail"
+      ]
+
+      for valid_subdomain <- valid_subdomains do
+        conn |> patch_subdomain(hub, valid_subdomain, expected_status: :ok)
+        %{"subdomain" => patched_subdomain} = get_hub(conn, hub)
+        assert patched_subdomain == valid_subdomain
+      end
+    end
+
     test "should error on invalid subdomains", %{conn: conn} do
       %{hub: hub} = create_test_account_and_hub()
       assert hub.subdomain =~ "test-subdomain"
 
-      short_subdomain = "aa"
-      conn |> patch_subdomain(hub, short_subdomain, expected_status: :bad_request)
+      invalid_subdomains = %{
+        nil_subdomain: nil,
+        whitespace_subdomain: " ",
+        empty_subdomain: "",
+        short_subdomain: "aa",
+        long_subdomain: String.duplicate("a", 64),
+        subdomain_with_starting_hyphen: "-test-subdomain",
+        subdomain_with_ending_hyphen: "test-subdomain-",
+        subdomain_with_underscore: "test_subdomain",
+        subdomain_with_spaces: "test subdomain",
+        subdomain_with_invalid_chars: "`~!@#$%^&*()+=;:'\"\\|[{]},<.>/?",
+        subdomain_with_unicode: "◝(ᵔᵕᵔ)◜",
+        reserved_subdomain: "admin",
+        naughty_subdomain: "poop",
+        naughtier_subdomain: "poopface"
+      }
 
-      long_subdomain = String.duplicate("a", 64)
-      conn |> patch_subdomain(hub, long_subdomain, expected_status: :bad_request)
-
-      subdomain_with_starting_hyphen = "-test-subdomain"
-      conn |> patch_subdomain(hub, subdomain_with_starting_hyphen, expected_status: :bad_request)
-
-      subdomain_with_ending_hyphen = "test-subdomain-"
-      conn |> patch_subdomain(hub, subdomain_with_ending_hyphen, expected_status: :bad_request)
-
-      subdomain_with_underscore = "test_subdomain"
-      conn |> patch_subdomain(hub, subdomain_with_underscore, expected_status: :bad_request)
-
-      subdomain_with_invalid_chars = "`~!@#$%^&*()+=;:'\"\\|[{]},<.>/?"
-      conn |> patch_subdomain(hub, subdomain_with_invalid_chars, expected_status: :bad_request)
-
-      subdomain_with_unicode = "◝(ᵔᵕᵔ)◜"
-      conn |> patch_subdomain(hub, subdomain_with_unicode, expected_status: :bad_request)
+      for {_key, invalid_subdomain} <- invalid_subdomains do
+        conn |> patch_subdomain(hub, invalid_subdomain, expected_status: :bad_request)
+      end
 
       %{"subdomain" => final_subdomain} = get_hub(conn, hub)
       assert final_subdomain =~ "test-subdomain"
@@ -225,6 +244,16 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       %{"success" => true} =
         conn |> post_validate_subdomain(current_hub.hub_id, "test-subdomain-one")
     end
+
+    test "returns an error for reserved and naughty subdomains", %{conn: conn} do
+      %{hub: current_hub} = create_test_account_and_hub()
+
+      %{"error" => "subdomain_denied"} =
+        conn |> post_validate_subdomain(current_hub.hub_id, "admin")
+
+      %{"error" => "subdomain_denied"} =
+        conn |> post_validate_subdomain(current_hub.hub_id, "poop")
+    end
   end
 
   describe "Hub Ready state tests" do
@@ -250,7 +279,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     test "should return error if /health timeout is reached", %{conn: conn} do
       stub_ret_get()
       expect_orch_post()
-      stub_ret_fail_health_check()
+      stub_ret_health_check(status_code: :service_unavailable)
 
       body =
         conn
@@ -263,8 +292,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   end
 
   describe "Hub ready state tests with exact calls" do
-    setup :verify_on_exit!
-
     test "should call /health endpoint ONLY once, if hubs is already ready", %{conn: conn} do
       # TODO To refine tests move these tests to own module that has setup :verify_on_exit!
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
@@ -333,6 +360,15 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end)
   end
 
+  defp stub_orch_patch(opts \\ [response: :ok, status_code: :ok]) do
+    Mox.stub(Dash.HttpMock, :patch, fn url, _body, _headers, _opts ->
+      cond do
+        url =~ ~r/\/hc_instance$/ ->
+          {opts[:response], %HTTPoison.Response{status_code: code(opts[:status_code])}}
+      end
+    end)
+  end
+
   defp get_hubs(conn) do
     conn
     |> put_test_token()
@@ -393,16 +429,16 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end)
   end
 
-  defp stub_ret_fail_health_check() do
+  defp stub_ret_health_check(opts \\ [status_code: :ok]) do
     Dash.HttpMock
     |> Mox.stub(:get, fn url, _headers, _opts ->
       cond do
         url =~ ~r/health$/ ->
-          {:ok, %HTTPoison.Response{status_code: 500}}
+          {:ok, %HTTPoison.Response{status_code: code(opts[:status_code])}}
 
         true ->
           Logger.warn(
-            "Inside test, hit stub set up in stub_hub_fail_health_check/0, but GET request URL did not match /health, did you mean to do that?"
+            "Inside test, hit stub set up in stub_hub_health_check/1, but GET request URL did not match /health, did you mean to do that?"
           )
       end
     end)
