@@ -17,7 +17,16 @@ defmodule Dash.Hub do
     "api"
   ]
 
-  @partial_reserved_subdomains ["mozilla", "mozi11a", "mozi1la", "mozil1a", "m0zilla", "m0zi11a", "m0zi1la", "m0zil1a"]
+  @partial_reserved_subdomains [
+    "mozilla",
+    "mozi11a",
+    "mozi1la",
+    "mozil1a",
+    "m0zilla",
+    "m0zi11a",
+    "m0zi1la",
+    "m0zil1a"
+  ]
   @denied_subdomains_pattern (@partial_reserved_subdomains ++
                                 Dash.SubdomainDenyList.naughty_words())
                              |> Enum.map(&Regex.escape/1)
