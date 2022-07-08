@@ -178,7 +178,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       create_test_account_and_hub(subdomain: "test-subdomain-one")
       %{hub: current_hub} = create_test_account_and_hub(subdomain: "test-subdomain-two")
 
-      %{"error" => "subdomain_taken"} =
+      %{"success" => false, "error" => "subdomain_taken"} =
         conn |> post_validate_subdomain(current_hub.hub_id, "test-subdomain-one")
     end
 
