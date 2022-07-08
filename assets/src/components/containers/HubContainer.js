@@ -12,13 +12,13 @@ export function HubContainer() {
   const { hubId } = useParams();
   const { currentHub, setCurrentHub, updateHub, isLoading, isError, isReady, isSubmitting } = useHub(hubId);
 
-  const currentHubIsReady = !currentHub || currentHub.status === STATUS_READY;
+  const currentHubIsReady = currentHub && currentHub.status === STATUS_READY;
 
   useEffect(() => {
-    if (!currentHubIsReady) {
+    if (currentHub && !currentHubIsReady) {
       navigate("/");
     }
-  }, [currentHubIsReady]);
+  }, [currentHub, currentHubIsReady]);
 
   return (
     <>
