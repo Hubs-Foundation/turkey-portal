@@ -144,8 +144,8 @@ defmodule Dash.Hub do
     Dash.Hub |> Repo.get_by(hub_id: hub_id, account_id: account.account_id)
   end
 
-  def get_all_hubs() do
-    from(h in Dash.Hub)
+  def get_all_ready_hub_ids() do
+    from(h in Dash.Hub, where: h.status == :ready, select: h.hub_id)
     |> Repo.all()
   end
 

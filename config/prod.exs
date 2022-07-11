@@ -61,10 +61,10 @@ config :dash, Dash.FeatureFlags,
   ccu_selection: false,
   storage_selection: false
 
-config :dash, Dash.StorageStat, enable_storage_stats: true
+config :dash, Dash.HubStat, enable_hub_stats: true
 
 config :dash, Dash.Scheduler,
   jobs: [
     # Runs every midnight:
-    {"@daily", {Dash.StorageStat, :job_record_hubs_daily_storage_stats, []}}
+    {"@daily", {Dash.HubStat, :job_record_hub_stats, []}}
   ]
