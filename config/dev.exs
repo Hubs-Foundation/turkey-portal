@@ -134,5 +134,5 @@ config :dash, Dash.HubStat, enable_hub_stats: false
 config :dash, Dash.Scheduler,
   jobs: [
     # Runs every minute:
-    {"* * * * *", {Dash.HubStat, :job_record_hub_stats, []}}
+    # {"* * * * *", {Dash.HubStat, :job_record_hub_stats, []}}
   ]

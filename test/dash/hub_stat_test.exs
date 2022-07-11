@@ -6,13 +6,14 @@ defmodule Dash.HubStatTest do
   require Logger
   alias Dash.{Repo, HubStat}
 
-  setup_all context do
+  setup_all do
     setup_http_mocks()
     on_exit(fn -> exit_http_mocks() end)
-    verify_on_exit!(context)
   end
 
   describe "Metrics Hub Stat" do
+    setup :verify_on_exit!
+
     test "Happy path: gets ready hubs storage stats into table" do
       # Set RetClient stub for /storage endpoint
       stub_ret_get()
@@ -42,7 +43,7 @@ defmodule Dash.HubStatTest do
 
       HubStat.job_record_hub_stats()
 
-      assert !Repo.exists?(
+      refute Repo.exists?(
                from(hs in HubStat, where: hs.hub_id == ^hub1.hub_id and hs.storage_mb > 0)
              )
     end

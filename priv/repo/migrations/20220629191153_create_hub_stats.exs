@@ -8,6 +8,6 @@ defmodule Dash.Repo.Migrations.CreateHubStats do
       add :hub_id, :bigint
     end
 
-    create index(:hub_stats, [:hub_id])
+    create index(:hub_stats, [:hub_id, :measured_at])
   end
 end

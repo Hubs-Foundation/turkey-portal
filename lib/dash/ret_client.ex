@@ -18,14 +18,14 @@ defmodule Dash.RetClient do
   defp fetch_ret_internal_endpoint(%Dash.Hub{} = hub, endpoint),
     do: fetch_ret_internal_endpoint(hub.hub_id, endpoint)
 
-  defp fetch_ret_internal_endpoint(hub_id, endpoint) when is_integer(hub_id) do
+  defp fetch_ret_internal_endpoint(hub_id, endpoint, opts \\ []) when is_integer(hub_id) do
     # Make the http client module configurable so that we can mock it out in tests.
     http_client = get_http_client() || HTTPoison
 
     http_client.get(
       ret_host_url(hub_id) <> @ret_internal_scope <> endpoint,
       [{"x-ret-dashboard-access-key", get_ret_access_key()}],
-      hackney: [:insecure]
+      [hackney: [:insecure]] ++ opts
     )
   end
 
@@ -64,8 +64,8 @@ defmodule Dash.RetClient do
   def get_current_storage_usage_mb(%Dash.Hub{} = hub),
     do: get_current_storage_usage_mb(hub.hub_id)
 
-  def get_current_storage_usage_mb(hub_id) when is_integer(hub_id) do
-    case fetch_ret_internal_endpoint(hub_id, @storage_endpoint) do
+  def get_current_storage_usage_mb(hub_id, opts \\ []) when is_integer(hub_id) do
+    case fetch_ret_internal_endpoint(hub_id, @storage_endpoint, opts) do
       {:ok, %{status_code: 200, body: body}} ->
         %{"storage_mb" => storage_mb} = Poison.Parser.parse!(body)
         storage_mb
