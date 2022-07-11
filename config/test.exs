@@ -38,3 +38,5 @@ config :logger, level: :critical
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :dash, Dash.HubStat, enable_hub_stats: true

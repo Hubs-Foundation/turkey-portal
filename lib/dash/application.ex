@@ -19,9 +19,10 @@ defmodule Dash.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Dash.PubSub},
       # Start the Endpoint (http/https)
-      DashWeb.Endpoint
+      DashWeb.Endpoint,
       # Start a worker by calling: Dash.Worker.start_link(arg)
       # {Dash.Worker, arg}
+      Dash.Scheduler
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

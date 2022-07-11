@@ -60,3 +60,11 @@ config :dash, Dash.FeatureFlags,
   tier_selection: false,
   ccu_selection: false,
   storage_selection: false
+
+config :dash, Dash.HubStat, enable_hub_stats: true
+
+config :dash, Dash.Scheduler,
+  jobs: [
+    # Runs every midnight:
+    {"@daily", {Dash.HubStat, :job_record_hub_stats, []}}
+  ]

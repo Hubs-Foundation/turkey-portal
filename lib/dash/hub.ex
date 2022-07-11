@@ -188,6 +188,11 @@ defmodule Dash.Hub do
     Dash.Hub |> Repo.get_by(hub_id: hub_id, account_id: account.account_id)
   end
 
+  def get_all_ready_hub_ids() do
+    from(h in Dash.Hub, where: h.status == :ready, select: h.hub_id)
+    |> Repo.all()
+  end
+
   def delete_hub(hub_id, %Dash.Account{} = account) do
     hub_to_delete = get_hub(hub_id, account)
 
