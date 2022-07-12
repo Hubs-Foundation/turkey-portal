@@ -16,6 +16,7 @@ module.exports = {
     config.resolve.alias = {
       ...config.resolve.alias,
       "@Shared": path.resolve(__dirname, "../components/shared"),
+      "@Forms": path.resolve(__dirname, "../components/forms"),
       "@Cards": path.resolve(__dirname, "../components/cards"),
       "@Navigation": path.resolve(__dirname, "../components/navigation"),
       "@Util": path.resolve(__dirname, "../components/util")

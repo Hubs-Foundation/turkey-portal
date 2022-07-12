@@ -1,5 +1,4 @@
 import {
-  useContext,
   ChangeEventHandler,
   ChangeEvent,
   useState,
@@ -8,13 +7,12 @@ import {
   forwardRef,
   useImperativeHandle,
 } from 'react';
-import { FormContext } from '@Shared/Form/Form';
 import styles from './Input.module.scss';
 import { InputT } from 'types/Form';
 
 /**
- * Methods available to access the component
- * in the parent component.
+ * Methods available to access the component in the parent component. These would most likley
+ * only be used outside of the form context. Ie search input or some type of filter input.
  */
 export type InputInterfaceT = {
   focusInput: Function;
@@ -34,6 +32,7 @@ type InputProps = {
   pattern?: string;
   maxLength?: number;
   minLength?: number;
+  value: string | number | readonly string[] | undefined;
 };
 
 const Input = forwardRef(
@@ -51,19 +50,13 @@ const Input = forwardRef(
       pattern,
       maxLength,
       minLength,
+      value,
     }: InputProps,
     ref
   ) => {
-    const formContext = useContext(FormContext);
-    const { form, handleFormChange } = formContext;
     const [isValid, setIsValid] = useState<boolean>(false);
     const [isDirty, setIsDirty] = useState<boolean>(false);
-    const [initialValue, setInitialValue] = useState(
-      Object.keys(form).length != 0 ? form[name] : ''
-    );
-    const [currentValue, setCurrentValue] = useState(
-      Object.keys(form).length != 0 ? form[name] : ''
-    );
+    const [initialValue, setInitialValue] = useState(value); // used to check if dirty
     const [currentErrorMessage, setCurrentErrorMessage] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -78,19 +71,14 @@ const Input = forwardRef(
     });
 
     /**
-     * Bifurcates Prop and Context handlers
+     * Handle Input Change
      * @param event
      */
-    const relayChange: ChangeEventHandler<HTMLInputElement> = (
+    const handleOnChange: ChangeEventHandler<HTMLInputElement> = (
       event: ChangeEvent<HTMLInputElement>
     ) => {
       const newValue = event.target.value;
-      setCurrentValue(newValue);
-
-      // Handle Context and prop event handlers
-      handleFormChange(event);
       onChange && onChange(newValue);
-
       // If initial value was empty any change makes form dirty
       const isDirty = initialValue === '' ? true : initialValue !== newValue;
       setIsDirty(isDirty);
@@ -106,7 +94,7 @@ const Input = forwardRef(
       const valid = input?.validity.valid;
       const validationMessage = input?.validationMessage;
       // Validate against html and js validators
-      const validation = valid && validator(currentValue);
+      const validation = valid && validator(value);
 
       // Prop error message takes precedence
       if (!validation) {
@@ -116,7 +104,7 @@ const Input = forwardRef(
         message ? setCurrentErrorMessage(message) : '';
       }
       setIsValid(validation);
-    }, [currentValue, customErrorMessage, validator]);
+    }, [value, customErrorMessage, validator]);
 
     /**
      * Error UI logic
@@ -130,39 +118,33 @@ const Input = forwardRef(
           showError ? styles.input_error : null
         } ${classProp}`}
       >
-        {Object.keys(form).length != 0 && (
-          <>
-            <label>
-              {label}
-              <span> {required ? '*' : ''}</span>
-            </label>
+        <label>
+          {label}
+          <span> {required ? '*' : ''}</span>
+        </label>
 
-            <input
-              ref={inputRef}
-              type={type}
-              name={name}
-              value={form[name]}
-              required={required}
-              placeholder={label}
-              onChange={relayChange}
-              maxLength={maxLength}
-              minLength={minLength}
-              pattern={pattern}
-            />
+        <input
+          ref={inputRef}
+          type={type}
+          name={name}
+          value={value}
+          required={required}
+          placeholder={label}
+          onChange={handleOnChange}
+          maxLength={maxLength}
+          minLength={minLength}
+          pattern={pattern}
+        />
 
-            {/* Error Message */}
-            {showError ? (
-              <span className={styles.error_message}>
-                {currentErrorMessage}
-              </span>
-            ) : (
-              ''
-            )}
-
-            {/* Additional Input Information  */}
-            {showInfo ? <span className={styles.info}>{info}</span> : ''}
-          </>
+        {/* Error Message */}
+        {showError ? (
+          <span className={styles.error_message}>{currentErrorMessage}</span>
+        ) : (
+          ''
         )}
+
+        {/* Additional Input Information  */}
+        {showInfo ? <span className={styles.info}>{info}</span> : ''}
       </div>
     );
   }

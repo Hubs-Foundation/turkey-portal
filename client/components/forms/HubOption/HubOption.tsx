@@ -1,22 +1,21 @@
-import styles from './HubOption.module.scss'
-import { FormEventHandler } from 'react'
-import Badge from '@Shared/Badge/Badge'
-import Icon from '@Shared/Icon/Icon'
-
+import styles from './HubOption.module.scss';
+import { FormEventHandler } from 'react';
+import Badge from '@Shared/Badge/Badge';
+import Icon from '@Shared/Icon/Icon';
 
 type HubOptionPropsT = {
-  value: number | string,
-  users: number,
-  size: string,
-  checked: boolean,
-  isDisabled?: boolean,
-  id: string,
-  label: string,
-  labelCategory: 'primary' | 'secondary',
-  groupName: string,
-  onChange: FormEventHandler<HTMLDivElement>,
-  classProp?: string
-}
+  value: number | string;
+  users: number;
+  size: string;
+  checked: boolean;
+  isDisabled?: boolean;
+  id: string;
+  label: string;
+  labelCategory: 'primary' | 'secondary';
+  groupName: string;
+  onChange?: FormEventHandler<HTMLDivElement>;
+  classProp?: string;
+};
 
 const HubOption = ({
   label,
@@ -29,11 +28,15 @@ const HubOption = ({
   id,
   groupName,
   onChange,
-  classProp = ''
+  classProp = '',
 }: HubOptionPropsT) => {
-
   return (
-    <label className={`${styles.button_wrapper} ${classProp} ${checked ? styles.button_wrapper_active : ''}`} htmlFor={id}>
+    <label
+      className={`${styles.button_wrapper} ${classProp} ${
+        checked ? styles.button_wrapper_active : ''
+      }`}
+      htmlFor={id}
+    >
       <div className={styles.button_input}>
         <input
           id={id}
@@ -54,17 +57,16 @@ const HubOption = ({
       {/* Users  */}
       <div className={styles.attribute_wrapper}>
         <Icon name="users" size={18} />
-        <span className='margin-left-5'>{users}</span>
+        <span className="margin-left-5">{users}</span>
       </div>
 
       {/* Size */}
       <div className={styles.attribute_wrapper}>
         <Icon name="database" size={18} />
-        <span className='margin-left-5'>{size}</span>
+        <span className="margin-left-5">{size}</span>
       </div>
-
     </label>
-  )
-}
+  );
+};
 
-export default HubOption
+export default HubOption;

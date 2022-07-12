@@ -1,7 +1,5 @@
 import Head from 'next/head';
 import { useState, useRef } from 'react';
-import RadioGroup from '@Shared/RadioGroup/RadioGroup';
-import Form from '@Shared/Form/Form';
 import Input, { InputInterfaceT } from '@Shared/Input/Input';
 import Button from '@Shared/Button/Button';
 import { ButtonCategoriesE, ButtonSizesE } from 'types/Form';
@@ -182,27 +180,7 @@ export default function Sandbox() {
 
           <h2>form 2</h2>
 
-          <Form submit={submit} initialValues={initialValues}>
-            <>
-              <Input
-                required={true}
-                label="Email"
-                type="email"
-                name="email"
-                customErrorMessage="you broke it"
-              />
-              <Input
-                required={true}
-                label="Testing"
-                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                name="password"
-                info="this is great"
-                ref={passwordInput}
-              />
-              <Input required={true} label="Name" name="name" />
-              <RadioGroup name="test" options={radioFormOptions} />
-            </>
-          </Form>
+       
         </section>
       </main>
     </div>

@@ -1,4 +1,4 @@
-@use 'styles/boilerplate.scss' as *;
+@use 'styles/boilerplate.scss'as *;
 
 .button {
   &_wrapper {
@@ -26,7 +26,7 @@
   &_input {
     width: 120px;
   }
-};
+}
 
 .attribute {
   &_wrapper {

@@ -1,7 +1,6 @@
 import React from 'react'
 import { ComponentStory, ComponentMeta } from '@storybook/react'
 import Input from '../components/shared/Input/Input'
-import Form from '../components/shared/Form/Form'
 
 const initialValues = {
   firstName: 'Dr.Duck',
@@ -14,11 +13,9 @@ export default {
 
 const Template: ComponentStory<typeof Input> = (args) => {
   return (
-    <Form
-      submit={() => { }}
-      initialValues={initialValues}>
-      <Input {...args} />
-    </Form>
+    <form>
+      <Input {...args} value={initialValues.firstName} />
+    </form>
   )
 }
 

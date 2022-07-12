@@ -3,6 +3,7 @@
     "baseUrl": ".",
     "paths": {
       "@Shared/*": ["components/shared/*"],
+      "@Forms/*": ["components/forms/*"],
       "@Cards/*": ["components/cards/*"],
       "@Navigation/*": ["components/navigation/*"],
       "@Util/*": ["components/util/*"],
