@@ -128,3 +128,11 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+config :dash, Dash.HubStat, enable_hub_stats: false
+
+config :dash, Dash.Scheduler,
+  jobs: [
+    # Runs every minute:
+    # {"* * * * *", {Dash.HubStat, :job_record_hub_stats, []}}
+  ]

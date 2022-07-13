@@ -46,6 +46,12 @@
     },
     "postcss-property-lookup": {
       "postcss": "7.0.36"
+    },
+    "git-up": {
+      "parse-url": "6.0.0"
+    },
+    "parse-url": {
+      "parse-path": "5.0.0"
     }
   },
   "devDependencies": {

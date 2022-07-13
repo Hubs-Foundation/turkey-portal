@@ -8,19 +8,24 @@ defmodule Dash.RetClient do
   @ret_host_prefix "ret.hc-"
   @ret_host_postfix ".svc.cluster.local"
   @ret_internal_port "4000"
-  defp ret_host_url(%Dash.Hub{} = hub) do
-    "https://#{@ret_host_prefix}#{hub.hub_id}#{@ret_host_postfix}:#{@ret_internal_port}"
+  defp ret_host_url(%Dash.Hub{} = hub), do: ret_host_url(hub.hub_id)
+
+  defp ret_host_url(hub_id) when is_integer(hub_id) do
+    "https://#{@ret_host_prefix}#{hub_id}#{@ret_host_postfix}:#{@ret_internal_port}"
   end
 
   @ret_internal_scope "/api-internal/v1/"
-  defp fetch_ret_internal_endpoint(%Dash.Hub{} = hub, endpoint) do
+  defp fetch_ret_internal_endpoint(%Dash.Hub{} = hub, endpoint),
+    do: fetch_ret_internal_endpoint(hub.hub_id, endpoint)
+
+  defp fetch_ret_internal_endpoint(hub_id, endpoint, opts \\ []) when is_integer(hub_id) do
     # Make the http client module configurable so that we can mock it out in tests.
     http_client = get_http_client() || HTTPoison
 
     http_client.get(
-      ret_host_url(hub) <> @ret_internal_scope <> endpoint,
+      ret_host_url(hub_id) <> @ret_internal_scope <> endpoint,
       [{"x-ret-dashboard-access-key", get_ret_access_key()}],
-      hackney: [:insecure]
+      [hackney: [:insecure]] ++ opts
     )
   end
 
@@ -56,8 +61,11 @@ defmodule Dash.RetClient do
   end
 
   @storage_endpoint "storage"
-  def get_current_storage_usage_mb(%Dash.Hub{} = hub) do
-    case fetch_ret_internal_endpoint(hub, @storage_endpoint) do
+  def get_current_storage_usage_mb(%Dash.Hub{} = hub),
+    do: get_current_storage_usage_mb(hub.hub_id)
+
+  def get_current_storage_usage_mb(hub_id, opts \\ []) when is_integer(hub_id) do
+    case fetch_ret_internal_endpoint(hub_id, @storage_endpoint, opts) do
       {:ok, %{status_code: 200, body: body}} ->
         %{"storage_mb" => storage_mb} = Poison.Parser.parse!(body)
         storage_mb
