@@ -1,5 +1,5 @@
-import { useState, createContext, ReactNode } from 'react';
-
+import { createContext, ReactNode } from 'react';
+import useDarkMode from 'hooks/useDarkMode';
 type ThemeProviderProps = {
   children?: ReactNode;
 };
@@ -15,16 +15,14 @@ export const ThemeContext = createContext({
 });
 
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState<ThemeE>(ThemeE.LIGHT);
-
-  const handleThemeChange = (value: ThemeE): void => {
-    setTheme(value);
-  };
+  const isDarkMode = useDarkMode();
+  // Place holder if we want to add a toggle on the site later to change theme
+  const handleThemeChange = (value: ThemeE): void => {};
 
   return (
     <ThemeContext.Provider
       value={{
-        theme: theme,
+        theme: isDarkMode ? ThemeE.DARK : ThemeE.LIGHT,
         handleThemeChange,
       }}
     >
