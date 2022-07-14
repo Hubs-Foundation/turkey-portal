@@ -54,6 +54,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
   describe "Subdomain updates" do
     test "subdomain should always be lower case", %{conn: conn} do
+      stub_ret_rewrite_assets()
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       expect_orch_patch()
 
@@ -65,6 +66,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should submit subdomain change to orchestrator", %{conn: conn} do
+      stub_ret_rewrite_assets()
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       expect_orch_patch()
 
@@ -86,6 +88,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should error on duplicate subdomains", %{conn: conn} do
+      stub_ret_rewrite_assets()
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       expect_orch_patch()
 
@@ -98,6 +101,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should allow valid subdomains", %{conn: conn} do
+      stub_ret_rewrite_assets()
       stub_ret_health_check()
       stub_orch_patch()
 
@@ -171,6 +175,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should set status to updating while waiting for subdomain change", %{conn: conn} do
+      stub_ret_rewrite_assets()
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       stub_orch_patch_with_pausing(self())
 
@@ -204,6 +209,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should not allow updates while hub is already updating", %{conn: conn} do
+      stub_ret_rewrite_assets()
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       stub_orch_patch_with_pausing(self())
 
@@ -220,10 +226,29 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       send(stub_pid, {:continue})
       assert %{"subdomain" => "new-subdomain"} = get_hub(conn, hub)
     end
+
+    test "should call reticulum to rewrite assets", %{conn: conn} do
+      stub_ret_health_check()
+      stub_orch_patch()
+
+      expect_ret_rewrite_assets(fn body ->
+        json = Jason.decode!(body)
+        assert json["old_domain"] =~ ~r/^old-subdomain/
+        assert json["new_domain"] =~ ~r/^new-subdomain/
+      end)
+
+      %{hub: hub} = create_test_account_and_hub(subdomain: "old-subdomain")
+
+      conn |> patch_subdomain(hub, "new-subdomain", expected_status: :ok)
+
+      %{"subdomain" => patched_subdomain} = get_hub(conn, hub)
+      assert patched_subdomain == "new-subdomain"
+    end
   end
 
   describe "Subdomain validation" do
     test "returns an error for duplicate subdomains", %{conn: conn} do
+      stub_ret_rewrite_assets()
       create_test_account_and_hub(subdomain: "test-subdomain-one")
       %{hub: current_hub} = create_test_account_and_hub(subdomain: "test-subdomain-two")
 
@@ -405,6 +430,27 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     )
     |> response(:ok)
     |> Jason.decode!()
+  end
+
+  defp stub_ret_rewrite_assets() do
+    Dash.HttpMock
+    |> Mox.stub(:post, fn url, _body, _headers, _opts ->
+      cond do
+        url =~ ~r/rewrite_assets$/ ->
+          {:ok, %HTTPoison.Response{status_code: 200}}
+      end
+    end)
+  end
+
+  defp expect_ret_rewrite_assets(body_callback) do
+    Dash.HttpMock
+    |> Mox.expect(:post, 1, fn url, body, _headers, _opts ->
+      cond do
+        url =~ ~r/rewrite_assets$/ ->
+          body_callback.(body)
+          {:ok, %HTTPoison.Response{status_code: 200}}
+      end
+    end)
   end
 
   # Used only in /health tests
