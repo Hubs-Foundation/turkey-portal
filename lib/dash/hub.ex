@@ -270,7 +270,8 @@ defmodule Dash.Hub do
     Task.Supervisor.async(Dash.TaskSupervisor, fn ->
       with {:ok, %{status_code: status_code}} when status_code < 400 <-
              Dash.OrchClient.update_subdomain(updated_hub),
-           {:ok} <- Dash.RetClient.wait_until_healthy(updated_hub) do
+           {:ok} <- Dash.RetClient.wait_until_healthy(updated_hub),
+           {:ok} <- Dash.RetClient.rewrite_assets(previous_hub, updated_hub) do
         set_hub_to_ready(updated_hub)
       else
         err ->
