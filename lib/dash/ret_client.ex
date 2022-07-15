@@ -60,6 +60,35 @@ defmodule Dash.RetClient do
     end
   end
 
+  # start_time and end_time should be in iso format
+  @range_max_ccu_endpoint "presence/range_max"
+  def get_max_ccu_for_range(hub_id, start_time, end_time, opts \\ [])
+      when is_binary(start_time) and is_binary(end_time) do
+    case fetch_ret_internal_endpoint(
+           hub_id,
+           @range_max_ccu_endpoint,
+           [params: %{start_time: start_time, end_time: end_time}] ++ opts
+         ) do
+      # Reticulum returned the max ccu correctly
+      {:ok, %{status_code: 200, body: body}} ->
+        %{"max_ccu" => max_ccu} = Poison.Parser.parse!(body)
+        max_ccu
+
+      # Reticulum completed the request but did not return the ccu
+      {:ok, %{status_code: status_code}} ->
+        Logger.error(
+          "Failed to retrieve #{hub_id} reticulum max_CCU. Status code: #{status_code}"
+        )
+
+        nil
+
+      # An error occurred
+      {:error, err} ->
+        Logger.error("Failed to retrieve #{hub_id} reticulum CCU. Error: #{inspect(err)}")
+        nil
+    end
+  end
+
   @storage_endpoint "storage"
   def get_current_storage_usage_mb(%Dash.Hub{} = hub),
     do: get_current_storage_usage_mb(hub.hub_id)
