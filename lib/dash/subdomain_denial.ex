@@ -13,6 +13,7 @@ defmodule Dash.SubdomainDenial do
     "email",
     "grafana",
     "haproxy",
+    "hub",
     "hubs",
     "mail",
     "orch",
