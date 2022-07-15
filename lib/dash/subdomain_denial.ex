@@ -1,5 +1,5 @@
 defmodule Dash.SubdomainDenial do
-  alias Dash.{NaughtyWords}
+  alias Dash.NaughtyWords
 
   @whole_reserved_subdomains [
     "admin",
