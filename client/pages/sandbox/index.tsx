@@ -1,9 +1,11 @@
 import Head from 'next/head';
 import { useState, useRef } from 'react';
-import Input, { InputInterfaceT } from '@Shared/Input/Input';
+import Input, { InputInterfaceT, InputIconColorE } from '@Shared/Input/Input';
 import Button from '@Shared/Button/Button';
 import { ButtonCategoriesE, ButtonSizesE } from 'types/Form';
 import styles from './sandbox.module.scss';
+import { IconT } from 'types/General'
+
 
 /**
  * NOTE: this page is for testing and showing.. Storybook will mostly take
@@ -26,8 +28,29 @@ export default function Sandbox() {
     },
   ];
 
+ 
+
   const [radioForm, setRadioForm] = useState('label_1');
+  const [testInput, setTestInput] = useState('');
   const passwordInput = useRef<InputInterfaceT>(null);
+
+
+
+  const [testInputIcon, setTestInputIcon] = useState<IconT>('check-circle');
+  const [testInputIconStatus, setTestInputIconStatus] = useState<InputIconColorE>(InputIconColorE.SUCCESS);
+
+  const toggleInput = () => {
+    if(testInputIconStatus === InputIconColorE.SUCCESS){
+      // setTestInputIcon("trash")
+      // setTestInputIconStatus(InputIconColorE.ERROR)
+      setTestInputIconStatus(InputIconColorE.DEFAULT)
+      setTestInputIcon("user")
+
+    } else {
+      setTestInputIcon("check-circle")
+      setTestInputIconStatus(InputIconColorE.SUCCESS)
+    }
+  }
 
   const testing = () => {
     console.log('dirty:', passwordInput.current?.isDirty());
@@ -133,10 +156,26 @@ export default function Sandbox() {
               text={ButtonCategoriesE.PRIMARY_OUTLINE}
               size={ButtonSizesE.SMALL}
             />
-            {/* <Button
-              category={ButtonCategoriesE.PRIMARY_OUTLINE}
-              text={ButtonCategoriesE.PRIMARY_OUTLINE}
+
+            <Input
+              label="Name"
+              name="nick"
+              value={testInput}
+              placeholder="Put your name here"
+              onChange={(value: any) => {
+                setTestInput(value);
+              }}
+              icon={testInputIcon}
+              iconColor={testInputIconStatus}
             />
+
+            <Button
+              category={ButtonCategoriesE.PRIMARY_OUTLINE}
+              text="change input"
+              onClick={toggleInput}
+            />
+
+            {/* 
             <Button
               category={ButtonCategoriesE.PRIMARY_CLEAR}
               text={ButtonCategoriesE.PRIMARY_CLEAR}
@@ -179,8 +218,6 @@ export default function Sandbox() {
           </form> */}
 
           <h2>form 2</h2>
-
-       
         </section>
       </main>
     </div>

@@ -8,7 +8,9 @@ import {
   useImperativeHandle,
 } from 'react';
 import styles from './Input.module.scss';
+import Icon from '@Shared/Icon/Icon';
 import { InputT } from 'types/Form';
+import { IconT } from 'types/General'
 
 /**
  * Methods available to access the component in the parent component. These would most likley
@@ -19,8 +21,15 @@ export type InputInterfaceT = {
   isDirty: Function;
 };
 
+export enum InputIconColorE {
+  SUCCESS = 'success',
+  ERROR = 'error',
+  DEFAULT = 'default',
+};
+
 type InputProps = {
   label: string;
+  placeholder: string;
   name: string;
   type?: InputT;
   info?: string;
@@ -33,12 +42,15 @@ type InputProps = {
   maxLength?: number;
   minLength?: number;
   value: string | number | readonly string[] | undefined;
+  icon?:IconT;
+  iconColor?:InputIconColorE
 };
 
 const Input = forwardRef(
   (
     {
       label,
+      placeholder,
       type = 'text',
       name,
       info = '',
@@ -51,6 +63,8 @@ const Input = forwardRef(
       maxLength,
       minLength,
       value,
+      icon,
+      iconColor = InputIconColorE.DEFAULT
     }: InputProps,
     ref
   ) => {
@@ -128,12 +142,18 @@ const Input = forwardRef(
           name={name}
           value={value}
           required={required}
-          placeholder={label}
+          placeholder={placeholder ? placeholder : label}
           onChange={handleOnChange}
           maxLength={maxLength}
           minLength={minLength}
           pattern={pattern}
+          className={icon && styles.has_icon}
         />
+
+        {
+          icon ? <Icon name={icon} classProp={styles['icon_'+ iconColor]}/> : null
+        }
+        
 
         {/* Error Message */}
         {showError ? (
