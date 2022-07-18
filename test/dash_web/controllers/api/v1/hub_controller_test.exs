@@ -33,7 +33,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       %{"subdomain" => "my-hub"} = get_hub(conn, hub)
     end
 
-    test "should not return other users' hub", %{conn: conn} do
+    test "should not return other user's hub", %{conn: conn} do
       user_one = "test-user-one"
       user_two = "test-user-two"
       hub_one_subdomain = "hub-one"
@@ -59,7 +59,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       %{"name" => "new name"} = get_hub(conn, hub)
     end
 
-    test "should not allow changing other users' hub", %{conn: conn} do
+    test "should not allow changing other user's hub", %{conn: conn} do
       user_one = "test-user-one"
       user_two = "test-user-two"
 
