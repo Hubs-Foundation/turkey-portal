@@ -42,6 +42,34 @@ defmodule Dash.RetClient do
     )
   end
 
+  defp post_ret_internal_endpoint_with_retry(%Dash.Hub{} = hub, endpoint, %{} = body),
+    do: post_ret_internal_endpoint_with_retry(hub.hub_id, endpoint, body)
+
+  defp post_ret_internal_endpoint_with_retry(hub_id, endpoint, %{} = body) do
+    retry with: constant_backoff(get_wait_ms()) |> expiry(get_timeout_ms()) do
+      case post_ret_internal_endpoint(hub_id, endpoint, body) do
+        {:ok, %{status_code: 200}} ->
+          :ok
+
+        {:ok, _} ->
+          :error
+
+        {:error, err} ->
+          Logger.error(
+            "Error posting to internal reticulum endpoint. Endpoint: #{endpoint}. Error: #{inspect(err)}"
+          )
+
+          :error
+      end
+    after
+      _ -> {:ok}
+    else
+      _ ->
+        Logger.error("Failed post to reticulum in retry loop. Likely timed out.")
+        {:error, :post_ret_internal_timed_out}
+    end
+  end
+
   @health_endpoint "/health"
   defp fetch_health_endpoint(%Dash.Hub{} = hub) do
     get_http_client().get(
@@ -121,19 +149,12 @@ defmodule Dash.RetClient do
     old_domain = "#{previous_hub.subdomain}.#{cluster_domain}"
     new_domain = "#{updated_hub.subdomain}.#{cluster_domain}"
 
-    case post_ret_internal_endpoint(updated_hub, @rewrite_assets_endpoint, %{
+    case post_ret_internal_endpoint_with_retry(updated_hub, @rewrite_assets_endpoint, %{
            "old_domain" => old_domain,
            "new_domain" => new_domain
          }) do
-      {:ok, %{status_code: 200}} ->
+      {:ok} ->
         {:ok}
-
-      {:ok, %{status_code: status_code}} ->
-        Logger.error(
-          "Failed to rewrite assets from: #{old_domain} to #{new_domain}. Status code: #{status_code}"
-        )
-
-        {:error, :rewrite_assets_failed}
 
       {:error, err} ->
         Logger.error(
