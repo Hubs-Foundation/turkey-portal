@@ -2,9 +2,10 @@ defmodule DashWeb.TestHelpers do
   import Phoenix.ConnTest
   require Logger
 
+  @default_test_uid "fake-uid"
   @test_email "email@fake.com"
   @default_token_claims %{
-    "sub" => "fake-uid",
+    "sub" => @default_test_uid,
     "fxa_email" => @test_email,
     "fxa_pic" => "https://fake.com/pic.jpg",
     "fxa_displayName" => "Faker McFakerson"
@@ -38,8 +39,8 @@ defmodule DashWeb.TestHelpers do
     conn |> put_req_cookie("_turkeyauthtoken", jwt_str)
   end
 
-  def create_test_account_and_hub(opts \\ []) do
-    account = Dash.Account.find_or_create_account_for_fxa_uid("fake-uid")
+  def create_test_account_and_hub(opts \\ [subdomain: nil, fxa_uid: nil]) do
+    account = Dash.Account.find_or_create_account_for_fxa_uid(opts[:fxa_uid] || @default_test_uid)
 
     hub =
       %Dash.Hub{}

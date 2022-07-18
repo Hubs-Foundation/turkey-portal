@@ -28,12 +28,54 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       %{"currentCcu" => 3, "currentStorageMb" => 10} = hub
     end
 
+    test "should allow access to a user's hub", %{conn: conn} do
+      %{hub: hub} = create_test_account_and_hub(subdomain: "my-hub")
+      %{"subdomain" => "my-hub"} = get_hub(conn, hub)
+    end
+
+    test "should not return other user's hub", %{conn: conn} do
+      user_one = "test-user-one"
+      user_two = "test-user-two"
+      hub_one_subdomain = "hub-one"
+      hub_two_subdomain = "hub-two"
+
+      %{hub: hub_one} =
+        create_test_account_and_hub(fxa_uid: user_one, subdomain: hub_one_subdomain)
+
+      %{hub: _hub_two} =
+        create_test_account_and_hub(fxa_uid: user_two, subdomain: hub_two_subdomain)
+
+      nil = get_hub(conn, hub_one, token_opts: [claims: %{"sub" => user_two}])
+
+      %{"subdomain" => ^hub_one_subdomain} =
+        get_hub(conn, hub_one, token_opts: [claims: %{"sub" => user_one}])
+    end
+
     test "should allow changing the name of a hub", %{conn: conn} do
       %{hub: hub} = create_test_account_and_hub()
       assert hub.name === "test hub"
 
       conn |> patch_hub(hub, %{name: "new name"}, expected_status: :ok)
       %{"name" => "new name"} = get_hub(conn, hub)
+    end
+
+    test "should not allow changing other user's hub", %{conn: conn} do
+      user_one = "test-user-one"
+      user_two = "test-user-two"
+
+      %{hub: hub_one} = create_test_account_and_hub(fxa_uid: user_one)
+      assert hub_one.name === "test hub"
+
+      %{hub: _hub_two} = create_test_account_and_hub(fxa_uid: user_two)
+
+      %{"error" => "update_hub_failed"} =
+        conn
+        |> patch_hub(hub_one, %{name: "new name"},
+          token_opts: [claims: %{"sub" => user_two}],
+          expected_status: :bad_request
+        )
+
+      %{"name" => "test hub"} = get_hub(conn, hub_one, token_opts: [claims: %{"sub" => user_one}])
     end
 
     test "should ignore changes to the storage limit", %{conn: conn} do
@@ -401,19 +443,19 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     |> json_response(:ok)
   end
 
-  defp get_hub(conn, hub) do
+  defp get_hub(conn, hub, opts \\ []) do
     conn
-    |> put_test_token()
+    |> put_test_token(opts[:token_opts] || [])
     |> get("/api/v1/hubs/#{hub.hub_id}")
     |> json_response(:ok)
   end
 
-  defp patch_hub(conn, %Dash.Hub{} = hub, %{} = body, expected_status: expected_status) do
+  defp patch_hub(conn, %Dash.Hub{} = hub, %{} = body, opts) do
     conn
-    |> put_test_token()
+    |> put_test_token(opts[:token_opts] || [])
     |> put_req_header("content-type", "application/json")
     |> patch("/api/v1/hubs/#{hub.hub_id}", Jason.encode!(body))
-    |> json_response(expected_status)
+    |> json_response(opts[:expected_status])
   end
 
   defp patch_subdomain(conn, hub, subdomain, expected_status: expected_status) do
