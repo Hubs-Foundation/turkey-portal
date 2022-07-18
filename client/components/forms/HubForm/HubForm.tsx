@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import styles from './HubForm.module.scss';
-import { TierT } from 'types/General';
+import { TierT, BadgeCategoriesE } from 'types/General';
 import { HUB_ROOT_DOMAIN } from 'config';
 import Button from '@Shared/Button/Button';
 import Input from '@Shared/Input/Input';
@@ -19,7 +19,7 @@ export type HubGroupOptionT = {
   value: number | string;
   users: number;
   size: string;
-  labelCategory: 'primary' | 'secondary';
+  labelCategory: BadgeCategoriesE;
   id: string;
   label: string;
   groupName: string;
@@ -55,7 +55,7 @@ const HubForm = ({ hub, onSubmit }: HubDetailsViewPropsT) => {
   const radioFormOptions: HubGroupOptionT[] = [
     {
       label: 'Free',
-      labelCategory: 'primary',
+      labelCategory: BadgeCategoriesE.PRIMARY,
       value: 'free',
       size: '250MB',
       users: 5,
@@ -64,7 +64,7 @@ const HubForm = ({ hub, onSubmit }: HubDetailsViewPropsT) => {
     },
     {
       label: 'MVP 2',
-      labelCategory: 'secondary',
+      labelCategory: BadgeCategoriesE.SECONDARY,
       value: 'mvp',
       size: '2GB',
       users: 25,

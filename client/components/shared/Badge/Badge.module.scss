@@ -13,12 +13,12 @@
   }
 
   &_primary {
-    background-color: $blue;
-    color: $white;
+    background-color: $color-interaction-primary;
+    color: $color-text-reverse;
   }
 
   &_secondary {
-    background-color: $purple;
-    color: $white;
+    background-color: $color-interaction-secondary;
+    color: $color-text-subtitle;
   }
 };

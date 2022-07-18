@@ -91,9 +91,8 @@ const Input = forwardRef(
       const input = inputRef.current;
       if (!input) return;
 
-      const valid = input?.validity.valid;
-      const validationMessage = input?.validationMessage;
-      // Validate against html and js validators
+      const valid = input.validity.valid;
+      const validationMessage = input.validationMessage;
       const validation = valid && validator(value);
 
       // Prop error message takes precedence
@@ -101,7 +100,7 @@ const Input = forwardRef(
         const message = customErrorMessage
           ? customErrorMessage
           : validationMessage;
-        message ? setCurrentErrorMessage(message) : '';
+        message ? setCurrentErrorMessage(message) : null;
       }
       setIsValid(validation);
     }, [value, customErrorMessage, validator]);

@@ -2,6 +2,7 @@ import styles from './HubOption.module.scss';
 import { FormEventHandler } from 'react';
 import Badge from '@Shared/Badge/Badge';
 import Icon from '@Shared/Icon/Icon';
+import { BadgeCategoriesE } from 'types/General'
 
 type HubOptionPropsT = {
   value: number | string;
@@ -11,7 +12,7 @@ type HubOptionPropsT = {
   isDisabled?: boolean;
   id: string;
   label: string;
-  labelCategory: 'primary' | 'secondary';
+  labelCategory: BadgeCategoriesE;
   groupName: string;
   onChange?: FormEventHandler<HTMLDivElement>;
   classProp?: string;

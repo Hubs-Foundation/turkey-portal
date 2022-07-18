@@ -70,7 +70,6 @@ const Template: ComponentStory<typeof Button> = (args) => (
   </>
 );
 
-// PRIMARY BUTTON
 export const Main = Template.bind({});
 Main.args = {
   text: 'Main Button',
