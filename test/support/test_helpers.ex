@@ -86,7 +86,7 @@ defmodule DashWeb.TestHelpers do
           {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{count: 3})}}
 
         url =~ ~r/storage$/ ->
-          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{storage_mb: 10})}}
+          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{storage_mb: 10.5})}}
 
         url =~ ~r/health$/ ->
           {:ok, %HTTPoison.Response{status_code: 200}}

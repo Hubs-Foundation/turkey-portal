@@ -25,7 +25,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
         |> get("/api/v1/hubs")
         |> json_response(:ok)
 
-      %{"currentCcu" => 3, "currentStorageMb" => 10} = hub
+      %{"currentCcu" => 3, "currentStorageMb" => 10.5} = hub
     end
 
     test "should allow access to a user's hub", %{conn: conn} do

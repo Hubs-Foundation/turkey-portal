@@ -19,7 +19,7 @@ defmodule Dash.HubStat do
         %{
           hub_id: hub_id,
           measured_at: measured_at,
-          storage_mb: storage_mb
+          storage_mb: floor(storage_mb)
         }
     end
   end
