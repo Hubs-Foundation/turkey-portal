@@ -29,7 +29,7 @@ main[data-theme="light"] {
   --color-interaction-primary-alt-hover:#E8EFFD;
   --color-interaction-primary-alt-active:#CBD8F0;
   --color-interaction-primary-alt-disabled:#E7E7E7;
-  --color-interaction-secondary:#E8E8EA;
+  --color-interaction-secondary:#ffffff;
   --color-interaction-secondary-hover:#DCDCDF;
   --color-interaction-secondary-active:#CCCCD1;
   --color-interaction-secondary-disabled:#A3A6AD;
@@ -125,7 +125,8 @@ main[data-theme="dark"] {
   display: flex;
   flex: 1;
   flex-direction: column;
-  height: calc(100vh - 80px);
-  background-color: $light-grey;
-  overflow: scroll;
+  min-height: 100vh;
+  background: linear-gradient(107.97deg, #489CBE 6.73%, #5427C9 39.4%, #A8527C 77.18%, #A67878 104.75%);
+  padding-top: 80px;
+  margin: 0;
 }

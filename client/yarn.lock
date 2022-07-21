@@ -1407,6 +1407,11 @@
   "resolved" "https://registry.npmjs.org/@mdx-js/util/-/util-1.6.22.tgz"
   "version" "1.6.22"
 
+"@mozilla/lilypad@^1.0.9":
+  "integrity" "sha512-lIvwWG9f+6IAPkyeNkgJSiUM/v1WES5MAcvLBxDdTw5XpUjFsIETJXwByxdA7gw8Fn1hv0t87bALGZfY5rjISw=="
+  "resolved" "https://npm.pkg.github.com/download/@mozilla/lilypad/1.0.9/46fc5419d688a0229a580085d289c4135f452ac960b90013fc94f24f94c0985a"
+  "version" "1.0.9"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   "integrity" "sha512-bPHp6Ji8b41szTOcaP63VlnbbO5Ny6dwAATtY6JTjh5N2OLrb5Qk/Th5cRkRQhkWCt+EJsYrNB0MiL+Gpn6e3g=="
   "resolved" "https://registry.npmjs.org/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz"

@@ -31,7 +31,7 @@ const Dashboard = ({}: DashboardPropsT) => {
         <meta name="description" content="general profile page" />
       </Head>
 
-      <PageHeading title="Dashboard" />
+      {/* <PageHeading title="Dashboard" /> */}
 
       <main className={styles.main}>
         {/* Hub Cards  */}

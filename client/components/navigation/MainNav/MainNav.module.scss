@@ -1,14 +1,16 @@
-@use 'styles/boilerplate' as *;
+@use 'styles/boilerplate'as *;
 
 .main_nav {
+  position: absolute;
+  width: 100%;
+
   &_wrapper {
     height: 80px;
     width: 100%;
-    background: $white;
     padding: 20px;
     display: flex;
     justify-content: center;
-    border-bottom: solid 1px $accent-grey;
+    background: rgba(23, 10, 122, 0.4);
 
     @include tablet-down {
       padding: 10px;
@@ -71,5 +73,22 @@
 
   &_manage_link {
     @include font-size(14)
+  }
+}
+
+.banner_gradient {
+  padding: 4px;
+  background: radial-gradient(147.61% 1186.51% at 110.24% -15.63%, #FF806F 36.82%, #FFFF98 100%)
+}
+
+.logo {
+  @include secondary-font();
+  @include font-size(39);
+  color: #ffffff;
+  margin-right: 8px;
+
+  &_wrapper {
+    display: flex;
+    align-items: center;
   }
 }
