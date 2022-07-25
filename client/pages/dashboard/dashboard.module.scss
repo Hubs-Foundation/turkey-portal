@@ -1,12 +1,33 @@
 @use '../../styles/boilerplate.scss' as *;
 
 .main {
-  padding: 20px;
+  margin-top: 95px;
 	display: flex;
 	justify-content: center;
+	flex-wrap: wrap;
+
+	@include desktop-large-down {
+		margin-top: 35px;
+		flex-direction: column;
+		padding: 0 24px;
+	}
 }
 
 .cards_wrapper{
-	width: 100%;
-	max-width: 1440px;
+	// width: 100%;
+	// max-width: 1440px;
+	margin-right: 20px;
+
+	@include desktop-large-down {
+		margin-right: 0;
+	}
+}
+
+.subcard {
+
+	@include desktop-large-down {
+		order: -1;
+		margin-bottom: 24px;
+	}
+
 }

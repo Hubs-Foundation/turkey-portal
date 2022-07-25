@@ -1,0 +1,44 @@
+@use 'styles/boilerplate.scss'as *;
+
+.button {
+  display: flex;
+  padding: 24px;
+  width: 100%;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 0;
+  height: 100px;
+  color: $color-text-reverse;
+}
+
+.icon {
+  stroke: $color-interaction-primary-alt;
+
+  &_wrapper {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.attributes {
+  &_wrapper {
+    flex-grow: 1;
+    align-items: baseline;
+    display: flex;
+    flex-direction: column;
+    padding-left: 24px;
+  }
+}
+
+.title {
+  @include secondary-font(700);
+  @include font-size(16);
+  line-height: 20px;
+  margin-bottom: 6px;
+}
+
+.description {
+  @include primary-font(500);
+  @include font-size(14);
+  line-height: 24px;
+}

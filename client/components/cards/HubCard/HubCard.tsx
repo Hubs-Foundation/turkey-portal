@@ -1,14 +1,20 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import styles from './HubCard.module.scss';
-import Badge from '@Shared/Badge/Badge';
-import Button from '@Shared/Button/Button';
+import {
+  Button,
+  Badge,
+  ProgressBar,
+  ButtonCategoriesE,
+  ButtonSizesE,
+} from '@mozilla/lilypad';
 import Icon from '@Shared/Icon/Icon';
 import ExternalLink from '@Shared/ExternalLink/ExternalLink';
-import IconButton from '@Shared/IconButton/IconButton';
+import CopyButton from '../../shared/CopyButton/CopyButton';
+
 import Spinner from '@Shared/Spinner/Spinner';
 import { TierT, StatusT } from 'types/General';
-import { ButtonCategoriesE } from 'types/Form';
+
 import { HUB_ROOT_DOMAIN } from 'config';
 
 type HubCardPropsT = {
@@ -45,6 +51,15 @@ const HubCard = ({
   }, [hubId, router]);
 
   /**
+   * Get % Value of MB used
+   */
+  const getStoragePercent = (): number => {
+    if (currentStorageMb === 0 || currentStorageMb === null) return 0;
+
+    return (currentStorageMb / storageLimitMb) * 100;
+  };
+
+  /**
    * Hub Loading State
    */
   const LoadingHub = (
@@ -62,72 +77,85 @@ const HubCard = ({
   const HubLink = (
     <div className={styles.card_domain}>
       <ExternalLink
-        icon="external-link"
         target="_blank"
         href={`${subdomain}.${HUB_ROOT_DOMAIN}`}
+        classProp="margin-right-20"
       >
         {subdomain}.{HUB_ROOT_DOMAIN}
       </ExternalLink>
-      <IconButton icon="copy" />
+
+      {/* <Button
+        icon="copy"
+        size={ButtonSizesE.SMALL}
+        category={ButtonCategoriesE.PRIMARY_CLEAR}
+      /> */}
+
+
+      <CopyButton/>
+
+
+
     </div>
   );
 
   return (
     <div className={`${styles.card_wrapper} ${classProp}`}>
-      {/* CARD NAME TIER STATES  */}
-      <div className="flex-justify-between">
-        {/* NAME / TIER  */}
-        <div className={styles.card_group}>
-          <div className="flex-align-center margin-bottom-10">
-            <Badge name={tier} />
-            <div className={styles.card_name}>{name}</div>
+      <div className={styles.card_container}>
+        {/* HEADER  */}
+        <div className={styles.card_header}>
+          <div className={styles.card_status_wrapper}>
+            <div
+              className={`${styles.card_status}  ${
+                styles['card_status_' + status]
+              }`}
+            ></div>
+            <div className="margin-left-10 u-capitalize">{status}</div>
           </div>
+          <Button
+            onClick={handleSettingClick}
+            text="Edit Details"
+            category={ButtonCategoriesE.PRIMARY_OUTLINE}
+          />
+        </div>
 
-          {/* TODO: Error Handeling design*/}
+        {/* BODY  */}
+        <div className={styles.card_body}>
+          <div className={styles.card_name}>{name}</div>
+
+          {/* TODO come back to this when you have loading design  */}
+
           {status === 'creating' || status === 'updating'
             ? LoadingHub
             : HubLink}
         </div>
 
-        {/* HUBS STATS */}
-        <div className={styles.card_stats}>
-          <div className={`${styles.card_stat} margin-bottom-10`}>
-            <Icon name="users" color="currentColor" />
-            {/* TODO: Working with design to establish all the 'Hub states' this includes 
-            hubs creation / update phases, data points and error handeling, related todo
-            is also to impliment Websocket for data point updates.  */}
+        <hr className={styles.card_hr} />
 
-            {/* TODO: Error Handeling design*/}
-            <span className="margin-left-5">
-              {currentCcu}/{ccuLimit} CCU
-            </span>
+        {/* FOOTER  */}
+        <div className={styles.footer}>
+          <div className={styles.footer_block}>
+            <div className="u-text-center">
+              <Badge name={tier} classProp="margin-bottom-12 u-block" />
+              <div>Hub Tier</div>
+            </div>
           </div>
-          <div className={styles.card_stat}>
-            <Icon name="hard-drive" color="currentColor" />
-            {/* TODO: Error Handeling design*/}
-            <span className="margin-left-5">
-              {currentStorageMb}/{storageLimitMb} MB
-            </span>
+          <div className={styles.footer_block}>
+            <div className="u-text-center">
+              <div className="margin-bottom-12">
+                <span className="u-color-text-main">{currentStorageMb}</span>
+                <span>/{storageLimitMb} MB</span>
+              </div>
+              <div className="flex-justify-center">
+                <div className={styles.progressbar_wrapper}>
+                  <ProgressBar
+                    value={getStoragePercent()}
+                    classProp={styles.progressbar}
+                  />
+                </div>
+              </div>
+              <div>Content Storage Space</div>
+            </div>
           </div>
-        </div>
-
-        {/* CARD ACTIONS  */}
-        <div className={styles.card_actions_wrapper}>
-          <Button
-            onClick={handleSettingClick}
-            classProp="margin-right-15"
-            text="Hub Settings"
-            category={ButtonCategoriesE.PRIMARY_OUTLINE}
-          />
-          <ExternalLink
-            target="_blank"
-            href={`https://${subdomain}.${HUB_ROOT_DOMAIN}/admin`}
-          >
-            <Button
-              text="Admin Panel"
-              category={ButtonCategoriesE.PRIMARY_OUTLINE}
-            />
-          </ExternalLink>
         </div>
       </div>
     </div>

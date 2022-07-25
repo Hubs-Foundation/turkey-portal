@@ -5,6 +5,7 @@ import { HubT } from 'types/General';
 import styles from './dashboard.module.scss';
 import PageHeading from '@Shared/PageHeading/PageHeading';
 import HubCard from '@Cards/HubCard/HubCard';
+import SubCard from '@Cards/SubCard/SubCard'
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
 import { requireAuthentication } from 'services/routeGuard.service';
 import { getHubs } from 'services/hub.service';
@@ -31,32 +32,37 @@ const Dashboard = ({}: DashboardPropsT) => {
         <meta name="description" content="general profile page" />
       </Head>
 
-      {/* <PageHeading title="Dashboard" /> */}
-
       <main className={styles.main}>
+
         {/* Hub Cards  */}
         <div className={styles.cards_wrapper}>
           {hubs.length ? (
-            hubs.map((hub) => {
-              return (
-                <HubCard
-                  key={hub.hubId}
-                  name={hub.name}
-                  tier={hub.tier}
-                  hubId={hub.hubId}
-                  ccuLimit={hub.ccuLimit}
-                  status={hub.status}
-                  storageLimitMb={hub.storageLimitMb}
-                  subdomain={hub.subdomain}
-                  currentCcu={hub.currentCcu}
-                  currentStorageMb={hub.currentStorageMb}
-                />
-              );
+            hubs.map((hub, i) => {
+              if (i === 0) {
+                return (
+                  <HubCard
+                    key={hub.hubId}
+                    name={hub.name}
+                    tier={hub.tier}
+                    hubId={hub.hubId}
+                    ccuLimit={hub.ccuLimit}
+                    status={hub.status}
+                    storageLimitMb={hub.storageLimitMb}
+                    subdomain={hub.subdomain}
+                    currentCcu={hub.currentCcu}
+                    currentStorageMb={hub.currentStorageMb}
+                  />
+                );
+              }
             })
           ) : (
             <SkeletonCard qty={3} category="row" />
           )}
         </div>
+
+        {/* SUBSCRIPTION WIDGET  */}
+        <SubCard classProp={styles.subcard}/>
+
       </main>
     </div>
   );
