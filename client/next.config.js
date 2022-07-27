@@ -6,7 +6,12 @@ const nextConfig = {
   },
   env: {
     HUB_ROOT_DOMAIN: "myhubs.net",
-    API_SERVER: "http://localhost:4000"
+  },
+  serverRuntimeConfig: {
+    API_SERVER: "http://localhost:4000",
+  },
+  publicRuntimeConfig: {
+    API_SERVER: process.env.PUBLIC_API_SERVER
   }
 }
 
