@@ -3,18 +3,22 @@ import type { GetServerSidePropsContext } from 'next';
 import { useEffect, useState } from 'react';
 import { HubT } from 'types/General';
 import styles from './dashboard.module.scss';
-import PageHeading from '@Shared/PageHeading/PageHeading';
 import HubCard from '@Cards/HubCard/HubCard';
-import SubCard from '@Cards/SubCard/SubCard'
+import SubCard from '@Cards/SubCard/SubCard';
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
 import { requireAuthentication } from 'services/routeGuard.service';
+import { getSubscription, SubscriptionT } from 'services/subscription.service';
 import { getHubs } from 'services/hub.service';
 
 type DashboardPropsT = {};
 
 const Dashboard = ({}: DashboardPropsT) => {
   const hubsInit: HubT[] = [];
+  const subscriptionInit: SubscriptionT = {
+    next_payment : ''
+  };
   const [hubs, setHubs] = useState(hubsInit);
+  const [subscription, setSubscription] = useState<SubscriptionT>(subscriptionInit);
 
   /**
    * Get All Hubs
@@ -22,6 +26,10 @@ const Dashboard = ({}: DashboardPropsT) => {
   useEffect(() => {
     getHubs().then((hubs) => {
       setHubs(hubs);
+    });
+
+    getSubscription().then((subscription) => {
+      setSubscription(subscription)
     });
   }, []);
 
@@ -33,7 +41,6 @@ const Dashboard = ({}: DashboardPropsT) => {
       </Head>
 
       <main className={styles.main}>
-
         {/* Hub Cards  */}
         <div className={styles.cards_wrapper}>
           {hubs.length ? (
@@ -61,8 +68,10 @@ const Dashboard = ({}: DashboardPropsT) => {
         </div>
 
         {/* SUBSCRIPTION WIDGET  */}
-        <SubCard classProp={styles.subcard}/>
-
+        <SubCard 
+          classProp={styles.subcard} 
+          subscription={subscription}
+        />
       </main>
     </div>
   );

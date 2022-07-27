@@ -1,4 +1,4 @@
-@use 'styles/boilerplate.scss' as *;
+@use 'styles/boilerplate.scss'as *;
 
 .card {
   &_wrapper {
@@ -51,12 +51,12 @@
   }
 
 
- 
+
   &_stat {
     @include font-size(14);
     display: flex;
     align-items: center;
-    color:$grey;
+    color: $grey;
   }
 
   &_name {
@@ -84,7 +84,7 @@
 
   &_block {
     @include primary-font(500);
-    @include font-size(16); 
+    @include font-size(16);
     line-height: 24px;
     width: 50%;
     display: flex;
@@ -96,25 +96,51 @@
 }
 
 
-.storage {
-
-  &_current {
-
-  }
-
-  &_max {
-    
-  }
-}
-
 .progressbar {
 
-  // :global(.progress_value){
-  //   background-color: red;
-  // }
+  &_warning {
+    :global(.progress_value) {
+      background-color: $color-semantic-warning;
+    }
+  }
+
+  &_critical {
+    :global(.progress_value) {
+      background-color: $color-semantic-critical;
+    }
+  }
 
   &_wrapper {
     width: 100px;
     margin-bottom: 12px;
+    position: relative;
+  }
+}
+
+.storage_icon {
+  position: absolute;
+  left: -32px;
+  top: -19px;
+
+  &_warning {
+    stroke: $color-semantic-warning;
+  }
+
+  &_critical {
+    stroke: $color-semantic-critical;
+  }
+}
+
+.status {
+  &_warning {
+    &>span {
+      color:  $color-semantic-warning;
+    }
+  }
+
+  &_critical {
+    &>span {
+      color: $color-semantic-critical;
+    }
   }
 }

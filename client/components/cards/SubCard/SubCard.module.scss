@@ -6,17 +6,17 @@
   padding: 24px;
   width: 487px;
   border-radius: 20px;
+  height: 393px;
 
   @include desktop-large-down {
-		width: 100%;
-	}
+    width: 100%;
+  }
 }
 
-.container {}
 
 .header {
   display: flex;
-  align-items:flex-end;
+  align-items: flex-end;
   margin-bottom: 32px;
 
   &_block {

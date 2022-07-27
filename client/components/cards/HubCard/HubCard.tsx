@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from './HubCard.module.scss';
 import {
@@ -6,11 +6,10 @@ import {
   Badge,
   ProgressBar,
   ButtonCategoriesE,
-  ButtonSizesE,
+  Icon,
+  CopyButton
 } from '@mozilla/lilypad';
-import Icon from '@Shared/Icon/Icon';
 import ExternalLink from '@Shared/ExternalLink/ExternalLink';
-import CopyButton from '../../shared/CopyButton/CopyButton';
 
 import Spinner from '@Shared/Spinner/Spinner';
 import { TierT, StatusT } from 'types/General';
@@ -30,6 +29,12 @@ type HubCardPropsT = {
   classProp?: string;
 };
 
+export enum StorageStateE {
+  DEFAULT = 'default',
+  WARNING = 'warning',
+  CRITICAL = 'critical',
+}
+
 const HubCard = ({
   name,
   tier,
@@ -43,12 +48,9 @@ const HubCard = ({
   classProp = '',
 }: HubCardPropsT) => {
   const router = useRouter();
-  const handleSettingClick = useCallback(() => {
-    router.push({
-      pathname: '/hubs/[hub_id]',
-      query: { hub_id: hubId },
-    });
-  }, [hubId, router]);
+  const [storageState, setStorageState] = useState<StorageStateE>(
+    StorageStateE.DEFAULT
+  );
 
   /**
    * Get % Value of MB used
@@ -58,6 +60,26 @@ const HubCard = ({
 
     return (currentStorageMb / storageLimitMb) * 100;
   };
+
+  useEffect(() => {
+    const storagePercent = getStoragePercent();
+    let status = StorageStateE.DEFAULT;
+
+    storagePercent > 75 && (status = StorageStateE.WARNING);
+    storagePercent === 100 && (status = StorageStateE.CRITICAL);
+
+    setStorageState(status);
+  }, [getStoragePercent]);
+
+  /**
+   * Handle Setting Click
+   */
+  const handleSettingClick = useCallback(() => {
+    router.push({
+      pathname: '/hubs/[hub_id]',
+      query: { hub_id: hubId },
+    });
+  }, [hubId, router]);
 
   /**
    * Hub Loading State
@@ -90,11 +112,7 @@ const HubCard = ({
         category={ButtonCategoriesE.PRIMARY_CLEAR}
       /> */}
 
-
-      <CopyButton/>
-
-
-
+      <CopyButton value={`${subdomain}.${HUB_ROOT_DOMAIN}`}/>
     </div>
   );
 
@@ -139,17 +157,24 @@ const HubCard = ({
               <div>Hub Tier</div>
             </div>
           </div>
+
           <div className={styles.footer_block}>
             <div className="u-text-center">
-              <div className="margin-bottom-12">
+              <div className={`margin-bottom-12 ${styles['status_' + storageState]}`}>
                 <span className="u-color-text-main">{currentStorageMb}</span>
                 <span>/{storageLimitMb} MB</span>
               </div>
               <div className="flex-justify-center">
                 <div className={styles.progressbar_wrapper}>
+                  {storageState !== StorageStateE.DEFAULT ? (
+                    <Icon
+                      classProp={`${styles.storage_icon} ${styles['storage_icon_' + storageState]}`}
+                      name="alert-triangle"
+                    />
+                  ) : null}
                   <ProgressBar
                     value={getStoragePercent()}
-                    classProp={styles.progressbar}
+                    classProp={styles['progressbar_' + storageState]}
                   />
                 </div>
               </div>

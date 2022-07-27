@@ -1,15 +1,18 @@
 import styles from './SubCard.module.scss';
 import CardButton from '../../shared/CardButton/CardButton';
+import { SubscriptionT } from 'services/subscription.service';
 
 type SubCardPropsT = {
+  subscription: SubscriptionT
   classProp?: string;
 };
 
-const SubCard = ({ classProp = '' }: SubCardPropsT) => {
+const SubCard = ({ subscription, classProp = '' }: SubCardPropsT) => {
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
       <div className={styles.container}>
         <div className={styles.header}>
+          
           {/* PAYMENT */}
           <div className={styles.header_block}>
             <div>
@@ -21,7 +24,7 @@ const SubCard = ({ classProp = '' }: SubCardPropsT) => {
 
           {/* NEXT PAYMENT */}
           <div className={styles.header_block}>
-            <div className={styles.month}>February</div>
+            <div className={styles.month}>{subscription.next_payment}</div>
             <div className={styles.label}>Next Payment</div>
           </div>
         </div>
@@ -35,7 +38,7 @@ const SubCard = ({ classProp = '' }: SubCardPropsT) => {
         />
 
         <CardButton
-          icon="settings"
+          icon="credit-card"
           title="Manage Subscription"
           description="Descriptive Text"
         />

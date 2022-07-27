@@ -50,11 +50,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
     <>
       {/* Go To Firefox Account  */}
       <div className={`padding-10 ${styles.account_details_wrapper}`}>
-        <Avatar 
-          src={account.profilePic} 
-          size={30} 
-          alt="profile picture" 
-        />
+        <Avatar src={account.profilePic} size={30} alt="profile picture" />
         <div className={styles.account_details}>
           <div className={styles.account_details_title}> {account.email}</div>
           <ExternalLink
@@ -68,7 +64,6 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
           >
             Manage your Firefox Account
           </ExternalLink>
-          
         </div>
       </div>
 
@@ -76,29 +71,40 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
 
       {/* Sign Out  */}
       <div className={`padding-10`}>
-      <ExternalLink
-            classProp={styles.account_manage_link}
-            icon="external-link"
-            target="_blank"
-            href={'#'}
-            onClick={() => {
-              dropdownRef.current?.closeDropdown();
-            }}
-          >
-            Manage your Firefox Account
-          </ExternalLink>
+        {/* <ExternalLink
+          classProp={styles.account_manage_link}
+          icon="external-link"
+          target="_blank"
+          href={'#'}
+          onClick={() => {
+            dropdownRef.current?.closeDropdown();
+          }}
+        >
+          Manage your Firefox Account
+        </ExternalLink> */}
 
-          <ExternalLink
-            classProp={styles.account_manage_link}
-            icon="external-link"
-            target="_blank"
-            href={'#'}
-            onClick={() => {
-              dropdownRef.current?.closeDropdown();
-            }}
-          >
-           Sign Out of Hubs
-          </ExternalLink>
+        {/* <ExternalLink
+          classProp={styles.account_manage_link}
+          icon="external-link"
+          target="_blank"
+          href={'#'}
+          onClick={() => {
+            dropdownRef.current?.closeDropdown();
+          }}
+        >
+          Sign Out of Hubs
+        </ExternalLink> */}
+
+        <a
+        href="#"
+        target="_blank"
+        className="dropdown-link"
+        onClick={(e) => {}}>
+          <Icon name="chevron-down" size={30} />
+          Sign Out of Hubs
+        </a>
+
+
       </div>
     </>
   );
@@ -132,6 +138,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
           {/* Account information  */}
           <div className="flex-align-center">
             <Button
+              classProp={styles.exit_button}
               category={ButtonCategoriesE.SECONDARY_OUTLINE}
               text="Exit Dashboard"
             />

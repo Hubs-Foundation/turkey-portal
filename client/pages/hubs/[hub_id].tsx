@@ -4,22 +4,28 @@ import { HubT, UpdateHubT } from 'types/General';
 import { getHub, updateHub } from 'services/hub.service';
 import { requireAuthentication } from 'services/routeGuard.service';
 import Head from 'next/head';
-import PageHeading from '@Shared/PageHeading/PageHeading';
-import Badge from '@Shared/Badge/Badge';
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
 import { ToastContainer, toast } from 'react-toastify';
-import HubForm, { HubFormT } from '@Forms/HubForm/HubForm';
+import HubFormCard, { HubFormCardT } from '@Cards/HubFormCard/HubFormCard';
 import type { GetServerSidePropsContext } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './[hub_id].module.scss';
+import { BadgeCategoriesE, Badge } from '@mozilla/lilypad';
+import { getSubscription, SubscriptionT } from 'services/subscription.service';
+import SubCard from '@Cards/SubCard/SubCard';
 
 type HubDetailsViewPropsT = {};
 
 const HubDetailsView = ({}: HubDetailsViewPropsT) => {
+  const subscriptionInit: SubscriptionT = {
+    next_payment: '',
+  };
   const router = useRouter();
   const [hub, setHub] = useState<HubT | null>(null);
   const [loading, setLoading] = useState(true);
   const { hub_id } = router.query;
+  const [subscription, setSubscription] =
+    useState<SubscriptionT>(subscriptionInit);
 
   /**
    * Get Hub By ID
@@ -30,6 +36,15 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
       setHub(hub);
     });
   }, [hub_id]);
+
+  /**
+   * Get Hub Subscription
+   */
+  useEffect(() => {
+    getSubscription().then((subscription) => {
+      setSubscription(subscription);
+    });
+  }, []);
 
   const launchToastError = () => {
     // TODO: set up error logger
@@ -45,7 +60,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
     setLoading(false);
   };
 
-  const handleFormSubmit = ({ name, tier, subdomain }: HubFormT) => {
+  const handleFormSubmit = ({ name, subdomain }: HubFormCardT) => {
     setLoading(true);
     if (!hub) {
       launchToastError();
@@ -56,14 +71,14 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
      * Update Date from from
      * keep all other data as is
      */
-    const { ccuLimit, status, storageLimitMb, hubId } = hub;
+    const { ccuLimit, status, storageLimitMb, hubId, tier } = hub;
     const updatedHub: UpdateHubT = {
       name,
       ccuLimit,
       status,
       storageLimitMb,
       subdomain,
-      tier,
+      tier
     };
 
     updateHub(`${hubId}`, updatedHub).then((resp) => {
@@ -82,33 +97,14 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
         <meta name="description" content="detailed information about a Hub" />
       </Head>
 
-      <PageHeading title="Hub Settings" />
-
       {!loading && hub !== null ? (
-        <main className="flex-justify-center margin-10">
-          <div className={styles.settings_grid_wrapper}>
-            <div className={styles.settings_form_wrapper}>
-              <HubForm hub={hub} onSubmit={handleFormSubmit} />
-            </div>
-            <div className={styles.summary_wrapper}>
-              <h3 className={styles.summary_title}>Summary</h3>
-              <ul className={styles.summary_attributes}>
-                <li>
-                  Tier:{' '}
-                  <Badge
-                    name={hub.tier}
-                    category={hub.tier === 'free' ? 'primary' : 'secondary'}
-                  />
-                </li>
-                <li>People: {hub.ccuLimit}</li>
-                <li>
-                  {/* TODO: what do we do with no storage here  */}
-                  Capacity:{' '}
-                  {hub.currentStorageMb ? hub.currentStorageMb : 'Creating'}
-                </li>{' '}
-              </ul>
-            </div>
+        <main className={styles.main}>
+          <div className={styles.cards_wrapper}>
+            <HubFormCard hub={hub} onSubmit={handleFormSubmit} />
           </div>
+
+          {/* SUBSCRIPTION WIDGET  */}
+          <SubCard classProp={styles.subcard} subscription={subscription} />
         </main>
       ) : (
         <div className="flex-justify-center">
