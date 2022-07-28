@@ -81,8 +81,7 @@ config :dash, Dash.RetClient,
   timeout_ms: 300_000,
   wait_ms: 5000
 
-config :cors_plug,
-  origin: ["http://localhost:3000"]
+config :dash, DashWeb.Endpoint, cors_origins: ["http://localhost:3000"]
 
 # ## SSL Support
 #
