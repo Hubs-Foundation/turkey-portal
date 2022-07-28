@@ -7,6 +7,7 @@
     box-shadow: 0px 0px 8px rgba(97, 97, 97, 0.35);
     border-radius: 20px;
     background-color: $color-neutral-0;
+    margin-bottom: 32px;
 
     @include desktop-large-down {
       width: 100%;
@@ -50,15 +51,6 @@
     margin: 30px 0;
   }
 
-
-
-  &_stat {
-    @include font-size(14);
-    display: flex;
-    align-items: center;
-    color: $grey;
-  }
-
   &_name {
     @include secondary-font();
     @include font-size(36);
@@ -71,31 +63,10 @@
   &_domain {
     display: flex;
   }
-
-  &_actions_wrapper {
-    display: flex;
-    align-items: center;
-  }
 }
 
 
-.footer {
-  display: flex;
-
-  &_block {
-    @include primary-font(500);
-    @include font-size(16);
-    line-height: 24px;
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    // color: $color-text-main;
-    color: $color-text-subtle;
-  }
-}
-
-
+// Progress Bar States
 .progressbar {
 
   &_warning {
@@ -131,10 +102,12 @@
   }
 }
 
+
+// Status States 
 .status {
   &_warning {
     &>span {
-      color:  $color-semantic-warning;
+      color: $color-semantic-warning;
     }
   }
 
@@ -142,5 +115,21 @@
     &>span {
       color: $color-semantic-critical;
     }
+  }
+}
+
+// Footer 
+.footer {
+  display: flex;
+
+  &_block {
+    @include primary-font(500);
+    @include font-size(16);
+    line-height: 24px;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    color: $color-text-subtle;
   }
 }

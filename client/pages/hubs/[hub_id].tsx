@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { HubT, UpdateHubT } from 'types/General';
 import { getHub, updateHub } from 'services/hub.service';
@@ -10,13 +10,13 @@ import HubFormCard, { HubFormCardT } from '@Cards/HubFormCard/HubFormCard';
 import type { GetServerSidePropsContext } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './[hub_id].module.scss';
-import { BadgeCategoriesE, Badge } from '@mozilla/lilypad';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
 import SubCard from '@Cards/SubCard/SubCard';
 
 type HubDetailsViewPropsT = {};
 
 const HubDetailsView = ({}: HubDetailsViewPropsT) => {
+  // TODO : Get real sub data
   const subscriptionInit: SubscriptionT = {
     next_payment: '',
   };
@@ -24,8 +24,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
   const [hub, setHub] = useState<HubT | null>(null);
   const [loading, setLoading] = useState(true);
   const { hub_id } = router.query;
-  const [subscription, setSubscription] =
-    useState<SubscriptionT>(subscriptionInit);
+  const [subscription, setSubscription] = useState<SubscriptionT>(subscriptionInit);
 
   /**
    * Get Hub By ID
@@ -60,35 +59,44 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
     setLoading(false);
   };
 
-  const handleFormSubmit = ({ name, subdomain }: HubFormCardT) => {
-    setLoading(true);
-    if (!hub) {
-      launchToastError();
-      return;
-    }
+  /**
+   * Handle Form Submit
+   */
+  const handleFormSubmit = useCallback(
+    ({ name, subdomain }: HubFormCardT) => {
+      setLoading(true);
+      if (!hub) {
+        launchToastError();
+        return;
+      }
 
-    /**
-     * Update Date from from
-     * keep all other data as is
-     */
-    const { ccuLimit, status, storageLimitMb, hubId, tier } = hub;
-    const updatedHub: UpdateHubT = {
-      name,
-      ccuLimit,
-      status,
-      storageLimitMb,
-      subdomain,
-      tier
-    };
+      /**
+       * Update Date from from
+       * keep all other data as is
+       */
+      const { ccuLimit, status, storageLimitMb, hubId, tier } = hub;
+      const updatedHub: UpdateHubT = {
+        name,
+        ccuLimit,
+        status,
+        storageLimitMb,
+        subdomain,
+        tier,
+      };
 
-    updateHub(`${hubId}`, updatedHub).then((resp) => {
-      resp?.status === 200
-        ? toast.success(`Hub: ${name} has been updated!`)
-        : toast.error('Sorry, there was an error updating this Hub.');
+      updateHub(`${hubId}`, updatedHub).then((resp) => {
+        if (resp?.status === 200) {
+          toast.success(`Hub: ${name} has been updated!`);
+          setHub(resp?.data);
+        } else {
+          toast.error('Sorry, there was an error updating this Hub.');
+        }
 
-      setLoading(false);
-    });
-  };
+        setLoading(false);
+      });
+    },
+    [hub]
+  );
 
   return (
     <div className="page_wrapper">

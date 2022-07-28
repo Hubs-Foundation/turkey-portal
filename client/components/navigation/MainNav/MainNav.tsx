@@ -1,12 +1,11 @@
 import { useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import styles from './MainNav.module.scss';
-import Image from 'next/image';
 import { logOut } from 'services/account.service';
 import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
 import ExternalLink from '@Shared/ExternalLink/ExternalLink';
-// import Dropdown, {dropdownT} from '@Shared/Dropdown/Dropdown';
+import BlobIcon from '@Logos/BlobIcon/BlobIcon';
 import {
   Button,
   Avatar,
@@ -14,9 +13,7 @@ import {
   Icon,
   Dropdown,
   dropdownT,
-  AlignmentT,
 } from '@mozilla/lilypad';
-import BlobIcon from '@Logos/BlobIcon/BlobIcon';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -71,40 +68,17 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
 
       {/* Sign Out  */}
       <div className={`padding-10`}>
-        {/* <ExternalLink
-          classProp={styles.account_manage_link}
-          icon="external-link"
-          target="_blank"
-          href={'#'}
-          onClick={() => {
-            dropdownRef.current?.closeDropdown();
-          }}
-        >
-          Manage your Firefox Account
-        </ExternalLink> */}
-
-        {/* <ExternalLink
-          classProp={styles.account_manage_link}
-          icon="external-link"
-          target="_blank"
-          href={'#'}
-          onClick={() => {
-            dropdownRef.current?.closeDropdown();
-          }}
-        >
-          Sign Out of Hubs
-        </ExternalLink> */}
-
         <a
-        href="#"
-        target="_blank"
-        className="dropdown-link"
-        onClick={(e) => {}}>
+          href="#"
+          target="_blank"
+          className="dropdown-link"
+          onClick={() => {
+            onLogOutClick();
+          }}
+        >
           <Icon name="chevron-down" size={30} />
           Sign Out of Hubs
         </a>
-
-
       </div>
     </>
   );

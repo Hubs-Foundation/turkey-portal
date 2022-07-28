@@ -3,20 +3,24 @@ import CardButton from '../../shared/CardButton/CardButton';
 import { SubscriptionT } from 'services/subscription.service';
 
 type SubCardPropsT = {
-  subscription: SubscriptionT
+  subscription: SubscriptionT;
+  price?: number;
   classProp?: string;
 };
 
-const SubCard = ({ subscription, classProp = '' }: SubCardPropsT) => {
+const SubCard = ({
+  subscription,
+  price = 5,
+  classProp = '',
+}: SubCardPropsT) => {
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
       <div className={styles.container}>
         <div className={styles.header}>
-          
           {/* PAYMENT */}
           <div className={styles.header_block}>
             <div>
-              <span className={styles.price}>$5.00</span>
+              <span className={styles.price}>${price}.00</span>
               <span className={styles.currency}>USD</span>
             </div>
             <div className={styles.label}>Monthly Payment</div>
@@ -31,15 +35,15 @@ const SubCard = ({ subscription, classProp = '' }: SubCardPropsT) => {
 
         {/* WIDGET ACTIONS */}
         <CardButton
-          icon="settings"
+          icon="credit-card"
           title="Manage Subscription"
           description="Descriptive Text"
           classProp="margin-bottom-24"
         />
 
         <CardButton
-          icon="credit-card"
-          title="Manage Subscription"
+          icon="settings"
+          title="Admin Panel"
           description="Descriptive Text"
         />
       </div>

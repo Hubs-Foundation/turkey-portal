@@ -14,10 +14,12 @@ type DashboardPropsT = {};
 
 const Dashboard = ({}: DashboardPropsT) => {
   const hubsInit: HubT[] = [];
+  const subPrice = 5;
   const subscriptionInit: SubscriptionT = {
     next_payment : ''
   };
   const [hubs, setHubs] = useState(hubsInit);
+  const [subscriptionTotal, setSubscriptionTotal] = useState<number>(subPrice);
   const [subscription, setSubscription] = useState<SubscriptionT>(subscriptionInit);
 
   /**
@@ -26,12 +28,14 @@ const Dashboard = ({}: DashboardPropsT) => {
   useEffect(() => {
     getHubs().then((hubs) => {
       setHubs(hubs);
+      setSubscriptionTotal(hubs.length * subPrice)
     });
 
     getSubscription().then((subscription) => {
       setSubscription(subscription)
     });
   }, []);
+
 
   return (
     <div className="page_wrapper">
@@ -45,7 +49,6 @@ const Dashboard = ({}: DashboardPropsT) => {
         <div className={styles.cards_wrapper}>
           {hubs.length ? (
             hubs.map((hub, i) => {
-              if (i === 0) {
                 return (
                   <HubCard
                     key={hub.hubId}
@@ -60,7 +63,6 @@ const Dashboard = ({}: DashboardPropsT) => {
                     currentStorageMb={hub.currentStorageMb}
                   />
                 );
-              }
             })
           ) : (
             <SkeletonCard qty={3} category="row" />
@@ -71,6 +73,7 @@ const Dashboard = ({}: DashboardPropsT) => {
         <SubCard 
           classProp={styles.subcard} 
           subscription={subscription}
+          price={subscriptionTotal}
         />
       </main>
     </div>

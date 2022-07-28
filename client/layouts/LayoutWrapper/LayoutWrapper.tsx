@@ -25,7 +25,7 @@ const LayoutWrapper = ({ children, componentName }: LayoutWrapperProps) => {
 
   return (
     // <main data-theme={themeContext.theme}>
-    <main data-theme='light'>
+    <main data-theme={themeContext.theme}>
       {!showLoggedOutUi ? <MainNav MobileMenuClick={toggleMobileNav} /> : null}
       <div
         className={
