@@ -19,6 +19,7 @@
 
   @include desktop-large-down {
     margin-right: 0;
+    min-width: initial;
   }
 }
 

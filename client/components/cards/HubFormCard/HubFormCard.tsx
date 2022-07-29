@@ -87,6 +87,7 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
               control={control}
               render={({ field }) => (
                 <Input
+                  maxLength={24}
                   classProp="u-width-100"
                   label="Hub Name"
                   placeholder="Hub Name"
@@ -99,11 +100,14 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
 
             {/* HUB SUBDOMAIN / ADDRESS  */}
             <div className={styles.address_wrapper}>
+              {/* TODO: FOLLOW UP WITH UX ON HOW WE WANT TO HANDLE MAX LENGHT  */}
               <Controller
                 name="subdomain"
                 control={control}
                 render={({ field }) => (
                   <Input
+                    minLength={3}
+                    maxLength={64}
                     classProp="margin-bottom-10"
                     placeholder="Web Address (URL)"
                     label="Web Address (URL)"

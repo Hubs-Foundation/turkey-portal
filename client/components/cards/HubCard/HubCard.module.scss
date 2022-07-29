@@ -67,18 +67,14 @@
 
 
 // Progress Bar States
-.progressbar {
+div.progressbar {
 
   &_warning {
-    :global(.progress_value) {
-      background-color: $color-semantic-warning;
-    }
+    background-color: $color-semantic-warning;
   }
 
   &_critical {
-    :global(.progress_value) {
-      background-color: $color-semantic-critical;
-    }
+    background-color: $color-semantic-critical;
   }
 
   &_wrapper {

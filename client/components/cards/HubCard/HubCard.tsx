@@ -6,8 +6,9 @@ import {
   Badge,
   ProgressBar,
   ButtonCategoriesE,
+  BadgeCategoriesE,
   Icon,
-  CopyButton
+  CopyButton,
 } from '@mozilla/lilypad';
 import ExternalLink from '@Shared/ExternalLink/ExternalLink';
 
@@ -106,13 +107,7 @@ const HubCard = ({
         {subdomain}.{HUB_ROOT_DOMAIN}
       </ExternalLink>
 
-      {/* <Button
-        icon="copy"
-        size={ButtonSizesE.SMALL}
-        category={ButtonCategoriesE.PRIMARY_CLEAR}
-      /> */}
-
-      <CopyButton value={`${subdomain}.${HUB_ROOT_DOMAIN}`}/>
+      <CopyButton value={`${subdomain}.${HUB_ROOT_DOMAIN}`} />
     </div>
   );
 
@@ -141,7 +136,6 @@ const HubCard = ({
           <div className={styles.card_name}>{name}</div>
 
           {/* TODO come back to this when you have loading design  */}
-
           {status === 'creating' || status === 'updating'
             ? LoadingHub
             : HubLink}
@@ -153,14 +147,18 @@ const HubCard = ({
         <div className={styles.footer}>
           <div className={styles.footer_block}>
             <div className="u-text-center">
-              <Badge name={tier} classProp="margin-bottom-12 u-block" />
+              <Badge name={tier} classProp="margin-bottom-12 u-block" category={BadgeCategoriesE.PRIMARY} />
               <div>Hub Tier</div>
             </div>
           </div>
 
           <div className={styles.footer_block}>
             <div className="u-text-center">
-              <div className={`margin-bottom-12 ${styles['status_' + storageState]}`}>
+              <div
+                className={`margin-bottom-12 ${
+                  styles['status_' + storageState]
+                }`}
+              >
                 <span className="u-color-text-main">{currentStorageMb}</span>
                 <span>/{storageLimitMb} MB</span>
               </div>
@@ -168,13 +166,15 @@ const HubCard = ({
                 <div className={styles.progressbar_wrapper}>
                   {storageState !== StorageStateE.DEFAULT ? (
                     <Icon
-                      classProp={`${styles.storage_icon} ${styles['storage_icon_' + storageState]}`}
+                      classProp={`${styles.storage_icon} ${
+                        styles['storage_icon_' + storageState]
+                      }`}
                       name="alert-triangle"
                     />
                   ) : null}
                   <ProgressBar
                     value={getStoragePercent()}
-                    classProp={styles['progressbar_' + storageState]}
+                    classValueProp={styles['progressbar_' + storageState]}
                   />
                 </div>
               </div>
