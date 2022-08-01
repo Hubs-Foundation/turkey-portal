@@ -3,38 +3,7 @@ defmodule Dash.Hub do
   import Ecto.Query
   import Ecto.Changeset
   require Logger
-  alias Dash.{Repo, RetClient}
-
-  @whole_reserved_subdomains [
-    "dashboard",
-    "dash",
-    "admin",
-    "hubs",
-    "email",
-    "mail",
-    "auth",
-    "dev",
-    "api"
-  ]
-
-  @partial_reserved_subdomains [
-    "mozilla",
-    "mozi11a",
-    "mozi1la",
-    "mozil1a",
-    "m0zilla",
-    "m0zi11a",
-    "m0zi1la",
-    "m0zil1a"
-  ]
-  @denied_subdomains_pattern (@partial_reserved_subdomains ++
-                                Dash.SubdomainDenyList.naughty_words())
-                             |> Enum.map(&Regex.escape/1)
-                             |> Enum.join("|")
-  @denied_subdomains_regex Regex.compile!(
-                             "(?:#{@denied_subdomains_pattern})",
-                             "iu"
-                           )
+  alias Dash.{SubdomainDenial, Repo, RetClient}
 
   @primary_key {:hub_id, :id, autogenerate: true}
 
@@ -88,7 +57,7 @@ defmodule Dash.Hub do
   end
 
   defp deny_reserved_and_naughty_subdomain(:subdomain, subdomain) do
-    if is_denied_subdomain(subdomain) do
+    if SubdomainDenial.is_denied_subdomain(subdomain) do
       [subdomain: "denied"]
     else
       []
@@ -240,7 +209,7 @@ defmodule Dash.Hub do
     downcased_subdomain = subdomain |> String.downcase()
 
     cond do
-      is_denied_subdomain(downcased_subdomain) ->
+      SubdomainDenial.is_denied_subdomain(downcased_subdomain) ->
         {:error, :subdomain_denied}
 
       subdomain_exists(excluded_hub_id, downcased_subdomain) ->
@@ -249,11 +218,6 @@ defmodule Dash.Hub do
       true ->
         {:ok}
     end
-  end
-
-  defp is_denied_subdomain(subdomain) do
-    Enum.member?(@whole_reserved_subdomains, subdomain) or
-      Regex.match?(@denied_subdomains_regex, subdomain)
   end
 
   defp subdomain_exists(excluded_hub_id, subdomain) do
@@ -270,7 +234,8 @@ defmodule Dash.Hub do
     Task.Supervisor.async(Dash.TaskSupervisor, fn ->
       with {:ok, %{status_code: status_code}} when status_code < 400 <-
              Dash.OrchClient.update_subdomain(updated_hub),
-           {:ok} <- Dash.RetClient.wait_until_healthy(updated_hub) do
+           {:ok} <- Dash.RetClient.wait_until_healthy(updated_hub),
+           {:ok} <- Dash.RetClient.rewrite_assets(previous_hub, updated_hub) do
         set_hub_to_ready(updated_hub)
       else
         err ->

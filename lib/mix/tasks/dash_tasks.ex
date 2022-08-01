@@ -122,7 +122,7 @@ defmodule Mix.Tasks.Dash.GenerateLocalToken do
           "exp" => token_expiry_timestamp,
           "sub" => "local-user-uid",
           "fxa_email" => "local-user@turkey.local",
-          "fxa_pic" => "/images/local-user.svg",
+          "fxa_pic" => "http://localhost:4000/images/local-user.svg",
           "fxa_displayName" => "Local User"
         },
         claims_json

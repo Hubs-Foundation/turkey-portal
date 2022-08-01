@@ -1,11 +1,10 @@
-name: turkeydashboard
+name: turkeydashboardclient
 on:
   push:
     branches: 
-    paths-ignore: 
-      - "README.md"
-      - "client/**"
-      - '.github/workflows/turkeydashboardclient.yml'
+    paths:
+    - 'client/**'
+    - '.github/workflows/turkeydashboardclient.yml'
   workflow_dispatch:
 
 jobs:
@@ -13,6 +12,7 @@ jobs:
     uses: mozilla/hubs-ops/.github/workflows/turkeyGitops.yml@master
     with:
       registry: mozilla
+      codePath: client
       dockerfile: Dockerfile
       DOCKER_HUB_USR: mzcshubs
     secrets:

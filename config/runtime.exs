@@ -36,8 +36,8 @@ if config_env() == :prod do
     username: System.get_env("BASIC_AUTH_USERNAME"),
     password: System.get_env("BASIC_AUTH_PASSWORD")
 
-  # A comma-separated list of origins to allow CORS requests
-  config :cors_plug, origin: (System.get_env("CORS_ORIGINS") || "") |> String.split(",")
+  config :dash, DashWeb.Endpoint,
+    cors_origins: (System.get_env("CORS_ORIGINS") || "") |> String.split(",")
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you

@@ -1,4 +1,4 @@
-defmodule Dash.SubdomainDenyList do
+defmodule Dash.NaughtyWords do
   def naughty_words() do
     # This list derived from the english and international lists in
     # https://github.com/xavier/expletive/tree/master/data (Apache-2.0 license, Xavier Defrang)
