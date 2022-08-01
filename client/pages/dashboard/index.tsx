@@ -7,7 +7,7 @@ import HubCard from '@Cards/HubCard/HubCard';
 import SubCard from '@Cards/SubCard/SubCard';
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
 import { requireAuthentication } from 'services/routeGuard.service';
-import { getSubscription, SubscriptionT } from 'services/subscription.service';
+import { getSubscriptions, SubscriptionT } from 'services/subscription.service';
 import { getHubs } from 'services/hub.service';
 
 type DashboardPropsT = {};
@@ -31,7 +31,7 @@ const Dashboard = ({}: DashboardPropsT) => {
       setSubscriptionTotal(hubs.length * subPrice)
     });
 
-    getSubscription().then((subscription) => {
+    getSubscriptions().then((subscription) => {
       setSubscription(subscription)
     });
   }, []);

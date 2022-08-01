@@ -10,11 +10,13 @@ export type SubscriptionT = {
  * Get Account
  * @returns Account:AccountT{}
  */
-export const getSubscription = async (headers?: AxiosRequestHeaders) => {
+export const getSubscriptions = async (headers?: AxiosRequestHeaders) => {
   const credentials = { withCredentials: true };
   const contextHeaders = { headers: { ...(headers as AxiosRequestHeaders) } };
   const config = headers ? contextHeaders : credentials;
 
+
+  // What is the best struct here .. TODO!!!
   const mockDate = {
     next_payment: 'Februaru 14',
   };
@@ -30,3 +32,6 @@ export const getSubscription = async (headers?: AxiosRequestHeaders) => {
   //   console.error('Error', error);
   // }
 };
+
+
+

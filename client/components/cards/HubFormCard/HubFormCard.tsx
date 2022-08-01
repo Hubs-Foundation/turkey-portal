@@ -76,7 +76,7 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
             icon="arrow-left"
             classProp="margin-right-5"
           />
-          <h1 className={styles.title}>Hub Detials</h1>
+          <h1 className={styles.title}>Hub Details</h1>
         </div>
 
         <form onSubmit={handleSubmit(handleFormSubmit)}>

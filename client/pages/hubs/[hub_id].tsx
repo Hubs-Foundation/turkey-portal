@@ -10,7 +10,7 @@ import HubFormCard, { HubFormCardT } from '@Cards/HubFormCard/HubFormCard';
 import type { GetServerSidePropsContext } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './[hub_id].module.scss';
-import { getSubscription, SubscriptionT } from 'services/subscription.service';
+import { getSubscriptions, SubscriptionT } from 'services/subscription.service';
 import SubCard from '@Cards/SubCard/SubCard';
 
 type HubDetailsViewPropsT = {};
@@ -40,7 +40,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
    * Get Hub Subscription
    */
   useEffect(() => {
-    getSubscription().then((subscription) => {
+    getSubscriptions().then((subscription) => {
       setSubscription(subscription);
     });
   }, []);
