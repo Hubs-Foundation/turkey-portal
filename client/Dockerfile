@@ -2,7 +2,7 @@
 FROM node:18-alpine as builder
 workdir client
 COPY . .
-RUN yarn && yarn run build
+RUN npm install --legacy-peer-deps  && npm run build
 # ---- app stage ----
 FROM node:18-alpine
 WORKDIR "/app"
