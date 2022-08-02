@@ -5,6 +5,7 @@ import Button from '@Shared/Button/Button';
 import { ButtonCategoriesE, ButtonSizesE } from 'types/Form';
 import styles from './sandbox.module.scss';
 import { IconT } from 'types/General'
+import { RadioButton } from '@mozilla/lilypad';
 
 
 /**
@@ -83,6 +84,13 @@ export default function Sandbox() {
         <h1>Sandbox Welcome</h1>
         <section>
           <div>
+            <RadioButton
+              value='test'
+              groupName='test'
+              groupValue='test'
+              label='Lest'
+              id='test'
+            />
             <Button
               category={ButtonCategoriesE.PRIMARY_SOLID}
               icon="arrow-down"
