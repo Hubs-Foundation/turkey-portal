@@ -2,7 +2,8 @@
 FROM node:18-alpine as builder
 workdir client
 COPY . .
-RUN npm install --legacy-peer-deps  && npm run build
+ENV GITHUB_TOKEN=$GITHUB_TOKEN
+RUN npm config set -- "//npm.pkg.github.com/:_authToken" "$GITHUB_TOKEN" && npm install --legacy-peer-deps  && npm run build
 # ---- app stage ----
 FROM node:18-alpine
 WORKDIR "/app"
