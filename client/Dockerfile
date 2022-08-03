@@ -1,5 +1,6 @@
 # ---- build stage ----
 FROM node:18-alpine as builder
+arg GITHUB_TOKEN
 workdir client
 COPY . .
 ENV GITHUB_TOKEN=$GITHUB_TOKEN
