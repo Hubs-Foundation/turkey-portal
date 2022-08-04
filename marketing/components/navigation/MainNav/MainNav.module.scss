@@ -9,7 +9,7 @@
     padding: 20px;
     display: flex;
     justify-content: center;
-    background: $color-background-overlay;
+    background: #ffffff;
 
     @include tablet-down {
       padding: 10px;
@@ -92,7 +92,7 @@ button.dashboard_button {
 .logo {
   @include secondary-font();
   @include font-size(39);
-  color: #ffffff;
+  color: #000;
   margin-right: 8px;
 
   &_wrapper {

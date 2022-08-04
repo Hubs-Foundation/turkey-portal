@@ -1,0 +1,13 @@
+@use 'styles/boilerplate.scss'as *;
+
+.wrapper {
+  color: #fff;
+}
+
+.tiles {
+  display: flex;
+}
+
+.tile_wrapper {
+  padding: 24px;
+}

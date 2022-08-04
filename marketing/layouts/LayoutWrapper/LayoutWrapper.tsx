@@ -19,7 +19,9 @@ const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
   }, []);
 
   return (
-    <main data-theme={themeContext.theme}>
+    // Hard coding light for deving 
+    // <main data-theme={themeContext.theme}>
+    <main data-theme="light">
       <MainNav MobileMenuClick={toggleMobileNav} /> 
       {children}
     </main>
