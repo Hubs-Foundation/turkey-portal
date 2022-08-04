@@ -8,7 +8,7 @@ type LayoutWrapperProps = {
 
 /**
 Note: This component is used to abstract the layout logic from _app.tsx to keep that
-file clean. This is a good palce to managage global contexts, for example we are
+file clean. This is a good place to managage global contexts, for example we are
 watching the color theme below, Another example might be a mobile nav toggle.
 **/
 const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
