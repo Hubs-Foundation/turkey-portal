@@ -51,7 +51,7 @@ config :logger, level: :info
 config :dash, Dash.OrchClient, orch_host: "turkeyorch:889"
 
 config :dash, Dash.RetClient,
-  timeout_ms: 300_000,
+  timeout_ms: 600_000,
   wait_ms: 2000
 
 config :dash, Dash.FeatureFlags,
@@ -60,6 +60,8 @@ config :dash, Dash.FeatureFlags,
   tier_selection: false,
   ccu_selection: false,
   storage_selection: false
+
+config :dash, DashWeb.Plugs.BasicAuth, enabled: false
 
 config :dash, Dash.HubStat, enable_hub_stats: true
 

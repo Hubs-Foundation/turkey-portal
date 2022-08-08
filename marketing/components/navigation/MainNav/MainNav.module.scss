@@ -1,0 +1,102 @@
+@use 'styles/boilerplate'as *;
+
+.main_nav {
+  width: 100%;
+
+  &_wrapper {
+    height: 80px;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    background: #ffffff;
+
+    @include tablet-down {
+      padding: 10px;
+    }
+  }
+
+  &_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1440px;
+    width: 100%;
+  }
+
+  &_contents {
+    display: flex;
+    align-items: center;
+  }
+
+  &_links {
+    margin-left: 50px;
+    display: flex;
+  }
+
+  &_link {
+    @include font-size(14);
+    font-weight: 700;
+    border-bottom: solid $black 2px;
+    padding-bottom: 0;
+    margin-right: 24px;
+    text-decoration: none;
+  }
+
+  &_account {
+    display: flex;
+    margin: 10px;
+  }
+}
+
+button.dashboard_button {
+  @include mobile-down {
+    display: none;
+  }
+}
+
+.mobile {
+  &_menu {
+    display: none;
+    margin-right: 20px;
+
+    @include tablet-down {
+      display: block;
+    }
+  }
+}
+
+.account {
+  &_details {
+    margin-left: 10px;
+
+    &_wrapper {
+      display: flex;
+    }
+
+    &_title {
+      @include h5()
+    }
+  }
+
+  &_manage_link {
+    @include font-size(14)
+  }
+}
+
+.banner_gradient {
+  padding: 4px;
+  background: $gradient-warm;
+}
+
+.logo {
+  @include secondary-font();
+  @include font-size(39);
+  color: #000;
+  margin-right: 8px;
+
+  &_wrapper {
+    display: flex;
+    align-items: center;
+  }
+}

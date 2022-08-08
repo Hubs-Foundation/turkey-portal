@@ -20,7 +20,7 @@ const accountSlice = createSlice({
       // Initialize Account Values
       const { profilePic, displayName, email } = action.payload
       state.isLoggedIn = true
-      state.profilePic = API_SERVER + profilePic
+      state.profilePic = profilePic
       state.displayName = displayName
       state.email = email
     },
