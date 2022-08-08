@@ -1,4 +1,6 @@
 import { useCallback } from 'react';
+import { useRouter } from 'next/router';
+
 import styles from './Hero.module.scss';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 
@@ -21,8 +23,18 @@ const Hero = ({
   ctaLink = '#',
   classProp = '',
 }: HeroPropsT) => {
+  const router = useRouter();
+
   const onCtaClick = useCallback(() => {
     ctaClick && ctaClick();
+
+    // TODO consider adding anchor functionaltiy to the button component
+    // Need to figure out if this is external or internal link / or both.
+    // if internal this is fine but external will need more. 
+    ctaLink &&
+      router.push({
+        pathname: ctaLink,
+      });
   }, [ctaClick]);
 
   return (
@@ -34,8 +46,8 @@ const Hero = ({
         }}
       >
         <div className={styles.contents}>
-          {title ? <h3>{title}</h3> : null}
-          {body ? <h3>{body}</h3> : null}
+          {title && <h3>{title}</h3>}
+          {body && <h3>{body}</h3>}
           <a href={ctaLink}>
             <Button
               text={cta}
