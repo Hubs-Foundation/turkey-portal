@@ -7,6 +7,7 @@ import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
 import Tiers, { TierPropsT } from '@Shared/Tiers/Tiers';
 
 const Home: NextPage = () => {
+  
   const onCtaClick = useCallback(() => {
     console.log('scroll or w.e');
   }, []);
@@ -32,6 +33,10 @@ const Home: NextPage = () => {
     return data;
   }, []);
 
+
+  /**
+   * Mock Tier Data
+   */
   const tiers = useMemo(() => {
     const data: TierPropsT[] = [
       {

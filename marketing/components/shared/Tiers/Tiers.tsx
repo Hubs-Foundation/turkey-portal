@@ -46,23 +46,23 @@ const Tier = ({
         <div>{title}</div>
 
         {/* SUBTITLE  */}
-        {subtitle ? <div>{subtitle}</div> : null}
+        {subtitle && <div>{subtitle}</div>}
 
         {/* TIER INFO  */}
         <div>{info}</div>
 
         {/* LINK - usually a substitute if no CTA  */}
-        {link ? <a href={linkUrl}>{link}</a> : null}
+        {link && <a href={linkUrl}>{link}</a>}
 
         {/* PRICE  */}
-        {price ? <div>{price} per month</div> : null}
+        {price && <div>{price} per month</div>}
 
         {/* CTA  */}
-        {cta ? (
+        {cta && (
           <a href={ctaUrl}>
             <Button category={ButtonCategoriesE.PRIMARY_SOLID} text={cta} />
           </a>
-        ) : null}
+        )}
       </div>
     </section>
   );
