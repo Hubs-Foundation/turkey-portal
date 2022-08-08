@@ -1,6 +1,7 @@
 import { useCallback, ReactNode, useContext } from 'react';
 import { ThemeContext } from 'contexts/ThemeProvider';
 import MainNav from '@Navigation/MainNav/MainNav';
+import Footer from '@Navigation/Footer/Footer'
 
 type LayoutWrapperProps = {
   children: ReactNode;
@@ -24,6 +25,7 @@ const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
     <main data-theme="light">
       <MainNav MobileMenuClick={toggleMobileNav} /> 
       {children}
+      <Footer/>
     </main>
   );
 };

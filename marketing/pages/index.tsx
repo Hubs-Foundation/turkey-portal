@@ -4,12 +4,12 @@ import Head from 'next/head';
 import Hero from '@Shared/Hero/Hero';
 import FiftyFifty, { FiftyFiftyLayoutE } from '@Shared/FiftyFifty/FiftyFifty';
 import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
+import Tiers, { TierPropsT } from '@Shared/Tiers/Tiers';
 
 const Home: NextPage = () => {
   const onCtaClick = useCallback(() => {
     console.log('scroll or w.e');
   }, []);
-
 
   /**
    * Mock Tile Data
@@ -27,6 +27,43 @@ const Home: NextPage = () => {
       {
         image: '/mock_fiftyfifty.jpg',
         title: 'Tile Three',
+      },
+    ];
+    return data;
+  }, []);
+
+  const tiers = useMemo(() => {
+    const data: TierPropsT[] = [
+      {
+        image: '/mock_tier.png',
+        title: 'Free',
+        subtitle: '(Coming Soon)',
+        info: 'Want to be notified when our free offering is available?',
+        link: 'Join the mailing list',
+        linkUrl: '/#',
+        cta: '',
+        ctaUrl: '',
+      },
+      {
+        image: '/mock_tier.png',
+        title: 'Early Access',
+        subtitle: '',
+        info: 'Want to be notified when our free offering is available?',
+        price: '$20',
+        link: '',
+        linkUrl: '',
+        cta: 'Sign in/ Sign up',
+        ctaUrl: '/#',
+      },
+      {
+        image: '/mock_tier.png',
+        title: 'Business',
+        subtitle: '(Coming Soon)',
+        info: 'Want to be notified when our free offering is available?',
+        link: 'Contact Us',
+        linkUrl: '/#',
+        cta: '',
+        ctaUrl: '',
       },
     ];
     return data;
@@ -71,6 +108,7 @@ const Home: NextPage = () => {
           title="The best place(s) to meet"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
         />
+        <Tiers tiers={tiers}/>
       </main>
     </div>
   );
