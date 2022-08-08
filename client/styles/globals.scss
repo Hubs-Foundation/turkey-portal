@@ -72,7 +72,7 @@ main[data-theme="light"] {
 
 // PLACE HOLDER FOR DARK VALUES 
 main[data-theme="dark"] {
-  --color-interaction-primary: #5282FF;
+  --color-interaction-primary: #df52ff;
   --color-interaction-primary-hover:#170696;
   --color-interaction-primary-active:#140968;
   --color-interaction-primary-disabled: #BABBBC;
@@ -92,7 +92,7 @@ main[data-theme="dark"] {
   --color-semantic-info-hover:#000000;
   --color-semantic-info-active:#000000;
   --color-semantic-disabled:#000000;
-  --color-semantic-success:#000000;
+  --color-semantic-success:#3dbe2c;
   --color-semantic-success-hover:#000000;
   --color-semantic-success-active:#000000;
   --color-semantic-success-disabled:#000000;
@@ -100,11 +100,11 @@ main[data-theme="dark"] {
   --color-semantic-warning-hover:#000000;
   --color-semantic-warning-active:#000000;
   --color-semantic-warning-disabled:#000000;
-  --color-semantic-critical:#000000;
+  --color-semantic-critical:#de0101;
   --color-semantic-critical-hover:#000000;
   --color-semantic-critical-active:#000000;
   --color-semantic-critical-disabled:#000000;
-  --color-text-main:#222222;
+  --color-text-main:#ffffff;
   --color-text-subtitle:#8F8F8F;
   --color-text-reverse:#FFFFFF;
   --color-text-reverse-subtle:#E7E7E7;

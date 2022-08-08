@@ -32,17 +32,6 @@
   }
 }
 
-.address {
-  &_wrapper {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  &_preview {
-    @include font-size(14);
-    margin-top: 34px;
-  }
-}
 
 .summary {
   &_wrapper {

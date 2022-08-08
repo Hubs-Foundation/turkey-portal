@@ -1,0 +1,22 @@
+@use '../../../styles/boilerplate.scss'as *;
+
+.address {
+  &_wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &_preview {
+    @include font-size(14);
+    margin-top: 34px;
+  }
+}
+
+.actions {
+  &_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+}

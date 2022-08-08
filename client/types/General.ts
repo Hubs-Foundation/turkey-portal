@@ -34,6 +34,11 @@ export type AccountT = {
   isInitialized?: boolean;
   isLoggedIn?: boolean;
 };
+ 
+export enum BadgeCategoriesE {
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary'
+}
 
 export type IconT =
   | 'activity'
