@@ -1,0 +1,11 @@
+@use 'styles/boilerplate.scss'as *;
+
+.link {
+  @include primary-font();
+  @include font-size(16);
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  color: $color-interaction-primary;
+  text-decoration-line: underline;
+}
