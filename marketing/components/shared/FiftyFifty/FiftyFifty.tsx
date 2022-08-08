@@ -26,12 +26,11 @@ const FiftyFifty = ({
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={`${styles.container} ${styles['container_' + layout]}`}>
-
         {/* Contents  */}
         <div className={styles.contents}>
-          {subTitle ? <p>{subTitle}</p> : null}
-          {title ? <h3>{title}</h3> : null}
-          {body ? <p>{body}</p> : null}
+          {subTitle && <p>{subTitle}</p>}
+          {title && <h3>{title}</h3>}
+          {body && <p>{body}</p>}
         </div>
 
         {/* Image  */}
