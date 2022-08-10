@@ -12,7 +12,7 @@ import {
 } from '@mozilla/lilypad';
 import ExternalLink from '@Shared/ExternalLink/ExternalLink';
 
-import Spinner from '@Shared/Spinner/Spinner';
+import Loader from '@Shared/Loader/Loader';
 import { TierT, StatusT } from 'types/General';
 
 import { HUB_ROOT_DOMAIN } from 'config';
@@ -82,14 +82,15 @@ const HubCard = ({
     });
   }, [hubId, router]);
 
+
   /**
    * Hub Loading State
    */
   const LoadingHub = (
     <div className="flex-align-center">
-      <Spinner size={18} />
+      <Loader/>
       <span className="u-font-14 margin-left-10">
-        <span className="u-capitalize">{status}</span> your hub...
+        <span className={styles.loading_message}>{status}</span> your Hub...
       </span>
     </div>
   );
@@ -135,7 +136,6 @@ const HubCard = ({
         <div className={styles.card_body}>
           <div className={styles.card_name}>{name}</div>
 
-          {/* TODO come back to this when you have loading design  */}
           {status === 'creating' || status === 'updating'
             ? LoadingHub
             : HubLink}

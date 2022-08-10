@@ -129,7 +129,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
                         size={50}
                         alt="profile picture"
                       />
-                      <Icon name="chevron-down" color="#ffffff" size={30} />
+                      {/* <Icon name="chevron-down" color="#ffffff" size={30} /> */}
                     </span>
                   )}
                 </div>

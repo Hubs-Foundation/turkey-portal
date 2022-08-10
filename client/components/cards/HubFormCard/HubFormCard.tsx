@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from './HubFormCard.module.scss';
 import { HUB_ROOT_DOMAIN } from 'config';
@@ -11,22 +11,34 @@ import {
 } from '@mozilla/lilypad';
 import 'react-toastify/dist/ReactToastify.css';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { validateHubSubdomain } from 'services/hub.service';
 
 export type HubFormCardT = {
   name: string;
   subdomain: string;
+  hubId: string;
 };
 
 type HubFormCardPropsT = {
   hub: HubFormCardT;
   onSubmit: Function;
+  onError?: Function;
   classProp?: string;
 };
 
-const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
+const HubFormCard = ({ hub, onSubmit, onError, classProp = '' }: HubFormCardPropsT) => {
   const [addressErrorMessage, setAddressErrorMessage] = useState<string>('');
+
+  const [isValidDomain, setIsValidDomain] = useState(true);
+  const [isEditingDomain, setIsEditingDomain] = useState(false);
+
   const router = useRouter();
-  const { control, handleSubmit } = useForm<HubFormCardT>({
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+    getValues,
+  } = useForm<HubFormCardT>({
     defaultValues: {
       name: hub.name,
       subdomain: hub.subdomain,
@@ -38,6 +50,19 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
    * @param data
    */
   const handleFormSubmit: SubmitHandler<HubFormCardT> = (data) => {
+
+    // Form Invalid
+    if(!isValid) {
+      onError && onError('Please fix form errors to continue.');
+      return;
+    }
+
+    // Domain does not pass serverside validation
+    if(!isValidDomain) {
+      onError && onError('Please provide a valid domain to continue');
+      return;
+    }
+
     onSubmit && onSubmit(data);
   };
 
@@ -48,6 +73,33 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
     router.push({
       pathname: '/dashboard',
     });
+  };
+
+  /**
+   * Handle Subdomain Input Blur
+   */
+  const handleOnBlur = () => {
+    const newSubdomain = getValues('subdomain');
+
+    // Data has not been edited
+    if (hub.subdomain === newSubdomain) {
+      setIsValidDomain(true);
+      setIsEditingDomain(false);
+      return;
+    }
+
+    // Validate subdomain
+    validateHubSubdomain(hub.hubId, newSubdomain).then((resp) => {
+      setIsValidDomain(resp.success);
+      setIsEditingDomain(false);
+    });
+  };
+
+  /**
+   * Handle domain input focus
+   */
+  const handleOnFocus = () => {
+    setIsEditingDomain(true);
   };
 
   /**
@@ -92,7 +144,7 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
                   label="Hub Name"
                   placeholder="Hub Name"
                   required={true}
-                  info="For use within the dashboard and accounts area"
+                  info="Character Limit 24"
                   {...field}
                 />
               )}
@@ -106,6 +158,8 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
                 control={control}
                 render={({ field }) => (
                   <Input
+                    onBlur={handleOnBlur}
+                    onFocus={handleOnFocus}
                     minLength={3}
                     maxLength={64}
                     classProp="margin-bottom-10"
@@ -116,13 +170,32 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
                     validator={handleNameValidator}
                     customErrorMessage={addressErrorMessage}
                     required={true}
-                    {...field}
+                    name={field.name}
+                    value={field.value}
+                    onChange={field.onChange}
                   />
                 )}
               />
               <div className={styles.address_preview}>
                 .{HUB_ROOT_DOMAIN}
-                <Icon name="check-circle" classProp={styles.check_icon} />
+
+                <div className={styles.icon_wrapper}>
+                  {!isEditingDomain && (
+                    <div className={styles.icon_container}>
+                      {isValidDomain ? (
+                        <Icon
+                          name="check-circle"
+                          classProp={styles.check_icon}
+                        />
+                      ) : (
+                        <Icon
+                          name="alert-triangle"
+                          classProp={styles.error_icon}
+                        />
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

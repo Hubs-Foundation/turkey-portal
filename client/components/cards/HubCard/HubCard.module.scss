@@ -52,9 +52,8 @@
   }
 
   &_name {
-    @include secondary-font();
+    @include secondary-font(700);
     @include font-size(36);
-    font-weight: 700;
     line-height: 46px;
     color: $color-text-main;
     margin-bottom: 12px;
@@ -63,6 +62,14 @@
   &_domain {
     display: flex;
   }
+}
+
+.loading_message {
+  @include primary-font(400);
+  @include font-size(16);
+  color: $color-text-main;
+  line-height: 24px;
+  text-transform: capitalize;
 }
 
 
