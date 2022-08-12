@@ -59,9 +59,7 @@ const Tier = ({
 
         {/* CTA  */}
         {cta && (
-          <a href={ctaUrl}>
-            <Button category={ButtonCategoriesE.PRIMARY_SOLID} text={cta} />
-          </a>
+          <Button href={ctaUrl} category={ButtonCategoriesE.PRIMARY_SOLID} text={cta} />
         )}
       </div>
     </section>
