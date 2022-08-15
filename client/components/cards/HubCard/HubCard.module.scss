@@ -12,6 +12,10 @@
     @include desktop-large-down {
       width: 100%;
     }
+
+    @include mobile-down {
+      border-radius: 0;
+    }
   }
 
   &_header {
@@ -44,6 +48,10 @@
     &_creating {
       border: $color-status-offline 2px solid;
     }
+
+    &_failed {
+      background-color: $color-semantic-critical;
+    }
   }
 
   &_hr {
@@ -63,15 +71,6 @@
     display: flex;
   }
 }
-
-.loading_message {
-  @include primary-font(400);
-  @include font-size(16);
-  color: $color-text-main;
-  line-height: 24px;
-  text-transform: capitalize;
-}
-
 
 // Progress Bar States
 div.progressbar {
@@ -120,6 +119,8 @@ div.progressbar {
     }
   }
 }
+
+
 
 // Footer 
 .footer {

@@ -7,7 +7,6 @@
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.2); // TODO get CSS VAR
   border: 0;
-  height: 100px;
   color: $color-text-reverse;
 }
 
@@ -34,11 +33,12 @@
   @include secondary-font(700);
   @include font-size(16);
   line-height: 20px;
-  margin-bottom: 6px;
 }
 
 .description {
   @include primary-font(500);
   @include font-size(14);
   line-height: 24px;
+  text-align: left;
+  margin-top: 6px;
 }

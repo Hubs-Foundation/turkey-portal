@@ -1,0 +1,24 @@
+@use 'styles/boilerplate.scss'as *;
+
+.error {
+  &_wrapper {
+    background-color: $color-background-critical;
+    padding: 24px;
+    display: flex;
+    border-radius: 24px;
+  }
+
+  &_container {
+    @include primary-font(500);
+    line-height: 24px;
+
+    p {
+      margin: 0 0 24px 0;
+    }
+  }
+
+  &_icon {
+    stroke: $color-semantic-critical;
+    margin-right: 12px;
+  }
+}

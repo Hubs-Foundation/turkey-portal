@@ -4,7 +4,7 @@
  */
 
 export type TierT = 'free' | 'premium';
-export type StatusT = 'creating' | 'updating' | 'ready';
+export type StatusT = 'creating' | 'updating' | 'ready' | 'failed';
 
 export type HubT = {
   ccuLimit: number;
