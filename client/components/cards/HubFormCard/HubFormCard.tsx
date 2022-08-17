@@ -9,7 +9,6 @@ import {
   ButtonSizesE,
   Icon,
 } from '@mozilla/lilypad';
-import 'react-toastify/dist/ReactToastify.css';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 
 export type HubFormCardT = {

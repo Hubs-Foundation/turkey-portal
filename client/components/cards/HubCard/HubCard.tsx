@@ -52,6 +52,7 @@ const HubCard = ({
   const [storageState, setStorageState] = useState<StorageStateE>(
     StorageStateE.DEFAULT
   );
+  const SubdomainRootdomain = `${subdomain}.${HUB_ROOT_DOMAIN}`;
 
   /**
    * Get % Value of MB used
@@ -59,7 +60,7 @@ const HubCard = ({
   const getStoragePercent = (): number => {
     if (currentStorageMb === 0 || currentStorageMb === null) return 0;
 
-    return (currentStorageMb / storageLimitMb) * 100;
+    return (Math.min(100, currentStorageMb) / storageLimitMb) * 100;
   };
 
   useEffect(() => {
@@ -67,7 +68,7 @@ const HubCard = ({
     let status = StorageStateE.DEFAULT;
 
     storagePercent > 75 && (status = StorageStateE.WARNING);
-    storagePercent === 100 && (status = StorageStateE.CRITICAL);
+    storagePercent >= 100 && (status = StorageStateE.CRITICAL);
 
     setStorageState(status);
   }, [getStoragePercent]);
@@ -101,13 +102,13 @@ const HubCard = ({
     <div className={styles.card_domain}>
       <ExternalLink
         target="_blank"
-        href={`${subdomain}.${HUB_ROOT_DOMAIN}`}
+        href={SubdomainRootdomain}
         classProp="margin-right-20"
       >
-        {subdomain}.{HUB_ROOT_DOMAIN}
+        {SubdomainRootdomain} 
       </ExternalLink>
 
-      <CopyButton value={`${subdomain}.${HUB_ROOT_DOMAIN}`} />
+      <CopyButton value={SubdomainRootdomain} />
     </div>
   );
 
@@ -147,7 +148,11 @@ const HubCard = ({
         <div className={styles.footer}>
           <div className={styles.footer_block}>
             <div className="u-text-center">
-              <Badge name={tier} classProp="margin-bottom-12 u-block" category={BadgeCategoriesE.PRIMARY} />
+              <Badge
+                name={tier}
+                classProp="margin-bottom-12 u-block"
+                category={BadgeCategoriesE.PRIMARY}
+              />
               <div>Hub Tier</div>
             </div>
           </div>

@@ -48,7 +48,7 @@ const Dashboard = ({}: DashboardPropsT) => {
         {/* Hub Cards  */}
         <div className={styles.cards_wrapper}>
           {hubs.length ? (
-            hubs.map((hub, i) => {
+            hubs.map((hub) => {
                 return (
                   <HubCard
                     key={hub.hubId}
