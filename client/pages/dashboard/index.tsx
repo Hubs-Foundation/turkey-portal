@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { HubT } from 'types/General';
 import styles from './dashboard.module.scss';
 import HubCard from '@Cards/HubCard/HubCard';
@@ -25,21 +25,7 @@ const Dashboard = ({}: DashboardPropsT) => {
   const [subscriptionTotal, setSubscriptionTotal] = useState<number>(subPrice);
   const [subscription, setSubscription] =
     useState<SubscriptionT>(subscriptionInit);
-  const [failedUpdatesList, setFailedUpdatesList] = useState<HubT[]>([
-    // PLace Holder Mock Hub
-    // {
-    //   ccuLimit: 5,
-    //   currentCcu: 10,
-    //   currentStorageMb: 20,
-    //   hubId: '78899727885664260',
-    //   name: 'Testing hub',
-    //   status: 'ready',
-    //   storageLimitMb: 100,
-    //   subdomain: 'e745b6810a',
-    //   tier: 'free',
-    // },
-  ]);
-
+  
   /**
    * Get Hubs again and apply data, also check 
    * data for updates and fails.
@@ -48,25 +34,7 @@ const Dashboard = ({}: DashboardPropsT) => {
     getHubs().then((hubs) => {
       setHubs(hubs);
       setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
-      handleUpdateFail(hubs);
     });
-  };
-
-
-  /**
-   * Watches Hubs reponses to check if there is a fail
-   * @param hubs 
-   */
-  const handleUpdateFail = (hubs: HubT[]) => {
-    let failedHubs: HubT[] = [];
-
-    hubs.forEach((hub: HubT) => {
-      if (hub.status === 'failed') {
-        failedHubs.push(hub);
-      }
-    });
-
-    setFailedUpdatesList(failedHubs);
   };
 
 
@@ -96,22 +64,12 @@ const Dashboard = ({}: DashboardPropsT) => {
   }, [hasUpdatingCreatingHub]);
 
 
-  /**
-   * Check if Hub has failed to update
-   * @param hub HubT
-   * @returns boolean
-   */
-  const isFailedUpdate = (hub: HubT): boolean => {
-    let isFound:boolean = false;
-
-    if (!failedUpdatesList.length) return isFound;
-
-    failedUpdatesList.findIndex((update) => {
-      return update.hubId === hub.hubId;
-    }) >= 0 && (isFound = true);
-
-    return isFound;
-  };
+  const refreshHubData = useCallback(() => {
+    getHubs().then((hubs) => {
+      setHubs(hubs);
+      setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
+    });
+  },[]);
 
   /**
    * Get All Hubs
@@ -143,16 +101,8 @@ const Dashboard = ({}: DashboardPropsT) => {
               return (
                 <HubCard
                   key={hub.hubId}
-                  name={hub.name}
-                  tier={hub.tier}
-                  hubId={hub.hubId}
-                  ccuLimit={hub.ccuLimit}
-                  status={hub.status}
-                  storageLimitMb={hub.storageLimitMb}
-                  subdomain={hub.subdomain}
-                  currentCcu={hub.currentCcu}
-                  updateDomainDidFail={isFailedUpdate(hub)}
-                  currentStorageMb={hub.currentStorageMb}
+                  hub={hub}
+                  refreshHubData={refreshHubData}
                 />
               );
             })

@@ -4,7 +4,13 @@
  */
 
 export type TierT = 'free' | 'premium';
-export type StatusT = 'creating' | 'updating' | 'ready' | 'failed';
+
+export enum StatusE {
+  CREATING = 'creating',
+  UPDATING = 'updating',
+  READY = 'ready',
+  SUBDOMAINERROR = 'subdomainError',
+}
 
 export type HubT = {
   ccuLimit: number;
@@ -12,10 +18,11 @@ export type HubT = {
   currentStorageMb: number | null;
   hubId: string;
   name: string;
-  status: StatusT;
+  status: StatusE;
   storageLimitMb: number;
   subdomain: string;
   tier: TierT;
+  isReverted: boolean
 };
 
 export type UpdateHubT = {
@@ -24,7 +31,7 @@ export type UpdateHubT = {
   storageLimitMb: number;
   tier: TierT;
   subdomain: string;
-  status: StatusT;
+  status: StatusE;
 };
 
 export type AccountT = {
@@ -38,6 +45,12 @@ export type AccountT = {
 export enum BadgeCategoriesE {
   PRIMARY = 'primary',
   SECONDARY = 'secondary'
+}
+
+export enum StorageStateE {
+  DEFAULT = 'default',
+  WARNING = 'warning',
+  CRITICAL = 'critical',
 }
 
 export type IconT =

@@ -18,42 +18,6 @@
     }
   }
 
-  &_header {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  &_status {
-    height: 14px;
-    width: 14px;
-    border-radius: 20px;
-
-    &_wrapper {
-      @include primary-font();
-      @include font-size(16);
-      display: flex;
-      align-items: center;
-      height: 30px;
-      color: $color-text-main;
-    }
-
-    &_ready {
-      background-color: $color-status-ready;
-    }
-
-    &_updating {
-      background-color: $color-status-busy;
-    }
-
-    &_creating {
-      border: $color-status-offline 2px solid;
-    }
-
-    &_failed {
-      background-color: $color-semantic-critical;
-    }
-  }
-
   &_hr {
     border: 1px solid $color-border-1;
     margin: 30px 0;
@@ -65,75 +29,5 @@
     line-height: 46px;
     color: $color-text-main;
     margin-bottom: 12px;
-  }
-
-  &_domain {
-    display: flex;
-  }
-}
-
-// Progress Bar States
-div.progressbar {
-
-  &_warning {
-    background-color: $color-semantic-warning;
-  }
-
-  &_critical {
-    background-color: $color-semantic-critical;
-  }
-
-  &_wrapper {
-    width: 100px;
-    margin-bottom: 12px;
-    position: relative;
-  }
-}
-
-.storage_icon {
-  position: absolute;
-  left: -32px;
-  top: -19px;
-
-  &_warning {
-    stroke: $color-semantic-warning;
-  }
-
-  &_critical {
-    stroke: $color-semantic-critical;
-  }
-}
-
-
-// Status States 
-.status {
-  &_warning {
-    &>span {
-      color: $color-semantic-warning;
-    }
-  }
-
-  &_critical {
-    &>span {
-      color: $color-semantic-critical;
-    }
-  }
-}
-
-
-
-// Footer 
-.footer {
-  display: flex;
-
-  &_block {
-    @include primary-font(500);
-    @include font-size(16);
-    line-height: 24px;
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    color: $color-text-subtle;
   }
 }

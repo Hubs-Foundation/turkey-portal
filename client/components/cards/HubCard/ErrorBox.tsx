@@ -4,11 +4,18 @@ import { Button, ButtonCategoriesE, Icon } from '@mozilla/lilypad';
 type ErrorBoxPropsT = {
   onTryAgainClick: Function;
   message: string;
+  canTryAgain?: boolean;
+  onClose?: Function;
   classProp?: string;
 };
 
-const ErrorBox = ({ message, onTryAgainClick, classProp }: ErrorBoxPropsT) => {
-
+const ErrorBox = ({
+  message,
+  onTryAgainClick,
+  canTryAgain,
+  onClose,
+  classProp,
+}: ErrorBoxPropsT) => {
   /**
    * Try Again Event
    */
@@ -16,29 +23,43 @@ const ErrorBox = ({ message, onTryAgainClick, classProp }: ErrorBoxPropsT) => {
     onTryAgainClick();
   };
 
+  const handleOnClose = () => {
+    onClose && onClose();
+  };
 
   /**
    * Contact Click
    */
   const handleContactClick = () => {
     // TODO - hook up subdomian update attempts to redux so that we can call the update
-    // hubs service here. 
+    // hubs service here.
     console.log('doing contact stuff');
-  }; 
+  };
 
   return (
     <div className={`${styles.error_wrapper} ${classProp}`}>
+      {onClose && (
+          <Button
+            icon="x"
+            classProp={styles.close}
+            onClick={handleOnClose}
+            category={ButtonCategoriesE.PRIMARY_CLEAR}
+          />
+        )}
       <div className={styles.error_icon_wrapper}>
         <Icon name="alert-triangle" size={28} classProp={styles.error_icon} />
       </div>
       <div className={styles.error_container}>
         <p>{message}</p>
         <div className={styles.error_actions}>
-          <Button
-            text="Try again now"
-            classProp="margin-right-12"
-            onClick={handleTryAgainClick}
-          />
+          {canTryAgain && (
+            <Button
+              text="Try again now"
+              classProp="margin-right-12"
+              onClick={handleTryAgainClick}
+            />
+          )}
+
           <Button
             text="Contact Us"
             category={ButtonCategoriesE.PRIMARY_OUTLINE}

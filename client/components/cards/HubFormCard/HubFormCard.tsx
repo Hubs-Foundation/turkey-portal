@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import styles from './HubFormCard.module.scss';
 import { HUB_ROOT_DOMAIN } from 'config';
@@ -12,6 +12,7 @@ import {
 import 'react-toastify/dist/ReactToastify.css';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { validateHubSubdomain } from 'services/hub.service';
+import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
 
 export type HubFormCardT = {
   name: string;
@@ -26,9 +27,14 @@ type HubFormCardPropsT = {
   classProp?: string;
 };
 
-const HubFormCard = ({ hub, onSubmit, onError, classProp = '' }: HubFormCardPropsT) => {
+const HubFormCard = ({
+  hub,
+  onSubmit,
+  onError,
+  classProp = '',
+}: HubFormCardPropsT) => {
   const [addressErrorMessage, setAddressErrorMessage] = useState<string>('');
-
+  const storeContext = useContext(StoreContext);
   const [isValidDomain, setIsValidDomain] = useState(true);
   const [isEditingDomain, setIsEditingDomain] = useState(false);
 
@@ -50,20 +56,25 @@ const HubFormCard = ({ hub, onSubmit, onError, classProp = '' }: HubFormCardProp
    * @param data
    */
   const handleFormSubmit: SubmitHandler<HubFormCardT> = (data) => {
-
     // Form Invalid
-    if(!isValid) {
+    if (!isValid) {
       onError && onError('Please fix form errors to continue.');
       return;
     }
 
     // Domain does not pass serverside validation
-    if(!isValidDomain) {
+    if (!isValidDomain) {
       onError && onError('Please provide a valid domain to continue');
       return;
     }
 
     onSubmit && onSubmit(data);
+    // Store away the last submitted subdomain incase we need to re-try.
+    const subdomain: SubdomainRetryT = {
+      subdomain: data.subdomain,
+      hubId: hub.hubId,
+    };
+    storeContext.handleThemeChange(subdomain);
   };
 
   /**
@@ -178,7 +189,6 @@ const HubFormCard = ({ hub, onSubmit, onError, classProp = '' }: HubFormCardProp
               />
               <div className={styles.address_preview}>
                 .{HUB_ROOT_DOMAIN}
-
                 <div className={styles.icon_wrapper}>
                   {!isEditingDomain && (
                     <div className={styles.icon_container}>
