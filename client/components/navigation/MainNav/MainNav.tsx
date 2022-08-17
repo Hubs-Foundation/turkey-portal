@@ -1,15 +1,19 @@
 import { useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import styles from './MainNav.module.scss';
-import Link from 'next/link';
-import Image from 'next/image';
 import { logOut } from 'services/account.service';
 import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
-import Dropdown, { dropdownT } from '@Shared/Dropdown/Dropdown';
 import ExternalLink from '@Shared/ExternalLink/ExternalLink';
-import Button from '@Shared/Button/Button';
-import IconButton from '@Shared/IconButton/IconButton';
+import BlobIcon from '@Logos/BlobIcon/BlobIcon';
+import {
+  Button,
+  Avatar,
+  ButtonCategoriesE,
+  Icon,
+  Dropdown,
+  dropdownT,
+} from '@mozilla/lilypad';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -43,12 +47,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
     <>
       {/* Go To Firefox Account  */}
       <div className={`padding-10 ${styles.account_details_wrapper}`}>
-        <Image
-          alt="profile picture"
-          width="30"
-          height="30"
-          src={account.profilePic}
-        />
+        <Avatar src={account.profilePic} size={30} alt="profile picture" />
         <div className={styles.account_details}>
           <div className={styles.account_details_title}> {account.email}</div>
           <ExternalLink
@@ -68,8 +67,18 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
       <hr className="dropdown-hr" />
 
       {/* Sign Out  */}
-      <div className={`padding-10 ${styles.account_details_wrapper}`}>
-        <Button icon="log-out" text="Sign Out" onClick={onLogOutClick} />
+      <div className={`padding-10`}>
+        <a
+          href="#"
+          target="_blank"
+          className="dropdown-link"
+          onClick={() => {
+            onLogOutClick();
+          }}
+        >
+          <Icon name="chevron-down" size={30} />
+          Sign Out of Hubs
+        </a>
       </div>
     </>
   );
@@ -78,49 +87,59 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
    * Main Nav JSX
    */
   return (
-    <div className={`${styles.main_nav_wrapper} ${classProp}`}>
-      <div className={styles.main_nav_container}>
-        {/* Main navigation links / logo */}
-        <div className={styles.main_nav_contents}>
-          {/* Mobile Menu */}
-          <IconButton
-            icon="menu"
-            onClick={handleMobileMenuClick}
-            size={30}
-            classProp={styles.mobile_menu}
-          />
+    <nav className={`${styles.main_nav} ${classProp}`}>
+      <div className={styles.banner_gradient} />
 
-          {/* Logo */}
-          <Image width="86" height="58" src="/hubs_black.svg" alt="hubs logo" />
+      <div className={styles.main_nav_wrapper}>
+        <div className={styles.main_nav_container}>
+          {/* Main navigation links / logo */}
+          <div className={styles.main_nav_contents}>
+            {/* Mobile Menu */}
+            {/* <IconButton
+              icon="menu"
+              onClick={handleMobileMenuClick}
+              size={30}
+              classProp={styles.mobile_menu}
+            /> */}
 
-          {/* Links  */}
-          <div className={styles.main_nav_links}>
-            <div className={styles.main_nav_link}>
-              <Link href="#">My Hubs</Link>
+            {/* Logo */}
+            <div className={styles.logo_wrapper}>
+              <div className={styles.logo}>hubs</div>
+              <BlobIcon />
             </div>
           </div>
-        </div>
 
-        {/* Account information  */}
-        <Dropdown
-          ref={dropdownRef}
-          alignment="right"
-          cta={
-            <div className={styles.main_nav_account}>
-              {account.profilePic && (
-                <Image
-                  alt="profile picture"
-                  width="50"
-                  height="50"
-                  src={account.profilePic}
-                />
-              )}
-            </div>
-          }
-          content={DropdownContent}
-        />
+          {/* Account information  */}
+          <div className="flex-align-center">
+            <Button
+              classProp={styles.exit_button}
+              category={ButtonCategoriesE.SECONDARY_OUTLINE}
+              text="Exit Dashboard"
+            />
+
+            <Dropdown
+              ref={dropdownRef}
+              alignment="right"
+              cta={
+                <div className={styles.main_nav_account}>
+                  {account.profilePic && (
+                    <span className="flex-align-center">
+                      <Avatar
+                        src={account.profilePic}
+                        size={50}
+                        alt="profile picture"
+                      />
+                      <Icon name="chevron-down" color="#ffffff" size={30} />
+                    </span>
+                  )}
+                </div>
+              }
+              content={DropdownContent}
+            />
+          </div>
+        </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

@@ -1,5 +1,6 @@
 @use '../tools/media-queries.scss' as *;
 @use '../tools/mixins.scss' as *;
+@use '../core/variables.scss' as *;
 
 // ---------------------------------
 //   Quick Typograpjhy
@@ -23,6 +24,27 @@
 .u-capitalize {
   text-transform: capitalize;
 }
+
+
+
+// ---------------------------------
+//   Quick Media-Q
+// ---------------------------------
+.u-no-mobile {
+  @include mobile-down{
+    display: none!important;
+  }
+}
+
+// ---------------------------------
+//   Colors
+// ---------------------------------
+.u-color-text-main {
+  color: $color-text-main;
+}
+
+
+
 
 // ---------------------------------
 //   Visibility
@@ -94,6 +116,10 @@
   display: inline-block;
   margin: 0;
   padding: 0;
+}
+
+.u-block {
+  display: block;
 }
 
 .u-pointer {
@@ -252,6 +278,10 @@ MARGIN
     margin: 10px;
   }
 
+  &-12 {
+    margin: 10px;
+  }
+
   &-15 {
     margin: 15px;
   }
@@ -268,6 +298,10 @@ MARGIN
 
   &-10 {
     margin-top: 10px !important;
+  }
+
+  &-12 {
+    margin: 10px;
   }
 
   &-15 {
@@ -288,12 +322,20 @@ MARGIN
     margin-bottom: 10px;
   }
 
+  &-12 {
+    margin: 10px;
+  }
+
   &-15 {
     margin-bottom: 15px;
   }
 
   &-20 {
     margin-bottom: 20px;
+  }
+
+  &-24 {
+    margin-bottom: 24px;
   }
 }
 
@@ -304,6 +346,10 @@ MARGIN
 
   &-10 {
     margin-right: 10px;
+  }
+
+  &-12 {
+    margin: 10px;
   }
 
   &-15 {

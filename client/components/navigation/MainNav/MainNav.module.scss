@@ -1,14 +1,16 @@
-@use 'styles/boilerplate' as *;
+@use 'styles/boilerplate'as *;
 
 .main_nav {
+  position: absolute;
+  width: 100%;
+
   &_wrapper {
     height: 80px;
     width: 100%;
-    background: $white;
     padding: 20px;
     display: flex;
     justify-content: center;
-    border-bottom: solid 1px $accent-grey;
+    background: $color-background-overlay;
 
     @include tablet-down {
       padding: 10px;
@@ -45,6 +47,12 @@
   }
 }
 
+button.exit_button {
+  @include mobile-down {
+    display: none;
+  }
+}
+
 .mobile {
   &_menu {
     display: none;
@@ -71,5 +79,22 @@
 
   &_manage_link {
     @include font-size(14)
+  }
+}
+
+.banner_gradient {
+  padding: 4px;
+  background: $gradient-warm;
+}
+
+.logo {
+  @include secondary-font();
+  @include font-size(39);
+  color: #ffffff;
+  margin-right: 8px;
+
+  &_wrapper {
+    display: flex;
+    align-items: center;
   }
 }

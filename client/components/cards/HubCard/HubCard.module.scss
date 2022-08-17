@@ -1,37 +1,131 @@
-@use 'styles/boilerplate.scss' as *;
+@use 'styles/boilerplate.scss'as *;
 
 .card {
   &_wrapper {
-    width: 100%;
-    max-width: 1440px;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: $drop-shadow;
-    border-left: 20px solid $accent-grey;
+    width: 692px;
+    padding: 30px 32px;
+    box-shadow: 0px 0px 8px rgba(97, 97, 97, 0.35);
+    border-radius: 20px;
+    background-color: $color-neutral-0;
+    margin-bottom: 32px;
+
+    @include desktop-large-down {
+      width: 100%;
+    }
   }
 
-  &_stat {
-    @include font-size(14);
+  &_header {
     display: flex;
-    align-items: center;
-    color:$grey;
+    justify-content: space-between;
+  }
+
+  &_status {
+    height: 14px;
+    width: 14px;
+    border-radius: 20px;
+
+    &_wrapper {
+      @include primary-font();
+      @include font-size(16);
+      display: flex;
+      align-items: center;
+      height: 30px;
+      color: $color-text-main;
+    }
+
+    &_ready {
+      background-color: $color-status-ready;
+    }
+
+    &_updating {
+      background-color: $color-status-busy;
+    }
+
+    &_creating {
+      border: $color-status-offline 2px solid;
+    }
+  }
+
+  &_hr {
+    border: 1px solid $color-border-1;
+    margin: 30px 0;
   }
 
   &_name {
-    @include font-size(16);
+    @include secondary-font();
+    @include font-size(36);
     font-weight: 700;
-    line-height: 18px;
-    color: $black;
-    margin-left: 10px;
+    line-height: 46px;
+    color: $color-text-main;
+    margin-bottom: 12px;
   }
 
   &_domain {
     display: flex;
-    justify-content: center;
+  }
+}
+
+
+// Progress Bar States
+div.progressbar {
+
+  &_warning {
+    background-color: $color-semantic-warning;
   }
 
-  &_actions_wrapper {
+  &_critical {
+    background-color: $color-semantic-critical;
+  }
+
+  &_wrapper {
+    width: 100px;
+    margin-bottom: 12px;
+    position: relative;
+  }
+}
+
+.storage_icon {
+  position: absolute;
+  left: -32px;
+  top: -19px;
+
+  &_warning {
+    stroke: $color-semantic-warning;
+  }
+
+  &_critical {
+    stroke: $color-semantic-critical;
+  }
+}
+
+
+// Status States 
+.status {
+  &_warning {
+    &>span {
+      color: $color-semantic-warning;
+    }
+  }
+
+  &_critical {
+    &>span {
+      color: $color-semantic-critical;
+    }
+  }
+}
+
+// Footer 
+.footer {
+  display: flex;
+
+  &_block {
+    @include primary-font(500);
+    @include font-size(16);
+    line-height: 24px;
+    width: 50%;
     display: flex;
-    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: $color-text-subtle;
   }
 }

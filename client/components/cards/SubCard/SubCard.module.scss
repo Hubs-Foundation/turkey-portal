@@ -1,0 +1,67 @@
+@use 'styles/boilerplate.scss'as *;
+
+.wrapper {
+  background-color: $color-background-overlay;
+  color: $color-text-reverse;
+  padding: 24px;
+  width: 487px;
+  border-radius: 20px;
+  height: 393px;
+
+  @include desktop-large-down {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 32px;
+
+  @include mobile-down {
+    display: block;
+  }
+
+  &_block {
+    width: 50%;
+
+    @include mobile-down {
+      width: auto;
+    }
+
+    &:first-child {
+      @include mobile-down {
+        margin-bottom: 24px;
+      }
+    }
+  }
+}
+
+.price {
+  @include secondary-font(400);
+  @include font-size(40);
+  line-height: 51px;
+  margin-right: 5px;
+}
+
+.currency {
+  @include secondary-font(500);
+  @include font-size(14);
+  line-height: 18px;
+}
+
+.month {
+  @include secondary-font(400);
+  @include font-size(24);
+  line-height: 31px;
+  margin-right: 5px;
+}
+
+.label {
+  @include primary-font(500);
+  @include font-size(14);
+  line-height: 17px;
+  margin-top: 6px;
+  opacity: 0.8;
+}
