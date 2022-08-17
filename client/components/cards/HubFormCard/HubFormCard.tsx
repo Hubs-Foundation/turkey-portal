@@ -9,7 +9,6 @@ import {
   ButtonSizesE,
   Icon,
 } from '@mozilla/lilypad';
-import 'react-toastify/dist/ReactToastify.css';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { validateHubSubdomain } from 'services/hub.service';
 import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
@@ -172,7 +171,7 @@ const HubFormCard = ({
                     onBlur={handleOnBlur}
                     onFocus={handleOnFocus}
                     minLength={3}
-                    maxLength={64}
+                    maxLength={63}
                     classProp="margin-bottom-10"
                     placeholder="Web Address (URL)"
                     label="Web Address (URL)"

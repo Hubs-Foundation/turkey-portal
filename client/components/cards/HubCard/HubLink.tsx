@@ -8,17 +8,19 @@ type HubLinkPropsT = {
 };
 
 const HubLink = ({ subdomain, classProp = '' }: HubLinkPropsT) => {
+  const subdomainRootdomain = `${subdomain}.${HUB_ROOT_DOMAIN}`;
+
   return (
     <div className={`flex ${classProp}`}>
       <ExternalLink
         target="_blank"
-        href={`${subdomain}.${HUB_ROOT_DOMAIN}`}
+        href={subdomainRootdomain}
         classProp="margin-right-20"
       >
-        {subdomain}.{HUB_ROOT_DOMAIN}
+        {subdomainRootdomain}
       </ExternalLink>
 
-      <CopyButton value={`${subdomain}.${HUB_ROOT_DOMAIN}`} />
+      <CopyButton value={subdomainRootdomain} />
     </div>
   );
 };

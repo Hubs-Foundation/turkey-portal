@@ -19,7 +19,7 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
    */
   const getStoragePercent = (): number => {
     if (currentStorageMb === 0 || currentStorageMb === null) return 0;
-    return (currentStorageMb / storageLimitMb) * 100;
+    return (Math.min(100, currentStorageMb) / storageLimitMb) * 100;
   };
 
   /**
@@ -30,7 +30,7 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
     let status = StorageStateE.DEFAULT;
 
     storagePercent > 75 && (status = StorageStateE.WARNING);
-    storagePercent === 100 && (status = StorageStateE.CRITICAL);
+    storagePercent >= 100 && (status = StorageStateE.CRITICAL);
 
     setStorageState(status);
   }, [getStoragePercent]);

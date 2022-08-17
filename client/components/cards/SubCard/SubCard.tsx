@@ -5,12 +5,14 @@ import { SubscriptionT } from 'services/subscription.service';
 type SubCardPropsT = {
   subscription: SubscriptionT;
   price?: number;
+  currency?:string;
   classProp?: string;
 };
 
 const SubCard = ({
   subscription,
   price = 5,
+  currency = 'USD',
   classProp = '',
 }: SubCardPropsT) => {
   return (
@@ -27,8 +29,8 @@ const SubCard = ({
           {/* PAYMENT */}
           <div className={styles.header_block}>
             <div>
-              <span className={styles.price}>${price}.00</span>
-              <span className={styles.currency}>USD</span>
+              <span className={styles.price}>${price.toFixed(2)}</span>
+              <span className={styles.currency}>{currency}</span>
             </div>
             <div className={styles.label}>Monthly Payment</div>
           </div>
