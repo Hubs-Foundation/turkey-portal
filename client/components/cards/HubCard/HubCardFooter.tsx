@@ -1,6 +1,6 @@
 import { Badge, ProgressBar, BadgeCategoriesE, Icon } from '@mozilla/lilypad';
 import { StorageStateE, HubT } from 'types/General';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styles from './HubCardFooter.module.scss';
 
 type HubCardFooterPropsT = {
@@ -17,10 +17,10 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
   /**
    * Get % Value of MB used
    */
-  const getStoragePercent = (): number => {
+  const getStoragePercent = useCallback((): number => {
     if (currentStorageMb === 0 || currentStorageMb === null) return 0;
     return Math.min(100, currentStorageMb / storageLimitMb) * 100;
-  };
+  }, []);
 
   /**
    * Watch Storage Percentage

@@ -67,7 +67,7 @@ const Dashboard = ({}: DashboardPropsT) => {
       setHubs(hubs);
       setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
     });
-  }, []);
+  }, [applyHubs]);
 
   /**
    * Get All Hubs

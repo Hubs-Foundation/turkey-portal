@@ -70,7 +70,6 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
    */
   const handleFormSubmit = useCallback(
     ({ name, subdomain }: HubFormCardT) => {
-
       
       if (!hub) {
         launchToastError('Sorry, there was an error locating this Hub.');
@@ -81,17 +80,13 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
        * Update Date from form
        * keep all other data as is
        */
-      const { ccuLimit, status, storageLimitMb, hubId, tier } = hub;
       const updatedHub: UpdateHubT = {
-        name,
-        ccuLimit,
-        status,
-        storageLimitMb,
-        subdomain,
-        tier,
+        ...hub,
+        subdomain:subdomain,
+        name:name
       };
 
-      updateHub(`${hubId}`, updatedHub).then((resp) => {
+      updateHub(hub.hubId, updatedHub).then((resp) => {
         if (resp?.status === 200) {
           router.push({
             pathname: RoutesE.Dashboard,
@@ -103,7 +98,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
         setLoading(false);
       });
     },
-    [hub]
+    [hub, router]
   );
 
   /**
