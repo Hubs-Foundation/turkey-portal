@@ -9,8 +9,14 @@ export enum StatusE {
   CREATING = 'creating',
   UPDATING = 'updating',
   READY = 'ready',
-  SUBDOMAINERROR = 'subdomainError',
+  ERROR = 'error',
 }
+
+export enum LastErrorE {
+  SUBDOMAIN_ERROR = 'subdomainError',
+  SUBDOMAIN_REVERTED = 'subdomainReverted',
+  CREATING_ERROR = 'creatingError'
+};
 
 export type HubT = {
   ccuLimit: number;
@@ -19,10 +25,10 @@ export type HubT = {
   hubId: string;
   name: string;
   status: StatusE;
+  lastError: LastErrorE | '';
   storageLimitMb: number;
   subdomain: string;
   tier: TierT;
-  isReverted: boolean
 };
 
 export type UpdateHubT = {
@@ -32,6 +38,7 @@ export type UpdateHubT = {
   tier: TierT;
   subdomain: string;
   status: StatusE;
+  lastError: LastErrorE | '';
 };
 
 export type AccountT = {

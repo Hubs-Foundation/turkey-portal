@@ -1,14 +1,14 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import styles from './HubCard.module.scss';
-import { HubT, UpdateHubT } from 'types/General';
-import ErrorBox from './ErrorBox';
+import { HubT, UpdateHubT, LastErrorE, StatusE } from 'types/General';
 import { Message } from './Message';
 import { StoreContext } from 'contexts/StoreProvider';
+import { updateHub } from 'services/hub.service';
+import ErrorBox from './ErrorBox';
 import HubLink from './HubLink';
 import HubLoading from './HubLoading';
 import HubCardHeader from './HubCardHeader';
 import HubCardFooter from './HubCardFooter';
-import { updateHub } from 'services/hub.service';
 
 type HubCardPropsT = {
   hub: HubT;
@@ -18,21 +18,10 @@ type HubCardPropsT = {
 
 const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
   const storeContext = useContext(StoreContext);
-  const { name, hubId, status, subdomain } = hub;
-
-  /**
-   * QUESTIONS ------
-   * What does the error object look like?
-   * Are all the status on StatusT accurate?
-   * is there an isReverted flag?
-   */
-
-  /**
-   * Building New Hub has failed - try again
-   */
-  const onTryRebuild = () => {
-    console.log('trying to build new hub again.');
-  };
+  const { name, hubId, status, subdomain, lastError } = hub;
+  const [showRevertError, setShowRevertError] = useState<boolean>(
+    lastError === LastErrorE.SUBDOMAIN_REVERTED
+  );
 
   /**
    * Updating Hub has failed - try again
@@ -56,9 +45,15 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
    * Submit hub no longer needs to be in reverted state.
    */
   const handleOnCloseError = () => {
-    console.log(
-      'confirming the user has seen the revert error and can change status back to non reverting.'
-    );
+    // patch the hub with lastError =  '' to clear out the error.
+    const updatedHub: UpdateHubT = {
+      ...hub,
+      lastError: '',
+    };
+
+    updateHub(hub.hubId, updatedHub).then(() => {
+      setShowRevertError(false);
+    });
   };
 
   /**
@@ -67,8 +62,9 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
    * @returns Boolean
    */
   const canTryAgain = (): boolean => {
-    if (storeContext.lastSubmittedSubdomain.subdomain === '') return false;
-    if (storeContext.lastSubmittedSubdomain.hubId !== hubId) return false;
+    const { subdomain: _subdomain, hubId: _hubId } =
+      storeContext.lastSubmittedSubdomain;
+    if (_subdomain === '' || _hubId !== hubId) return false;
 
     return true;
   };
@@ -86,7 +82,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
           <div className={styles.card_name}>{name}</div>
 
           {/* Did Revert Error  */}
-          {true && (
+          {showRevertError && (
             <ErrorBox
               classProp="margin-bottom-12"
               message={Message.updateSubdomainErrorMessage}
@@ -96,39 +92,45 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
             />
           )}
 
-          {/* Critical Error */}
-          {/* status === 'subdomainError' */}
-          { true ? (
-            <ErrorBox
-              message={Message.failMessage}
-              onTryAgainClick={onTryRebuild}
-              canTryAgain={canTryAgain()}
-            />
-          ) : (
-            // If Creating / Updating show loading else show subdomain link
-            <>
-              {status === 'creating' || status === 'updating' ? (
-                <HubLoading
-                  loadingMessage={
-                    status === 'creating'
-                      ? Message.creatingMessage
-                      : Message.updatingMessage
-                  }
-                />
-              ) : (
-                <HubLink subdomain={subdomain} />
-              )}
-            </>
+          {/* Critical Error 
+            The user can not try aagin on critical error
+            have the only contact button. 
+          */}
+          {lastError === LastErrorE.SUBDOMAIN_ERROR && (
+            <ErrorBox message={Message.criticalFailMessage} />
           )}
+
+          {/* Create Error 
+            This error takes place when the hub first tries to build 
+            and fails to do so.
+          */}
+          {lastError === LastErrorE.CREATING_ERROR && (
+            <ErrorBox message={Message.createFailMessage} />
+          )}
+
+          {/* Loading Subdomain Updates  */}
+          {(status === StatusE.CREATING || status === StatusE.UPDATING) && (
+            <HubLoading
+              loadingMessage={
+                status === StatusE.CREATING
+                  ? Message.creatingMessage
+                  : Message.updatingMessage
+              }
+            />
+          )}
+
+          {/* Subdomain is ready and available  */}
+          {status === StatusE.READY && <HubLink subdomain={subdomain} />}
         </div>
 
         {/* FOOTER  */}
-        {status !== 'creating' && status !== 'subdomainError' && (
-          <>
-            <hr className={styles.card_hr} />
-            <HubCardFooter hub={hub} />
-          </>
-        )}
+        {status === StatusE.UPDATING ||
+          (status === StatusE.READY && (
+            <>
+              <hr className={styles.card_hr} />
+              <HubCardFooter hub={hub} />
+            </>
+          ))}
       </div>
     </div>
   );

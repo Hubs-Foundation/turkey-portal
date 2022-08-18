@@ -2,7 +2,7 @@ import styles from './ErrorBox.module.scss';
 import { Button, ButtonCategoriesE, Icon } from '@mozilla/lilypad';
 
 type ErrorBoxPropsT = {
-  onTryAgainClick: Function;
+  onTryAgainClick?: Function;
   message: string;
   canTryAgain?: boolean;
   onClose?: Function;
@@ -20,7 +20,7 @@ const ErrorBox = ({
    * Try Again Event
    */
   const handleTryAgainClick = () => {
-    onTryAgainClick();
+    onTryAgainClick && onTryAgainClick();
   };
 
   const handleOnClose = () => {
@@ -31,21 +31,19 @@ const ErrorBox = ({
    * Contact Click
    */
   const handleContactClick = () => {
-    // TODO - hook up subdomian update attempts to redux so that we can call the update
-    // hubs service here.
     console.log('doing contact stuff');
   };
 
   return (
     <div className={`${styles.error_wrapper} ${classProp}`}>
       {onClose && (
-          <Button
-            icon="x"
-            classProp={styles.close}
-            onClick={handleOnClose}
-            category={ButtonCategoriesE.PRIMARY_CLEAR}
-          />
-        )}
+        <Button
+          icon="x"
+          classProp={styles.close}
+          onClick={handleOnClose}
+          category={ButtonCategoriesE.PRIMARY_CLEAR}
+        />
+      )}
       <div className={styles.error_icon_wrapper}>
         <Icon name="alert-triangle" size={28} classProp={styles.error_icon} />
       </div>
