@@ -1,0 +1,13 @@
+@use 'styles/boilerplate'as *;
+
+.logo {
+  @include secondary-font();
+  @include font-size(39);
+  color: #000;
+  margin-right: 8px;
+
+  &_wrapper {
+    display: flex;
+    align-items: center;
+  }
+}

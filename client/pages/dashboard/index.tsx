@@ -9,7 +9,7 @@ import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
 import { requireAuthentication } from 'services/routeGuard.service';
 import { getSubscriptions, SubscriptionT } from 'services/subscription.service';
 import { getHubs } from 'services/hub.service';
-import FeedbackBanner from '@Shared/FeedbackBanner/FeedbackBanner'
+import FeedbackBanner from '@Shared/FeedbackBanner/FeedbackBanner';
 
 type DashboardPropsT = {};
 
@@ -25,9 +25,9 @@ const Dashboard = ({}: DashboardPropsT) => {
   const [subscriptionTotal, setSubscriptionTotal] = useState<number>(subPrice);
   const [subscription, setSubscription] =
     useState<SubscriptionT>(subscriptionInit);
-  
+
   /**
-   * Get Hubs again and apply data, also check 
+   * Get Hubs again and apply data, also check
    * data for updates and fails.
    */
   const applyHubs = () => {
@@ -36,7 +36,6 @@ const Dashboard = ({}: DashboardPropsT) => {
       setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
     });
   };
-
 
   /**
    * Check if hub is being created or is updating
@@ -63,13 +62,12 @@ const Dashboard = ({}: DashboardPropsT) => {
     };
   }, [hasUpdatingCreatingHub]);
 
-
   const refreshHubData = useCallback(() => {
     getHubs().then((hubs) => {
       setHubs(hubs);
       setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
     });
-  },[]);
+  }, []);
 
   /**
    * Get All Hubs
@@ -113,15 +111,11 @@ const Dashboard = ({}: DashboardPropsT) => {
 
         {/* SUBSCRIPTION WIDGET  */}
         <div className={styles.subcard}>
-          <SubCard
-            subscription={subscription}
-            price={subscriptionTotal}
-          />
+          <SubCard subscription={subscription} price={subscriptionTotal} />
         </div>
-        
       </main>
       <footer>
-        <FeedbackBanner/>
+        <FeedbackBanner />
       </footer>
     </div>
   );

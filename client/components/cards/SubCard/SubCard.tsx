@@ -4,8 +4,8 @@ import { SubscriptionT } from 'services/subscription.service';
 
 type SubCardPropsT = {
   subscription: SubscriptionT;
+  currency?: string;
   price?: number;
-  currency?:string;
   classProp?: string;
 };
 
@@ -18,7 +18,6 @@ const SubCard = ({
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
       <div className={styles.container}>
-
         <CardButton
           icon="settings"
           title="Admin Panel"
@@ -50,10 +49,7 @@ const SubCard = ({
           classProp="margin-bottom-24"
         />
 
-        <CardButton
-          icon="settings"
-          title="Cancel subscription"
-        />
+        <CardButton icon="settings" title="Cancel subscription" />
       </div>
     </div>
   );
