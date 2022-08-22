@@ -20,7 +20,7 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
   const getStoragePercent = useCallback((): number => {
     if (currentStorageMb === 0 || currentStorageMb === null) return 0;
     return Math.min(100, currentStorageMb / storageLimitMb) * 100;
-  }, []);
+  }, [currentStorageMb, storageLimitMb]);
 
   /**
    * Watch Storage Percentage

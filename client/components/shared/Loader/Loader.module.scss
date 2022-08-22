@@ -32,7 +32,7 @@ $color-three: #5749be;
   animation-delay: .25s;
 
   &::before,
-  .dot_pulse::after {
+  &::after {
     content: '';
     display: inline-block;
     position: absolute;

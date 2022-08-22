@@ -71,6 +71,11 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
   const handleFormSubmit = useCallback(
     ({ name, subdomain }: HubFormCardT) => {
       
+      /**
+       * TODO:
+       * Circle back with UX on how we can have a error state here and not
+       * just a toast message. 
+       */
       if (!hub) {
         launchToastError('Sorry, there was an error locating this Hub.');
         return;

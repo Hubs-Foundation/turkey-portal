@@ -54,6 +54,14 @@ const HubFormCard = ({
    * Submit Form
    * @param data
    */
+
+  /**
+   * TODO: 
+   * Show a different error for when a subdomain 
+   * is already in use by another user, vs when a subdomain 
+   * is invalid or forbidden. The validate_subdomain API returns 
+   * either subdomain_taken or subdomain_denied.
+   */
   const handleFormSubmit: SubmitHandler<HubFormCardT> = (data) => {
     // Form Invalid
     if (!isValid) {
@@ -162,7 +170,6 @@ const HubFormCard = ({
 
             {/* HUB SUBDOMAIN / ADDRESS  */}
             <div className={styles.address_wrapper}>
-              {/* TODO: FOLLOW UP WITH UX ON HOW WE WANT TO HANDLE MAX LENGHT  */}
               <Controller
                 name="subdomain"
                 control={control}

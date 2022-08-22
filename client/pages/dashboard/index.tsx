@@ -30,12 +30,12 @@ const Dashboard = ({}: DashboardPropsT) => {
    * Get Hubs again and apply data, also check
    * data for updates and fails.
    */
-  const applyHubs = () => {
+  const applyHubs = useCallback(() => {
     getHubs().then((hubs) => {
       setHubs(hubs);
       setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
     });
-  };
+  },[]);
 
   /**
    * Check if hub is being created or is updating
@@ -43,13 +43,9 @@ const Dashboard = ({}: DashboardPropsT) => {
    * @returns boolean
    */
   const checkIfCreatingUpdating = (hubs: HubT[]): boolean => {
-    let creatingUpdating = false;
-
-    hubs.forEach(({ status }) => {
-      if (status === 'creating' || status === 'updating')
-        creatingUpdating = true;
-    });
-    return creatingUpdating;
+    return hubs.some(
+      ({ status }) => status === 'creating' || status === 'updating'
+    );
   };
 
   useEffect(() => {
@@ -60,14 +56,14 @@ const Dashboard = ({}: DashboardPropsT) => {
     return () => {
       clearInterval(updateIntervalId);
     };
-  }, [hasUpdatingCreatingHub]);
+  }, [hasUpdatingCreatingHub, applyHubs]);
 
   const refreshHubData = useCallback(() => {
     getHubs().then((hubs) => {
       setHubs(hubs);
       setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
     });
-  }, [applyHubs]);
+  }, []);
 
   /**
    * Get All Hubs

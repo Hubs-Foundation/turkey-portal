@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import styles from './HubCard.module.scss';
 import { HubT, UpdateHubT, LastErrorE, StatusE } from 'types/General';
 import { Message } from './Message';
@@ -69,6 +69,20 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
     return true;
   };
 
+  /**
+   * Hide / Show Card Footer
+   */
+  const footerVisible = useMemo(() => {
+    return status === StatusE.UPDATING || status === StatusE.READY;
+  }, [status]);
+
+  /**
+   * Hide / Show Loader
+   */
+  const loadingVisible = useMemo(() => {
+    return status === StatusE.CREATING || status === StatusE.UPDATING;
+  }, [status]);
+
   return (
     <div className={`${styles.card_wrapper} ${classProp}`}>
       <div className={styles.card_container}>
@@ -109,7 +123,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
           )}
 
           {/* Loading Subdomain Updates  */}
-          {(status === StatusE.CREATING || status === StatusE.UPDATING) && (
+          {loadingVisible && (
             <HubLoading
               loadingMessage={
                 status === StatusE.CREATING
@@ -124,13 +138,12 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
         </div>
 
         {/* FOOTER  */}
-        {status === StatusE.UPDATING ||
-          (status === StatusE.READY && (
-            <>
-              <hr className={styles.card_hr} />
-              <HubCardFooter hub={hub} />
-            </>
-          ))}
+        {footerVisible && (
+          <>
+            <hr className={styles.card_hr} />
+            <HubCardFooter hub={hub} />
+          </>
+        )}
       </div>
     </div>
   );
