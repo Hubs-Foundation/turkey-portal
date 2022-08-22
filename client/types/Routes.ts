@@ -1,4 +1,4 @@
-export enum LoggedOutRoutesE {
+export enum LoggedOutComponentPages {
   Login = 'login'
 }
 
