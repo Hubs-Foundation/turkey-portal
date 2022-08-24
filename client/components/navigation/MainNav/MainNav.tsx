@@ -33,6 +33,10 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
     });
   }, [router]);
 
+  const onManageAccountClick = useCallback(() => {
+    // TODO set up variables to get correct FX account link
+  },[])
+
   /**
    * Handle Menu Click
    */
@@ -67,7 +71,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
           target="_blank"
           className="dropdown-link"
           onClick={() => {
-            onLogOutClick();
+            onManageAccountClick();
           }}
         >
           {/* TODO update icon asset  */}
