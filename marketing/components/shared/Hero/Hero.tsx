@@ -27,12 +27,7 @@ const Hero = ({
 
   const onCtaClick = useCallback(() => {
     ctaClick && ctaClick();
-
-    // TODO - once the subscription section is in link of scroll-to
-    ctaLink &&
-      router.push({
-        pathname: ctaLink,
-      });
+    ctaLink && router.push(ctaLink);
   }, [ctaClick]);
 
   return (

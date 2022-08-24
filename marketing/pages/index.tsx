@@ -91,6 +91,7 @@ const Home: NextPage = () => {
           title="A whole new world, from the comfort of your home"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
           cta="Get Started"
+          ctaLink='/#subscriptions'
           ctaClick={onCtaClick}
         />
 
