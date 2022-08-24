@@ -18,7 +18,7 @@ export const getSubscriptions = async (headers?: AxiosRequestHeaders) => {
 
   // What is the best struct here .. TODO!!!
   const mockDate = {
-    next_payment: 'Februaru 14',
+    next_payment: 'February 14',
   };
 
   return mockDate;

@@ -39,6 +39,37 @@ export const getHub = async (hubId: string) => {
 };
 
 /**
+ * Validate Proposed Subdomain
+ * @param hubId string
+ * @param subdomain string
+ * @returns data{}
+ */
+export const validateHubSubdomain = async (
+  hubId: string,
+  subdomain: string
+) => {
+  try {
+    return axios
+      .post(
+        `${API_SERVER}${API_PATH}/validate_subdomain`,
+        {
+          excludedHubId: hubId,
+          subdomain: subdomain,
+        },
+        {
+          withCredentials: true,
+        }
+      )
+      .then((response) => {
+        return response.data;
+      });
+  } catch (error) {
+    // TODO: Make game plan for error handling
+    console.error('Error', error);
+  }
+};
+
+/**
  * TODO: UPDATE AND DELETE
  **/
 

@@ -1,192 +1,149 @@
-import { useCallback, useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useContext, useMemo, useState } from 'react';
 import styles from './HubCard.module.scss';
-import {
-  Button,
-  Badge,
-  ProgressBar,
-  ButtonCategoriesE,
-  BadgeCategoriesE,
-  Icon,
-  CopyButton,
-} from '@mozilla/lilypad';
-import ExternalLink from '@Shared/ExternalLink/ExternalLink';
-
-import Spinner from '@Shared/Spinner/Spinner';
-import { TierT, StatusT } from 'types/General';
-
-import { HUB_ROOT_DOMAIN } from 'config';
+import { HubT, UpdateHubT, LastErrorE, StatusE } from 'types/General';
+import { Message } from './Message';
+import { StoreContext } from 'contexts/StoreProvider';
+import { updateHub } from 'services/hub.service';
+import ErrorBox from './ErrorBox';
+import HubLink from './HubLink';
+import HubLoading from './HubLoading';
+import HubCardHeader from './HubCardHeader';
+import HubCardFooter from './HubCardFooter';
 
 type HubCardPropsT = {
-  name: string;
-  tier: TierT;
-  hubId: string;
-  currentCcu: number | null;
-  currentStorageMb: number | null;
-  ccuLimit: number;
-  status: StatusT;
-  storageLimitMb: number;
-  subdomain: string;
+  hub: HubT;
+  refreshHubData: Function;
   classProp?: string;
 };
 
-export enum StorageStateE {
-  DEFAULT = 'default',
-  WARNING = 'warning',
-  CRITICAL = 'critical',
-}
-
-const HubCard = ({
-  name,
-  tier,
-  hubId,
-  currentCcu,
-  currentStorageMb,
-  ccuLimit,
-  status,
-  storageLimitMb,
-  subdomain,
-  classProp = '',
-}: HubCardPropsT) => {
-  const router = useRouter();
-  const [storageState, setStorageState] = useState<StorageStateE>(
-    StorageStateE.DEFAULT
+const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
+  const storeContext = useContext(StoreContext);
+  const { name, hubId, status, subdomain, lastError } = hub;
+  const [showRevertError, setShowRevertError] = useState<boolean>(
+    lastError === LastErrorE.SUBDOMAIN_REVERTED
   );
-  const SubdomainRootdomain = `${subdomain}.${HUB_ROOT_DOMAIN}`;
 
   /**
-   * Get % Value of MB used
+   * Updating Hub has failed - try again
    */
-  const getStoragePercent = (): number => {
-    if (currentStorageMb === 0 || currentStorageMb === null) return 0;
+  const onTryReupdate = () => {
+    /**
+     * Note: use session data 'storeContext.lastSubmittedSubdomain' and
+     * try and updates the Hub again.
+     */
+    const updatedHub: UpdateHubT = {
+      ...hub,
+      subdomain: storeContext.lastSubmittedSubdomain.subdomain,
+    };
 
-    return (Math.min(100, currentStorageMb) / storageLimitMb) * 100;
+    updateHub(hub.hubId, updatedHub).then(() => {
+      refreshHubData && refreshHubData();
+    });
   };
 
-  useEffect(() => {
-    const storagePercent = getStoragePercent();
-    let status = StorageStateE.DEFAULT;
-
-    storagePercent > 75 && (status = StorageStateE.WARNING);
-    storagePercent >= 100 && (status = StorageStateE.CRITICAL);
-
-    setStorageState(status);
-  }, [getStoragePercent]);
-
   /**
-   * Handle Setting Click
+   * Submit hub no longer needs to be in reverted state.
    */
-  const handleSettingClick = useCallback(() => {
-    router.push({
-      pathname: '/hubs/[hub_id]',
-      query: { hub_id: hubId },
+  const handleOnCloseError = () => {
+    // patch the hub with lastError =  '' to clear out the error.
+    const updatedHub: UpdateHubT = {
+      ...hub,
+      lastError: '',
+    };
+
+    updateHub(hub.hubId, updatedHub).then(() => {
+      setShowRevertError(false);
     });
-  }, [hubId, router]);
+  };
 
   /**
-   * Hub Loading State
+   * Check if session data is still holding last submitted domain
+   * to display 'try again button'
+   * @returns Boolean
    */
-  const LoadingHub = (
-    <div className="flex-align-center">
-      <Spinner size={18} />
-      <span className="u-font-14 margin-left-10">
-        <span className="u-capitalize">{status}</span> your hub...
-      </span>
-    </div>
-  );
+  const canTryAgain = (): boolean => {
+    const { subdomain: _subdomain, hubId: _hubId } =
+      storeContext.lastSubmittedSubdomain;
+    if (_subdomain === '' || _hubId !== hubId) return false;
+
+    return true;
+  };
 
   /**
-   * Hub External Link
+   * Hide / Show Card Footer
    */
-  const HubLink = (
-    <div className={styles.card_domain}>
-      <ExternalLink
-        target="_blank"
-        href={SubdomainRootdomain}
-        classProp="margin-right-20"
-      >
-        {SubdomainRootdomain} 
-      </ExternalLink>
+  const footerVisible = useMemo(() => {
+    return status === StatusE.UPDATING || status === StatusE.READY;
+  }, [status]);
 
-      <CopyButton value={SubdomainRootdomain} />
-    </div>
-  );
+  /**
+   * Hide / Show Loader
+   */
+  const loadingVisible = useMemo(() => {
+    return status === StatusE.CREATING || status === StatusE.UPDATING;
+  }, [status]);
 
   return (
     <div className={`${styles.card_wrapper} ${classProp}`}>
       <div className={styles.card_container}>
         {/* HEADER  */}
-        <div className={styles.card_header}>
-          <div className={styles.card_status_wrapper}>
-            <div
-              className={`${styles.card_status}  ${
-                styles['card_status_' + status]
-              }`}
-            ></div>
-            <div className="margin-left-10 u-capitalize">{status}</div>
-          </div>
-          <Button
-            onClick={handleSettingClick}
-            text="Edit Details"
-            category={ButtonCategoriesE.PRIMARY_OUTLINE}
-          />
-        </div>
+        <HubCardHeader status={status} hubId={hubId} />
 
         {/* BODY  */}
         <div className={styles.card_body}>
+          {/* TODO - figure out if a name is applied to a hub off the bat before we put "untitled hub" 
+          here statically, might be able to just pull w/e through  */}
           <div className={styles.card_name}>{name}</div>
 
-          {/* TODO come back to this when you have loading design  */}
-          {status === 'creating' || status === 'updating'
-            ? LoadingHub
-            : HubLink}
-        </div>
+          {/* Did Revert Error  */}
+          {showRevertError && (
+            <ErrorBox
+              classProp="margin-bottom-12"
+              message={Message.updateSubdomainErrorMessage}
+              onTryAgainClick={onTryReupdate}
+              canTryAgain={canTryAgain()}
+              onClose={handleOnCloseError}
+            />
+          )}
 
-        <hr className={styles.card_hr} />
+          {/* Critical Error 
+            The user can not try aagin on critical error
+            have the only contact button. 
+          */}
+          {lastError === LastErrorE.SUBDOMAIN_ERROR && (
+            <ErrorBox message={Message.criticalFailMessage} />
+          )}
+
+          {/* Create Error 
+            This error takes place when the hub first tries to build 
+            and fails to do so.
+          */}
+          {lastError === LastErrorE.CREATING_ERROR && (
+            <ErrorBox message={Message.createFailMessage} />
+          )}
+
+          {/* Loading Subdomain Updates  */}
+          {loadingVisible && (
+            <HubLoading
+              loadingMessage={
+                status === StatusE.CREATING
+                  ? Message.creatingMessage
+                  : Message.updatingMessage
+              }
+            />
+          )}
+
+          {/* Subdomain is ready and available  */}
+          {status === StatusE.READY && <HubLink subdomain={subdomain} />}
+        </div>
 
         {/* FOOTER  */}
-        <div className={styles.footer}>
-          <div className={styles.footer_block}>
-            <div className="u-text-center">
-              <Badge
-                name={tier}
-                classProp="margin-bottom-12 u-block"
-                category={BadgeCategoriesE.PRIMARY}
-              />
-              <div>Hub Tier</div>
-            </div>
-          </div>
-
-          <div className={styles.footer_block}>
-            <div className="u-text-center">
-              <div
-                className={`margin-bottom-12 ${
-                  styles['status_' + storageState]
-                }`}
-              >
-                <span className="u-color-text-main">{currentStorageMb}</span>
-                <span>/{storageLimitMb} MB</span>
-              </div>
-              <div className="flex-justify-center">
-                <div className={styles.progressbar_wrapper}>
-                  {storageState !== StorageStateE.DEFAULT ? (
-                    <Icon
-                      classProp={`${styles.storage_icon} ${
-                        styles['storage_icon_' + storageState]
-                      }`}
-                      name="alert-triangle"
-                    />
-                  ) : null}
-                  <ProgressBar
-                    value={getStoragePercent()}
-                    classValueProp={styles['progressbar_' + storageState]}
-                  />
-                </div>
-              </div>
-              <div>Content Storage Space</div>
-            </div>
-          </div>
-        </div>
+        {footerVisible && (
+          <>
+            <hr className={styles.card_hr} />
+            <HubCardFooter hub={hub} />
+          </>
+        )}
       </div>
     </div>
   );

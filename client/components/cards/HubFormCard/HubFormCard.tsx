@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import styles from './HubFormCard.module.scss';
 import { HUB_ROOT_DOMAIN } from 'config';
@@ -10,22 +10,40 @@ import {
   Icon,
 } from '@mozilla/lilypad';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { validateHubSubdomain } from 'services/hub.service';
+import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
 
 export type HubFormCardT = {
   name: string;
   subdomain: string;
+  hubId: string;
 };
 
 type HubFormCardPropsT = {
   hub: HubFormCardT;
   onSubmit: Function;
+  onError?: Function;
   classProp?: string;
 };
 
-const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
+const HubFormCard = ({
+  hub,
+  onSubmit,
+  onError,
+  classProp = '',
+}: HubFormCardPropsT) => {
   const [addressErrorMessage, setAddressErrorMessage] = useState<string>('');
+  const storeContext = useContext(StoreContext);
+  const [isValidDomain, setIsValidDomain] = useState(true);
+  const [isEditingDomain, setIsEditingDomain] = useState(false);
+
   const router = useRouter();
-  const { control, handleSubmit } = useForm<HubFormCardT>({
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+    getValues,
+  } = useForm<HubFormCardT>({
     defaultValues: {
       name: hub.name,
       subdomain: hub.subdomain,
@@ -36,8 +54,34 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
    * Submit Form
    * @param data
    */
+
+  /**
+   * TODO: 
+   * Show a different error for when a subdomain 
+   * is already in use by another user, vs when a subdomain 
+   * is invalid or forbidden. The validate_subdomain API returns 
+   * either subdomain_taken or subdomain_denied.
+   */
   const handleFormSubmit: SubmitHandler<HubFormCardT> = (data) => {
+    // Form Invalid
+    if (!isValid) {
+      onError && onError('Please fix form errors to continue.');
+      return;
+    }
+
+    // Domain does not pass serverside validation
+    if (!isValidDomain) {
+      onError && onError('Please provide a valid domain to continue');
+      return;
+    }
+
     onSubmit && onSubmit(data);
+    // Store away the last submitted subdomain incase we need to re-try.
+    const subdomain: SubdomainRetryT = {
+      subdomain: data.subdomain,
+      hubId: hub.hubId,
+    };
+    storeContext.handleThemeChange(subdomain);
   };
 
   /**
@@ -47,6 +91,33 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
     router.push({
       pathname: '/dashboard',
     });
+  };
+
+  /**
+   * Handle Subdomain Input Blur
+   */
+  const handleOnBlur = () => {
+    const newSubdomain = getValues('subdomain');
+
+    // Data has not been edited
+    if (hub.subdomain === newSubdomain) {
+      setIsValidDomain(true);
+      setIsEditingDomain(false);
+      return;
+    }
+
+    // Validate subdomain
+    validateHubSubdomain(hub.hubId, newSubdomain).then((resp) => {
+      setIsValidDomain(resp.success);
+      setIsEditingDomain(false);
+    });
+  };
+
+  /**
+   * Handle domain input focus
+   */
+  const handleOnFocus = () => {
+    setIsEditingDomain(true);
   };
 
   /**
@@ -91,7 +162,7 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
                   label="Hub Name"
                   placeholder="Hub Name"
                   required={true}
-                  info="For use within the dashboard and accounts area"
+                  info="Character Limit 24"
                   {...field}
                 />
               )}
@@ -99,14 +170,15 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
 
             {/* HUB SUBDOMAIN / ADDRESS  */}
             <div className={styles.address_wrapper}>
-              {/* TODO: FOLLOW UP WITH UX ON HOW WE WANT TO HANDLE MAX LENGHT  */}
               <Controller
                 name="subdomain"
                 control={control}
                 render={({ field }) => (
                   <Input
+                    onBlur={handleOnBlur}
+                    onFocus={handleOnFocus}
                     minLength={3}
-                    maxLength={64}
+                    maxLength={63}
                     classProp="margin-bottom-10"
                     placeholder="Web Address (URL)"
                     label="Web Address (URL)"
@@ -115,13 +187,31 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
                     validator={handleNameValidator}
                     customErrorMessage={addressErrorMessage}
                     required={true}
-                    {...field}
+                    name={field.name}
+                    value={field.value}
+                    onChange={field.onChange}
                   />
                 )}
               />
               <div className={styles.address_preview}>
                 .{HUB_ROOT_DOMAIN}
-                <Icon name="check-circle" classProp={styles.check_icon} />
+                <div className={styles.icon_wrapper}>
+                  {!isEditingDomain && (
+                    <div className={styles.icon_container}>
+                      {isValidDomain ? (
+                        <Icon
+                          name="check-circle"
+                          classProp={styles.check_icon}
+                        />
+                      ) : (
+                        <Icon
+                          name="alert-triangle"
+                          classProp={styles.error_icon}
+                        />
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>

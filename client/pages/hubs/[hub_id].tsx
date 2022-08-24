@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { HubT, UpdateHubT } from 'types/General';
+import { RoutesE } from 'types/Routes';
 import { getHub, updateHub } from 'services/hub.service';
 import { requireAuthentication } from 'services/routeGuard.service';
 import Head from 'next/head';
@@ -24,7 +25,8 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
   const [hub, setHub] = useState<HubT | null>(null);
   const [loading, setLoading] = useState(true);
   const { hub_id } = router.query;
-  const [subscription, setSubscription] = useState<SubscriptionT>(subscriptionInit);
+  const [subscription, setSubscription] =
+    useState<SubscriptionT>(subscriptionInit);
 
   /**
    * Get Hub By ID
@@ -45,9 +47,13 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
     });
   }, []);
 
-  const launchToastError = () => {
+  /**
+   * Toast Error
+   * @param errorMessage
+   */
+  const launchToastError = (errorMessage: string) => {
     // TODO: set up error logger
-    toast.error('Sorry, there was an error locating this Hub.', {
+    toast.error(errorMessage, {
       position: 'top-center',
       autoClose: 5000,
       hideProgressBar: false,
@@ -64,39 +70,48 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
    */
   const handleFormSubmit = useCallback(
     ({ name, subdomain }: HubFormCardT) => {
-      setLoading(true);
+      
+      /**
+       * TODO:
+       * Circle back with UX on how we can have a error state here and not
+       * just a toast message. 
+       */
       if (!hub) {
-        launchToastError();
+        launchToastError('Sorry, there was an error locating this Hub.');
         return;
       }
 
       /**
-       * Update Date from from
+       * Update Date from form
        * keep all other data as is
        */
-      const { ccuLimit, status, storageLimitMb, hubId, tier } = hub;
       const updatedHub: UpdateHubT = {
-        name,
-        ccuLimit,
-        status,
-        storageLimitMb,
-        subdomain,
-        tier,
+        ...hub,
+        subdomain:subdomain,
+        name:name
       };
 
-      updateHub(`${hubId}`, updatedHub).then((resp) => {
+      updateHub(hub.hubId, updatedHub).then((resp) => {
         if (resp?.status === 200) {
-          toast.success(`Hub: ${name} has been updated!`);
-          setHub(resp?.data);
+          router.push({
+            pathname: RoutesE.Dashboard,
+          });
         } else {
-          toast.error('Sorry, there was an error updating this Hub.');
+          launchToastError('Sorry, there was an error updating this Hub.');
         }
 
         setLoading(false);
       });
     },
-    [hub]
+    [hub, router]
   );
+
+  /**
+   * Handle Form Error
+   */
+  const handleFormError = (errorMessage:string) => {
+    launchToastError(errorMessage);
+  };
 
   return (
     <div className="page_wrapper">
@@ -108,7 +123,11 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
       {!loading && hub !== null ? (
         <main className={styles.main}>
           <div className={styles.cards_wrapper}>
-            <HubFormCard hub={hub} onSubmit={handleFormSubmit} />
+            <HubFormCard
+              hub={hub}
+              onSubmit={handleFormSubmit}
+              onError={handleFormError}
+            />
           </div>
 
           {/* SUBSCRIPTION WIDGET  */}

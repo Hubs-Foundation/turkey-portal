@@ -59,8 +59,20 @@
   }
 }
 
+.icon {
+  &_wrapper {
+    height: 40px;
+    width: 40px;
+  }
+}
+
 .check_icon {
   stroke: $color-semantic-success;
+  margin-left: 4px;
+}
+
+.error_icon {
+  stroke: $color-semantic-critical;
   margin-left: 4px;
 }
 

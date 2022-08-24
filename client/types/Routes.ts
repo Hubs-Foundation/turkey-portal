@@ -1,3 +1,9 @@
-export enum LoggedOutRoutesE {
-  Login = 'Login'
+export enum LoggedOutComponentPages {
+  Login = 'login'
+}
+
+export enum RoutesE {
+  Login = '/login',
+  Dashboard = '/dashboard',
+  Hubs = '/hubs'
 }

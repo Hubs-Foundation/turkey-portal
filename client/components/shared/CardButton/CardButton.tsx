@@ -5,7 +5,7 @@ import { Icon, IconT } from '@mozilla/lilypad';
 export type CardButtonPropsT = {
   id?: string;
   title: string;
-  description: string;
+  description?: string;
   icon: IconT;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   classProp?: string;
@@ -24,6 +24,7 @@ const CardButton = ({
       className={`
         ${styles.button} 
         ${classProp}
+        ${!description && 'flex-align-center'}
       `}
       id={id}
       aria-label={title}
@@ -38,7 +39,7 @@ const CardButton = ({
       {/* Attributes  */}
       <div className={styles.attributes_wrapper}>
         <div className={styles.title}>{title}</div>
-        <div className={styles.description}>{description}</div>
+        { description && <div className={styles.description}>{description}</div> }
       </div>
 
       {/* Arrow Icon  */}

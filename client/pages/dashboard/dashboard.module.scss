@@ -5,12 +5,19 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  flex-grow: 1;
 
   @include desktop-large-down {
     margin-top: 35px;
     flex-direction: column;
     padding: 0 24px;
   }
+
+  @include mobile-down {
+    margin-top: 0;
+    padding: 0;
+  }
+  
 }
 
 .cards_wrapper {
@@ -26,7 +33,10 @@
 .subcard {
 
   @include desktop-large-down {
-    order: -1;
     margin-bottom: 24px;
+  }
+
+  @include mobile-down {
+    margin-bottom: 0;
   }
 }
