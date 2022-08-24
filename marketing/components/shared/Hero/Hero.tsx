@@ -28,9 +28,7 @@ const Hero = ({
   const onCtaClick = useCallback(() => {
     ctaClick && ctaClick();
 
-    // TODO consider adding anchor functionaltiy to the button component
-    // Need to figure out if this is external or internal link / or both.
-    // if internal this is fine but external will need more. 
+    // TODO - once the subscription section is in link of scroll-to
     ctaLink &&
       router.push({
         pathname: ctaLink,
@@ -45,16 +43,18 @@ const Hero = ({
           backgroundImage: `url(${background})`,
         }}
       >
-        <div className={styles.contents}>
-          {title && <h3>{title}</h3>}
-          {body && <h3>{body}</h3>}
-          <a href={ctaLink}>
-            <Button
-              text={cta}
-              onClick={onCtaClick}
-              category={ButtonCategoriesE.PRIMARY_SOLID}
-            />
-          </a>
+        <div className={styles.contents_wrapper}>
+          <div className={styles.contents}>
+            {title && <h3 className={styles.title}>{title}</h3>}
+            {body && <p className={styles.body}>{body}</p>}
+            <a href={ctaLink}>
+              <Button
+                text={cta}
+                onClick={onCtaClick}
+                category={ButtonCategoriesE.PRIMARY_SOLID}
+              />
+            </a>
+          </div>
         </div>
       </div>
     </section>

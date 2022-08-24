@@ -13,7 +13,35 @@
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
-  align-items: center;
+  justify-content: center;
   background-color: #fff;
-  color:#fff;
 }
+
+.contents {
+  width: 540px;
+  margin: 60px 66px 0;
+
+  @include tablet-down {
+    width: 280px;
+  }
+
+  @include mobile-down {
+    text-align: center;
+  }
+
+  &_wrapper {
+    max-width: $container-max-width;
+    width: $container-max-width;
+  }
+}
+
+.title {
+  @include h1;
+  margin: 0 0 16px;
+}
+
+.body {
+  margin: 0 0 24px;
+  @include body-md;
+}
+
