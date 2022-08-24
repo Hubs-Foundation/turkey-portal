@@ -133,7 +133,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
           {/* SUBSCRIPTION WIDGET  */}
           {hub && (
             <SubCard
-              hub={hub}
+              subdomain={hub.subdomain}
               classProp={styles.subcard}
               subscription={subscription}
             />

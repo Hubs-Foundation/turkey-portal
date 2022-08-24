@@ -8,11 +8,9 @@
 }
 
 .dropdown-link {
-  @include font-size(16);
-  @include primary-font(500);
+  @include body-md;
   display: flex;
   align-items: center;
-  line-height: 24px;
   color: $color-text-reverse;
   
   &:first-child{

@@ -110,7 +110,7 @@ const Dashboard = ({}: DashboardPropsT) => {
         <div className={styles.subcard}>
         {hubs.length ?
           <SubCard 
-            hub={hubs[0]}
+            subdomain={hubs[0].subdomain}
             subscription={subscription} 
             price={subscriptionTotal} 
           /> : null }

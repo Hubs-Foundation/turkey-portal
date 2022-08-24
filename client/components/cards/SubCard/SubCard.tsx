@@ -7,7 +7,7 @@ import SubscriptionModal from 'components/Modals/SubscriptionModal/SubscriptionM
 import { HubT } from 'types/General';
 
 type SubCardPropsT = {
-  hub: HubT;
+  subdomain: string;
   subscription: SubscriptionT;
   currency?: string;
   price?: number;
@@ -15,7 +15,7 @@ type SubCardPropsT = {
 };
 
 const SubCard = ({
-  hub,
+  subdomain,
   subscription,
   price = 5,
   currency = 'USD',
@@ -93,7 +93,7 @@ const SubCard = ({
         <Modal onClose={handleCloseModal}>
           <SubscriptionModal 
             cancelDate={subscription.end_of_cycle}
-            subdomain={hub.subdomain}
+            subdomain={subdomain}
             onClose={handleCloseModal}
           />
         </Modal>

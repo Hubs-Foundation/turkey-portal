@@ -9,11 +9,6 @@ type SubscriptionModalT = {
   classProp?: string;
 };
 
-/**
- * Skeleton Card: This card is used to create faux loading ui of widgets and rows. Stack
- * the skeleton cards to build a custom grid of widgets to mimic the actual UI.
- */
-
 const SubscriptionModal = ({
   subdomain,
   cancelDate,
@@ -28,6 +23,7 @@ const SubscriptionModal = ({
     <div className={classProp}>
       {/* HEADER  */}
       <div className={styles.header}>
+        {/* TODO update icon asset  */}
         <Icon name="alert-circle" size={24} classProp="margin-right-10" />
         <h2 className={styles.title}>Cancel Subscription</h2>
       </div>
