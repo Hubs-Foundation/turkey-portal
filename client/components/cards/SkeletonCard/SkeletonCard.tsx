@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './SkeletonCard.module.scss';
-import './SkeletonCard.module.scss';
 
 type SkeletonCardPropsT = {
   category: 'square' | 'row';

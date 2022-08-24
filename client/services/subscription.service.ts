@@ -4,6 +4,7 @@ import { API_SERVER } from 'config';
 
 export type SubscriptionT = {
   next_payment: string;
+  end_of_cycle: string;
 };
 
 /**
@@ -15,10 +16,10 @@ export const getSubscriptions = async (headers?: AxiosRequestHeaders) => {
   const contextHeaders = { headers: { ...(headers as AxiosRequestHeaders) } };
   const config = headers ? contextHeaders : credentials;
 
-
   // What is the best struct here .. TODO!!!
   const mockDate = {
     next_payment: 'February 14',
+    end_of_cycle: 'February 12, 2023',
   };
 
   return mockDate;
@@ -32,6 +33,3 @@ export const getSubscriptions = async (headers?: AxiosRequestHeaders) => {
   //   console.error('Error', error);
   // }
 };
-
-
-

@@ -18,6 +18,7 @@ const Dashboard = ({}: DashboardPropsT) => {
   const subPrice = 5;
   const subscriptionInit: SubscriptionT = {
     next_payment: '',
+    end_of_cycle: ''
   };
   const [hubs, setHubs] = useState(hubsInit);
   const [hasUpdatingCreatingHub, setHasUpdatingCreatingHub] =
@@ -107,8 +108,14 @@ const Dashboard = ({}: DashboardPropsT) => {
 
         {/* SUBSCRIPTION WIDGET  */}
         <div className={styles.subcard}>
-          <SubCard subscription={subscription} price={subscriptionTotal} />
+        {hubs.length ?
+          <SubCard 
+            hub={hubs[0]}
+            subscription={subscription} 
+            price={subscriptionTotal} 
+          /> : null }
         </div>
+
       </main>
       <footer>
         <FeedbackBanner />

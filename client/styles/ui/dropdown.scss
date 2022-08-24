@@ -2,14 +2,20 @@
 
 .dropdown-hr {
   border: 0;
-  height: 1px;
-  background: linear-gradient(90deg, #6375F4 0%, #ED2462 52.7%, #F29436 100%);
-  margin: 0;
+  height: 2px;
+  background: $color-border-3;
+  margin: 24px 0;
 }
 
 .dropdown-link {
   @include font-size(16);
-  @include primary-font(400);
+  @include primary-font(500);
   display: flex;
   align-items: center;
+  line-height: 24px;
+  color: $color-text-reverse;
+  
+  &:first-child{
+    margin-bottom: 24px;
+  }
 }
