@@ -1,6 +1,6 @@
-@use '../core/variables.scss' as *;
-@use '../tools/media-queries.scss' as *;
-@use '../tools/functions.scss' as *;
+@use '../core/variables.scss'as *;
+@use '../tools/media-queries.scss'as *;
+@use '../tools/functions.scss'as *;
 
 /*-------------------------------
   TYPOGRAPHY STYLES
@@ -30,7 +30,7 @@
 
   @include tablet-down {
     @include font-size(20);
-    line-height: 26px;   
+    line-height: 26px;
   }
 }
 
