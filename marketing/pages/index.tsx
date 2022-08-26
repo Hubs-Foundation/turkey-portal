@@ -5,9 +5,12 @@ import Hero from '@Shared/Hero/Hero';
 import FiftyFifty, { FiftyFiftyLayoutE } from '@Shared/FiftyFifty/FiftyFifty';
 import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
 import Tiers, { TierPropsT } from '@Shared/Tiers/Tiers';
+import { useMobileDown } from 'hooks/useMediaQuery';
+
 
 const Home: NextPage = () => {
-  
+
+  const isMobile = useMobileDown();
   const onCtaClick = useCallback(() => {
     console.log('scroll or w.e');
   }, []);
@@ -84,10 +87,11 @@ const Home: NextPage = () => {
 
       <main>
         <Hero
-          background="/mock_hero.jpg"
+          background={ isMobile ?'/HubsHeroMobile.png':'/HubsHero.png'}
           title="A whole new world, from the comfort of your home"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
           cta="Get Started"
+          ctaLink='/#subscriptions'
           ctaClick={onCtaClick}
         />
 
