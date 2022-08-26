@@ -7,9 +7,7 @@ import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
 import Tiers, { TierPropsT } from '@Shared/Tiers/Tiers';
 import { useMobileDown } from 'hooks/useMediaQuery';
 
-
 const Home: NextPage = () => {
-
   const isMobile = useMobileDown();
   const onCtaClick = useCallback(() => {
     console.log('scroll or w.e');
@@ -23,19 +21,24 @@ const Home: NextPage = () => {
       {
         image: '/mock_fiftyfifty.jpg',
         title: 'Tile One',
+        description:
+          'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space - the volume changes based on how close or far away you are.',
       },
       {
         image: '/mock_fiftyfifty.jpg',
         title: 'Tile Two',
+        description:
+          'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space - the volume changes based on how close or far away you are.',
       },
       {
         image: '/mock_fiftyfifty.jpg',
         title: 'Tile Three',
+        description:
+          'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space - the volume changes based on how close or far away you are.',
       },
     ];
     return data;
   }, []);
-
 
   /**
    * Mock Tier Data
@@ -86,12 +89,20 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
+        <TileSpotlight
+          tiles={tiles}
+          title="Hubs puts you back in control of your online social spaces"
+          body="Your Hub is the portal to your online community. Create spaces for friends, family, co-workers - the choice is yours. 
+          With a subscription to Hubs, you choose who can access your space and take advantage of all Hubs has to offer.
+          "
+        />
+
         <Hero
-          background={ isMobile ?'/HubsHeroMobile.png':'/HubsHero.png'}
+          background={isMobile ? '/HubsHeroMobile.png' : '/HubsHero.png'}
           title="A whole new world, from the comfort of your home"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
           cta="Get Started"
-          ctaLink='/#subscriptions'
+          ctaLink="/#subscriptions"
           ctaClick={onCtaClick}
         />
 
@@ -112,12 +123,8 @@ const Home: NextPage = () => {
           title="Customizable"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
         />
-        <TileSpotlight
-          tiles={tiles}
-          title="The best place(s) to meet"
-          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
-        />
-        <Tiers tiers={tiers}/>
+
+        <Tiers tiers={tiers} />
       </main>
     </div>
   );

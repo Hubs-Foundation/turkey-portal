@@ -11,21 +11,28 @@ type TileSpotlightPropsT = {
 export type TilePropsT = {
   image: string;
   title: string;
+  description:string;
 };
 
 /**
  * Spotlight Tile
  */
-const Tile = ({ image, title }: TilePropsT) => {
+const Tile = ({ image, title, description }: TilePropsT) => {
   return (
     <section className={styles.tile_wrapper}>
       <div className={styles.tile_container}>
-        <Image src={image} width="200" height="200" />
-        <div>{title}</div>
+        <Image src={image} width="385" height="207" />
+        <div className={styles.tile_content}>
+          <div className={styles.tile_bar}/>
+          <h3>{title}</h3>
+          <p>{description}</p>
+        </div>
       </div>
     </section>
   );
 };
+
+
 
 const TileSpotlight = ({
   title,
@@ -36,13 +43,20 @@ const TileSpotlight = ({
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.container}>
-        <h2>{title}</h2>
-        <p>{body}</p>
+
+        {/* HEADER  */}
+        <div className={styles.header}>
+          <h2>{title}</h2>
+          <p>{body}</p>
+        </div>
+
+        {/* CARDS  */}
         <div className={styles.tiles}>
-          {tiles.map(({ image, title }, i) => {
-            return <Tile key={i} image={image} title={title} />;
+          {tiles.map(({ image, title, description }, i) => {
+            return <Tile key={i} image={image} title={title} description={description}/>;
           })}
         </div>
+
       </div>
     </section>
   );
