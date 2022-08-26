@@ -1,0 +1,38 @@
+@use '../../styles/boilerplate.scss'as *;
+
+.wrapper {
+  margin-top: 100px;
+  flex-wrap: wrap;
+  flex-grow: 1;
+
+  @include mobile-down {
+    margin-top: 40px;
+  }
+}
+
+.header {
+
+  @include mobile-down {
+    margin: 0px 24px;
+  }
+
+  h1 {
+    color: $color-text-reverse;
+    @include h2;
+    text-align: center;
+    margin: 0 0 16px;
+  }
+
+  p {
+    @include body-md;
+    color: $color-text-reverse;
+    text-align: center;
+    margin: 0 0 40px;
+  }
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}

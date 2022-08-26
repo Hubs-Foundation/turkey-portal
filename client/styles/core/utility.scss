@@ -1,6 +1,6 @@
-@use '../tools/media-queries.scss' as *;
-@use '../tools/mixins.scss' as *;
-@use '../core/variables.scss' as *;
+@use '../tools/media-queries.scss'as *;
+@use '../tools/mixins.scss'as *;
+@use '../core/variables.scss'as *;
 
 // ---------------------------------
 //   Quick Typograpjhy
@@ -38,8 +38,8 @@
 //   Quick Media-Q
 // ---------------------------------
 .u-no-mobile {
-  @include mobile-down{
-    display: none!important;
+  @include mobile-down {
+    display: none !important;
   }
 }
 
@@ -299,6 +299,15 @@ MARGIN
 }
 
 .margin-top {
+
+  &-2 {
+    margin-top: 2px;
+  }
+
+  &-4 {
+    margin-top: 4px;
+  }
+
   &-5 {
     margin-top: 5px;
   }

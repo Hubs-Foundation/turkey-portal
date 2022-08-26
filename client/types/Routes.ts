@@ -1,5 +1,6 @@
 export enum LoggedOutComponentPages {
-  Login = 'login'
+  Login = 'login',
+  Subscribe = 'subscribe'
 }
 
 export enum RoutesE {

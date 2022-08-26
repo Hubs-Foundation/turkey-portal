@@ -18,11 +18,12 @@ const Dashboard = ({}: DashboardPropsT) => {
   const subPrice = 5;
   const subscriptionInit: SubscriptionT = {
     next_payment: '',
-    end_of_cycle: ''
+    end_of_cycle: '',
   };
   const [hubs, setHubs] = useState(hubsInit);
   const [hasUpdatingCreatingHub, setHasUpdatingCreatingHub] =
     useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [subscriptionTotal, setSubscriptionTotal] = useState<number>(subPrice);
   const [subscription, setSubscription] =
     useState<SubscriptionT>(subscriptionInit);
@@ -36,7 +37,7 @@ const Dashboard = ({}: DashboardPropsT) => {
       setHubs(hubs);
       setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
     });
-  },[]);
+  }, []);
 
   /**
    * Check if hub is being created or is updating
@@ -70,15 +71,20 @@ const Dashboard = ({}: DashboardPropsT) => {
    * Get All Hubs
    */
   useEffect(() => {
-    getHubs().then((hubs) => {
+    const getData = async () => {
+      // Get Hubs
+      const hubs = await getHubs();
       setHubs(hubs);
       setSubscriptionTotal(hubs.length * subPrice);
       setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
-    });
 
-    getSubscriptions().then((subscription) => {
+      // Get Subscriptions
+      const subscription = await getSubscriptions();
       setSubscription(subscription);
-    });
+      setIsLoading(false);
+    };
+
+    getData().catch(console.error);
   }, []);
 
   return (
@@ -88,10 +94,10 @@ const Dashboard = ({}: DashboardPropsT) => {
         <meta name="description" content="general profile page" />
       </Head>
 
-      <main className={styles.main}>
+      <section className={styles.hubs_wrapper}>
         {/* Hub Cards  */}
         <div className={styles.cards_wrapper}>
-          {hubs.length ? (
+          {!isLoading ? (
             hubs.map((hub) => {
               return (
                 <HubCard
@@ -108,15 +114,22 @@ const Dashboard = ({}: DashboardPropsT) => {
 
         {/* SUBSCRIPTION WIDGET  */}
         <div className={styles.subcard}>
-        {hubs.length ?
-          <SubCard 
-            subdomain={hubs[0].subdomain}
-            subscription={subscription} 
-            price={subscriptionTotal} 
-          /> : null }
+          {!isLoading ? (
+            <SubCard
+              subdomain={hubs[0].subdomain}
+              subscription={subscription}
+              price={subscriptionTotal}
+            />
+          ) : (
+            <SkeletonCard
+              qty={1}
+              category="square"
+              classProp={styles.subcard_skeleton}
+            />
+          )}
         </div>
+      </section>
 
-      </main>
       <footer>
         <FeedbackBanner />
       </footer>

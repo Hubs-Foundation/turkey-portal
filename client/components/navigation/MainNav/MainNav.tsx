@@ -18,9 +18,14 @@ import {
 type MainNavPropsT = {
   classProp?: string;
   MobileMenuClick: Function;
+  isExternal?: boolean;
 };
 
-const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
+const MainNav = ({
+  classProp = '',
+  MobileMenuClick,
+  isExternal = false,
+}: MainNavPropsT) => {
   const account = useSelector(selectAccount);
   const dropdownRef = useRef<dropdownT>(null);
   const router = useRouter();
@@ -35,7 +40,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
 
   const onManageAccountClick = useCallback(() => {
     // TODO set up variables to get correct FX account link
-  },[])
+  }, []);
 
   /**
    * Handle Menu Click
@@ -75,7 +80,12 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
           }}
         >
           {/* TODO update icon asset  */}
-          <Icon classProp="margin-right-10" color="currentColor" name="plus-circle" size={24} />
+          <Icon
+            classProp="margin-right-10"
+            color="currentColor"
+            name="plus-circle"
+            size={24}
+          />
           Manage Your Firefox Account
         </a>
 
@@ -88,7 +98,12 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
           }}
         >
           {/* TODO update icon asset  */}
-          <Icon classProp="margin-right-10" color="currentColor" name="plus-circle" size={24} />
+          <Icon
+            classProp="margin-right-10"
+            color="currentColor"
+            name="plus-circle"
+            size={24}
+          />
           Sign Out
         </a>
       </div>
@@ -122,32 +137,34 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
           </div>
 
           {/* Account information  */}
-          <div className="flex-align-center">
-            <Button
-              classProp={styles.exit_button}
-              category={ButtonCategoriesE.SECONDARY_OUTLINE}
-              text="Exit Dashboard"
-            />
+          {!isExternal && (
+            <div className="flex-align-center">
+              <Button
+                classProp={styles.exit_button}
+                category={ButtonCategoriesE.SECONDARY_OUTLINE}
+                text="Exit Dashboard"
+              />
 
-            <Dropdown
-              ref={dropdownRef}
-              alignment="right"
-              cta={
-                <div className={styles.main_nav_account}>
-                  {account.profilePic && (
-                    <span className="flex-align-center">
-                      <Avatar
-                        src={account.profilePic}
-                        size={50}
-                        alt="profile picture"
-                      />
-                    </span>
-                  )}
-                </div>
-              }
-              content={DropdownContent}
-            />
-          </div>
+              <Dropdown
+                ref={dropdownRef}
+                alignment="right"
+                cta={
+                  <div className={styles.main_nav_account}>
+                    {account.profilePic && (
+                      <span className="flex-align-center">
+                        <Avatar
+                          src={account.profilePic}
+                          size={50}
+                          alt="profile picture"
+                        />
+                      </span>
+                    )}
+                  </div>
+                }
+                content={DropdownContent}
+              />
+            </div>
+          )}
         </div>
       </div>
     </nav>
