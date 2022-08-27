@@ -1,12 +1,15 @@
 import axios, { AxiosRequestHeaders } from 'axios';
-const API_PATH = '/api/v1/account';
 import { API_SERVER } from 'config';
+
+const API_PATH = '/api/v1/account';
 
 /**
  * Get Account
  * @returns Account:AccountT{}
  */
-export const getAccount = async (headers?: AxiosRequestHeaders) => {
+export const getAccount = async (
+  headers?: AxiosRequestHeaders
+) => {
   const credentials = { withCredentials: true };
   const contextHeaders = { headers: { ...(headers as AxiosRequestHeaders) } };
   const config = headers ? contextHeaders : credentials;
@@ -17,13 +20,13 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
     });
   } catch (error) {
     // TODO: Make game plan for error handling
-    console.error('Error', error);
+    console.error('Error in getAccount()', error);
   }
 };
 
 /**
  * Log User Out
- * @returns 
+ * @returns
  */
 export const logOut = async () => {
   try {

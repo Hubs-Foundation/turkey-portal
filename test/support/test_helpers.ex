@@ -8,7 +8,8 @@ defmodule DashWeb.TestHelpers do
     "sub" => @default_test_uid,
     "fxa_email" => @test_email,
     "fxa_pic" => "https://fake.com/pic.jpg",
-    "fxa_displayName" => "Faker McFakerson"
+    "fxa_displayName" => "Faker McFakerson",
+    "fxa_subscriptions" => ["hubs:sub"]
   }
 
   @default_token_opts [
@@ -18,6 +19,13 @@ defmodule DashWeb.TestHelpers do
   ]
   def get_test_email() do
     @test_email
+  end
+
+  def put_keys_for_jwk() do
+    private_key = JOSE.JWK.generate_key({:rsa, 512})
+
+    {_meta, public_key_str} = private_key |> JOSE.JWK.to_public() |> JOSE.JWK.to_pem()
+    Application.put_env(:dash, DashWeb.Plugs.Auth, %{auth_pub_key: public_key_str})
   end
 
   def put_test_token(conn, opts \\ []) do
