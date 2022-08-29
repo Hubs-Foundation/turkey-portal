@@ -33,6 +33,10 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
     });
   }, [router]);
 
+  const onManageAccountClick = useCallback(() => {
+    // TODO set up variables to get correct FX account link
+  },[])
+
   /**
    * Handle Menu Click
    */
@@ -44,30 +48,37 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
    * Dropdown Content
    */
   const DropdownContent = (
-    <>
-      {/* Go To Firefox Account  */}
-      <div className={`padding-10 ${styles.account_details_wrapper}`}>
-        <Avatar src={account.profilePic} size={30} alt="profile picture" />
+    <div className={styles.dropdown_wrapper}>
+      <div className={styles.account_wrapper}>
+        <Avatar
+          classProp="margin-top-5"
+          src={account.profilePic}
+          size={40}
+          alt="profile picture"
+        />
         <div className={styles.account_details}>
-          <div className={styles.account_details_title}> {account.email}</div>
-          <ExternalLink
-            classProp={styles.account_manage_link}
-            icon="external-link"
-            target="_blank"
-            href={'#'}
-            onClick={() => {
-              dropdownRef.current?.closeDropdown();
-            }}
-          >
-            Manage your Firefox Account
-          </ExternalLink>
+          <div className={styles.account_label}>Signed in as</div>
+          <div className={styles.account_email}>{account.email}</div>
         </div>
       </div>
 
       <hr className="dropdown-hr" />
 
       {/* Sign Out  */}
-      <div className={`padding-10`}>
+      <div className={styles.links}>
+        <a
+          href="#"
+          target="_blank"
+          className="dropdown-link"
+          onClick={() => {
+            onManageAccountClick();
+          }}
+        >
+          {/* TODO update icon asset  */}
+          <Icon classProp="margin-right-10" color="currentColor" name="plus-circle" size={24} />
+          Manage Your Firefox Account
+        </a>
+
         <a
           href="#"
           target="_blank"
@@ -76,11 +87,12 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
             onLogOutClick();
           }}
         >
-          <Icon name="chevron-down" size={30} />
-          Sign Out of Hubs
+          {/* TODO update icon asset  */}
+          <Icon classProp="margin-right-10" color="currentColor" name="plus-circle" size={24} />
+          Sign Out
         </a>
       </div>
-    </>
+    </div>
   );
 
   /**

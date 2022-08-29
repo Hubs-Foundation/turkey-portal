@@ -98,14 +98,15 @@
 }
 
 @mixin body-md {
-  @include primary-font(300);
-  @include font-size(12);
-  letter-spacing: 0;
+  @include primary-font(500);
+  @include font-size(16);
   line-height: 24px;
+}
 
-  @include tablet-up {
-    @include font-size(14);
-  }
+@mixin body-md-bold {
+  @include primary-font(700);
+  @include font-size(16);
+  line-height: 24px;
 }
 
 @mixin body-sm {

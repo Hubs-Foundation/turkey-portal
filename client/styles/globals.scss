@@ -59,6 +59,7 @@ main[data-theme="light"] {
   --color-semantic-critical-disabled: #000000;
 
   --color-background-critical:#F9E1E5;
+  --color-background-neutral-0:#FFFFFF;
 
   --color-text-main: #222222;
   --color-text-subtle: #8F8F8F;
@@ -72,6 +73,7 @@ main[data-theme="light"] {
 
   --color-border-1: #E6E6E6;
   --color-border-2: #F9F9F9;
+  --color-border-3: rgba(202, 202, 202, 0.2);
 
   --color-neutral-0: #FFFFFF;
   --color-neutral-1: #F5F5F5;
@@ -83,6 +85,7 @@ main[data-theme="light"] {
   --color-status-busy: #F19B53;
 
   --color-background-overlay: rgba(23, 10, 122, 0.4);
+  --color-background-modal-overlay: rgba(0, 0, 0, 0.3);
 
 }
 
@@ -150,6 +153,7 @@ main[data-theme="dark"] {
   --color-status-busy: #F19B53;
   
   --color-background-overlay: rgba(23, 10, 122, 0.4);
+  --color-background-modal-overlay: rgba(0, 0, 0, 0.3);
 }
 
 .page_wrapper {
