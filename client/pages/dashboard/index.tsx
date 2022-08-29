@@ -17,8 +17,8 @@ const Dashboard = ({}: DashboardPropsT) => {
   const hubsInit: HubT[] = [];
   const subPrice = 5;
   const subscriptionInit: SubscriptionT = {
-    next_payment: '',
-    end_of_cycle: ''
+    nextPayment: '',
+    endOfCycle: ''
   };
   const [hubs, setHubs] = useState(hubsInit);
   const [hasUpdatingCreatingHub, setHasUpdatingCreatingHub] =

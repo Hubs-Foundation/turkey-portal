@@ -5,7 +5,7 @@ import { Icon, Button, ButtonCategoriesE } from '@mozilla/lilypad';
 type SubscriptionModalT = {
   subdomain: string;
   cancelDate: string;
-  onClose: Function;
+  onClose: () => void;
   classProp?: string;
 };
 
