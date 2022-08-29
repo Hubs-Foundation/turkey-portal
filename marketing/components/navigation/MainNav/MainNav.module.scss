@@ -35,9 +35,9 @@
   }
 
   &_link {
-    @include font-size(14);
-    font-weight: 700;
-    border-bottom: solid $black 2px;
+    @include font-size(16);
+    @include secondary-font(700);
+    color: $color-text-main;
     padding-bottom: 0;
     margin-right: 24px;
     text-decoration: none;

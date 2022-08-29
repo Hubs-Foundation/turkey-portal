@@ -4,6 +4,7 @@ import Link from 'next/link';
 import BlobIcon from '@Logos/BlobIcon/BlobIcon';
 import ExternalLink from '@Shared/ExternalLink/ExternalLink';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
+import { useTabletDown } from 'hooks/useMediaQuery';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -18,6 +19,8 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
     // we will probably have a mobile slide out menu *place holder*
   }, [MobileMenuClick]);
 
+  const isTabletDown = useTabletDown();
+
   /**
    * Main Nav JSX
    */
@@ -29,14 +32,6 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
         <div className={styles.main_nav_container}>
           {/* Main navigation links / logo */}
           <div className={styles.main_nav_contents}>
-            {/* Mobile Menu */}
-            {/* <IconButton
-              icon="menu"
-              onClick={handleMobileMenuClick}
-              size={30}
-              classProp={styles.mobile_menu}
-            /> */}
-
             {/* Logo */}
             <div className={styles.logo_wrapper}>
               <div className={styles.logo}>hubs</div>
@@ -44,28 +39,42 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
             </div>
 
             {/* Links  */}
-            <div className={styles.main_nav_links}>
-          
-              <div className={styles.main_nav_link}>
-                <a href="#" target="_blank">Hubs Cloud</a>
-              </div>
-              <div className={styles.main_nav_link}>
-                <a href="#" target="_blank">Creator Labs</a>
-              </div>
-              <div className={styles.main_nav_link}>
-                <a href="#" target="_blank">Try our demo</a>
-              </div>
+            {!isTabletDown && (
+              <div className={styles.main_nav_links}>
+                <a href="#" target="_blank" className={styles.main_nav_link}>
+                  Creator Labs
+                </a>
 
-            </div>
+                <a href="#" target="_blank" className={styles.main_nav_link}>
+                  Hubs Cloud
+                </a>
+
+                <a href="#" target="_blank" className={styles.main_nav_link}>
+                  Try our demo
+                </a>
+              </div>
+            )}
           </div>
 
           {/* Go To Hub Dashboard */}
           <div className="flex-align-center">
-            <Button
-              classProp={styles.dashboard_button}
-              category={ButtonCategoriesE.PRIMARY_SOLID}
-              text="My Hub Dashboard"
-            />
+            {/* Mobile Menu */}
+            {isTabletDown && (
+              <Button
+                category={ButtonCategoriesE.PRIMARY_CLEAR}
+                icon="menu"
+                onClick={handleMobileMenuClick}
+                classProp={styles.mobile_menu}
+              />
+            )}
+
+            {!isTabletDown && (
+              <Button
+                classProp={styles.dashboard_button}
+                category={ButtonCategoriesE.PRIMARY_SOLID}
+                text="Get Started"
+              />
+            )}
           </div>
         </div>
       </div>
