@@ -11,7 +11,7 @@ type TileSpotlightPropsT = {
 export type TilePropsT = {
   image: string;
   title: string;
-  description:string;
+  description: string;
 };
 
 /**
@@ -21,9 +21,14 @@ const Tile = ({ image, title, description }: TilePropsT) => {
   return (
     <section className={styles.tile_wrapper}>
       <div className={styles.tile_container}>
-        <Image src={image} width="385" height="207" />
+        <div
+          className={styles.tile_image}
+          style={{
+            backgroundImage: `url(${image})`,
+          }}
+        ></div>
         <div className={styles.tile_content}>
-          <div className={styles.tile_bar}/>
+          <div className={styles.tile_bar} />
           <h3>{title}</h3>
           <p>{description}</p>
         </div>
@@ -31,8 +36,6 @@ const Tile = ({ image, title, description }: TilePropsT) => {
     </section>
   );
 };
-
-
 
 const TileSpotlight = ({
   title,
@@ -42,8 +45,13 @@ const TileSpotlight = ({
 }: TileSpotlightPropsT) => {
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
+      <div
+        className={styles.bubble_top}
+        style={{
+          backgroundImage: `url(/bubble-top.png)`,
+        }}
+      ></div>
       <div className={styles.container}>
-
         {/* HEADER  */}
         <div className={styles.header}>
           <h2>{title}</h2>
@@ -53,11 +61,23 @@ const TileSpotlight = ({
         {/* CARDS  */}
         <div className={styles.tiles}>
           {tiles.map(({ image, title, description }, i) => {
-            return <Tile key={i} image={image} title={title} description={description}/>;
+            return (
+              <Tile
+                key={i}
+                image={image}
+                title={title}
+                description={description}
+              />
+            );
           })}
         </div>
-
       </div>
+      <div
+        className={styles.bubble_bottom}
+        style={{
+          backgroundImage: `url(/bubble-bottom.png)`,
+        }}
+      ></div>
     </section>
   );
 };

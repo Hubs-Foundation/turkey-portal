@@ -89,14 +89,6 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <TileSpotlight
-          tiles={tiles}
-          title="Hubs puts you back in control of your online social spaces"
-          body="Your Hub is the portal to your online community. Create spaces for friends, family, co-workers - the choice is yours. 
-          With a subscription to Hubs, you choose who can access your space and take advantage of all Hubs has to offer.
-          "
-        />
-
         <Hero
           background={isMobile ? '/HubsHeroMobile.png' : '/HubsHero.png'}
           title="A whole new world, from the comfort of your home"
@@ -104,6 +96,14 @@ const Home: NextPage = () => {
           cta="Get Started"
           ctaLink="/#subscriptions"
           ctaClick={onCtaClick}
+        />
+
+        <TileSpotlight
+          tiles={tiles}
+          title="Hubs puts you back in control of your online social spaces"
+          body="Your Hub is the portal to your online community. Create spaces for friends, family, co-workers - the choice is yours. 
+          With a subscription to Hubs, you choose who can access your space and take advantage of all Hubs has to offer.
+          "
         />
 
         <FiftyFifty
