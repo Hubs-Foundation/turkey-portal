@@ -27,7 +27,7 @@ Paste the following in your browser console to login as a local user.
 
 The email associated with this token is "local-user@turkey.local".
 
-Subscribed to subplat hubs product
+Token IS subscribed to subplat hubs product
 ```
 document.cookie='_turkeyauthtoken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMyNTAzNjgwMDAwLCJmeGFfZGlzcGxheU5hbWUiOiJMb2NhbCBVc2VyIiwiZnhhX2VtYWlsIjoibG9jYWwtdXNlckB0dXJrZXkubG9jYWwiLCJmeGFfcGljIjoiL2ltYWdlcy9sb2NhbC11c2VyLnN2ZyIsImZ4YV9zdWJzY3JpcHRpb25zIjpbImh1YnM6c3ViIl0sInN1YiI6ImxvY2FsLXVzZXItdWlkIn0.UbE34iMGv_lZXfGyLSmSXKB7mrk5xPuIAh0ODsQdnrqdXFJKT14yJstxseBH61cAdrDi6qvEC8jzWwn4ZTi-dQ'
 ```
