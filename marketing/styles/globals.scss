@@ -1,5 +1,6 @@
 @use './boilerplate.scss'as *;
 @use './core/utility.scss'as *;
+@use './core/flex.scss'as *;
 
 html,
 body {
@@ -229,5 +230,5 @@ main[data-theme="dark"] {
   flex: 1;
   flex-direction: column;
   min-height: 100vh;
-  margin: 0;
+  margin: 90px 0 0 0;
 }

@@ -118,6 +118,14 @@
   line-height: 13px;
 }
 
+@mixin navigation-link {
+  @include font-size(16);
+  @include secondary-font(700);
+  color: $color-text-main;
+  padding-bottom: 0;
+  text-decoration: none;
+}
+
 /*-------------------------------
   UTILITY MIXINS
 -------------------------------*/

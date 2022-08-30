@@ -1,5 +1,5 @@
-@use '../tools/media-queries.scss' as *;
-@use '../tools/mixins.scss' as *;
+@use '../tools/media-queries.scss'as *;
+@use '../tools/mixins.scss'as *;
 
 // ---------------------------------
 //   Quick Typograpjhy
@@ -166,6 +166,10 @@ PADDING
   &-20 {
     padding: 20px;
   }
+
+  &-24 {
+    padding: 24px;
+  }
 }
 
 .padding-right {
@@ -244,6 +248,10 @@ PADDING
 MARGIN
 **/
 .margin {
+  &-0 {
+    margin: 0;
+  }
+
   &-5 {
     margin: 5px;
   }
