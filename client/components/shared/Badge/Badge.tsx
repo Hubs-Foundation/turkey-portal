@@ -1,22 +1,34 @@
-import PropTypes from 'prop-types'
-import styles from './Badge.module.scss'
+import PropTypes from 'prop-types';
+import { BadgeCategoriesE } from 'types/General';
+import styles from './Badge.module.scss';
 
 const propTypes = {
   name: PropTypes.string.isRequired,
-  category: PropTypes.oneOf(['primary', 'secondary']),
-  classProp: PropTypes.string
-}
+  category: PropTypes.oneOf([
+    BadgeCategoriesE.PRIMARY,
+    BadgeCategoriesE.SECONDARY,
+  ]),
+  classProp: PropTypes.string,
+};
 
-type BadgePropsT = PropTypes.InferProps<typeof propTypes>
+type BadgePropsT = PropTypes.InferProps<typeof propTypes>;
 
-const Badge = ({ name, category = 'primary', classProp = '' }: BadgePropsT) => {
+const Badge = ({
+  name,
+  category = BadgeCategoriesE.PRIMARY,
+  classProp = '',
+}: BadgePropsT) => {
   return (
-    <span className={`${(category === 'primary') ? styles.badge_primary : styles.badge_secondary} ${classProp}`}>
+    <span
+      className={`
+       ${styles['badge_' + category]} 
+       ${classProp}`}
+    >
       {name}
     </span>
-  )
-}
+  );
+};
 
-Badge.propTypes = propTypes
+Badge.propTypes = propTypes;
 
-export default Badge
+export default Badge;

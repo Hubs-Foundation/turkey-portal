@@ -1,19 +1,69 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { HubT } from 'types/General';
 import styles from './dashboard.module.scss';
-import PageHeading from '@Shared/PageHeading/PageHeading';
 import HubCard from '@Cards/HubCard/HubCard';
+import SubCard from '@Cards/SubCard/SubCard';
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
 import { requireAuthentication } from 'services/routeGuard.service';
+import { getSubscriptions, SubscriptionT } from 'services/subscription.service';
 import { getHubs } from 'services/hub.service';
+import FeedbackBanner from '@Shared/FeedbackBanner/FeedbackBanner';
 
 type DashboardPropsT = {};
 
 const Dashboard = ({}: DashboardPropsT) => {
   const hubsInit: HubT[] = [];
+  const subPrice = 5;
+  const subscriptionInit: SubscriptionT = {
+    next_payment: '',
+  };
   const [hubs, setHubs] = useState(hubsInit);
+  const [hasUpdatingCreatingHub, setHasUpdatingCreatingHub] =
+    useState<boolean>(false);
+  const [subscriptionTotal, setSubscriptionTotal] = useState<number>(subPrice);
+  const [subscription, setSubscription] =
+    useState<SubscriptionT>(subscriptionInit);
+
+  /**
+   * Get Hubs again and apply data, also check
+   * data for updates and fails.
+   */
+  const applyHubs = useCallback(() => {
+    getHubs().then((hubs) => {
+      setHubs(hubs);
+      setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
+    });
+  },[]);
+
+  /**
+   * Check if hub is being created or is updating
+   * @param hubs HubT
+   * @returns boolean
+   */
+  const checkIfCreatingUpdating = (hubs: HubT[]): boolean => {
+    return hubs.some(
+      ({ status }) => status === 'creating' || status === 'updating'
+    );
+  };
+
+  useEffect(() => {
+    let updateIntervalId: NodeJS.Timeout;
+    if (hasUpdatingCreatingHub) {
+      updateIntervalId = setInterval(applyHubs, 1000);
+    }
+    return () => {
+      clearInterval(updateIntervalId);
+    };
+  }, [hasUpdatingCreatingHub, applyHubs]);
+
+  const refreshHubData = useCallback(() => {
+    getHubs().then((hubs) => {
+      setHubs(hubs);
+      setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
+    });
+  }, []);
 
   /**
    * Get All Hubs
@@ -21,6 +71,12 @@ const Dashboard = ({}: DashboardPropsT) => {
   useEffect(() => {
     getHubs().then((hubs) => {
       setHubs(hubs);
+      setSubscriptionTotal(hubs.length * subPrice);
+      setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
+    });
+
+    getSubscriptions().then((subscription) => {
+      setSubscription(subscription);
     });
   }, []);
 
@@ -31,8 +87,6 @@ const Dashboard = ({}: DashboardPropsT) => {
         <meta name="description" content="general profile page" />
       </Head>
 
-      <PageHeading title="Dashboard" />
-
       <main className={styles.main}>
         {/* Hub Cards  */}
         <div className={styles.cards_wrapper}>
@@ -41,15 +95,8 @@ const Dashboard = ({}: DashboardPropsT) => {
               return (
                 <HubCard
                   key={hub.hubId}
-                  name={hub.name}
-                  tier={hub.tier}
-                  hubId={hub.hubId}
-                  ccuLimit={hub.ccuLimit}
-                  status={hub.status}
-                  storageLimitMb={hub.storageLimitMb}
-                  subdomain={hub.subdomain}
-                  currentCcu={hub.currentCcu}
-                  currentStorageMb={hub.currentStorageMb}
+                  hub={hub}
+                  refreshHubData={refreshHubData}
                 />
               );
             })
@@ -57,7 +104,15 @@ const Dashboard = ({}: DashboardPropsT) => {
             <SkeletonCard qty={3} category="row" />
           )}
         </div>
+
+        {/* SUBSCRIPTION WIDGET  */}
+        <div className={styles.subcard}>
+          <SubCard subscription={subscription} price={subscriptionTotal} />
+        </div>
       </main>
+      <footer>
+        <FeedbackBanner />
+      </footer>
     </div>
   );
 };

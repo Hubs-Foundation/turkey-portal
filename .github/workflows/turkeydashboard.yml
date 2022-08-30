@@ -2,7 +2,10 @@ name: turkeydashboard
 on:
   push:
     branches: 
-    paths-ignore: ["README.md"]
+    paths-ignore: 
+      - "README.md"
+      - "client/**"
+      - '.github/workflows/turkeydashboardclient.yml'
   workflow_dispatch:
 
 jobs:

@@ -1,6 +1,6 @@
 import { useEffect, useCallback, ReactNode, useContext, useState } from 'react';
 import initStoreData from 'store/storeInit';
-import { LoggedOutRoutesE } from 'types/Routes';
+import { LoggedOutComponentPages } from 'types/Routes';
 import { ThemeContext } from 'contexts/ThemeProvider';
 import MainNav from '@Navigation/MainNav/MainNav';
 import styles from './LayoutWrapper.module.scss';
@@ -12,7 +12,7 @@ type LayoutWrapperProps = {
 
 const LayoutWrapper = ({ children, componentName }: LayoutWrapperProps) => {
   // Check if a logged out route
-  const showLoggedOutUi = componentName in LoggedOutRoutesE;
+  const showLoggedOutUi = componentName in LoggedOutComponentPages;
   const themeContext = useContext(ThemeContext);
   const toggleMobileNav = useCallback(() => {
     // Place holder - not sure if we need this: waiting on UX/UI
@@ -24,7 +24,8 @@ const LayoutWrapper = ({ children, componentName }: LayoutWrapperProps) => {
   }, [showLoggedOutUi]);
 
   return (
-    <main data-theme={themeContext.theme}>
+    // <main data-theme={themeContext.theme}>
+    <main data-theme='light'>
       {!showLoggedOutUi ? <MainNav MobileMenuClick={toggleMobileNav} /> : null}
       <div
         className={

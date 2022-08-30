@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  color: #fff;
+
+  &_left {
+    flex-direction: row;
+  }
+
+  &_right {
+    flex-direction: row-reverse;
+  }
+}
+
+.contents, .image {
+  width: 50%;
+}

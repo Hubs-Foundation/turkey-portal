@@ -5,10 +5,10 @@
 
   &_wrapper {
     :global(.pulse) {
-      background-color: $grey;
-      animation-name: pulse;
-      animation-duration: 2s;
-      animation-iteration-count: infinite;
+      background-color: $color-background-overlay;
+      // animation-name: pulse;
+      // animation-duration: 2s;
+      // animation-iteration-count: infinite;
     }
 
     &.square_wrapper {

@@ -1,25 +1,21 @@
 import styles from './RadioButton.module.scss'
-import { FormEventHandler } from 'react'
 
 type RadioButtonPropsT = {
   value: number | string,
-  checked: boolean,
+  checked?: boolean,
   isDisabled?: boolean,
   id: string,
   label: string,
   groupName: string,
-  onChange: FormEventHandler<HTMLDivElement>,
   classProp?: string
 }
 
 const RadioButton = ({
   label,
   value,
-  checked = false,
   isDisabled = false,
   id,
   groupName,
-  onChange,
   classProp = ''
 }: RadioButtonPropsT) => {
 
@@ -31,9 +27,7 @@ const RadioButton = ({
         type="radio"
         name={groupName}
         value={value}
-        checked={checked}
         disabled={isDisabled}
-        onChange={onChange}
       />
     </div>
   )

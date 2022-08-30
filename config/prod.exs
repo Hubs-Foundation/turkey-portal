@@ -61,6 +61,8 @@ config :dash, Dash.FeatureFlags,
   ccu_selection: false,
   storage_selection: false
 
+config :dash, DashWeb.Plugs.BasicAuth, enabled: false
+
 config :dash, Dash.HubStat, enable_hub_stats: true
 
 config :dash, Dash.Scheduler,

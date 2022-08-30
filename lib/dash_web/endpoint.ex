@@ -10,6 +10,8 @@ defmodule DashWeb.Endpoint do
     signing_salt: "Ke6bG2r4"
   ]
 
+  def get_cors_origins, do: Application.get_env(:dash, __MODULE__)[:cors_origins]
+
   # Required for LiveDashboard
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
@@ -52,6 +54,6 @@ defmodule DashWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug CORSPlug
+  plug CORSPlug, origin: &DashWeb.Endpoint.get_cors_origins/0
   plug DashWeb.Router
 end

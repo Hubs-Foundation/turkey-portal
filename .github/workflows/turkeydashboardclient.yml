@@ -1,0 +1,22 @@
+name: turkeydashboardclient
+on:
+  push:
+    branches: 
+    paths:
+    - 'client/**'
+    - '.github/workflows/turkeydashboardclient.yml'
+  workflow_dispatch:
+  
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  turkeyGitops:
+    uses: mozilla/hubs-ops/.github/workflows/turkeyGitops.yml@master
+    with:
+      registry: mozilla
+      codePath: client
+      dockerfile: Dockerfile
+      DOCKER_HUB_USR: mzcshubs
+    secrets:
+      DOCKER_HUB_PWD: ${{ secrets.DOCKER_HUB_PWD_MOZ }}

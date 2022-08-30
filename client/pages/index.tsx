@@ -3,22 +3,20 @@ import { useEffect } from 'react'
 import Head from "next/head"
 import { setAccount, logOut } from '../store/accountSlice'
 import { useDispatch } from 'react-redux'
-import axios from 'axios'
+import axios, { AxiosRequestHeaders } from 'axios'
 import { HubT, AccountT } from 'types/General'
 import { API_SERVER } from 'config'
 
 const fetchData = async (context: GetServerSidePropsContext, resource: string) => {
   const { cookie, accept, host, connection } = context.req.headers
-
-  return await axios.get(`${API_SERVER}/api/v1/${resource}`, {
-    headers: {
-      Accept: 'application/json',
+  const contextHeaders = {
       cookie: cookie ? cookie : '',
-      accept: accept ? accept : '',
-      host: host ? host : '',
-      connection: connection ? connection : ''
-    }
-  })
+      accept: accept ? accept : 'application/json',
+  } as AxiosRequestHeaders;
+  if (host) contextHeaders.host = host;
+  if (connection) contextHeaders.connection = connection;
+
+  return await axios.get(`${API_SERVER}/api/v1/${resource}`, { headers: contextHeaders })
     .then((response) => response.data)
 }
 

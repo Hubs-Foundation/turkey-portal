@@ -1,6 +1,8 @@
 defmodule Mix.Tasks.Dash.CreateAccount do
   @shortdoc "Creates an account"
   @moduledoc "mix dash.create_account <fxa_uid>"
+  # mix dash.generate_local_token [claims_json]
+  # mix dash.generate_local_token "{\"fxa_subscriptions\" : []}"
   @requirements ["app.start"]
   use Mix.Task
 
@@ -122,7 +124,7 @@ defmodule Mix.Tasks.Dash.GenerateLocalToken do
           "exp" => token_expiry_timestamp,
           "sub" => "local-user-uid",
           "fxa_email" => "local-user@turkey.local",
-          "fxa_pic" => "/images/local-user.svg",
+          "fxa_pic" => "http://localhost:4000/images/local-user.svg",
           "fxa_displayName" => "Local User",
           "fxa_subscriptions" => [
             "hubs:sub"

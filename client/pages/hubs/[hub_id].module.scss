@@ -1,4 +1,25 @@
-@use '../../styles/boilerplate.scss' as *;
+@use '../../styles/boilerplate.scss'as *;
+
+.main {
+  margin-top: 95px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  @include desktop-large-down {
+    margin-top: 35px;
+    flex-direction: column;
+    padding: 0 24px;
+  }
+}
+
+.cards_wrapper {
+  margin-right: 20px;
+
+  @include desktop-large-down {
+    margin-right: 0;
+  }
+}
 
 .settings {
   &_grid_wrapper {
@@ -32,42 +53,12 @@
   }
 }
 
-.address {
-  &_wrapper {
-    display: flex;
-    justify-content: space-between;
+
+.subcard {
+
+  @include desktop-large-down {
+    order: -1;
+    margin-bottom: 24px;
   }
 
-  &_preview {
-    @include font-size(14);
-    margin-top: 34px;
-  }
-}
-
-.summary {
-  &_wrapper {
-    background-color: $white;
-    border-radius: 8px;
-    border: 1px solid $grey;
-    padding: 30px;
-
-    @include tablet-down() {
-      order: -1;
-    }
-  }
-
-  &_title {
-    @include h3();
-    margin: 0 0 10px 0;
-  }
-
-  &_attributes {
-    padding: 0;
-    margin: 0;
-
-    li {
-      list-style: none;
-      margin-bottom: 10px;
-    }
-  }
 }
