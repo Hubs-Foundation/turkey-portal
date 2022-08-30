@@ -64,24 +64,6 @@ button.exit_button {
   }
 }
 
-.account {
-  &_details {
-    margin-left: 10px;
-
-    &_wrapper {
-      display: flex;
-    }
-
-    &_title {
-      @include h5()
-    }
-  }
-
-  &_manage_link {
-    @include font-size(14)
-  }
-}
-
 .banner_gradient {
   padding: 4px;
   background: $gradient-warm;
@@ -96,5 +78,35 @@ button.exit_button {
   &_wrapper {
     display: flex;
     align-items: center;
+  }
+}
+
+.dropdown_wrapper {
+  padding: 16px;
+  background-color: $color-interaction-menu;
+}
+
+.account {
+  &_wrapper {
+    display: flex;
+  }
+
+  &_details {
+    margin-left: 10px;
+  }
+
+  &_label {
+    @include primary-font(500);
+    @include font-size(14);
+    color: $color-text-subtle;
+    line-height: 24px;
+    margin-bottom: 4px;
+  }
+
+  &_email {
+    @include secondary-font(700);
+    @include font-size(16);
+    color: $color-text-reverse;
+    line-height: 20px;
   }
 }
