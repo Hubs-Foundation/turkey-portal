@@ -28,7 +28,7 @@ const Hero = ({
   const onCtaClick = useCallback(() => {
     ctaClick && ctaClick();
     ctaLink && router.push(ctaLink);
-  }, [ctaClick]);
+  }, [ctaClick, ctaLink, router]);
 
   return (
     <section className={`${classProp} ${styles.wrapper}`}>

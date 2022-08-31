@@ -16,7 +16,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
    */
   const handleMobileMenuClick = useCallback(() => {
     // we will probably have a mobile slide out menu *place holder*
-  }, [MobileMenuClick]);
+  }, []);
 
   /**
    * Main Nav JSX
