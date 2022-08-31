@@ -39,49 +39,53 @@ const Template: ComponentStory<typeof RadioButton> = (args) => {
 
   return (
     <>
-      <main data-theme="light" style={{ padding: '20px' }} >
+      <main data-theme="light" style={{ padding: '20px' }}>
         <form>
-
-        <h3>Light Theme</h3>
-        <fieldset id="sb_radio" onChange={onChange} defaultValue={radioFormOptions[0].value}>
-          {radioFormOptions.map((option) => {
-            return (
-              <RadioButton
-                key={option.id}
-                label={option.label}
-                value={option.value}
-                id={option.id}
-                groupName={option.groupName}
-              />
-            );
-          })}
-        </fieldset>
+          <h3>Light Theme</h3>
+          <fieldset
+            id="sb_radio"
+            onChange={onChange}
+            defaultValue={radioFormOptions[0].value}
+          >
+            {radioFormOptions.map((option) => {
+              return (
+                <RadioButton
+                  key={option.id}
+                  label={option.label}
+                  value={option.value}
+                  id={option.id}
+                  groupName={option.groupName}
+                />
+              );
+            })}
+          </fieldset>
         </form>
-
       </main>
-      
+
       <main
         data-theme="dark"
         style={{ background: '#000000', padding: '20px' }}
       >
         <form>
-
-        <h3 style={{ color: '#ffffff' }}>Dark Theme</h3>
-        <fieldset id="sb_dark_radio" onChange={onDarkChange} defaultValue={radioFormOptions[0].value}>
-          {radioFormOptions.map((option) => {
-            return (
-              <RadioButton
-                key={option.id}
-                label={option.label}
-                value={option.value}
-                id={option.id}
-                groupName={option.groupName}
-              />
-            );
-          })}
-        </fieldset>
+          <h3 style={{ color: '#ffffff' }}>Dark Theme</h3>
+          <fieldset
+            id="sb_dark_radio"
+            onChange={onDarkChange}
+            defaultValue={radioFormOptions[0].value}
+          >
+            {radioFormOptions.map((option) => {
+              return (
+                <RadioButton
+                  key={option.id}
+                  label={option.label}
+                  value={option.value}
+                  id={option.id}
+                  groupName={option.groupName}
+                />
+              );
+            })}
+          </fieldset>
         </form>
-
       </main>
     </>
   );

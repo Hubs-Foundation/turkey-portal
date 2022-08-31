@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import styles from './TileSpotlight.module.scss';
-import bubbleTop from '../../../public/bubble-top.png'
-import bubbleBottom from '../../../public/bubble-bottom.png'
+import bubbleTop from '../../../public/bubble-top.png';
+import bubbleBottom from '../../../public/bubble-bottom.png';
 
 type TileSpotlightPropsT = {
   title?: string;

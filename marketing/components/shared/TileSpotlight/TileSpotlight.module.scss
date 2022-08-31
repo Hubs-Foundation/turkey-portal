@@ -1,4 +1,4 @@
-@use 'styles/boilerplate.scss'as *;
+@use 'styles/boilerplate.scss' as *;
 
 .wrapper {
   display: flex;
@@ -32,7 +32,6 @@
 }
 
 .tile {
-
   &s {
     display: grid;
     grid-template-columns: 385px 385px 385px;
@@ -68,7 +67,7 @@
   &_bar {
     /* LIGHT/Brand/ducks-beak */
     // TODO get CSS VAR for this color.
-    background: #FF806F;
+    background: #ff806f;
     width: 82px;
     padding: 4px;
     border-radius: 100px;
@@ -88,11 +87,9 @@
       margin: 0;
     }
   }
-
 }
 
 .bubble {
-
   &_top,
   &_bottom {
     position: absolute;

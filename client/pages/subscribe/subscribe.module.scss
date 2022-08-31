@@ -1,4 +1,4 @@
-@use '../../styles/boilerplate.scss'as *;
+@use '../../styles/boilerplate.scss' as *;
 
 .wrapper {
   margin-top: 100px;
@@ -11,7 +11,6 @@
 }
 
 .header {
-
   @include mobile-down {
     margin: 0px 24px;
   }

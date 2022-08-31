@@ -36,7 +36,7 @@
 .error_message {
   @include font-size(12);
   color: $red;
-  margin-top: 5px; 
+  margin-top: 5px;
 }
 
 .info {
@@ -44,7 +44,6 @@
   margin-bottom: 5px;
   color: $grey;
 }
-
 
 @mixin icon() {
   position: absolute;

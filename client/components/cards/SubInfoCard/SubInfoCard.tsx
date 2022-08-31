@@ -52,7 +52,7 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
 
       {/* CONTENT  */}
       <div className={styles.content}>
-        {SubscriptionInfoCopy.map(({ label, description, icon}, i) => {
+        {SubscriptionInfoCopy.map(({ label, description, icon }, i) => {
           return (
             <InfoBlock
               key={i}

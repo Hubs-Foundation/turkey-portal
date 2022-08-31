@@ -1,4 +1,4 @@
-@use 'styles/boilerplate'as *;
+@use 'styles/boilerplate' as *;
 
 .main_nav {
   width: 100%;
@@ -75,12 +75,12 @@ button.dashboard_button {
     }
 
     &_title {
-      @include h5()
+      @include h5();
     }
   }
 
   &_manage_link {
-    @include font-size(14)
+    @include font-size(14);
   }
 }
 

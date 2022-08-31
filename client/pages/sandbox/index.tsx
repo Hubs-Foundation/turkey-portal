@@ -4,9 +4,8 @@ import Input, { InputInterfaceT, InputIconColorE } from '@Shared/Input/Input';
 import Button from '@Shared/Button/Button';
 import { ButtonCategoriesE, ButtonSizesE } from 'types/Form';
 import styles from './sandbox.module.scss';
-import { IconT } from 'types/General'
+import { IconT } from 'types/General';
 import { RadioButton } from '@mozilla/lilypad';
-
 
 /**
  * NOTE: this page is for testing and showing.. Storybook will mostly take
@@ -29,29 +28,25 @@ export default function Sandbox() {
     },
   ];
 
- 
-
   const [radioForm, setRadioForm] = useState('label_1');
   const [testInput, setTestInput] = useState('');
   const passwordInput = useRef<InputInterfaceT>(null);
 
-
-
   const [testInputIcon, setTestInputIcon] = useState<IconT>('check-circle');
-  const [testInputIconStatus, setTestInputIconStatus] = useState<InputIconColorE>(InputIconColorE.SUCCESS);
+  const [testInputIconStatus, setTestInputIconStatus] =
+    useState<InputIconColorE>(InputIconColorE.SUCCESS);
 
   const toggleInput = () => {
-    if(testInputIconStatus === InputIconColorE.SUCCESS){
+    if (testInputIconStatus === InputIconColorE.SUCCESS) {
       // setTestInputIcon("trash")
       // setTestInputIconStatus(InputIconColorE.ERROR)
-      setTestInputIconStatus(InputIconColorE.DEFAULT)
-      setTestInputIcon("user")
-
+      setTestInputIconStatus(InputIconColorE.DEFAULT);
+      setTestInputIcon('user');
     } else {
-      setTestInputIcon("check-circle")
-      setTestInputIconStatus(InputIconColorE.SUCCESS)
+      setTestInputIcon('check-circle');
+      setTestInputIconStatus(InputIconColorE.SUCCESS);
     }
-  }
+  };
 
   const testing = () => {
     console.log('dirty:', passwordInput.current?.isDirty());
@@ -85,11 +80,11 @@ export default function Sandbox() {
         <section>
           <div>
             <RadioButton
-              value='test'
-              groupName='test'
-              groupValue='test'
-              label='Lest'
-              id='test'
+              value="test"
+              groupName="test"
+              groupValue="test"
+              label="Lest"
+              id="test"
             />
             <Button
               category={ButtonCategoriesE.PRIMARY_SOLID}

@@ -1,4 +1,4 @@
-import { IconT } from '@mozilla/lilypad'
+import { IconT } from '@mozilla/lilypad';
 
 export type SubscriptionInfoCopyT = {
   label: string;
@@ -27,5 +27,5 @@ const SubscriptionInfoCopy: SubscriptionInfoCopyT[] = [
     description: '',
     icon: 'address',
   },
-];export default SubscriptionInfoCopy;
-
+];
+export default SubscriptionInfoCopy;
