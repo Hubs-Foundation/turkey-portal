@@ -12,13 +12,14 @@ const Subscribe = ({}: SubscribePropsT) => {
     <div className="page_wrapper">
       <Head>
         <title>Subscription</title>
-        <meta name="description" content="Sign up for subscribtion" />
+        <meta name="description" content="Sign up for a subscribtion" />
       </Head>
 
       <main>
         <div className={styles.wrapper}>
           <div className={styles.header}>
             <h1>Your account has no active hubs</h1>
+            {/* TODO pull pricing from subplat - $20 */}
             <p>
               You can begin a new subscription with an Early Access Hub for $20
               a month

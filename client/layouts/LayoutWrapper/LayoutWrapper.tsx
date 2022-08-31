@@ -30,7 +30,7 @@ const LayoutWrapper = ({ children, componentName }: LayoutWrapperProps) => {
       {!showLoggedOutUi ? (
         <MainNav MobileMenuClick={toggleMobileNav} />
       ) : (
-        <MainNav MobileMenuClick={toggleMobileNav} isExternal={true}/>
+        <MainNav MobileMenuClick={toggleMobileNav} showAccountSection={true}/>
       )}
       <div
         className={

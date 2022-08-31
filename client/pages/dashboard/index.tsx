@@ -7,7 +7,7 @@ import HubCard from '@Cards/HubCard/HubCard';
 import SubCard from '@Cards/SubCard/SubCard';
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
 import { requireAuthentication } from 'services/routeGuard.service';
-import { getSubscriptions, SubscriptionT } from 'services/subscription.service';
+import { getSubscription, SubscriptionT } from 'services/subscription.service';
 import { getHubs } from 'services/hub.service';
 import FeedbackBanner from '@Shared/FeedbackBanner/FeedbackBanner';
 
@@ -72,18 +72,18 @@ const Dashboard = ({}: DashboardPropsT) => {
    */
   useEffect(() => {
     const getData = async () => {
-      // Get Hubs
-      const hubs = await getHubs();
+
+      const [hubs, subscription] = await Promise.all([getHubs(), getSubscription()]);
+
+
       setHubs(hubs);
       setSubscriptionTotal(hubs.length * subPrice);
       setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
-
-      // Get Subscriptions
-      const subscription = await getSubscriptions();
       setSubscription(subscription);
       setIsLoading(false);
     };
 
+    // TODO: Error state
     getData().catch(console.error);
   }, []);
 

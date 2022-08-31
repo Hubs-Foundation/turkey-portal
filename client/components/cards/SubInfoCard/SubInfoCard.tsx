@@ -41,6 +41,7 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
         <div className={styles.price_wrapper}>
           <div className={styles.price_container}>
             <div className={styles.price}>
+              {/* TODO pull price and currency from subplat here  */}
               <h2>$20</h2>
               <p>USD</p>
             </div>

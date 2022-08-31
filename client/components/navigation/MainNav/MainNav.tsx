@@ -4,7 +4,6 @@ import styles from './MainNav.module.scss';
 import { logOut } from 'services/account.service';
 import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
-import ExternalLink from '@Shared/ExternalLink/ExternalLink';
 import BlobIcon from '@Logos/BlobIcon/BlobIcon';
 import {
   Button,
@@ -18,13 +17,13 @@ import {
 type MainNavPropsT = {
   classProp?: string;
   MobileMenuClick: Function;
-  isExternal?: boolean;
+  showAccountSection?: boolean;
 };
 
 const MainNav = ({
   classProp = '',
   MobileMenuClick,
-  isExternal = false,
+  showAccountSection = false,
 }: MainNavPropsT) => {
   const account = useSelector(selectAccount);
   const dropdownRef = useRef<dropdownT>(null);
@@ -137,7 +136,7 @@ const MainNav = ({
           </div>
 
           {/* Account information  */}
-          {!isExternal && (
+          {!showAccountSection && (
             <div className="flex-align-center">
               <Button
                 classProp={styles.exit_button}
