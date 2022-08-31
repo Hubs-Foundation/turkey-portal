@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Button, ButtonCategoriesE, ButtonSizesE } from '@mozilla/lilypad';
-import BlobIcon from '@Logos/BlobIcon/BlobIcon';
+import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { useRouter } from 'next/router';
 import styles from './MobileSideNav.module.scss';
 
@@ -59,10 +59,7 @@ const MobileSideNav = ({
 
           {/* Logo */}
           <div className="flex-justify-center margin-bottom-10">
-            <div className={styles.logo_wrapper}>
-              <div className={styles.logo}>hubs</div>
-              <BlobIcon />
-            </div>
+            <HubsLogo/>
           </div>
 
           {/* LINKS  */}

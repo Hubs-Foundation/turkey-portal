@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import styles from './MainNav.module.scss';
-import BlobIcon from '@Logos/BlobIcon/BlobIcon';
+import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 import { useTabletDown } from 'hooks/useMediaQuery';
 import { useRouter } from 'next/router';
@@ -37,10 +37,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
           {/* Main navigation links / logo */}
           <div className={styles.main_nav_contents}>
             {/* Logo */}
-            <div className={styles.logo_wrapper}>
-              <div className={styles.logo}>hubs</div>
-              <BlobIcon />
-            </div>
+            <HubsLogo/>
 
             {/* Links  */}
             {!isTabletDown && (
