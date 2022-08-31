@@ -1,10 +1,9 @@
 import { useCallback } from 'react';
 import styles from './MainNav.module.scss';
-import Link from 'next/link';
 import BlobIcon from '@Logos/BlobIcon/BlobIcon';
-import ExternalLink from '@Shared/ExternalLink/ExternalLink';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 import { useTabletDown } from 'hooks/useMediaQuery';
+import { useRouter } from 'next/router';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -12,6 +11,9 @@ type MainNavPropsT = {
 };
 
 const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
+  const isTabletDown = useTabletDown();
+  const router = useRouter();
+
   /**
    * Handle Menu Click
    */
@@ -19,7 +21,9 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
     MobileMenuClick && MobileMenuClick();
   }, [MobileMenuClick]);
 
-  const isTabletDown = useTabletDown();
+  const handleGetStartedClick = useCallback(() => {
+    router.push('/#subscribe-hook')
+  },[router])
 
   /**
    * Main Nav JSX
@@ -41,16 +45,16 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
             {/* Links  */}
             {!isTabletDown && (
               <div className={styles.main_nav_links}>
-                <a href="https://hubs.mozilla.com/labs/" target="_blank" className={styles.main_nav_link}>
+                <a href="https://hubs.mozilla.com/labs/" target="_blank" rel="noreferrer" className={styles.main_nav_link}>
                   Creator Labs
                 </a>
 
-                <a href="https://hubs.mozilla.com/cloud" target="_blank" className={styles.main_nav_link}>
+                <a href="https://hubs.mozilla.com/cloud" target="_blank" rel="noreferrer" className={styles.main_nav_link}>
                   Hubs Cloud
                 </a>
 
                 {/* TODO get demo url?  */}
-                <a href="#" target="_blank" className={styles.main_nav_link}>
+                <a href="#" target="_blank" rel="noreferrer" className={styles.main_nav_link}>
                   Try our demo
                 </a>
               </div>
@@ -73,6 +77,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
               <Button
                 classProp={styles.dashboard_button}
                 category={ButtonCategoriesE.PRIMARY_SOLID}
+                onClick={handleGetStartedClick}
                 text="Get Started"
               />
             )}

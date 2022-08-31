@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { Button, ButtonCategoriesE, ButtonSizesE } from '@mozilla/lilypad';
 import BlobIcon from '@Logos/BlobIcon/BlobIcon';
+import { useRouter } from 'next/router';
 import styles from './MobileSideNav.module.scss';
 
 type MobileSideNavPropsT = {
@@ -12,6 +13,9 @@ const MobileSideNav = ({
   isOpen = false,
   MobileMenuClick,
 }: MobileSideNavPropsT) => {
+
+  const router = useRouter();
+
   /**
    * Handle Menu Click
    */
@@ -19,10 +23,14 @@ const MobileSideNav = ({
     MobileMenuClick();
   }, [MobileMenuClick]);
 
+  /**
+   * Handle Get Started Click
+   */
   const handleGetStartedClick = useCallback(() => {
     // TODO bubble up scroll to...
     MobileMenuClick();
-  }, [MobileMenuClick]);
+    router.push('/#subscribe-hook')
+  }, [MobileMenuClick, router]);
 
   return (
     <>
@@ -60,17 +68,18 @@ const MobileSideNav = ({
           {/* LINKS  */}
           <ul className="margin-0">
             <li>
-              <a className={styles.nav_link} href="https://hubs.mozilla.com/labs/">
+              <a className={styles.nav_link} target="_blank" rel="noreferrer" href="https://hubs.mozilla.com/labs/">
                 Creator Labs
               </a>
             </li>
             <li>
-              <a className={styles.nav_link} href="https://hubs.mozilla.com/cloud">
+              <a className={styles.nav_link} target="_blank" rel="noreferrer" href="https://hubs.mozilla.com/cloud">
                 Hubs Cloud
               </a>
             </li>
             <li>
-              <a className={styles.nav_link} href="#">
+              {/* TODO get demo url?  */}
+              <a className={styles.nav_link} target="_blank" rel="noreferrer" href="#">
                 Try our demo
               </a>
             </li>
