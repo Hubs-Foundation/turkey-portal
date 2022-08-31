@@ -1,4 +1,4 @@
-@use 'styles/boilerplate.scss'as *;
+@use 'styles/boilerplate.scss' as *;
 
 .wrapper {
   background-color: $color-background-neutral-0;
@@ -34,12 +34,12 @@
 
 .price {
   display: inline-flex;
-  align-items:baseline;
+  align-items: baseline;
   margin: 0;
 
   h2 {
     @include h2;
-    margin:0 4px 0 0;
+    margin: 0 4px 0 0;
   }
 
   p {

@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { RootStateT } from './store'
-import { API_SERVER } from 'config'
+import { createSlice } from '@reduxjs/toolkit';
+import { RootStateT } from './store';
+import { API_SERVER } from 'config';
 
 const initialState = {
   isInitialized: false,
@@ -8,32 +8,32 @@ const initialState = {
   profilePic: '',
   displayName: '',
   email: '',
-}
+};
 
 const accountSlice = createSlice({
   name: 'account',
   initialState,
   reducers: {
     setAccount(state, action) {
-      if (!action.payload) return
+      if (!action.payload) return;
 
       // Initialize Account Values
-      const { profilePic, displayName, email } = action.payload
-      state.isLoggedIn = true
-      state.profilePic = profilePic
-      state.displayName = displayName
-      state.email = email
+      const { profilePic, displayName, email } = action.payload;
+      state.isLoggedIn = true;
+      state.profilePic = profilePic;
+      state.displayName = displayName;
+      state.email = email;
     },
     logOut(state) {
       // Clear Account
-      state.isLoggedIn = false
-      state.profilePic = ''
-      state.displayName = ''
-      state.email = ''
+      state.isLoggedIn = false;
+      state.profilePic = '';
+      state.displayName = '';
+      state.email = '';
     },
   },
-})
+});
 
-export const selectAccount = (state: RootStateT) => state.account
-export const { setAccount, logOut } = accountSlice.actions
-export default accountSlice.reducer
+export const selectAccount = (state: RootStateT) => state.account;
+export const { setAccount, logOut } = accountSlice.actions;
+export default accountSlice.reducer;

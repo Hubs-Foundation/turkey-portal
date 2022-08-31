@@ -1,4 +1,4 @@
-@use '../../styles/boilerplate.scss'as *;
+@use '../../styles/boilerplate.scss' as *;
 
 .hubs_wrapper {
   margin-top: 95px;
@@ -17,7 +17,6 @@
     margin-top: 0;
     padding: 0;
   }
-
 }
 
 .cards_wrapper {
@@ -31,7 +30,6 @@
 }
 
 .subcard {
-
   &_skeleton {
     width: 487px;
     height: 100px;

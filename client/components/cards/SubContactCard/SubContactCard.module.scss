@@ -1,4 +1,4 @@
-@use 'styles/boilerplate.scss'as *;
+@use 'styles/boilerplate.scss' as *;
 
 .wrapper {
   background-color: $color-background-overlay;
@@ -18,7 +18,6 @@
     padding: 40px 65px;
   }
 }
-
 
 .content {
   text-align: center;

@@ -18,7 +18,7 @@ const Dashboard = ({}: DashboardPropsT) => {
   const subPrice = 5;
   const subscriptionInit: SubscriptionT = {
     nextPayment: '',
-    endOfCycle: ''
+    endOfCycle: '',
   };
   const [hubs, setHubs] = useState(hubsInit);
   const [hasUpdatingCreatingHub, setHasUpdatingCreatingHub] =
@@ -72,9 +72,10 @@ const Dashboard = ({}: DashboardPropsT) => {
    */
   useEffect(() => {
     const getData = async () => {
-
-      const [hubs, subscription] = await Promise.all([getHubs(), getSubscription()]);
-
+      const [hubs, subscription] = await Promise.all([
+        getHubs(),
+        getSubscription(),
+      ]);
 
       setHubs(hubs);
       setSubscriptionTotal(hubs.length * subPrice);

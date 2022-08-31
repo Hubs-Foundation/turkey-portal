@@ -1,6 +1,6 @@
-@use '../tools/media-queries.scss'as *;
-@use '../tools/mixins.scss'as *;
-@use '../core/variables.scss'as *;
+@use '../tools/media-queries.scss' as *;
+@use '../tools/mixins.scss' as *;
+@use '../core/variables.scss' as *;
 
 // ---------------------------------
 //   Quick Typograpjhy
@@ -33,7 +33,6 @@
   @include body-md-bold();
 }
 
-
 // ---------------------------------
 //   Quick Media-Q
 // ---------------------------------
@@ -49,9 +48,6 @@
 .u-color-text-main {
   color: $color-text-main;
 }
-
-
-
 
 // ---------------------------------
 //   Visibility
@@ -97,7 +93,6 @@
   }
 }
 
-
 // ---------------------------------
 //   Misc
 // ---------------------------------
@@ -134,7 +129,6 @@
 }
 
 .u-no-link {
-
   &,
   &:hover {
     text-decoration: none;
@@ -168,12 +162,12 @@
 
 .u-left-absolute {
   position: absolute;
-  left: 0
+  left: 0;
 }
 
 .u-right-absolute {
   position: absolute;
-  right: 0
+  right: 0;
 }
 
 .u-width-100 {
@@ -299,7 +293,6 @@ MARGIN
 }
 
 .margin-top {
-
   &-2 {
     margin-top: 2px;
   }

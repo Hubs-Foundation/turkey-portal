@@ -15,8 +15,8 @@ export enum StatusE {
 export enum LastErrorE {
   SUBDOMAIN_ERROR = 'subdomainError',
   SUBDOMAIN_REVERTED = 'subdomainReverted',
-  CREATING_ERROR = 'creatingError'
-};
+  CREATING_ERROR = 'creatingError',
+}
 
 export type HubT = {
   ccuLimit: number;
@@ -48,10 +48,10 @@ export type AccountT = {
   isInitialized?: boolean;
   isLoggedIn?: boolean;
 };
- 
+
 export enum BadgeCategoriesE {
   PRIMARY = 'primary',
-  SECONDARY = 'secondary'
+  SECONDARY = 'secondary',
 }
 
 export enum StorageStateE {

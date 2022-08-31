@@ -1,4 +1,4 @@
-@use 'styles/boilerplate.scss'as *;
+@use 'styles/boilerplate.scss' as *;
 
 .footer {
   display: flex;
@@ -29,25 +29,23 @@
   }
 }
 
-// Status States 
+// Status States
 .status {
   &_warning {
-    &>span {
+    & > span {
       color: $color-semantic-warning;
     }
   }
 
   &_critical {
-    &>span {
+    & > span {
       color: $color-semantic-critical;
     }
   }
 }
 
-
 // Progress Bar States
 div.progressbar {
-
   &_warning {
     background-color: $color-semantic-warning;
   }

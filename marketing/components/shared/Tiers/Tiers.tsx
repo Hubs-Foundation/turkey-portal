@@ -36,7 +36,6 @@ const Tier = ({
   return (
     <section className={styles.tier_wrapper}>
       <div className={styles.tier_container}>
-
         {/* TIER IMAGE  */}
         <div className={styles.image_wrapper}>
           <Image src={image} width="100" height="100" />
@@ -59,7 +58,11 @@ const Tier = ({
 
         {/* CTA  */}
         {cta && (
-          <Button href={ctaUrl} category={ButtonCategoriesE.PRIMARY_SOLID} text={cta} />
+          <Button
+            href={ctaUrl}
+            category={ButtonCategoriesE.PRIMARY_SOLID}
+            text={cta}
+          />
         )}
       </div>
     </section>
