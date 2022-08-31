@@ -13,7 +13,6 @@ jobs:
         with:
           node-version: 16.x
           cache: 'npm'
-          cache-dependency-path: assets/package-lock.json
 
       - run: npm ci
         working-directory: assets
@@ -21,6 +20,16 @@ jobs:
         working-directory: assets
       - run: npm run test
         working-directory: assets
+
+      - run: npm ci --legacy-peer-deps
+        working-directory: client
+      - run: npm run lint
+        working-directory: client
+
+      - run: npm ci --legacy-peer-deps
+        working-directory: marketing
+      - run: npm run lint
+        working-directory: marketing
 
   lint-and-test-backend:
     runs-on: ubuntu-latest
