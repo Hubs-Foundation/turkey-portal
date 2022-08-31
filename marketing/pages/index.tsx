@@ -47,6 +47,7 @@ const Home: NextPage = () => {
     const data: TierPropsT[] = [
       {
         image: '/mock_tier.png',
+        imageAlt: 'TODO image alt text',
         title: 'Free',
         subtitle: '(Coming Soon)',
         info: 'Want to be notified when our free offering is available?',
@@ -57,6 +58,7 @@ const Home: NextPage = () => {
       },
       {
         image: '/mock_tier.png',
+        imageAlt: 'TODO image alt text',
         title: 'Early Access',
         subtitle: '',
         info: 'Want to be notified when our free offering is available?',
@@ -68,6 +70,7 @@ const Home: NextPage = () => {
       },
       {
         image: '/mock_tier.png',
+        imageAlt: 'TODO image alt text',
         title: 'Business',
         subtitle: '(Coming Soon)',
         info: 'Want to be notified when our free offering is available?',
@@ -108,11 +111,13 @@ const Home: NextPage = () => {
 
         <FiftyFifty
           image="/mock_fiftyfifty.jpg"
+          imageAlt="TODO alt text for image"
           title="Customizable"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
         />
         <FiftyFifty
           image="/mock_fiftyfifty.jpg"
+          imageAlt="TODO alt text for image"
           layout={FiftyFiftyLayoutE.RIGHT}
           title="Customizable"
           subTitle="Hubs is..."
@@ -120,6 +125,7 @@ const Home: NextPage = () => {
         />
         <FiftyFifty
           image="/mock_fiftyfifty.jpg"
+          imageAlt="TODO alt text for image"
           title="Customizable"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
         />

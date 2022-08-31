@@ -9,6 +9,7 @@ type TiersPropsT = {
 
 export type TierPropsT = {
   image: string;
+  imageAlt: string;
   title: string;
   subtitle?: string;
   info: string;
@@ -24,6 +25,7 @@ export type TierPropsT = {
  */
 const Tier = ({
   image,
+  imageAlt,
   title,
   subtitle,
   info,
@@ -38,7 +40,7 @@ const Tier = ({
       <div className={styles.tier_container}>
         {/* TIER IMAGE  */}
         <div className={styles.image_wrapper}>
-          <Image src={image} width="100" height="100" />
+          <Image src={image} alt={imageAlt} width="100" height="100" />
         </div>
 
         {/* TITLE  */}
@@ -78,6 +80,7 @@ const Tiers = ({ tiers, classProp = '' }: TiersPropsT) => {
             (
               {
                 image,
+                imageAlt,
                 title,
                 subtitle,
                 info,
@@ -93,6 +96,7 @@ const Tiers = ({ tiers, classProp = '' }: TiersPropsT) => {
                 <Tier
                   key={i}
                   image={image}
+                  imageAlt={imageAlt}
                   title={title}
                   subtitle={subtitle}
                   info={info}
