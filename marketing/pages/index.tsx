@@ -118,6 +118,7 @@ const Home: NextPage = () => {
           subTitle="Hubs is..."
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
         />
+        <div id="subscribe-hook"></div>
         <FiftyFifty
           image="/mock_fiftyfifty.jpg"
           title="Customizable"

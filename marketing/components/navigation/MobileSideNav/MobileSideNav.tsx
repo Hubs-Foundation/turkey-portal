@@ -60,12 +60,12 @@ const MobileSideNav = ({
           {/* LINKS  */}
           <ul className="margin-0">
             <li>
-              <a className={styles.nav_link} href="#">
+              <a className={styles.nav_link} href="https://hubs.mozilla.com/labs/">
                 Creator Labs
               </a>
             </li>
             <li>
-              <a className={styles.nav_link} href="#">
+              <a className={styles.nav_link} href="https://hubs.mozilla.com/cloud">
                 Hubs Cloud
               </a>
             </li>
