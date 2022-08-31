@@ -1,6 +1,6 @@
-@use 'styles/boilerplate.scss'as *;
+@use 'styles/boilerplate.scss' as *;
 
-@mixin rect_button_base() { 
+@mixin rect_button_base() {
   @include primary-font(600);
   @include font-size(14);
 
@@ -27,7 +27,6 @@
 /******************************
         PRIMARY BUTTONS
 ******************************/
-
 
 /*-------------------------------
   SOLID BUTTON 
@@ -116,8 +115,6 @@
   }
 }
 
-
-
 /******************************
       SECONDARY BUTTONS
 ******************************/
@@ -202,7 +199,6 @@
     border: solid 2px $color-interaction-secondary-alt-disabled;
   }
 }
-
 
 /*-------------------------------
   SIZES

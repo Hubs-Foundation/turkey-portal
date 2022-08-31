@@ -45,17 +45,21 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
 
             {/* Links  */}
             <div className={styles.main_nav_links}>
-          
               <div className={styles.main_nav_link}>
-                <a href="#" target="_blank">Hubs Cloud</a>
+                <a href="#" target="_blank">
+                  Hubs Cloud
+                </a>
               </div>
               <div className={styles.main_nav_link}>
-                <a href="#" target="_blank">Creator Labs</a>
+                <a href="#" target="_blank">
+                  Creator Labs
+                </a>
               </div>
               <div className={styles.main_nav_link}>
-                <a href="#" target="_blank">Try our demo</a>
+                <a href="#" target="_blank">
+                  Try our demo
+                </a>
               </div>
-
             </div>
           </div>
 

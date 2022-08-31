@@ -1,7 +1,6 @@
-$color-one: #1700C7;
+$color-one: #1700c7;
 $color-two: #3624c2;
 $color-three: #5749be;
-
 
 .wrapper {
   display: flex;
@@ -29,7 +28,7 @@ $color-three: #5749be;
   color: $color-two;
   box-shadow: 9999px 0 0 -5px $color-two;
   animation: dotPulse 1.5s infinite linear;
-  animation-delay: .25s;
+  animation-delay: 0.25s;
 
   &::before,
   &::after {
@@ -53,12 +52,9 @@ $color-three: #5749be;
   &::after {
     box-shadow: 10014px 0 0 -5px $color-three;
     animation: dotPulseAfter 1.5s infinite linear;
-    animation-delay: .5s;
+    animation-delay: 0.5s;
   }
-
 }
-
-
 
 @keyframes dotPulseBefore {
   0% {

@@ -18,7 +18,7 @@ const Dashboard = ({}: DashboardPropsT) => {
   const subPrice = 5;
   const subscriptionInit: SubscriptionT = {
     nextPayment: '',
-    endOfCycle: ''
+    endOfCycle: '',
   };
   const [hubs, setHubs] = useState(hubsInit);
   const [hasUpdatingCreatingHub, setHasUpdatingCreatingHub] =
@@ -36,7 +36,7 @@ const Dashboard = ({}: DashboardPropsT) => {
       setHubs(hubs);
       setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
     });
-  },[]);
+  }, []);
 
   /**
    * Check if hub is being created or is updating
@@ -108,14 +108,14 @@ const Dashboard = ({}: DashboardPropsT) => {
 
         {/* SUBSCRIPTION WIDGET  */}
         <div className={styles.subcard}>
-        {hubs.length ?
-          <SubCard 
-            subdomain={hubs[0].subdomain}
-            subscription={subscription} 
-            price={subscriptionTotal} 
-          /> : null }
+          {hubs.length ? (
+            <SubCard
+              subdomain={hubs[0].subdomain}
+              subscription={subscription}
+              price={subscriptionTotal}
+            />
+          ) : null}
         </div>
-
       </main>
       <footer>
         <FeedbackBanner />

@@ -23,7 +23,7 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
 
 /**
  * Log User Out
- * @returns 
+ * @returns
  */
 export const logOut = async () => {
   try {

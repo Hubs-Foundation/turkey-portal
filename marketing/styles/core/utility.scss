@@ -68,7 +68,6 @@
   }
 }
 
-
 // ---------------------------------
 //   Misc
 // ---------------------------------
@@ -101,7 +100,6 @@
 }
 
 .u-no-link {
-
   &,
   &:hover {
     text-decoration: none;
@@ -135,12 +133,12 @@
 
 .u-left-absolute {
   position: absolute;
-  left: 0
+  left: 0;
 }
 
 .u-right-absolute {
   position: absolute;
-  right: 0
+  right: 0;
 }
 
 .u-width-100 {

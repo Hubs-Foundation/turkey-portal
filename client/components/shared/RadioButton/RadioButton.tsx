@@ -1,14 +1,14 @@
-import styles from './RadioButton.module.scss'
+import styles from './RadioButton.module.scss';
 
 type RadioButtonPropsT = {
-  value: number | string,
-  checked?: boolean,
-  isDisabled?: boolean,
-  id: string,
-  label: string,
-  groupName: string,
-  classProp?: string
-}
+  value: number | string;
+  checked?: boolean;
+  isDisabled?: boolean;
+  id: string;
+  label: string;
+  groupName: string;
+  classProp?: string;
+};
 
 const RadioButton = ({
   label,
@@ -16,9 +16,8 @@ const RadioButton = ({
   isDisabled = false,
   id,
   groupName,
-  classProp = ''
+  classProp = '',
 }: RadioButtonPropsT) => {
-
   return (
     <div className={`${styles.button_wrapper} ${classProp}`}>
       <label htmlFor={id}>{label}</label>
@@ -30,7 +29,7 @@ const RadioButton = ({
         disabled={isDisabled}
       />
     </div>
-  )
-}
+  );
+};
 
-export default RadioButton
+export default RadioButton;

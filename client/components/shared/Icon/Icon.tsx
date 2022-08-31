@@ -1,20 +1,19 @@
-import { IconT } from 'types/General'
-import styles from './Icon.module.scss'
+import { IconT } from 'types/General';
+import styles from './Icon.module.scss';
 
 type IconProps = {
-  name: IconT,
-  color?: string,
-  size?: number,
-  classProp?: string
-}
+  name: IconT;
+  color?: string;
+  size?: number;
+  classProp?: string;
+};
 
 const Icon = ({
   name,
   color = '#000000',
   size = 20,
-  classProp = ''
+  classProp = '',
 }: IconProps) => {
-
   return (
     <svg
       className={`${styles.icon} ${classProp}`}
@@ -28,7 +27,7 @@ const Icon = ({
     >
       <use href={`/feather-sprite.svg#${name}`} />
     </svg>
-  )
-}
+  );
+};
 
-export default Icon
+export default Icon;

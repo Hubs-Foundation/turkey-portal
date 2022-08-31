@@ -35,7 +35,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
 
   const onManageAccountClick = useCallback(() => {
     // TODO set up variables to get correct FX account link
-  },[])
+  }, []);
 
   /**
    * Handle Menu Click
@@ -75,7 +75,12 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
           }}
         >
           {/* TODO update icon asset  */}
-          <Icon classProp="margin-right-10" color="currentColor" name="plus-circle" size={24} />
+          <Icon
+            classProp="margin-right-10"
+            color="currentColor"
+            name="plus-circle"
+            size={24}
+          />
           Manage Your Firefox Account
         </a>
 
@@ -88,7 +93,12 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
           }}
         >
           {/* TODO update icon asset  */}
-          <Icon classProp="margin-right-10" color="currentColor" name="plus-circle" size={24} />
+          <Icon
+            classProp="margin-right-10"
+            color="currentColor"
+            name="plus-circle"
+            size={24}
+          />
           Sign Out
         </a>
       </div>
