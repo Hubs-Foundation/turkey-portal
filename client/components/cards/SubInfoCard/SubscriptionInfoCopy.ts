@@ -1,4 +1,4 @@
-import { IconT } from 'types/General';
+import { IconT } from '@mozilla/lilypad'
 
 export type SubscriptionInfoCopyT = {
   label: string;
@@ -6,28 +6,26 @@ export type SubscriptionInfoCopyT = {
   icon: IconT;
 };
 
-
-// TODO UPDATE ICON ASSETS 
 const SubscriptionInfoCopy: SubscriptionInfoCopyT[] = [
   {
     label: 'Unlimited spaces',
     description: 'With customizable environment and themes',
-    icon: 'alert-circle',
+    icon: 'spaces',
   },
   {
     label: '25 Online guest capacity',
     description: 'Applies to the entire hub',
-    icon: 'alert-circle',
+    icon: 'capacity',
   },
   {
     label: '5GB Asset storage',
     description: 'For avatars and scenes',
-    icon: 'alert-circle',
+    icon: 'space',
   },
   {
     label: 'Custom myhubs.net web address',
     description: '',
-    icon: 'alert-circle',
+    icon: 'address',
   },
 ];export default SubscriptionInfoCopy;
 

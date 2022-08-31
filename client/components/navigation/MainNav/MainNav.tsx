@@ -83,7 +83,7 @@ const MainNav = ({
           <Icon
             classProp="margin-right-10"
             color="currentColor"
-            name="plus-circle"
+            name="fx-account"
             size={24}
           />
           Manage Your Firefox Account
