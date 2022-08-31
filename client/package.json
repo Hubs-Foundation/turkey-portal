@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next lint && prettier -c .",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "deploy-storybook": "storybook-to-ghpages --source-branch=main --ci"
@@ -73,6 +73,8 @@
     "babel-loader": "^8.2.5",
     "eslint": "8.14.0",
     "eslint-config-next": "12.1.5",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-storybook": "^0.5.11",
     "gh-pages": "^4.0.0",
     "precss": "^4.0.0",
