@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -19,7 +22,7 @@ jobs:
       - name: Deploy storybook to Github Pages
         run: |
           cd client 
-          npm install --legacy-peer-deps
+          npm config set -- "//npm.pkg.github.com/:_authToken" "$GITHUB_TOKEN" && npm install --legacy-peer-deps
           # Forcing legacy peer dep behavior, since we want to use a version of React 
           # that is newer than the one Storybook expects.
           npm run deploy-storybook -- --ci
