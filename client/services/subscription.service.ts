@@ -3,8 +3,8 @@ const API_PATH = 'TODO';
 import { API_SERVER } from 'config';
 
 export type SubscriptionT = {
-  next_payment: string;
-  end_of_cycle: string;
+  nextPayment: string;
+  endOfCycle: string;
 };
 
 /**
@@ -18,8 +18,8 @@ export const getSubscriptions = async (headers?: AxiosRequestHeaders) => {
 
   // What is the best struct here .. TODO!!!
   const mockDate = {
-    next_payment: 'February 14',
-    end_of_cycle: 'February 12, 2023',
+    nextPayment: 'February 14',
+    endOfCycle: 'February 12, 2023',
   };
 
   return mockDate;

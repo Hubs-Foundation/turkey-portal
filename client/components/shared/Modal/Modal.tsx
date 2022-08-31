@@ -4,7 +4,7 @@ import styles from './Modal.module.scss';
 
 type ModalPropsT = {
   children: ReactNode;
-  onClose?: MouseEventHandler<HTMLDivElement>;
+  onClose: MouseEventHandler<HTMLDivElement>;
   classProp?: string;
 };
 

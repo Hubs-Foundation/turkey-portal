@@ -41,8 +41,8 @@ const SubCard = ({
     <div className={`${styles.wrapper} ${classProp}`}>
       <div className={styles.container}>
 
-        {/* Note: this button needs to only be shown on details page ones we open it up to multiple 
-        hubs so this button is better mapped to a specific hub  */}
+        {/* Note: When we open the dashboard to multiple hubs this admin button
+        should only show on the details page. Not on the main dashboard  */}
         <CardButton
           icon="settings"
           title="Admin Panel"
@@ -61,7 +61,7 @@ const SubCard = ({
 
           {/* NEXT PAYMENT */}
           <div className={styles.header_block}>
-            <div className={styles.month}>{subscription.next_payment}</div>
+            <div className={styles.month}>{subscription.nextPayment}</div>
             <div className={styles.label}>Next Payment</div>
           </div>
         </div>
@@ -83,16 +83,16 @@ const SubCard = ({
 
       {/* CANCEL SUB MODAL  */}
       {/* Note: The cancel subscription button should not show up on the main dash and should only
-      show up in the details view once we start having mutiple hubs. Right now the cancel sub 
+      show up in the details view once we start having multiple hubs. Right now the cancel sub 
       as well as the admin button are in both the dash and details ONLY while we have one hub
       otherwise these buttons would not know what hub to cancel. So for now this subscription
       modal should just get the first and only hub data.. */}
 
-      {/* TODO pull subscption data "Cancel Date" and  */}
+      {/* TODO pull subscption data "Cancel Date" */}
       {showModal && (
         <Modal onClose={handleCloseModal}>
           <SubscriptionModal 
-            cancelDate={subscription.end_of_cycle}
+            cancelDate={subscription.endOfCycle}
             subdomain={subdomain}
             onClose={handleCloseModal}
           />

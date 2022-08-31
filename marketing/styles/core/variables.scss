@@ -67,7 +67,7 @@ $color-status-busy: var(--color-status-busy);
 $color-status-offline: var(--color-status-offline); 
 
 $color-background-overlay: var(--color-background-overlay);
-
+$color-background-neutral-0: var(--color-background-neutral-0);
 
 // $color-background-info: var(--color-background-info);
 // $color-background-success: var(--color-background-success);
@@ -117,7 +117,7 @@ $breakpoint-tablet-large: 992px;
 $breakpoint-desktop: 1024px;
 $breakpoint-desktop-large: 1220px;
 $breakpoint-hd: 1312px;
-$container-max-width: 1440px;
+$container-max-width: 1200px;
 
 // ---- Misc ---------------------
 $drop-shadow: 0 3px 8px rgba($black, 0.3);

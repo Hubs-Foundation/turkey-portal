@@ -19,8 +19,8 @@ type HubDetailsViewPropsT = {};
 const HubDetailsView = ({}: HubDetailsViewPropsT) => {
   // TODO : Get real sub data
   const subscriptionInit: SubscriptionT = {
-    next_payment: '',
-    end_of_cycle: '',
+    nextPayment: '',
+    endOfCycle: '',
   };
   const router = useRouter();
   const [hub, setHub] = useState<HubT | null>(null);

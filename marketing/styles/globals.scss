@@ -71,6 +71,7 @@ main[data-theme="light"] {
   --color-status-offline: #ADA7A8;
   --color-status-busy: #F19B53;
   --color-background-overlay: rgba(23, 10, 122, 0.4);
+  --color-background-neutral-0: #FFFFFF;
 }
 
 // PLACE HOLDER FOR DARK VALUES 
@@ -126,6 +127,7 @@ main[data-theme="dark"] {
   --color-status-offline: #ADA7A8;
   --color-status-busy: #F19B53;
   --color-background-overlay: rgba(23, 10, 122, 0.4);
+  --color-background-neutral-0: #FFFFFF;
 }
 
 .page_wrapper {
@@ -133,6 +135,5 @@ main[data-theme="dark"] {
   flex: 1;
   flex-direction: column;
   min-height: 100vh;
-  background: #000000;
   margin: 0;
 }
