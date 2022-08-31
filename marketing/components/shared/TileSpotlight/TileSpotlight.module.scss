@@ -55,12 +55,14 @@
     overflow: hidden;
   }
 
+  &_container {
+    position: relative;
+  }
+
   &_image {
+    position: relative;
     height: 207px;
     width: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
   }
 
   &_bar {

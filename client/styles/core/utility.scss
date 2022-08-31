@@ -25,6 +25,13 @@
   text-transform: capitalize;
 }
 
+.u-body-md {
+  @include body-md();
+}
+
+.u-body-md-bold {
+  @include body-md-bold();
+}
 
 
 // ---------------------------------
@@ -336,16 +343,34 @@ MARGIN
 
   &-24 {
     margin-bottom: 24px;
+
+    @include mobile-down {
+      &-mobile {
+        margin-bottom: 24px;
+      }
+    }
   }
 }
 
 .margin-right {
   &-5 {
     margin-right: 5px;
+
+    &-desktop {
+      @include mobile-up {
+        margin-right: 5px;
+      }
+    }
   }
 
   &-10 {
     margin-right: 10px;
+
+    &-desktop {
+      @include mobile-up {
+        margin-right: 10px;
+      }
+    }
   }
 
   &-12 {

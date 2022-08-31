@@ -19,7 +19,8 @@ type HubDetailsViewPropsT = {};
 const HubDetailsView = ({}: HubDetailsViewPropsT) => {
   // TODO : Get real sub data
   const subscriptionInit: SubscriptionT = {
-    next_payment: '',
+    nextPayment: '',
+    endOfCycle: '',
   };
   const router = useRouter();
   const [hub, setHub] = useState<HubT | null>(null);
@@ -70,11 +71,10 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
    */
   const handleFormSubmit = useCallback(
     ({ name, subdomain }: HubFormCardT) => {
-      
       /**
        * TODO:
        * Circle back with UX on how we can have a error state here and not
-       * just a toast message. 
+       * just a toast message.
        */
       if (!hub) {
         launchToastError('Sorry, there was an error locating this Hub.');
@@ -87,8 +87,8 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
        */
       const updatedHub: UpdateHubT = {
         ...hub,
-        subdomain:subdomain,
-        name:name
+        subdomain: subdomain,
+        name: name,
       };
 
       updateHub(hub.hubId, updatedHub).then((resp) => {
@@ -109,7 +109,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
   /**
    * Handle Form Error
    */
-  const handleFormError = (errorMessage:string) => {
+  const handleFormError = (errorMessage: string) => {
     launchToastError(errorMessage);
   };
 
@@ -131,7 +131,13 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
           </div>
 
           {/* SUBSCRIPTION WIDGET  */}
-          <SubCard classProp={styles.subcard} subscription={subscription} />
+          {hub && (
+            <SubCard
+              subdomain={hub.subdomain}
+              classProp={styles.subcard}
+              subscription={subscription}
+            />
+          )}
         </main>
       ) : (
         <div className="flex-justify-center">

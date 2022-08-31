@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import styles from './TileSpotlight.module.scss';
+import bubbleTop from '../../../public/bubble-top.png'
+import bubbleBottom from '../../../public/bubble-bottom.png'
 
 type TileSpotlightPropsT = {
   title?: string;
@@ -21,12 +23,16 @@ const Tile = ({ image, title, description }: TilePropsT) => {
   return (
     <section className={styles.tile_wrapper}>
       <div className={styles.tile_container}>
-        <div
-          className={styles.tile_image}
-          style={{
-            backgroundImage: `url(${image})`,
-          }}
-        ></div>
+        <div className={styles.tile_image}>
+          <Image
+            src={image}
+            alt="tile featured image"
+            layout="fill"
+            objectFit="cover"
+            objectPosition="center"
+          />
+        </div>
+
         <div className={styles.tile_content}>
           <div className={styles.tile_bar} />
           <h3>{title}</h3>
@@ -48,7 +54,7 @@ const TileSpotlight = ({
       <div
         className={styles.bubble_top}
         style={{
-          backgroundImage: `url(/bubble-top.png)`,
+          backgroundImage: `url(${bubbleTop.src})`,
         }}
       ></div>
       <div className={styles.container}>
@@ -75,7 +81,7 @@ const TileSpotlight = ({
       <div
         className={styles.bubble_bottom}
         style={{
-          backgroundImage: `url(/bubble-bottom.png)`,
+          backgroundImage: `url(${bubbleBottom.src})`,
         }}
       ></div>
     </section>
