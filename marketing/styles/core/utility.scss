@@ -1,5 +1,5 @@
-@use '../tools/media-queries.scss'as *;
-@use '../tools/mixins.scss'as *;
+@use '../tools/media-queries.scss' as *;
+@use '../tools/mixins.scss' as *;
 
 // ---------------------------------
 //   Quick Typograpjhy
@@ -100,7 +100,6 @@
 }
 
 .u-no-link {
-
   &,
   &:hover {
     text-decoration: none;
