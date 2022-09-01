@@ -7,7 +7,7 @@
       "@Logos/*": ["components/logos/*"],
       "@Cards/*": ["components/cards/*"],
       "@Navigation/*": ["components/navigation/*"],
-      "@Util/*": ["components/util/*"],
+      "@Util/*": ["components/util/*"]
     },
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],

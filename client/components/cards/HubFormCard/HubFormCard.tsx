@@ -56,10 +56,10 @@ const HubFormCard = ({
    */
 
   /**
-   * TODO: 
-   * Show a different error for when a subdomain 
-   * is already in use by another user, vs when a subdomain 
-   * is invalid or forbidden. The validate_subdomain API returns 
+   * TODO:
+   * Show a different error for when a subdomain
+   * is already in use by another user, vs when a subdomain
+   * is invalid or forbidden. The validate_subdomain API returns
    * either subdomain_taken or subdomain_denied.
    */
   const handleFormSubmit: SubmitHandler<HubFormCardT> = (data) => {

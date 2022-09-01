@@ -65,18 +65,18 @@ const MobileSideNav = ({
           {/* LINKS  */}
           <ul className="margin-0">
             <li>
-              <a className={styles.nav_link} target="_blank" rel="noreferrer" href="https://hubs.mozilla.com/labs/">
+              <a className={styles.nav_link} target="_blank" rel="noreferrer" href="/labs">
                 Creator Labs
               </a>
             </li>
             <li>
-              <a className={styles.nav_link} target="_blank" rel="noreferrer" href="https://hubs.mozilla.com/cloud">
+              <a className={styles.nav_link} target="_blank" rel="noreferrer" href="/cloud">
                 Hubs Cloud
               </a>
             </li>
             <li>
               {/* TODO get demo url?  */}
-              <a className={styles.nav_link} target="_blank" rel="noreferrer" href="#">
+              <a className={styles.nav_link} target="_blank" rel="noreferrer" href="/demo">
                 Try our demo
               </a>
             </li>

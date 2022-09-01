@@ -1,8 +1,8 @@
-import "../styles/globals.scss"
-import type { AppProps } from "next/app"
-import Head from "next/head"
-import ThemeProvider from "contexts/ThemeProvider"
-import LayoutWrapper from "layouts/LayoutWrapper/LayoutWrapper"
+import '../styles/globals.scss';
+import type { AppProps } from 'next/app';
+import Head from 'next/head';
+import ThemeProvider from 'contexts/ThemeProvider';
+import LayoutWrapper from 'layouts/LayoutWrapper/LayoutWrapper';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -31,9 +31,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <LayoutWrapper>
         <Component {...pageProps} />
       </LayoutWrapper>
-      
     </ThemeProvider>
-  )
+  );
 }
 
-export default MyApp
+export default MyApp;

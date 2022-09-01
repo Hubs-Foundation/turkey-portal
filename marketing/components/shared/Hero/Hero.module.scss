@@ -1,4 +1,4 @@
-@use 'styles/boilerplate.scss'as *;
+@use 'styles/boilerplate.scss' as *;
 
 .wrapper {
   width: 100%;
@@ -44,4 +44,3 @@
   margin: 0 0 24px;
   @include body-md;
 }
-

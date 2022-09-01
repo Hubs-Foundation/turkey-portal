@@ -42,8 +42,8 @@ const SubscriptionModal = ({
             permenantly deleted.
           </li>
           <li>
-            The subdomain <b>{subdomain}</b> will be released and made available for
-            other hub owners to use.
+            The subdomain <b>{subdomain}</b> will be released and made available
+            for other hub owners to use.
           </li>
         </ul>
 

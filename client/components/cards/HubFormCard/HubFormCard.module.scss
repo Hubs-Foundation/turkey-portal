@@ -1,4 +1,4 @@
-@use '../../../styles/boilerplate.scss'as *;
+@use '../../../styles/boilerplate.scss' as *;
 
 .card {
   &_wrapper {
@@ -75,4 +75,3 @@
   stroke: $color-semantic-critical;
   margin-left: 4px;
 }
-

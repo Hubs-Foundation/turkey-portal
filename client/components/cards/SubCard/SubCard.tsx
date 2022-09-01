@@ -24,7 +24,7 @@ const SubCard = ({
   const [showModal, setShowModal] = useState<Boolean>(false);
 
   /**
-   * Cancel Subscription 
+   * Cancel Subscription
    */
   const onCancelSubClick = () => {
     setShowModal(true);
@@ -40,7 +40,6 @@ const SubCard = ({
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
       <div className={styles.container}>
-
         {/* Note: When we open the dashboard to multiple hubs this admin button
         should only show on the details page. Not on the main dashboard  */}
         <CardButton
@@ -91,7 +90,7 @@ const SubCard = ({
       {/* TODO pull subscption data "Cancel Date" */}
       {showModal && (
         <Modal onClose={handleCloseModal}>
-          <SubscriptionModal 
+          <SubscriptionModal
             cancelDate={subscription.endOfCycle}
             subdomain={subdomain}
             onClose={handleCloseModal}

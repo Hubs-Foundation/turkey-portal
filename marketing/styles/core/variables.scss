@@ -4,7 +4,7 @@
 $font-size-base: 16; // base size in px
 $primary-font: 'Inter';
 $secondary-font: 'Space Grotesk';
-$backup-font:'Arial';
+$backup-font: 'Arial';
 
 
 // ---------------------------------
@@ -18,9 +18,15 @@ $color-interaction-primary-hover: var(--color-interaction-primary-hover);
 $color-interaction-primary-active: var(--color-interaction-primary-active);
 $color-interaction-primary-disabled: var(--color-interaction-primary-disabled);
 $color-interaction-primary-alt: var(--color-interaction-primary-alt);
-$color-interaction-primary-alt-hover: var(--color-interaction-primary-alt-hover);
-$color-interaction-primary-alt-active: var(--color-interaction-primary-alt-active);
-$color-interaction-primary-alt-disabled: var(--color-interaction-primary-alt-disabled);
+$color-interaction-primary-alt-hover: var(
+  --color-interaction-primary-alt-hover
+);
+$color-interaction-primary-alt-active: var(
+  --color-interaction-primary-alt-active
+);
+$color-interaction-primary-alt-disabled: var(
+  --color-interaction-primary-alt-disabled
+);
 
 /**
   SECONDARY INTERACTION
@@ -28,11 +34,19 @@ $color-interaction-primary-alt-disabled: var(--color-interaction-primary-alt-dis
 $color-interaction-secondary: var(--color-interaction-secondary);
 $color-interaction-secondary-hover: var(--color-interaction-secondary-hover);
 $color-interaction-secondary-active: var(--color-interaction-secondary-active);
-$color-interaction-secondary-disabled: var(--color-interaction-secondary-disabled);
+$color-interaction-secondary-disabled: var(
+  --color-interaction-secondary-disabled
+);
 $color-interaction-secondary-alt: var(--color-interaction-secondary-alt);
-$color-interaction-secondary-alt-hover: var(--color-interaction-secondary-alt-hover);
-$color-interaction-secondary-alt-active: var(--color-interaction-secondary-alt-active);
-$color-interaction-secondary-alt-disabled: var(--color-interaction-secondary-alt-disabled);
+$color-interaction-secondary-alt-hover: var(
+  --color-interaction-secondary-alt-hover
+);
+$color-interaction-secondary-alt-active: var(
+  --color-interaction-secondary-alt-active
+);
+$color-interaction-secondary-alt-disabled: var(
+  --color-interaction-secondary-alt-disabled
+);
 
 /**
   SEMANTIC
@@ -92,7 +106,7 @@ $color-neutral-3: var(--color-neutral-3);
 **/
 $color-status-ready: var(--color-status-ready);
 $color-status-offline: var(--color-status-offline);
-$color-status-bus: var(--color-status-bus);
+$color-status-busy: var(--color-status-busy);
 
 /**
   BACKGROUNDS
@@ -114,13 +128,22 @@ $color-interactions-menu-inactive: var(--color-interactions-menu-inactive);
 // ---- Primary Brand Colors ---------------------
 $black: #231f20;
 $dark-teal: #1c7f8d;
-$blue: #0D73A6;
-$light-blue:#e0f5ff;
-$link-blue:#007AB8;
-$purple: #663DF5;
-$gradient-warm: radial-gradient(147.61% 1186.51% at 110.24% -15.63%, #FF806F 36.82%, #FFFF98 100%);
-$gradient-rainbow: linear-gradient(107.97deg, #489CBE 6.73%, #5427C9 39.4%, #A8527C 77.18%, #A67878 104.75%);
-
+$blue: #0d73a6;
+$light-blue: #e0f5ff;
+$link-blue: #007ab8;
+$purple: #663df5;
+$gradient-warm: radial-gradient(
+  147.61% 1186.51% at 110.24% -15.63%,
+  #ff806f 36.82%,
+  #ffff98 100%
+);
+$gradient-rainbow: linear-gradient(
+  107.97deg,
+  #489cbe 6.73%,
+  #5427c9 39.4%,
+  #a8527c 77.18%,
+  #a67878 104.75%
+);
 
 // ---- Accent Colors ---------------------
 $teal: #23a2b3;
@@ -135,8 +158,8 @@ $tan: #e5dfd8;
 $white: #ffffff;
 $off-white: #ddd;
 $grey: #868686;
-$accent-grey:#e0e0e0;
-$form-gray:#c9c9c9;
+$accent-grey: #e0e0e0;
+$form-gray: #c9c9c9;
 $semi-dark-grey: #767474;
 $dark-grey: #393536;
 $red: #d42828;

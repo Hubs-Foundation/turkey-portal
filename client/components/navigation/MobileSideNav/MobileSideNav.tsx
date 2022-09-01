@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback } from 'react';
 import IconButton from '@Shared/IconButton/IconButton';
 import React from 'react';
 import styles from './MobileSideNav.module.scss';
@@ -12,7 +12,6 @@ const MobileSideNav = ({
   isOpen = false,
   MobileMenuClick,
 }: MobileSideNavPropsT) => {
-
   /**
    * Handle Menu Click
    */

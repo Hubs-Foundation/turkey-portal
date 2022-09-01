@@ -42,16 +42,15 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
             {/* Links  */}
             {!isTabletDown && (
               <div className={styles.main_nav_links}>
-                <a href="https://hubs.mozilla.com/labs/" target="_blank" rel="noreferrer" className={styles.main_nav_link}>
+                <a href="/labs" target="_blank" rel="noreferrer" className={styles.main_nav_link}>
                   Creator Labs
                 </a>
 
-                <a href="https://hubs.mozilla.com/cloud" target="_blank" rel="noreferrer" className={styles.main_nav_link}>
+                <a href="/cloud" target="_blank" rel="noreferrer" className={styles.main_nav_link}>
                   Hubs Cloud
                 </a>
 
-                {/* TODO get demo url?  */}
-                <a href="#" target="_blank" rel="noreferrer" className={styles.main_nav_link}>
+                <a href="/demo" target="_blank" rel="noreferrer" className={styles.main_nav_link}>
                   Try our demo
                 </a>
               </div>

@@ -1,6 +1,6 @@
-@use '../core/variables.scss'as *;
-@use '../tools/media-queries.scss'as *;
-@use '../tools/functions.scss'as *;
+@use '../core/variables.scss' as *;
+@use '../tools/media-queries.scss' as *;
+@use '../tools/functions.scss' as *;
 
 /*-------------------------------
   TYPOGRAPHY STYLES
@@ -77,7 +77,6 @@
     line-height: 21px;
   }
 }
-
 
 /*-------------------------------
   BODY STYLES

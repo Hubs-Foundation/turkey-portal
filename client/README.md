@@ -12,12 +12,9 @@ Make sure database server is running. See 'README' in root project.
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-
 ## Path Alias
 
 To add or edit the import path aliases refer to [tsconfig.json](https://github.com/mozilla/turkey-portal/blob/main/client/tsconfig.json). Remember to update storybook in file [main.js](https://github.com/mozilla/turkey-portal/blob/main/client/.storybook/main.js) in parallel to match the file paths.
-
-
 
 ## Media Queries ( React Hooks )
 
