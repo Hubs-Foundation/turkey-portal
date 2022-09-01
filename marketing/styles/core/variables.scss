@@ -18,15 +18,9 @@ $color-interaction-primary-hover: var(--color-interaction-primary-hover);
 $color-interaction-primary-active: var(--color-interaction-primary-active);
 $color-interaction-primary-disabled: var(--color-interaction-primary-disabled);
 $color-interaction-primary-alt: var(--color-interaction-primary-alt);
-$color-interaction-primary-alt-hover: var(
-  --color-interaction-primary-alt-hover
-);
-$color-interaction-primary-alt-active: var(
-  --color-interaction-primary-alt-active
-);
-$color-interaction-primary-alt-disabled: var(
-  --color-interaction-primary-alt-disabled
-);
+$color-interaction-primary-alt-hover: var(--color-interaction-primary-alt-hover);
+$color-interaction-primary-alt-active: var(--color-interaction-primary-alt-active);
+$color-interaction-primary-alt-disabled: var(--color-interaction-primary-alt-disabled);
 
 /**
   SECONDARY INTERACTION
@@ -34,19 +28,11 @@ $color-interaction-primary-alt-disabled: var(
 $color-interaction-secondary: var(--color-interaction-secondary);
 $color-interaction-secondary-hover: var(--color-interaction-secondary-hover);
 $color-interaction-secondary-active: var(--color-interaction-secondary-active);
-$color-interaction-secondary-disabled: var(
-  --color-interaction-secondary-disabled
-);
+$color-interaction-secondary-disabled: var(--color-interaction-secondary-disabled);
 $color-interaction-secondary-alt: var(--color-interaction-secondary-alt);
-$color-interaction-secondary-alt-hover: var(
-  --color-interaction-secondary-alt-hover
-);
-$color-interaction-secondary-alt-active: var(
-  --color-interaction-secondary-alt-active
-);
-$color-interaction-secondary-alt-disabled: var(
-  --color-interaction-secondary-alt-disabled
-);
+$color-interaction-secondary-alt-hover: var(--color-interaction-secondary-alt-hover);
+$color-interaction-secondary-alt-active: var(--color-interaction-secondary-alt-active);
+$color-interaction-secondary-alt-disabled: var(--color-interaction-secondary-alt-disabled);
 
 /**
   SEMANTIC
@@ -132,18 +118,14 @@ $blue: #0d73a6;
 $light-blue: #e0f5ff;
 $link-blue: #007ab8;
 $purple: #663df5;
-$gradient-warm: radial-gradient(
-  147.61% 1186.51% at 110.24% -15.63%,
+$gradient-warm: radial-gradient(147.61% 1186.51% at 110.24% -15.63%,
   #ff806f 36.82%,
-  #ffff98 100%
-);
-$gradient-rainbow: linear-gradient(
-  107.97deg,
+  #ffff98 100%);
+$gradient-rainbow: linear-gradient(107.97deg,
   #489cbe 6.73%,
   #5427c9 39.4%,
   #a8527c 77.18%,
-  #a67878 104.75%
-);
+  #a67878 104.75%);
 
 // ---- Accent Colors ---------------------
 $teal: #23a2b3;
