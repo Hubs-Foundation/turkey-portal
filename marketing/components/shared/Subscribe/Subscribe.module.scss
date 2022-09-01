@@ -1,0 +1,83 @@
+@use 'styles/boilerplate.scss'as *;
+
+.wrapper {
+  background: $gradient-rainbow;
+}
+
+.container {
+  padding: 120px 0;
+  flex-wrap: wrap;
+  flex-grow: 1;
+
+  @include tablet-down {
+    padding: 50px 0;
+  }
+
+  @include mobile-down {
+    margin-top: 40px;
+  }
+}
+
+.header {
+  @include mobile-down {
+    margin: 0px 24px;
+  }
+
+  h1 {
+    color: $color-text-reverse;
+    @include h2;
+    text-align: center;
+    margin: 0 0 16px;
+  }
+
+  p {
+    @include body-md;
+    color: $color-text-reverse;
+    text-align: center;
+    margin: 0 0 40px;
+  }
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.swoosh_container {
+  height: 280px;
+  width: 100%;
+  position: relative;
+}
+
+.swoosh {
+  position: relative;
+  height: 100px;
+  width: 100%;
+
+  @include tablet-down {
+    height: 50px;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.swoosh_bottom {
+  background-color: transparent;
+  transform: rotate(180deg);
+  position: relative;
+  height: 100px;
+  width: 100%;
+
+  @include tablet-down {
+    height: 50px;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+}
