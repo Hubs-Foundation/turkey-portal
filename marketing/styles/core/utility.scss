@@ -1,5 +1,5 @@
-@use '../tools/media-queries.scss'as *;
-@use '../tools/mixins.scss'as *;
+@use '../tools/media-queries.scss' as *;
+@use '../tools/mixins.scss' as *;
 @use '../core/variables.scss' as *;
 
 // ---------------------------------
@@ -109,7 +109,6 @@
 }
 
 .u-no-link {
-
   &,
   &:hover {
     text-decoration: none;
