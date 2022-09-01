@@ -13,7 +13,6 @@ const MobileSideNav = ({
   isOpen = false,
   MobileMenuClick,
 }: MobileSideNavPropsT) => {
-
   const router = useRouter();
 
   /**
@@ -29,7 +28,7 @@ const MobileSideNav = ({
   const handleGetStartedClick = useCallback(() => {
     // TODO bubble up scroll to...
     MobileMenuClick();
-    router.push('/#subscribe-hook')
+    router.push('/#subscribe-hook');
   }, [MobileMenuClick, router]);
 
   return (
@@ -59,24 +58,24 @@ const MobileSideNav = ({
 
           {/* Logo */}
           <div className="flex-justify-center margin-bottom-10">
-            <HubsLogo/>
+            <HubsLogo />
           </div>
 
           {/* LINKS  */}
           <ul className="margin-0">
             <li>
-              <a className={styles.nav_link} target="_blank" rel="noreferrer" href="/labs">
+              <a className={styles.nav_link} href="/labs">
                 Creator Labs
               </a>
             </li>
             <li>
-              <a className={styles.nav_link} target="_blank" rel="noreferrer" href="/cloud">
+              <a className={styles.nav_link} href="/cloud">
                 Hubs Cloud
               </a>
             </li>
             <li>
               {/* TODO get demo url?  */}
-              <a className={styles.nav_link} target="_blank" rel="noreferrer" href="/demo">
+              <a className={styles.nav_link} href="/demo">
                 Try our demo
               </a>
             </li>

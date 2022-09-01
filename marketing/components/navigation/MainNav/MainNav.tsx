@@ -22,8 +22,8 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
   }, [MobileMenuClick]);
 
   const handleGetStartedClick = useCallback(() => {
-    router.push('/#subscribe-hook')
-  },[router])
+    router.push('/#subscribe-hook');
+  }, [router]);
 
   /**
    * Main Nav JSX
@@ -37,20 +37,20 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
           {/* Main navigation links / logo */}
           <div className={styles.main_nav_contents}>
             {/* Logo */}
-            <HubsLogo/>
+            <HubsLogo />
 
             {/* Links  */}
             {!isTabletDown && (
               <div className={styles.main_nav_links}>
-                <a href="/labs" target="_blank" rel="noreferrer" className={styles.main_nav_link}>
+                <a href="/labs" className={styles.main_nav_link}>
                   Creator Labs
                 </a>
 
-                <a href="/cloud" target="_blank" rel="noreferrer" className={styles.main_nav_link}>
+                <a href="/cloud" className={styles.main_nav_link}>
                   Hubs Cloud
                 </a>
 
-                <a href="/demo" target="_blank" rel="noreferrer" className={styles.main_nav_link}>
+                <a href="/demo" className={styles.main_nav_link}>
                   Try our demo
                 </a>
               </div>
