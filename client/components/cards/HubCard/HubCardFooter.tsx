@@ -25,12 +25,14 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
   /**
    * Round number to 2 dec
    * @param num
-   * @returns num
+   * @returns num | string
    */
-  const round = (num: number): number => {
+  const round = (num: number | null): number | string => {
+    if(num == null) return 'Error'
     const _num = Number((Math.abs(num) * 100).toPrecision(15));
     return (Math.round(_num) / 100) * Math.sign(num);
   };
+  
 
   /**
    * Watch Storage Percentage
