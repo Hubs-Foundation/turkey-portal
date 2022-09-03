@@ -23,6 +23,16 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
   }, [currentStorageMb, storageLimitMb]);
 
   /**
+   * Round number to 2 dec
+   * @param num
+   * @returns num
+   */
+  const round = (num: number): number => {
+    const _num = Number((Math.abs(num) * 100).toPrecision(15));
+    return (Math.round(_num) / 100) * Math.sign(num);
+  };
+
+  /**
    * Watch Storage Percentage
    */
   useEffect(() => {
@@ -55,7 +65,7 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
           <div
             className={`margin-bottom-12 ${styles['status_' + storageState]}`}
           >
-            <span className="u-color-text-main">{currentStorageMb}</span>
+            <span className="u-color-text-main">{round(currentStorageMb)}</span>
             <span>/{storageLimitMb} MB</span>
           </div>
           <div className="flex-justify-center">

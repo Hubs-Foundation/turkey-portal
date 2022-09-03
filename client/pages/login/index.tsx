@@ -5,6 +5,13 @@ import { API_SERVER } from 'config';
 import Button from '@Shared/Button/Button';
 import ExternalLink from '@Shared/ExternalLink/ExternalLink';
 
+/**
+ *
+ * Note :  THIS PAGE IS NOT BEING USED. THIS PAGE SHOULD NOT BE SHOWN TO THE USER
+ * IN THE CURRENT WORK FLOW - NG
+ *
+ */
+
 type LoginPropsT = {};
 
 const Login = ({}: LoginPropsT) => {

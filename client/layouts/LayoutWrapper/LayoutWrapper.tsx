@@ -27,11 +27,7 @@ const LayoutWrapper = ({ children, componentName }: LayoutWrapperProps) => {
     // <main data-theme={themeContext.theme}>
     <main data-theme="light">
       <div id="modal_portal" />
-      {!showLoggedOutUi ? (
-        <MainNav MobileMenuClick={toggleMobileNav} />
-      ) : (
-        <MainNav MobileMenuClick={toggleMobileNav} showAccountSection={true} />
-      )}
+      {!showLoggedOutUi ? <MainNav /> : <MainNav showAccountSection={false} />}
       <div
         className={
           showLoggedOutUi
