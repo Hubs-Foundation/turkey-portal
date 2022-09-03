@@ -32,6 +32,11 @@
   &_wrapper {
     max-width: $container-max-width;
     width: $container-max-width;
+
+    @include mobile-down {
+      display: flex;
+      justify-content: center;
+    }
   }
 }
 

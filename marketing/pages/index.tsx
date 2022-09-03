@@ -4,8 +4,9 @@ import Head from 'next/head';
 import Hero from '@Shared/Hero/Hero';
 import FiftyFifty, { FiftyFiftyLayoutE } from '@Shared/FiftyFifty/FiftyFifty';
 import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
-import Tiers, { TierPropsT } from '@Shared/Tiers/Tiers';
+import TitleDescription from '@Shared/TitleDescription/TitleDescription';
 import Subscribe from '@Shared/Subscribe/Subscribe';
+
 import { useMobileDown } from 'hooks/useMediaQuery';
 
 const Home: NextPage = () => {
@@ -41,49 +42,6 @@ const Home: NextPage = () => {
     return data;
   }, []);
 
-  /**
-   * Mock Tier Data
-   */
-  const tiers = useMemo(() => {
-    const data: TierPropsT[] = [
-      {
-        image: '/mock_tier.png',
-        imageAlt: 'TODO image alt text',
-        title: 'Free',
-        subtitle: '(Coming Soon)',
-        info: 'Want to be notified when our free offering is available?',
-        link: 'Join the mailing list',
-        linkUrl: '/#',
-        cta: '',
-        ctaUrl: '',
-      },
-      {
-        image: '/mock_tier.png',
-        imageAlt: 'TODO image alt text',
-        title: 'Early Access',
-        subtitle: '',
-        info: 'Want to be notified when our free offering is available?',
-        price: '$20',
-        link: '',
-        linkUrl: '',
-        cta: 'Sign in/ Sign up',
-        ctaUrl: '/#',
-      },
-      {
-        image: '/mock_tier.png',
-        imageAlt: 'TODO image alt text',
-        title: 'Business',
-        subtitle: '(Coming Soon)',
-        info: 'Want to be notified when our free offering is available?',
-        link: 'Contact Us',
-        linkUrl: '/#',
-        cta: '',
-        ctaUrl: '',
-      },
-    ];
-    return data;
-  }, []);
-
   return (
     <div className="page_wrapper">
       <Head>
@@ -98,9 +56,15 @@ const Home: NextPage = () => {
           title="A whole new world, from the comfort of your home"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
           cta="Get Started"
-          ctaLink="/#subscriptions"
+          ctaLink="/#subscribe-hook"
           ctaClick={onCtaClick}
         />
+
+        <TitleDescription
+          title="We're bringing the best of face-to-face interactions to the web:"
+          description="No more videos in a grid of squares. Connect with your community online in virtual spaces as avatars to communicate more naturally."
+        />
+
         <FiftyFifty
           image="/mock_fiftyfifty.jpg"
           imageAlt="TODO alt text for image"
@@ -133,7 +97,6 @@ const Home: NextPage = () => {
           title="Customizable"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
         />
-        <Tiers tiers={tiers} />
       </main>
     </div>
   );
