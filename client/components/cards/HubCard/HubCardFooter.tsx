@@ -28,11 +28,10 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
    * @returns num | string
    */
   const round = (num: number | null): number | string => {
-    if(num == null) return 'Error'
+    if (num == null) return 'Error';
     const _num = Number((Math.abs(num) * 100).toPrecision(15));
     return (Math.round(_num) / 100) * Math.sign(num);
   };
-  
 
   /**
    * Watch Storage Percentage
