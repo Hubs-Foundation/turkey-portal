@@ -1,6 +1,7 @@
 import type { GetServerSideProps } from 'next';
 import { AxiosRequestHeaders } from 'axios';
 import { getAccount } from './account.service';
+import { RoutesE } from 'types/Routes';
 
 export function requireAuthentication(gssp: Function): GetServerSideProps {
   return async (context) => {
@@ -14,7 +15,7 @@ export function requireAuthentication(gssp: Function): GetServerSideProps {
     } catch (error) {
       return {
         redirect: {
-          destination: '/subscribe',
+          destination: RoutesE.Subscribe,
           permanent: false,
         },
       };
@@ -37,7 +38,7 @@ export function checkLoggedIn(gssp: Function): GetServerSideProps {
       // If Authenticated Redirect to Dashboard.
       return {
         redirect: {
-          destination: '/dashboard',
+          destination: RoutesE.Dashboard,
           permanent: false,
         },
       };

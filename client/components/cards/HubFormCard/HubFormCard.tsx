@@ -3,15 +3,16 @@ import { useRouter } from 'next/router';
 import styles from './HubFormCard.module.scss';
 import { HUB_ROOT_DOMAIN } from 'config';
 import {
-  Input,
   Button,
   ButtonCategoriesE,
   ButtonSizesE,
   Icon,
 } from '@mozilla/lilypad';
+import Input from '@Shared/Input/Input';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { validateHubSubdomain } from 'services/hub.service';
 import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
+import { RoutesE } from 'types/Routes';
 
 export type HubFormCardT = {
   name: string;
@@ -41,7 +42,7 @@ const HubFormCard = ({
   const {
     control,
     handleSubmit,
-    formState: { isValid },
+    formState: { isValid, errors, dirtyFields },
     getValues,
   } = useForm<HubFormCardT>({
     defaultValues: {
@@ -63,6 +64,9 @@ const HubFormCard = ({
    * either subdomain_taken or subdomain_denied.
    */
   const handleFormSubmit: SubmitHandler<HubFormCardT> = (data) => {
+    console.log('data', data);
+    console.log('dirtyFields', dirtyFields);
+    console.log('errors', errors);
     // Form Invalid
     if (!isValid) {
       onError && onError('Please fix form errors to continue.');
@@ -89,19 +93,27 @@ const HubFormCard = ({
    */
   const handleCancelClick = () => {
     router.push({
-      pathname: '/dashboard',
+      pathname: RoutesE.Dashboard,
     });
   };
 
   /**
    * Handle Subdomain Input Blur
    */
-  const handleOnBlur = () => {
+  const handleOnBlur = (isValid: boolean | undefined) => {
     const newSubdomain = getValues('subdomain');
+
+    console.log('isValid', isValid);
 
     // Data has not been edited
     if (hub.subdomain === newSubdomain) {
       setIsValidDomain(true);
+      setIsEditingDomain(false);
+      return;
+    }
+
+    if (!isValid) {
+      setIsValidDomain(false);
       setIsEditingDomain(false);
       return;
     }
@@ -150,11 +162,16 @@ const HubFormCard = ({
         </div>
 
         <form onSubmit={handleSubmit(handleFormSubmit)}>
+          {/* <div>
+            {isValid && 'isValid'}
+            {dirtyFields.subdomain && 'subdomain' }
+          </div> */}
           <div className={styles.form_contents}>
             {/* HUB NAME  */}
             <Controller
               name="name"
               control={control}
+              rules={{ required: true }}
               render={({ field }) => (
                 <Input
                   maxLength={24}
@@ -170,27 +187,53 @@ const HubFormCard = ({
 
             {/* HUB SUBDOMAIN / ADDRESS  */}
             <div className={styles.address_wrapper}>
+              {/* <input 
+               onBlur={()=> {
+                handleOnBlur();
+                field.onBlur();
+              }}
+              ref={field.ref}
+              onFocus={handleOnFocus}
+              minLength={3}
+              maxLength={63}
+              placeholder="Web Address (URL)"
+              label="Web Address (URL)"
+              info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
+              pattern="[a-zA-Z0-9-]+"
+              validator={handleNameValidator}
+              customErrorMessage={addressErrorMessage}
+              required={true}
+              name='subdomain'
+              onChange={fieonChange}
+              /> */}
               <Controller
                 name="subdomain"
                 control={control}
-                render={({ field }) => (
-                  <Input
-                    onBlur={handleOnBlur}
-                    onFocus={handleOnFocus}
-                    minLength={3}
-                    maxLength={63}
-                    classProp="margin-bottom-10"
-                    placeholder="Web Address (URL)"
-                    label="Web Address (URL)"
-                    info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
-                    pattern="[a-zA-Z0-9-]+"
-                    validator={handleNameValidator}
-                    customErrorMessage={addressErrorMessage}
-                    required={true}
-                    name={field.name}
-                    value={field.value}
-                    onChange={field.onChange}
-                  />
+                rules={{ required: true }}
+                render={({field}) => (
+                  <>
+                    <Input
+                      onBlur={(isValid) => {
+                        handleOnBlur(isValid);
+                        field.onBlur();
+                      }}
+                      ref={field.ref}
+                      onFocus={handleOnFocus}
+                      minLength={3}
+                      maxLength={63}
+                      classProp="margin-bottom-10"
+                      placeholder="Web Address (URL)"
+                      label="Web Address (URL)"
+                      info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
+                      pattern="[a-zA-Z0-9-]+"
+                      validator={handleNameValidator}
+                      customErrorMessage={addressErrorMessage}
+                      required={true}
+                      name={field.name}
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  </>
                 )}
               />
               <div className={styles.address_preview}>
