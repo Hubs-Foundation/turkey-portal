@@ -10,12 +10,16 @@ export function requireAuthentication(gssp: Function): GetServerSideProps {
     // If no errors user is authenticated
     try {
       // TODO : MAYBE - Should we make a more explicit way to confirm a JWT here..
+
+      // TODO we need to check the account data here and see
+      // if the user has any subscriptions... if not send them to subscribe page. 
       await getAccount(req.headers as AxiosRequestHeaders);
       return await gssp(context);
     } catch (error) {
       return {
+        // TODO this should probably change to send them to the marking page..
         redirect: {
-          destination: RoutesE.Subscribe,
+          destination: RoutesE.Login,
           permanent: false,
         },
       };

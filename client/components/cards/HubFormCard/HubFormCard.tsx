@@ -7,8 +7,9 @@ import {
   ButtonCategoriesE,
   ButtonSizesE,
   Icon,
+  Input
 } from '@mozilla/lilypad';
-import Input from '@Shared/Input/Input';
+// import Input from '@Shared/Input/Input';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { validateHubSubdomain } from 'services/hub.service';
 import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
@@ -103,8 +104,6 @@ const HubFormCard = ({
   const handleOnBlur = (isValid: boolean | undefined) => {
     const newSubdomain = getValues('subdomain');
 
-    console.log('isValid', isValid);
-
     // Data has not been edited
     if (hub.subdomain === newSubdomain) {
       setIsValidDomain(true);
@@ -187,25 +186,6 @@ const HubFormCard = ({
 
             {/* HUB SUBDOMAIN / ADDRESS  */}
             <div className={styles.address_wrapper}>
-              {/* <input 
-               onBlur={()=> {
-                handleOnBlur();
-                field.onBlur();
-              }}
-              ref={field.ref}
-              onFocus={handleOnFocus}
-              minLength={3}
-              maxLength={63}
-              placeholder="Web Address (URL)"
-              label="Web Address (URL)"
-              info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
-              pattern="[a-zA-Z0-9-]+"
-              validator={handleNameValidator}
-              customErrorMessage={addressErrorMessage}
-              required={true}
-              name='subdomain'
-              onChange={fieonChange}
-              /> */}
               <Controller
                 name="subdomain"
                 control={control}
@@ -213,7 +193,7 @@ const HubFormCard = ({
                 render={({field}) => (
                   <>
                     <Input
-                      onBlur={(isValid) => {
+                      onBlur={(isValid:boolean) => {
                         handleOnBlur(isValid);
                         field.onBlur();
                       }}

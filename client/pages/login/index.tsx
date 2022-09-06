@@ -1,9 +1,11 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
 import { checkLoggedIn } from 'services/routeGuard.service';
+import SubContactCard from '@Cards/SubContactCard/SubContactCard';
 import { API_SERVER } from 'config';
-import Button from '@Shared/Button/Button';
-import ExternalLink from '@Shared/ExternalLink/ExternalLink';
+import SubInfoCard from '@Cards/SubInfoCard/SubInfoCard';
+import styles from './login.module.scss';
+
 
 /**
  *
@@ -30,11 +32,14 @@ const Login = ({}: LoginPropsT) => {
       </Head>
 
       <main>
-        <h1>Login Page</h1>
-
-        <ExternalLink href={loginUrl} target="_self">
-          <Button text="Sign Up"></Button>
-        </ExternalLink>
+        <div className={styles.wrapper}>
+          <div className={styles.header}>
+          <div className={styles.cards}>
+            <SubInfoCard />
+            <SubContactCard />
+          </div>
+        </div>
+        </div>
       </main>
     </div>
   );
