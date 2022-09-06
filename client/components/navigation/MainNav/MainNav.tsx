@@ -163,7 +163,7 @@ const MainNav = ({
             <Button
               category={ButtonCategoriesE.SECONDARY_OUTLINE}
               text="Sign In"
-              href={`https://auth.myhubs.net/login?idp=fxa&client=https://dashboardclient.${HUB_ROOT_DOMAIN}`}
+              href={`https://auth.myhubs.net/login?idp=fxa&client=https://dashboard.${HUB_ROOT_DOMAIN}`}
             />
           )}
         </div>
