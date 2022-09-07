@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import Head from 'next/head';
 import Hero from '@Shared/Hero/Hero';
 import FiftyFifty, { FiftyFiftyLayoutE } from '@Shared/FiftyFifty/FiftyFifty';
@@ -11,10 +11,6 @@ import { useMobileDown } from 'hooks/useMediaQuery';
 
 const Home: NextPage = () => {
   const isMobile = useMobileDown();
-  const onCtaClick = useCallback(() => {
-    console.log('scroll or w.e');
-  }, []);
-
   /**
    * Mock Tile Data
    */
@@ -57,7 +53,6 @@ const Home: NextPage = () => {
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
           cta="Get Started"
           ctaLink="/#subscribe-hook"
-          ctaClick={onCtaClick}
         />
 
         <TitleDescription

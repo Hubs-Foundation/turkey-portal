@@ -22,7 +22,8 @@
 
   p {
     @include body-md;
-    margin: 0 100px 64px;
+    margin-bottom: 64px;
+    padding: 0;
 
     @include tablet-down {
       margin: 0 24px 64px;
