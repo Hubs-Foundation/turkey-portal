@@ -13,7 +13,7 @@ const SubContactCard = ({
   classProp = '',
 }: SubContactCardPropsT) => {
   const handleContactClick = () => {
-    window.location.href = `mailto:${email}?subject=${subject}`;
+    window.open(`mailto:${email}?subject=${encodeURI(subject)}`);
   };
 
   return (

@@ -28,7 +28,7 @@ const Subscribe = ({}: SubscribePropsT) => {
 
           <div className={styles.cards}>
             <SubInfoCard />
-            <SubContactCard email="hubs@mozilla.com" subject="Subscription" />
+            <SubContactCard email="hubs@mozilla.com" subject="Subscription inquiries" />
           </div>
         </div>
       </main>
