@@ -6,7 +6,6 @@ import { API_SERVER } from 'config';
 import SubInfoCard from '@Cards/SubInfoCard/SubInfoCard';
 import styles from './login.module.scss';
 
-
 /**
  *
  * Note :  THIS PAGE IS NOT BEING USED. THIS PAGE SHOULD NOT BE SHOWN TO THE USER
@@ -34,11 +33,11 @@ const Login = ({}: LoginPropsT) => {
       <main>
         <div className={styles.wrapper}>
           <div className={styles.header}>
-          <div className={styles.cards}>
-            <SubInfoCard />
-            <SubContactCard />
+            <div className={styles.cards}>
+              <SubInfoCard />
+              <SubContactCard />
+            </div>
           </div>
-        </div>
         </div>
       </main>
     </div>

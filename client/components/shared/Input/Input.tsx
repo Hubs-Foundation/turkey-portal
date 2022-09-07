@@ -35,8 +35,6 @@ type InputProps = {
   info?: string;
   classProp?: string;
   onChange?: Function;
-  onBlur?: (isValid?:boolean) => void;
-  onFocus?: Function;
   validator?: Function;
   required?: boolean;
   customErrorMessage?: string;
@@ -58,8 +56,6 @@ const Input = forwardRef(
       info = '',
       classProp = '',
       onChange,
-      onBlur,
-      onFocus,
       validator = () => true,
       required = false,
       customErrorMessage,
@@ -88,31 +84,19 @@ const Input = forwardRef(
       };
     });
 
-
-    const handleOnBlur = () => {
-      onBlur && onBlur(isValid);
-    };
-
-    const handleOnFocus = () => {
-      onFocus && onFocus();
-    };
-
-
     /**
      * Handle Input Change
      * @param event
      */
     const handleOnChange: ChangeEventHandler<HTMLInputElement> = (
       event: ChangeEvent<HTMLInputElement>
-    ): ChangeEvent<HTMLInputElement> => {
+    ) => {
       const newValue = event.target.value;
       onChange && onChange(newValue);
       // If initial value was empty any change makes form dirty
       const isDirty = initialValue === '' ? true : initialValue !== newValue;
       setIsDirty(isDirty);
-      return event;
     };
-
 
     /**
      * Validate Input
@@ -156,12 +140,10 @@ const Input = forwardRef(
           ref={inputRef}
           type={type}
           name={name}
-          required={required}
           value={value}
+          required={required}
           placeholder={placeholder ? placeholder : label}
           onChange={handleOnChange}
-          onBlur={handleOnBlur}
-          onFocus={handleOnFocus}
           maxLength={maxLength}
           minLength={minLength}
           pattern={pattern}

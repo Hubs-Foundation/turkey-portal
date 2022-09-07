@@ -71,7 +71,7 @@ const HubFormCard = ({
    * is invalid or forbidden. The validate_subdomain API returns
    * either subdomain_taken or subdomain_denied.
    */
-  const handleFormSubmit: SubmitHandler<HubFormCardT> = (data) => {  
+  const handleFormSubmit: SubmitHandler<HubFormCardT> = (data) => {
     // Domain does not pass serverside validation
     if (!isValidDomain) return;
 
