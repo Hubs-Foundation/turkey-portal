@@ -5,6 +5,7 @@ import Hero from '@Shared/Hero/Hero';
 import FiftyFifty, { FiftyFiftyLayoutE } from '@Shared/FiftyFifty/FiftyFifty';
 import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
 import Tiers, { TierPropsT } from '@Shared/Tiers/Tiers';
+import Subscribe from '@Shared/Subscribe/Subscribe';
 import { useMobileDown } from 'hooks/useMediaQuery';
 
 const Home: NextPage = () => {
@@ -100,6 +101,12 @@ const Home: NextPage = () => {
           ctaLink="/#subscriptions"
           ctaClick={onCtaClick}
         />
+        <FiftyFifty
+          image="/mock_fiftyfifty.jpg"
+          imageAlt="TODO alt text for image"
+          title="Customizable"
+          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
+        />
 
         <TileSpotlight
           tiles={tiles}
@@ -108,15 +115,10 @@ const Home: NextPage = () => {
           With a subscription to Hubs, you choose who can access your space and take advantage of all Hubs has to offer.
           "
         />
-
-        <FiftyFifty
-          image="/mock_fiftyfifty.jpg"
-          imageAlt="TODO alt text for image"
-          title="Customizable"
-          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
-        />
+        <Subscribe />
         {/* NOTE: this is a mock placement to get the scroll to working.  */}
         <div id="subscribe-hook"></div>
+
         <FiftyFifty
           image="/mock_fiftyfifty.jpg"
           imageAlt="TODO alt text for image"
