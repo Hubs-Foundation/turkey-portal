@@ -7,7 +7,8 @@ import {
   ButtonCategoriesE,
   ButtonSizesE,
   Icon,
-  Input
+  Input,
+  InputIconColorE,
 } from '@mozilla/lilypad';
 // import Input from '@Shared/Input/Input';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
@@ -28,6 +29,11 @@ type HubFormCardPropsT = {
   classProp?: string;
 };
 
+export enum DomainErrorsE {
+  SUBDOMAIN_TAKEN = 'subdomain_taken',
+  SUBDOMAIN_DENIED = 'subdomain_denied',
+}
+
 const HubFormCard = ({
   hub,
   onSubmit,
@@ -37,6 +43,8 @@ const HubFormCard = ({
   const [addressErrorMessage, setAddressErrorMessage] = useState<string>('');
   const storeContext = useContext(StoreContext);
   const [isValidDomain, setIsValidDomain] = useState(true);
+  const [domainValidationError, setDomainValidationError] =
+    useState<string>('');
   const [isEditingDomain, setIsEditingDomain] = useState(false);
 
   const router = useRouter();
@@ -58,7 +66,6 @@ const HubFormCard = ({
    */
 
   /**
-   * TODO:
    * Show a different error for when a subdomain
    * is already in use by another user, vs when a subdomain
    * is invalid or forbidden. The validate_subdomain API returns
@@ -70,7 +77,7 @@ const HubFormCard = ({
     console.log('errors', errors);
     // Form Invalid
     if (!isValid) {
-      onError && onError('Please fix form errors to continue.');
+      onError && onError(``);
       return;
     }
 
@@ -118,8 +125,20 @@ const HubFormCard = ({
     }
 
     // Validate subdomain
-    validateHubSubdomain(hub.hubId, newSubdomain).then((resp) => {
-      setIsValidDomain(resp.success);
+    validateHubSubdomain(hub.hubId, newSubdomain).then(({ error, success }) => {
+      if (error) {
+        switch (error) {
+          case DomainErrorsE.SUBDOMAIN_TAKEN:
+            setDomainValidationError('subdomain is taken');
+            break;
+          case DomainErrorsE.SUBDOMAIN_DENIED:
+            setDomainValidationError('subdomain is denied');
+            break;
+        }
+      }
+
+      success && setDomainValidationError('');
+      setIsValidDomain(success);
       setIsEditingDomain(false);
     });
   };
@@ -190,10 +209,10 @@ const HubFormCard = ({
                 name="subdomain"
                 control={control}
                 rules={{ required: true }}
-                render={({field}) => (
+                render={({ field }) => (
                   <>
                     <Input
-                      onBlur={(isValid:boolean) => {
+                      onBlur={(isValid: boolean) => {
                         handleOnBlur(isValid);
                         field.onBlur();
                       }}
@@ -237,6 +256,13 @@ const HubFormCard = ({
                 </div>
               </div>
             </div>
+
+            {/* Note: this error messaging is specific to domain serverside validation  */}
+            {!isValidDomain && (
+              <div className={styles.error_message}>
+                Please enter another address, the {domainValidationError}.
+              </div>
+            )}
           </div>
 
           <div className={styles.actions_wrapper}>
