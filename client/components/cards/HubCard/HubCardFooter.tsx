@@ -9,7 +9,8 @@ type HubCardFooterPropsT = {
 };
 
 const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
-  const { tier, currentStorageMb, storageLimitMb } = hub;
+  const { tier, storageLimitMb } = hub;
+  const currentStorageMb = 12.676;
   const [storageState, setStorageState] = useState<StorageStateE>(
     StorageStateE.DEFAULT
   );
@@ -18,7 +19,7 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
    * Get % Value of MB used
    */
   const getStoragePercent = useCallback((): number => {
-    if (currentStorageMb === 0 || currentStorageMb === null) return 0;
+    // if (currentStorageMb === 0 || currentStorageMb === null) return 0;
     return Math.min(100, currentStorageMb / storageLimitMb) * 100;
   }, [currentStorageMb, storageLimitMb]);
 
@@ -29,8 +30,11 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
    */
   const round = (num: number | null): number | string => {
     if (num == null) return 'Error';
-    const _num = Number((Math.abs(num) * 100).toPrecision(15));
-    return (Math.round(_num) / 100) * Math.sign(num);
+
+    return new Intl.NumberFormat('en-IN', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }).format(num);
   };
 
   /**
