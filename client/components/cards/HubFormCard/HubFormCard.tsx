@@ -71,21 +71,9 @@ const HubFormCard = ({
    * is invalid or forbidden. The validate_subdomain API returns
    * either subdomain_taken or subdomain_denied.
    */
-  const handleFormSubmit: SubmitHandler<HubFormCardT> = (data) => {
-    console.log('data', data);
-    console.log('dirtyFields', dirtyFields);
-    console.log('errors', errors);
-    // Form Invalid
-    if (!isValid) {
-      onError && onError(``);
-      return;
-    }
-
+  const handleFormSubmit: SubmitHandler<HubFormCardT> = (data) => {  
     // Domain does not pass serverside validation
-    if (!isValidDomain) {
-      onError && onError('Please provide a valid domain to continue');
-      return;
-    }
+    if (!isValidDomain) return;
 
     onSubmit && onSubmit(data);
     // Store away the last submitted subdomain incase we need to re-try.
@@ -93,7 +81,7 @@ const HubFormCard = ({
       subdomain: data.subdomain,
       hubId: hub.hubId,
     };
-    storeContext.handleThemeChange(subdomain);
+    storeContext.handleSubdomainChange(subdomain);
   };
 
   /**

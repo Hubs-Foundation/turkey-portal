@@ -13,7 +13,7 @@ import {
   Dropdown,
   dropdownT,
 } from '@mozilla/lilypad';
-import { HUB_ROOT_DOMAIN } from 'config';
+import { HUB_ROOT_DOMAIN, ACCOUNT_ROOT_DOMAIN } from 'config';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -37,11 +37,7 @@ const MainNav = ({
   }, [router]);
 
   const onManageAccountClick = useCallback(() => {
-    // TODO set up variables to get correct FX account link
-  }, []);
-
-  const handleSignInClick = useCallback(() => {
-    // TODO - do sign in stuff here
+    window.open(`https://accounts.${ACCOUNT_ROOT_DOMAIN}/settings`);
   }, []);
 
   /**
@@ -64,7 +60,7 @@ const MainNav = ({
 
       <hr className="dropdown-hr" />
 
-      {/* Sign Out  */}
+      {/* Account / Sign Out  */}
       <div className={styles.links}>
         <button
           className="dropdown-link"
@@ -72,7 +68,6 @@ const MainNav = ({
             onManageAccountClick();
           }}
         >
-          {/* TODO update icon asset  */}
           <Icon
             classProp="margin-right-10"
             color="currentColor"
@@ -135,6 +130,7 @@ const MainNav = ({
                 classProp={styles.exit_button}
                 category={ButtonCategoriesE.SECONDARY_OUTLINE}
                 text="Exit Dashboard"
+                onClick={onLogOutClick}
               />
 
               <Dropdown

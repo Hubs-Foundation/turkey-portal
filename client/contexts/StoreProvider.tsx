@@ -15,12 +15,12 @@ const initSubdomain: SubdomainRetryT = { subdomain: '', hubId: '' };
 
 export const StoreContext = createContext({
   lastSubmittedSubdomain: initSubdomain,
-  handleThemeChange: (value: SubdomainRetryT) => {},
+  handleSubdomainChange: (value: SubdomainRetryT) => {},
 });
 
 const StoreProvider = ({ children }: StoreProviderProps) => {
   const [subdomain, setSubdomain] = useState<SubdomainRetryT>(initSubdomain);
-  const handleThemeChange = (value: SubdomainRetryT): void => {
+  const handleSubdomainChange = (value: SubdomainRetryT): void => {
     setSubdomain(value);
   };
 
@@ -28,7 +28,7 @@ const StoreProvider = ({ children }: StoreProviderProps) => {
     <StoreContext.Provider
       value={{
         lastSubmittedSubdomain: subdomain,
-        handleThemeChange,
+        handleSubdomainChange,
       }}
     >
       {children}

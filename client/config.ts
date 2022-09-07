@@ -7,3 +7,4 @@ export const API_SERVER = isServerSide
   ? serverRuntimeConfig.API_SERVER
   : publicRuntimeConfig.API_SERVER;
 export const HUB_ROOT_DOMAIN = process.env.HUB_ROOT_DOMAIN;
+export const ACCOUNT_ROOT_DOMAIN = process.env.ACCOUNT_ROOT_DOMAIN;

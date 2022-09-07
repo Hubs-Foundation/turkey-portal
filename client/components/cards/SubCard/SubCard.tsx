@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import styles from './SubCard.module.scss';
 import CardButton from '../../shared/CardButton/CardButton';
 import { SubscriptionT } from 'services/subscription.service';
 import Modal from '@Shared/Modal/Modal';
 import SubscriptionModal from 'components/Modals/SubscriptionModal/SubscriptionModal';
-import { HubT } from 'types/General';
+import { HUB_ROOT_DOMAIN } from 'config';
 
 type SubCardPropsT = {
   subdomain: string;
@@ -37,12 +37,18 @@ const SubCard = ({
     setShowModal(false);
   };
 
+  const handleAdminPanelClick = useCallback(() => {
+    window.open(`https://${subdomain}.${HUB_ROOT_DOMAIN}/admin`);
+  }, [subdomain]);
+
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
       <div className={styles.container}>
         {/* Note: When we open the dashboard to multiple hubs this admin button
         should only show on the details page. Not on the main dashboard  */}
+
         <CardButton
+          onClick={handleAdminPanelClick}
           icon="settings"
           title="Admin Panel"
           description="Manage the scenes, avatars, accounts and access rules for this hub."
