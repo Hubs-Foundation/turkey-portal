@@ -9,7 +9,7 @@ type HubCardFooterPropsT = {
 };
 
 const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
-  const { tier,currentStorageMb, storageLimitMb } = hub;
+  const { tier, currentStorageMb, storageLimitMb } = hub;
   const [storageState, setStorageState] = useState<StorageStateE>(
     StorageStateE.DEFAULT
   );
@@ -30,7 +30,7 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
   const round = (num: number | null): number | string => {
     if (num == null) return 'Error';
 
-    // TODO - In the future, I guess we'd use i18n routing and useRouter to get the current 
+    // TODO - In the future, I guess we'd use i18n routing and useRouter to get the current
     // locale, but for now default to "en-US".
     return new Intl.NumberFormat('en-US', {
       maximumFractionDigits: 2,
