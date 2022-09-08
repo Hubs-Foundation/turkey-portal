@@ -43,7 +43,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
       setLoading(false);
       setHub(hub);
     });
-  }, [hub_id]);
+  }, [hub_id, router]);
 
   /**
    * Get Hub Subscription
