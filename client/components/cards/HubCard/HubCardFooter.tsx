@@ -9,8 +9,7 @@ type HubCardFooterPropsT = {
 };
 
 const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
-  const { tier, storageLimitMb } = hub;
-  const currentStorageMb = 12.676;
+  const { tier,currentStorageMb, storageLimitMb } = hub;
   const [storageState, setStorageState] = useState<StorageStateE>(
     StorageStateE.DEFAULT
   );
@@ -19,7 +18,7 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
    * Get % Value of MB used
    */
   const getStoragePercent = useCallback((): number => {
-    // if (currentStorageMb === 0 || currentStorageMb === null) return 0;
+    if (currentStorageMb === 0 || currentStorageMb === null) return 0;
     return Math.min(100, currentStorageMb / storageLimitMb) * 100;
   }, [currentStorageMb, storageLimitMb]);
 
@@ -31,8 +30,9 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
   const round = (num: number | null): number | string => {
     if (num == null) return 'Error';
 
-    return new Intl.NumberFormat('en-IN', {
-      minimumFractionDigits: 0,
+    // TODO - In the future, I guess we'd use i18n routing and useRouter to get the current 
+    // locale, but for now default to "en-US".
+    return new Intl.NumberFormat('en-US', {
       maximumFractionDigits: 2,
     }).format(num);
   };
