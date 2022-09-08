@@ -4,10 +4,6 @@ const nextConfig = {
   images: {
     domains: ['localhost'], // TODO Add other servers
   },
-  env: {
-    HUB_ROOT_DOMAIN: process.env.HUB_ROOT_DOMAIN,
-    ACCOUNT_ROOT_DOMAIN: process.env.ACCOUNT_ROOT_DOMAIN
-  },
   serverRuntimeConfig: {
     API_SERVER: 'http://localhost:4000',
   },
