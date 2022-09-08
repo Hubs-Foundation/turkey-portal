@@ -1,0 +1,101 @@
+@use 'styles/boilerplate.scss' as *;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px 32px;
+  position: relative;
+}
+
+.container {
+  max-width: $container-max-width;
+}
+
+
+.header {
+  color: $color-text-main;
+  text-align: center;
+  margin-bottom: 42px;
+
+  h2 {
+    @include h1;
+    margin: 0 0 16px;
+  }
+
+  p {
+    @include body-md;
+    margin-bottom: 64px;
+    padding: 0;
+
+    @include tablet-down {
+      margin: 0 24px 64px;
+    }
+  }
+}
+
+.tile {
+  &s {
+    display: grid;
+    grid-template-columns: 385px 385px 385px;
+    column-gap: 23px;
+
+    @include desktop-large-down {
+      grid-template-columns: 32% 32% 32%;
+    }
+
+    @include tablet-down {
+      grid-template-columns: 100%;
+      row-gap: 23px;
+    }
+  }
+
+  &_wrapper {
+    overflow: hidden;
+  }
+
+  &_container {
+    position: relative;
+  }
+
+  &_icon {
+   display: flex;
+   justify-content: center;
+  }
+
+  &_bar {
+    /* LIGHT/Brand/ducks-beak */
+    // TODO get CSS VAR for this color.
+    background: #ff806f;
+    width: 82px;
+    padding: 4px;
+    border-radius: 100px;
+    margin-bottom: 12px;
+  }
+
+  &_content {
+    padding: 24px;
+    text-align: center;
+
+    h3 {
+      @include h2;
+      margin: 0 0 24px;
+    }
+
+    p {
+      @include body-md;
+      margin: 0;
+    }
+  }
+}
+
+.border {
+  display: none;
+  background: $gradient-cool;
+  padding: 2px;
+  border-radius: 20px;
+  margin: 0 32px;
+
+  @include tablet-down {
+    display: block;
+  }
+}

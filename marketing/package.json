@@ -9,7 +9,7 @@
     "lint": "next lint && prettier -c ."
   },
   "dependencies": {
-    "@mozilla/lilypad": "^1.0.28",
+    "@mozilla/lilypad": "^1.0.29",
     "next": "12.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",

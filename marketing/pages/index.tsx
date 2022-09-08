@@ -57,18 +57,9 @@ const Home: NextPage = () => {
           ctaLink="/#subscribe-hook"
         />
 
-        <ValueProps />
-
         <TitleDescription
           title="We're bringing the best of face-to-face interactions to the web:"
           description="No more videos in a grid of squares. Connect with your community online in virtual spaces as avatars to communicate more naturally."
-        />
-
-        <FiftyFifty
-          image="/mock_fiftyfifty.jpg"
-          imageAlt="TODO alt text for image"
-          title="Customizable"
-          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
         />
 
         <TileSpotlight
@@ -78,7 +69,18 @@ const Home: NextPage = () => {
           With a subscription to Hubs, you choose who can access your space and take advantage of all Hubs has to offer.
           "
         />
+
+        <ValueProps />
+
         <Subscribe />
+
+        <FiftyFifty
+          image="/mock_fiftyfifty.jpg"
+          imageAlt="TODO alt text for image"
+          title="Customizable"
+          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
+        />
+
         {/* NOTE: this is a mock placement to get the scroll to working.  */}
         <div id="subscribe-hook"></div>
 
