@@ -6,13 +6,15 @@ import FiftyFifty, { FiftyFiftyLayoutE } from '@Shared/FiftyFifty/FiftyFifty';
 import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
 import TitleDescription from '@Shared/TitleDescription/TitleDescription';
 import Subscribe from '@Shared/Subscribe/Subscribe';
+import ValueProps from '@Shared/ValueProps/ValueProps';
 
 import { useMobileDown } from 'hooks/useMediaQuery';
 
 const Home: NextPage = () => {
   const isMobile = useMobileDown();
+
   /**
-   * Mock Tile Data
+   * Tile Data
    */
   const tiles = useMemo(() => {
     const data: TilePropsT[] = [
@@ -54,6 +56,8 @@ const Home: NextPage = () => {
           cta="Get Started"
           ctaLink="/#subscribe-hook"
         />
+
+        <ValueProps />
 
         <TitleDescription
           title="We're bringing the best of face-to-face interactions to the web:"
