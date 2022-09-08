@@ -17,16 +17,16 @@ const Home: NextPage = () => {
   const tiles = useMemo(() => {
     const data: TilePropsT[] = [
       {
-        image: '/mock_fiftyfifty.jpg',
-        title: 'Tile One',
+        image: '/spatial_audio.jpg',
+        title: 'Spatial Audio',
         description:
           'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space - the volume changes based on how close or far away you are.',
       },
       {
-        image: '/mock_fiftyfifty.jpg',
-        title: 'Tile Two',
+        image: '/import_3d_models.jpg',
+        title: 'Media Sharing',
         description:
-          'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space - the volume changes based on how close or far away you are.',
+          'Import media from across the web. Have fun sharing 3D models, pdfs, images, gifs, videos and audio with your guests.',
       },
       {
         image: '/mock_fiftyfifty.jpg',
@@ -48,7 +48,7 @@ const Home: NextPage = () => {
 
       <main>
         <Hero
-          background={isMobile ? '/HubsHeroMobile.png' : '/HubsHero.png'}
+          background={isMobile ? '/hubs_hero_mobile.jpg' : '/hubs_hero.jpg'}
           title="A whole new world, from the comfort of your home"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
           cta="Get Started"

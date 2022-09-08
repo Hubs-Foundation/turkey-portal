@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/router';
-
+import Image from 'next/image';
 import styles from './Hero.module.scss';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 
@@ -32,12 +32,14 @@ const Hero = ({
 
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
-      <div
-        className={styles.container}
-        style={{
-          backgroundImage: `url(${background})`,
-        }}
-      >
+      <div className={styles.container}>
+        <Image
+          src={background}
+          alt="hero image"
+          layout="fill"
+          objectFit="cover"
+          objectPosition="center"
+        />
         <div className={styles.contents_wrapper}>
           <div className={styles.contents}>
             {title && <h3 className={styles.title}>{title}</h3>}
