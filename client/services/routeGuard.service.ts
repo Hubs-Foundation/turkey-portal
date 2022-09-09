@@ -14,7 +14,7 @@ export function requireAuthentication(gssp: Function): GetServerSideProps {
     } catch (error) {
       return {
         redirect: {
-          destination: '/login',
+          destination: '/subscribe',
           permanent: false,
         },
       };

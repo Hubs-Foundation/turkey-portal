@@ -13,17 +13,16 @@ import {
   Dropdown,
   dropdownT,
 } from '@mozilla/lilypad';
+import { HUB_ROOT_DOMAIN } from 'config';
 
 type MainNavPropsT = {
   classProp?: string;
-  MobileMenuClick: Function;
-  showAccountSection?: boolean;
+  showLoggedOutUi?: boolean;
 };
 
 const MainNav = ({
   classProp = '',
-  MobileMenuClick,
-  showAccountSection = false,
+  showLoggedOutUi = false,
 }: MainNavPropsT) => {
   const account = useSelector(selectAccount);
   const dropdownRef = useRef<dropdownT>(null);
@@ -33,7 +32,7 @@ const MainNav = ({
     dropdownRef.current?.closeDropdown();
     await logOut();
     router.push({
-      pathname: '/login',
+      pathname: '/subscribe',
     });
   }, [router]);
 
@@ -41,12 +40,9 @@ const MainNav = ({
     // TODO set up variables to get correct FX account link
   }, []);
 
-  /**
-   * Handle Menu Click
-   */
-  const handleMobileMenuClick = useCallback(() => {
-    MobileMenuClick();
-  }, [MobileMenuClick]);
+  const handleSignInClick = useCallback(() => {
+    // TODO - do sign in stuff here
+  }, []);
 
   /**
    * Dropdown Content
@@ -70,9 +66,7 @@ const MainNav = ({
 
       {/* Sign Out  */}
       <div className={styles.links}>
-        <a
-          href="#"
-          target="_blank"
+        <button
           className="dropdown-link"
           onClick={() => {
             onManageAccountClick();
@@ -86,11 +80,10 @@ const MainNav = ({
             size={24}
           />
           Manage Your Firefox Account
-        </a>
+        </button>
 
-        <a
-          href="#"
-          target="_blank"
+        <button
+          aria-label="sign out"
           className="dropdown-link"
           onClick={() => {
             onLogOutClick();
@@ -100,11 +93,11 @@ const MainNav = ({
           <Icon
             classProp="margin-right-10"
             color="currentColor"
-            name="plus-circle"
+            name="log-out"
             size={24}
           />
           Sign Out
-        </a>
+        </button>
       </div>
     </div>
   );
@@ -136,7 +129,7 @@ const MainNav = ({
           </div>
 
           {/* Account information  */}
-          {!showAccountSection && (
+          {!showLoggedOutUi && (
             <div className="flex-align-center">
               <Button
                 classProp={styles.exit_button}
@@ -163,6 +156,15 @@ const MainNav = ({
                 content={DropdownContent}
               />
             </div>
+          )}
+
+          {/* Login Action  */}
+          {showLoggedOutUi && (
+            <Button
+              category={ButtonCategoriesE.SECONDARY_OUTLINE}
+              text="Sign In"
+              href={`https://auth.myhubs.net/login?idp=fxa&client=https://dashboard.${HUB_ROOT_DOMAIN}`}
+            />
           )}
         </div>
       </div>
