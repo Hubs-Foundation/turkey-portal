@@ -14,9 +14,6 @@ const LayoutWrapper = ({ children, componentName }: LayoutWrapperProps) => {
   // Check if a logged out route
   const showLoggedOutUi = componentName in LoggedOutComponentPages;
   const themeContext = useContext(ThemeContext);
-  const toggleMobileNav = useCallback(() => {
-    // Place holder - not sure if we need this: waiting on UX/UI
-  }, []);
 
   useEffect(() => {
     // If on one of the "logged out pages" don't try to init store data
@@ -27,11 +24,7 @@ const LayoutWrapper = ({ children, componentName }: LayoutWrapperProps) => {
     // <main data-theme={themeContext.theme}>
     <main data-theme="light">
       <div id="modal_portal" />
-      {!showLoggedOutUi ? (
-        <MainNav MobileMenuClick={toggleMobileNav} />
-      ) : (
-        <MainNav MobileMenuClick={toggleMobileNav} showAccountSection={true} />
-      )}
+      <MainNav showLoggedOutUi={showLoggedOutUi} />
       <div
         className={
           showLoggedOutUi

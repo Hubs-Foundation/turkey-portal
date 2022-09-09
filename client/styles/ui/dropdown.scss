@@ -12,6 +12,9 @@
   display: flex;
   align-items: center;
   color: $color-text-reverse;
+  background-color: transparent;
+  border: 0px;
+  padding: 0;
 
   &:first-child {
     margin-bottom: 24px;
