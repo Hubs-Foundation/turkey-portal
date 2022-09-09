@@ -11,7 +11,7 @@ type HeroPropsT = {
   cta?: string;
   ctaClick?: Function;
   ctaLink?: string;
-  heroAlt?:string;
+  heroAlt?: string;
   classProp?: string;
 };
 
