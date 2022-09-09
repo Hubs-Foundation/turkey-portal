@@ -10,7 +10,7 @@ type TilePropsT = {
   icon: IconT;
   title: string;
   description: string;
-  hasBorder?:boolean;
+  hasBorder?: boolean;
 };
 
 /**
@@ -28,7 +28,7 @@ const Tile = ({ icon, title, description, hasBorder = false }: TilePropsT) => {
           <h3>{title}</h3>
           <p>{description}</p>
         </div>
-        { hasBorder && (<div className={styles.border} />)}
+        {hasBorder && <div className={styles.border} />}
       </div>
     </section>
   );
@@ -77,7 +77,7 @@ const ValueProps = ({ classProp = '' }: ValuePropsPropsT) => {
                 icon={icon}
                 title={title}
                 description={description}
-                hasBorder={i<2}
+                hasBorder={i < 2}
               />
             );
           })}
