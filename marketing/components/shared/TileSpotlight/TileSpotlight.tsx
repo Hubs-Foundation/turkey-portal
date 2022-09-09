@@ -12,6 +12,7 @@ type TileSpotlightPropsT = {
 
 export type TilePropsT = {
   image: StaticImageData;
+  imageAlt: string;
   title: string;
   description: string;
 };
@@ -19,14 +20,14 @@ export type TilePropsT = {
 /**
  * Spotlight Tile
  */
-const Tile = ({ image, title, description }: TilePropsT) => {
+const Tile = ({ image, imageAlt, title, description }: TilePropsT) => {
   return (
     <section className={styles.tile_wrapper}>
       <div className={styles.tile_container}>
         <div className={styles.tile_image}>
           <Image
             src={image}
-            alt={title}
+            alt={imageAlt ? imageAlt : title}
             layout="fill"
             objectFit="cover"
             objectPosition="center"
