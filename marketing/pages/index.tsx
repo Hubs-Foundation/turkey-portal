@@ -6,7 +6,9 @@ import FiftyFifty, { FiftyFiftyLayoutE } from '@Shared/FiftyFifty/FiftyFifty';
 import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
 import TitleDescription from '@Shared/TitleDescription/TitleDescription';
 import Subscribe from '@Shared/Subscribe/Subscribe';
-import ValueProps from '@Shared/ValueProps/ValueProps';
+import ValueProps, {
+  TilePropsT as ValuePropsT,
+} from '@Shared/ValueProps/ValueProps';
 
 import { useMobileDown } from 'hooks/useMediaQuery';
 
@@ -15,6 +17,7 @@ const Home: NextPage = () => {
 
   /**
    * Tile Data
+   * TODO - this will eventually come from a CMS
    */
   const tiles = useMemo(() => {
     const data: TilePropsT[] = [
@@ -35,6 +38,34 @@ const Home: NextPage = () => {
         title: 'Tile Three',
         description:
           'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space - the volume changes based on how close or far away you are.',
+      },
+    ];
+    return data;
+  }, []);
+
+  /**
+   * Value Props Data
+   * TODO - this will eventually come from a CMS
+   */
+  const values = useMemo(() => {
+    const data: ValuePropsT[] = [
+      {
+        icon: 'shield',
+        title: 'Private by design',
+        description:
+          'Your Hubs spaces are private by design and discoverable only to people you share the link with.',
+      },
+      {
+        icon: 'cross-device',
+        title: 'Works across devices',
+        description:
+          'Guests can join from most devices with a modern browser - desktop computers, mobile devices, and VR headsets. No downloads required.',
+      },
+      {
+        icon: 'code',
+        title: 'Open Source  ',
+        description:
+          'Hubs is built in the open, check out our source code here',
       },
     ];
     return data;
@@ -70,7 +101,7 @@ const Home: NextPage = () => {
           "
         />
 
-        <ValueProps />
+        <ValueProps values={values} />
 
         <Subscribe />
 

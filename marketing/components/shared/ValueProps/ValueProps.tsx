@@ -3,10 +3,11 @@ import styles from './ValueProps.module.scss';
 import { Icon, IconT } from '@mozilla/lilypad';
 
 type ValuePropsPropsT = {
+  values: TilePropsT[];
   classProp?: string;
 };
 
-type TilePropsT = {
+export type TilePropsT = {
   icon: IconT;
   title: string;
   description: string;
@@ -34,34 +35,7 @@ const Tile = ({ icon, title, description, hasBorder = false }: TilePropsT) => {
   );
 };
 
-const ValueProps = ({ classProp = '' }: ValuePropsPropsT) => {
-  /**
-   * Value Data
-   */
-  const values = useMemo(() => {
-    const data: TilePropsT[] = [
-      {
-        icon: 'shield',
-        title: 'Private by design',
-        description:
-          'Your Hubs spaces are private by design and discoverable only to people you share the link with.',
-      },
-      {
-        icon: 'cross-device',
-        title: 'Works across devices',
-        description:
-          'Guests can join from most devices with a modern browser - desktop computers, mobile devices, and VR headsets. No downloads required.',
-      },
-      {
-        icon: 'code',
-        title: 'Open Source  ',
-        description:
-          'Hubs is built in the open, check out our source code here',
-      },
-    ];
-    return data;
-  }, []);
-
+const ValueProps = ({ values, classProp = '' }: ValuePropsPropsT) => {
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.container}>

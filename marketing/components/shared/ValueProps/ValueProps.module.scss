@@ -11,7 +11,6 @@
   max-width: $container-max-width;
 }
 
-
 .header {
   color: $color-text-main;
   text-align: center;
@@ -58,18 +57,8 @@
   }
 
   &_icon {
-   display: flex;
-   justify-content: center;
-  }
-
-  &_bar {
-    /* LIGHT/Brand/ducks-beak */
-    // TODO get CSS VAR for this color.
-    background: #ff806f;
-    width: 82px;
-    padding: 4px;
-    border-radius: 100px;
-    margin-bottom: 12px;
+    display: flex;
+    justify-content: center;
   }
 
   &_content {
