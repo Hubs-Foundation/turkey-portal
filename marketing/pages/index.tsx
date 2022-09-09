@@ -6,6 +6,11 @@ import FiftyFifty, { FiftyFiftyLayoutE } from '@Shared/FiftyFifty/FiftyFifty';
 import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
 import TitleDescription from '@Shared/TitleDescription/TitleDescription';
 import Subscribe from '@Shared/Subscribe/Subscribe';
+import SpatialAudio from '../public/spatial_audio.jpg';
+import Import3dModel from '../public/import_3d_models.jpg';
+import Mock from '../public/mock_fiftyfifty.jpg';
+import HubsMobileHero from '../public/hubs_hero_mobile.jpg';
+import HubsHero from '../public/hubs_hero.jpg';
 
 import { useMobileDown } from 'hooks/useMediaQuery';
 
@@ -17,19 +22,19 @@ const Home: NextPage = () => {
   const tiles = useMemo(() => {
     const data: TilePropsT[] = [
       {
-        image: '/mock_fiftyfifty.jpg',
-        title: 'Tile One',
+        image: SpatialAudio,
+        title: 'Spatial Audio',
         description:
           'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space - the volume changes based on how close or far away you are.',
       },
       {
-        image: '/mock_fiftyfifty.jpg',
-        title: 'Tile Two',
+        image: Import3dModel,
+        title: 'Media Sharing',
         description:
-          'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space - the volume changes based on how close or far away you are.',
+          'Import media from across the web. Have fun sharing 3D models, pdfs, images, gifs, videos and audio with your guests.',
       },
       {
-        image: '/mock_fiftyfifty.jpg',
+        image: Mock,
         title: 'Tile Three',
         description:
           'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space - the volume changes based on how close or far away you are.',
@@ -48,11 +53,12 @@ const Home: NextPage = () => {
 
       <main>
         <Hero
-          background={isMobile ? '/HubsHeroMobile.png' : '/HubsHero.png'}
+          background={isMobile ? HubsMobileHero : HubsHero}
           title="A whole new world, from the comfort of your home"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
           cta="Get Started"
           ctaLink="/#subscribe-hook"
+          heroAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
         />
 
         <TitleDescription
