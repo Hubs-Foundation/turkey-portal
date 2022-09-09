@@ -13,7 +13,7 @@ import {
   Dropdown,
   dropdownT,
 } from '@mozilla/lilypad';
-import { HUB_ROOT_DOMAIN, ACCOUNT_ROOT_DOMAIN } from 'config';
+import { HUB_ROOT_DOMAIN, FXA_SERVER } from 'config';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -37,7 +37,7 @@ const MainNav = ({
   }, [router]);
 
   const onManageAccountClick = useCallback(() => {
-    window.open(`https://accounts.${ACCOUNT_ROOT_DOMAIN}/settings`);
+    window.open(`https://accounts.${FXA_SERVER}/settings`);
   }, []);
 
   /**

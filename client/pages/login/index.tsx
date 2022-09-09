@@ -2,7 +2,7 @@ import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
 import { checkLoggedIn } from 'services/routeGuard.service';
 import SubContactCard from '@Cards/SubContactCard/SubContactCard';
-import { API_SERVER } from 'config';
+import { PUBLIC_API_SERVER, AUTH_SERVER } from 'config';
 import SubInfoCard from '@Cards/SubInfoCard/SubInfoCard';
 import styles from './login.module.scss';
 
@@ -21,7 +21,7 @@ const Login = ({}: LoginPropsT) => {
 
   // This looks close enough for now. We still haven't finalized this in MVP2. Probably the main change would be
   // to make auth.myhubs.net configurable with an environment variable. - BP
-  const loginUrl = `https://auth.myhubs.net/login?idp=fxa&client=${API_SERVER}`;
+  const loginUrl = `https://${AUTH_SERVER}/login?idp=fxa&client=${PUBLIC_API_SERVER}`;
 
   return (
     <div className="page_wrapper">

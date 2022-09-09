@@ -1,6 +1,6 @@
-import React from 'react';
 import styles from './SubscriptionModal.module.scss';
 import { Icon, Button, ButtonCategoriesE } from '@mozilla/lilypad';
+import { AUTH_SERVER } from 'config';
 
 type SubscriptionModalT = {
   subdomain: string;
@@ -18,6 +18,7 @@ const SubscriptionModal = ({
   const handleCloseClick = () => {
     onClose && onClose();
   };
+
 
   return (
     <div className={classProp}>
@@ -66,6 +67,8 @@ const SubscriptionModal = ({
             category={ButtonCategoriesE.PRIMARY_SOLID}
             classProp="margin-bottom-24-mobile"
             text="Continue to Firefox Account"
+            href={`https://${AUTH_SERVER}/settings`}
+            target="_blank"
           />
         </div>
       </div>
