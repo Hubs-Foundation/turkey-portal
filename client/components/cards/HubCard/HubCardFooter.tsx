@@ -23,6 +23,21 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
   }, [currentStorageMb, storageLimitMb]);
 
   /**
+   * Round number to 2 dec
+   * @param num
+   * @returns num | string
+   */
+  const round = (num: number | null): number | string => {
+    if (num == null) return 'Error';
+
+    // TODO - In the future, I guess we'd use i18n routing and useRouter to get the current
+    // locale, but for now default to "en-US".
+    return new Intl.NumberFormat('en-US', {
+      maximumFractionDigits: 2,
+    }).format(num);
+  };
+
+  /**
    * Watch Storage Percentage
    */
   useEffect(() => {
@@ -55,7 +70,7 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
           <div
             className={`margin-bottom-12 ${styles['status_' + storageState]}`}
           >
-            <span className="u-color-text-main">{currentStorageMb}</span>
+            <span className="u-color-text-main">{round(currentStorageMb)}</span>
             <span>/{storageLimitMb} MB</span>
           </div>
           <div className="flex-justify-center">
