@@ -1,16 +1,17 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import styles from './Hero.module.scss';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 
 type HeroPropsT = {
-  background: string;
+  background: StaticImageData;
   title?: string;
   body?: string;
   cta?: string;
   ctaClick?: Function;
   ctaLink?: string;
+  heroAlt?: string;
   classProp?: string;
 };
 
@@ -21,6 +22,7 @@ const Hero = ({
   cta,
   ctaClick,
   ctaLink = '#',
+  heroAlt = 'hero image',
   classProp = '',
 }: HeroPropsT) => {
   const router = useRouter();
@@ -35,7 +37,7 @@ const Hero = ({
       <div className={styles.container}>
         <Image
           src={background}
-          alt="hero image"
+          alt={heroAlt}
           layout="fill"
           objectFit="cover"
           objectPosition="center"

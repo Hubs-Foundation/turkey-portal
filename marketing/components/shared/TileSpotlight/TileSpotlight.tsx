@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import styles from './TileSpotlight.module.scss';
 import bubbleTop from '../../../public/bubble-top.png';
 import bubbleBottom from '../../../public/bubble-bottom.png';
@@ -11,7 +11,7 @@ type TileSpotlightPropsT = {
 };
 
 export type TilePropsT = {
-  image: string;
+  image: StaticImageData;
   title: string;
   description: string;
 };
@@ -26,7 +26,7 @@ const Tile = ({ image, title, description }: TilePropsT) => {
         <div className={styles.tile_image}>
           <Image
             src={image}
-            alt="tile featured image"
+            alt={title}
             layout="fill"
             objectFit="cover"
             objectPosition="center"
