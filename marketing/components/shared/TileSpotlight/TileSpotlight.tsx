@@ -12,7 +12,7 @@ type TileSpotlightPropsT = {
 
 export type TilePropsT = {
   image: StaticImageData;
-  imageAlt: string;
+  imageAlt?: string;
   title: string;
   description: string;
 };

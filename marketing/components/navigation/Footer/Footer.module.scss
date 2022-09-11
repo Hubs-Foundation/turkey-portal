@@ -1,5 +1,10 @@
 @use 'styles/boilerplate' as *;
 
+.wrapper {
+  background-color: $color-neutral-0-reverse;
+  padding: 48px;
+}
+
 .logo {
   @include secondary-font();
   @include font-size(39);
@@ -9,5 +14,49 @@
   &_wrapper {
     display: flex;
     align-items: center;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+
+  h3 {
+    @include font-size(24);
+    @include secondary-font();
+    line-height: 36px;
+    color: $color-text-reverse;
+    margin: 0
+  }
+
+  &_content {
+    text-align: center;
+    margin-left: 24px;
+  }
+}
+
+.link {
+  @include primary-font(500);
+  @include font-size(16);
+  color: $color-text-reverse;
+  line-height: 24px;
+  text-decoration-line: underline;
+}
+
+.border {
+  background: $gradient-cool;
+  padding: 2px;
+  border-radius: 20px;
+}
+
+.submenu {
+  &_wrapper {
+    padding-top: 72px;
+    display: flex;
+    justify-content: space-between;
+
+    .link {
+      margin-right: 50px;
+    }
   }
 }
