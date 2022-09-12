@@ -19,7 +19,6 @@ const SubscriptionModal = ({
     onClose && onClose();
   };
 
-
   return (
     <div className={classProp}>
       {/* HEADER  */}
