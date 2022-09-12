@@ -17,7 +17,7 @@ export type TilePropsT = {
 /**
  * Value Tile
  */
-const Tile = ({ icon, title, description, hasBorder = false }: TilePropsT) => {
+const Tile = ({ icon, title, description }: TilePropsT) => {
   return (
     <section className={styles.tile_wrapper}>
       <div className={styles.tile_container}>
@@ -29,7 +29,7 @@ const Tile = ({ icon, title, description, hasBorder = false }: TilePropsT) => {
           <h3>{title}</h3>
           <p>{description}</p>
         </div>
-        {hasBorder && <div className={styles.border} />}
+        <div className={styles.border} />
       </div>
     </section>
   );
@@ -51,7 +51,6 @@ const ValueProps = ({ values, classProp = '' }: ValuePropsPropsT) => {
                 icon={icon}
                 title={title}
                 description={description}
-                hasBorder={i < 2}
               />
             );
           })}
