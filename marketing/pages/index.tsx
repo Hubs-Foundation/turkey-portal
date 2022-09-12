@@ -111,17 +111,17 @@ const Home: NextPage = () => {
 
         <Subscribe />
 
-        <FiftyFifty
+        {/* <FiftyFifty
           image="/mock_fiftyfifty.jpg"
           imageAlt="TODO alt text for image"
           title="Customizable"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
-        />
+        /> */}
 
         {/* NOTE: this is a mock placement to get the scroll to working.  */}
         <div id="subscribe-hook"></div>
 
-        <FiftyFifty
+        {/* <FiftyFifty
           image="/mock_fiftyfifty.jpg"
           imageAlt="TODO alt text for image"
           layout={FiftyFiftyLayoutE.RIGHT}
@@ -133,8 +133,9 @@ const Home: NextPage = () => {
           image="/mock_fiftyfifty.jpg"
           imageAlt="TODO alt text for image"
           title="Customizable"
-          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
+          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. " 
         />
+        */}
       </main>
     </div>
   );

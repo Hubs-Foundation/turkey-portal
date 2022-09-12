@@ -3,30 +3,53 @@
 .wrapper {
   background-color: $color-neutral-0-reverse;
   padding: 48px;
+  display: flex;
+  justify-content: center;
+
+  @include desktop-down {
+    padding: 64px 38px;
+  }
+}
+
+.container {
+  width: 100%;
+  max-width: $container-max-width;
+
+  @include desktop-down {
+    max-width: 284px;
+  }
 }
 
 .logo {
-  @include secondary-font();
-  @include font-size(39);
-  color: #000;
-  margin-right: 8px;
-
-  &_wrapper {
+  margin-bottom: 10px;
+  @include desktop-down {
+    width: 100%;
     display: flex;
-    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
   }
 }
 
 .header {
   display: flex;
   justify-content: center;
+  margin-bottom: 44px;
+
+  @include desktop-down {
+    flex-direction: column;
+  }
 
   h3 {
     @include font-size(24);
     @include secondary-font();
     line-height: 36px;
     color: $color-text-reverse;
-    margin: 0
+    margin: 0;
+
+    @include desktop-down {
+      line-height: 24px;
+      @include font-size(16);
+    }
   }
 
   &_content {
@@ -36,11 +59,54 @@
 }
 
 .link {
+  @include body-md();
+  color: $color-text-reverse;
+  margin-bottom: 12px;
+
+  @include desktop-down {
+    margin-bottom: 4px;
+  }
+
+  &_block {
+    display: flex;
+    flex-direction: column;
+
+    @include desktop-down {
+      text-align: center;
+      width: 100%;
+      margin-bottom: 52px;
+    }
+
+    &s {
+      margin-bottom: 52px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      @include desktop-down {
+        flex-direction: column;
+        margin-bottom: 0;
+      }
+    }
+
+    h4 {
+      @include h4;
+      margin: 4px 0 14px;
+      color: $color-text-reverse;
+    }
+  }
+}
+
+.legacy_link {
   @include primary-font(500);
   @include font-size(16);
-  color: $color-text-reverse;
+  color: #2f80ed;
   line-height: 24px;
   text-decoration-line: underline;
+
+  @include desktop-down {
+    @include font-size(12);
+  }
 }
 
 .border {
@@ -55,8 +121,32 @@
     display: flex;
     justify-content: space-between;
 
-    .link {
-      margin-right: 50px;
+    @include desktop-down {
+      padding-top: 24px;
+      flex-direction: column;
+      text-align: center;
+
+    }
+  }
+
+  &_link {
+    @include primary-font(500);
+    @include font-size(16);
+    color: $color-text-reverse;
+    line-height: 24px;
+    text-decoration-line: underline;
+    margin-right: 50px;
+
+    @include desktop-down {
+      margin: 8px;
+    }
+
+    &s {
+      @include desktop-down {
+        margin-bottom: 44px;
+        display: flex;
+        justify-content: space-between;
+      }
     }
   }
 }

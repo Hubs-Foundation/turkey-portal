@@ -27,15 +27,16 @@ const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
     // Hard coding light for deving
     // <main data-theme={themeContext.theme}>
     <main data-theme="light">
-      {/* <MainNav MobileMenuClick={toggleMobileNav} />
+      <MainNav MobileMenuClick={toggleMobileNav} />
       {!tabletUp && (
         <MobileSideNav
           MobileMenuClick={toggleMobileNav}
           isOpen={isMobileMenuOpen}
         />
-      )} */}
-       <Footer />
+      )}
       {children}
+      <Footer />
+
      
     </main>
   );

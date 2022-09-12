@@ -1,10 +1,20 @@
 @use 'styles/boilerplate' as *;
 
 .logo {
-  @include secondary-font();
-  @include font-size(39);
-  color: $color-text-main;
-  margin-right: 8px;
+  &_dark,
+  &_light {
+    @include secondary-font();
+    @include font-size(37);
+    margin-right: 8px;
+  }
+
+  &_dark {
+    color: $color-text-reverse;
+  }
+
+  &_light {
+    color: $color-text-main;
+  }
 
   &_wrapper {
     display: flex;
