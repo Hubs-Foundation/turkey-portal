@@ -5,6 +5,8 @@ import { logOut } from 'services/account.service';
 import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
 import BlobIcon from '@Logos/BlobIcon/BlobIcon';
+import { RoutesE } from 'types/Routes';
+
 import {
   Button,
   Avatar,
@@ -13,7 +15,7 @@ import {
   Dropdown,
   dropdownT,
 } from '@mozilla/lilypad';
-import { HUB_ROOT_DOMAIN, FXA_SERVER } from 'config';
+import { AUTH_SERVER, FXA_SERVER } from 'config';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -32,12 +34,12 @@ const MainNav = ({
     dropdownRef.current?.closeDropdown();
     await logOut();
     router.push({
-      pathname: '/subscribe',
+      pathname: RoutesE.Login,
     });
   }, [router]);
 
   const onManageAccountClick = useCallback(() => {
-    window.open(`https://accounts.${FXA_SERVER}/settings`);
+    window.open(`https://${FXA_SERVER}/settings`);
   }, []);
 
   /**
@@ -159,7 +161,7 @@ const MainNav = ({
             <Button
               category={ButtonCategoriesE.SECONDARY_OUTLINE}
               text="Sign In"
-              href={`https://auth.myhubs.net/login?idp=fxa&client=https://dashboardclient.${HUB_ROOT_DOMAIN}`}
+              href={`https://${AUTH_SERVER}/login?idp=fxa&client=${window.location.origin}`}
             />
           )}
         </div>

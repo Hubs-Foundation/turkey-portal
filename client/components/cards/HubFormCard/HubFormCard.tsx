@@ -8,7 +8,6 @@ import {
   ButtonSizesE,
   Icon,
   Input,
-  InputIconColorE,
 } from '@mozilla/lilypad';
 // import Input from '@Shared/Input/Input';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
@@ -48,6 +47,7 @@ const HubFormCard = ({
   const [isEditingDomain, setIsEditingDomain] = useState(false);
 
   const router = useRouter();
+  // TODO - react hook form is always saying inputs are valid when they are not
   const {
     control,
     handleSubmit,
@@ -246,11 +246,11 @@ const HubFormCard = ({
             </div>
 
             {/* Note: this error messaging is specific to domain serverside validation  */}
-            {!isValidDomain && (
+            {!isValidDomain && domainValidationError.length ? (
               <div className={styles.error_message}>
                 Please enter another address, the {domainValidationError}.
               </div>
-            )}
+            ) : null}
           </div>
 
           <div className={styles.actions_wrapper}>
