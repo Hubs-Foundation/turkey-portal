@@ -12,9 +12,11 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
   const config = headers ? contextHeaders : credentials;
 
   try {
-    return axios.get(`${PUBLIC_API_SERVER}${API_PATH}`, config).then((response) => {
-      return response.data;
-    });
+    return axios
+      .get(`${PUBLIC_API_SERVER}${API_PATH}`, config)
+      .then((response) => {
+        return response.data;
+      });
   } catch (error) {
     // TODO: Make game plan for error handling
     console.error('Error', error);

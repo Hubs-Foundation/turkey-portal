@@ -6,5 +6,5 @@ export enum RoutesE {
   Login = '/login',
   Dashboard = '/dashboard',
   Hubs = '/hubs',
-  Subscribe = '/subscribe'
+  Subscribe = '/subscribe',
 }

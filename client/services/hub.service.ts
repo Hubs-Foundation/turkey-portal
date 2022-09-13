@@ -28,7 +28,9 @@ export const getHubs = async () => {
 export const getHub = async (hubId: string) => {
   try {
     return axios
-      .get(`${PUBLIC_API_SERVER}${API_PATH}/${hubId}`, { withCredentials: true })
+      .get(`${PUBLIC_API_SERVER}${API_PATH}/${hubId}`, {
+        withCredentials: true,
+      })
       .then((response) => {
         return response.data;
       });

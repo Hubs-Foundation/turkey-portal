@@ -12,7 +12,7 @@ export function requireAuthentication(gssp: Function): GetServerSideProps {
       // TODO : MAYBE - Should we make a more explicit way to confirm a JWT here..
 
       // TODO we need to check the account data here and see
-      // if the user has any subscriptions... if not send them to subscribe page. 
+      // if the user has any subscriptions... if not send them to subscribe page.
       await getAccount(req.headers as AxiosRequestHeaders);
       return await gssp(context);
     } catch (error) {
