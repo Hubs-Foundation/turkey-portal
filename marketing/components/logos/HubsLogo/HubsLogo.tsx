@@ -11,7 +11,10 @@ type HubsLogoPropsT = {
   classProp?: string;
 };
 
-const HubsLogo = ({ category = LogoCategoryE.LIGHT, classProp = '' }: HubsLogoPropsT) => {
+const HubsLogo = ({
+  category = LogoCategoryE.LIGHT,
+  classProp = '',
+}: HubsLogoPropsT) => {
   return (
     <div className={`${styles.logo_wrapper} ${classProp}`}>
       <div className={styles[`logo_${category}`]}>hubs</div>

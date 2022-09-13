@@ -21,11 +21,15 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
       <div className={styles.container}>
         {/* HEADER  */}
         <div className={styles.header}>
-          <Image src={hubDuck}   width={isDesktopDown ? 60 : 100}
-                height={isDesktopDown ? 60 : 100}/>
+          <Image
+            src={hubDuck}
+            width={isDesktopDown ? 60 : 100}
+            height={isDesktopDown ? 60 : 100}
+            alt="Hub Yellow Duck"
+          />
           <div className={styles.header_content}>
-            <h3>Looking for your legacy rooms?</h3>
-            {/* TODO - get link  */}
+            <h4>Looking for your old rooms?</h4>
+            {/* TODO - GET THIS LINK!!  */}
             <a className={styles.legacy_link} href="#">
               visit legacy/former hubs.mozilla.com site
             </a>
@@ -40,13 +44,28 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
               <HubsLogo category={LogoCategoryE.DARK} />
             </div>
 
-            <a href="#" className={styles.link}>
+            <a
+              target="_blanks"
+              rel="noreferrer"
+              href="https://discord.gg/sBMqSjCndj"
+              className={styles.link}
+            >
               Join Our Discored
             </a>
-            <a href="#" className={styles.link}>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://github.com/mozilla/hubs/"
+              className={styles.link}
+            >
               Contribute to Our Code
             </a>
-            <a href="#" className={styles.link}>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://hubs.mozilla.com/whats-new"
+              className={styles.link}
+            >
               Latest News
             </a>
           </div>
@@ -54,13 +73,28 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
           {/* RESOURCES  */}
           <div className={styles.link_block}>
             <h4>Resources</h4>
-            <a href="#" className={styles.link}>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://mozilla.github.io/hackweek-avatar-maker/"
+              className={styles.link}
+            >
               Avatar Maker
             </a>
-            <a href="#" className={styles.link}>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://hubs.mozilla.com/labs/"
+              className={styles.link}
+            >
               Creator Labs
             </a>
-            <a href="#" className={styles.link}>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://hubs.mozilla.com/spoke/"
+              className={styles.link}
+            >
               Spoke
             </a>
           </div>
@@ -68,10 +102,20 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
           {/* SUPPORT  */}
           <div className={styles.link_block}>
             <h4>Support</h4>
-            <a href="#" className={styles.link}>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://hubs.mozilla.com/docs/welcome.html"
+              className={styles.link}
+            >
               Checkout Out Our Guides
             </a>
-            <a href="#" className={styles.link}>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://hubs.mozilla.com/docs/hubs-faq.html"
+              className={styles.link}
+            >
               FAQ
             </a>
           </div>
@@ -79,10 +123,20 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
           {/* MORE  */}
           <div className={styles.link_block}>
             <h4>More</h4>
-            <a href="#" className={styles.link}>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://hubs.mozilla.com/cloud/"
+              className={styles.link}
+            >
               Hubs Cloud
             </a>
-            <a href="#" className={styles.link}>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://mozillamr.myspreadshop.com/"
+              className={styles.link}
+            >
               Hubs Merch
             </a>
           </div>
@@ -93,26 +147,54 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
               Follow @MozillaHubs
             </div>
             <div className="flex-justify-between margin-top-20">
-              <Image
-                width={isDesktopDown ? 36 : ''}
-                height={isDesktopDown ? 36 : ''}
-                src={discord}
-              />
-              <Image
-                width={isDesktopDown ? 36 : ''}
-                height={isDesktopDown ? 36 : ''}
-                src={twitter}
-              />
-              <Image
-                width={isDesktopDown ? 36 : ''}
-                height={isDesktopDown ? 36 : ''}
-                src={youtube}
-              />
-              <Image
-                width={isDesktopDown ? 36 : ''}
-                height={isDesktopDown ? 36 : ''}
-                src={twitch}
-              />
+              <a
+                target="_blanks"
+                rel="noreferrer"
+                href="https://discord.gg/sBMqSjCndj"
+              >
+                <Image
+                  width={isDesktopDown ? 36 : ''}
+                  height={isDesktopDown ? 36 : ''}
+                  src={discord}
+                  alt="discord"
+                />
+              </a>
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://twitter.com/MozillaHubs"
+              >
+                <Image
+                  width={isDesktopDown ? 36 : ''}
+                  height={isDesktopDown ? 36 : ''}
+                  src={twitter}
+                  alt="twitter"
+                />
+              </a>
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://www.youtube.com/c/MozillaHubs"
+              >
+                <Image
+                  width={isDesktopDown ? 36 : ''}
+                  height={isDesktopDown ? 36 : ''}
+                  src={youtube}
+                  alt="youtube"
+                />
+              </a>
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://www.twitch.tv/mozillahubs"
+              >
+                <Image
+                  width={isDesktopDown ? 36 : ''}
+                  height={isDesktopDown ? 36 : ''}
+                  src={twitch}
+                  alt="twitch"
+                />
+              </a>
             </div>
           </div>
         </div>
@@ -122,10 +204,18 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
         {/* LINKS  */}
         <div className={styles.submenu_wrapper}>
           <div className={styles.submenu_links}>
-            <a className={styles.submenu_link} href="#">
+            <a
+              target="_blanks"
+              className={styles.submenu_link}
+              href="https://www.mozilla.org/en-US/privacy/hubs/"
+            >
               Privacy Policy
             </a>
-            <a className={styles.submenu_link} href="#">
+            <a
+              target="_blanks"
+              className={styles.submenu_link}
+              href="https://www.mozilla.org/en-US/about/legal/terms/hubs/"
+            >
               Turms of Use
             </a>
           </div>

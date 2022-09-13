@@ -39,15 +39,14 @@
     flex-direction: column;
   }
 
-  h3 {
-    @include font-size(24);
-    @include secondary-font();
-    line-height: 36px;
+  h4 {
+    @include h4;
     color: $color-text-reverse;
-    margin: 0;
+    margin: 0 0 10px;
 
     @include desktop-down {
       line-height: 24px;
+      margin: 0;
       @include font-size(16);
     }
   }
@@ -55,6 +54,7 @@
   &_content {
     text-align: center;
     margin-left: 24px;
+    padding-top: 4px;
   }
 }
 
@@ -63,6 +63,9 @@
   color: $color-text-reverse;
   margin-bottom: 12px;
 
+  &:hover {
+  }
+
   @include desktop-down {
     margin-bottom: 4px;
   }
@@ -70,6 +73,10 @@
   &_block {
     display: flex;
     flex-direction: column;
+
+    a:hover {
+      opacity: 0.8;
+    }
 
     @include desktop-down {
       text-align: center;
@@ -121,11 +128,14 @@
     display: flex;
     justify-content: space-between;
 
+    a:hover {
+      opacity: 0.8;
+    }
+
     @include desktop-down {
       padding-top: 24px;
       flex-direction: column;
       text-align: center;
-
     }
   }
 

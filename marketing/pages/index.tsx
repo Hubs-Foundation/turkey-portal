@@ -88,7 +88,7 @@ const Home: NextPage = () => {
         <Hero
           background={isMobile ? HubsMobileHero : HubsHero}
           title="A whole new world, from the comfort of your home"
-          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+          body="Take control of your online communities with a fully open source virtual world platform that you can make your own"
           cta="Get Started"
           ctaLink="/#subscribe-hook"
           heroAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
