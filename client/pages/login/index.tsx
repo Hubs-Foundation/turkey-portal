@@ -26,7 +26,10 @@ const Login = ({}: LoginPropsT) => {
           <div className={styles.header}>
             <div className={styles.cards}>
               <SubInfoCard />
-              <SubContactCard />
+              <SubContactCard
+                email="hubs@mozilla.com"
+                subject="Subscription inquiries"
+              />
             </div>
           </div>
         </div>
