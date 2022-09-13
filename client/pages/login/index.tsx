@@ -5,13 +5,6 @@ import SubContactCard from '@Cards/SubContactCard/SubContactCard';
 import SubInfoCard from '@Cards/SubInfoCard/SubInfoCard';
 import styles from './login.module.scss';
 
-/**
- *
- * Note :  THIS PAGE IS NOT BEING USED. THIS PAGE SHOULD NOT BE SHOWN TO THE USER
- * IN THE CURRENT WORK FLOW - NG
- *
- */
-
 type LoginPropsT = {};
 
 const Login = ({}: LoginPropsT) => {

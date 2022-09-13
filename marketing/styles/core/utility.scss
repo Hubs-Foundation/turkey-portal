@@ -1,5 +1,6 @@
 @use '../tools/media-queries.scss' as *;
 @use '../tools/mixins.scss' as *;
+@use '../core/variables.scss' as *;
 
 // ---------------------------------
 //   Quick Typograpjhy
@@ -22,6 +23,14 @@
 
 .u-capitalize {
   text-transform: capitalize;
+}
+
+.u-body-md {
+  @include body-md();
+}
+
+.u-body-md-bold {
+  @include body-md-bold();
 }
 
 // ---------------------------------

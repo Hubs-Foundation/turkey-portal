@@ -29,8 +29,12 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
    */
   const round = (num: number | null): number | string => {
     if (num == null) return 'Error';
-    const _num = Number((Math.abs(num) * 100).toPrecision(15));
-    return (Math.round(_num) / 100) * Math.sign(num);
+
+    // TODO - In the future, I guess we'd use i18n routing and useRouter to get the current
+    // locale, but for now default to "en-US".
+    return new Intl.NumberFormat('en-US', {
+      maximumFractionDigits: 2,
+    }).format(num);
   };
 
   /**

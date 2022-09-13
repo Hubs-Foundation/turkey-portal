@@ -19,12 +19,12 @@ import { AUTH_SERVER, FXA_SERVER } from 'config';
 
 type MainNavPropsT = {
   classProp?: string;
-  showAccountSection?: boolean;
+  showLoggedOutUi?: boolean;
 };
 
 const MainNav = ({
   classProp = '',
-  showAccountSection = true,
+  showLoggedOutUi = false,
 }: MainNavPropsT) => {
   const account = useSelector(selectAccount);
   const dropdownRef = useRef<dropdownT>(null);
@@ -126,7 +126,7 @@ const MainNav = ({
           </div>
 
           {/* Account information  */}
-          {showAccountSection && (
+          {!showLoggedOutUi && (
             <div className="flex-align-center">
               <Button
                 classProp={styles.exit_button}
@@ -157,7 +157,7 @@ const MainNav = ({
           )}
 
           {/* Login Action  */}
-          {!showAccountSection && (
+          {showLoggedOutUi && (
             <Button
               category={ButtonCategoriesE.SECONDARY_OUTLINE}
               text="Sign In"

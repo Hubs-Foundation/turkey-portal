@@ -1,0 +1,32 @@
+@use 'styles/boilerplate.scss' as *;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px 32px;
+  position: relative;
+}
+
+.container {
+  max-width: $container-max-width;
+}
+
+.header {
+  color: $color-text-main;
+  text-align: center;
+
+  h2 {
+    @include h2;
+    margin: 0 0 16px;
+  }
+
+  p {
+    @include body-md;
+    margin-bottom: 64px;
+    padding: 0;
+
+    @include tablet-down {
+      margin: 0 24px 64px;
+    }
+  }
+}

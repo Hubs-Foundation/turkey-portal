@@ -1,0 +1,83 @@
+@use 'styles/boilerplate.scss' as *;
+
+.wrapper {
+  background-color: $color-background-neutral-0;
+  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.15);
+  border-radius: 20px;
+  width: 415px;
+  color: $color-text-main;
+  padding: 40px;
+  overflow: hidden;
+  position: relative;
+  margin: 0px 17px 24px;
+
+  @include mobile-down {
+    width: 100%;
+    margin: 0px 24px 24px;
+  }
+}
+
+.banner_gradient {
+  padding: 6px;
+  background: $gradient-warm;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.title {
+  @include h2;
+  text-align: center;
+  margin: 0 0 16px;
+}
+
+.price {
+  display: inline-flex;
+  align-items: baseline;
+  margin: 0;
+
+  h2 {
+    @include h2;
+    margin: 0 4px 0 0;
+  }
+
+  p {
+    @include body-md;
+    margin: 0;
+  }
+
+  &_wrapper {
+    background-color: $color-background-subtle-callout;
+    border-radius: 20px;
+    padding: 12px;
+    margin-bottom: 24px;
+  }
+
+  &_container {
+    text-align: center;
+  }
+
+  &_cadence {
+    @include body-md;
+    margin: 0;
+  }
+}
+
+.info {
+  &_wrapper {
+    display: flex;
+
+    p {
+      margin: 0 0 16px;
+    }
+  }
+}
+
+.footer {
+  display: flex;
+
+  button {
+    flex-grow: 1;
+  }
+}

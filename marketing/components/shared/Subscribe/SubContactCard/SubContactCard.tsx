@@ -2,20 +2,10 @@ import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 import styles from './SubContactCard.module.scss';
 
 type SubContactCardPropsT = {
-  email: string;
-  subject: string;
   classProp?: string;
 };
 
-const SubContactCard = ({
-  email,
-  subject,
-  classProp = '',
-}: SubContactCardPropsT) => {
-  const handleContactClick = () => {
-    window.open(`mailto:${email}?subject=${encodeURI(subject)}`);
-  };
-
+const SubContactCard = ({ classProp = '' }: SubContactCardPropsT) => {
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
       <div className={styles.content}>
@@ -23,7 +13,7 @@ const SubContactCard = ({
         <p>Need dedicated infrastructure, custom clients, or something else?</p>
         <Button
           text="Contact us"
-          onClick={handleContactClick}
+          href="mailto:hubs@mozilla.com?subject=Subscription inquiries"
           category={ButtonCategoriesE.SECONDARY_SOLID}
         />
       </div>
