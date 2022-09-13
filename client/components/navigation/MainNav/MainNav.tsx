@@ -4,7 +4,6 @@ import styles from './MainNav.module.scss';
 import { logOut } from 'services/account.service';
 import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
-import ExternalLink from '@Shared/ExternalLink/ExternalLink';
 import BlobIcon from '@Logos/BlobIcon/BlobIcon';
 import {
   Button,
@@ -14,35 +13,41 @@ import {
   Dropdown,
   dropdownT,
 } from '@mozilla/lilypad';
+import { AUTH_SERVER_URL, HUB_ROOT_DOMAIN, PUBLIC_NODE_SERVER } from 'config';
 
 type MainNavPropsT = {
   classProp?: string;
-  MobileMenuClick: Function;
+  showLoggedOutUi?: boolean;
 };
 
-const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
+const MainNav = ({
+  classProp = '',
+  showLoggedOutUi = false,
+}: MainNavPropsT) => {
   const account = useSelector(selectAccount);
   const dropdownRef = useRef<dropdownT>(null);
   const router = useRouter();
 
   const onLogOutClick = useCallback(async () => {
     dropdownRef.current?.closeDropdown();
-    await logOut();
+    try {
+      await logOut();
+    } catch {
+      console.error('Error: issue logging out');
+    }
+
     router.push({
-      pathname: '/login',
+      pathname: '/subscribe',
     });
   }, [router]);
 
   const onManageAccountClick = useCallback(() => {
     // TODO set up variables to get correct FX account link
-  },[])
+  }, []);
 
-  /**
-   * Handle Menu Click
-   */
-  const handleMobileMenuClick = useCallback(() => {
-    MobileMenuClick();
-  }, [MobileMenuClick]);
+  const handleSignInClick = useCallback(() => {
+    // TODO - do sign in stuff here
+  }, []);
 
   /**
    * Dropdown Content
@@ -66,31 +71,38 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
 
       {/* Sign Out  */}
       <div className={styles.links}>
-        <a
-          href="#"
-          target="_blank"
+        <button
           className="dropdown-link"
           onClick={() => {
             onManageAccountClick();
           }}
         >
           {/* TODO update icon asset  */}
-          <Icon classProp="margin-right-10" color="currentColor" name="plus-circle" size={24} />
+          <Icon
+            classProp="margin-right-10"
+            color="currentColor"
+            name="fx-account"
+            size={24}
+          />
           Manage Your Firefox Account
-        </a>
+        </button>
 
-        <a
-          href="#"
-          target="_blank"
+        <button
+          aria-label="sign out"
           className="dropdown-link"
           onClick={() => {
             onLogOutClick();
           }}
         >
           {/* TODO update icon asset  */}
-          <Icon classProp="margin-right-10" color="currentColor" name="plus-circle" size={24} />
+          <Icon
+            classProp="margin-right-10"
+            color="currentColor"
+            name="log-out"
+            size={24}
+          />
           Sign Out
-        </a>
+        </button>
       </div>
     </div>
   );
@@ -122,32 +134,43 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
           </div>
 
           {/* Account information  */}
-          <div className="flex-align-center">
-            <Button
-              classProp={styles.exit_button}
-              category={ButtonCategoriesE.SECONDARY_OUTLINE}
-              text="Exit Dashboard"
-            />
+          {!showLoggedOutUi && (
+            <div className="flex-align-center">
+              <Button
+                classProp={styles.exit_button}
+                category={ButtonCategoriesE.SECONDARY_OUTLINE}
+                text="Exit Dashboard"
+              />
 
-            <Dropdown
-              ref={dropdownRef}
-              alignment="right"
-              cta={
-                <div className={styles.main_nav_account}>
-                  {account.profilePic && (
-                    <span className="flex-align-center">
-                      <Avatar
-                        src={account.profilePic}
-                        size={50}
-                        alt="profile picture"
-                      />
-                    </span>
-                  )}
-                </div>
-              }
-              content={DropdownContent}
+              <Dropdown
+                ref={dropdownRef}
+                alignment="right"
+                cta={
+                  <div className={styles.main_nav_account}>
+                    {account.profilePic && (
+                      <span className="flex-align-center">
+                        <Avatar
+                          src={account.profilePic}
+                          size={50}
+                          alt="profile picture"
+                        />
+                      </span>
+                    )}
+                  </div>
+                }
+                content={DropdownContent}
+              />
+            </div>
+          )}
+
+          {/* Login Action  */}
+          {showLoggedOutUi && (
+            <Button
+              category={ButtonCategoriesE.SECONDARY_OUTLINE}
+              text="Sign In"
+              href={`https://${AUTH_SERVER_URL}/login?idp=fxa&client=https://${PUBLIC_NODE_SERVER}`}
             />
-          </div>
+          )}
         </div>
       </div>
     </nav>

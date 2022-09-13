@@ -1,4 +1,4 @@
-@use 'styles/boilerplate'as *;
+@use 'styles/boilerplate' as *;
 
 .wrapper {
   background-color: $color-interaction-menu;
@@ -28,7 +28,7 @@
 
   @include tablet-down {
     flex-direction: column;
-    align-items: flex-start
+    align-items: flex-start;
   }
 
   p {
@@ -39,7 +39,8 @@
     max-width: 790px;
     // padding-bottom: 24px;
 
-    @include tablet-down {}
+    @include tablet-down {
+    }
   }
 }
 

@@ -39,7 +39,7 @@ const CardButton = ({
       {/* Attributes  */}
       <div className={styles.attributes_wrapper}>
         <div className={styles.title}>{title}</div>
-        { description && <div className={styles.description}>{description}</div> }
+        {description && <div className={styles.description}>{description}</div>}
       </div>
 
       {/* Arrow Icon  */}

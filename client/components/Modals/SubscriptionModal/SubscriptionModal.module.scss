@@ -1,4 +1,4 @@
-@use 'styles/boilerplate.scss'as *;
+@use 'styles/boilerplate.scss' as *;
 
 .header {
   display: flex;
@@ -15,7 +15,6 @@
 }
 
 .footer {
-
   &_wrapper {
     display: flex;
     justify-content: flex-end;

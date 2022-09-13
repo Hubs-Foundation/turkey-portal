@@ -10,7 +10,7 @@ import {
 import styles from './Input.module.scss';
 import Icon from '@Shared/Icon/Icon';
 import { InputT } from 'types/Form';
-import { IconT } from 'types/General'
+import { IconT } from 'types/General';
 
 /**
  * Methods available to access the component in the parent component. These would most likley
@@ -25,7 +25,7 @@ export enum InputIconColorE {
   SUCCESS = 'success',
   ERROR = 'error',
   DEFAULT = 'default',
-};
+}
 
 type InputProps = {
   label: string;
@@ -42,8 +42,8 @@ type InputProps = {
   maxLength?: number;
   minLength?: number;
   value: string | number | readonly string[] | undefined;
-  icon?:IconT;
-  iconColor?:InputIconColorE
+  icon?: IconT;
+  iconColor?: InputIconColorE;
 };
 
 const Input = forwardRef(
@@ -64,7 +64,7 @@ const Input = forwardRef(
       minLength,
       value,
       icon,
-      iconColor = InputIconColorE.DEFAULT
+      iconColor = InputIconColorE.DEFAULT,
     }: InputProps,
     ref
   ) => {
@@ -150,10 +150,9 @@ const Input = forwardRef(
           className={icon && styles.has_icon}
         />
 
-        {
-          icon ? <Icon name={icon} classProp={styles['icon_'+ iconColor]}/> : null
-        }
-        
+        {icon ? (
+          <Icon name={icon} classProp={styles['icon_' + iconColor]} />
+        ) : null}
 
         {/* Error Message */}
         {showError ? (

@@ -2,22 +2,24 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First, get an access token to fetch our maintained Lilypad component library on npm, you need to create an access token on github and enable Mozilla organization on the access token.
+
+First, install dependencies in the `/client` directory (this directory), then run the development server. (For now, we use `--legacy-peer-deps` because Storybook requires an older version of react to run).
 
 ```bash
+npm i --legacy-peer-deps
 npm run dev
 ```
 
-Make sure database server is running. See 'README' in root project.
+Then, make sure the Phoenix API server is running on. See [/README.md](/README.md) 'README' in root project.
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+To authenticate using local cookies, see [README.md:"Create a local user"](/README.md#create-a-local-user) to paste development cookies into the browser and create a local user with or without a hubs subscription.
 
 ## Path Alias
 
 To add or edit the import path aliases refer to [tsconfig.json](https://github.com/mozilla/turkey-portal/blob/main/client/tsconfig.json). Remember to update storybook in file [main.js](https://github.com/mozilla/turkey-portal/blob/main/client/.storybook/main.js) in parallel to match the file paths.
-
-
 
 ## Media Queries ( React Hooks )
 

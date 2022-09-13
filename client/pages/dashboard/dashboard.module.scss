@@ -1,6 +1,6 @@
-@use '../../styles/boilerplate.scss'as *;
+@use '../../styles/boilerplate.scss' as *;
 
-.main {
+.hubs_wrapper {
   margin-top: 95px;
   display: flex;
   justify-content: center;
@@ -17,7 +17,6 @@
     margin-top: 0;
     padding: 0;
   }
-  
 }
 
 .cards_wrapper {
@@ -31,6 +30,14 @@
 }
 
 .subcard {
+  &_skeleton {
+    width: 487px;
+    height: 100px;
+
+    @include desktop-large-down {
+      width: 100%;
+    }
+  }
 
   @include desktop-large-down {
     margin-bottom: 24px;

@@ -1,77 +1,43 @@
 import type { NextPage } from 'next';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import Head from 'next/head';
 import Hero from '@Shared/Hero/Hero';
 import FiftyFifty, { FiftyFiftyLayoutE } from '@Shared/FiftyFifty/FiftyFifty';
 import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
-import Tiers, { TierPropsT } from '@Shared/Tiers/Tiers';
+import TitleDescription from '@Shared/TitleDescription/TitleDescription';
+import Subscribe from '@Shared/Subscribe/Subscribe';
+import SpatialAudio from '../public/spatial_audio.jpg';
+import Import3dModel from '../public/import_3d_models.jpg';
+import Mock from '../public/mock_fiftyfifty.jpg';
+import HubsMobileHero from '../public/hubs_hero_mobile.jpg';
+import HubsHero from '../public/hubs_hero.jpg';
+
 import { useMobileDown } from 'hooks/useMediaQuery';
 
-
 const Home: NextPage = () => {
-
   const isMobile = useMobileDown();
-  const onCtaClick = useCallback(() => {
-    console.log('scroll or w.e');
-  }, []);
-
   /**
    * Mock Tile Data
    */
   const tiles = useMemo(() => {
     const data: TilePropsT[] = [
       {
-        image: '/mock_fiftyfifty.jpg',
-        title: 'Tile One',
+        image: SpatialAudio,
+        title: 'Spatial Audio',
+        description:
+          'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space - the volume changes based on how close or far away you are.',
       },
       {
-        image: '/mock_fiftyfifty.jpg',
-        title: 'Tile Two',
+        image: Import3dModel,
+        title: 'Media Sharing',
+        description:
+          'Import media from across the web. Have fun sharing 3D models, pdfs, images, gifs, videos and audio with your guests.',
       },
       {
-        image: '/mock_fiftyfifty.jpg',
+        image: Mock,
         title: 'Tile Three',
-      },
-    ];
-    return data;
-  }, []);
-
-
-  /**
-   * Mock Tier Data
-   */
-  const tiers = useMemo(() => {
-    const data: TierPropsT[] = [
-      {
-        image: '/mock_tier.png',
-        title: 'Free',
-        subtitle: '(Coming Soon)',
-        info: 'Want to be notified when our free offering is available?',
-        link: 'Join the mailing list',
-        linkUrl: '/#',
-        cta: '',
-        ctaUrl: '',
-      },
-      {
-        image: '/mock_tier.png',
-        title: 'Early Access',
-        subtitle: '',
-        info: 'Want to be notified when our free offering is available?',
-        price: '$20',
-        link: '',
-        linkUrl: '',
-        cta: 'Sign in/ Sign up',
-        ctaUrl: '/#',
-      },
-      {
-        image: '/mock_tier.png',
-        title: 'Business',
-        subtitle: '(Coming Soon)',
-        info: 'Want to be notified when our free offering is available?',
-        link: 'Contact Us',
-        linkUrl: '/#',
-        cta: '',
-        ctaUrl: '',
+        description:
+          'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space - the volume changes based on how close or far away you are.',
       },
     ];
     return data;
@@ -87,21 +53,40 @@ const Home: NextPage = () => {
 
       <main>
         <Hero
-          background={ isMobile ?'/HubsHeroMobile.png':'/HubsHero.png'}
+          background={isMobile ? HubsMobileHero : HubsHero}
           title="A whole new world, from the comfort of your home"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
           cta="Get Started"
-          ctaLink='/#subscriptions'
-          ctaClick={onCtaClick}
+          ctaLink="/#subscribe-hook"
+          heroAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
+        />
+
+        <TitleDescription
+          title="We're bringing the best of face-to-face interactions to the web:"
+          description="No more videos in a grid of squares. Connect with your community online in virtual spaces as avatars to communicate more naturally."
         />
 
         <FiftyFifty
           image="/mock_fiftyfifty.jpg"
+          imageAlt="TODO alt text for image"
           title="Customizable"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
         />
+
+        <TileSpotlight
+          tiles={tiles}
+          title="Hubs puts you back in control of your online social spaces"
+          body="Your Hub is the portal to your online community. Create spaces for friends, family, co-workers - the choice is yours. 
+          With a subscription to Hubs, you choose who can access your space and take advantage of all Hubs has to offer.
+          "
+        />
+        <Subscribe />
+        {/* NOTE: this is a mock placement to get the scroll to working.  */}
+        <div id="subscribe-hook"></div>
+
         <FiftyFifty
           image="/mock_fiftyfifty.jpg"
+          imageAlt="TODO alt text for image"
           layout={FiftyFiftyLayoutE.RIGHT}
           title="Customizable"
           subTitle="Hubs is..."
@@ -109,15 +94,10 @@ const Home: NextPage = () => {
         />
         <FiftyFifty
           image="/mock_fiftyfifty.jpg"
+          imageAlt="TODO alt text for image"
           title="Customizable"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
         />
-        <TileSpotlight
-          tiles={tiles}
-          title="The best place(s) to meet"
-          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
-        />
-        <Tiers tiers={tiers}/>
       </main>
     </div>
   );

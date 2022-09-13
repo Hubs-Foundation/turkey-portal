@@ -2,9 +2,9 @@
  * Form Related Types
  */
 
-export type InputT = 'text' | 'password' | 'email' | 'number' | 'tel'
+export type InputT = 'text' | 'password' | 'email' | 'number' | 'tel';
 
-export type ButtonT = 'button' | 'submit' | 'reset'
+export type ButtonT = 'button' | 'submit' | 'reset';
 
 /**
  * Enums are formatted in snake_case so that we can use the mapped

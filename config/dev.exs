@@ -53,7 +53,7 @@ config :dash, DashWeb.Endpoint,
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
-auth_server = "auth.dev.myhubs.net"
+auth_server = "auth.local"
 
 config :dash, Dash.AppConfig,
   host: "dashboard.cluster.turkey.local",

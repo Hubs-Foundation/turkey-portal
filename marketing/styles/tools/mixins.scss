@@ -1,6 +1,6 @@
-@use '../core/variables.scss'as *;
-@use '../tools/media-queries.scss'as *;
-@use '../tools/functions.scss'as *;
+@use '../core/variables.scss' as *;
+@use '../tools/media-queries.scss' as *;
+@use '../tools/functions.scss' as *;
 
 /*-------------------------------
   TYPOGRAPHY STYLES
@@ -35,14 +35,13 @@
 }
 
 @mixin h2 {
-  @include font-size(18);
-  @include primary-font(500);
-  line-height: 27px;
-  letter-spacing: 0;
+  @include font-size(32);
+  @include secondary-font(700);
+  line-height: 41px;
 
-  @include tablet-up {
-    @include font-size(25);
-    line-height: 38px;
+  @include tablet-down {
+    @include font-size(20);
+    line-height: 26px;
   }
 }
 
@@ -79,7 +78,6 @@
   }
 }
 
-
 /*-------------------------------
   BODY STYLES
 -------------------------------*/
@@ -106,6 +104,12 @@
   }
 }
 
+@mixin body-md-bold {
+  @include primary-font(700);
+  @include font-size(16);
+  line-height: 24px;
+}
+
 @mixin body-sm {
   @include font-size(12);
   @include primary-font(400);
@@ -117,6 +121,14 @@
   @include font-size(10);
   @include primary-font(300);
   line-height: 13px;
+}
+
+@mixin navigation-link {
+  @include font-size(16);
+  @include secondary-font(700);
+  color: $color-text-main;
+  padding-bottom: 0;
+  text-decoration: none;
 }
 
 /*-------------------------------

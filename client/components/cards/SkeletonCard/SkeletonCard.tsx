@@ -4,6 +4,7 @@ import styles from './SkeletonCard.module.scss';
 type SkeletonCardPropsT = {
   category: 'square' | 'row';
   qty: number;
+  classProp?: string;
 };
 
 /**
@@ -11,10 +12,14 @@ type SkeletonCardPropsT = {
  * the skeleton cards to build a custom grid of widgets to mimic the actual UI.
  */
 
-const SkeletonCard = ({ category, qty = 1 }: SkeletonCardPropsT) => {
+const SkeletonCard = ({
+  category,
+  qty = 1,
+  classProp = '',
+}: SkeletonCardPropsT) => {
   return (
     <div
-      className={`${styles.card_wrapper} ${
+      className={`${classProp} ${styles.card_wrapper} ${
         category === 'square' ? styles.square_wrapper : styles.row_wrapper
       }`}
     >

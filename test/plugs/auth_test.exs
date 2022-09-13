@@ -21,7 +21,7 @@ defmodule DashWeb.Plugs.AuthTest do
     @invalid_expiration token_expiry: ~N[2000-01-01 00:00:00]
     @without_subscription_claims claims: %{fxa_subscriptions: []}
 
-    test "No JWT token: /api/v1/account responds with 401 with redirect to auth server", %{
+    test "No JWT token: /api/v1/account responds with 401 with redirect to login page", %{
       conn: conn
     } do
       put_keys_for_jwk()
@@ -34,7 +34,7 @@ defmodule DashWeb.Plugs.AuthTest do
       assert response(conn, 401) ==
                Jason.encode!(%{
                  error: "unauthorized",
-                 redirect: Auth.get_auth_url(current_url(conn))
+                 redirect: Auth.get_login_page_path()
                })
     end
 
@@ -67,7 +67,7 @@ defmodule DashWeb.Plugs.AuthTest do
       assert response(conn, 401) ==
                Jason.encode!(%{
                  error: "unauthorized",
-                 redirect: Auth.get_auth_url(current_url(conn))
+                 redirect: Auth.get_login_page_path()
                })
     end
 
@@ -83,7 +83,7 @@ defmodule DashWeb.Plugs.AuthTest do
       assert response(conn, 401) ==
                Jason.encode!(%{
                  error: "unauthorized",
-                 redirect: Auth.get_auth_url(current_url(conn))
+                 redirect: Auth.get_login_page_path()
                })
     end
   end

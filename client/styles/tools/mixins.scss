@@ -36,15 +36,9 @@
 }
 
 @mixin h2 {
-  @include font-size(18);
-  @include primary-font(500);
-  line-height: 27px;
-  letter-spacing: 0;
-
-  @include tablet-up {
-    @include font-size(25);
-    line-height: 38px;
-  }
+  @include secondary-font(700);
+  @include font-size(32);
+  line-height: 41px;
 }
 
 @mixin h3 {
@@ -79,7 +73,6 @@
     line-height: 21px;
   }
 }
-
 
 /*-------------------------------
   BODY STYLES

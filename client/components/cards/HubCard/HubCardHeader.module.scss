@@ -1,7 +1,6 @@
-@use 'styles/boilerplate.scss'as *;
+@use 'styles/boilerplate.scss' as *;
 
 .card {
-
   &_header {
     display: flex;
     justify-content: space-between;

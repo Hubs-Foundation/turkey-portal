@@ -72,7 +72,7 @@ defmodule DashWeb.Plugs.Auth do
     conn
     |> send_resp(
       401,
-      Jason.encode!(get_unauthorized_redirect_struct(conn))
+      Jason.encode!(%{error: "unauthorized", redirect: get_login_page_path()})
     )
     |> halt()
   end
@@ -119,5 +119,10 @@ defmodule DashWeb.Plugs.Auth do
   @pricing_page_path "/subscribe"
   def get_pricing_page_path() do
     @pricing_page_path
+  end
+
+  @login_page_path "/login"
+  def get_login_page_path() do
+    @login_page_path
   end
 end

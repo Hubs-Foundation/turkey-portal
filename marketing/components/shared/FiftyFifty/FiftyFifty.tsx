@@ -8,6 +8,7 @@ export enum FiftyFiftyLayoutE {
 
 type FiftyFiftyPropsT = {
   image: string;
+  imageAlt: string;
   title?: string;
   subTitle?: string;
   body?: string;
@@ -17,6 +18,7 @@ type FiftyFiftyPropsT = {
 
 const FiftyFifty = ({
   image,
+  imageAlt,
   title,
   subTitle,
   body,
@@ -35,7 +37,7 @@ const FiftyFifty = ({
 
         {/* Image  */}
         <div className={styles.image}>
-          <Image width="400" height="400" src={image} />
+          <Image width="400" height="400" src={image} alt={imageAlt} />
         </div>
       </div>
     </section>

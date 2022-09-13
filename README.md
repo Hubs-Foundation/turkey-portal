@@ -14,6 +14,8 @@ asdf will use the versions specified in the `.tool-versions` file. Just run `asd
 - Create and migrate your database with `mix ecto.setup`
 - Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
+## Create a local user
+
 Run the following commands to create a local user and a test hub:
 
 ```
@@ -21,18 +23,20 @@ mix dash.create_account local-user-uid
 mix dash.create_hub local-user-uid "Dev Hub"
 ```
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Visit [`http://localhost:3000`](http://localhost:3000/)
 
 Paste the following in your browser console to login as a local user.
 
 The email associated with this token is "local-user@turkey.local".
 
-Token IS subscribed to subplat hubs product
+### Token IS subscribed to subplat hubs product
+
 ```
 document.cookie='_turkeyauthtoken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMyNTAzNjgwMDAwLCJmeGFfZGlzcGxheU5hbWUiOiJMb2NhbCBVc2VyIiwiZnhhX2VtYWlsIjoibG9jYWwtdXNlckB0dXJrZXkubG9jYWwiLCJmeGFfcGljIjoiL2ltYWdlcy9sb2NhbC11c2VyLnN2ZyIsImZ4YV9zdWJzY3JpcHRpb25zIjpbImh1YnM6c3ViIl0sInN1YiI6ImxvY2FsLXVzZXItdWlkIn0.UbE34iMGv_lZXfGyLSmSXKB7mrk5xPuIAh0ODsQdnrqdXFJKT14yJstxseBH61cAdrDi6qvEC8jzWwn4ZTi-dQ'
 ```
 
-Token is NOT subscribed to subplat hubs product
+### Token is NOT subscribed to subplat hubs product
+
 ```
 document.cookie='_turkeyauthtoken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMyNTAzNjgwMDAwLCJmeGFfZGlzcGxheU5hbWUiOiJMb2NhbCBVc2VyIiwiZnhhX2VtYWlsIjoibG9jYWwtdXNlckB0dXJrZXkubG9jYWwiLCJmeGFfcGljIjoiL2ltYWdlcy9sb2NhbC11c2VyLnN2ZyIsImZ4YV9zdWJzY3JpcHRpb25zIjpbXSwic3ViIjoibG9jYWwtdXNlci11aWQifQ.IoYId-VqIzupSK300Bx7QesPpnP2WwFwOXCnLGd57mkDrpGoxFRH97rifZsQRUAlrrk9tkgfS6uW-1vmkyij8Q'
 ```

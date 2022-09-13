@@ -1,5 +1,6 @@
 @use '../tools/media-queries.scss' as *;
 @use '../tools/mixins.scss' as *;
+@use '../core/variables.scss' as *;
 
 // ---------------------------------
 //   Quick Typograpjhy
@@ -22,6 +23,14 @@
 
 .u-capitalize {
   text-transform: capitalize;
+}
+
+.u-body-md {
+  @include body-md();
+}
+
+.u-body-md-bold {
+  @include body-md-bold();
 }
 
 // ---------------------------------
@@ -68,7 +77,6 @@
   }
 }
 
-
 // ---------------------------------
 //   Misc
 // ---------------------------------
@@ -101,7 +109,6 @@
 }
 
 .u-no-link {
-
   &,
   &:hover {
     text-decoration: none;
@@ -135,12 +142,12 @@
 
 .u-left-absolute {
   position: absolute;
-  left: 0
+  left: 0;
 }
 
 .u-right-absolute {
   position: absolute;
-  right: 0
+  right: 0;
 }
 
 .u-width-100 {
@@ -165,6 +172,10 @@ PADDING
 
   &-20 {
     padding: 20px;
+  }
+
+  &-24 {
+    padding: 24px;
   }
 }
 
@@ -244,6 +255,10 @@ PADDING
 MARGIN
 **/
 .margin {
+  &-0 {
+    margin: 0;
+  }
+
   &-5 {
     margin: 5px;
   }

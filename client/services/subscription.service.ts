@@ -11,7 +11,7 @@ export type SubscriptionT = {
  * Get Account
  * @returns Account:AccountT{}
  */
-export const getSubscriptions = async (headers?: AxiosRequestHeaders) => {
+export const getSubscription = async (headers?: AxiosRequestHeaders) => {
   const credentials = { withCredentials: true };
   const contextHeaders = { headers: { ...(headers as AxiosRequestHeaders) } };
   const config = headers ? contextHeaders : credentials;

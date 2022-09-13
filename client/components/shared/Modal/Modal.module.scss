@@ -1,7 +1,6 @@
-@use 'styles/boilerplate.scss'as *;
+@use 'styles/boilerplate.scss' as *;
 
 .backdrop {
-
   &_wrapper {
     position: fixed;
     top: 0;
@@ -21,7 +20,6 @@
       margin: 24px;
     }
   }
-  
 }
 
 .modal {
