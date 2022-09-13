@@ -9,6 +9,7 @@ import Subscribe from '@Shared/Subscribe/Subscribe';
 import ValueProps, {
   TilePropsT as ValuePropsT,
 } from '@Shared/ValueProps/ValueProps';
+import Testimonial from '@Shared/Testimonial/Testimonial';
 import SpatialAudio from '../public/spatial_audio.jpg';
 import Import3dModel from '../public/import_3d_models.jpg';
 import Mock from '../public/mock_fiftyfifty.jpg';
@@ -85,6 +86,7 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
+        <Testimonial />
         <Hero
           background={isMobile ? HubsMobileHero : HubsHero}
           title="A whole new world, from the comfort of your home"
