@@ -63,9 +63,6 @@
   color: $color-text-reverse;
   margin-bottom: 12px;
 
-  &:hover {
-  }
-
   @include desktop-down {
     margin-bottom: 4px;
   }
@@ -105,10 +102,8 @@
 }
 
 .legacy_link {
-  @include primary-font(500);
-  @include font-size(16);
+  @include body-md;
   color: #2f80ed;
-  line-height: 24px;
   text-decoration-line: underline;
 
   @include desktop-down {
