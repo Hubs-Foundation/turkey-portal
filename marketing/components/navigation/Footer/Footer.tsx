@@ -219,7 +219,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
               Turms of Use
             </a>
           </div>
-          <Image width={130} src={mozillaLogo} />
+          <Image width={130} src={mozillaLogo} alt="Mozilla Logo" />
         </div>
       </div>
     </section>
