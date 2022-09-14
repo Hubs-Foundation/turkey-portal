@@ -86,7 +86,6 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <Testimonial />
         <Hero
           background={isMobile ? HubsMobileHero : HubsHero}
           title="A whole new world, from the comfort of your home"
@@ -110,7 +109,7 @@ const Home: NextPage = () => {
         />
 
         <ValueProps values={values} />
-
+        <div id="subscribe-hook"></div>
         <Subscribe />
 
         {/* <FiftyFifty
@@ -121,7 +120,7 @@ const Home: NextPage = () => {
         /> */}
 
         {/* NOTE: this is a mock placement to get the scroll to working.  */}
-        <div id="subscribe-hook"></div>
+        <Testimonial />
 
         {/* <FiftyFifty
           image="/mock_fiftyfifty.jpg"
