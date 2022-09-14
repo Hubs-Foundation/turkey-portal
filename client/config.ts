@@ -1,6 +1,5 @@
 import getConfig from 'next/config';
 
-// source of true
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 const isServerSide = typeof window === 'undefined';
 

@@ -9,7 +9,6 @@ import {
   Icon,
   Input,
 } from '@mozilla/lilypad';
-// import Input from '@Shared/Input/Input';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { validateHubSubdomain } from 'services/hub.service';
 import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
@@ -168,10 +167,6 @@ const HubFormCard = ({
         </div>
 
         <form onSubmit={handleSubmit(handleFormSubmit)}>
-          {/* <div>
-            {isValid && 'isValid'}
-            {dirtyFields.subdomain && 'subdomain' }
-          </div> */}
           <div className={styles.form_contents}>
             {/* HUB NAME  */}
             <Controller

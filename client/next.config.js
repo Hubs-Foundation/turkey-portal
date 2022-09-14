@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['localhost'], // TODO Add other servers
+    domains: ['localhost:4000'], // TODO Add other servers
   },
   serverRuntimeConfig: {
     PUBLIC_API_SERVER: 'http://localhost:4000',
