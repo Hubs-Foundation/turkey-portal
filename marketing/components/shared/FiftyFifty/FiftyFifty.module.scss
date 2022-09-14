@@ -1,6 +1,23 @@
+@use 'styles/boilerplate.scss' as *;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
 .container {
   display: flex;
-  color: #fff;
+  position: relative;
+  height: 570px;
+  max-height: 570px;
+  max-width: $container-max-width;
+  padding: 20px;
+  width: 100%;
+
+  @include tablet-down {
+    flex-direction: column;
+    max-height: initial;
+    height: initial;
+  }
 
   &_left {
     flex-direction: row;
@@ -9,9 +26,73 @@
   &_right {
     flex-direction: row-reverse;
   }
+
+  &_right,
+  &_left {
+    @include tablet-down {
+      flex-direction: column;
+    }
+  }
 }
 
-.contents,
 .image {
-  width: 50%;
+  &_wrapper {
+    @include tablet-down {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
+.contents {
+  width: 400px;
+  padding: 80px 0 0 20px;
+  position: relative;
+
+  h3 {
+    @include h2;
+    margin: 4px 0 18px;
+  }
+
+  h4 {
+    @include h4;
+    margin-bottom: 0;
+  }
+
+  p {
+    @include body-md;
+  }
+
+  &_wrapper {
+    @include tablet-down {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+}
+
+.bar {
+  width: 82px;
+  padding: 4px;
+  // Todo get css var
+  background: #ff806f;
+  border-radius: 100px;
+  &_wrapper {
+    @include tablet-down {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+}
+
+.accent_image {
+  position: absolute;
+  right: -40px;
+  top: 0;
+
+  @include tablet-down {
+    right: -10px;
+  }
 }

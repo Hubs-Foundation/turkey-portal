@@ -15,6 +15,10 @@ import Import3dModel from '../public/import_3d_models.jpg';
 import Mock from '../public/mock_fiftyfifty.jpg';
 import HubsMobileHero from '../public/hubs_hero_mobile.jpg';
 import HubsHero from '../public/hubs_hero.jpg';
+import engagingFiftyfifty from '../public/engaging_fiftyfifty.png';
+import heart from '../public/heart.png';
+// mock delet this asset!!
+import mock_delete_me_mobile from '../public/mock_ff_mobile.png';
 
 import { useMobileDown } from 'hooks/useMediaQuery';
 
@@ -98,6 +102,14 @@ const Home: NextPage = () => {
         <TitleDescription
           title="We're bringing the best of face-to-face interactions to the web:"
           description="No more videos in a grid of squares. Connect with your community online in virtual spaces as avatars to communicate more naturally."
+        />
+
+        <FiftyFifty
+          imageMobile={mock_delete_me_mobile}
+          image={engagingFiftyfifty}
+          accentImage={heart}
+          title="Customizable"
+          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
         />
 
         <TileSpotlight
