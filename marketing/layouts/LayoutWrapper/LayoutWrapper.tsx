@@ -36,8 +36,6 @@ const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
       )}
       {children}
       <Footer />
-
-     
     </main>
   );
 };
