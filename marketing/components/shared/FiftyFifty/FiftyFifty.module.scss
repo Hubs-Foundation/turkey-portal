@@ -95,9 +95,10 @@
 .accent_image {
   position: absolute;
   right: -40px;
-  top: 0;
+  top: -20px;
 
   @include tablet-down {
+    top: -40px;
     right: -10px;
   }
 }

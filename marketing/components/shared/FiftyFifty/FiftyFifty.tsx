@@ -10,7 +10,7 @@ export enum FiftyFiftyLayoutE {
 type FiftyFiftyPropsT = {
   image: StaticImageData;
   imageMobile: StaticImageData;
-  imageAlt?: string;
+  imageAlt: string;
   accentImage?: StaticImageData;
   accentImageAlt?: string;
   title?: string;
@@ -23,7 +23,7 @@ type FiftyFiftyPropsT = {
 const FiftyFifty = ({
   image,
   imageMobile,
-  imageAlt = 'fifty fify image',
+  imageAlt,
   accentImage,
   accentImageAlt = 'Accent Image',
   title,

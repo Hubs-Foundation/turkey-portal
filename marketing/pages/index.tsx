@@ -106,10 +106,11 @@ const Home: NextPage = () => {
         <FiftyFifty
           imageMobile={engaging_fiftyfifty_mobile}
           image={engagingFiftyfifty}
+          imageAlt="Engage Digital Worlds"
           accentImage={heart}
-          subTitle="Test.."
-          title="Customizable"
-          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
+          title="Engaging Digital Worlds"
+          body="Create a museum for your favorite hobbies, a classroom to connect with your students, a planet in outer space, or an office that serves as your company HQ. Hubs provides templates and scenes to get started with building out your vibrant virtual worlds.
+          "
         />
 
         <TileSpotlight
