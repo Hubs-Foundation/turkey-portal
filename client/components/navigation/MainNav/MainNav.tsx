@@ -5,6 +5,9 @@ import { logOut } from 'services/account.service';
 import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
 import BlobIcon from '@Logos/BlobIcon/BlobIcon';
+import { RoutesE } from 'types/Routes';
+import { PUBLIC_API_SERVER } from 'config';
+
 import {
   Button,
   Avatar,
@@ -13,7 +16,7 @@ import {
   Dropdown,
   dropdownT,
 } from '@mozilla/lilypad';
-import { HUB_ROOT_DOMAIN } from 'config';
+import { AUTH_SERVER, FXA_SERVER } from 'config';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -32,16 +35,12 @@ const MainNav = ({
     dropdownRef.current?.closeDropdown();
     await logOut();
     router.push({
-      pathname: '/subscribe',
+      pathname: RoutesE.Login,
     });
   }, [router]);
 
   const onManageAccountClick = useCallback(() => {
-    // TODO set up variables to get correct FX account link
-  }, []);
-
-  const handleSignInClick = useCallback(() => {
-    // TODO - do sign in stuff here
+    window.open(`https://${FXA_SERVER}/settings`);
   }, []);
 
   /**
@@ -64,7 +63,7 @@ const MainNav = ({
 
       <hr className="dropdown-hr" />
 
-      {/* Sign Out  */}
+      {/* Account / Sign Out  */}
       <div className={styles.links}>
         <button
           className="dropdown-link"
@@ -72,7 +71,6 @@ const MainNav = ({
             onManageAccountClick();
           }}
         >
-          {/* TODO update icon asset  */}
           <Icon
             classProp="margin-right-10"
             color="currentColor"
@@ -135,6 +133,7 @@ const MainNav = ({
                 classProp={styles.exit_button}
                 category={ButtonCategoriesE.SECONDARY_OUTLINE}
                 text="Exit Dashboard"
+                onClick={onLogOutClick}
               />
 
               <Dropdown
@@ -163,7 +162,8 @@ const MainNav = ({
             <Button
               category={ButtonCategoriesE.SECONDARY_OUTLINE}
               text="Sign In"
-              href={`https://auth.myhubs.net/login?idp=fxa&client=https://dashboard.${HUB_ROOT_DOMAIN}`}
+              href={`${AUTH_SERVER}/login?idp=fxa&client=${PUBLIC_API_SERVER};
+              ${AUTH_SERVER}/login?idp=fxa&client=${PUBLIC_API_SERVER};`}
             />
           )}
         </div>

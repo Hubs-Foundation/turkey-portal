@@ -132,7 +132,7 @@ const Dashboard = ({}: DashboardPropsT) => {
       </section>
 
       <footer>
-        <FeedbackBanner />
+        <FeedbackBanner email="hubs-feedback@mozilla.com" subject="Feedback" />
       </footer>
     </div>
   );

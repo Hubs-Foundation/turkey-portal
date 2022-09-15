@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootStateT } from './store';
-import { API_SERVER } from 'config';
 
 const initialState = {
   isInitialized: false,

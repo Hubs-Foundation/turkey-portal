@@ -1,6 +1,7 @@
 import type { GetServerSideProps } from 'next';
 import { AxiosRequestHeaders } from 'axios';
 import { getAccount } from './account.service';
+import { RoutesE } from 'types/Routes';
 
 export function requireAuthentication(gssp: Function): GetServerSideProps {
   return async (context) => {
@@ -9,12 +10,16 @@ export function requireAuthentication(gssp: Function): GetServerSideProps {
     // If no errors user is authenticated
     try {
       // TODO : MAYBE - Should we make a more explicit way to confirm a JWT here..
+
+      // TODO we need to check the account data here and see
+      // if the user has any subscriptions... if not send them to subscribe page.
       await getAccount(req.headers as AxiosRequestHeaders);
       return await gssp(context);
     } catch (error) {
       return {
+        // TODO this should probably change to send them to the marking page..
         redirect: {
-          destination: '/subscribe',
+          destination: RoutesE.Login,
           permanent: false,
         },
       };
@@ -37,7 +42,7 @@ export function checkLoggedIn(gssp: Function): GetServerSideProps {
       // If Authenticated Redirect to Dashboard.
       return {
         redirect: {
-          destination: '/dashboard',
+          destination: RoutesE.Dashboard,
           permanent: false,
         },
       };
