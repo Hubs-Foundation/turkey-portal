@@ -12,7 +12,7 @@ type TileSpotlightPropsT = {
 
 export type TilePropsT = {
   image: StaticImageData;
-  imageAlt?: string;
+  imageAlt: string;
   title: string;
   description: string;
 };
@@ -27,7 +27,7 @@ const Tile = ({ image, imageAlt, title, description }: TilePropsT) => {
         <div className={styles.tile_image}>
           <Image
             src={image}
-            alt={imageAlt ? imageAlt : title}
+            alt={imageAlt}
             layout="fill"
             objectFit="cover"
             objectPosition="center"
@@ -67,11 +67,12 @@ const TileSpotlight = ({
 
         {/* CARDS  */}
         <div className={styles.tiles}>
-          {tiles.map(({ image, title, description }, i) => {
+          {tiles.map(({ image, imageAlt, title, description }, i) => {
             return (
               <Tile
                 key={i}
                 image={image}
+                imageAlt={imageAlt}
                 title={title}
                 description={description}
               />

@@ -28,18 +28,21 @@ const Home: NextPage = () => {
     const data: TilePropsT[] = [
       {
         image: SpatialAudio,
+        imageAlt: 'spatial audio',
         title: 'Spatial Audio',
         description:
           'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space - the volume changes based on how close or far away you are.',
       },
       {
         image: Import3dModel,
+        imageAlt: 'import 3d model',
         title: 'Media Sharing',
         description:
           'Import media from across the web. Have fun sharing 3D models, pdfs, images, gifs, videos and audio with your guests.',
       },
       {
         image: Mock,
+        imageAlt: 'mock',
         title: 'Tile Three',
         description:
           'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space - the volume changes based on how close or far away you are.',
