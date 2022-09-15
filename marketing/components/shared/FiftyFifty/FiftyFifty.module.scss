@@ -49,6 +49,11 @@
   padding: 80px 0 0 20px;
   position: relative;
 
+  @include tablet-down {
+    padding: 20px;
+    width: 100%;
+  }
+
   h3 {
     @include h2;
     margin: 4px 0 18px;
@@ -75,9 +80,9 @@
 .bar {
   width: 82px;
   padding: 4px;
-  // Todo get css var
-  background: #ff806f;
+  background: $color-brand-1;
   border-radius: 100px;
+
   &_wrapper {
     @include tablet-down {
       display: flex;

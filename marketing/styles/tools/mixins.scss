@@ -40,7 +40,7 @@
   line-height: 46px;
 
   @include tablet-down {
-    @include font-size(20);
+    @include font-size(26);
     line-height: 26px;
   }
 }
@@ -60,6 +60,11 @@
   @include font-size(24);
   @include secondary-font(700);
   line-height: 31px;
+
+  @include tablet-down {
+    @include font-size(20);
+    line-height: 26px;
+  }
 }
 
 @mixin h5 {

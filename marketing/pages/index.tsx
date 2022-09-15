@@ -17,8 +17,7 @@ import HubsMobileHero from '../public/hubs_hero_mobile.jpg';
 import HubsHero from '../public/hubs_hero.jpg';
 import engagingFiftyfifty from '../public/engaging_fiftyfifty.png';
 import heart from '../public/heart.png';
-// mock delet this asset!!
-import mock_delete_me_mobile from '../public/mock_ff_mobile.png';
+import engaging_fiftyfifty_mobile from '../public/engaging_fiftyfifty_mobile.png';
 
 import { useMobileDown } from 'hooks/useMediaQuery';
 
@@ -105,9 +104,10 @@ const Home: NextPage = () => {
         />
 
         <FiftyFifty
-          imageMobile={mock_delete_me_mobile}
+          imageMobile={engaging_fiftyfifty_mobile}
           image={engagingFiftyfifty}
           accentImage={heart}
+          subTitle="Test.."
           title="Customizable"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
         />

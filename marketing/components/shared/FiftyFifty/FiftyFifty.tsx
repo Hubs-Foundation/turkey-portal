@@ -46,8 +46,8 @@ const FiftyFifty = ({
               layout={isTabletDown ? undefined : 'fill'}
               objectFit={isTabletDown ? undefined : 'cover'}
               objectPosition={isTabletDown ? undefined : 'center'}
-              width={isTabletDown ? 500 : undefined}
-              height={isTabletDown ? 500 : undefined}
+              width={isTabletDown ? 800 : undefined}
+              height={isTabletDown ? 700 : undefined}
             />
           </div>
         </div>

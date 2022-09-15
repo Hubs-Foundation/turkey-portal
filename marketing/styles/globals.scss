@@ -22,6 +22,11 @@ a {
 main[data-theme='light'],
 :root {
   /**
+  BRAND COLORS
+  **/
+  --color-brand-1: #ff806f;
+
+  /**
   PRIMARY INTERACTION
   **/
   --color-interaction-primary: #1700c7;
@@ -123,6 +128,11 @@ main[data-theme='light'],
 
 // PLACE HOLDER FOR DARK VALUES
 main[data-theme='dark'] {
+  /**
+  BRAND COLORS
+  **/
+  --color-brand-1: #ff806f;
+
   /**
   PRIMARY INTERACTION
   **/
