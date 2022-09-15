@@ -28,18 +28,21 @@ const Home: NextPage = () => {
     const data: TilePropsT[] = [
       {
         image: SpatialAudio,
+        imageAlt: 'spatial audio',
         title: 'Spatial Audio',
         description:
           'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space - the volume changes based on how close or far away you are.',
       },
       {
         image: Import3dModel,
+        imageAlt: 'import 3d model',
         title: 'Media Sharing',
         description:
           'Import media from across the web. Have fun sharing 3D models, pdfs, images, gifs, videos and audio with your guests.',
       },
       {
         image: Mock,
+        imageAlt: 'mock',
         title: 'Tile Three',
         description:
           'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space - the volume changes based on how close or far away you are.',
@@ -88,7 +91,7 @@ const Home: NextPage = () => {
         <Hero
           background={isMobile ? HubsMobileHero : HubsHero}
           title="A whole new world, from the comfort of your home"
-          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor"
+          body="Take control of your online communities with a fully open source virtual world platform that you can make your own"
           cta="Get Started"
           ctaLink="/#subscribe-hook"
           heroAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
@@ -111,17 +114,17 @@ const Home: NextPage = () => {
 
         <Subscribe />
 
-        <FiftyFifty
+        {/* <FiftyFifty
           image="/mock_fiftyfifty.jpg"
           imageAlt="TODO alt text for image"
           title="Customizable"
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
-        />
+        /> */}
 
         {/* NOTE: this is a mock placement to get the scroll to working.  */}
         <div id="subscribe-hook"></div>
 
-        <FiftyFifty
+        {/* <FiftyFifty
           image="/mock_fiftyfifty.jpg"
           imageAlt="TODO alt text for image"
           layout={FiftyFiftyLayoutE.RIGHT}
@@ -133,8 +136,9 @@ const Home: NextPage = () => {
           image="/mock_fiftyfifty.jpg"
           imageAlt="TODO alt text for image"
           title="Customizable"
-          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
+          body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. " 
         />
+        */}
       </main>
     </div>
   );
