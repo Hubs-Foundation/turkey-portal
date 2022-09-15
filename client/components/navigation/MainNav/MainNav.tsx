@@ -6,6 +6,7 @@ import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
 import BlobIcon from '@Logos/BlobIcon/BlobIcon';
 import { RoutesE } from 'types/Routes';
+import { PUBLIC_API_SERVER } from 'config';
 
 import {
   Button,
@@ -161,7 +162,8 @@ const MainNav = ({
             <Button
               category={ButtonCategoriesE.SECONDARY_OUTLINE}
               text="Sign In"
-              href={`https://${AUTH_SERVER}/login?idp=fxa&client=${window.location.origin}`}
+              href={`${AUTH_SERVER}/login?idp=fxa&client=${PUBLIC_API_SERVER};
+              ${AUTH_SERVER}/login?idp=fxa&client=${PUBLIC_API_SERVER};`}
             />
           )}
         </div>
