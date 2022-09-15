@@ -3,15 +3,16 @@ import { useRouter } from 'next/router';
 import styles from './HubFormCard.module.scss';
 import { HUB_ROOT_DOMAIN } from 'config';
 import {
-  Input,
   Button,
   ButtonCategoriesE,
   ButtonSizesE,
   Icon,
+  Input,
 } from '@mozilla/lilypad';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { validateHubSubdomain } from 'services/hub.service';
 import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
+import { RoutesE } from 'types/Routes';
 
 export type HubFormCardT = {
   name: string;
@@ -26,6 +27,11 @@ type HubFormCardPropsT = {
   classProp?: string;
 };
 
+export enum DomainErrorsE {
+  SUBDOMAIN_TAKEN = 'subdomain_taken',
+  SUBDOMAIN_DENIED = 'subdomain_denied',
+}
+
 const HubFormCard = ({
   hub,
   onSubmit,
@@ -35,13 +41,16 @@ const HubFormCard = ({
   const [addressErrorMessage, setAddressErrorMessage] = useState<string>('');
   const storeContext = useContext(StoreContext);
   const [isValidDomain, setIsValidDomain] = useState(true);
+  const [domainValidationError, setDomainValidationError] =
+    useState<string>('');
   const [isEditingDomain, setIsEditingDomain] = useState(false);
 
   const router = useRouter();
+  // TODO - react hook form is always saying inputs are valid when they are not
   const {
     control,
     handleSubmit,
-    formState: { isValid },
+    formState: { isValid, errors, dirtyFields },
     getValues,
   } = useForm<HubFormCardT>({
     defaultValues: {
@@ -56,24 +65,14 @@ const HubFormCard = ({
    */
 
   /**
-   * TODO:
    * Show a different error for when a subdomain
    * is already in use by another user, vs when a subdomain
    * is invalid or forbidden. The validate_subdomain API returns
    * either subdomain_taken or subdomain_denied.
    */
   const handleFormSubmit: SubmitHandler<HubFormCardT> = (data) => {
-    // Form Invalid
-    if (!isValid) {
-      onError && onError('Please fix form errors to continue.');
-      return;
-    }
-
     // Domain does not pass serverside validation
-    if (!isValidDomain) {
-      onError && onError('Please provide a valid domain to continue');
-      return;
-    }
+    if (!isValidDomain) return;
 
     onSubmit && onSubmit(data);
     // Store away the last submitted subdomain incase we need to re-try.
@@ -81,7 +80,7 @@ const HubFormCard = ({
       subdomain: data.subdomain,
       hubId: hub.hubId,
     };
-    storeContext.handleThemeChange(subdomain);
+    storeContext.handleSubdomainChange(subdomain);
   };
 
   /**
@@ -89,14 +88,14 @@ const HubFormCard = ({
    */
   const handleCancelClick = () => {
     router.push({
-      pathname: '/dashboard',
+      pathname: RoutesE.Dashboard,
     });
   };
 
   /**
    * Handle Subdomain Input Blur
    */
-  const handleOnBlur = () => {
+  const handleOnBlur = (isValid: boolean | undefined) => {
     const newSubdomain = getValues('subdomain');
 
     // Data has not been edited
@@ -106,9 +105,27 @@ const HubFormCard = ({
       return;
     }
 
+    if (!isValid) {
+      setIsValidDomain(false);
+      setIsEditingDomain(false);
+      return;
+    }
+
     // Validate subdomain
-    validateHubSubdomain(hub.hubId, newSubdomain).then((resp) => {
-      setIsValidDomain(resp.success);
+    validateHubSubdomain(hub.hubId, newSubdomain).then(({ error, success }) => {
+      if (error) {
+        switch (error) {
+          case DomainErrorsE.SUBDOMAIN_TAKEN:
+            setDomainValidationError('subdomain is taken');
+            break;
+          case DomainErrorsE.SUBDOMAIN_DENIED:
+            setDomainValidationError('subdomain is denied');
+            break;
+        }
+      }
+
+      success && setDomainValidationError('');
+      setIsValidDomain(success);
       setIsEditingDomain(false);
     });
   };
@@ -155,6 +172,7 @@ const HubFormCard = ({
             <Controller
               name="name"
               control={control}
+              rules={{ required: true }}
               render={({ field }) => (
                 <Input
                   maxLength={24}
@@ -173,24 +191,31 @@ const HubFormCard = ({
               <Controller
                 name="subdomain"
                 control={control}
+                rules={{ required: true }}
                 render={({ field }) => (
-                  <Input
-                    onBlur={handleOnBlur}
-                    onFocus={handleOnFocus}
-                    minLength={3}
-                    maxLength={63}
-                    classProp="margin-bottom-10"
-                    placeholder="Web Address (URL)"
-                    label="Web Address (URL)"
-                    info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
-                    pattern="[a-zA-Z0-9-]+"
-                    validator={handleNameValidator}
-                    customErrorMessage={addressErrorMessage}
-                    required={true}
-                    name={field.name}
-                    value={field.value}
-                    onChange={field.onChange}
-                  />
+                  <>
+                    <Input
+                      onBlur={(isValid: boolean) => {
+                        handleOnBlur(isValid);
+                        field.onBlur();
+                      }}
+                      ref={field.ref}
+                      onFocus={handleOnFocus}
+                      minLength={3}
+                      maxLength={63}
+                      classProp="margin-bottom-10"
+                      placeholder="Web Address (URL)"
+                      label="Web Address (URL)"
+                      info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
+                      pattern="[a-zA-Z0-9-]+"
+                      validator={handleNameValidator}
+                      customErrorMessage={addressErrorMessage}
+                      required={true}
+                      name={field.name}
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  </>
                 )}
               />
               <div className={styles.address_preview}>
@@ -214,6 +239,13 @@ const HubFormCard = ({
                 </div>
               </div>
             </div>
+
+            {/* Note: this error messaging is specific to domain serverside validation  */}
+            {!isValidDomain && domainValidationError.length ? (
+              <div className={styles.error_message}>
+                Please enter another address, the {domainValidationError}.
+              </div>
+            ) : null}
           </div>
 
           <div className={styles.actions_wrapper}>

@@ -73,7 +73,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
    * Hide / Show Card Footer
    */
   const footerVisible = useMemo(() => {
-    return status === StatusE.UPDATING || status === StatusE.READY;
+    return status === StatusE.READY;
   }, [status]);
 
   /**

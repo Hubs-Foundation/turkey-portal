@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import { HubT, UpdateHubT } from 'types/General';
+import { HubT, UpdateHubT, StatusE } from 'types/General';
 import { RoutesE } from 'types/Routes';
 import { getHub, updateHub } from 'services/hub.service';
 import { requireAuthentication } from 'services/routeGuard.service';
@@ -34,10 +34,16 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
    */
   useEffect(() => {
     getHub(`${hub_id}`).then((hub: HubT) => {
+      if (hub.status === StatusE.UPDATING) {
+        router.push({
+          pathname: RoutesE.Dashboard,
+        });
+        return;
+      }
       setLoading(false);
       setHub(hub);
     });
-  }, [hub_id]);
+  }, [hub_id, router]);
 
   /**
    * Get Hub Subscription
