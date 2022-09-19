@@ -5,7 +5,7 @@ on:
     paths-ignore: 
       - "README.md"
       - "client/**"
-      - "marketing/**
+      - "marketing/**"
       - '.github/workflows/turkeydashboardclient.yml'
   workflow_dispatch:
 
