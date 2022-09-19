@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
 import { useEffect, useState, useCallback } from 'react';
-import { HubT } from 'types/General';
+import { AccountT, HubT } from 'types/General';
 import styles from './dashboard.module.scss';
 import HubCard from '@Cards/HubCard/HubCard';
 import SubCard from '@Cards/SubCard/SubCard';
@@ -141,8 +141,18 @@ const Dashboard = ({}: DashboardPropsT) => {
 export default Dashboard;
 
 export const getServerSideProps = requireAuthentication(
-  (context: GetServerSidePropsContext) => {
-    // Your normal `getServerSideProps` code here
-    return { props: {} };
+  (context: GetServerSidePropsContext, account: AccountT) => {
+    if (account?.hasHubs) {
+      // Your normal `getServerSideProps` code here
+      return { props: {} };
+    } else {
+      return {
+        redirect: {
+          source: '/dashboard',
+          destination: '/subscribe', // /login OR /subscribe page
+          permanent: false,
+        },
+      };
+    }
   }
 );

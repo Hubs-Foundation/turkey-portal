@@ -15,14 +15,14 @@ export function requireAuthentication(
   gssp: Function
 ): GetServerSideProps | Redirect {
   return async (context: GetServerSidePropsContext) => {
-    const { req, resolvedUrl, query } = context;
+    const { req } = context;
 
     // If no errors user is authenticated
     try {
       // TODO : MAYBE - Should we make a more explicit way to confirm a JWT here..
-      await getAccount(req.headers as AxiosRequestHeaders);
+      const account = await getAccount(req.headers as AxiosRequestHeaders);
       // User is authenticated
-      return await gssp(context);
+      return await gssp(context, account);
     } catch (error) {
       // User is not authenticated
       const axiosError = error as AxiosError;
@@ -32,11 +32,10 @@ export function requireAuthentication(
       if (status === 401 && checkTypeRedirectDataT(data)) {
         // Expected authentication redirects from the Phoenix server
         const redirectUrl: String = data.redirect;
-
         return {
           redirect: {
             source: '/dashboard',
-            destination: redirectUrl, // FxA auth server OR /subscribe
+            destination: redirectUrl, // /login OR /subscribe page
             permanent: false,
           },
         };
