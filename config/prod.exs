@@ -65,6 +65,8 @@ config :dash, DashWeb.Plugs.BasicAuth, enabled: false
 
 config :dash, Dash.HubStat, enable_hub_stats: true
 
+config :dash, Dash.ApprovedEmail, enabled: false
+
 config :dash, Dash.Scheduler,
   jobs: [
     # Runs every midnight:
