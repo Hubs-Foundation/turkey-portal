@@ -28,7 +28,7 @@ const MobileSideNav = ({
   const handleGetStartedClick = useCallback(() => {
     // TODO bubble up scroll to...
     MobileMenuClick();
-    router.push('/#subscribe-hook');
+    router.push('/#subscribe');
   }, [MobileMenuClick, router]);
 
   return (

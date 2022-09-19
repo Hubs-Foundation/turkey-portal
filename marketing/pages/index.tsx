@@ -91,7 +91,7 @@ const Home: NextPage = () => {
           title="A whole new world, from the comfort of your home"
           body="Take control of your online communities with a fully open source virtual world platform that you can make your own"
           cta="Get Started"
-          ctaLink="/#subscribe-hook"
+          ctaLink="/#subscribe"
           heroAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
         />
 
@@ -109,7 +109,7 @@ const Home: NextPage = () => {
         />
 
         <ValueProps values={values} />
-        <div id="subscribe-hook"></div>
+        <div id="subscribe"></div>
         <Subscribe />
 
         {/* <FiftyFifty
