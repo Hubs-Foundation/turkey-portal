@@ -3,8 +3,8 @@ on:
   push:
     branches: 
     paths:
-    - 'client/**'
-    - '.github/workflows/turkeydashboardclient.yml'
+    - 'marketing/**'
+    - '.github/workflows/turkeymarketing.yml'
   workflow_dispatch:
   
 env:
@@ -14,9 +14,8 @@ jobs:
   turkeyGitops:
     uses: mozilla/hubs-ops/.github/workflows/turkeyGitops.yml@master
     with:
-      registry: mozilla
+      registry: mozillareality
       codePath: marketing
       dockerfile: Dockerfile
-      DOCKER_HUB_USR: mzcshubs
     secrets:
-      DOCKER_HUB_PWD: ${{ secrets.DOCKER_HUB_PWD_MOZ }}
+      DOCKER_HUB_PWD: ${{ secrets.DOCKER_HUB_PWD }}
