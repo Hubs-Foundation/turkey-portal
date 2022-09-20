@@ -41,5 +41,3 @@ export const getServerSideProps = checkLoggedIn(
     return { props: {} };
   }
 );
-
-Login.displayName = 'Login';
