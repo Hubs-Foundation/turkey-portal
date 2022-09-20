@@ -2,6 +2,10 @@ import styles from './FiftyFifty.module.scss';
 import Image, { StaticImageData } from 'next/image';
 import { useTabletDown } from 'hooks/useMediaQuery';
 
+/**
+  FiftyFifty component can be image left / content right or vice versa
+  use layout to alter image content placement.
+**/
 export enum FiftyFiftyLayoutE {
   LEFT = 'left',
   RIGHT = 'right',
@@ -37,8 +41,9 @@ const FiftyFifty = ({
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={`${styles.container} ${styles['container_' + layout]}`}>
+        {/* Image  */}
         <div className={styles.image_wrapper}>
-          <div className={styles.image_contianer}>
+          <div>
             <Image
               className={styles.image}
               src={isTabletDown ? imageMobile : image}
@@ -55,6 +60,8 @@ const FiftyFifty = ({
         {/* Contents  */}
         <div className={styles.contents_wrapper}>
           <div className={styles.contents}>
+            {/* Note: Accent image is a small image absolutely positioned 
+            on the top right of the content that is optional depending on design. */}
             {accentImage && (
               <div className={styles.accent_image}>
                 <Image
