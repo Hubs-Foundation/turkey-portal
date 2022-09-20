@@ -13,6 +13,25 @@ Make sure database server is running. See 'README' in root project.
 Open [http://localhost:3000](http://localhost:3000) with your
 browser to see the result.
 
+## Setting Up Lilypad
+
+Configure your local install of NPM itself to be authorized to use Lilypad. To do this we use a .npmrc file.
+
+This file is NOT PART OF YOUR PROJECT. This is a global file in a central location. For Mac/Linux users it goes in your home directory ~/.npmrc.
+
+For Windows users it goes in your home directory as well, though the syntax will be different. Something along the lines of C:\Users\{YOUR_WINDOWS_USERNAME}
+
+Once you have created the file, edit it to include the following information:
+
+~/.npmrc
+
+```
+registry=https://registry.npmjs.org/
+@YOUR_GITHUB_USERNAME:registry=https://npm.pkg.github.com/
+//npm.pkg.github.com/:_authToken=YOUR_AUTH_TOKEN
+
+```
+
 ## Production environment variables
 
 - PUBLIC_API_SERVER - public server url ( todo more info here )
