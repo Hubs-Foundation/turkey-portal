@@ -19,6 +19,9 @@ browser to see the result.
 - HUB_ROOT_DOMAIN - Root url for cluster ( todo more info here )
 - AUTH_SERVER - Server used for login links. e.g. "auth.myhubs.net"
 - FXA_SERVER - Firefox Accounts server used for account management links. e.g. "accounts.firefox.com"
+- FXA_PAYMENT_URL - subscription payment url
+- PRODUCT_ID - subscription payment ID
+- PLAN_ID_EA - subscription payment Early Access ID
 
 ## Path Alias
 
