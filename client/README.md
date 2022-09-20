@@ -10,7 +10,15 @@ npm run dev
 
 Make sure database server is running. See 'README' in root project.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your
+browser to see the result.
+
+## Production environment variables
+
+- PUBLIC_API_SERVER - public server url ( todo more info here )
+- HUB_ROOT_DOMAIN - Root url for cluster ( todo more info here )
+- AUTH_SERVER - Server used for login links. e.g. "auth.myhubs.net"
+- FXA_SERVER - Firefox Accounts server used for account management links. e.g. "accounts.firefox.com"
 
 ## Path Alias
 

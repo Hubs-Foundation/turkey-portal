@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import styles from './Testimonial.module.scss';
+import { useDesktopDown, useTabletDown } from 'hooks/useMediaQuery';
 import jacobErvinAvatar from '../../../public/jacob_ervinAvatar.png';
 import testimonialBackground from '../../../public/testimonial_background.jpg';
+import testimonialBackgroundMobile from '../../../public/testimonial_background_mobile.jpg';
 import messageCarrot from '../../../public/message_carrot.svg';
-import { useDesktopDown, useTabletDown } from 'hooks/useMediaQuery';
 import quoteRight from '../../../public/quote_right.svg';
 import quoteLeft from '../../../public/quote_left.svg';
 
@@ -26,7 +27,11 @@ const Testimonial = ({ classProp = '' }: TestimonialPropsT) => {
         {/* MAIN CONTENT  */}
         <div className={styles.content_wrapper}>
           <Image
-            src={testimonialBackground}
+            src={
+              isDesktopDown
+                ? testimonialBackgroundMobile
+                : testimonialBackground
+            }
             alt="blog background"
             objectFit="cover"
             objectPosition="center"

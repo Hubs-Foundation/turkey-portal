@@ -16,6 +16,10 @@ type FooterPropsT = {
 const Footer = ({ classProp = '' }: FooterPropsT) => {
   const isDesktopDown = useDesktopDown();
 
+  const handleDiscordClick = () => {
+    window.open('https://discord.gg/sBMqSjCndj');
+  };
+
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.container}>
@@ -44,12 +48,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
               <HubsLogo category={LogoCategoryE.DARK} />
             </div>
 
-            <a
-              target="_blanks"
-              rel="noreferrer"
-              href="https://discord.gg/sBMqSjCndj"
-              className={styles.link}
-            >
+            <a onClick={handleDiscordClick} href="#" className={styles.link}>
               Join Our Discored
             </a>
             <a
@@ -147,11 +146,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
               Follow @MozillaHubs
             </div>
             <div className="flex-justify-between margin-top-20">
-              <a
-                target="_blanks"
-                rel="noreferrer"
-                href="https://discord.gg/sBMqSjCndj"
-              >
+              <a onClick={handleDiscordClick} href="#">
                 <Image
                   width={isDesktopDown ? 36 : ''}
                   height={isDesktopDown ? 36 : ''}
@@ -216,7 +211,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
               className={styles.submenu_link}
               href="https://www.mozilla.org/en-US/about/legal/terms/hubs/"
             >
-              Turms of Use
+              Terms of Use
             </a>
           </div>
           <Image width={130} src={mozillaLogo} alt="Mozilla Logo" />

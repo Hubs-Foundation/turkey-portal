@@ -1,6 +1,6 @@
 import axios, { AxiosRequestHeaders } from 'axios';
 const API_PATH = '/api/v1/account';
-import { API_SERVER } from 'config';
+import { PUBLIC_API_SERVER } from 'config';
 
 /**
  * Get Account
@@ -12,9 +12,11 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
   const config = headers ? contextHeaders : credentials;
 
   try {
-    return axios.get(`${API_SERVER}${API_PATH}`, config).then((response) => {
-      return response.data;
-    });
+    return axios
+      .get(`${PUBLIC_API_SERVER}${API_PATH}`, config)
+      .then((response) => {
+        return response.data;
+      });
   } catch (error) {
     // TODO: Make game plan for error handling
     console.error('Error', error);
@@ -28,7 +30,7 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
 export const logOut = async () => {
   try {
     return axios
-      .get(`${API_SERVER}/logout`, { withCredentials: true })
+      .get(`${PUBLIC_API_SERVER}/logout`, { withCredentials: true })
       .then((response) => {
         return response.data;
       });

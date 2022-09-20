@@ -50,6 +50,11 @@
 
   &_wrapper {
     overflow: hidden;
+    &:last-child {
+      .border {
+        display: none;
+      }
+    }
   }
 
   &_container {
