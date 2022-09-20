@@ -49,7 +49,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
             </div>
 
             <a onClick={handleDiscordClick} href="#" className={styles.link}>
-              Join Our Discored
+              Join Our Discord
             </a>
             <a
               target="_blank"
