@@ -4,7 +4,7 @@ import CardButton from '../../shared/CardButton/CardButton';
 import { SubscriptionT } from 'services/subscription.service';
 import Modal from '@Shared/Modal/Modal';
 import SubscriptionModal from 'components/Modals/SubscriptionModal/SubscriptionModal';
-import { HUB_ROOT_DOMAIN } from 'config';
+import { HUB_ROOT_DOMAIN, FXA_SERVER } from 'config';
 
 type SubCardPropsT = {
   subdomain: string;
@@ -41,6 +41,13 @@ const SubCard = ({
     window.open(`https://${subdomain}.${HUB_ROOT_DOMAIN}/admin`);
   }, [subdomain]);
 
+  /**
+   * Manage Account
+   */
+  const onManageAccountClick = useCallback(() => {
+    window.open(`https://${FXA_SERVER}/settings`);
+  }, []);
+
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
       <div className={styles.container}>
@@ -73,6 +80,7 @@ const SubCard = ({
 
         {/* WIDGET ACTIONS */}
         <CardButton
+          onClick={onManageAccountClick}
           icon="credit-card"
           title="Manage Subscription"
           description="View your active subscriptions and change your payment information. "
