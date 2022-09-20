@@ -9,6 +9,7 @@ import Subscribe from '@Shared/Subscribe/Subscribe';
 import ValueProps, {
   TilePropsT as ValuePropsT,
 } from '@Shared/ValueProps/ValueProps';
+import Testimonial from '@Shared/Testimonial/Testimonial';
 import SpatialAudio from '../public/spatial_audio.jpg';
 import Import3dModel from '../public/import_3d_models.jpg';
 import Mock from '../public/mock_fiftyfifty.jpg';
@@ -93,7 +94,7 @@ const Home: NextPage = () => {
           title="A whole new world, from the comfort of your home"
           body="Take control of your online communities with a fully open source virtual world platform that you can make your own"
           cta="Get Started"
-          ctaLink="/#subscribe-hook"
+          ctaLink="/#subscribe"
           heroAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
         />
 
@@ -111,8 +112,9 @@ const Home: NextPage = () => {
         />
 
         <ValueProps values={values} />
-
-        <Subscribe />
+        <div id="subscribe">
+          <Subscribe />
+        </div>
 
         {/* <FiftyFifty
           image="/mock_fiftyfifty.jpg"
@@ -121,8 +123,7 @@ const Home: NextPage = () => {
           body="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Adipiscing bibendum est ultricies integer. Nullam vehicula ipsum a arcu cursus vitae. "
         /> */}
 
-        {/* NOTE: this is a mock placement to get the scroll to working.  */}
-        <div id="subscribe-hook"></div>
+        <Testimonial />
 
         {/* <FiftyFifty
           image="/mock_fiftyfifty.jpg"
