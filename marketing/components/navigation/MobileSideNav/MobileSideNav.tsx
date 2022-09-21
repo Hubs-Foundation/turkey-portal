@@ -20,7 +20,7 @@ const MobileSideNav = ({
    * Handle Go To Hubs Click
    */
   const handleGoToHubsClick = useCallback(() => {
-    window.open(`https://${HUB_ROOT_DOMAIN}`);
+    router.push(`https://${HUB_ROOT_DOMAIN}`);
   }, []);
 
   /**
