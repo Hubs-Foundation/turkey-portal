@@ -10,6 +10,10 @@
     @include desktop-large-down {
       width: 100%;
     }
+
+    @include mobile-down {
+      border-radius: 0;
+    }
   }
 
   &_header {
@@ -40,12 +44,20 @@
     input {
       text-transform: lowercase;
     }
+
+    @include mobile-down {
+      flex-direction: column;
+    }
   }
 
   &_preview {
     @include font-size(14);
     margin: 44px 0 0 14px;
     display: flex;
+
+    @include mobile-down {
+      margin: 0;
+    }
   }
 }
 
