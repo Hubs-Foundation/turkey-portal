@@ -4,6 +4,7 @@ import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 import { useTabletDown } from 'hooks/useMediaQuery';
 import { useRouter } from 'next/router';
+import { HUB_ROOT_DOMAIN } from 'config';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -20,6 +21,13 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
   const handleMobileMenuClick = useCallback(() => {
     MobileMenuClick && MobileMenuClick();
   }, [MobileMenuClick]);
+
+  /**
+   * Handle Go To Hubs Click
+   */
+  const handleGoToHubsClick = useCallback(() => {
+    window.open(`https://${HUB_ROOT_DOMAIN}`);
+  }, []);
 
   const handleGetStartedClick = useCallback(() => {
     router.push('/#subscribe');
@@ -70,12 +78,19 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
             )}
 
             {!isTabletDown && (
-              <Button
-                classProp={styles.dashboard_button}
-                category={ButtonCategoriesE.PRIMARY_SOLID}
-                onClick={handleGetStartedClick}
-                text="Get Started"
-              />
+              <div className={styles.main_nav_actions}>
+                <Button
+                  classProp="margin-right-10"
+                  category={ButtonCategoriesE.PRIMARY_OUTLINE}
+                  onClick={handleGoToHubsClick}
+                  text="Go to my hubs"
+                />
+                <Button
+                  category={ButtonCategoriesE.PRIMARY_SOLID}
+                  onClick={handleGetStartedClick}
+                  text="Get Started"
+                />
+              </div>
             )}
           </div>
         </div>

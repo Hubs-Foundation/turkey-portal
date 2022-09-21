@@ -1,23 +1,5 @@
 @use 'styles/boilerplate' as *;
 
-.logo {
-  &_dark,
-  &_light {
-    @include secondary-font();
-    @include font-size(37);
-    margin-right: 8px;
-  }
-
-  &_dark {
-    color: $color-text-reverse;
-  }
-
-  &_light {
-    color: $color-text-main;
-  }
-
-  &_wrapper {
-    display: flex;
-    align-items: center;
-  }
+.logo_wrapper {
+  width: 140px;
 }

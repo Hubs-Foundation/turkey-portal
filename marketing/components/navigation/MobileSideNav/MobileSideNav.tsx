@@ -3,6 +3,7 @@ import { Button, ButtonCategoriesE, ButtonSizesE } from '@mozilla/lilypad';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { useRouter } from 'next/router';
 import styles from './MobileSideNav.module.scss';
+import { HUB_ROOT_DOMAIN } from 'config';
 
 type MobileSideNavPropsT = {
   isOpen: boolean;
@@ -14,6 +15,13 @@ const MobileSideNav = ({
   MobileMenuClick,
 }: MobileSideNavPropsT) => {
   const router = useRouter();
+
+  /**
+   * Handle Go To Hubs Click
+   */
+  const handleGoToHubsClick = useCallback(() => {
+    window.open(`https://${HUB_ROOT_DOMAIN}`);
+  }, []);
 
   /**
    * Handle Menu Click
@@ -82,12 +90,23 @@ const MobileSideNav = ({
           </ul>
 
           {/* ACTIONS  */}
-          <div className="padding-24 flex">
-            <Button
-              classProp="flex-grow-1 "
-              text="Get Started"
-              onClick={handleGetStartedClick}
-            />
+          <div className="padding-24">
+            <div className="margin-bottom-10 flex">
+              <Button
+                classProp="flex-grow-1 "
+                text="Get Started"
+                onClick={handleGetStartedClick}
+              />
+            </div>
+
+            <div className="flex">
+              <Button
+                classProp="flex-grow-1 "
+                category={ButtonCategoriesE.PRIMARY_OUTLINE}
+                onClick={handleGoToHubsClick}
+                text="Go to my hubs"
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -47,11 +47,11 @@
     display: flex;
     margin: 10px;
   }
-}
 
-button.dashboard_button {
-  @include mobile-down {
-    display: none;
+  &_actions {
+    @include mobile-down {
+      display: none;
+    }
   }
 }
 
