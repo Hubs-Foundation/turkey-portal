@@ -15,6 +15,8 @@ browser to see the result.
 
 ## Setting Up Lilypad
 
+First, get an access token to fetch our maintained Lilypad component library on npm, you need to create an access token on github and enable Mozilla organization on the access token.
+
 Configure your local install of NPM itself to be authorized to use Lilypad. To do this we use a .npmrc file.
 
 This file is NOT PART OF YOUR PROJECT. This is a global file in a central location. For Mac/Linux users it goes in your home directory ~/.npmrc.
