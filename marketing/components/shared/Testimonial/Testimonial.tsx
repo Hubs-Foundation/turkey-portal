@@ -46,7 +46,8 @@ const Testimonial = ({ classProp = '' }: TestimonialPropsT) => {
                   src={jacobErvinAvatar}
                   height={isTabletDown ? 165 : 230}
                   width={isTabletDown ? 165 : 230}
-                  alt="blog background"
+                  alt="Jacob Ervin Avatar"
+                  layout="fixed"
                 />
               </div>
             </div>

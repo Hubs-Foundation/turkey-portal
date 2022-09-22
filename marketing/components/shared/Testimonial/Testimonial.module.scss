@@ -58,14 +58,7 @@
   border-radius: 20px;
   background-color: $color-background-neutral-0;
   margin: 60px 40px 40px 0;
-  min-width: 244px;
   max-height: 244px;
-
-  @include desktop-down {
-    margin: 40px 30px 30px 0;
-    min-width: 180px;
-    max-height: 180px;
-  }
 
   @include tablet-down {
     margin: 0 0 24px;

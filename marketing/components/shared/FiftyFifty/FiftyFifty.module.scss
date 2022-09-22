@@ -42,6 +42,12 @@
       justify-content: center;
     }
   }
+
+  &_container {
+    @include tablet-down {
+      width: 100%;
+    }
+  }
 }
 
 .contents {

@@ -43,12 +43,12 @@ const FiftyFifty = ({
       <div className={`${styles.container} ${styles['container_' + layout]}`}>
         {/* Image  */}
         <div className={styles.image_wrapper}>
-          <div>
+          <div className={styles.image_container}>
             <Image
               className={styles.image}
               src={isTabletDown ? imageMobile : image}
               alt={imageAlt}
-              layout={isTabletDown ? undefined : 'fill'}
+              layout={isTabletDown ? 'responsive' : 'fill'}
               objectFit={isTabletDown ? undefined : 'cover'}
               objectPosition={isTabletDown ? undefined : 'center'}
               width={isTabletDown ? 800 : undefined}
@@ -67,6 +67,7 @@ const FiftyFifty = ({
                 <Image
                   width={isTabletDown ? 95 : 164}
                   height={isTabletDown ? 92 : 159}
+                  layout="fixed"
                   src={accentImage}
                   alt={accentImageAlt}
                 />
