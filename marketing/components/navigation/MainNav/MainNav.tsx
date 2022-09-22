@@ -27,7 +27,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
    */
   const handleGoToHubsClick = useCallback(() => {
     router.push(`https://${DASH_ROOT_DOMAIN}`);
-  }, []);
+  }, [router]);
 
   const handleGetStartedClick = useCallback(() => {
     router.push('/#subscribe');

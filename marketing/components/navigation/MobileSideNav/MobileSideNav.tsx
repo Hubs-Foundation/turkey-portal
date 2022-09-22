@@ -21,7 +21,7 @@ const MobileSideNav = ({
    */
   const handleGoToHubsClick = useCallback(() => {
     router.push(`https://${DASH_ROOT_DOMAIN}`);
-  }, []);
+  }, [router]);
 
   /**
    * Handle Menu Click
