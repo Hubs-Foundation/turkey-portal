@@ -1,6 +1,6 @@
 import axios from 'axios';
 const API_PATH = '/api/v1/hubs';
-import { API_SERVER } from 'config';
+import { PUBLIC_API_SERVER_SERVER } from 'config';
 import { UpdateHubT } from 'types/General';
 
 /**
@@ -10,7 +10,7 @@ import { UpdateHubT } from 'types/General';
 export const getHubs = async () => {
   try {
     return axios
-      .get(`${API_SERVER}${API_PATH}`, { withCredentials: true })
+      .get(`${PUBLIC_API_SERVER_SERVER}${API_PATH}`, { withCredentials: true })
       .then((response) => {
         return response.data;
       });
@@ -28,7 +28,9 @@ export const getHubs = async () => {
 export const getHub = async (hubId: string) => {
   try {
     return axios
-      .get(`${API_SERVER}${API_PATH}/${hubId}`, { withCredentials: true })
+      .get(`${PUBLIC_API_SERVER_SERVER}${API_PATH}/${hubId}`, {
+        withCredentials: true,
+      })
       .then((response) => {
         return response.data;
       });
@@ -49,20 +51,18 @@ export const validateHubSubdomain = async (
   subdomain: string
 ) => {
   try {
-    return axios
-      .post(
-        `${API_SERVER}${API_PATH}/validate_subdomain`,
-        {
-          excludedHubId: hubId,
-          subdomain: subdomain,
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        return response.data;
-      });
+    return PUBLIC_API_SERVER.post(
+      `${PUBLIC_API_SERVER}${API_PATH}/validate_subdomain`,
+      {
+        excludedHubId: hubId,
+        subdomain: subdomain,
+      },
+      {
+        withCredentials: true,
+      }
+    ).then((response) => {
+      return response.data;
+    });
   } catch (error) {
     // TODO: Make game plan for error handling
     console.error('Error', error);
@@ -79,9 +79,9 @@ export const validateHubSubdomain = async (
  */
 export const updateHub = async (hubId: string, hub: UpdateHubT) => {
   if (!hub) return;
-
+  PUBLIC_API_SERVER;
   try {
-    return axios.patch(`${API_SERVER}${API_PATH}/${hubId}`, hub, {
+    return axios.patch(`${PUBLIC_API_SERVER}${API_PATH}/${hubId}`, hub, {
       withCredentials: true,
     });
   } catch (error) {

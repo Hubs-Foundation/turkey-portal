@@ -1,10 +1,13 @@
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from './MainNav.module.scss';
 import { logOut } from 'services/account.service';
 import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
 import BlobIcon from '@Logos/BlobIcon/BlobIcon';
+import { RoutesE } from 'types/Routes';
+import { AUTH_SERVER, PUBLIC_DASH_ROOT_DOMAIN } from 'config';
+
 import {
   Button,
   Avatar,
@@ -13,7 +16,6 @@ import {
   Dropdown,
   dropdownT,
 } from '@mozilla/lilypad';
-import { AUTH_SERVER_URL, HUB_ROOT_DOMAIN, PUBLIC_NODE_SERVER } from 'config';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -28,6 +30,10 @@ const MainNav = ({
   const dropdownRef = useRef<dropdownT>(null);
   const router = useRouter();
 
+  useEffect(() => {
+    console.log('showLoggedOutUi', showLoggedOutUi);
+  }, [showLoggedOutUi]);
+
   const onLogOutClick = useCallback(async () => {
     dropdownRef.current?.closeDropdown();
     try {
@@ -37,16 +43,12 @@ const MainNav = ({
     }
 
     router.push({
-      pathname: '/subscribe',
+      pathname: RoutesE.Login,
     });
   }, [router]);
 
   const onManageAccountClick = useCallback(() => {
-    // TODO set up variables to get correct FX account link
-  }, []);
-
-  const handleSignInClick = useCallback(() => {
-    // TODO - do sign in stuff here
+    window.open(`https://${FXA_SERVER}/settings`);
   }, []);
 
   /**
@@ -69,7 +71,7 @@ const MainNav = ({
 
       <hr className="dropdown-hr" />
 
-      {/* Sign Out  */}
+      {/* Account / Sign Out  */}
       <div className={styles.links}>
         <button
           className="dropdown-link"
@@ -77,7 +79,6 @@ const MainNav = ({
             onManageAccountClick();
           }}
         >
-          {/* TODO update icon asset  */}
           <Icon
             classProp="margin-right-10"
             color="currentColor"
@@ -133,13 +134,14 @@ const MainNav = ({
             </div>
           </div>
 
-          {/* Account information  */}
+          {/* Account information */}
           {!showLoggedOutUi && (
             <div className="flex-align-center">
               <Button
                 classProp={styles.exit_button}
                 category={ButtonCategoriesE.SECONDARY_OUTLINE}
                 text="Exit Dashboard"
+                onClick={onLogOutClick}
               />
 
               <Dropdown
@@ -168,7 +170,7 @@ const MainNav = ({
             <Button
               category={ButtonCategoriesE.SECONDARY_OUTLINE}
               text="Sign In"
-              href={`https://${AUTH_SERVER_URL}/login?idp=fxa&client=https://${PUBLIC_NODE_SERVER}`}
+              href={`https://${AUTH_SERVER}/login?idp=fxa&client=https://${PUBLIC_DASH_ROOT_DOMAIN}`}
             />
           )}
         </div>

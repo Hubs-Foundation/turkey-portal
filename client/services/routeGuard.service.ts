@@ -5,6 +5,7 @@ import type {
 } from 'next';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 import { getAccount } from './account.service';
+import { RoutesE } from 'types/Routes';
 
 type RedirectDataT = {
   error: String;
@@ -81,7 +82,7 @@ export function checkLoggedIn(gssp: Function): GetServerSideProps {
       // If Authenticated Redirect to Dashboard.
       return {
         redirect: {
-          destination: '/dashboard',
+          destination: RoutesE.Dashboard,
           permanent: false,
         },
       };

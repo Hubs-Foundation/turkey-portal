@@ -1,5 +1,5 @@
 import axios, { AxiosRequestHeaders } from 'axios';
-import { API_SERVER } from 'config';
+import { PUBLIC_API_SERVER } from 'config';
 
 const API_PATH = '/api/v1/account';
 
@@ -13,9 +13,11 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
   const contextHeaders = { headers: { ...(headers as AxiosRequestHeaders) } };
   const config = headers ? contextHeaders : credentials;
 
-  return axios.get(`${API_SERVER}${API_PATH}`, config).then((response) => {
-    return response.data;
-  });
+  return axios
+    .get(`${PUBLIC_API_SERVER}${API_PATH}`, config)
+    .then((response) => {
+      return response.data;
+    });
 };
 
 /**
@@ -25,7 +27,7 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
  */
 export const logOut = async () => {
   return axios
-    .get(`${API_SERVER}/logout`, { withCredentials: true })
+    .get(`${PUBLIC_API_SERVER}/logout`, { withCredentials: true })
     .then((response) => {
       return response.data;
     });

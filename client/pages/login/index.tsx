@@ -1,15 +1,14 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
 import { checkLoggedIn } from 'services/routeGuard.service';
-import { AUTH_SERVER_URL, PUBLIC_DASH_ROOT_DOMAIN } from 'config';
-import Button from '@Shared/Button/Button';
-import ExternalLink from '@Shared/ExternalLink/ExternalLink';
+import SubContactCard from '@Cards/SubContactCard/SubContactCard';
+import SubInfoCard from '@Cards/SubInfoCard/SubInfoCard';
+import styles from './login.module.scss';
 
+// TODO This page will never be seen for EA
 type LoginPropsT = {};
 
 const Login = ({}: LoginPropsT) => {
-  const loginUrl = `${AUTH_SERVER_URL}/login?idp=fxa&client=${PUBLIC_DASH_ROOT_DOMAIN}`;
-
   return (
     <div className="page_wrapper">
       <Head>
@@ -18,11 +17,17 @@ const Login = ({}: LoginPropsT) => {
       </Head>
 
       <main>
-        <h1>Login Page</h1>
-
-        <ExternalLink href={loginUrl} target="_self">
-          <Button text="Sign Up"></Button>
-        </ExternalLink>
+        <div className={styles.wrapper}>
+          <div className={styles.header}>
+            <div className={styles.cards}>
+              <SubInfoCard />
+              <SubContactCard
+                email="hubs@mozilla.com"
+                subject="Subscription inquiries"
+              />
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );

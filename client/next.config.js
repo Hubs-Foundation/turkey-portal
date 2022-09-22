@@ -2,16 +2,17 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['localhost'], // TODO Add other servers
+    domains: ['localhost:4000'], // TODO Add other servers
   },
   serverRuntimeConfig: {
-    API_SERVER: 'http://localhost:4000',
+    PUBLIC_API_SERVER: 'http://localhost:4000',
   },
   publicRuntimeConfig: {
-    API_SERVER: process.env.PUBLIC_API_SERVER,
-    AUTH_SERVER_URL: process.env.AUTH_SERVER_URL,
-    PUBLIC_API_SERVER: process.env.PUBLIC_API_SERVER,
+    AUTH_SERVER: process.env.AUTH_SERVER,
+    DUMMY: process.env.dummy,
+    FXA_SERVER: process.env.FXA_SERVER,
     HUB_ROOT_DOMAIN: process.env.HUB_ROOT_DOMAIN,
+    PUBLIC_API_SERVER: process.env.PUBLIC_API_SERVER,
     PUBLIC_DASH_ROOT_DOMAIN: process.env.PUBLIC_DASH_ROOT_DOMAIN,
   },
   async redirects() {

@@ -22,7 +22,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
   }, [MobileMenuClick]);
 
   const handleGetStartedClick = useCallback(() => {
-    router.push('/#subscribe-hook');
+    router.push('/#subscribe');
   }, [router]);
 
   /**

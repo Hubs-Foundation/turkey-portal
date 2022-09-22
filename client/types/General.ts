@@ -47,6 +47,8 @@ export type AccountT = {
   profilePic: string;
   isLoggedIn?: boolean;
   hasHubs?: boolean;
+  hasCreatingHubs: boolean;
+  isForbidden: boolean;
 };
 
 export enum BadgeCategoriesE {

@@ -13,7 +13,15 @@ npm run dev
 
 Then, make sure the Phoenix API server is running on. See [/README.md](/README.md) 'README' in root project.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your
+browser to see the result.
+
+## Production environment variables
+
+- PUBLIC_API_SERVER - public server url ( todo more info here )
+- HUB_ROOT_DOMAIN - Root url for cluster ( todo more info here )
+- AUTH_SERVER - Server used for login links. e.g. "auth.myhubs.net"
+- FXA_SERVER - Firefox Accounts server used for account management links. e.g. "accounts.firefox.com"
 
 To authenticate using local cookies, see [README.md:"Create a local user"](/README.md#create-a-local-user) to paste development cookies into the browser and create a local user with or without a hubs subscription.
 

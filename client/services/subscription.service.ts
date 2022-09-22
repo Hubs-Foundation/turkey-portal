@@ -1,6 +1,6 @@
 import axios, { AxiosRequestHeaders } from 'axios';
 const API_PATH = 'TODO';
-import { API_SERVER } from 'config';
+import { PUBLIC_API_SERVER_SERVER } from 'config';
 
 export type SubscriptionT = {
   nextPayment: string;
@@ -25,7 +25,7 @@ export const getSubscription = async (headers?: AxiosRequestHeaders) => {
   return mockDate;
 
   // try {
-  //   return axios.get(`${API_SERVER}${API_PATH}`, config).then((response) => {
+  //   return axios.get(`${PUBLIC_API_SERVER}${API_PATH}`, config).then((response) => {
   //     return response.data;
   //   });
   // } catch (error) {
