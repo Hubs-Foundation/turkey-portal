@@ -15,6 +15,9 @@ import Import3dModel from '../public/import_3d_models.jpg';
 import Mock from '../public/mock_fiftyfifty.jpg';
 import HubsMobileHero from '../public/hubs_hero_mobile.jpg';
 import HubsHero from '../public/hubs_hero.jpg';
+import engagingFiftyfifty from '../public/engaging_fiftyfifty.png';
+import heart from '../public/heart.png';
+import engaging_fiftyfifty_mobile from '../public/engaging_fiftyfifty_mobile.png';
 
 import { useMobileDown } from 'hooks/useMediaQuery';
 
@@ -101,6 +104,16 @@ const Home: NextPage = () => {
         <TitleDescription
           title="We're bringing the best of face-to-face interactions to the web:"
           description="No more videos in a grid of squares. Connect with your community online in virtual spaces as avatars to communicate more naturally."
+        />
+
+        <FiftyFifty
+          imageMobile={engaging_fiftyfifty_mobile}
+          image={engagingFiftyfifty}
+          imageAlt="Engage Digital Worlds"
+          accentImage={heart}
+          title="Engaging Digital Worlds"
+          body="Create a museum for your favorite hobbies, a classroom to connect with your students, a planet in outer space, or an office that serves as your company HQ. Hubs provides templates and scenes to get started with building out your vibrant virtual worlds.
+          "
         />
 
         <TileSpotlight
