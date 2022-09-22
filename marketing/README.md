@@ -1,6 +1,17 @@
 ## Hubs Marketing Site
 
+To run:
+
+```
+npm install --legacy-peer-deps
+npm run dev
+```
+
+Open http://localhost:3000 and you'll see the marketing page!
+
 ## Setting Up Lilypad
+
+First, get an access token to fetch our maintained Lilypad component library on npm, you need to create an access token on github and enable Mozilla organization on the access token.
 
 Configure your local install of NPM itself to be authorized to use Lilypad. To do this we use a .npmrc file.
 
@@ -19,9 +30,10 @@ registry=https://registry.npmjs.org/
 
 ```
 
-## Production environment variables
+## Evironment Variables
 
 - HUB_ROOT_DOMAIN - Root url for cluster ( todo more info here )
+- DASH_ROOT_DOMAIN - Root url for dashboard "dashboard.dev.myhubs.net"
 - AUTH_SERVER - Server used for login links. e.g. "auth.myhubs.net"
 - FXA_SERVER - Firefox Accounts server used for account management links. e.g. "accounts.firefox.com"
 - FXA_PAYMENT_URL - subscription payment url

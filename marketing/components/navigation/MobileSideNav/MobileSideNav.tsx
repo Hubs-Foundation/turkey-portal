@@ -3,7 +3,7 @@ import { Button, ButtonCategoriesE, ButtonSizesE } from '@mozilla/lilypad';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { useRouter } from 'next/router';
 import styles from './MobileSideNav.module.scss';
-import { HUB_ROOT_DOMAIN } from 'config';
+import { DASH_ROOT_DOMAIN } from 'config';
 
 type MobileSideNavPropsT = {
   isOpen: boolean;
@@ -20,7 +20,7 @@ const MobileSideNav = ({
    * Handle Go To Hubs Click
    */
   const handleGoToHubsClick = useCallback(() => {
-    router.push(`https://${HUB_ROOT_DOMAIN}`);
+    router.push(`https://${DASH_ROOT_DOMAIN}`);
   }, []);
 
   /**

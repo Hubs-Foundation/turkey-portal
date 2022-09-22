@@ -4,7 +4,7 @@ import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 import { useTabletDown } from 'hooks/useMediaQuery';
 import { useRouter } from 'next/router';
-import { HUB_ROOT_DOMAIN } from 'config';
+import { DASH_ROOT_DOMAIN } from 'config';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -26,7 +26,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
    * Handle Go To Hubs Click
    */
   const handleGoToHubsClick = useCallback(() => {
-    router.push(`https://${HUB_ROOT_DOMAIN}`);
+    router.push(`https://${DASH_ROOT_DOMAIN}`);
   }, []);
 
   const handleGetStartedClick = useCallback(() => {
