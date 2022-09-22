@@ -1,4 +1,4 @@
-import { useEffect, useCallback, ReactNode, useContext, useState } from 'react';
+import { useEffect, ReactNode, useContext } from 'react';
 import initStoreData from 'store/storeInit';
 import { LoggedOutComponentPages } from 'types/Routes';
 import { ThemeContext } from 'contexts/ThemeProvider';

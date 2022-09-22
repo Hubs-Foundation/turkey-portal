@@ -6,7 +6,7 @@ import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
 import BlobIcon from '@Logos/BlobIcon/BlobIcon';
 import { RoutesE } from 'types/Routes';
-import { PUBLIC_API_SERVER } from 'config';
+import { AUTH_SERVER, FXA_SERVER, PUBLIC_API_SERVER } from 'config';
 
 import {
   Button,
@@ -16,7 +16,6 @@ import {
   Dropdown,
   dropdownT,
 } from '@mozilla/lilypad';
-import { AUTH_SERVER, FXA_SERVER } from 'config';
 
 type MainNavPropsT = {
   classProp?: string;

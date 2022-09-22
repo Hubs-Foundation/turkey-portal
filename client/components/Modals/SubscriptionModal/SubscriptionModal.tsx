@@ -1,6 +1,7 @@
 import styles from './SubscriptionModal.module.scss';
+import { useCallback } from 'react';
 import { Icon, Button, ButtonCategoriesE } from '@mozilla/lilypad';
-import { AUTH_SERVER } from 'config';
+import { FXA_SERVER } from 'config';
 
 type SubscriptionModalT = {
   subdomain: string;
@@ -15,16 +16,27 @@ const SubscriptionModal = ({
   onClose,
   classProp = '',
 }: SubscriptionModalT) => {
-  const handleCloseClick = () => {
+  /**
+   * Close Modal
+   */
+  const handleCloseClick = useCallback(() => {
     onClose && onClose();
-  };
+  }, [onClose]);
+
+  /**
+   * Manage Account
+   */
+  const onManageAccountClick = useCallback(() => {
+    window.open(`https://${FXA_SERVER}/settings`);
+    onClose && onClose();
+  }, [onClose]);
 
   return (
     <div className={classProp}>
       {/* HEADER  */}
       <div className={styles.header}>
         {/* TODO update icon asset  */}
-        <Icon name="alert-circle" size={24} classProp="margin-right-10" />
+        <Icon name="info" size={24} classProp="margin-right-10" />
         <h2 className={styles.title}>Cancel Subscription</h2>
       </div>
 
@@ -63,10 +75,10 @@ const SubscriptionModal = ({
             onClick={handleCloseClick}
           />
           <Button
+            onClick={onManageAccountClick}
             category={ButtonCategoriesE.PRIMARY_SOLID}
             classProp="margin-bottom-24-mobile"
             text="Continue to Firefox Account"
-            href={`https://${AUTH_SERVER}/settings`}
             target="_blank"
           />
         </div>

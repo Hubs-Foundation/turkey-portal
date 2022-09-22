@@ -1,6 +1,8 @@
+import { useRouter } from 'next/router';
 import { Button, Icon, IconT } from '@mozilla/lilypad';
 import SubscriptionInfoCopy from './SubscriptionInfoCopy';
 import styles from './SubInfoCard.module.scss';
+import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA } from 'config';
 
 type SubInfoCardPropsT = {
   classProp?: string;
@@ -27,8 +29,11 @@ const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
 };
 
 const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
+  const router = useRouter();
+
   const handleSubscribeClick = () => {
-    // TODO set up subscribe route here...
+    const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_EA}`;
+    router.push(url);
   };
 
   return (
