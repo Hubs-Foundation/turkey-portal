@@ -11,27 +11,6 @@
   max-width: $container-max-width;
 }
 
-.header {
-  color: $color-text-main;
-  text-align: center;
-  margin-bottom: 42px;
-
-  h2 {
-    @include h1;
-    margin: 0 0 16px;
-  }
-
-  p {
-    @include body-md;
-    margin-bottom: 64px;
-    padding: 0;
-
-    @include tablet-down {
-      margin: 0 24px 64px;
-    }
-  }
-}
-
 .tile {
   &s {
     display: grid;
@@ -71,7 +50,7 @@
     text-align: center;
 
     h3 {
-      @include h2;
+      @include heading-lg;
       margin: 0 0 24px;
     }
 
