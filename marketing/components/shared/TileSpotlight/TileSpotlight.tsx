@@ -52,12 +52,15 @@ const TileSpotlight = ({
 }: TileSpotlightPropsT) => {
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
-      <div
-        className={styles.bubble_top}
-        style={{
-          backgroundImage: `url(${bubbleTop.src})`,
-        }}
-      ></div>
+      <div className={styles.bubble_top}>
+        <Image
+          src={bubbleTop}
+          alt="bubble background"
+          layout="fill"
+          objectFit="cover"
+          objectPosition="center"
+        />
+      </div>
       <div className={styles.container}>
         {/* HEADER  */}
         <div className={styles.header}>
@@ -80,12 +83,15 @@ const TileSpotlight = ({
           })}
         </div>
       </div>
-      <div
-        className={styles.bubble_bottom}
-        style={{
-          backgroundImage: `url(${bubbleBottom.src})`,
-        }}
-      ></div>
+      <div className={styles.bubble_bottom}>
+        <Image
+          src={bubbleBottom}
+          alt="bubble background"
+          layout="fill"
+          objectFit="cover"
+          objectPosition="center"
+        />
+      </div>
     </section>
   );
 };

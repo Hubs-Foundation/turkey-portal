@@ -20,6 +20,9 @@ const HubsLogo = ({
   return (
     <div className={`${styles.logo_wrapper} ${classProp}`}>
       <Image
+        layout="fixed"
+        width={140}
+        height={50}
         src={category === LogoCategoryE.DARK ? logoDark : logoLight}
         alt="Hubs Logo"
       />
