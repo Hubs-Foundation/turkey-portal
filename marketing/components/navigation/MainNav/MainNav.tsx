@@ -4,6 +4,7 @@ import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 import { useTabletDown } from 'hooks/useMediaQuery';
 import { useRouter } from 'next/router';
+import { DASH_ROOT_DOMAIN } from 'config';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -70,12 +71,19 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
             )}
 
             {!isTabletDown && (
-              <Button
-                classProp={styles.dashboard_button}
-                category={ButtonCategoriesE.PRIMARY_SOLID}
-                onClick={handleGetStartedClick}
-                text="Get Started"
-              />
+              <div className={styles.main_nav_actions}>
+                <Button
+                  classProp="margin-right-10"
+                  category={ButtonCategoriesE.PRIMARY_OUTLINE}
+                  href={`https://${DASH_ROOT_DOMAIN}`}
+                  text="Go to Dashboard"
+                />
+                <Button
+                  category={ButtonCategoriesE.PRIMARY_SOLID}
+                  onClick={handleGetStartedClick}
+                  text="Get Started"
+                />
+              </div>
             )}
           </div>
         </div>

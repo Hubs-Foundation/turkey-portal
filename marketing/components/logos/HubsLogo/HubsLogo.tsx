@@ -1,5 +1,7 @@
-import BlobIcon from '@Logos/BlobIcon/BlobIcon';
+import Image from 'next/image';
 import styles from './HubsLogo.module.scss';
+import logoDark from '../../../public/hubs_logo_dark.svg';
+import logoLight from '../../../public/hubs_logo_light.svg';
 
 export enum LogoCategoryE {
   DARK = 'dark',
@@ -17,8 +19,10 @@ const HubsLogo = ({
 }: HubsLogoPropsT) => {
   return (
     <div className={`${styles.logo_wrapper} ${classProp}`}>
-      <div className={styles[`logo_${category}`]}>hubs</div>
-      <BlobIcon />
+      <Image
+        src={category === LogoCategoryE.DARK ? logoDark : logoLight}
+        alt="Hubs Logo"
+      />
     </div>
   );
 };
