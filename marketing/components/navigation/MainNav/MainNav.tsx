@@ -22,13 +22,6 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
     MobileMenuClick && MobileMenuClick();
   }, [MobileMenuClick]);
 
-  /**
-   * Handle Go To Hubs Click
-   */
-  const handleGoToHubsClick = useCallback(() => {
-    router.push(`https://${DASH_ROOT_DOMAIN}`);
-  }, [router]);
-
   const handleGetStartedClick = useCallback(() => {
     router.push('/#subscribe');
   }, [router]);
@@ -82,8 +75,8 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
                 <Button
                   classProp="margin-right-10"
                   category={ButtonCategoriesE.PRIMARY_OUTLINE}
-                  onClick={handleGoToHubsClick}
-                  text="Go to my hubs"
+                  href={`https://${DASH_ROOT_DOMAIN}`}
+                  text="Go to Dashboard"
                 />
                 <Button
                   category={ButtonCategoriesE.PRIMARY_SOLID}

@@ -17,13 +17,6 @@ const MobileSideNav = ({
   const router = useRouter();
 
   /**
-   * Handle Go To Hubs Click
-   */
-  const handleGoToHubsClick = useCallback(() => {
-    router.push(`https://${DASH_ROOT_DOMAIN}`);
-  }, [router]);
-
-  /**
    * Handle Menu Click
    */
   const handleMobileMenuClick = useCallback(() => {
@@ -103,8 +96,8 @@ const MobileSideNav = ({
               <Button
                 classProp="flex-grow-1 "
                 category={ButtonCategoriesE.PRIMARY_OUTLINE}
-                onClick={handleGoToHubsClick}
-                text="Go to my hubs"
+                href={`https://${DASH_ROOT_DOMAIN}`}
+                text="Go to my Dashboard"
               />
             </div>
           </div>

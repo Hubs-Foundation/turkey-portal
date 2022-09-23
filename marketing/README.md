@@ -1,14 +1,3 @@
-## Hubs Marketing Site
-
-To run:
-
-```
-npm install --legacy-peer-deps
-npm run dev
-```
-
-Open http://localhost:3000 and you'll see the marketing page!
-
 ## Setting Up Lilypad
 
 First, get an access token to fetch our maintained Lilypad component library on npm, you need to create an access token on github and enable Mozilla organization on the access token.
@@ -30,7 +19,20 @@ registry=https://registry.npmjs.org/
 
 ```
 
-## Evironment Variables
+## Hubs Marketing Site
+
+To run:
+
+```
+npm install --legacy-peer-deps
+npm run dev
+```
+
+Open http://localhost:3000 and you'll see the marketing page!
+
+## Environment Variables
+
+Note: Files env.development and .env.production are where env varibles go for this project NOT Skooner.
 
 - HUB_ROOT_DOMAIN - Root url for cluster ( todo more info here )
 - DASH_ROOT_DOMAIN - Root url for dashboard "dashboard.dev.myhubs.net"
