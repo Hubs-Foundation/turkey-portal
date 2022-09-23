@@ -55,12 +55,12 @@
   }
 
   h3 {
-    @include h2;
+    @include heading-xxl;
     margin: 4px 0 18px;
   }
 
   h4 {
-    @include h4;
+    @include heading-sm;
     margin-bottom: 0;
   }
 

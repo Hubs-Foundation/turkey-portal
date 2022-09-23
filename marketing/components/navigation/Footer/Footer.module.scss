@@ -40,7 +40,7 @@
   }
 
   h4 {
-    @include h4;
+    @include heading-sm;
     color: $color-text-reverse;
     margin: 0 0 10px;
 
@@ -94,7 +94,7 @@
     }
 
     h4 {
-      @include h4;
+      @include heading-sm;
       margin: 4px 0 14px;
       color: $color-text-reverse;
     }

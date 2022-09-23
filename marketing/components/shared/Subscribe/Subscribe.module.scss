@@ -18,26 +18,6 @@
   }
 }
 
-.header {
-  @include mobile-down {
-    margin: 0px 24px;
-  }
-
-  h1 {
-    color: $color-text-reverse;
-    @include h2;
-    text-align: center;
-    margin: 0 0 16px;
-  }
-
-  p {
-    @include body-md;
-    color: $color-text-reverse;
-    text-align: center;
-    margin: 0 0 40px;
-  }
-}
-
 .cards {
   display: flex;
   justify-content: center;

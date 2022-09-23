@@ -39,10 +39,6 @@ const ValueProps = ({ values, classProp = '' }: ValuePropsPropsT) => {
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.container}>
-        <div className={styles.header}>
-          <h2>Privacy remains our focus</h2>
-        </div>
-
         <div className={styles.tiles}>
           {values.map(({ icon, title, description }, i) => {
             return (
