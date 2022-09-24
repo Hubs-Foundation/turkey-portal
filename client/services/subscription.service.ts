@@ -1,6 +1,6 @@
 import axios, { AxiosRequestHeaders } from 'axios';
 const API_PATH = 'TODO';
-import { PUBLIC_API_SERVER_SERVER } from 'config';
+import { PUBLIC_API_SERVER } from 'config';
 
 export type SubscriptionT = {
   nextPayment: string;

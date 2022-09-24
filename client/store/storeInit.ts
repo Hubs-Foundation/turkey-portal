@@ -8,11 +8,13 @@ import { getAccount } from 'services/account.service';
  */
 const initAccountData = async () => {
   try {
-    const { displayName, email, profilePic } = await getAccount();
+    const { displayName, email, profilePic, hasSubscription } =
+      await getAccount();
     const account: AccountT = {
       displayName,
       email,
       profilePic,
+      hasSubscription,
       isLoggedIn: true,
       isInitialized: true,
     };

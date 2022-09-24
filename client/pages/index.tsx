@@ -5,7 +5,7 @@ import { setAccount, logOut } from '../store/accountSlice';
 import { useDispatch } from 'react-redux';
 import axios, { AxiosRequestHeaders } from 'axios';
 import { HubT, AccountT } from 'types/General';
-import { PUBLIC_API_SERVER_SERVER } from 'config';
+import { PUBLIC_API_SERVER } from 'config';
 
 const fetchData = async (
   context: GetServerSidePropsContext,
@@ -20,7 +20,7 @@ const fetchData = async (
   if (connection) contextHeaders.connection = connection;
 
   return await axios
-    .get(`${PUBLIC_API_SERVER_SERVER}/api/v1/${resource}`, {
+    .get(`${PUBLIC_API_SERVER}/api/v1/${resource}`, {
       headers: contextHeaders,
     })
     .then((response) => response.data);

@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 const API_PATH = '/api/v1/hubs';
-import { PUBLIC_API_SERVER_SERVER } from 'config';
+import { PUBLIC_API_SERVER } from 'config';
 import { UpdateHubT } from 'types/General';
 
 /**
@@ -10,7 +10,7 @@ import { UpdateHubT } from 'types/General';
 export const getHubs = async () => {
   try {
     return axios
-      .get(`${PUBLIC_API_SERVER_SERVER}${API_PATH}`, { withCredentials: true })
+      .get(`${PUBLIC_API_SERVER}${API_PATH}`, { withCredentials: true })
       .then((response) => {
         return response.data;
       });
@@ -28,10 +28,10 @@ export const getHubs = async () => {
 export const getHub = async (hubId: string) => {
   try {
     return axios
-      .get(`${PUBLIC_API_SERVER_SERVER}${API_PATH}/${hubId}`, {
+      .get(`${PUBLIC_API_SERVER}${API_PATH}/${hubId}`, {
         withCredentials: true,
       })
-      .then((response) => {
+      .then((response: AxiosResponse) => {
         return response.data;
       });
   } catch (error) {
@@ -60,7 +60,7 @@ export const validateHubSubdomain = async (
       {
         withCredentials: true,
       }
-    ).then((response) => {
+    ).then((response: AxiosResponse) => {
       return response.data;
     });
   } catch (error) {
