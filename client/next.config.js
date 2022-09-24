@@ -13,7 +13,7 @@ const nextConfig = {
     FXA_SERVER: process.env.FXA_SERVER,
     HUB_ROOT_DOMAIN: process.env.HUB_ROOT_DOMAIN,
     PUBLIC_API_SERVER: process.env.PUBLIC_API_SERVER,
-    PUBLIC_DASH_ROOT_DOMAIN: process.env.PUBLIC_DASH_ROOT_DOMAIN,
+    DASH_ROOT_DOMAIN: process.env.DASH_ROOT_DOMAIN,
   },
   async redirects() {
     return [

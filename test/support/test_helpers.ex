@@ -9,7 +9,7 @@ defmodule DashWeb.TestHelpers do
     "fxa_email" => @test_email,
     "fxa_pic" => "https://fake.com/pic.jpg",
     "fxa_displayName" => "Faker McFakerson",
-    "fxa_subscriptions" => ["hubs:sub"]
+    "fxa_subscriptions" => [Dash.Plugs.Auth.get_subscription_string()]
   }
 
   @default_token_opts [

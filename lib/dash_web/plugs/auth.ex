@@ -13,7 +13,7 @@ defmodule DashWeb.Plugs.Auth do
     "sub": "123abc",
     "fxa_displayName": "Name"
     "fxa_subscriptions": [
-       "hubs:sub"
+       "managed-hubs"
     ]
   }
   """
@@ -22,6 +22,7 @@ defmodule DashWeb.Plugs.Auth do
 
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
+  @subscription_string "managed-hubs"
 
   def init(default), do: default
 
@@ -47,24 +48,14 @@ defmodule DashWeb.Plugs.Auth do
 
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
-    if Enum.member?(fxa_subscriptions, "hubs:sub") do
-      # Has subscription
-      conn
-      |> assign(:account, account)
-      |> assign(:fxa_account_info, %Dash.FxaAccountInfo{
-        fxa_pic: fxa_pic,
-        fxa_display_name: fxa_display_name,
-        fxa_email: fxa_email
-      })
-    else
-      # Does not have subscription redirect to the pricing page
-      conn
-      |> send_resp(
-        401,
-        Jason.encode!(%{error: "unauthorized", redirect: get_pricing_page_path()})
-      )
-      |> halt()
-    end
+    conn
+    |> assign(:account, account)
+    |> assign(:fxa_account_info, %Dash.FxaAccountInfo{
+      fxa_pic: fxa_pic,
+      fxa_display_name: fxa_display_name,
+      fxa_email: fxa_email,
+      has_subscription: Enum.member?(fxa_subscriptions, @subscription_string)
+    })
   end
 
   # Not authorized or empty jwt
@@ -124,5 +115,9 @@ defmodule DashWeb.Plugs.Auth do
   @login_page_path "/login"
   def get_login_page_path() do
     @login_page_path
+  end
+
+  def get_subscription_string() do
+    @subscription_string
   end
 end

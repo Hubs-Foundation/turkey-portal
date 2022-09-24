@@ -16,8 +16,11 @@ defmodule DashWeb.Api.V1.HubController do
 
   # All hubs for 1 account
   def index(conn, %{}, account) do
-    # Check that this account has at least one hub
-    case Hub.ensure_default_hub_is_ready(account, conn.assigns[:fxa_account_info].fxa_email) do
+    # Check that this account has at least one hub if subscribed
+    fxa_email = conn.assigns[:fxa_account_info].fxa_email
+    has_subscription = conn.assigns[:fxa_account_info].has_subscription
+
+    case Hub.ensure_default_hub_is_ready(account, fxa_email, has_subscription) do
       {:ok} ->
         hubs = Hub.hubs_with_usage_stats_for_account(account)
         conn |> render("index.json", hubs: hubs)
