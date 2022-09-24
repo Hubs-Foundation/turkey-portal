@@ -6,6 +6,7 @@ import type {
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 import { getAccount } from './account.service';
 import { RoutesE } from 'types/Routes';
+import { MARKETING_PAGE_URL } from 'config';
 
 type RedirectDataT = {
   error: String;
@@ -22,34 +23,40 @@ export function requireAuthentication(
     try {
       // TODO : MAYBE - Should we make a more explicit way to confirm a JWT here..
       const account = await getAccount(req.headers as AxiosRequestHeaders);
+
       // User is authenticated
-      return await gssp(context, account);
+      if (account.hasHubs || account.hasSubscription) {
+        return await gssp(context, account);
+      } else {
+        // Authenticated but does not have any hubs or a subscription therefore send to /subscribe page
+        return {
+          redirect: {
+            source: '/dashboard',
+            destination: '/subscribe',
+            permanent: false,
+          },
+        };
+      }
     } catch (error) {
       // User is not authenticated
       const axiosError = error as AxiosError;
       const status: Number | undefined = axiosError.response?.status;
-      const data: RedirectDataT | unknown = axiosError.response?.data;
+      const redirectToMarketingPage = {
+        redirect: {
+          source: '/dashboard',
+          destination: MARKETING_PAGE_URL, // likely the marketing page
+          permanent: false,
+        },
+      };
 
-      if (status === 401 && checkTypeRedirectDataT(data)) {
-        // Expected authentication redirects from the Phoenix server
-        const redirectUrl: String = data.redirect;
-        return {
-          redirect: {
-            source: '/dashboard',
-            destination: redirectUrl, // /login OR /subscribe page
-            permanent: false,
-          },
-        };
+      if (status === 401) {
+        // Expected authentication error from the Phoenix server
+        return redirectToMarketingPage;
       } else {
         console.error('Unexpected error in requireAuthentication');
+        console.error(`Response status ${status}`);
         // Unexpected error
-        return {
-          redirect: {
-            source: '/dashboard',
-            destination: `/subscribe`,
-            permanent: false,
-          },
-        };
+        return redirectToMarketingPage;
       }
     }
   };

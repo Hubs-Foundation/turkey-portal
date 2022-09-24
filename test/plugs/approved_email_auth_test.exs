@@ -42,7 +42,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
 
       # Passes through ApprovedEmailAuth without responding with a 403
       assert response(conn, 401) ==
-               Jason.encode!(DashWeb.Plugs.Auth.get_unauthorized_redirect_struct())
+               Jason.encode!(DashWeb.Plugs.Auth.get_unauthorized_struct())
     end
 
     # if email on the conn and it's authorized, should do nothing to the conn

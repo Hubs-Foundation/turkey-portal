@@ -58,9 +58,7 @@ config :dash, Dash.AppConfig,
   auth_server: "auth.local",
   fxa_server: "fxa.turkey.local"
 
-config :dash, DashWeb.Plugs.Auth,
-  auth_pub_key: auth_pub_key,
-  marketing_page_url: "http://localhost:3030"
+config :dash, DashWeb.Plugs.Auth, auth_pub_key: auth_pub_key
 
 config :dash, DashWeb.Plugs.BasicAuth,
   # Disable BasicAuth by default in local dev, since it's a bit annoying.

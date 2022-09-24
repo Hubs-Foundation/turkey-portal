@@ -49,6 +49,7 @@ export type AccountT = {
   hasHubs?: boolean;
   hasCreatingHubs: boolean;
   isForbidden: boolean;
+  hasSubscription: boolean;
 };
 
 export enum BadgeCategoriesE {

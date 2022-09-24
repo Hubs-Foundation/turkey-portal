@@ -77,8 +77,7 @@ if config_env() == :prod do
       System.get_env("AUTH_PUBLIC_KEY") ||
         raise("""
         Environment variable AUTH_PUBLIC_KEY is missing. Used in JWT authentication.
-        """),
-    marketing_page_url: "https://hubs.mozilla.com"
+        """)
 
   # ## Using releases
   #

@@ -33,8 +33,7 @@ defmodule DashWeb.Plugs.AuthTest do
 
       assert response(conn, 401) ==
                Jason.encode!(%{
-                 error: "unauthorized",
-                 redirect: Auth.get_marketing_page_url()
+                 error: "unauthorized"
                })
     end
 
@@ -65,8 +64,7 @@ defmodule DashWeb.Plugs.AuthTest do
 
       assert response(conn, 401) ==
                Jason.encode!(%{
-                 error: "unauthorized",
-                 redirect: Auth.get_marketing_page_url()
+                 error: "unauthorized"
                })
     end
 
@@ -81,8 +79,7 @@ defmodule DashWeb.Plugs.AuthTest do
 
       assert response(conn, 401) ==
                Jason.encode!(%{
-                 error: "unauthorized",
-                 redirect: Auth.get_marketing_page_url()
+                 error: "unauthorized"
                })
     end
   end

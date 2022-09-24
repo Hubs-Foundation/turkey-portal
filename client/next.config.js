@@ -14,6 +14,7 @@ const nextConfig = {
     HUB_ROOT_DOMAIN: process.env.HUB_ROOT_DOMAIN,
     PUBLIC_API_SERVER: process.env.PUBLIC_API_SERVER,
     DASH_ROOT_DOMAIN: process.env.DASH_ROOT_DOMAIN,
+    MARKETING_PAGE_URL: process.env.MARKETING_PAGE_URL,
   },
   async redirects() {
     return [

@@ -63,7 +63,7 @@ defmodule DashWeb.Plugs.Auth do
     conn
     |> send_resp(
       401,
-      Jason.encode!(get_unauthorized_redirect_struct())
+      Jason.encode!(get_unauthorized_struct())
     )
     |> halt()
   end
@@ -96,12 +96,8 @@ defmodule DashWeb.Plugs.Auth do
 
   def get_cookie_name(), do: @cookie_name
 
-  def get_unauthorized_redirect_struct() do
-    %{error: "unauthorized", redirect: get_marketing_page_url()}
-  end
-
-  def get_marketing_page_url() do
-    Application.get_env(:dash, __MODULE__)[:marketing_page_url]
+  def get_unauthorized_struct() do
+    %{error: "unauthorized"}
   end
 
   def get_subscription_string() do
