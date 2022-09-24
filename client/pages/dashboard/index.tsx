@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
 import { useEffect, useState, useCallback } from 'react';
-import { AccountT, HubT } from 'types/General';
+import { HubT } from 'types/General';
 import styles from './dashboard.module.scss';
 import HubCard from '@Cards/HubCard/HubCard';
 import SubCard from '@Cards/SubCard/SubCard';
