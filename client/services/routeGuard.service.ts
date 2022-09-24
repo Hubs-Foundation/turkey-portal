@@ -7,13 +7,9 @@ import { AxiosError, AxiosRequestHeaders } from 'axios';
 import { getAccount } from './account.service';
 import { RoutesE } from 'types/Routes';
 import { MARKETING_PAGE_URL } from 'config';
+import { IncomingMessage } from 'http';
 
-type RedirectDataT = {
-  error: String;
-  redirect: String;
-};
-
-export function requireAuthentication(
+export function requireAuthenticationAndHubsOrSubscription(
   gssp: Function
 ): GetServerSideProps | Redirect {
   return async (context: GetServerSidePropsContext) => {
@@ -28,50 +24,114 @@ export function requireAuthentication(
       if (account.hasHubs || account.hasSubscription) {
         return await gssp(context, account);
       } else {
-        // Authenticated but does not have any hubs or a subscription therefore send to /subscribe page
-        return {
-          redirect: {
-            source: '/dashboard',
-            destination: '/subscribe',
-            permanent: false,
-          },
-        };
+        // Authenticated, NO hubs OR NO subscription
+        return redirectToSubscribe();
       }
     } catch (error) {
       // User is not authenticated
       const axiosError = error as AxiosError;
       const status: Number | undefined = axiosError.response?.status;
-      const redirectToMarketingPage = {
-        redirect: {
-          source: '/dashboard',
-          destination: MARKETING_PAGE_URL, // likely the marketing page
-          permanent: false,
-        },
-      };
 
       if (status === 401) {
         // Expected authentication error from the Phoenix server
-        return redirectToMarketingPage;
+        return redirectToMarketingPage();
       } else {
-        console.error('Unexpected error in requireAuthentication');
-        console.error(`Response status ${status}`);
         // Unexpected error
-        return redirectToMarketingPage;
+        console.error('Unexpected error in requireAuthentication');
+        console.error(`Response status: ${status}, error: ${axiosError}`);
+        return redirectToMarketingPage();
       }
     }
   };
 }
 
-// Type check if obj is RedirectDataT
-function checkTypeRedirectDataT(
-  obj: unknown | RedirectDataT
-): obj is RedirectDataT {
-  return (
-    typeof obj === 'object' &&
-    obj !== null &&
-    'error' in obj &&
-    'redirect' in obj
-  );
+function redirectToMarketingPage() {
+  return {
+    redirect: {
+      source: '/dashboard',
+      destination: MARKETING_PAGE_URL, // likely the marketing page
+      permanent: false,
+    },
+  };
+}
+
+function redirectToDashboard() {
+  return {
+    redirect: {
+      destination: RoutesE.Dashboard,
+      permanent: false,
+    },
+  };
+}
+
+function redirectToSubscribe() {
+  return {
+    redirect: {
+      source: '/dashboard',
+      destination: '/subscribe',
+      permanent: false,
+    },
+  };
+}
+
+// TODO EA remove this function when unauthenticated users are no longer redirected to marketing page
+const FALSE = 'false';
+type QueryRedirectT = {
+  redirect?: string;
+};
+
+/**
+ * Local development only
+ * Used for pasting document.cookie into the browser for local testing purposes
+ * Checks for /subscribe page, then for "?redirect=false" in query params, then if we're on localhost
+ *
+ * @param req
+ * @param query
+ * @returns boolean
+ */
+function shouldNotRedirect(
+  req: IncomingMessage,
+  query: QueryRedirectT
+): boolean {
+  if (
+    req.url?.includes('/subscribe') &&
+    query.redirect === FALSE &&
+    req.headers.host?.includes('localhost')
+  )
+    return true;
+  else return false;
+}
+
+/**
+ * For authenticated subscribe page,redirect to /dashboard if you have hubs or subscription
+ * Authenticated NO hubs AND NO subscription, stay on /subscribe page
+ * Authenticated YES hubs OR YES subscription, redirect to /dashbaord
+ * NOT Authenticated, redirect to marketing page
+ * @param gssp
+ * @returns GetServerSideProps
+ */
+export function subscriptionPageRequireAuthentication(
+  gssp: Function
+): GetServerSideProps {
+  return async (context) => {
+    const { req, query } = context;
+
+    // shouldNotRedirect() Local development only
+    if (shouldNotRedirect(req, query)) return await gssp(context);
+
+    try {
+      const account = await getAccount(req.headers as AxiosRequestHeaders);
+
+      if (account.hasHubs || account.hasSubscription) {
+        return redirectToDashboard();
+      } else {
+        return await gssp(context, account);
+      }
+    } catch (error) {
+      // Not Authenticated
+      return redirectToMarketingPage();
+    }
+  };
 }
 
 /**

@@ -23,22 +23,20 @@ mix dash.create_account local-user-uid
 mix dash.create_hub local-user-uid "Dev Hub"
 ```
 
-Visit [`http://localhost:3000`](http://localhost:3000/)
-
-Paste the following in your browser console to login as a local user.
+Go to [`http://localhost:3000/subscribe?redirect=false`](http://localhost:3000/subscribe?redirect=false) and paste the following in your browser console to login as a local user.
 
 The email associated with this token is "local-user@turkey.local".
 
 ### Token IS subscribed to subplat hubs product
 
 ```
-document.cookie='_turkeyauthtoken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMyNTAzNjgwMDAwLCJmeGFfZGlzcGxheU5hbWUiOiJMb2NhbCBVc2VyIiwiZnhhX2VtYWlsIjoibG9jYWwtdXNlckB0dXJrZXkubG9jYWwiLCJmeGFfcGljIjoiL2ltYWdlcy9sb2NhbC11c2VyLnN2ZyIsImZ4YV9zdWJzY3JpcHRpb25zIjpbImh1YnM6c3ViIl0sInN1YiI6ImxvY2FsLXVzZXItdWlkIn0.UbE34iMGv_lZXfGyLSmSXKB7mrk5xPuIAh0ODsQdnrqdXFJKT14yJstxseBH61cAdrDi6qvEC8jzWwn4ZTi-dQ'
+document.cookie='_turkeyauthtoken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMyNTAzNjgwMDAwLCJmeGFfZGlzcGxheU5hbWUiOiJMb2NhbCBVc2VyIiwiZnhhX2VtYWlsIjoibG9jYWwtdXNlckB0dXJrZXkubG9jYWwiLCJmeGFfcGljIjoiaHR0cDovL2xvY2FsaG9zdDo0MDAwL2ltYWdlcy9sb2NhbC11c2VyLnN2ZyIsImZ4YV9zdWJzY3JpcHRpb25zIjpbIm1hbmFnZWQtaHVicyJdLCJzdWIiOiJsb2NhbC11c2VyLXVpZCJ9.fNtGK-SV0mbzKFgiKWfLwwk_g3F261jnSMITB3QwHe-sNStl7JW7Oh2DHFdMtn65Y54-6fpPNTW48KbJ6G26Ug'
 ```
 
 ### Token is NOT subscribed to subplat hubs product
 
 ```
-document.cookie='_turkeyauthtoken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMyNTAzNjgwMDAwLCJmeGFfZGlzcGxheU5hbWUiOiJMb2NhbCBVc2VyIiwiZnhhX2VtYWlsIjoibG9jYWwtdXNlckB0dXJrZXkubG9jYWwiLCJmeGFfcGljIjoiL2ltYWdlcy9sb2NhbC11c2VyLnN2ZyIsImZ4YV9zdWJzY3JpcHRpb25zIjpbXSwic3ViIjoibG9jYWwtdXNlci11aWQifQ.IoYId-VqIzupSK300Bx7QesPpnP2WwFwOXCnLGd57mkDrpGoxFRH97rifZsQRUAlrrk9tkgfS6uW-1vmkyij8Q'
+document.cookie='_turkeyauthtoken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMyNTAzNjgwMDAwLCJmeGFfZGlzcGxheU5hbWUiOiJMb2NhbCBVc2VyIiwiZnhhX2VtYWlsIjoibG9jYWwtdXNlckB0dXJrZXkubG9jYWwiLCJmeGFfcGljIjoiaHR0cDovL2xvY2FsaG9zdDo0MDAwL2ltYWdlcy9sb2NhbC11c2VyLnN2ZyIsImZ4YV9zdWJzY3JpcHRpb25zIjpbXSwic3ViIjoibG9jYWwtdXNlci11aWQifQ.psKf0BPCtKL5X1fuqHFqH2E3LPaI5lVZHjcmNjxDr1erBR0nbcYjIEeVTjmCHcgkNO1Ikb9-pnS94qNf60u3eg'
 ```
 
 ## Utilities

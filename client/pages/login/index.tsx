@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
-import { checkLoggedIn } from 'services/routeGuard.service';
+import { requireAuthenticationAndHubsOrSubscription } from 'services/routeGuard.service';
 import SubContactCard from '@Cards/SubContactCard/SubContactCard';
 import SubInfoCard from '@Cards/SubInfoCard/SubInfoCard';
 import styles from './login.module.scss';
@@ -35,7 +35,7 @@ const Login = ({}: LoginPropsT) => {
 
 export default Login;
 
-export const getServerSideProps = checkLoggedIn(
+export const getServerSideProps = requireAuthenticationAndHubsOrSubscription(
   (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
     return { props: {} };
