@@ -128,7 +128,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
 
       {!loading && hub !== null ? (
         <main className={styles.main}>
-          <div className={styles.cards_wrapper}>
+          <div className={styles.card_wrapper}>
             <HubFormCard
               hub={hub}
               onSubmit={handleFormSubmit}

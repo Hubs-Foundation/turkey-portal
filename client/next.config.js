@@ -9,12 +9,15 @@ const nextConfig = {
   },
   publicRuntimeConfig: {
     AUTH_SERVER: process.env.AUTH_SERVER,
+    DASH_ROOT_DOMAIN: process.env.DASH_ROOT_DOMAIN,
     DUMMY: process.env.dummy,
+    FXA_PAYMENT_URL: process.env.FXA_PAYMENT_URL,
     FXA_SERVER: process.env.FXA_SERVER,
     HUB_ROOT_DOMAIN: process.env.HUB_ROOT_DOMAIN,
-    PUBLIC_API_SERVER: process.env.PUBLIC_API_SERVER,
-    DASH_ROOT_DOMAIN: process.env.DASH_ROOT_DOMAIN,
     MARKETING_PAGE_URL: process.env.MARKETING_PAGE_URL,
+    PLAN_ID_EA: process.env.PLAN_ID_EA,
+    PRODUCT_ID: process.env.PRODUCT_ID,
+    PUBLIC_API_SERVER: process.env.PUBLIC_API_SERVER,
   },
   async redirects() {
     return [

@@ -41,3 +41,5 @@ export const getServerSideProps = requireAuthenticationAndHubsOrSubscription(
     return { props: {} };
   }
 );
+
+Login.displayName = 'Login';

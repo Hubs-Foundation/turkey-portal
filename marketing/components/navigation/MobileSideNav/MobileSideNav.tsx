@@ -3,6 +3,7 @@ import { Button, ButtonCategoriesE, ButtonSizesE } from '@mozilla/lilypad';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { useRouter } from 'next/router';
 import styles from './MobileSideNav.module.scss';
+import { DASH_ROOT_DOMAIN } from 'config';
 
 type MobileSideNavPropsT = {
   isOpen: boolean;
@@ -82,12 +83,23 @@ const MobileSideNav = ({
           </ul>
 
           {/* ACTIONS  */}
-          <div className="padding-24 flex">
-            <Button
-              classProp="flex-grow-1 "
-              text="Get Started"
-              onClick={handleGetStartedClick}
-            />
+          <div className="padding-24">
+            <div className="margin-bottom-10 flex">
+              <Button
+                classProp="flex-grow-1 "
+                text="Get Started"
+                onClick={handleGetStartedClick}
+              />
+            </div>
+
+            <div className="flex">
+              <Button
+                classProp="flex-grow-1 "
+                category={ButtonCategoriesE.PRIMARY_OUTLINE}
+                href={`https://${DASH_ROOT_DOMAIN}`}
+                text="Go to my Dashboard"
+              />
+            </div>
           </div>
         </div>
       </div>

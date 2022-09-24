@@ -6,9 +6,11 @@ $primary-font: 'Inter';
 $secondary-font: 'Space Grotesk';
 $backup-font: 'Arial';
 
-// ---------------------------------
-//  Colors
-// ---------------------------------
+/**
+  BRAND COLORS
+**/
+$color-brand-1: var(--color-brand-1);
+
 /**
   PRIMARY INTERACTION
 **/

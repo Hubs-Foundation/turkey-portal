@@ -6,7 +6,7 @@ import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
 import BlobIcon from '@Logos/BlobIcon/BlobIcon';
 import { RoutesE } from 'types/Routes';
-import { AUTH_SERVER, DASH_ROOT_DOMAIN } from 'config';
+import { AUTH_SERVER, FXA_SERVER, DASH_ROOT_DOMAIN } from 'config';
 
 import {
   Button,

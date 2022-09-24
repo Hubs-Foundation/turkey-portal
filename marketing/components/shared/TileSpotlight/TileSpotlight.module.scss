@@ -17,7 +17,7 @@
   text-align: center;
 
   h2 {
-    @include h1;
+    @include heading-xxl;
     margin: 0 0 16px;
   }
 
@@ -78,7 +78,7 @@
     padding: 24px;
 
     h3 {
-      @include h2;
+      @include heading-xl;
       margin: 0 0 12px;
     }
 

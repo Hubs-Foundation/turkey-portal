@@ -16,6 +16,27 @@ Then, make sure the Phoenix API server is running on. See [/README.md](/README.m
 Open [http://localhost:3000](http://localhost:3000) with your
 browser to see the result.
 
+## Setting Up Lilypad
+
+First, get an access token to fetch our maintained Lilypad component library on npm, you need to create an access token on github and enable Mozilla organization on the access token.
+
+Configure your local install of NPM itself to be authorized to use Lilypad. To do this we use a .npmrc file.
+
+This file is NOT PART OF YOUR PROJECT. This is a global file in a central location. For Mac/Linux users it goes in your home directory ~/.npmrc.
+
+For Windows users it goes in your home directory as well, though the syntax will be different. Something along the lines of C:\Users\{YOUR_WINDOWS_USERNAME}
+
+Once you have created the file, edit it to include the following information:
+
+~/.npmrc
+
+```
+registry=https://registry.npmjs.org/
+@YOUR_GITHUB_USERNAME:registry=https://npm.pkg.github.com/
+//npm.pkg.github.com/:_authToken=YOUR_AUTH_TOKEN
+
+```
+
 ## Production environment variables
 
 - PUBLIC_API_SERVER - public server url ( todo more info here )
@@ -23,6 +44,9 @@ browser to see the result.
 - AUTH_SERVER - Server used for login links. e.g. "auth.myhubs.net"
 - FXA_SERVER - Firefox Accounts server used for account management links. e.g. "accounts.firefox.com"
 - MARKETING_PAGE_URL - URL to the marketing page that we use as logged out homepage for the Dashboard e.g. "https://marketing.page"
+- FXA_PAYMENT_URL - subscription payment url
+- PRODUCT_ID - subscription payment ID
+- PLAN_ID_EA - subscription payment Early Access ID
 
 To authenticate using local cookies, see [README.md:"Create a local user"](/README.md#create-a-local-user) to paste development cookies into the browser and create a local user with or without a hubs subscription.
 

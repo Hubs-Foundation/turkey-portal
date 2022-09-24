@@ -29,7 +29,7 @@ const FeedbackBanner = ({
           <Button
             onClick={feedbackClick}
             classProp={styles.button}
-            category={ButtonCategoriesE.PRIMARY_SOLID}
+            category={ButtonCategoriesE.SECONDARY_SOLID}
             text="Give Feedback"
           />
         </div>

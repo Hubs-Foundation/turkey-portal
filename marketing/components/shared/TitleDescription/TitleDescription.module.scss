@@ -5,6 +5,10 @@
   justify-content: center;
   padding: 40px 32px;
   position: relative;
+
+  @include tablet-down {
+    padding: 40px 32px 20px;
+  }
 }
 
 .container {
@@ -16,7 +20,7 @@
   text-align: center;
 
   h2 {
-    @include h3;
+    @include heading-lg;
     margin: 0 0 16px;
   }
 
@@ -26,7 +30,7 @@
     padding: 0;
 
     @include tablet-down {
-      margin: 0 24px 64px;
+      margin: 0 0 12px;
     }
   }
 }

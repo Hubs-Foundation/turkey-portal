@@ -49,7 +49,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
             </div>
 
             <a onClick={handleDiscordClick} href="#" className={styles.link}>
-              Join Our Discored
+              Join Our Discord
             </a>
             <a
               target="_blank"
@@ -152,6 +152,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
                   height={isDesktopDown ? 36 : ''}
                   src={discord}
                   alt="discord"
+                  layout="fixed"
                 />
               </a>
               <a
@@ -164,6 +165,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
                   height={isDesktopDown ? 36 : ''}
                   src={twitter}
                   alt="twitter"
+                  layout="fixed"
                 />
               </a>
               <a
@@ -176,6 +178,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
                   height={isDesktopDown ? 36 : ''}
                   src={youtube}
                   alt="youtube"
+                  layout="fixed"
                 />
               </a>
               <a
@@ -188,6 +191,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
                   height={isDesktopDown ? 36 : ''}
                   src={twitch}
                   alt="twitch"
+                  layout="fixed"
                 />
               </a>
             </div>
@@ -214,7 +218,14 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
               Terms of Use
             </a>
           </div>
-          <Image width={130} src={mozillaLogo} alt="Mozilla Logo" />
+          <div className="flex-justify-center">
+            <Image
+              width={130}
+              src={mozillaLogo}
+              alt="Mozilla Logo"
+              layout="fixed"
+            />
+          </div>
         </div>
       </div>
     </section>

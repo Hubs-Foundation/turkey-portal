@@ -19,15 +19,6 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
       </div>
 
       <div className={styles.container}>
-        <div className={styles.header}>
-          <h1>Your account has no active hubs</h1>
-          {/* TODO pull pricing from subplat - $20 */}
-          <p>
-            You can begin a new subscription with an Early Access Hub for $20 a
-            month
-          </p>
-        </div>
-
         <div className={styles.cards}>
           <SubInfoCard />
           <SubContactCard />
