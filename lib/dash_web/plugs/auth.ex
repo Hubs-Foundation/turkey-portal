@@ -63,7 +63,7 @@ defmodule DashWeb.Plugs.Auth do
     conn
     |> send_resp(
       401,
-      Jason.encode!(%{error: "unauthorized", redirect: get_login_page_path()})
+      Jason.encode!(get_unauthorized_redirect_struct())
     )
     |> halt()
   end
@@ -96,25 +96,12 @@ defmodule DashWeb.Plugs.Auth do
 
   def get_cookie_name(), do: @cookie_name
 
-  def get_unauthorized_redirect_struct(conn) do
-    %{error: "unauthorized", redirect: get_auth_url(current_url(conn))}
+  def get_unauthorized_redirect_struct() do
+    %{error: "unauthorized", redirect: get_marketing_page_url()}
   end
 
-  # Auth server url
-  def get_auth_url(client_url) do
-    auth_server = Application.get_env(:dash, __MODULE__)[:auth_server]
-    client = Regex.replace(~r/\/$/, client_url, "")
-    "https://#{auth_server}/login?idp=fxa&client=#{client}"
-  end
-
-  @pricing_page_path "/subscribe"
-  def get_pricing_page_path() do
-    @pricing_page_path
-  end
-
-  @login_page_path "/login"
-  def get_login_page_path() do
-    @login_page_path
+  def get_marketing_page_url() do
+    Application.get_env(:dash, __MODULE__)[:marketing_page_url]
   end
 
   def get_subscription_string() do

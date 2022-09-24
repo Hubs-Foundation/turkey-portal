@@ -34,19 +34,18 @@ defmodule DashWeb.Plugs.AuthTest do
       assert response(conn, 401) ==
                Jason.encode!(%{
                  error: "unauthorized",
-                 redirect: Auth.get_login_page_path()
+                 redirect: Auth.get_marketing_page_url()
                })
     end
 
-    test "Yes JWT token, no subscription: /api/v1/account responds with 401 with redirect to /subscribe page",
+    test "Yes JWT token, no subscription: /api/v1/account responds with 200 account",
          %{conn: conn} do
       conn =
         conn
         |> put_test_token(@valid_expiration ++ @without_subscription_claims)
         |> get("/api/v1/account")
 
-      assert response(conn, 401) ==
-               Jason.encode!(%{error: "unauthorized", redirect: Auth.get_pricing_page_path()})
+      assert response(conn, 200)
     end
 
     test "Yes JWT token, yes subscription: /api/v1/account responds with 200", %{conn: conn} do
@@ -58,7 +57,7 @@ defmodule DashWeb.Plugs.AuthTest do
       assert response(conn, 200)
     end
 
-    test "Invalid JWT token responds with 401 with redirect to auth server", %{conn: conn} do
+    test "Invalid JWT token responds with 401 with redirect to marketing page", %{conn: conn} do
       conn =
         conn
         |> put_test_token(@invalid_expiration)
@@ -67,11 +66,11 @@ defmodule DashWeb.Plugs.AuthTest do
       assert response(conn, 401) ==
                Jason.encode!(%{
                  error: "unauthorized",
-                 redirect: Auth.get_login_page_path()
+                 redirect: Auth.get_marketing_page_url()
                })
     end
 
-    test "Invalid JWT token/odd string for token responds with 401 with redirect to auth server",
+    test "Invalid JWT token/odd string for token responds with 401 with redirect to marketing page",
          %{conn: conn} do
       put_keys_for_jwk()
 
@@ -83,7 +82,7 @@ defmodule DashWeb.Plugs.AuthTest do
       assert response(conn, 401) ==
                Jason.encode!(%{
                  error: "unauthorized",
-                 redirect: Auth.get_login_page_path()
+                 redirect: Auth.get_marketing_page_url()
                })
     end
   end

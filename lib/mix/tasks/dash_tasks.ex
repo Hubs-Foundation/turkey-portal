@@ -127,7 +127,7 @@ defmodule Mix.Tasks.Dash.GenerateLocalToken do
           "fxa_pic" => "http://localhost:4000/images/local-user.svg",
           "fxa_displayName" => "Local User",
           "fxa_subscriptions" => [
-            Dash.Plugs.Auth.get_subscription_string()
+            "managed-hubs"
           ]
         },
         claims_json

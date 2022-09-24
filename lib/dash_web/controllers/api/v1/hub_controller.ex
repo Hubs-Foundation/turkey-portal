@@ -33,10 +33,23 @@ defmodule DashWeb.Api.V1.HubController do
   # Create hub with defaults
   def create(conn, _, account) do
     fxa_email = conn.assigns[:fxa_account_info].fxa_email
+    has_subscription = conn.assigns[:fxa_account_info].has_subscription
 
-    case Hub.create_default_hub(account, fxa_email) do
-      {:ok, new_hub} -> conn |> render("create.json", hub: new_hub)
-      {:error, err} -> conn |> send_resp(400, Jason.encode!(%{error: err})) |> halt()
+    if has_subscription do
+      case Hub.create_default_hub(account, fxa_email) do
+        {:ok, new_hub} -> conn |> render("create.json", hub: new_hub)
+        {:error, err} -> conn |> send_resp(400, Jason.encode!(%{error: err})) |> halt()
+      end
+    else
+      conn
+      |> send_resp(
+        403,
+        Jason.encode!(%{
+          error: "forbidden",
+          message: "Can't create new hub, account is not subscribed"
+        })
+      )
+      |> halt()
     end
   end
 

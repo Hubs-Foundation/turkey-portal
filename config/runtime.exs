@@ -54,11 +54,9 @@ if config_env() == :prod do
   host = System.get_env("PHX_HOST") || "example.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
-  auth_server = System.get_env("AUTH_SERVER")
-
   config :dash, Dash.AppConfig,
     host: host,
-    auth_server: auth_server,
+    auth_server: System.get_env("AUTH_SERVER"),
     fxa_server: System.get_env("FXA_SERVER")
 
   config :dash, DashWeb.Endpoint,
@@ -80,7 +78,7 @@ if config_env() == :prod do
         raise("""
         Environment variable AUTH_PUBLIC_KEY is missing. Used in JWT authentication.
         """),
-    auth_server: auth_server
+    marketing_page_url: "https://hubs.mozilla.com"
 
   # ## Using releases
   #

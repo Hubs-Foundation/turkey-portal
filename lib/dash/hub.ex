@@ -92,7 +92,7 @@ defmodule Dash.Hub do
     if !has_hubs(account), do: create_default_hub(account, email)
   end
 
-  def maybe_create_default_hub(%Dash.Account{} = account, email, has_subscription)
+  def maybe_create_default_hub(%Dash.Account{} = _account, _email, has_subscription)
       when has_subscription == false,
       do: {:ok}
 
@@ -128,7 +128,7 @@ defmodule Dash.Hub do
     storage_limit_mb: 2000
   }
 
-  def create_default_hub(%Dash.Account{} = account, fxa_email, has_subscription) do
+  def create_default_hub(%Dash.Account{} = account, fxa_email) do
     subdomain = Dash.Utils.rand_string(10)
 
     new_hub_params =

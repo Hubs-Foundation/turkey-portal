@@ -53,16 +53,14 @@ config :dash, DashWeb.Endpoint,
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
   ]
 
-auth_server = "auth.local"
-
 config :dash, Dash.AppConfig,
   host: "dashboard.cluster.turkey.local",
-  auth_server: auth_server,
+  auth_server: "auth.local",
   fxa_server: "fxa.turkey.local"
 
 config :dash, DashWeb.Plugs.Auth,
   auth_pub_key: auth_pub_key,
-  auth_server: auth_server
+  marketing_page_url: "http://localhost:3030"
 
 config :dash, DashWeb.Plugs.BasicAuth,
   # Disable BasicAuth by default in local dev, since it's a bit annoying.

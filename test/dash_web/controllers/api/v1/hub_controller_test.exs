@@ -5,6 +5,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   import Mox
   import Plug.Conn.Status, only: [code: 1]
   require Logger
+  alias Dash.Hub
 
   setup_all do
     setup_http_mocks()
@@ -379,6 +380,90 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
       [%{"status" => status} = _hub] = get_hubs(conn)
       assert status =~ "ready"
+    end
+  end
+
+  @without_subscription_claims claims: %{fxa_subscriptions: []}
+  describe "Subscription tests" do
+    test "NOT subscribed, do NOT make default hub and return 200 with empty array", %{conn: conn} do
+      conn =
+        conn
+        |> put_test_token(@without_subscription_claims)
+        |> get("/api/v1/hubs")
+
+      assert response(conn, 200) ==
+               Jason.encode!([])
+
+      account = get_test_account()
+
+      assert !Hub.has_hubs(account)
+    end
+
+    # TODO for some reason the FeatureFlags are not allowing for POST request to be enabled inside setup or test block
+    # Ignore test for now, since POST isn't enabled for dev or production
+    # This test is working when POST is enabled
+    # test "NOT subscribed, do NOT make a new Hub for POST", %{conn: conn} do
+    #   Application.put_env(:dash, Dash.FeatureFlags, create_hubs: true)
+    #   # Enable POST request on environment
+    #   # POST create request
+    #   # Returns 403 forbidden
+    #   conn =
+    #     conn
+    #     |> put_test_token(@without_subscription_claims)
+    #     |> post("/api/v1/hubs")
+
+    #   account = get_test_account()
+
+    #   assert response(conn, 403) && !Hub.has_hubs(account)
+    # end
+
+    test "IS subscribed, can get default Hub", %{conn: conn} do
+      stub_ret_get()
+      expect_orch_post()
+
+      # Account with subscription, use index request and has_hubs
+      conn =
+        conn
+        |> put_test_token()
+        |> get("/api/v1/hubs")
+
+      assert response(conn, 200)
+
+      account = get_test_account()
+
+      assert Hub.has_hubs(account)
+    end
+
+    test "NOT subscribed, if account ALREADY has hubs, can still get hubs and hub info", %{
+      conn: conn
+    } do
+      stub_ret_get()
+      create_test_account_and_hub()
+
+      conn =
+        conn
+        |> put_test_token(@without_subscription_claims)
+        |> get("/api/v1/hubs")
+
+      assert response(conn, 200)
+    end
+
+    test "If account is NOT subscribed, can still update subdomain if has_hubs", %{conn: conn} do
+      # TODO EA Ensure before end subscription date!!
+      stub_ret_rewrite_assets()
+      expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
+      expect_orch_patch()
+
+      create_test_account_and_hub()
+
+      %{hub: hub} = create_test_account_and_hub()
+      assert hub.subdomain =~ "test-subdomain"
+
+      conn
+      |> put_test_token(@without_subscription_claims)
+      |> patch_subdomain(hub, "new-subdomain", expected_status: :ok)
+
+      %{"subdomain" => "new-subdomain"} = get_hub(conn, hub)
     end
   end
 

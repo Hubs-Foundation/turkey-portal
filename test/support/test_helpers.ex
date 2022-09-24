@@ -9,7 +9,7 @@ defmodule DashWeb.TestHelpers do
     "fxa_email" => @test_email,
     "fxa_pic" => "https://fake.com/pic.jpg",
     "fxa_displayName" => "Faker McFakerson",
-    "fxa_subscriptions" => [Dash.Plugs.Auth.get_subscription_string()]
+    "fxa_subscriptions" => ["managed-hubs"]
   }
 
   @default_token_opts [
@@ -45,6 +45,10 @@ defmodule DashWeb.TestHelpers do
     jwt_str = "#{signed_jwt["protected"]}.#{signed_jwt["payload"]}.#{signature}"
 
     conn |> put_req_cookie("_turkeyauthtoken", jwt_str)
+  end
+
+  def get_test_account() do
+    Dash.Account.account_for_fxa_uid(@default_test_uid)
   end
 
   def create_test_account_and_hub(opts \\ [subdomain: nil, fxa_uid: nil]) do
