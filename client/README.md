@@ -2,27 +2,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, get an access token to fetch our maintained Lilypad component library on npm, you need to create an access token on github and enable Mozilla organization on the access token.
+### 1. Setup Lilypad
 
-First, install dependencies in the `/client` directory (this directory), then run the development server. (For now, we use `--legacy-peer-deps` because Storybook requires an older version of react to run).
+First, create an access token on Github to fetch our maintained Lilypad component library on npm, you need to create an access token on github and enable Mozilla organization on the access token.
 
-```bash
-npm i --legacy-peer-deps
-npm run dev
-```
-
-Then, make sure the Phoenix API server is running on. See [/README.md](/README.md) 'README' in root project.
-
-Open [http://localhost:3000](http://localhost:3000) with your
-browser to see the result.
-
-## Setting Up Lilypad
-
-First, get an access token to fetch our maintained Lilypad component library on npm, you need to create an access token on github and enable Mozilla organization on the access token.
-
-Configure your local install of NPM itself to be authorized to use Lilypad. To do this we use a .npmrc file.
-
-This file is NOT PART OF YOUR PROJECT. This is a global file in a central location. For Mac/Linux users it goes in your home directory ~/.npmrc.
+Configure your local install of NPM itself to be authorized to use Lilypad. To do this we use a `.npmrc` file. This file is NOT PART OF YOUR PROJECT. This is a global file in a central location. For Mac/Linux users it goes in your home directory ~/.npmrc.
 
 For Windows users it goes in your home directory as well, though the syntax will be different. Something along the lines of C:\Users\{YOUR_WINDOWS_USERNAME}
 
@@ -36,6 +20,25 @@ registry=https://registry.npmjs.org/
 //npm.pkg.github.com/:_authToken=YOUR_AUTH_TOKEN
 
 ```
+
+This will allow you to get updates from lilypad during development!
+
+### 2. Install dependencies in the `/client` directory (this directory) and run dev
+
+```bash
+npm i --legacy-peer-deps
+npm run dev
+```
+
+(For now, we use `--legacy-peer-deps` because Storybook requires an older version of react to run).
+
+### 3. Ensure Phoenix API server is Running
+
+See [/README.md](/README.md) 'README' in root project.
+
+### 4. Open [http://localhost:3000](http://localhost:3000)
+
+**NOTE: If you keep getting redirected, you may need to navigate to [http://localhost:3000/subscribe?redirect=false](http://localhost:3000/subscribe?redirect=false) to paste the Auth Cookies in the [/README.md](/README.md)**
 
 ## Production environment variables
 
