@@ -3,7 +3,7 @@ defmodule Hub do
   import Ecto.Query
   import Ecto.Changeset
   require Logger
-  alias Dash.{Hub, SubdomainDenial, Repo, RetClient, Account, OrchClient}
+  alias Dash.{SubdomainDenial, Repo, RetClient, Account}
 
   @primary_key {:hub_id, :id, autogenerate: true}
 
@@ -14,7 +14,7 @@ defmodule Hub do
     field :storage_limit_mb, :integer
     field :subdomain, :string
     field :tier, Ecto.Enum, values: [:free, :mvp]
-    belongs_to :account, Account, references: :account_id
+    belongs_to :account, Dash.Account, references: :account_id
 
     timestamps()
   end
@@ -65,7 +65,7 @@ defmodule Hub do
   end
 
   defp hubs_for_account(%Account{} = account) do
-    from(h in Hub, where: h.account_id == ^account.account_id)
+    from(h in Dash.Hub, where: h.account_id == ^account.account_id)
     |> Repo.all()
   end
 
@@ -76,14 +76,14 @@ defmodule Hub do
 
   # Returns a boolean of whether the account has a hub
   def has_hubs(%Account{} = account) do
-    Repo.exists?(from(h in Hub, where: h.account_id == ^account.account_id))
+    Repo.exists?(from(h in Dash.Hub, where: h.account_id == ^account.account_id))
   end
 
   # TODO EA remove
   def has_creating_hubs(%Account{} = account) do
     has_hubs(account) &&
       Repo.exists?(
-        from(h in Hub, where: h.account_id == ^account.account_id and h.status == :creating)
+        from(h in Dash.Hub, where: h.account_id == ^account.account_id and h.status == :creating)
       )
   end
 
@@ -130,12 +130,12 @@ defmodule Hub do
       |> Map.merge(@hub_defaults)
 
     new_hub =
-      %Hub{}
-      |> Hub.changeset(new_hub_params)
+      %Dash.Hub{}
+      |> Dash.Hub.changeset(new_hub_params)
       |> Ecto.Changeset.put_assoc(:account, account)
       |> Repo.insert!()
 
-    case OrchClient.create_hub(fxa_email, new_hub) do
+    case Dash.OrchClient.create_hub(fxa_email, new_hub) do
       {:ok, %{status_code: 200}} ->
         {:ok, new_hub}
 
@@ -154,11 +154,11 @@ defmodule Hub do
   end
 
   def get_hub(hub_id, %Account{} = account) do
-    Hub |> Repo.get_by(hub_id: hub_id, account_id: account.account_id)
+    Dash.Hub |> Repo.get_by(hub_id: hub_id, account_id: account.account_id)
   end
 
   def get_all_ready_hub_ids() do
-    from(h in Hub, where: h.status == :ready, select: h.hub_id)
+    from(h in Dash.Hub, where: h.status == :ready, select: h.hub_id)
     |> Repo.all()
   end
 
@@ -176,8 +176,8 @@ defmodule Hub do
     hub_to_delete = get_hub(hub_id, account)
 
     case hub_to_delete do
-      %Hub{} ->
-        with {:ok, %{status_code: 200}} <- OrchClient.delete_hub(hub_to_delete),
+      %Dash.Hub{} ->
+        with {:ok, %{status_code: 200}} <- Dash.OrchClient.delete_hub(hub_to_delete),
              {:ok, _deleted_hub} <- Dash.Repo.delete!(hub_to_delete) do
           {:ok}
         else
@@ -198,7 +198,7 @@ defmodule Hub do
     end
   end
 
-  def set_hub_to_ready(%Hub{} = hub) do
+  def set_hub_to_ready(%Dash.Hub{} = hub) do
     hub |> change(status: :ready) |> Dash.Repo.update!()
   end
 
@@ -210,7 +210,7 @@ defmodule Hub do
         attrs
       end
 
-    with %Hub{status: :ready} = hub <- get_hub(hub_id, account),
+    with %Dash.Hub{status: :ready} = hub <- get_hub(hub_id, account),
          {:ok, updated_hub} <- form_changeset(hub, attrs) |> Dash.Repo.update() do
       if hub.subdomain != updated_hub.subdomain do
         updated_hub =
@@ -246,18 +246,18 @@ defmodule Hub do
 
   defp subdomain_exists(excluded_hub_id, subdomain) do
     Repo.exists?(
-      from(h in Hub,
+      from(h in Dash.Hub,
         where: h.hub_id != ^excluded_hub_id and h.subdomain == ^subdomain
       )
     )
   end
 
-  defp start_subdomain_update(%Hub{} = previous_hub, %Hub{} = updated_hub) do
+  defp start_subdomain_update(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do
     # This async task runs in the background, asynchronously, under the TaskSupervisor.
     # It needs to be able to handle success and failure scenarios in a self-contained manner.
     Task.Supervisor.async(Dash.TaskSupervisor, fn ->
       with {:ok, %{status_code: status_code}} when status_code < 400 <-
-             OrchClient.update_subdomain(updated_hub),
+             Dash.OrchClient.update_subdomain(updated_hub),
            {:ok} <- RetClient.wait_until_healthy(updated_hub),
            {:ok} <- RetClient.rewrite_assets(previous_hub, updated_hub) do
         set_hub_to_ready(updated_hub)
@@ -272,7 +272,7 @@ defmodule Hub do
     end)
   end
 
-  defp try_revert_subdomain(%Hub{} = previous_hub, %Hub{} = updated_hub) do
+  defp try_revert_subdomain(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do
     try do
       # If the subdomain update failed, we assume that the hub instance will still be available
       # at the previous subdomain, so we revert it and set it to ready.
@@ -294,8 +294,8 @@ defmodule Hub do
   end
 
   # Returns current CCU and Storage
-  defp get_hub_usage_stats(%Hub{} = hub) do
-    if Application.get_env(:dash, Hub)[:use_fake_hub_stats] === true do
+  defp get_hub_usage_stats(%Dash.Hub{} = hub) do
+    if Application.get_env(:dash, Dash.Hub)[:use_fake_hub_stats] === true do
       %{current_ccu: 10, current_storage_mb: 20}
     else
       current_ccu = RetClient.get_current_ccu(hub)
