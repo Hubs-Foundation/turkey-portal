@@ -3,7 +3,7 @@ defmodule Hub do
   import Ecto.Query
   import Ecto.Changeset
   require Logger
-  alias Dash.{SubdomainDenial, Repo, RetClient, Account}
+  alias Dash.{SubdomainDenial, Repo, RetClient}
 
   @primary_key {:hub_id, :id, autogenerate: true}
 
@@ -64,23 +64,23 @@ defmodule Hub do
     end
   end
 
-  defp hubs_for_account(%Account{} = account) do
+  defp hubs_for_account(%Dash.Account{} = account) do
     from(h in Dash.Hub, where: h.account_id == ^account.account_id)
     |> Repo.all()
   end
 
-  def hubs_with_usage_stats_for_account(%Account{} = account) do
+  def hubs_with_usage_stats_for_account(%Dash.Account{} = account) do
     hubs = hubs_for_account(account)
     Enum.map(hubs, fn h -> Map.merge(h, get_hub_usage_stats(h)) end)
   end
 
   # Returns a boolean of whether the account has a hub
-  def has_hubs(%Account{} = account) do
+  def has_hubs(%Dash.Account{} = account) do
     Repo.exists?(from(h in Dash.Hub, where: h.account_id == ^account.account_id))
   end
 
   # TODO EA remove
-  def has_creating_hubs(%Account{} = account) do
+  def has_creating_hubs(%Dash.Account{} = account) do
     has_hubs(account) &&
       Repo.exists?(
         from(h in Dash.Hub, where: h.account_id == ^account.account_id and h.status == :creating)
@@ -89,7 +89,7 @@ defmodule Hub do
 
   # Checks if account has at least one hub, if not, creates hub
   # Will wait for hub to be ready before
-  def ensure_default_hub_is_ready(%Account{} = account, email) do
+  def ensure_default_hub_is_ready(%Dash.Account{} = account, email) do
     if !has_hubs(account), do: create_default_hub(account, email)
 
     # TODO EA make own hub controller endpoint for waiting_until_ready_state
@@ -119,7 +119,7 @@ defmodule Hub do
     storage_limit_mb: 2000
   }
 
-  def create_default_hub(%Account{} = account, fxa_email) do
+  def create_default_hub(%Dash.Account{} = account, fxa_email) do
     subdomain = Dash.Utils.rand_string(10)
 
     new_hub_params =
@@ -153,7 +153,7 @@ defmodule Hub do
     end
   end
 
-  def get_hub(hub_id, %Account{} = account) do
+  def get_hub(hub_id, %Dash.Account{} = account) do
     Dash.Hub |> Repo.get_by(hub_id: hub_id, account_id: account.account_id)
   end
 
@@ -163,8 +163,8 @@ defmodule Hub do
   end
 
   def delete_hub(hub_id, fxa_uid) when is_binary(fxa_uid) do
-    case Account.account_for_fxa_uid(fxa_uid) do
-      %Account{} = account ->
+    case Dash.Account.account_for_fxa_uid(fxa_uid) do
+      %Dash.Account{} = account ->
         delete_hub(hub_id, account)
 
       nil ->
@@ -172,7 +172,7 @@ defmodule Hub do
     end
   end
 
-  def delete_hub(hub_id, %Account{} = account) do
+  def delete_hub(hub_id, %Dash.Account{} = account) do
     hub_to_delete = get_hub(hub_id, account)
 
     case hub_to_delete do
@@ -202,7 +202,7 @@ defmodule Hub do
     hub |> change(status: :ready) |> Dash.Repo.update!()
   end
 
-  def update_hub(hub_id, attrs, %Account{} = account) do
+  def update_hub(hub_id, attrs, %Dash.Account{} = account) do
     attrs =
       if attrs["subdomain"] do
         Map.put(attrs, "subdomain", attrs["subdomain"] |> String.downcase())
