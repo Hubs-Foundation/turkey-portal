@@ -1,4 +1,4 @@
-defmodule Hub do
+defmodule Dash.Hub do
   use Ecto.Schema
   import Ecto.Query
   import Ecto.Changeset
