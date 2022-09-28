@@ -39,7 +39,8 @@ defmodule Dash.OrchClient do
   end
 
   def delete_hub(%Dash.Hub{} = hub) do
-    get_http_client().delete!(
+    get_http_client().request(
+      :delete,
       orch_hub_endpoint(),
       Jason.encode!(%{hub_id: hub.hub_id |> to_string}),
       [],

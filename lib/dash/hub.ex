@@ -177,8 +177,8 @@ defmodule Dash.Hub do
 
     case hub_to_delete do
       %Dash.Hub{} ->
-        with {:ok, %{status_code: 200}} <- Dash.OrchClient.delete_hub(hub_to_delete),
-             {:ok, _deleted_hub} <- Dash.Repo.delete!(hub_to_delete) do
+        with {:ok, %{status_code: 202}} <- Dash.OrchClient.delete_hub(hub_to_delete),
+             {:ok, _deleted_hub} <- Dash.Repo.delete(hub_to_delete) do
           {:ok}
         else
           {:ok, %{status_code: status_code} = resp} ->
@@ -187,7 +187,7 @@ defmodule Dash.Hub do
             )
 
           {:error, err} ->
-            Logger.error("Failed to delete default hub #{inspect(err)}")
+            Logger.error("Failed to delete hub #{inspect(err)}")
 
           _ ->
             Logger.error("Failed to delete Hub, unknown error occurred")
