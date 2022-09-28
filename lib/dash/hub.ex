@@ -279,4 +279,8 @@ defmodule Dash.Hub do
       %{current_ccu: current_ccu, current_storage_mb: current_storage_mb}
     end
   end
+
+  def print_thing() do
+    Logger.warn("Print thing")
+  end
 end

@@ -16,6 +16,7 @@ const Login = ({}: LoginPropsT) => {
 
   return (
     <div className="page_wrapper">
+      <title>I am here.</title>
       <Head>
         <title>Login Page</title>
         <meta name="description" content="login profle page" />
