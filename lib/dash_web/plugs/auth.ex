@@ -44,20 +44,25 @@ defmodule DashWeb.Plugs.Auth do
       "fxa_pic" => fxa_pic,
       "fxa_displayName" => fxa_display_name,
       "iat" => issued_at,
-      "exp" => expiration_at,
       "fxa_subscriptions" => fxa_subscriptions
     } = claims
 
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
-    conn
-    |> assign(:account, account)
-    |> assign(:fxa_account_info, %Dash.FxaAccountInfo{
-      fxa_pic: fxa_pic,
-      fxa_display_name: fxa_display_name,
-      fxa_email: fxa_email,
-      has_subscription: Enum.member?(fxa_subscriptions, @subscription_string)
-    })
+    # If token issued before an Authorization change in the account, invalidate token and login again
+    if issued_at < account.auth_updated_at do
+      # Issued before auth_updated_at
+      process_jwt(conn, %{is_valid: true, claims: claims})
+    else
+      conn
+      |> assign(:account, account)
+      |> assign(:fxa_account_info, %Dash.FxaAccountInfo{
+        fxa_pic: fxa_pic,
+        fxa_display_name: fxa_display_name,
+        fxa_email: fxa_email,
+        has_subscription: Enum.member?(fxa_subscriptions, @subscription_string)
+      })
+    end
   end
 
   # Not authorized or empty jwt
