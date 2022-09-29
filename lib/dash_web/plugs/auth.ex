@@ -37,7 +37,9 @@ defmodule DashWeb.Plugs.Auth do
       "fxa_email" => fxa_email,
       "sub" => fxa_uid,
       "fxa_pic" => fxa_pic,
-      "fxa_displayName" => fxa_display_name
+      "fxa_displayName" => fxa_display_name,
+      "iat" => issued_at,
+      "exp" => expiration_at
     } = claims
 
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)

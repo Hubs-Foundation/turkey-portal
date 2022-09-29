@@ -7,6 +7,7 @@ defmodule Dash.Account do
 
   schema "accounts" do
     field :fxa_uid, :string
+    field :auth_updated_at, :utc_datetime
 
     timestamps()
   end
