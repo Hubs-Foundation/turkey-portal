@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { AccountT } from 'types/General';
 import { RootStateT } from './store';
-
-const initialState = {
+const initialState: AccountT = {
   isInitialized: false,
   isLoggedIn: false,
   profilePic: '',
   displayName: '',
   email: '',
+  hasSubscription: false,
 };
 
 const accountSlice = createSlice({
@@ -17,11 +18,14 @@ const accountSlice = createSlice({
       if (!action.payload) return;
 
       // Initialize Account Values
-      const { profilePic, displayName, email } = action.payload;
+      const { profilePic, displayName, email, hasSubscription } =
+        action.payload;
       state.isLoggedIn = true;
       state.profilePic = profilePic;
       state.displayName = displayName;
       state.email = email;
+      state.hasSubscription = hasSubscription;
+      state.isInitialized = true;
     },
     logOut(state) {
       // Clear Account
@@ -29,6 +33,8 @@ const accountSlice = createSlice({
       state.profilePic = '';
       state.displayName = '';
       state.email = '';
+      state.hasSubscription = false;
+      state.isInitialized = false;
     },
   },
 });

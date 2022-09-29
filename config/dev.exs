@@ -55,7 +55,7 @@ config :dash, DashWeb.Endpoint,
 
 config :dash, Dash.AppConfig,
   host: "dashboard.cluster.turkey.local",
-  auth_server: "auth.turkey.local",
+  auth_server: "auth.local",
   fxa_server: "fxa.turkey.local"
 
 config :dash, DashWeb.Plugs.Auth, auth_pub_key: auth_pub_key

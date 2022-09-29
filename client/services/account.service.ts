@@ -1,9 +1,11 @@
 import axios, { AxiosRequestHeaders } from 'axios';
-const API_PATH = '/api/v1/account';
 import { PUBLIC_API_SERVER } from 'config';
+
+const API_PATH = '/api/v1/account';
 
 /**
  * Get Account
+ * Must be called within a try catch
  * @returns Account:AccountT{}
  */
 export const getAccount = async (headers?: AxiosRequestHeaders) => {
@@ -11,31 +13,22 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
   const contextHeaders = { headers: { ...(headers as AxiosRequestHeaders) } };
   const config = headers ? contextHeaders : credentials;
 
-  try {
-    return axios
-      .get(`${PUBLIC_API_SERVER}${API_PATH}`, config)
-      .then((response) => {
-        return response.data;
-      });
-  } catch (error) {
-    // TODO: Make game plan for error handling
-    console.error('Error', error);
-  }
+  return axios
+    .get(`${PUBLIC_API_SERVER}${API_PATH}`, config)
+    .then((response) => {
+      return response.data;
+    });
 };
 
 /**
  * Log User Out
+ * Must be called in a try catch
  * @returns
  */
 export const logOut = async () => {
-  try {
-    return axios
-      .get(`${PUBLIC_API_SERVER}/logout`, { withCredentials: true })
-      .then((response) => {
-        return response.data;
-      });
-  } catch (error) {
-    // TODO: Make game plan for error handling
-    console.error('Error', error);
-  }
+  return axios
+    .get(`${PUBLIC_API_SERVER}/logout`, { withCredentials: true })
+    .then((response) => {
+      return response.data;
+    });
 };

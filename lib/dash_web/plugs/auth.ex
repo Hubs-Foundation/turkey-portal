@@ -12,12 +12,17 @@ defmodule DashWeb.Plugs.Auth do
     "iss": "",
     "sub": "123abc",
     "fxa_displayName": "Name"
+    "fxa_subscriptions": [
+       "managed-hubs"
+    ]
   }
   """
+  use DashWeb, :controller
   import Plug.Conn
 
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
+  @subscription_string "managed-hubs"
 
   def init(default), do: default
 
@@ -39,7 +44,8 @@ defmodule DashWeb.Plugs.Auth do
       "fxa_pic" => fxa_pic,
       "fxa_displayName" => fxa_display_name,
       "iat" => issued_at,
-      "exp" => expiration_at
+      "exp" => expiration_at,
+      "fxa_subscriptions" => fxa_subscriptions
     } = claims
 
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
@@ -49,14 +55,18 @@ defmodule DashWeb.Plugs.Auth do
     |> assign(:fxa_account_info, %Dash.FxaAccountInfo{
       fxa_pic: fxa_pic,
       fxa_display_name: fxa_display_name,
-      fxa_email: fxa_email
+      fxa_email: fxa_email,
+      has_subscription: Enum.member?(fxa_subscriptions, @subscription_string)
     })
   end
 
   # Not authorized or empty jwt
   defp process_jwt(conn, %{is_valid: false, claims: _claims}) do
     conn
-    |> send_resp(401, Jason.encode!(%{error: "unauthorized"}))
+    |> send_resp(
+      401,
+      Jason.encode!(get_unauthorized_struct())
+    )
     |> halt()
   end
 
@@ -65,20 +75,34 @@ defmodule DashWeb.Plugs.Auth do
   defp process_and_verify_jwt(""), do: %{is_valid: false, claims: %{}}
 
   defp process_and_verify_jwt(jwt) do
-    jwk = JOSE.JWK.from_pem(Application.get_env(:dash, DashWeb.Plugs.Auth)[:auth_pub_key])
-    {is_verified, jwt_struct, _} = JOSE.JWT.verify_strict(jwk, [@algo], jwt)
-    %JOSE.JWT{fields: %{"exp" => exp} = claims} = jwt_struct
+    jwk = JOSE.JWK.from_pem(Application.get_env(:dash, __MODULE__)[:auth_pub_key])
 
-    exp_converted = NaiveDateTime.add(~N[1970-01-01 00:00:00], exp)
+    case JOSE.JWT.verify_strict(jwk, [@algo], jwt) do
+      {is_verified, jwt_struct, _} ->
+        %JOSE.JWT{fields: %{"exp" => exp} = claims} = jwt_struct
+        exp_converted = NaiveDateTime.add(~N[1970-01-01 00:00:00], exp)
 
-    is_valid =
-      case NaiveDateTime.compare(exp_converted, NaiveDateTime.utc_now()) do
-        :lt -> false
-        _ -> is_verified
-      end
+        is_valid =
+          case NaiveDateTime.compare(exp_converted, NaiveDateTime.utc_now()) do
+            :lt -> false
+            _ -> is_verified
+          end
 
-    %{is_valid: is_valid, claims: claims}
+        %{is_valid: is_valid, claims: claims}
+
+      _ ->
+        # Could not be verified so must be something other than a jwt token
+        %{is_valid: false, claims: nil}
+    end
   end
 
   def get_cookie_name(), do: @cookie_name
+
+  def get_unauthorized_struct() do
+    %{error: "unauthorized"}
+  end
+
+  def get_subscription_string() do
+    @subscription_string
+  end
 end

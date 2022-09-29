@@ -8,7 +8,8 @@ defmodule DashWeb.TestHelpers do
     "sub" => @default_test_uid,
     "fxa_email" => @test_email,
     "fxa_pic" => "https://fake.com/pic.jpg",
-    "fxa_displayName" => "Faker McFakerson"
+    "fxa_displayName" => "Faker McFakerson",
+    "fxa_subscriptions" => ["managed-hubs"]
   }
 
   @default_token_opts [
@@ -18,6 +19,13 @@ defmodule DashWeb.TestHelpers do
   ]
   def get_test_email() do
     @test_email
+  end
+
+  def put_keys_for_jwk() do
+    private_key = JOSE.JWK.generate_key({:rsa, 512})
+
+    {_meta, public_key_str} = private_key |> JOSE.JWK.to_public() |> JOSE.JWK.to_pem()
+    Application.put_env(:dash, DashWeb.Plugs.Auth, %{auth_pub_key: public_key_str})
   end
 
   def put_test_token(conn, opts \\ []) do
@@ -37,6 +45,10 @@ defmodule DashWeb.TestHelpers do
     jwt_str = "#{signed_jwt["protected"]}.#{signed_jwt["payload"]}.#{signature}"
 
     conn |> put_req_cookie("_turkeyauthtoken", jwt_str)
+  end
+
+  def get_test_account() do
+    Dash.Account.account_for_fxa_uid(@default_test_uid)
   end
 
   def create_test_account_and_hub(opts \\ [subdomain: nil, fxa_uid: nil]) do

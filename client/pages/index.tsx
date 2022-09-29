@@ -20,7 +20,9 @@ const fetchData = async (
   if (connection) contextHeaders.connection = connection;
 
   return await axios
-    .get(`${PUBLIC_API_SERVER}/api/v1/${resource}`, { headers: contextHeaders })
+    .get(`${PUBLIC_API_SERVER}/api/v1/${resource}`, {
+      headers: contextHeaders,
+    })
     .then((response) => response.data);
 };
 

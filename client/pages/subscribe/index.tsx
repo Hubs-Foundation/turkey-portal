@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
-import { requireAuthentication } from 'services/routeGuard.service';
+import { subscriptionPageRequireAuthentication } from 'services/routeGuard.service';
 import SubContactCard from '@Cards/SubContactCard/SubContactCard';
 import SubInfoCard from '@Cards/SubInfoCard/SubInfoCard';
 import styles from './subscribe.module.scss';
@@ -12,7 +12,7 @@ const Subscribe = ({}: SubscribePropsT) => {
     <div className="page_wrapper">
       <Head>
         <title>Subscription</title>
-        <meta name="description" content="Sign up for a subscribtion" />
+        <meta name="description" content="Sign up for a subscription" />
       </Head>
 
       <main>
@@ -41,7 +41,7 @@ const Subscribe = ({}: SubscribePropsT) => {
 
 export default Subscribe;
 
-export const getServerSideProps = requireAuthentication(
+export const getServerSideProps = subscriptionPageRequireAuthentication(
   (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
     return { props: {} };

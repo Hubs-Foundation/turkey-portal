@@ -1,6 +1,8 @@
 defmodule Mix.Tasks.Dash.CreateAccount do
   @shortdoc "Creates an account"
   @moduledoc "mix dash.create_account <fxa_uid>"
+  # mix dash.generate_local_token [claims_json]
+  # mix dash.generate_local_token "{\"fxa_subscriptions\" : []}"
   @requirements ["app.start"]
   use Mix.Task
 
@@ -82,7 +84,7 @@ end
 
 defmodule Mix.Tasks.Dash.GenerateLocalToken do
   @shortdoc "Generates a JWT token for use in local development. Takes an optional json with claims."
-  @moduledoc "mix dash.generate_local_token [claims_json]"
+  # mix dash.generate_local_token "{\"fxa_subscriptions\" : []}"
   use Mix.Task
 
   def run(args) when length(args) == 0 do
@@ -123,7 +125,10 @@ defmodule Mix.Tasks.Dash.GenerateLocalToken do
           "sub" => "local-user-uid",
           "fxa_email" => "local-user@turkey.local",
           "fxa_pic" => "http://localhost:4000/images/local-user.svg",
-          "fxa_displayName" => "Local User"
+          "fxa_displayName" => "Local User",
+          "fxa_subscriptions" => [
+            "managed-hubs"
+          ]
         },
         claims_json
       )

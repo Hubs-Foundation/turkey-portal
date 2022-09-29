@@ -28,7 +28,7 @@ npm install --legacy-peer-deps
 npm run dev
 ```
 
-Open http://localhost:3000 and you'll see the marketing page!
+Open http://localhost:3030 and you'll see the marketing page!
 
 ## Environment Variables
 
