@@ -19,7 +19,7 @@ defmodule Dash.FxaEvents do
   def handle_password_change(fxa_uid, event_data) do
     %{"changeTime" => time} = event_data
 
-    case Dash.Account.set_auth_updated_at(fxa_uid, event_data) do
+    case Dash.Account.set_auth_updated_at(fxa_uid, time) do
       {:ok, _changeset} ->
         {:ok}
 

@@ -42,14 +42,14 @@ defmodule Dash.Account do
   end
 
   def set_auth_updated_at(fxa_uid, time) when is_binary(fxa_uid) do
-    case account_for_fxa_uid()
-      %Dash.Account = account ->
+    case account_for_fxa_uid(fxa_uid) do
+      %Dash.Account{} = account ->
         # TODO may need to convert this time
         account |> change(auth_updated_at: time) |> Dash.Repo.update!()
+
       nil ->
         # It's possible a person subscribed to Hubs never logged in but we still get this auth changed event
         nil
-      end
-
+    end
   end
 end

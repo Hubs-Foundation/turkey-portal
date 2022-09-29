@@ -1,4 +1,4 @@
-defmodule DashWeb.Api.V1.AccountController do
+defmodule DashWeb.Api.V1.FxaEventsController do
   # Handles events from the fxa webhook
   # Example password change event
   # {
@@ -14,31 +14,42 @@ defmodule DashWeb.Api.V1.AccountController do
   #   }
   # }
   use DashWeb, :controller
-
+  require Logger
 
   @password_change "/password-change"
   def index(conn, decoded_body) do
     %{
       "sub" => fxa_uid,
-      "events" => {
-        event => event_data
-      }
-    } = claims
+      "events" => events
+    } = decoded_body
 
-    result = case event do
-      event =~ @password_change ->
-        Dash.FxaEvents.handle_password_change(fxa_uid, event_data)
-    end
+    # Only one event each time
+    {event, event_data} = List.first(get_key_value_array(events))
+
+    result =
+      cond do
+        event =~ @password_change ->
+          Dash.FxaEvents.handle_password_change(fxa_uid, event_data)
+
+        true ->
+          Logger.warn("FxaEventsController index: No events matched for the given FxA event.")
+          {:ok}
+      end
 
     case result do
       {:ok} ->
         conn
         |> send_resp(200, [])
+
       _ ->
         # Webhook event handlers errored
         # If response other than 200 is returned, FxA will retry
         conn
         |> send_resp(500, "Internal Server Error")
     end
+  end
+
+  defp get_key_value_array(obj) do
+    Enum.map(obj, fn {k, v} -> {k, v} end)
   end
 end
