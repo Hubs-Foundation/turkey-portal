@@ -41,10 +41,9 @@ defmodule Dash.Account do
     |> Dash.Repo.insert!()
   end
 
-  def set_auth_updated_at(fxa_uid, time) when is_binary(fxa_uid) do
+  def set_auth_updated_at(fxa_uid, %DateTime{} = time) when is_binary(fxa_uid) do
     case account_for_fxa_uid(fxa_uid) do
       %Dash.Account{} = account ->
-        # TODO may need to convert this time
         account |> change(auth_updated_at: time) |> Dash.Repo.update!()
 
       nil ->

@@ -17,9 +17,11 @@ defmodule Dash.FxaEvents do
   # }
   # Handles password change event
   def handle_password_change(fxa_uid, event_data) do
-    %{"changeTime" => time} = event_data
+    %{"changeTime" => fxa_timestamp} = event_data
 
-    case Dash.Account.set_auth_updated_at(fxa_uid, time) do
+    utc_datetime = fxa_timestamp_str_to_utc_datetime(fxa_timestamp)
+
+    case Dash.Account.set_auth_updated_at(fxa_uid, utc_datetime) do
       {:ok, _changeset} ->
         {:ok}
 
@@ -37,5 +39,10 @@ defmodule Dash.FxaEvents do
         Logger.error("Unknown error in Dash.FxaEvents handle_password_change(), #{inspect(err)}")
         {:ok}
     end
+  end
+
+  def fxa_timestamp_str_to_utc_datetime(fxa_timestamp_str) when is_binary(fxa_timestamp_str) do
+    {timestamp, _} = Integer.parse(fxa_timestamp_str)
+    DateTime.from_unix!(timestamp, :millisecond) |> DateTime.truncate(:second)
   end
 end

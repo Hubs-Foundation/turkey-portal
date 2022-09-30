@@ -32,7 +32,10 @@ defmodule DashWeb.Api.V1.FxaEventsController do
           Dash.FxaEvents.handle_password_change(fxa_uid, event_data)
 
         true ->
-          Logger.warn("FxaEventsController index: No events matched for the given FxA event.")
+          Logger.warn(
+            "FxaEventsController index: No events matched for the given FxA event. Event is #{event} #{inspect(event_data)}"
+          )
+
           {:ok}
       end
 
