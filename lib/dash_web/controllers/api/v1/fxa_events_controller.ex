@@ -17,11 +17,13 @@ defmodule DashWeb.Api.V1.FxaEventsController do
   require Logger
 
   @password_change "/password-change"
-  def index(conn, decoded_body) do
+  def index(conn) do
+    event = conn.assigns[:fxa_event]
+
     %{
       "sub" => fxa_uid,
       "events" => events
-    } = decoded_body
+    } = event
 
     # Only one event each time
     {event, event_data} = List.first(get_key_value_array(events))

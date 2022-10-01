@@ -24,8 +24,6 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       create_test_account_and_hub()
       account_before = get_test_account()
 
-      # Logger.error("account #{inspect(account_before)}")
-
       # Should have nothing set for auth_changed_at
       assert account_before.auth_updated_at == nil
 
@@ -35,6 +33,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
 
       conn
       |> put_resp_content_type("application/json")
+      |> put_req_header("authorization", "Bearer #{JASON.encode!(body)}")
       |> get("/api/v1/events/fxa", body)
 
       # time set for auth_changed_at
@@ -58,6 +57,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
 
       conn
       |> put_resp_content_type("application/json")
+      |> put_req_header("authorization", "Bearer #{JASON.encode!(body)}")
       |> get("/api/v1/events/fxa", body)
 
       account_after = get_test_account()
