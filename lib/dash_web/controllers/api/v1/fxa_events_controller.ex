@@ -17,7 +17,7 @@ defmodule DashWeb.Api.V1.FxaEventsController do
   require Logger
 
   @password_change "/password-change"
-  def index(conn) do
+  def index(conn, _) do
     event = conn.assigns[:fxa_event]
 
     %{

@@ -18,7 +18,6 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
 
   describe "FxA Events Controller Webhook" do
     # Password change event handled correctly
-    @tag marked: true
     test "should return 200 and password change event handled correctly", %{conn: conn} do
       # Create Account
       create_test_account_and_hub()
@@ -33,8 +32,8 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
 
       conn
       |> put_resp_content_type("application/json")
-      |> put_req_header("authorization", "Bearer #{JASON.encode!(body)}")
-      |> get("/api/v1/events/fxa", body)
+      |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+      |> get("/api/v1/events/fxa")
 
       # time set for auth_changed_at
       account_after = get_test_account()
@@ -44,7 +43,6 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     end
 
     # Account is not created if the account never existed and we receive a password change event
-    @tag marked: true
     test "should return 200 and if account never existed, there's still no account", %{conn: conn} do
       account_before = get_test_account()
 
@@ -57,8 +55,8 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
 
       conn
       |> put_resp_content_type("application/json")
-      |> put_req_header("authorization", "Bearer #{JASON.encode!(body)}")
-      |> get("/api/v1/events/fxa", body)
+      |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+      |> get("/api/v1/events/fxa")
 
       account_after = get_test_account()
 

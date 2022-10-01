@@ -45,4 +45,8 @@ defmodule Dash.FxaEvents do
     {timestamp, _} = Integer.parse(fxa_timestamp_str)
     DateTime.from_unix!(timestamp, :millisecond) |> DateTime.truncate(:second)
   end
+
+  def fxa_timestamp_str_to_utc_datetime(fxa_timestamp) when is_integer(fxa_timestamp) do
+    DateTime.from_unix!(fxa_timestamp, :millisecond) |> DateTime.truncate(:second)
+  end
 end
