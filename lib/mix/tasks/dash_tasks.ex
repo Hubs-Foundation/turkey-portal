@@ -126,6 +126,7 @@ defmodule Mix.Tasks.Dash.GenerateLocalToken do
           "fxa_email" => "local-user@turkey.local",
           "fxa_pic" => "http://localhost:4000/images/local-user.svg",
           "fxa_displayName" => "Local User",
+          "iat" => 1_664_659_003,
           "fxa_subscriptions" => [
             "managed-hubs"
           ]
