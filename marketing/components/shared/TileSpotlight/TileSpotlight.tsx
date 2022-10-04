@@ -31,6 +31,7 @@ const Tile = ({ image, imageAlt, title, description }: TilePropsT) => {
             layout="fill"
             objectFit="cover"
             objectPosition="center"
+            placeholder="blur"
           />
         </div>
 
@@ -59,6 +60,7 @@ const TileSpotlight = ({
           layout="fill"
           objectFit="cover"
           objectPosition="center"
+          placeholder="blur"
         />
       </div>
       <div className={styles.container}>
