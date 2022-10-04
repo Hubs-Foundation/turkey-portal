@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import styles from './Testimonial.module.scss';
-import { useDesktopDown, useTabletDown } from 'hooks/useMediaQuery';
+import { useDesktopDown } from 'hooks/useMediaQuery';
 import jacobErvinAvatar from '../../../public/jacob_ervinAvatar.png';
 import testimonialBackground from '../../../public/testimonial_background.jpg';
 import testimonialBackgroundMobile from '../../../public/testimonial_background_mobile.jpg';
@@ -14,7 +14,6 @@ type TestimonialPropsT = {
 
 const Testimonial = ({ classProp = '' }: TestimonialPropsT) => {
   const isDesktopDown = useDesktopDown();
-  const isTabletDown = useTabletDown();
 
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
@@ -35,7 +34,7 @@ const Testimonial = ({ classProp = '' }: TestimonialPropsT) => {
             alt="blog background"
             objectFit="cover"
             objectPosition="center"
-            layout={isTabletDown ? 'fill' : undefined}
+            layout={isDesktopDown ? 'fill' : undefined}
           />
 
           <div className={styles.content}>
@@ -44,8 +43,8 @@ const Testimonial = ({ classProp = '' }: TestimonialPropsT) => {
               <div className={styles.avatar}>
                 <Image
                   src={jacobErvinAvatar}
-                  height={isTabletDown ? 165 : 230}
-                  width={isTabletDown ? 165 : 230}
+                  height={isDesktopDown ? 165 : 230}
+                  width={isDesktopDown ? 165 : 230}
                   alt="Jacob Ervin Avatar"
                   layout="fixed"
                 />

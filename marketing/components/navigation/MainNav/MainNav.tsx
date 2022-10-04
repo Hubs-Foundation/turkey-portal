@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import styles from './MainNav.module.scss';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
-import { useTabletDown } from 'hooks/useMediaQuery';
+import { useDesktopDown } from 'hooks/useMediaQuery';
 import { useRouter } from 'next/router';
 import { DASH_ROOT_DOMAIN } from 'config';
 
@@ -12,7 +12,7 @@ type MainNavPropsT = {
 };
 
 const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
-  const isTabletDown = useTabletDown();
+  const isDesktopDown = useDesktopDown();
   const router = useRouter();
 
   /**
@@ -41,7 +41,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
             <HubsLogo />
 
             {/* Links  */}
-            {!isTabletDown && (
+            {!isDesktopDown && (
               <div className={styles.main_nav_links}>
                 <a href="/labs" className={styles.main_nav_link}>
                   Creator Labs
@@ -61,7 +61,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
           {/* Go To Hub Dashboard */}
           <div className="flex-align-center">
             {/* Mobile Menu */}
-            {isTabletDown && (
+            {isDesktopDown && (
               <Button
                 category={ButtonCategoriesE.PRIMARY_CLEAR}
                 icon="menu"
@@ -70,7 +70,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
               />
             )}
 
-            {!isTabletDown && (
+            {!isDesktopDown && (
               <div className={styles.main_nav_actions}>
                 <Button
                   classProp="margin-right-10"

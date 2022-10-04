@@ -29,8 +29,8 @@
   line-height: 51px;
 
   @include tablet-down {
-    @include font-size(20);
-    line-height: 26px;
+    @include font-size(28.8);
+    line-height: 37px;
   }
 }
 
@@ -40,8 +40,8 @@
   line-height: 46px;
 
   @include tablet-down {
-    @include font-size(26);
-    line-height: 26px;
+    @include font-size(25.6);
+    line-height: 33px;
   }
 }
 
@@ -51,19 +51,19 @@
   line-height: 41px;
 
   @include tablet-down {
-    @include font-size(20);
-    line-height: 26px;
+    @include font-size(24);
+    line-height: 31px;
   }
 }
 
 @mixin heading-md {
   @include font-size(28);
   @include secondary-font(700);
-  line-height: 31px;
+  line-height: 36px;
 
   @include tablet-down {
-    @include font-size(20);
-    line-height: 26px;
+    @include font-size(21);
+    line-height: 27px;
   }
 }
 
@@ -71,21 +71,23 @@
   @include font-size(24);
   @include primary-font(700);
   line-height: 31px;
-  letter-spacing: 0;
+
+  @include tablet-down {
+    @include font-size(19.2);
+    line-height: 24px;
+  }
 }
 
 @mixin heading-xs {
   @include font-size(20);
   @include primary-font(700);
-  line-height: 25px;
-  letter-spacing: 0;
+  line-height: 26px;
 }
 
 @mixin heading-xxs {
   @include font-size(16);
   @include primary-font(700);
-  line-height: 25px;
-  letter-spacing: 0;
+  line-height: 20px;
 }
 
 /*-------------------------------
