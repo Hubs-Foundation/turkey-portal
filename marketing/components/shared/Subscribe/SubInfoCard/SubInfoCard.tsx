@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { useRouter } from 'next/router';
 import { Button, Icon, IconT, Checkbox } from '@mozilla/lilypad';
 import SubscriptionInfoCopy from './SubscriptionInfoCopy';
 import styles from './SubInfoCard.module.scss';
@@ -34,11 +33,9 @@ const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
 
 const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
-  const router = useRouter();
 
   const handleSubscribeClick = useCallback(() => {
-    const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_EA}`;
-    router.push(url);
+    window.open(`${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_EA}`);
   }, []);
 
   const onToggleConfirmation = useCallback((value: boolean) => {
