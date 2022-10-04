@@ -40,7 +40,6 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
 
   const onToggleConfirmation = useCallback((value: boolean) => {
     setLocationConfirmed(value);
-    console.log('value', value);
   }, []);
 
   return (
