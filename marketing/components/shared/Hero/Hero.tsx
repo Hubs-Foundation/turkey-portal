@@ -41,6 +41,7 @@ const Hero = ({
           layout="fill"
           objectFit="cover"
           objectPosition="center"
+          placeholder="blur"
         />
         <div className={styles.contents_wrapper}>
           <div className={styles.contents}>

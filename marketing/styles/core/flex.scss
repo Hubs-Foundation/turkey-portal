@@ -37,3 +37,9 @@
 .flex-grow-1 {
   flex-grow: 1;
 }
+
+.flex-box {
+  // This is a CSS class to signify the need for a wrapper container due to
+  // flex box layout, this is usually used to wrap an image being flex formatted
+  // and we want the flex side effect of warping the image.
+}
