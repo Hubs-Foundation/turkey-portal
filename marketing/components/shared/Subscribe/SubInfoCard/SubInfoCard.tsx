@@ -18,7 +18,7 @@ type InfoBlockPropsT = {
 const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   return (
     <div className={styles.info_wrapper}>
-      <div>
+      <div className="flex-box">
         <Icon name={icon} size={30} classProp="margin-right-20 margin-top-2 " />
       </div>
       <div className="u-body-md">
