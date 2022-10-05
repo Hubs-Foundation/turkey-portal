@@ -9,6 +9,6 @@ RUN npm config set -- "//npm.pkg.github.com/:_authToken" "$GITHUB_TOKEN" && npm 
 FROM node:18-alpine
 WORKDIR "/app"
 RUN chown nobody /app
-COPY --from=builder --chown=nobody:root /client ./
+COPY --from=builder --chown=nobody:root /marketing ./
 USER nobody
 CMD yarn run start
