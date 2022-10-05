@@ -28,6 +28,7 @@ defmodule DashWeb.TestHelpers do
       private_key
       |> JOSE.JWK.to_public()
       |> JOSE.JWK.to_pem()
+
     Application.put_env(:dash, DashWeb.Plugs.Auth, %{auth_pub_key: public_key_str})
   end
 

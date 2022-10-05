@@ -42,6 +42,7 @@ defmodule DashWeb.Api.V1.HubController do
         {:ok, new_hub} ->
           conn
           |> render("create.json", hub: new_hub)
+
         {:error, err} ->
           conn
           |> send_resp(400, Jason.encode!(%{error: err}))
