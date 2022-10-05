@@ -4,7 +4,7 @@ import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import { useRouter } from 'next/router';
-import { DASH_ROOT_DOMAIN } from 'config';
+import { DASH_ROOT_DOMAIN, DASH_ROOT_DOMAIN_V2 } from 'config';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -77,6 +77,12 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
                   category={ButtonCategoriesE.PRIMARY_OUTLINE}
                   href={`https://${DASH_ROOT_DOMAIN}`}
                   text="Go to Dashboard"
+                />
+                <Button
+                  classProp="margin-right-10"
+                  category={ButtonCategoriesE.PRIMARY_OUTLINE}
+                  href={`https://${DASH_ROOT_DOMAIN_V2}`}
+                  text="Go to Dashboard v2"
                 />
                 <Button
                   category={ButtonCategoriesE.PRIMARY_SOLID}
