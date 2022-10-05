@@ -108,7 +108,7 @@ defmodule Dash.Hub do
       # TODO EA For MVP2 we expect 1 hub
       hub = Enum.at(hubs, 0)
 
-      case Dash.RetClient.wait_until_healthy(hub) do
+      case RetClient.wait_until_healthy(hub) do
         {:ok} ->
           set_hub_to_ready(hub)
           {:ok}
@@ -166,20 +166,75 @@ defmodule Dash.Hub do
     Dash.Hub |> Repo.get_by(hub_id: hub_id, account_id: account.account_id)
   end
 
+  def get_hub(_hub_id, nil) do
+    Logger.error("Can't get_hub() account is nil")
+    nil
+  end
+
   def get_all_ready_hub_ids() do
     from(h in Dash.Hub, where: h.status == :ready, select: h.hub_id)
     |> Repo.all()
   end
 
-  def delete_hub(hub_id, %Dash.Account{} = account) do
-    hub_to_delete = get_hub(hub_id, account)
+  @spec delete_hub(String.t(), String.t()) :: %Dash.Hub{} | :error
+  def delete_hub(hub_id, fxa_uid) when is_binary(fxa_uid) do
+    account = Dash.Account.account_for_fxa_uid(fxa_uid)
 
-    case hub_to_delete do
-      %Dash.Hub{} ->
-        Dash.Repo.delete!(hub_to_delete)
+    case get_hub(hub_id, account) do
+      %Dash.Hub{} = hub_to_delete ->
+        delete_hub(hub_to_delete)
 
       nil ->
-        nil
+        Logger.error("delete_hub/2 error: No account for fxa_uid OR no hub for hub_id")
+        :error
+
+      _ ->
+        Logger.error("Unknown delete_hub/2 error")
+        :error
+    end
+  end
+
+  def delete_hub(%Dash.Hub{} = hub) do
+    with :ok <- delete_hub_instance(hub) do
+      delete_hub_repo(hub)
+    else
+      _ ->
+        Logger.error("Issue deleting hub")
+    end
+  end
+
+  @spec delete_hub_instance(%Dash.Hub{}) :: :ok | :error
+  defp delete_hub_instance(%Dash.Hub{} = hub) do
+    case Dash.OrchClient.delete_hub(hub) do
+      {:ok, %{status_code: 202}} ->
+        :ok
+
+      {:ok, %{status_code: status_code} = resp} ->
+        Logger.warn(
+          "Deleting hub Orch request returned status code #{status_code} and response #{inspect(resp)}"
+        )
+
+        :error
+
+      {:error, %HTTPoison.Error{} = httpoison_error} ->
+        Logger.error("Failed to delete hub #{inspect(httpoison_error)}")
+        :error
+
+      {:ok, _} ->
+        Logger.error("Failed to delete Hub, unknown error occurred")
+        :error
+    end
+  end
+
+  @spec delete_hub_repo(%Dash.Hub{}) :: :ok | :error
+  defp delete_hub_repo(%Dash.Hub{} = hub) do
+    case Repo.delete(hub) do
+      {:ok, _} ->
+        :ok
+
+      {:error, changeset} ->
+        Logger.error("Failed to delete hub #{inspect(changeset)}")
+        :error
     end
   end
 
@@ -243,8 +298,8 @@ defmodule Dash.Hub do
     Task.Supervisor.async(Dash.TaskSupervisor, fn ->
       with {:ok, %{status_code: status_code}} when status_code < 400 <-
              Dash.OrchClient.update_subdomain(updated_hub),
-           {:ok} <- Dash.RetClient.wait_until_healthy(updated_hub),
-           {:ok} <- Dash.RetClient.rewrite_assets(previous_hub, updated_hub) do
+           {:ok} <- RetClient.wait_until_healthy(updated_hub),
+           {:ok} <- RetClient.rewrite_assets(previous_hub, updated_hub) do
         set_hub_to_ready(updated_hub)
       else
         err ->
