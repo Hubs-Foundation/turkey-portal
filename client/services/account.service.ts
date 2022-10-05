@@ -13,9 +13,6 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
   const contextHeaders = { headers: { ...(headers as AxiosRequestHeaders) } };
   const config = headers ? contextHeaders : credentials;
 
-  console.log('logging api endpoint');
-  console.log(`${PUBLIC_API_SERVER}${API_PATH}`);
-
   return axios
     .get(`${PUBLIC_API_SERVER}${API_PATH}`, config)
     .then((response) => response.data)
