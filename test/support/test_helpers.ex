@@ -24,7 +24,10 @@ defmodule DashWeb.TestHelpers do
   def put_keys_for_jwk() do
     private_key = JOSE.JWK.generate_key({:rsa, 512})
 
-    {_meta, public_key_str} = private_key |> JOSE.JWK.to_public() |> JOSE.JWK.to_pem()
+    {_meta, public_key_str} =
+      private_key
+      |> JOSE.JWK.to_public()
+      |> JOSE.JWK.to_pem()
     Application.put_env(:dash, DashWeb.Plugs.Auth, %{auth_pub_key: public_key_str})
   end
 

@@ -54,7 +54,7 @@ defmodule DashWeb.Plugs.Auth do
       fxa_pic: fxa_pic,
       fxa_display_name: fxa_display_name,
       fxa_email: fxa_email,
-      has_subscription: Enum.member?(fxa_subscriptions, @subscription_string)
+      has_subscription?: Enum.member?(fxa_subscriptions, @subscription_string)
     })
   end
 

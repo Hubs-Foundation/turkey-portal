@@ -10,7 +10,7 @@ defmodule DashWeb.Api.V1.AccountController do
     has_creating_hubs = Dash.Hub.has_creating_hubs(conn.assigns[:account])
     fxa_account_info = conn.assigns[:fxa_account_info]
     is_forbidden = Dash.ApprovedEmail.is_forbidden(fxa_account_info.fxa_email)
-    has_subscription = conn.assigns[:fxa_account_info].has_subscription
+    has_subscription? = fxa_account_info.has_subscription?
 
     conn
     |> render(
@@ -19,7 +19,7 @@ defmodule DashWeb.Api.V1.AccountController do
       has_hubs: has_hubs,
       has_creating_hubs: has_creating_hubs,
       is_forbidden: is_forbidden,
-      has_subscription: has_subscription
+      has_subscription?: has_subscription?
     )
   end
 end

@@ -17,10 +17,11 @@ defmodule DashWeb.Api.V1.HubController do
   # All hubs for 1 account
   def index(conn, %{}, account) do
     # Check that this account has at least one hub if subscribed
-    fxa_email = conn.assigns[:fxa_account_info].fxa_email
-    has_subscription = conn.assigns[:fxa_account_info].has_subscription
+    fxa_account_info = conn.assigns[:fxa_account_info]
+    fxa_email = fxa_account_info.fxa_email
+    has_subscription? = fxa_account_info.has_subscription?
 
-    case Hub.ensure_default_hub_is_ready(account, fxa_email, has_subscription) do
+    case Hub.ensure_default_hub_is_ready(account, fxa_email, has_subscription?) do
       {:ok} ->
         hubs = Hub.hubs_with_usage_stats_for_account(account)
         conn |> render("index.json", hubs: hubs)
@@ -32,13 +33,19 @@ defmodule DashWeb.Api.V1.HubController do
 
   # Create hub with defaults
   def create(conn, _, account) do
-    fxa_email = conn.assigns[:fxa_account_info].fxa_email
-    has_subscription = conn.assigns[:fxa_account_info].has_subscription
+    fxa_account_info = conn.assigns[:fxa_account_info]
+    fxa_email = fxa_account_info.fxa_email
+    has_subscription? = fxa_account_info.has_subscription?
 
-    if has_subscription do
+    if has_subscription? do
       case Hub.create_default_hub(account, fxa_email) do
-        {:ok, new_hub} -> conn |> render("create.json", hub: new_hub)
-        {:error, err} -> conn |> send_resp(400, Jason.encode!(%{error: err})) |> halt()
+        {:ok, new_hub} ->
+          conn
+          |> render("create.json", hub: new_hub)
+        {:error, err} ->
+          conn
+          |> send_resp(400, Jason.encode!(%{error: err}))
+          |> halt()
       end
     else
       conn
@@ -57,7 +64,8 @@ defmodule DashWeb.Api.V1.HubController do
     # this verifies that the account has a hub with this id
     case Hub.update_hub(hub_id, json_camel_to_snake(attrs), account) do
       {:ok, updated_hub} ->
-        conn |> render("show.json", hub: updated_hub)
+        conn
+        |> render("show.json", hub: updated_hub)
 
       {:error, err} ->
         conn

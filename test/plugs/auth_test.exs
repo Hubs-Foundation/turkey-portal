@@ -1,9 +1,9 @@
 defmodule DashWeb.Plugs.AuthTest do
   use DashWeb.ConnCase
+  use DashWeb, :controller
+
   import DashWeb.TestHelpers
   import Mox
-  use DashWeb, :controller
-  alias DashWeb.Plugs.Auth
 
   setup_all do
     setup_http_mocks()
