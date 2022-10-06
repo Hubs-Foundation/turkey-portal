@@ -41,6 +41,16 @@ defmodule Dash.FxaEvents do
     end
   end
 
+  def handle_account_deletion_event(fxa_uid) do
+    case Dash.Account.delete_account_and_hubs(fxa_uid) do
+      :ok ->
+        :ok
+
+      :error ->
+        Logger.error("Error in handle_account_deletion_event.")
+    end
+  end
+
   def fxa_timestamp_str_to_utc_datetime(fxa_timestamp_str) when is_binary(fxa_timestamp_str) do
     {timestamp, _} = Integer.parse(fxa_timestamp_str)
     DateTime.from_unix!(timestamp, :millisecond) |> DateTime.truncate(:second)
