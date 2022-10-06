@@ -89,8 +89,9 @@ defmodule Dash.Hub do
 
   # Checks if account has at least one hub, if not, creates hub
   # Will wait for hub to be ready before
-  def ensure_default_hub_is_ready(%Dash.Account{} = account, email) do
-    if !has_hubs(account), do: create_default_hub(account, email)
+  def ensure_default_hub_is_ready(%Dash.Account{} = account, email, has_subscription?) do
+    # Need subscription in order to create hub
+    if has_subscription? and not has_hubs(account), do: create_default_hub(account, email)
 
     # TODO EA make own hub controller endpoint for waiting_until_ready_state
     if has_creating_hubs(account) do

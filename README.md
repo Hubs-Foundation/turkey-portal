@@ -14,6 +14,8 @@ asdf will use the versions specified in the `.tool-versions` file. Just run `asd
 - Create and migrate your database with `mix ecto.setup`
 - Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
+## Create a local user
+
 Run the following commands to create a local user and a test hub:
 
 ```
@@ -21,14 +23,20 @@ mix dash.create_account local-user-uid
 mix dash.create_hub local-user-uid "Dev Hub"
 ```
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
-
-Paste the following in your browser console to login as a local user.
+Go to [`http://localhost:3000/subscribe?redirect=false`](http://localhost:3000/subscribe?redirect=false) and paste the following in your browser console to login as a local user.
 
 The email associated with this token is "local-user@turkey.local".
 
+### Token IS subscribed to Subscription Platform hubs product
+
 ```
-document.cookie='_turkeyauthtoken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMyNTAzNjgwMDAwLCJmeGFfZGlzcGxheU5hbWUiOiJMb2NhbCBVc2VyIiwiZnhhX2VtYWlsIjoibG9jYWwtdXNlckB0dXJrZXkubG9jYWwiLCJmeGFfcGljIjoiaHR0cDovL2xvY2FsaG9zdDo0MDAwL2ltYWdlcy9sb2NhbC11c2VyLnN2ZyIsInN1YiI6ImxvY2FsLXVzZXItdWlkIn0.AKqv56S8ZW3kG2buj-mPisG_beSPrzgMETZuiwkb2nK6KYqjIVQX9WZWzDz1oqFGuQAYnkNnmDyEpI_cMUVKbA;path=/;max-age=31536000'
+document.cookie='_turkeyauthtoken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMyNTAzNjgwMDAwLCJmeGFfZGlzcGxheU5hbWUiOiJMb2NhbCBVc2VyIiwiZnhhX2VtYWlsIjoibG9jYWwtdXNlckB0dXJrZXkubG9jYWwiLCJmeGFfcGljIjoiaHR0cDovL2xvY2FsaG9zdDo0MDAwL2ltYWdlcy9sb2NhbC11c2VyLnN2ZyIsImZ4YV9zdWJzY3JpcHRpb25zIjpbIm1hbmFnZWQtaHVicyJdLCJzdWIiOiJsb2NhbC11c2VyLXVpZCJ9.fNtGK-SV0mbzKFgiKWfLwwk_g3F261jnSMITB3QwHe-sNStl7JW7Oh2DHFdMtn65Y54-6fpPNTW48KbJ6G26Ug;path=/;max-age=31536000'
+```
+
+### Token is NOT subscribed to Subscription Platform hubs product
+
+```
+document.cookie='_turkeyauthtoken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMyNTAzNjgwMDAwLCJmeGFfZGlzcGxheU5hbWUiOiJMb2NhbCBVc2VyIiwiZnhhX2VtYWlsIjoibG9jYWwtdXNlckB0dXJrZXkubG9jYWwiLCJmeGFfcGljIjoiaHR0cDovL2xvY2FsaG9zdDo0MDAwL2ltYWdlcy9sb2NhbC11c2VyLnN2ZyIsImZ4YV9zdWJzY3JpcHRpb25zIjpbXSwic3ViIjoibG9jYWwtdXNlci11aWQifQ.psKf0BPCtKL5X1fuqHFqH2E3LPaI5lVZHjcmNjxDr1erBR0nbcYjIEeVTjmCHcgkNO1Ikb9-pnS94qNf60u3eg;path=/;max-age=31536000'
 ```
 
 ## Utilities
