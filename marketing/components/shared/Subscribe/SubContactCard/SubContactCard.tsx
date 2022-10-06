@@ -12,6 +12,7 @@ const SubContactCard = ({ classProp = '' }: SubContactCardPropsT) => {
         <h2>Business</h2>
         <p>Need dedicated infrastructure, custom clients, or something else?</p>
         <Button
+          label="Contact us"
           text="Contact us"
           href="mailto:hubs@mozilla.com?subject=Subscription inquiries"
           category={ButtonCategoriesE.SECONDARY_SOLID}

@@ -88,6 +88,7 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
       {/* FOOTER  */}
       <div className={styles.footer}>
         <Button
+          label="Subscribe to hubs"
           text="Subscribe"
           onClick={handleSubscribeClick}
           disabled={!locationConfirmed}

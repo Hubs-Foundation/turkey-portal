@@ -63,6 +63,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
             {/* Mobile Menu */}
             {isDesktopDown && (
               <Button
+                label="Menu"
                 category={ButtonCategoriesE.PRIMARY_CLEAR}
                 icon="menu"
                 onClick={handleMobileMenuClick}
@@ -73,12 +74,14 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
             {!isDesktopDown && (
               <div className={styles.main_nav_actions}>
                 <Button
+                  label="Go to your hubs dashboard"
                   classProp="margin-right-10"
                   category={ButtonCategoriesE.PRIMARY_OUTLINE}
                   href={`https://${DASH_ROOT_DOMAIN}`}
                   text="Go to Dashboard"
                 />
                 <Button
+                  label="Get started and subscribe to Hubs"
                   category={ButtonCategoriesE.PRIMARY_SOLID}
                   onClick={handleGetStartedClick}
                   text="Get Started"
