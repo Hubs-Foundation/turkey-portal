@@ -6,7 +6,7 @@ import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
 import BlobIcon from '@Logos/BlobIcon/BlobIcon';
 import { RoutesE } from 'types/Routes';
-import { AUTH_SERVER, FXA_SERVER, PUBLIC_API_SERVER } from 'config';
+import { AUTH_SERVER, FXA_SERVER, DASH_ROOT_DOMAIN } from 'config';
 
 import {
   Button,
@@ -36,7 +36,12 @@ const MainNav = ({
 
   const onLogOutClick = useCallback(async () => {
     dropdownRef.current?.closeDropdown();
-    await logOut();
+    try {
+      await logOut();
+    } catch {
+      console.error('Error: issue logging out');
+    }
+
     router.push({
       pathname: RoutesE.Login,
     });
@@ -129,7 +134,7 @@ const MainNav = ({
             </div>
           </div>
 
-          {/* Account information  */}
+          {/* Account information */}
           {!showLoggedOutUi && (
             <div className="flex-align-center">
               <Button
@@ -165,8 +170,7 @@ const MainNav = ({
             <Button
               category={ButtonCategoriesE.SECONDARY_OUTLINE}
               text="Sign In"
-              href={`${AUTH_SERVER}/login?idp=fxa&client=${PUBLIC_API_SERVER};
-              ${AUTH_SERVER}/login?idp=fxa&client=${PUBLIC_API_SERVER};`}
+              href={`https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}`}
             />
           )}
         </div>

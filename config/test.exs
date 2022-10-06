@@ -24,6 +24,8 @@ config :dash, Dash.AppConfig, host: "dashboard.cluster.turkey.local"
 
 config :dash, DashWeb.Plugs.BasicAuth, enabled: false
 
+config :dash, DashWeb.Plugs.Auth, auth_server: "test.auth.server"
+
 config :dash, Dash.ApprovedEmail, enabled: false
 
 # In test we don't send emails.
