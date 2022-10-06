@@ -84,6 +84,13 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
                   href={`https://${DASH_ROOT_DOMAIN_V2}`}
                   text="Go to Dashboard v2"
                 />
+
+                <Button
+                  classProp="margin-right-10"
+                  category={ButtonCategoriesE.PRIMARY_OUTLINE}
+                  href={`https://${process.env.NEXT_PUBLIC_DASH_ROOT_DOMAIN_V3}`}
+                  text="Go to Dashboard v3"
+                />
                 <Button
                   category={ButtonCategoriesE.PRIMARY_SOLID}
                   onClick={handleGetStartedClick}
