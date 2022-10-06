@@ -178,16 +178,12 @@ defmodule Dash.Hub do
       nil ->
         Logger.error("delete_hub/2 error: No account for fxa_uid OR no hub for hub_id")
         :error
-
-      _ ->
-        Logger.error("Unknown delete_hub/2 error")
-        :error
     end
   end
 
   def delete_hub(%Dash.Hub{} = hub) do
     with :ok <- delete_hub_instance(hub) do
-      delete_hub_repo(hub)
+      delete_hub_record(hub)
     else
       _ ->
         Logger.error("Issue deleting hub")
@@ -217,8 +213,8 @@ defmodule Dash.Hub do
     end
   end
 
-  @spec delete_hub_repo(%Dash.Hub{}) :: :ok | :error
-  defp delete_hub_repo(%Dash.Hub{} = hub) do
+  @spec delete_hub_record(%Dash.Hub{}) :: :ok | :error
+  defp delete_hub_record(%Dash.Hub{} = hub) do
     case Repo.delete(hub) do
       {:ok, _} ->
         :ok
