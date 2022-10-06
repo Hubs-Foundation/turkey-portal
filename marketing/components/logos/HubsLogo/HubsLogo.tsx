@@ -24,7 +24,7 @@ const HubsLogo = ({
   const router = useRouter();
   const handleButtonClick = useCallback(() => {
     router.push(href);
-  }, []);
+  }, [href, router]);
 
   return (
     <button
