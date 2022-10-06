@@ -38,6 +38,16 @@ defmodule Dash.OrchClient do
     )
   end
 
+  def delete_hub(%Dash.Hub{} = hub) do
+    get_http_client().request(
+      :delete,
+      orch_hub_endpoint(),
+      Jason.encode!(%{hub_id: hub.hub_id |> to_string}),
+      [],
+      hackney: [:insecure]
+    )
+  end
+
   defp get_http_client() do
     # Make the http client module configurable so that we can mock it out in tests.
     Application.get_env(:dash, Dash.Hub)[:http_client] || HTTPoison
