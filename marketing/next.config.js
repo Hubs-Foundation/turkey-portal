@@ -4,7 +4,7 @@ const nextConfig = {
   swcMinify: true,
   publicRuntimeConfig: {
     AUTH_SERVER: process.env.NEXT_PUBLIC_AUTH_SERVER,
-    DASH_ROOT_DOMAIN: process.env.NEXT_PUBLIC_DASH_ROOT_DOMAIN,
+    DASH_ROOT_DOMAIN: process.env.DASH_ROOT_DOMAIN,
     FXA_PAYMENT_URL: process.env.NEXT_PUBLIC_FXA_PAYMENT_URL,
     FXA_SERVER: process.env.NEXT_PUBLIC_FXA_SERVER,
     HUB_ROOT_DOMAIN: process.env.NEXT_PUBLIC_HUB_ROOT_DOMAIN,
