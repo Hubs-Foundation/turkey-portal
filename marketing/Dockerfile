@@ -9,5 +9,4 @@ COPY . .
 FROM node:18-alpine
 WORKDIR "/app"
 COPY --from=builder /client ./
-USER nobody
 CMD source env.production && yarn run start
