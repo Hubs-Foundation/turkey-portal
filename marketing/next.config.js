@@ -1,26 +1,37 @@
 /** @type {import('next').NextConfig} */
+
+if (process.env.ENV == "prod"){
+  FXA_SERVER="TBD111"
+  AUTH_SERVER="TBD222"
+  HUB_ROOT_DOMAIN="TBD333"
+  DASH_ROOT_DOMAIN="TBD444"
+  FXA_PAYMENT_URL="TBD555"
+  PRODUCT_ID="TBD666"
+  PLAN_ID_EA="TBD777"
+}else{
+  FXA_SERVER="accounts.firefox.com"
+  AUTH_SERVER="auth.myhubs.net"
+  HUB_ROOT_DOMAIN="dev.myhubs.net"
+  DASH_ROOT_DOMAIN="dashboard.dev.myhubs.net"
+  FXA_PAYMENT_URL="https://payments-stage.fxa.nonprod.cloudops.mozgcp.net"
+  PRODUCT_ID="prod_KPReWHqwGqZBzc"
+  PLAN_ID_EA="price_1Jkcl3Kb9q6OnNsLFbECmMtd"
+}
+
+
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   publicRuntimeConfig: {
-    AUTH_SERVER: process.env.AUTH_SERVER,
-    FXA_SERVER: process.env.FXA_SERVER,
-    HUB_ROOT_DOMAIN: process.env.HUB_ROOT_DOMAIN,
-    FXA_PAYMENT_URL: process.env.FXA_PAYMENT_URL,
-    DASH_ROOT_DOMAIN: process.env.DASH_ROOT_DOMAIN,
-    PRODUCT_ID: process.env.PRODUCT_ID,
-    PLAN_ID_EA: process.env.PLAN_ID_EA,
+    AUTH_SERVER: AUTH_SERVER,
+    FXA_SERVER: FXA_SERVER,
+    HUB_ROOT_DOMAIN: HUB_ROOT_DOMAIN,
+    FXA_PAYMENT_URL: FXA_PAYMENT_URL,
+    DASH_ROOT_DOMAIN: DASH_ROOT_DOMAIN,
+    PRODUCT_ID: PRODUCT_ID,
+    PLAN_ID_EA: PLAN_ID_EA,
   },
 };
-
-
-console.log("process.env.AUTH_SERVER: ", process.env.AUTH_SERVER)
-console.log("process.env.FXA_SERVER: ", process.env.FXA_SERVER)
-console.log("process.env.HUB_ROOT_DOMAIN: ", process.env.HUB_ROOT_DOMAIN)
-console.log("process.env.FXA_PAYMENT_URL: ", process.env.FXA_PAYMENT_URL)
-console.log("process.env.DASH_ROOT_DOMAIN: ", process.env.DASH_ROOT_DOMAIN)
-console.log("process.env.PRODUCT_ID: ", process.env.PRODUCT_ID)
-console.log("process.env.PLAN_ID_EA: ", process.env.PLAN_ID_EA)
 
 console.log("nextConfig: ", nextConfig)
 

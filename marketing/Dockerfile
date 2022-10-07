@@ -11,4 +11,4 @@ WORKDIR "/app"
 RUN chown nobody /app
 COPY --from=builder --chown=nobody:root /client ./
 USER nobody
-CMD source env.production && echo "FXA_SERVER=$FXA_SERVER"; yarn run start
+CMD ENV="prod" yarn run start
