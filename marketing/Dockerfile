@@ -8,7 +8,6 @@ COPY . .
 # ---- app stage ----
 FROM node:18-alpine
 WORKDIR "/app"
-RUN chown nobody /app
-COPY --from=builder --chown=nobody:root /client ./
+COPY --from=builder /client ./
 USER nobody
 CMD source env.production && yarn run start
