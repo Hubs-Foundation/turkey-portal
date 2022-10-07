@@ -15,9 +15,8 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
 
   return axios
     .get(`${PUBLIC_API_SERVER}${API_PATH}`, config)
-    .then((response) => {
-      return response.data;
-    });
+    .then((response) => response.data)
+    .catch((e) => console.error(e));
 };
 
 /**
@@ -28,7 +27,6 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
 export const logOut = async () => {
   return axios
     .get(`${PUBLIC_API_SERVER}/logout`, { withCredentials: true })
-    .then((response) => {
-      return response.data;
-    });
+    .then((response) => response.data)
+    .catch((e) => console.error(e));
 };

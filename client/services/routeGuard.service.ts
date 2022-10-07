@@ -23,24 +23,23 @@ export function requireAuthenticationAndHubsOrSubscription(
       // User is authenticated
       if (account.hasHubs || account.hasSubscription) {
         return await gssp(context, account);
-      } else {
-        // Authenticated, NO hubs OR NO subscription
-        return redirectToSubscribe();
       }
+
+      // Authenticated, NO hubs OR NO subscription
+      return redirectToSubscribe();
     } catch (error) {
       // User is not authenticated
       const axiosError = error as AxiosError;
       const status: Number | undefined = axiosError.response?.status;
 
-      if (status === 401) {
-        // Expected authentication error from the Phoenix server
-        return redirectToMarketingPage();
-      } else {
+      // If status is 401, it's an expected error
+      if (status !== 401) {
         // Unexpected error
         console.error('Unexpected error in requireAuthentication');
         console.error(`Response status: ${status}, error: ${axiosError}`);
-        return redirectToMarketingPage();
       }
+
+      return redirectToMarketingPage();
     }
   };
 }
@@ -105,7 +104,7 @@ function shouldNotRedirect(
 /**
  * For authenticated subscribe page,redirect to /dashboard if you have hubs or subscription
  * Authenticated NO hubs AND NO subscription, stay on /subscribe page
- * Authenticated YES hubs OR YES subscription, redirect to /dashbaord
+ * Authenticated YES hubs OR YES subscription, redirect to /dashboard
  * NOT Authenticated, redirect to marketing page
  * @param gssp
  * @returns GetServerSideProps

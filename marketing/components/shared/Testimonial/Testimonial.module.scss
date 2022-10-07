@@ -10,10 +10,6 @@
   padding: 20px;
 
   @include desktop-down {
-    padding: 20px 60px;
-  }
-
-  @include tablet-down {
     padding: 0;
   }
 }
@@ -22,7 +18,7 @@
   text-align: center;
 
   h2 {
-    @include heading-xxl;
+    @include heading-lg;
   }
 }
 
@@ -33,9 +29,6 @@
 
   @include desktop-down {
     top: 25%;
-  }
-
-  @include tablet-down {
     flex-direction: column;
     position: initial;
     padding: 0 24px;
@@ -46,7 +39,7 @@
     max-width: $container-max-width;
     position: relative;
 
-    @include tablet-down {
+    @include desktop-down {
       padding: 0 0 100px;
     }
   }
@@ -60,14 +53,14 @@
   margin: 60px 40px 40px 0;
   max-height: 244px;
 
-  @include tablet-down {
+  @include desktop-down {
     margin: 0 0 24px;
     position: relative;
     border-radius: 100px;
   }
 
   &_wrapper {
-    @include tablet-down {
+    @include desktop-down {
       display: flex;
       justify-content: center;
     }
@@ -89,17 +82,19 @@
 }
 
 .message {
-  @include heading-sm;
+  @include primary-font(700);
+  @include font-size(21);
+  line-height: 150%;
   margin: 0 0 16px 0;
 
   &_wrapper {
     box-shadow: 0px 3px 19px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
     background-color: $color-background-neutral-0;
-    max-width: 916px;
+    max-width: 835px;
     position: relative;
 
-    @include tablet-down {
+    @include desktop-down {
       display: flex;
     }
   }
@@ -109,10 +104,6 @@
     position: relative;
 
     @include desktop-down {
-      padding: 70px 80px;
-    }
-
-    @include tablet-down {
       text-align: center;
       padding: 20px;
     }
@@ -124,22 +115,14 @@
     left: -90px;
 
     @include desktop-down {
-      top: 50px;
-      left: -67px;
-    }
-
-    @include tablet-down {
       display: none;
     }
   }
 
   &_name {
     @include primary-font(500);
-    @include font-size(24);
+    @include font-size(19.3);
+    line-height: 150%;
     margin: 0px;
-
-    @include desktop-down {
-      @include font-size(16);
-    }
   }
 }

@@ -165,6 +165,13 @@
   width: 100%;
 }
 
+.u-content-box {
+  &,
+  & * {
+    box-sizing: content-box;
+  }
+}
+
 /**
 PADDING
 **/
@@ -300,6 +307,10 @@ MARGIN
     margin-top: 15px;
   }
 
+  &-16 {
+    margin-top: 16px;
+  }
+
   &-20 {
     margin-top: 20px;
   }
@@ -316,6 +327,10 @@ MARGIN
 
   &-15 {
     margin-bottom: 15px;
+  }
+
+  &-15 {
+    margin-bottom: 16px;
   }
 
   &-20 {
