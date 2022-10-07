@@ -51,7 +51,7 @@ defmodule DashWeb.Plugs.Auth do
 
     # If token issued before an Authorization change in the account, invalidate token and login again
     if account.auth_updated_at != nil and
-         DateTime.compare(iat_to_utc_datetime(issued_at), account.auth_updated_at, :second) == :lt do
+         DateTime.compare(iat_to_utc_datetime(issued_at), account.auth_updated_at) == :lt do
       # Issued before auth_updated_at
       process_jwt(conn, %{is_valid: false, claims: claims})
     else
@@ -61,7 +61,7 @@ defmodule DashWeb.Plugs.Auth do
         fxa_pic: fxa_pic,
         fxa_display_name: fxa_display_name,
         fxa_email: fxa_email,
-        has_subscription: @subscription_string in fxa_subscriptions
+        has_subscription?: @subscription_string in fxa_subscriptions
       })
     end
   end
