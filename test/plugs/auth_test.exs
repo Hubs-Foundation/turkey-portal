@@ -83,4 +83,51 @@ defmodule DashWeb.Plugs.AuthTest do
                })
     end
   end
+
+  describe "Auth Plug account.auth_updated_at tests" do
+    test "Should reject if token.iat is before account.auth_updated_at", %{conn: conn} do
+      create_test_account_and_hub()
+      fxa_test_uid = get_default_test_uid()
+
+      utc_datetime_now = DateTime.utc_now() |> DateTime.truncate(:second)
+
+      earlier_datetime = utc_datetime_now
+      later_datetime = DateTime.add(utc_datetime_now, 1000)
+
+      Dash.Account.set_auth_updated_at(fxa_test_uid, later_datetime)
+
+      conn =
+        conn
+        |> put_test_token(claims: %{iat: datetime_to_timestamp(earlier_datetime)})
+        |> get("/api/v1/account")
+
+      assert response(conn, 401) ==
+               Jason.encode!(%{
+                 error: "unauthorized"
+               })
+    end
+
+    test "Should succeed if token.iat is after account.auth_updated_at", %{conn: conn} do
+      create_test_account_and_hub()
+      fxa_test_uid = get_default_test_uid()
+
+      utc_datetime_now = DateTime.utc_now() |> DateTime.truncate(:second)
+
+      earlier_datetime = utc_datetime_now
+      later_datetime = DateTime.add(utc_datetime_now, 1000)
+
+      Dash.Account.set_auth_updated_at(fxa_test_uid, earlier_datetime)
+
+      conn =
+        conn
+        |> put_test_token(claims: %{iat: datetime_to_timestamp(later_datetime)})
+        |> get("/api/v1/account")
+
+      assert json_response(conn, 200)["email"] === get_test_email()
+    end
+  end
+
+  defp datetime_to_timestamp(datetime) do
+    DateTime.to_unix(datetime)
+  end
 end

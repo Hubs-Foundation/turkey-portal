@@ -9,7 +9,8 @@ defmodule DashWeb.TestHelpers do
     "fxa_email" => @test_email,
     "fxa_pic" => "https://fake.com/pic.jpg",
     "fxa_displayName" => "Faker McFakerson",
-    "fxa_subscriptions" => ["managed-hubs"]
+    "fxa_subscriptions" => ["managed-hubs"],
+    "iat" => 1_633_040_007
   }
 
   @default_token_opts [
@@ -19,6 +20,10 @@ defmodule DashWeb.TestHelpers do
   ]
   def get_test_email() do
     @test_email
+  end
+
+  def get_default_test_uid() do
+    @default_test_uid
   end
 
   def put_keys_for_jwk() do

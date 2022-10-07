@@ -17,6 +17,10 @@ defmodule DashWeb.Router do
     plug DashWeb.Plugs.Auth
   end
 
+  pipeline :fxa_events_parser do
+    plug DashWeb.Plugs.FxaEventsParser
+  end
+
   pipeline :basic_auth do
     plug DashWeb.Plugs.BasicAuth
   end
@@ -64,6 +68,12 @@ defmodule DashWeb.Router do
     )
 
     post "/hubs/validate_subdomain", Api.V1.HubController, :validate_subdomain
+  end
+
+  scope "/api/v1", DashWeb do
+    pipe_through :fxa_events_parser
+    # TODO decode JWT tokens from FxA with a new plug
+    resources("/events/fxa", Api.V1.FxaEventsController, [:index])
   end
 
   # Enables LiveDashboard only for development

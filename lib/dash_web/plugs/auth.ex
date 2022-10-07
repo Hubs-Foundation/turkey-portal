@@ -43,19 +43,27 @@ defmodule DashWeb.Plugs.Auth do
       "sub" => fxa_uid,
       "fxa_pic" => fxa_pic,
       "fxa_displayName" => fxa_display_name,
+      "iat" => issued_at,
       "fxa_subscriptions" => fxa_subscriptions
     } = claims
 
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
-    conn
-    |> assign(:account, account)
-    |> assign(:fxa_account_info, %Dash.FxaAccountInfo{
-      fxa_pic: fxa_pic,
-      fxa_display_name: fxa_display_name,
-      fxa_email: fxa_email,
-      has_subscription?: @subscription_string in fxa_subscriptions
-    })
+    # If token issued before an Authorization change in the account, invalidate token and login again
+    if account.auth_updated_at != nil and
+         DateTime.compare(iat_to_utc_datetime(issued_at), account.auth_updated_at) == :lt do
+      # Issued before auth_updated_at
+      process_jwt(conn, %{is_valid: false, claims: claims})
+    else
+      conn
+      |> assign(:account, account)
+      |> assign(:fxa_account_info, %Dash.FxaAccountInfo{
+        fxa_pic: fxa_pic,
+        fxa_display_name: fxa_display_name,
+        fxa_email: fxa_email,
+        has_subscription?: @subscription_string in fxa_subscriptions
+      })
+    end
   end
 
   # Not authorized or empty jwt
@@ -102,5 +110,9 @@ defmodule DashWeb.Plugs.Auth do
 
   def get_subscription_string() do
     @subscription_string
+  end
+
+  def iat_to_utc_datetime(timestamp_s) do
+    DateTime.from_unix!(timestamp_s, :second)
   end
 end
