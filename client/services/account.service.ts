@@ -26,7 +26,7 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
  */
 export const logOut = async () => {
   return axios
-    .get(`${PUBLIC_API_SERVER}/logout`, { withCredentials: true })
+    .get(`${PUBLIC_API_SERVER}/api/v1/logout`, { withCredentials: true })
     .then((response) => response.data)
     .catch((e) => console.error(e));
 };
