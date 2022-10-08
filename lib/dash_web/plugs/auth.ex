@@ -48,12 +48,12 @@ defmodule DashWeb.Plugs.Auth do
     } = claims
 
     # Ensure fxa_subscriptions is type [] and not nil
-    fxa_subscriptions = if fxa_subscriptions == nil, do: [], else: fxa_subscriptions
+    fxa_subscriptions = if is_nil(fxa_subscriptions), do: [], else: fxa_subscriptions
 
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
     # If token issued before an Authorization change in the account, invalidate token and login again
-    if account.auth_updated_at != nil and
+    if !is_nil(account.auth_updated_at) and
          DateTime.compare(iat_to_utc_datetime(issued_at), account.auth_updated_at) == :lt do
       # Issued before auth_updated_at
       process_jwt(conn, %{is_valid: false, claims: claims})
