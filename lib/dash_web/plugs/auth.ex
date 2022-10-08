@@ -14,7 +14,7 @@ defmodule DashWeb.Plugs.Auth do
     "fxa_displayName": "Name"
     "fxa_subscriptions": [
        "managed-hubs"
-    ]
+    ] OR nil
   }
   """
   use DashWeb, :controller
@@ -46,6 +46,9 @@ defmodule DashWeb.Plugs.Auth do
       "iat" => issued_at,
       "fxa_subscriptions" => fxa_subscriptions
     } = claims
+
+    # Ensure fxa_subscriptions is type [] and not nil
+    fxa_subscriptions = if fxa_subscriptions == nil, do: [], else: fxa_subscriptions
 
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
