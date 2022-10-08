@@ -44,11 +44,12 @@ defmodule DashWeb.Plugs.Auth do
       "fxa_pic" => fxa_pic,
       "fxa_displayName" => fxa_display_name,
       "iat" => issued_at,
-      "fxa_subscriptions" => fxa_subscriptions
+      "fxa_subscriptions" => fxa_subscriptions_nil_or_list
     } = claims
 
     # Ensure fxa_subscriptions is type [] and not nil
-    fxa_subscriptions = if is_nil(fxa_subscriptions), do: [], else: fxa_subscriptions
+    fxa_subscriptions =
+      if is_nil(fxa_subscriptions_nil_or_list), do: [], else: fxa_subscriptions_nil_or_list
 
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
