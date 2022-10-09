@@ -7,6 +7,7 @@ defmodule DashWeb.Api.V1.FxaEventsController do
   require Logger
 
   @password_change "/password-change"
+  @delete_user "/delete-user"
   def index(conn, _) do
     fxa_event = conn.assigns[:fxa_event]
 
@@ -25,6 +26,9 @@ defmodule DashWeb.Api.V1.FxaEventsController do
       cond do
         event =~ @password_change ->
           Dash.FxaEvents.handle_password_change(fxa_uid, event_data)
+
+        event =~ @delete_user ->
+          Dash.FxaEvents.handle_account_deletion_event(fxa_uid)
 
         true ->
           Logger.warn(

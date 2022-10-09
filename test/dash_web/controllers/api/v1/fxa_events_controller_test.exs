@@ -16,7 +16,12 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   #   }
   # }
 
-  describe "FxA Events Controller Webhook" do
+  setup_all do
+    setup_http_mocks()
+    on_exit(fn -> exit_http_mocks() end)
+  end
+
+  describe "FxA Events Controller Webhook: Password change events" do
     # Password change event handled correctly
     test "should return 200 and password change event handled correctly", %{conn: conn} do
       # Create Account
@@ -43,7 +48,9 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     end
 
     # Account is not created if the account never existed and we receive a password change event
-    test "should return 200 and if account never existed, there's still no account", %{conn: conn} do
+    test "should return 200 and if account never existed, there's still no account", %{
+      conn: conn
+    } do
       account_before = get_test_account()
 
       # No account for fxa_uid
@@ -65,6 +72,35 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     end
   end
 
+  describe "FxA Events Controller Webhook: Account delete change events" do
+    test "should return 200 and delete user event handled correctly", %{conn: conn} do
+      expect_orch_delete()
+      # Create Account
+      create_test_account_and_hub()
+      fxa_uid = get_default_test_uid()
+
+      # Account exists and has hubs
+      account = Dash.Account.account_for_fxa_uid(fxa_uid)
+      assert account != nil
+      hubs = Dash.Hub.hubs_for_account(account)
+      assert length(hubs) != 0
+
+      event_struct = get_account_delete_event()
+      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
+
+      conn
+      |> put_resp_content_type("application/json")
+      |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+      |> get("/api/v1/events/fxa")
+
+      # Account deleted and no hubs
+      hubs = Dash.Hub.hubs_for_account(account)
+      assert length(hubs) == 0
+      account = Dash.Account.account_for_fxa_uid(fxa_uid)
+      assert account == nil
+    end
+  end
+
   defp get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct) do
     %{
       "iss" => "https://accounts.fxa.local/",
@@ -81,6 +117,12 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       "https://schemas.accounts.fxa.local/event/password-change" => %{
         "changeTime" => time
       }
+    }
+  end
+
+  defp get_account_delete_event() do
+    %{
+      "https://schemas.accounts.fxa.local/event/delete-user" => %{}
     }
   end
 end

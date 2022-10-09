@@ -1,13 +1,15 @@
 defmodule Dash.Account do
   use Ecto.Schema
+
   import Ecto.Changeset
+  require Logger
   alias Dash.Repo
 
   @primary_key {:account_id, :id, autogenerate: true}
 
   schema "accounts" do
-    field :fxa_uid, :string
-    field :auth_updated_at, :utc_datetime
+    field(:fxa_uid, :string)
+    field(:auth_updated_at, :utc_datetime)
 
     timestamps()
   end
@@ -39,6 +41,26 @@ defmodule Dash.Account do
     %Dash.Account{}
     |> Dash.Account.changeset(%{fxa_uid: fxa_uid})
     |> Dash.Repo.insert!()
+  end
+
+  @spec delete_account_and_hubs(String.t()) :: :error | :ok
+  def delete_account_and_hubs(fxa_uid) do
+    account = account_for_fxa_uid(fxa_uid)
+
+    hubs = Dash.Hub.hubs_for_account(account)
+
+    for hub <- hubs do
+      Dash.Hub.delete_hub(hub)
+    end
+
+    case Repo.delete(account) do
+      {:ok, _} ->
+        :ok
+
+      {:error, changeset} ->
+        Logger.error("Failed to delete account #{inspect(changeset)}")
+        :error
+    end
   end
 
   def set_auth_updated_at(fxa_uid, %DateTime{} = time) when is_binary(fxa_uid) do
