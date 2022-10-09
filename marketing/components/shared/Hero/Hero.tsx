@@ -41,18 +41,21 @@ const Hero = ({
           layout="fill"
           objectFit="cover"
           objectPosition="center"
+          placeholder="blur"
         />
         <div className={styles.contents_wrapper}>
           <div className={styles.contents}>
             {title && <h3 className={styles.title}>{title}</h3>}
             {body && <p className={styles.body}>{body}</p>}
-            <a href={ctaLink}>
+            {cta && (
               <Button
+                href={ctaLink}
+                label={cta}
                 text={cta}
                 onClick={onCtaClick}
                 category={ButtonCategoriesE.PRIMARY_SOLID}
               />
-            </a>
+            )}
           </div>
         </div>
       </div>

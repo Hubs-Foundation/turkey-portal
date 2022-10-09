@@ -49,6 +49,7 @@ const MobileSideNav = ({
         <div className={styles.nav_container}>
           <div className="flex-justify-end padding-20">
             <Button
+              label="close mobile navigation"
               category={ButtonCategoriesE.PRIMARY_CLEAR}
               size={ButtonSizesE.LARGE}
               icon="x"
@@ -86,6 +87,7 @@ const MobileSideNav = ({
           <div className="padding-24">
             <div className="margin-bottom-10 flex">
               <Button
+                label="Get started and subscribe to Hubs"
                 classProp="flex-grow-1 "
                 text="Get Started"
                 onClick={handleGetStartedClick}
@@ -94,6 +96,7 @@ const MobileSideNav = ({
 
             <div className="flex">
               <Button
+                label="Go to your hubs dashboard"
                 classProp="flex-grow-1 "
                 category={ButtonCategoriesE.PRIMARY_OUTLINE}
                 href={`https://${DASH_ROOT_DOMAIN}`}

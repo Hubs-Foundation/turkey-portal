@@ -25,7 +25,6 @@ const accountSlice = createSlice({
       state.displayName = displayName;
       state.email = email;
       state.hasSubscription = hasSubscription;
-      state.isInitialized = true;
     },
     logOut(state) {
       // Clear Account
@@ -34,7 +33,6 @@ const accountSlice = createSlice({
       state.displayName = '';
       state.email = '';
       state.hasSubscription = false;
-      state.isInitialized = false;
     },
   },
 });

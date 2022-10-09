@@ -88,19 +88,11 @@ defmodule Dash.Hub do
       )
   end
 
-  def maybe_create_default_hub(%Dash.Account{} = account, email, has_subscription)
-      when has_subscription == true do
-    if !has_hubs(account), do: create_default_hub(account, email)
-  end
-
-  def maybe_create_default_hub(%Dash.Account{} = _account, _email, has_subscription)
-      when has_subscription == false,
-      do: {:ok}
-
   # Checks if account has at least one hub, if not, creates hub
   # Will wait for hub to be ready before
-  def ensure_default_hub_is_ready(%Dash.Account{} = account, email, has_subscription) do
-    maybe_create_default_hub(account, email, has_subscription)
+  def ensure_default_hub_is_ready(%Dash.Account{} = account, email, has_subscription?) do
+    # Need subscription in order to create hub
+    if has_subscription? and not has_hubs(account), do: create_default_hub(account, email)
 
     # TODO EA make own hub controller endpoint for waiting_until_ready_state
     if has_creating_hubs(account) do
@@ -188,16 +180,12 @@ defmodule Dash.Hub do
       nil ->
         Logger.error("delete_hub/2 error: No account for fxa_uid OR no hub for hub_id")
         :error
-
-      _ ->
-        Logger.error("Unknown delete_hub/2 error")
-        :error
     end
   end
 
   def delete_hub(%Dash.Hub{} = hub) do
     with :ok <- delete_hub_instance(hub) do
-      delete_hub_repo(hub)
+      delete_hub_record(hub)
     else
       _ ->
         Logger.error("Issue deleting hub")
@@ -227,8 +215,8 @@ defmodule Dash.Hub do
     end
   end
 
-  @spec delete_hub_repo(%Dash.Hub{}) :: :ok | :error
-  defp delete_hub_repo(%Dash.Hub{} = hub) do
+  @spec delete_hub_record(%Dash.Hub{}) :: :ok | :error
+  defp delete_hub_record(%Dash.Hub{} = hub) do
     case Repo.delete(hub) do
       {:ok, _} ->
         :ok

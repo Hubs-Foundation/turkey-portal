@@ -8,7 +8,7 @@ defmodule DashWeb.Api.V1.AccountView do
         has_hubs: has_hubs,
         has_creating_hubs: has_creating_hubs,
         is_forbidden: is_forbidden,
-        has_subscription: has_subscription
+        has_subscription?: has_subscription?
       }) do
     %{
       displayName: fxa_account_info.fxa_display_name,
@@ -17,7 +17,7 @@ defmodule DashWeb.Api.V1.AccountView do
       hasHubs: has_hubs,
       hasCreatingHubs: has_creating_hubs,
       isForbidden: is_forbidden,
-      hasSubscription: has_subscription
+      hasSubscription: has_subscription?
     }
   end
 end

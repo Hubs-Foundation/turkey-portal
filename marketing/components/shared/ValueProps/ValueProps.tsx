@@ -22,7 +22,7 @@ const Tile = ({ icon, title, description }: TilePropsT) => {
     <section className={styles.tile_wrapper}>
       <div className={styles.tile_container}>
         <div className={styles.tile_icon}>
-          <Icon name={icon} size={37} />
+          <Icon name={icon} size={64} />
         </div>
 
         <div className={styles.tile_content}>

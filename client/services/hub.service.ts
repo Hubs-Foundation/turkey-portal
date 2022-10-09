@@ -79,7 +79,6 @@ export const validateHubSubdomain = async (
  */
 export const updateHub = async (hubId: string, hub: UpdateHubT) => {
   if (!hub) return;
-  PUBLIC_API_SERVER;
   try {
     return axios.patch(`${PUBLIC_API_SERVER}${API_PATH}/${hubId}`, hub, {
       withCredentials: true,

@@ -1,8 +1,9 @@
 defmodule DashWeb.Plugs.AuthTest do
   use DashWeb.ConnCase
+  use DashWeb, :controller
+
   import DashWeb.TestHelpers
   import Mox
-  use DashWeb, :controller
 
   setup_all do
     setup_http_mocks()
@@ -19,6 +20,7 @@ defmodule DashWeb.Plugs.AuthTest do
     @valid_expiration token_expiry: ~N[3000-01-01 00:00:00]
     @invalid_expiration token_expiry: ~N[2000-01-01 00:00:00]
     @without_subscription_claims claims: %{fxa_subscriptions: []}
+    @null_subscription_claims claims: %{fxa_subscriptions: nil}
 
     test "No JWT token: /api/v1/account responds with 401 with redirect to login page", %{
       conn: conn
@@ -36,11 +38,21 @@ defmodule DashWeb.Plugs.AuthTest do
                })
     end
 
-    test "Yes JWT token, no subscription: /api/v1/account responds with 200 account",
+    test "Yes JWT token, EMPTY ARRAY subscription: /api/v1/account responds with 200 account",
          %{conn: conn} do
       conn =
         conn
         |> put_test_token(@valid_expiration ++ @without_subscription_claims)
+        |> get("/api/v1/account")
+
+      assert response(conn, 200)
+    end
+
+    test "Yes JWT token, NULL subscription: /api/v1/account responds with 200 account",
+         %{conn: conn} do
+      conn =
+        conn
+        |> put_test_token(@valid_expiration ++ @null_subscription_claims)
         |> get("/api/v1/account")
 
       assert response(conn, 200)

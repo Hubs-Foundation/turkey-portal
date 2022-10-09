@@ -53,6 +53,7 @@ const FiftyFifty = ({
               objectPosition={isTabletDown ? undefined : 'center'}
               width={isTabletDown ? 800 : undefined}
               height={isTabletDown ? 700 : undefined}
+              placeholder="blur"
             />
           </div>
         </div>
