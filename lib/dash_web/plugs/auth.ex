@@ -59,6 +59,12 @@ defmodule DashWeb.Plugs.Auth do
       # Issued before auth_updated_at
       process_jwt(conn, %{is_valid: false, claims: claims})
     else
+      fxa_subscriptions =
+        Dash.Subscription.process_latest_fxa_subscription(account, %{
+          iat: issued_at,
+          fxa_subscriptions: fxa_subscriptions
+        })
+
       conn
       |> assign(:account, account)
       |> assign(:fxa_account_info, %Dash.FxaAccountInfo{

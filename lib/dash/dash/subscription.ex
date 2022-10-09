@@ -144,4 +144,32 @@ defmodule Dash.Subscription do
     )
     |> Repo.delete_all()
   end
+
+  @spec process_latest_fxa_subscription(%Dash.Account{}, %{
+          :fxa_subscriptions => list(),
+          :iat => integer()
+        }) :: list()
+  def process_latest_fxa_subscription(%Dash.Account{} = account, %{
+        iat: iat,
+        fxa_subscriptions: fxa_subscriptions
+      }) do
+    iat_dt = iat |> DateTime.from_unix!(:second)
+    subscriptions = get_all_subscriptions_for_account(account)
+
+    for sub <- subscriptions do
+      if sub.capability in subscriptions do
+        # matches
+        # means it's active in the cookie
+        is_active? = sub.is_active
+        change_time = sub.change_time
+        sub_is_latest? = DateTime.compare(iat_dt, change_time) != :gt
+
+        # if the subscription is later than iat
+        # it is the source of truth
+
+        # in rare instance that cookie is later than change_time
+        # use cookie as source of truth
+      end
+    end
+  end
 end
