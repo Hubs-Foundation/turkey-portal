@@ -2,6 +2,7 @@ defmodule Dash.Subscription do
   use Ecto.Schema
 
   import Ecto.Changeset
+  import Ecto.Query
   alias Dash.{Repo}
 
   schema "subscriptions" do
@@ -18,6 +19,32 @@ defmodule Dash.Subscription do
     subscription
     |> cast(attrs, [:capability, :is_active, :change_time, :account_id])
     |> validate_required([:capability, :is_active, :change_time, :account_id])
+    |> validate_unique_capability_to_account()
+  end
+
+  # Check that per account each capability is unique
+  # Account can not have 2x rows of same capability string
+  defp validate_unique_capability_to_account(changeset) do
+    account_id = get_field(changeset, :account_id)
+    capability = get_field(changeset, :capability)
+
+    result =
+      from(s in Dash.Subscription,
+        where: s.account_id == ^account_id and s.capability == ^capability
+      )
+      |> Repo.exists?()
+
+    case result do
+      true ->
+        add_error(
+          changeset,
+          :capability,
+          "Duplicate capability for account_id, for each account, should only have unique capabilities"
+        )
+
+      _ ->
+        changeset
+    end
   end
 
   def update_or_create_subscription_for_changeset(
@@ -109,5 +136,12 @@ defmodule Dash.Subscription do
     |> Dash.Subscription.changeset(new_subscription)
     |> Ecto.Changeset.put_assoc(:account, account)
     |> Repo.insert!()
+  end
+
+  def delete_all_subscriptions_for_account(%Dash.Account{} = account) do
+    from(s in Dash.Subscription,
+      where: s.account_id == ^account.account_id
+    )
+    |> Repo.delete_all()
   end
 end

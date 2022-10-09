@@ -79,11 +79,18 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       create_test_account_and_hub()
       fxa_uid = get_default_test_uid()
 
-      # Account exists and has hubs
+      # Account exists and has hubs and subscriptions
       account = Dash.Account.account_for_fxa_uid(fxa_uid)
       assert account != nil
       hubs = Dash.Hub.hubs_for_account(account)
       assert length(hubs) != 0
+      subscription_count = 2
+      create_subscriptions(account, subscription_count)
+
+      assert subscription_count ==
+               account
+               |> Dash.Subscription.get_all_subscriptions_for_account()
+               |> length()
 
       event_struct = get_account_delete_event()
       body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
@@ -96,6 +103,12 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       # Account deleted and no hubs
       hubs = Dash.Hub.hubs_for_account(account)
       assert length(hubs) == 0
+
+      assert 0 ==
+               account
+               |> Dash.Subscription.get_all_subscriptions_for_account()
+               |> length()
+
       account = Dash.Account.account_for_fxa_uid(fxa_uid)
       assert account == nil
     end
