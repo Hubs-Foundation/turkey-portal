@@ -14,7 +14,7 @@ defmodule DashWeb.Plugs.Auth do
     "fxa_displayName": "Name"
     "fxa_subscriptions": [
        "managed-hubs"
-    ]
+    ] OR nil
   }
   """
   use DashWeb, :controller
@@ -44,13 +44,17 @@ defmodule DashWeb.Plugs.Auth do
       "fxa_pic" => fxa_pic,
       "fxa_displayName" => fxa_display_name,
       "iat" => issued_at,
-      "fxa_subscriptions" => fxa_subscriptions
+      "fxa_subscriptions" => fxa_subscriptions_nil_or_list
     } = claims
+
+    # Ensure fxa_subscriptions is type [] and not nil
+    fxa_subscriptions =
+      if is_nil(fxa_subscriptions_nil_or_list), do: [], else: fxa_subscriptions_nil_or_list
 
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
     # If token issued before an Authorization change in the account, invalidate token and login again
-    if account.auth_updated_at != nil and
+    if !is_nil(account.auth_updated_at) and
          DateTime.compare(iat_to_utc_datetime(issued_at), account.auth_updated_at) == :lt do
       # Issued before auth_updated_at
       process_jwt(conn, %{is_valid: false, claims: claims})
