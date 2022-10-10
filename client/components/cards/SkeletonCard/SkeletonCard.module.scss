@@ -5,10 +5,9 @@
 
   &_wrapper {
     :global(.pulse) {
-      background-color: $color-background-overlay;
-      // animation-name: pulse;
-      // animation-duration: 2s;
-      // animation-iteration-count: infinite;
+      animation-name: pulse;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
     }
 
     &.square_wrapper {
@@ -36,14 +35,14 @@
 
 @keyframes pulse {
   0% {
-    background-color: $off-white;
+    background-color: rgba(23, 10, 122, 0.1);
   }
 
   50% {
-    background-color: $grey;
+    background-color: rgba(23, 10, 122, 0.5);
   }
 
   100% {
-    background-color: $off-white;
+    background-color: rgba(23, 10, 122, 0.1);
   }
 }
