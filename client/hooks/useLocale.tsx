@@ -1,19 +1,25 @@
 import { useState, useEffect } from 'react';
+import { LanguagesT } from 'types/General';
 
 /**
- * @param
- * @returns
+  About the hook
+  useLocal react hook looks to the users browser and returns
+  the prefered language the browser is set to. The hook
+  will then return an array of type LanguagesT "language codes"
+**/
+
+/**
+ * @returns LanguagesT[]
  */
 const useLocal = () => {
-  const initLanguage = [''];
+  const initLanguage: LanguagesT[] = [];
   const [language, setLanguage] = useState(initLanguage);
 
-  const resolveLocal = (): string[] => {
-    let languages: string[] = [];
-    console.log('navigator.language', navigator.language);
-    console.log('navigator.languages', navigator.languages);
-    if (navigator.language) languages = [navigator.language];
-    if (navigator.languages) languages = [...navigator.languages];
+  const resolveLocal = (): LanguagesT[] => {
+    let languages: LanguagesT[] = [];
+    if (navigator.language) languages = [navigator.language as LanguagesT];
+    if (navigator.languages)
+      languages = [...(navigator.languages as LanguagesT[])];
 
     return languages;
   };
