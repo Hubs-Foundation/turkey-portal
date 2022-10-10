@@ -48,6 +48,7 @@ export type AccountT = {
   isLoggedIn?: boolean;
   hasHubs?: boolean;
   hasSubscription: boolean;
+  hasCreatingHubs: boolean;
   isInitialized: boolean;
 };
 

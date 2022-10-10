@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
 import { useEffect, useState, useCallback } from 'react';
-import { HubT } from 'types/General';
+import { HubT, StatusE } from 'types/General';
 import styles from './dashboard.module.scss';
 import HubCard from '@Cards/HubCard/HubCard';
 import SubCard from '@Cards/SubCard/SubCard';
@@ -10,10 +10,26 @@ import { requireAuthenticationAndHubsOrSubscription } from 'services/routeGuard.
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
 import { getHubs } from 'services/hub.service';
 import FeedbackBanner from '@Shared/FeedbackBanner/FeedbackBanner';
+import { selectAccount } from 'store/accountSlice';
+import { useSelector } from 'react-redux';
 
 type DashboardPropsT = {};
 
+const creatingHub: HubT = {
+  ccuLimit: 0,
+  currentCcu: 0,
+  currentStorageMb: 0,
+  hubId: '',
+  name: 'Untitled Hub',
+  status: StatusE.CREATING,
+  lastError: '',
+  storageLimitMb: 0,
+  subdomain: '',
+  tier: 'premium',
+};
+
 const Dashboard = ({}: DashboardPropsT) => {
+  const account = useSelector(selectAccount);
   const hubsInit: HubT[] = [];
   const subPrice = 5;
   const subscriptionInit: SubscriptionT = {
@@ -98,6 +114,21 @@ const Dashboard = ({}: DashboardPropsT) => {
       <section className={styles.hubs_wrapper}>
         {/* Hub Cards  */}
         <div className={styles.cards_wrapper}>
+          {/* Hub Creating */}
+          {/* TODO (Tech Debt): Right now (EA) we are only dealing with one hub, so, if there are zero 
+          hubs and account has "creating hubs" flag as true, we know to show the creating hub
+          card. When we have multiple hubs (post EA) we need to transition this on the back end to have
+          a "creating" state accompanied by websockets and not depend on the account data. 
+              Reason being is we are not polling the account api to see if the creating hubs flag has 
+          changed, and subsequently remove this creating card, additionally, we can't rely on the hubs.length
+          anymore in the senario of a multi-hub account. So, it would be better to handle this in the scope 
+          of the hubs api in the future - NG */}
+          {account.hasCreatingHubs && hubs.length === 0 ? (
+            <HubCard hub={creatingHub} />
+          ) : (
+            ''
+          )}
+
           {!isLoading ? (
             hubs.map((hub) => {
               return (
