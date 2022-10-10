@@ -83,6 +83,8 @@ config :dash, Dash.RetClient,
 
 config :dash, DashWeb.Endpoint, cors_origins: ["http://localhost:3000"]
 
+config :dash, Dash.Subscription, subscription_capability: "hubs-local-sub-dev"
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

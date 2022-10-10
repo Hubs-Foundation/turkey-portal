@@ -22,7 +22,6 @@ defmodule DashWeb.Plugs.Auth do
 
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
-  @subscription_string "managed-hubs"
 
   def init(default), do: default
 
@@ -71,7 +70,7 @@ defmodule DashWeb.Plugs.Auth do
         fxa_pic: fxa_pic,
         fxa_display_name: fxa_display_name,
         fxa_email: fxa_email,
-        has_subscription?: @subscription_string in fxa_subscriptions
+        has_subscription?: Dash.Subscription.get_capability_string() in fxa_subscriptions
       })
     end
   end
@@ -116,10 +115,6 @@ defmodule DashWeb.Plugs.Auth do
 
   def get_unauthorized_struct() do
     %{error: "unauthorized"}
-  end
-
-  def get_subscription_string() do
-    @subscription_string
   end
 
   def iat_to_utc_datetime(timestamp_s) do

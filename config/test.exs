@@ -42,3 +42,5 @@ config :logger, level: :critical
 config :phoenix, :plug_init_mode, :runtime
 
 config :dash, Dash.HubStat, enable_hub_stats: true
+
+config :dash, Dash.Subscription, subscription_capability: "hubs-local-sub-test"

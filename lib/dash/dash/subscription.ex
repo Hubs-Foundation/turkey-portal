@@ -145,6 +145,9 @@ defmodule Dash.Subscription do
     |> Repo.delete_all()
   end
 
+  # Creates the latest subscription list
+  # If iat is latest use the cookie subscriptions
+  # If created_at is latest, use the subscription information
   @spec process_latest_fxa_subscription(%Dash.Account{}, %{
           :fxa_subscriptions => list(),
           :iat => integer()
@@ -154,22 +157,49 @@ defmodule Dash.Subscription do
         fxa_subscriptions: fxa_subscriptions
       }) do
     iat_dt = iat |> DateTime.from_unix!(:second)
+    fxa_has_subscription? = subscription_str in fxa_has_subscriptions
+
     subscriptions = get_all_subscriptions_for_account(account)
 
-    for sub <- subscriptions do
-      if sub.capability in subscriptions do
-        # matches
-        # means it's active in the cookie
-        is_active? = sub.is_active
-        change_time = sub.change_time
-        sub_is_latest? = DateTime.compare(iat_dt, change_time) != :gt
+    # TODO EA expect this to be only 1 subscription
+    subscription = if length(subscriptions) == 0, do: nil, else: subscriptions[0]
+    is_active = if is_nil(subscription), do: false, else: subscription.is_active
+    change_time = if is_nil(subscription), do: nil, else: subscription.change_time
 
-        # if the subscription is later than iat
-        # it is the source of truth
-
-        # in rare instance that cookie is later than change_time
-        # use cookie as source of truth
-      end
+    cond do
+      is_nil(subscription) and !has_subscription_c? ->
+        []
+        !has_subscription_c?
     end
+
+    if length(subscriptions) do
+      sub = subscriptions[0]
+    end
+
+    # matches
+    # means it's active in the cookie
+
+    # if the subscription is later than iat
+    # it is the source of truth
+
+    # in rare instance that cookie is later than change_time
+    # use cookie as source of truth
+  end
+
+  defp process_latest_fxa_subscription(nil, %{
+         iat: iat,
+         fxa_subscriptions: fxa_subscriptions
+       }) do
+    subscription_str = DashWeb.Plugs.Auth.get_subscription_string()
+  end
+
+  defp process_latest_fxa_subscription(%Dash.Subscription{} = subscription, %{
+         iat: iat,
+         fxa_subscriptions: fxa_subscriptions
+       }) do
+  end
+
+  def get_capability_string() do
+    Application.get_env(:dash, __MODULE__)[:auth_pub_key]
   end
 end

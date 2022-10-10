@@ -79,6 +79,13 @@ if config_env() == :prod do
         Environment variable AUTH_PUBLIC_KEY is missing. Used in JWT authentication.
         """)
 
+  config :dash, Dash.Subscription,
+    subscription_capability:
+      System.get_env("SUBSCRIPTION_CAPABILITY") ||
+        raise("""
+        Environment variable SUBSCRIPTION_CAPABILITY is missing.
+        """)
+
   # ## Using releases
   #
   # If you are doing OTP releases, you need to instruct Phoenix
