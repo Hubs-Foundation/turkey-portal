@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import BlobIcon from '@Logos/BlobIcon/BlobIcon';
 import { RoutesE } from 'types/Routes';
 import { AUTH_SERVER, FXA_SERVER, DASH_ROOT_DOMAIN } from 'config';
+import useLocal from 'hooks/useLocale';
 
 import {
   Button,
@@ -29,22 +30,26 @@ const MainNav = ({
   const account = useSelector(selectAccount);
   const dropdownRef = useRef<dropdownT>(null);
   const router = useRouter();
+  const locale = useLocal();
 
   useEffect(() => {
     console.log('showLoggedOutUi', showLoggedOutUi);
+    console.log('locale', locale);
   }, [showLoggedOutUi]);
 
   const onLogOutClick = useCallback(async () => {
-    dropdownRef.current?.closeDropdown();
-    try {
-      await logOut();
-    } catch {
-      console.error('Error: issue logging out');
-    }
+    console.log('locale', locale);
 
-    router.push({
-      pathname: RoutesE.Login,
-    });
+    // dropdownRef.current?.closeDropdown();
+    // try {
+    //   await logOut();
+    // } catch {
+    //   console.error('Error: issue logging out');
+    // }
+
+    // router.push({
+    //   pathname: RoutesE.Login,
+    // });
   }, [router]);
 
   const onManageAccountClick = useCallback(() => {
