@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import Head from 'next/head';
 import Hero from '@Shared/Hero/Hero';
 import FiftyFifty, { FiftyFiftyLayoutE } from '@Shared/FiftyFifty/FiftyFifty';
@@ -19,9 +19,16 @@ import engagingFiftyfifty from '../public/engaging_fiftyfifty.png';
 import heart from '../public/heart.png';
 import engaging_fiftyfifty_mobile from '../public/engaging_fiftyfifty_mobile.png';
 import { useMobileDown } from 'hooks/useMediaQuery';
+import { getLocation } from 'services/location.service';
 
 const Home: NextPage = () => {
   const isMobile = useMobileDown();
+
+  useEffect(() => {
+    getLocation().then((resp) => {
+      console.log('resp', resp);
+    });
+  }, []);
 
   /**
    * Tile Data
