@@ -4,6 +4,7 @@ defmodule Dash.Subscription do
   import Ecto.Changeset
   import Ecto.Query
   alias Dash.{Repo}
+  require Logger
 
   schema "subscriptions" do
     field :capability, :string
@@ -150,56 +151,76 @@ defmodule Dash.Subscription do
   # If created_at is latest, use the subscription information
   @spec process_latest_fxa_subscription(%Dash.Account{}, %{
           :fxa_subscriptions => list(),
-          :iat => integer()
+          :iat_utc_dt => %DateTime{}
         }) :: list()
-  def process_latest_fxa_subscription(%Dash.Account{} = account, %{
-        iat: iat,
-        fxa_subscriptions: fxa_subscriptions
-      }) do
-    iat_dt = iat |> DateTime.from_unix!(:second)
-    fxa_has_subscription? = subscription_str in fxa_has_subscriptions
-
+  def process_latest_fxa_subscription(
+        %Dash.Account{} = account,
+        %{
+          iat_utc_dt: _,
+          fxa_subscriptions: _
+        } = fxa_cookie_info
+      ) do
     subscriptions = get_all_subscriptions_for_account(account)
 
     # TODO EA expect this to be only 1 subscription
-    subscription = if length(subscriptions) == 0, do: nil, else: subscriptions[0]
-    is_active = if is_nil(subscription), do: false, else: subscription.is_active
-    change_time = if is_nil(subscription), do: nil, else: subscription.change_time
+    subscription_or_nil = subscriptions |> List.first()
+
+    compare_latest_fxa_subscription(subscription_or_nil, fxa_cookie_info)
+  end
+
+  defp compare_latest_fxa_subscription(nil, %{
+         iat_utc_dt: _,
+         fxa_subscriptions: fxa_subscriptions
+       }) do
+    capability = get_capability_string()
+
+    if capability in fxa_subscriptions do
+      # ISSUE we did NOT get a webhook event to add an active subscription
+      Logger.warn(
+        "WEBHOOK ISSUE: maybe issue with fxa webhook. Cookie says account has subscription, our db has no record"
+      )
+
+      # Trust cookie is correct
+      fxa_subscriptions
+    else
+      []
+    end
+  end
+
+  defp compare_latest_fxa_subscription(%Dash.Subscription{} = subscription, %{
+         iat_utc_dt: iat_utc_dt,
+         fxa_subscriptions: fxa_subscriptions
+       }) do
+    # TODO EA expect this to be only 1 subscription
+    capability = get_capability_string()
+    matches? = capability in fxa_subscriptions == subscription.is_active
+    iat_is_later? = iat_later_than_change_time?(iat_utc_dt, subscription.change_time)
 
     cond do
-      is_nil(subscription) and !has_subscription_c? ->
-        []
-        !has_subscription_c?
+      matches? ->
+        # both records match, return array of subscriptions
+        fxa_subscriptions
+
+      not matches? and iat_is_later? ->
+        # ISSUE we did NOT get a webhook event to match the cookie
+        # Trust the cookie is correct because it is later
+        Logger.warn("WEBHOOK ISSUE: maybe issue with fxa webhook. Cookie doesn't match our db.")
+        fxa_subscriptions
+
+      not matches? and !iat_is_later? ->
+        # Happy path, user was authenticated via cookie, then subscription cancelled OR started,
+        # and user is still authenticated but has outdated subscription information in cookie
+
+        # TODO EA expect this to be only 1 subscription
+        if subscription.is_active, do: [capability], else: []
     end
-
-    if length(subscriptions) do
-      sub = subscriptions[0]
-    end
-
-    # matches
-    # means it's active in the cookie
-
-    # if the subscription is later than iat
-    # it is the source of truth
-
-    # in rare instance that cookie is later than change_time
-    # use cookie as source of truth
   end
 
-  defp process_latest_fxa_subscription(nil, %{
-         iat: iat,
-         fxa_subscriptions: fxa_subscriptions
-       }) do
-    subscription_str = DashWeb.Plugs.Auth.get_subscription_string()
-  end
-
-  defp process_latest_fxa_subscription(%Dash.Subscription{} = subscription, %{
-         iat: iat,
-         fxa_subscriptions: fxa_subscriptions
-       }) do
+  defp iat_later_than_change_time?(iat_utc_dt, change_time) do
+    DateTime.compare(iat_utc_dt, change_time) == :gt
   end
 
   def get_capability_string() do
-    Application.get_env(:dash, __MODULE__)[:auth_pub_key]
+    Application.get_env(:dash, __MODULE__)[:subscription_capability]
   end
 end

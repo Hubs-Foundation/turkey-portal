@@ -58,9 +58,7 @@ defmodule Dash.SubscriptionTest do
       fxa_uid = get_default_test_uid()
       account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
-      now = DateTime.utc_now() |> DateTime.truncate(:second)
-      earlier = DateTime.add(now, -5000) |> DateTime.truncate(:second)
-      later = DateTime.add(now, 5000) |> DateTime.truncate(:second)
+      %{now: now, earlier: earlier, later: later} = get_times()
 
       subscription_struct = %{
         fxa_uid: fxa_uid,
@@ -137,5 +135,214 @@ defmodule Dash.SubscriptionTest do
 
       assert length(Subscription.get_all_subscriptions_for_account(account3)) == count3
     end
+  end
+
+  describe "Subscription test process_latest_fxa_subscription: cookie and subscriptions comparison" do
+    # Process process_latest_fxa_subscription
+
+    # Happy paths:
+    #
+    # Tests: subscription and cookie match
+    # No subs
+    # Yes subs - iat later OR change_time later
+    @tag marked: true
+    test "Subscriptions in db matches cookie: Sub is nil, cookie no subs" do
+      fxa_uid = get_default_test_uid()
+      account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
+
+      cookie_info = %{iat_utc_dt: now(), fxa_subscriptions: []}
+      fxa_subscriptions = Subscription.process_latest_fxa_subscription(account, cookie_info)
+
+      assert fxa_subscriptions == []
+    end
+
+    @tag marked: true
+    test "Subscriptions in db matches cookie: Sub is not_active, cookie no subs" do
+      %{later: later, earlier: earlier} = get_times()
+
+      # Test with iat later
+      test_struct1 = %{
+        fxa_uid: "uid1",
+        iat: later,
+        change_time: earlier,
+        is_active: false,
+        fxa_subscriptions: []
+      }
+
+      fxa_subscriptions = get_latest_fxa_subscriptions(test_struct1)
+
+      assert fxa_subscriptions == []
+
+      # Test with change_time later
+      test_struct2 = %{
+        fxa_uid: "uid2",
+        iat: earlier,
+        change_time: later,
+        is_active: false,
+        fxa_subscriptions: []
+      }
+
+      fxa_subscriptions2 = get_latest_fxa_subscriptions(test_struct2)
+
+      assert fxa_subscriptions2 == []
+    end
+
+    @tag marked: true
+    test "Subscriptions in db matches cookie: Sub is_active, cookie subs" do
+      %{later: later, earlier: earlier} = get_times()
+      capability = Subscription.get_capability_string()
+
+      # iat later, change_time earlier
+      # Sub is_active=true, cookie hasSub
+      test_struct1 = %{
+        fxa_uid: "uid1",
+        iat: later,
+        change_time: earlier,
+        is_active: true,
+        fxa_subscriptions: [capability]
+      }
+
+      fxa_subscriptions1 = get_latest_fxa_subscriptions(test_struct1)
+
+      assert capability in fxa_subscriptions1
+
+      # Test with change_time later
+      test_struct2 = %{
+        fxa_uid: "uid2",
+        iat: earlier,
+        change_time: later,
+        is_active: false,
+        fxa_subscriptions: []
+      }
+
+      fxa_subscriptions2 = get_latest_fxa_subscriptions(test_struct2)
+
+      assert capability in fxa_subscriptions2
+    end
+
+    @tag marked: true
+    # Test: subscription and cookie do NOT match, change_time LATER
+    test "Subscriptions do NOT match db and cookie: cookie NO sub, sub is_active=true, change_time later, match is_active=true" do
+      # cookie = no subs , subscription = sub, subscription change_at later
+      %{later: later, earlier: earlier} = get_times()
+      capability = Subscription.get_capability_string()
+
+      # iat earlier, change_time later
+      # Sub is_active=true, cookie NO subs
+      test_struct = %{
+        fxa_uid: "uid1",
+        iat: earlier,
+        change_time: later,
+        is_active: true,
+        fxa_subscriptions: []
+      }
+
+      fxa_subscriptions = get_latest_fxa_subscriptions(test_struct)
+
+      assert capability in fxa_subscriptions
+    end
+
+    # Test: subscription and cookie do NOT match
+    @tag marked: true
+    test "Subscriptions do NOT match db and cookie: cookie YES sub, sub is_active=false, change_time later, match is_active=false" do
+      %{later: later, earlier: earlier} = get_times()
+      capability = Subscription.get_capability_string()
+
+      # cookie = yes subs, subscription no subs, subscription change_at later
+      test_struct = %{
+        fxa_uid: "uid1",
+        iat: earlier,
+        change_time: later,
+        is_active: false,
+        fxa_subscriptions: [capability]
+      }
+
+      fxa_subscriptions = get_latest_fxa_subscriptions(test_struct)
+
+      assert fxa_subscriptions == []
+    end
+
+    # Not happy paths
+    @tag marked: true
+    test "NOT Happy path, means something was wrong: Subscriptions do NOT match, iat later, match cookie" do
+      %{later: later, earlier: earlier} = get_times()
+      capability = Subscription.get_capability_string()
+
+      # cookie = NO subs, subscription YES subs, iat later
+      test_struct1 = %{
+        fxa_uid: "uid1",
+        iat: later,
+        change_time: earlier,
+        is_active: true,
+        fxa_subscriptions: []
+      }
+
+      fxa_subscriptions1 = get_latest_fxa_subscriptions(test_struct1)
+
+      assert fxa_subscriptions1 == []
+
+      # cookie = YES subs, subscription NO subs, iat later
+      test_struct2 = %{
+        fxa_uid: "uid1",
+        iat: later,
+        change_time: earlier,
+        is_active: false,
+        fxa_subscriptions: [capability]
+      }
+
+      fxa_subscriptions2 = get_latest_fxa_subscriptions(test_struct2)
+
+      # Not happy path but refer to latest iat
+      assert fxa_subscriptions2 == [capability]
+    end
+  end
+
+  defp now() do
+    DateTime.utc_now() |> DateTime.truncate(:second)
+  end
+
+  defp get_times() do
+    now = now()
+    earlier = DateTime.add(now, -5000) |> DateTime.truncate(:second)
+    later = DateTime.add(now, 5000) |> DateTime.truncate(:second)
+    %{now: now, earlier: earlier, later: later}
+  end
+
+  defp get_latest_fxa_subscriptions(%{iat: iat, fxa_subscriptions: fxa_subscriptions} = opts) do
+    account = create_account_and_subscription(opts)
+
+    cookie_info = %{
+      iat_utc_dt: iat,
+      fxa_subscriptions: fxa_subscriptions
+    }
+
+    Subscription.process_latest_fxa_subscription(account, cookie_info)
+  end
+
+  # Uses fxa_uid in the struct
+  defp create_account_and_subscription(%{fxa_uid: fxa_uid} = opts) do
+    account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
+    create_subscription(account, opts)
+    account
+  end
+
+  # Uses is_active: true, change_time, capability: nil in the struct
+  defp create_subscription(
+         account,
+         %{
+           is_active: is_active,
+           change_time: change_time
+         }
+       ) do
+    capability = Subscription.get_capability_string()
+
+    subscription_struct = %{
+      fxa_uid: account.fxa_uid,
+      capability: capability,
+      is_active: is_active,
+      change_time: change_time
+    }
+
+    Subscription.update_or_create_subscription_for_changeset(subscription_struct)
   end
 end

@@ -143,7 +143,7 @@ defmodule DashWeb.TestHelpers do
     create_subscriptions(account, count - 1)
   end
 
-  defp create_subscription(account, count) do
+  defp create_subscription(account, count) when is_integer(count) do
     capability = "foo" <> to_string(count)
 
     Dash.Subscription.create_subscription(account, %{

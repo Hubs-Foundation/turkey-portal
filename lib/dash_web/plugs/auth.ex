@@ -50,17 +50,20 @@ defmodule DashWeb.Plugs.Auth do
     fxa_subscriptions =
       if is_nil(fxa_subscriptions_nil_or_list), do: [], else: fxa_subscriptions_nil_or_list
 
+    # Convert iat to DateTime
+    iat_utc_dt = iat_to_utc_datetime(issued_at)
+
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
     # If token issued before an Authorization change in the account, invalidate token and login again
     if !is_nil(account.auth_updated_at) and
-         DateTime.compare(iat_to_utc_datetime(issued_at), account.auth_updated_at) == :lt do
+         DateTime.compare(iat_utc_dt, account.auth_updated_at) == :lt do
       # Issued before auth_updated_at
       process_jwt(conn, %{is_valid: false, claims: claims})
     else
       fxa_subscriptions =
         Dash.Subscription.process_latest_fxa_subscription(account, %{
-          iat: issued_at,
+          iat_utc_dt: iat_utc_dt,
           fxa_subscriptions: fxa_subscriptions
         })
 
