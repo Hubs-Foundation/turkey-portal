@@ -141,11 +141,6 @@ defmodule Dash.SubscriptionTest do
     # Process process_latest_fxa_subscription
 
     # Happy paths:
-    #
-    # Tests: subscription and cookie match
-    # No subs
-    # Yes subs - iat later OR change_time later
-    @tag marked: true
     test "Subscriptions in db matches cookie: Sub is nil, cookie no subs" do
       fxa_uid = get_default_test_uid()
       account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
@@ -156,7 +151,6 @@ defmodule Dash.SubscriptionTest do
       assert fxa_subscriptions == []
     end
 
-    @tag marked: true
     test "Subscriptions in db matches cookie: Sub is not_active, cookie no subs" do
       %{later: later, earlier: earlier} = get_times()
 
@@ -187,7 +181,6 @@ defmodule Dash.SubscriptionTest do
       assert fxa_subscriptions2 == []
     end
 
-    @tag marked: true
     test "Subscriptions in db matches cookie: Sub is_active, cookie subs" do
       %{later: later, earlier: earlier} = get_times()
       capability = Subscription.get_capability_string()
@@ -220,7 +213,6 @@ defmodule Dash.SubscriptionTest do
       assert capability in fxa_subscriptions2
     end
 
-    @tag marked: true
     # Test: subscription and cookie do NOT match, change_time LATER
     test "Subscriptions do NOT match db and cookie: cookie NO sub, sub is_active=true, change_time later, match is_active=true" do
       # cookie = no subs , subscription = sub, subscription change_at later
@@ -243,7 +235,6 @@ defmodule Dash.SubscriptionTest do
     end
 
     # Test: subscription and cookie do NOT match
-    @tag marked: true
     test "Subscriptions do NOT match db and cookie: cookie YES sub, sub is_active=false, change_time later, match is_active=false" do
       %{later: later, earlier: earlier} = get_times()
       capability = Subscription.get_capability_string()
@@ -263,7 +254,6 @@ defmodule Dash.SubscriptionTest do
     end
 
     # Not happy paths
-    @tag marked: true
     test "NOT Happy path, means something was wrong: Subscriptions do NOT match, iat later, match cookie" do
       %{later: later, earlier: earlier} = get_times()
       capability = Subscription.get_capability_string()

@@ -325,7 +325,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   end
 
   describe "Hub Ready state tests" do
-    @tag marked: true
     test "should call ret /health endpoint at least 1 time", %{conn: conn} do
       # TODO To refine test make this test call /health endpoint 3 times
       max_expected_calls = 3
@@ -345,7 +344,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       assert status =~ "ready"
     end
 
-    @tag marked: true
     test "should return error if /health timeout is reached", %{conn: conn} do
       stub_ret_get()
       expect_orch_post()
@@ -362,7 +360,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   end
 
   describe "Hub ready state tests with exact calls" do
-    @tag marked: true
     test "should call /health endpoint ONLY once, if hubs is already ready", %{conn: conn} do
       # TODO To refine tests move these tests to own module that has setup :verify_on_exit!
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
@@ -420,7 +417,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     #   assert response(conn, 403) && !Hub.has_hubs(account)
     # end
 
-    @tag marked: true
     test "IS subscribed, can get default Hub", %{conn: conn} do
       stub_ret_get()
       expect_orch_post()
