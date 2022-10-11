@@ -17,7 +17,6 @@ const LayoutWrapper = ({ children, componentName }: LayoutWrapperProps) => {
 
   useEffect(() => {
     // If on one of the "logged out pages" don't try to init store data
-    console.log('componentName', componentName);
     if (!showLoggedOutUi) initStoreData();
   }, [showLoggedOutUi]);
 
