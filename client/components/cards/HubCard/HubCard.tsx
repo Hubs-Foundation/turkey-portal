@@ -12,7 +12,7 @@ import HubCardFooter from './HubCardFooter';
 
 type HubCardPropsT = {
   hub: HubT;
-  refreshHubData: Function;
+  refreshHubData?: Function;
   classProp?: string;
 };
 
@@ -93,7 +93,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
         <div className={styles.card_body}>
           {/* TODO - figure out if a name is applied to a hub off the bat before we put "untitled hub" 
           here statically, might be able to just pull w/e through  */}
-          <div className={styles.card_name}>{name}</div>
+          <div className={`${styles.card_name} ${styles[status]}`}>{name}</div>
 
           {/* Did Revert Error  */}
           {showRevertError && (
