@@ -20,6 +20,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
 
     @valid_expiration token_expiry: ~N[3000-01-01 00:00:00]
 
+    @tag marked: true
     test "ApprovedEmails should not be enabled when disabled", %{conn: conn} do
       Application.put_env(:dash, Dash.ApprovedEmail, enabled: false)
 
@@ -45,6 +46,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
                Jason.encode!(DashWeb.Plugs.Auth.get_unauthorized_struct())
     end
 
+    @tag marked: true
     # if email on the conn and it's authorized, should do nothing to the conn
     test "should respond with 200 if user is on ApprovedEmailList and authorized", %{conn: conn} do
       stub_ret_get()

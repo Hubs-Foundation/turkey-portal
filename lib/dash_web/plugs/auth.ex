@@ -61,6 +61,8 @@ defmodule DashWeb.Plugs.Auth do
       # Issued before auth_updated_at
       process_jwt(conn, %{is_valid: false, claims: claims})
     else
+      capability = Dash.Subscription.get_capability_string()
+
       fxa_subscriptions =
         Dash.Subscription.process_latest_fxa_subscription(account, %{
           iat_utc_dt: iat_utc_dt,
@@ -73,7 +75,7 @@ defmodule DashWeb.Plugs.Auth do
         fxa_pic: fxa_pic,
         fxa_display_name: fxa_display_name,
         fxa_email: fxa_email,
-        has_subscription?: Dash.Subscription.get_capability_string() in fxa_subscriptions
+        has_subscription?: capability in fxa_subscriptions
       })
     end
   end

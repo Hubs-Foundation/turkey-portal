@@ -16,7 +16,8 @@ defmodule DashWeb.TestHelpers do
   @default_token_opts [
     claims: %{},
     token_expiry: ~N[3000-01-01 00:00:00],
-    unverified: false
+    unverified: false,
+    subscription?: true
   ]
   def get_test_email() do
     @test_email
@@ -39,6 +40,11 @@ defmodule DashWeb.TestHelpers do
 
   def put_test_token(conn, opts \\ []) do
     opts = Keyword.merge(@default_token_opts, opts)
+
+    if opts[:subscription?] do
+      account = Dash.Account.find_or_create_account_for_fxa_uid(@default_test_uid)
+      create_subscription_for_account(account)
+    end
 
     private_key = JOSE.JWK.generate_key({:rsa, 512})
 
@@ -77,6 +83,19 @@ defmodule DashWeb.TestHelpers do
       |> Dash.Repo.insert!()
 
     %{account: account, hub: hub}
+  end
+
+  def create_subscription_for_account(account) do
+    capability = Dash.Subscription.get_capability_string()
+
+    subscription_struct = %{
+      fxa_uid: account.fxa_uid,
+      capability: capability,
+      is_active: true,
+      change_time: DateTime.utc_now() |> DateTime.truncate(:second)
+    }
+
+    Dash.Subscription.update_or_create_subscription_for_changeset(subscription_struct)
   end
 
   def merge_module_config(app, key, configs) do
