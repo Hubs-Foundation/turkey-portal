@@ -26,11 +26,9 @@ This will allow you to get updates from lilypad during development!
 ### 2. Install dependencies in the `/client` directory (this directory) and run dev
 
 ```bash
-npm i --legacy-peer-deps
+npm i
 npm run dev
 ```
-
-(For now, we use `--legacy-peer-deps` because Storybook requires an older version of react to run).
 
 ### 3. Ensure Phoenix API server is Running
 
