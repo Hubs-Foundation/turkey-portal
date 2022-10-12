@@ -14,6 +14,8 @@ defmodule DashWeb.Plugs.FxaEventsParser do
   def verify_authorization_header(conn) do
     [header_value] = conn |> get_req_header("authorization")
 
+    IO.inspect(["fxa_events_parser", header_value])
+
     with [maybe_bearer, value] <- String.split(header_value),
          true <- matches_bearer_pattern(maybe_bearer),
          parsed_token <- parse_token(value) do
