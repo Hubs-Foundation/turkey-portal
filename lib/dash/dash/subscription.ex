@@ -29,10 +29,11 @@ defmodule Dash.Subscription do
     capability = get_field(changeset, :capability)
 
     result =
-      from(s in Dash.Subscription,
-        where: s.account_id == ^account_id and s.capability == ^capability
+      Repo.exists?(
+        from(s in Dash.Subscription,
+          where: s.account_id == ^account_id and s.capability == ^capability
+        )
       )
-      |> Repo.exists?()
 
     case result do
       true ->
@@ -55,11 +56,9 @@ defmodule Dash.Subscription do
           change_time: change_time
         } = new_subscription_info
       ) do
-    # return subscripiton, if sub => not active, delete hubs? in fxa_event stuffs
-
-    # get account or create
+    # Get account or create
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-    # get subscription
+    # Get subscription
     old_subscription = get_one_subscription(account, capability: capability)
 
     case old_subscription do
@@ -139,9 +138,10 @@ defmodule Dash.Subscription do
   end
 
   def delete_all_subscriptions_for_account(%Dash.Account{} = account) do
-    from(s in Dash.Subscription,
-      where: s.account_id == ^account.account_id
+    Repo.delete_all(
+      from(s in Dash.Subscription,
+        where: s.account_id == ^account.account_id
+      )
     )
-    |> Repo.delete_all()
   end
 end

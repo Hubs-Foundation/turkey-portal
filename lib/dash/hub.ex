@@ -64,7 +64,7 @@ defmodule Dash.Hub do
     end
   end
 
-  @spec hubs_for_account(%Dash.Account{}) :: [%Dash.Hub{}] | []
+  @spec hubs_for_account(%Dash.Account{}) :: [%Dash.Hub{}]
   def hubs_for_account(%Dash.Account{} = account) do
     from(h in Dash.Hub, where: h.account_id == ^account.account_id)
     |> Repo.all()

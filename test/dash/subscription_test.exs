@@ -17,7 +17,7 @@ defmodule Dash.SubscriptionTest do
 
       account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
-      assert Subscription.get_all_subscriptions_for_account(account) |> length() == 0
+      assert Subscription.get_all_subscriptions_for_account(account) === []
 
       Subscription.create_subscription(account, %{
         capability: @capability1,
@@ -25,7 +25,7 @@ defmodule Dash.SubscriptionTest do
         change_time: DateTime.utc_now()
       })
 
-      assert Subscription.get_all_subscriptions_for_account(account) |> length() == 1
+      assert length(Subscription.get_all_subscriptions_for_account(account)) === 1
 
       Subscription.create_subscription(account, %{
         capability: @capability2,
@@ -33,7 +33,7 @@ defmodule Dash.SubscriptionTest do
         change_time: DateTime.utc_now()
       })
 
-      assert Subscription.get_all_subscriptions_for_account(account) |> length() == 2
+      assert length(Subscription.get_all_subscriptions_for_account(account)) === 2
     end
 
     test "Creates account if subscription is added" do
@@ -50,7 +50,7 @@ defmodule Dash.SubscriptionTest do
       assert Repo.exists?(from(a in Dash.Account, where: a.fxa_uid == ^fxa_uid))
       account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
-      assert Subscription.get_all_subscriptions_for_account(account) |> length() == 1
+      assert length(Subscription.get_all_subscriptions_for_account(account)) == 1
       refute is_nil(Subscription.get_one_subscription(account, capability: @capability1))
     end
 
