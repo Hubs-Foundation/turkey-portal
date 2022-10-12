@@ -15,14 +15,14 @@ defmodule Dash.AccountTest do
       create_test_account_and_hub()
 
       account = Dash.Account.account_for_fxa_uid(fxa_uid)
-      assert account != nil
+      if account === nil, do: raise("missing account")
       hubs = Dash.Hub.hubs_for_account(account)
-      assert length(hubs) != 0
+      [_ | _] = hubs
 
       Dash.Account.delete_account_and_hubs(fxa_uid)
 
       hubs = Dash.Hub.hubs_for_account(account)
-      assert length(hubs) == 0
+      assert [] === hubs
       account = Dash.Account.account_for_fxa_uid(fxa_uid)
       assert account == nil
     end
