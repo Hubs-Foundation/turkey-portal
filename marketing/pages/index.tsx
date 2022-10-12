@@ -10,15 +10,24 @@ import ValueProps, {
   TilePropsT as ValuePropsT,
 } from '@Shared/ValueProps/ValueProps';
 import Testimonial from '@Shared/Testimonial/Testimonial';
-import SpatialAudio from '../public/spatial_audio.jpg';
-import Import3dModel from '../public/import_3d_models.jpg';
+import { useMobileDown } from 'hooks/useMediaQuery';
+// Hero Assets
 import HubsMobileHero from '../public/hubs_hero_mobile.jpg';
 import HubsHero from '../public/hubs_hero.jpg';
-import engagingFiftyfifty from '../public/engaging_fiftyfifty.png';
-import hubsFiftyfifty from '../public/hubs_fiftyfifty.png';
+// Fifty Fifty Assets
+import makeOwnFiftyFifty from '../public/fiftyfifty_make_own.png';
+import makeOwnFiftyFiftyMobile from '../public/fiftyfifty_make_own_mobile.png';
+import engagingFiftyfifty from '../public/fiftyfifty_engaging.png';
+import engagingFiftyFiftyMobile from '../public/fiftyfifty_engaging_mobile.png';
+import hubsFiftyfifty from '../public/fiftyfifty_hubs.png';
+import hubsFiftyFiftyMobile from '../public/fiftyfifty_hubs_mobile.png';
+import avatarsFiftyfifty from '../public/fiftyfifty_avatars.png';
+import avatarsFiftyfiftyMobile from '../public/fiftyfifty_avatars_mobile.png';
 import heart from '../public/heart.png';
-import engaging_fiftyfifty_mobile from '../public/engaging_fiftyfifty_mobile.png';
-import { useMobileDown } from 'hooks/useMediaQuery';
+// Tiles Assets
+import spatialAudio from '../public/spatial_audio.jpg';
+import import3dModel from '../public/import_3d_models.jpg';
+import customizable from '../public/customizable.jpg';
 
 const Home: NextPage = () => {
   const isMobile = useMobileDown();
@@ -30,21 +39,21 @@ const Home: NextPage = () => {
   const tiles = useMemo(() => {
     const data: TilePropsT[] = [
       {
-        image: SpatialAudio,
+        image: spatialAudio,
         imageAlt: 'spatial audio',
         title: 'Spatial Audio',
         description:
           'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space — the volume changes based on how close or far away you are.',
       },
       {
-        image: Import3dModel,
+        image: import3dModel,
         imageAlt: 'import 3d model',
         title: 'Media Sharing',
         description:
           'mport media from across the web. Have fun sharing 3D models, PDFs, images, gifs, videos and audio with your guests.',
       },
       {
-        image: Import3dModel,
+        image: customizable,
         imageAlt: 'customizable',
         title: 'Customizable',
         description:
@@ -105,34 +114,37 @@ const Home: NextPage = () => {
         />
 
         <FiftyFifty
-          imageMobile={engaging_fiftyfifty_mobile}
+          imageMobile={engagingFiftyFiftyMobile}
           image={engagingFiftyfifty}
-          imageAlt="Engage Digital Worlds"
-          accentImage={heart}
-          title="Engaging Digital Worlds"
-          body="Create a museum for your favorite hobbies, a classroom to connect with your students, a planet in outer space, or an office that serves as your company HQ. Hubs provides templates and scenes to get started with building out your vibrant virtual worlds.
-          "
-        />
+          imageAlt="The many ways to use Hubs"
+          title="The many ways to use Hubs"
+        >
+          <ul className="padding-left-15 u-text-left">
+            <li>Host a virtual event</li>
+            <li>Create a museum or digital gallery</li>
+            <li>Build a space for your favorite hobbies</li>
+            <li>Open a classroom to connect with your students</li>
+            <li>Host a social hour for your team</li>
+            <li>Have a meeting on a planet in outer space</li>
+          </ul>
+        </FiftyFifty>
 
         <FiftyFifty
-          imageMobile={engaging_fiftyfifty_mobile}
-          image={hubsFiftyfifty}
-          imageAlt="Engage Digital Worlds"
-          accentImage={heart}
-          title="Engaging Digital Worlds"
+          imageMobile={makeOwnFiftyFiftyMobile}
+          image={makeOwnFiftyFifty}
+          imageAlt="Make it your own"
+          title="Make it your own"
           layout={FiftyFiftyLayoutE.RIGHT}
-          body="Create a museum for your favorite hobbies, a classroom to connect with your students, a planet in outer space, or an office that serves as your company HQ. Hubs provides templates and scenes to get started with building out your vibrant virtual worlds.
-          "
+          body="Create a unique Hub by choosing environments and avatars that represent your community. Decorate using our world-building tool Spoke. 3D artists can build their own world from scratch using Blender."
         />
 
         <FiftyFifty
-          imageMobile={engaging_fiftyfifty_mobile}
-          image={engagingFiftyfifty}
-          imageAlt="Engage Digital Worlds"
-          accentImage={heart}
-          title="Engaging Digital Worlds"
-          body="Create a museum for your favorite hobbies, a classroom to connect with your students, a planet in outer space, or an office that serves as your company HQ. Hubs provides templates and scenes to get started with building out your vibrant virtual worlds.
-          "
+          imageMobile={avatarsFiftyfiftyMobile}
+          image={avatarsFiftyfifty}
+          imageAlt="Expressive avatars"
+          title="Expressive avatars"
+          body="Change your hair, your outfit, your vibe. Choose from a rich array
+          of diverse avatars to show off how you’re feeling, or create your own range of different styles that let your personality shine through."
         />
 
         <TileSpotlight
@@ -142,14 +154,23 @@ const Home: NextPage = () => {
         />
 
         <FiftyFifty
-          imageMobile={engaging_fiftyfifty_mobile}
-          image={engagingFiftyfifty}
-          imageAlt="Engage Digital Worlds"
+          imageMobile={hubsFiftyFiftyMobile}
+          image={hubsFiftyfifty}
+          imageAlt="joyful, secure, yours"
           accentImage={heart}
-          title="Engaging Digital Worlds"
-          body="Create a museum for your favorite hobbies, a classroom to connect with your students, a planet in outer space, or an office that serves as your company HQ. Hubs provides templates and scenes to get started with building out your vibrant virtual worlds.
-          "
-        />
+          subTitle="Hubs is..."
+          title="joyful, secure, yours"
+          layout={FiftyFiftyLayoutE.RIGHT}
+        >
+          <p>
+            We believe everyone should be able to create the (virtual) reality
+            of their dreams.
+          </p>
+          <p>
+            Hubs is the only virtual world platform that puts you in full
+            control — by Mozilla, the company that created Firefox.
+          </p>
+        </FiftyFifty>
 
         <ValueProps values={values} />
 
