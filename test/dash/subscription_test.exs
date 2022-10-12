@@ -112,24 +112,24 @@ defmodule Dash.SubscriptionTest do
 
     test "Delete subscriptions of ONLY the selected account" do
       fxa_uid = get_default_test_uid()
-      account = fxa_uid |> Account.find_or_create_account_for_fxa_uid()
-      account1 = (fxa_uid <> "1") |> Account.find_or_create_account_for_fxa_uid()
-      account2 = (fxa_uid <> "2") |> Account.find_or_create_account_for_fxa_uid()
-      account3 = (fxa_uid <> "3") |> Account.find_or_create_account_for_fxa_uid()
+      account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
+      account1 = Account.find_or_create_account_for_fxa_uid(fxa_uid <> "1")
+      account2 = Account.find_or_create_account_for_fxa_uid(fxa_uid <> "2")
+      account3 = Account.find_or_create_account_for_fxa_uid(fxa_uid <> "3")
 
       count = 1
       count1 = 3
       count2 = 4
       count3 = 2
 
-      account |> create_subscriptions(count)
-      account1 |> create_subscriptions(count1)
-      account2 |> create_subscriptions(count2)
-      account3 |> create_subscriptions(count3)
+      create_subscriptions(account, count)
+      create_subscriptions(account1, count1)
+      create_subscriptions(account2, count2)
+      create_subscriptions(account3, count3)
 
-      {num, nil} = account |> Subscription.delete_all_subscriptions_for_account()
-      {num1, nil} = account1 |> Subscription.delete_all_subscriptions_for_account()
-      {num2, nil} = account2 |> Subscription.delete_all_subscriptions_for_account()
+      {num, nil} = Subscription.delete_all_subscriptions_for_account(account)
+      {num1, nil} = Subscription.delete_all_subscriptions_for_account(account1)
+      {num2, nil} = Subscription.delete_all_subscriptions_for_account(account2)
 
       assert num == count
       assert num1 == count1
