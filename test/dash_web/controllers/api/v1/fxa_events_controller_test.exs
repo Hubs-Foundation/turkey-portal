@@ -84,10 +84,9 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       %Dash.Account{} = account
       hubs = Dash.Hub.hubs_for_account(account)
       [_ | _] = hubs
-      subscription_count = 2
       create_subscriptions(account, 2)
 
-      subscription_count =
+      2 =
         account
         |> Dash.Subscription.get_all_subscriptions_for_account()
         |> length()
@@ -105,12 +104,9 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       assert [] === hubs
 
       assert [] ===
-               account
-               |> Dash.Subscription.get_all_subscriptions_for_account()
-               |> length()
+               Dash.Subscription.get_all_subscriptions_for_account(account)
 
-      account = Dash.Account.account_for_fxa_uid(fxa_uid)
-      assert account == nil
+      assert nil == Dash.Account.account_for_fxa_uid(fxa_uid)
     end
   end
 

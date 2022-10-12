@@ -24,6 +24,7 @@ defmodule Dash.AccountTest do
 
       hubs = Dash.Hub.hubs_for_account(account)
       assert hubs === []
-      assert account == nil
+      assert nil == Dash.Account.account_for_fxa_uid(fxa_uid)
+    end
   end
 end
