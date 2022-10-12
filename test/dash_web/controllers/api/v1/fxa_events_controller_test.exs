@@ -95,7 +95,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
 
       # Account deleted and no hubs
       hubs = Dash.Hub.hubs_for_account(account)
-      assert [_ | _] = hubs
+      assert hubs === []
       account = Dash.Account.account_for_fxa_uid(fxa_uid)
       assert account == nil
     end
