@@ -8,8 +8,8 @@ defmodule Dash.Account do
   @primary_key {:account_id, :id, autogenerate: true}
 
   schema "accounts" do
-    field(:fxa_uid, :string)
-    field(:auth_updated_at, :utc_datetime)
+    field :fxa_uid, :string
+    field :auth_updated_at, :utc_datetime
 
     timestamps()
   end
