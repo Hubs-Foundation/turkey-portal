@@ -121,15 +121,13 @@ defmodule DashWeb.TestHelpers do
   end
 
   def expect_orch_post() do
-    Dash.HttpMock
-    |> Mox.expect(:post, fn _url, _body, _headers, _opts ->
+    Mox.expect(Dash.HttpMock, :post, fn _url, _body, _headers, _opts ->
       {:ok, %HTTPoison.Response{status_code: 200}}
     end)
   end
 
   def expect_orch_delete() do
-    Dash.HttpMock
-    |> Mox.expect(:request, fn _, _body, _headers, _opts, _ ->
+    Mox.expect(Dash.HttpMock, :request, fn _, _body, _headers, _opts, _ ->
       {:ok, %HTTPoison.Response{status_code: 202}}
     end)
   end

@@ -16,6 +16,7 @@ defmodule Dash.AccountTest do
 
       account = Dash.Account.account_for_fxa_uid(fxa_uid)
       %Dash.Account{} = account
+      if account === nil, do: raise("missing account")
       hubs = Dash.Hub.hubs_for_account(account)
       [_ | _] = hubs
 
@@ -23,8 +24,6 @@ defmodule Dash.AccountTest do
 
       hubs = Dash.Hub.hubs_for_account(account)
       assert hubs === []
-      account = Dash.Account.account_for_fxa_uid(fxa_uid)
       assert account == nil
-    end
   end
 end
