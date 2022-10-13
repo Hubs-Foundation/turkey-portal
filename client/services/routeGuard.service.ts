@@ -161,7 +161,8 @@ export function subscriptionPageRequireAuthentication(
       const status: Number | undefined = axiosError.response?.status;
       const data: unknown | undefined = axiosError.response?.data;
 
-      // If status is 401, it's an expected error
+      // If status is 401 AND there's a redirect specified, redirect them
+      // Otherwise redirect to marketing page
       if (
         status === 401 &&
         checkRedirectDataType(data) &&

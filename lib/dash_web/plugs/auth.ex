@@ -20,7 +20,6 @@ defmodule DashWeb.Plugs.Auth do
   use DashWeb, :controller
 
   import Plug.Conn
-  require Logger
 
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
@@ -74,8 +73,6 @@ defmodule DashWeb.Plugs.Auth do
 
   # Not authorized or empty jwt
   defp process_jwt(conn, %{is_valid: false, claims: _claims}) do
-    Logger.warn(conn.req_cookies[@cookie_name])
-
     conn
     |> clear_cookie()
     |> send_resp(
