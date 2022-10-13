@@ -136,4 +136,4 @@ config :dash, Dash.Scheduler,
     # {"* * * * *", {Dash.HubStat, :job_record_hub_stats, []}}
   ]
 
-config :dash, DashWeb.Plugs.FxaEventsParser, fxa_jwk_string: "dev"
+config :dash, DashWeb.Plugs.FxaEventsParser, fxa_jwk_string: "dev-hdwEqn1cHs69TT3"

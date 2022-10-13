@@ -35,8 +35,8 @@ defmodule DashWeb.Plugs.FxaEventsParser do
   end
 
   # TODO add a JWK parsing flow for dev and test environments
-  def parse_token(token, "dev"), do: {:ok, Jason.decode!(token)}
-  def parse_token(token, "test"), do: {:ok, Jason.decode!(token)}
+  def parse_token(token, "dev-hdwEqn1cHs69TT3"), do: {:ok, Jason.decode!(token)}
+  def parse_token(token, "test-aC2KtiGDxtqvNmv"), do: {:ok, Jason.decode!(token)}
 
   def parse_token(token, fxa_key_string) do
     # TODO fetch FXA_JWK_STRING on startup and put into environment variable
