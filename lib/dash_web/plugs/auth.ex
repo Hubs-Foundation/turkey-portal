@@ -18,7 +18,9 @@ defmodule DashWeb.Plugs.Auth do
   }
   """
   use DashWeb, :controller
+
   import Plug.Conn
+  require Logger
 
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
@@ -33,6 +35,10 @@ defmodule DashWeb.Plugs.Auth do
   end
 
   defp get_auth_cookie(conn) do
+    conn.req_cookies[@cookie_name]
+
+    Logger.warn(conn.req_cookies[@cookie_name])
+
     conn.req_cookies[@cookie_name]
   end
 
