@@ -40,21 +40,22 @@ const Home: NextPage = () => {
     const data: TilePropsT[] = [
       {
         image: spatialAudio,
-        imageAlt: 'spatial audio',
+        imageAlt: 'spatial audio replicating natural conversations',
         title: 'Spatial Audio',
         description:
           'Replicate natural conversations with spatialized 3D audio. Break out into groups and then reconvene in the same space — the volume changes based on how close or far away you are.',
       },
       {
         image: import3dModel,
-        imageAlt: 'import 3d model',
+        imageAlt:
+          'Import media and share 3D models, PDFs, images, gifs, videos and audio',
         title: 'Media Sharing',
         description:
-          'mport media from across the web. Have fun sharing 3D models, PDFs, images, gifs, videos and audio with your guests.',
+          'Import media from across the web. Have fun sharing 3D models, PDFs, images, gifs, videos and audio with your guests.',
       },
       {
         image: customizable,
-        imageAlt: 'customizable',
+        imageAlt: 'customizable subdomain',
         title: 'Customizable',
         description:
           'Choose your subdomain and make your landing page shine. Included in your Hubs subscription is a customization toolkit for the landing page and Hubs client.',
@@ -116,7 +117,7 @@ const Home: NextPage = () => {
         <FiftyFifty
           imageMobile={engagingFiftyFiftyMobile}
           image={engagingFiftyfifty}
-          imageAlt="The many ways to use Hubs"
+          imageAlt="Hubs landscaps with trees and sun and indoore example"
           title="The many ways to use Hubs"
         >
           <ul className="padding-left-15 u-text-left">
@@ -132,7 +133,7 @@ const Home: NextPage = () => {
         <FiftyFifty
           imageMobile={makeOwnFiftyFiftyMobile}
           image={makeOwnFiftyFifty}
-          imageAlt="Make it your own"
+          imageAlt="Avatars having a conversation in a dining hall"
           title="Make it your own"
           layout={FiftyFiftyLayoutE.RIGHT}
           body="Create a unique Hub by choosing environments and avatars that represent your community. Decorate using our world-building tool Spoke. 3D artists can build their own world from scratch using Blender."
@@ -141,7 +142,7 @@ const Home: NextPage = () => {
         <FiftyFifty
           imageMobile={avatarsFiftyfiftyMobile}
           image={avatarsFiftyfifty}
-          imageAlt="Expressive avatars"
+          imageAlt="Diverse display of avatars and fun graphics"
           title="Expressive avatars"
           body="Change your hair, your outfit, your vibe. Choose from a rich array
           of diverse avatars to show off how you’re feeling, or create your own range of different styles that let your personality shine through."
@@ -156,7 +157,7 @@ const Home: NextPage = () => {
         <FiftyFifty
           imageMobile={hubsFiftyFiftyMobile}
           image={hubsFiftyfifty}
-          imageAlt="joyful, secure, yours"
+          imageAlt="Avatars meeting and in open air auditorium"
           accentImage={heart}
           subTitle="Hubs is..."
           title="joyful, secure, yours"
