@@ -33,7 +33,7 @@ export function requireAuthenticationAndHubsOrSubscription(
       // Authenticated, NO hubs OR NO subscription
       return redirectToSubscribe();
     } catch (error) {
-      handleUnauthenticatedRedirects(error as AxiosError);
+      return handleUnauthenticatedRedirects(error as AxiosError);
     }
   };
 }
@@ -165,7 +165,7 @@ export function subscriptionPageRequireAuthentication(
         return await gssp(context, account);
       }
     } catch (error) {
-      handleUnauthenticatedRedirects(error as AxiosError);
+      return handleUnauthenticatedRedirects(error as AxiosError);
     }
   };
 }
