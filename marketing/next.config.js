@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 if (process.env.ENV == 'prod') {
-  console.log("if", process.env.ENV)
+  console.log('if', process.env.ENV);
   FXA_SERVER = 'accounts.firefox.com';
   AUTH_SERVER = 'XXXXauth.dev.myhubs.net';
   HUB_ROOT_DOMAIN = 'TBD333';
@@ -10,7 +10,7 @@ if (process.env.ENV == 'prod') {
   PRODUCT_ID = 'TBD666';
   PLAN_ID_EA = 'TBD777';
 } else {
-  console.log("else", process.env.ENV)
+  console.log('else', process.env.ENV);
   FXA_SERVER = 'accounts.firefox.com';
   AUTH_SERVER = 'auth.dev.myhubs.net';
   HUB_ROOT_DOMAIN = 'dev.myhubs.net';
