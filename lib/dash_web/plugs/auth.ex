@@ -31,14 +31,12 @@ defmodule DashWeb.Plugs.Auth do
   def call(conn, _options) do
     results = conn |> get_auth_cookie() |> process_and_verify_jwt()
 
+    Logger.warn("req_headers are #{inspect(conn.req_headers)}")
+
     conn |> process_jwt(results)
   end
 
   defp get_auth_cookie(conn) do
-    conn.req_cookies[@cookie_name]
-
-    Logger.warn(conn.req_cookies[@cookie_name])
-
     conn.req_cookies[@cookie_name]
   end
 
@@ -79,6 +77,7 @@ defmodule DashWeb.Plugs.Auth do
   # Not authorized or empty jwt
   defp process_jwt(conn, %{is_valid: false, claims: _claims}) do
     conn
+    |> clear_cookie()
     |> send_resp(
       401,
       Jason.encode!(get_unauthorized_struct())
@@ -124,5 +123,20 @@ defmodule DashWeb.Plugs.Auth do
 
   def iat_to_utc_datetime(timestamp_s) do
     DateTime.from_unix!(timestamp_s, :second)
+  end
+
+  def clear_cookie(conn) do
+    cookie_secure = Application.get_env(:dash, __MODULE__)[:cookie_secure]
+
+    put_resp_cookie(
+      conn,
+      @cookie_name,
+      "",
+      path: "/",
+      domain: DashWeb.LogoutController.cluster_domain(conn),
+      httpOnly: true,
+      secure: cookie_secure,
+      max_age: 0
+    )
   end
 end

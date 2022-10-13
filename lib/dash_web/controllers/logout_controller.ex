@@ -8,9 +8,9 @@ defmodule DashWeb.LogoutController do
   end
 
   def remove_cookies(conn) do
-    cluster_domain = ".#{conn.host |> String.split(".") |> Enum.take(-2) |> Enum.join(".")}"
-
-    conn
-    |> delete_resp_cookie(DashWeb.Plugs.Auth.get_cookie_name(), domain: cluster_domain)
+    delete_resp_cookie(conn, DashWeb.Plugs.Auth.get_cookie_name(), domain: cluster_domain(conn))
   end
+
+  def cluster_domain(conn),
+    do: ".#{conn.host |> String.split(".") |> Enum.take(-2) |> Enum.join(".")}"
 end

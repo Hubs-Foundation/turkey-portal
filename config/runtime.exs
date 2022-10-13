@@ -73,6 +73,7 @@ if config_env() == :prod do
 
   # Public key for JWT auth
   config :dash, DashWeb.Plugs.Auth,
+    cookie_secure: true,
     auth_pub_key:
       System.get_env("AUTH_PUBLIC_KEY") ||
         raise("""
