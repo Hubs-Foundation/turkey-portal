@@ -2,7 +2,7 @@
 
 if (process.env.ENV == 'prod') {
   FXA_SERVER = 'accounts.firefox.com';
-  AUTH_SERVER = 'auth.dev.myhubs.net';
+  AUTH_SERVER = 'XXXXauth.dev.myhubs.net';
   HUB_ROOT_DOMAIN = 'TBD333';
   DASH_ROOT_DOMAIN = 'dashboard.dev.myhubs.net';
   FXA_PAYMENT_URL = 'TBD555';
