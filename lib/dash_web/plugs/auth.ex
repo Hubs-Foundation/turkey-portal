@@ -31,8 +31,6 @@ defmodule DashWeb.Plugs.Auth do
   def call(conn, _options) do
     results = conn |> get_auth_cookie() |> process_and_verify_jwt()
 
-    Logger.warn("req_headers are #{inspect(conn.req_headers)}")
-
     conn |> process_jwt(results)
   end
 
