@@ -10,7 +10,7 @@ if (process.env.ENV == 'prod') {
   PLAN_ID_EA = 'TBD777';
 } else {
   FXA_SERVER = 'accounts.firefox.com';
-  AUTH_SERVER = 'auth.myhubs.net';
+  AUTH_SERVER = 'auth.dev.myhubs.net';
   HUB_ROOT_DOMAIN = 'dev.myhubs.net';
   DASH_ROOT_DOMAIN = 'dashboard.dev.myhubs.net';
   FXA_PAYMENT_URL = 'https://payments-stage.fxa.nonprod.cloudops.mozgcp.net';
