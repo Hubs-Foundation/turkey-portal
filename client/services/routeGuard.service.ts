@@ -33,22 +33,31 @@ export function requireAuthenticationAndHubsOrSubscription(
       // Authenticated, NO hubs OR NO subscription
       return redirectToSubscribe();
     } catch (error) {
-      // User is not authenticated
-      const axiosError = error as AxiosError;
-      const status: Number | undefined = axiosError.response?.status;
-      const data: unknown | undefined = axiosError.response?.data;
-
-      // If status is 401, it's an expected error
-      if (status !== 401) {
-        // Unexpected error
-        console.error('Unexpected error in requireAuthentication');
-        console.error(`Response status: ${status}, error: ${axiosError}`);
-      } else if (checkRedirectDataType(data) && data.redirect === 'auth')
-        return redirectToAuthServer();
-
-      return redirectToMarketingPage();
+      handleUnauthenticatedRedirects(error as AxiosError);
     }
   };
+}
+
+function handleUnauthenticatedRedirects(axiosError: AxiosError) {
+  // User is not authenticated
+  const status: Number | undefined = axiosError.response?.status;
+  const data: unknown | undefined = axiosError.response?.data;
+
+  // If status is 401 AND there's a redirect specified, redirect them
+  // Otherwise redirect to marketing page
+  if (
+    status === 401 &&
+    checkRedirectDataType(data) &&
+    data.redirect === 'auth'
+  ) {
+    return redirectToAuthServer();
+  } else if (status !== 401) {
+    // Unexpected error
+    console.error('Unexpected error in requireAuthentication');
+    console.error(`Response status: ${status}, error: ${axiosError}`);
+  }
+
+  return redirectToMarketingPage();
 }
 
 // Type checker if obj is RedirectDataT
@@ -156,23 +165,7 @@ export function subscriptionPageRequireAuthentication(
         return await gssp(context, account);
       }
     } catch (error) {
-      // User is not authenticated
-      const axiosError = error as AxiosError;
-      const status: Number | undefined = axiosError.response?.status;
-      const data: unknown | undefined = axiosError.response?.data;
-
-      // If status is 401 AND there's a redirect specified, redirect them
-      // Otherwise redirect to marketing page
-      if (
-        status === 401 &&
-        checkRedirectDataType(data) &&
-        data.redirect === 'auth'
-      ) {
-        // Expected redirect error
-        return redirectToAuthServer();
-      }
-      // Not Authenticated
-      return redirectToMarketingPage();
+      handleUnauthenticatedRedirects(error as AxiosError);
     }
   };
 }
