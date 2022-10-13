@@ -113,9 +113,7 @@ defmodule DashWeb.Plugs.AuthTest do
         |> get("/api/v1/account")
 
       assert response(conn, 401) ==
-               Jason.encode!(%{
-                 error: "unauthorized"
-               })
+               Jason.encode!(DashWeb.Plugs.Auth.unauthorized_auth_redirect_struct())
     end
 
     test "Should succeed if token.iat is after account.auth_updated_at", %{conn: conn} do

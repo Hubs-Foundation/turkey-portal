@@ -63,10 +63,14 @@ defmodule Dash.Account do
     end
   end
 
+  @spec set_auth_updated_at(binary, DateTime.t()) ::
+          {:ok, %Dash.Account{}} | {:error, %Ecto.Changeset{}} | nil
   def set_auth_updated_at(fxa_uid, %DateTime{} = time) when is_binary(fxa_uid) do
     case account_for_fxa_uid(fxa_uid) do
       %Dash.Account{} = account ->
-        account |> change(auth_updated_at: time) |> Dash.Repo.update!()
+        account
+        |> change(auth_updated_at: time)
+        |> Dash.Repo.update()
 
       nil ->
         # It's possible a person subscribed to Hubs never logged in but we still get this auth changed event

@@ -73,7 +73,7 @@ defmodule DashWeb.Router do
   scope "/api/v1", DashWeb do
     pipe_through :fxa_events_parser
     # TODO decode JWT tokens from FxA with a new plug
-    resources("/events/fxa", Api.V1.FxaEventsController, [:index])
+    resources("/events/fxa", Api.V1.FxaEventsController, [:create])
   end
 
   # Enables LiveDashboard only for development

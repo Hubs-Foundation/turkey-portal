@@ -6,8 +6,13 @@ import type {
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 import { getAccount } from './account.service';
 import { RoutesE } from 'types/Routes';
-import { MARKETING_PAGE_URL } from 'config';
+import { AUTH_SERVER, DASH_ROOT_DOMAIN, MARKETING_PAGE_URL } from 'config';
 import { IncomingMessage } from 'http';
+
+type RedirectDataT = {
+  error: String;
+  redirect: 'auth';
+};
 
 export function requireAuthenticationAndHubsOrSubscription(
   gssp: Function
@@ -28,19 +33,52 @@ export function requireAuthenticationAndHubsOrSubscription(
       // Authenticated, NO hubs OR NO subscription
       return redirectToSubscribe();
     } catch (error) {
-      // User is not authenticated
-      const axiosError = error as AxiosError;
-      const status: Number | undefined = axiosError.response?.status;
-
-      // If status is 401, it's an expected error
-      if (status !== 401) {
-        // Unexpected error
-        console.error('Unexpected error in requireAuthentication');
-        console.error(`Response status: ${status}, error: ${axiosError}`);
-      }
-
-      return redirectToMarketingPage();
+      return handleUnauthenticatedRedirects(error as AxiosError);
     }
+  };
+}
+
+function handleUnauthenticatedRedirects(axiosError: AxiosError) {
+  // User is not authenticated
+  const status: Number | undefined = axiosError.response?.status;
+  const data: unknown | undefined = axiosError.response?.data;
+
+  // If status is 401 AND there's a redirect specified, redirect them
+  // Otherwise redirect to marketing page
+  if (
+    status === 401 &&
+    checkRedirectDataType(data) &&
+    data.redirect === 'auth'
+  ) {
+    return redirectToAuthServer();
+  } else if (status !== 401) {
+    // Unexpected error
+    console.error('Unexpected error in requireAuthentication');
+    console.error(`Response status: ${status}, error: ${axiosError}`);
+  }
+
+  return redirectToMarketingPage();
+}
+
+// Type checker if obj is RedirectDataT
+function checkRedirectDataType(
+  obj: unknown | RedirectDataT
+): obj is RedirectDataT {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    'error' in obj &&
+    'redirect' in obj
+  );
+}
+
+function redirectToAuthServer() {
+  return {
+    redirect: {
+      source: '/dashboard',
+      destination: `https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}`,
+      permanent: false,
+    },
   };
 }
 
@@ -48,7 +86,7 @@ function redirectToMarketingPage() {
   return {
     redirect: {
       source: '/dashboard',
-      destination: MARKETING_PAGE_URL, // likely the marketing page
+      destination: MARKETING_PAGE_URL,
       permanent: false,
     },
   };
@@ -127,8 +165,7 @@ export function subscriptionPageRequireAuthentication(
         return await gssp(context, account);
       }
     } catch (error) {
-      // Not Authenticated
-      return redirectToMarketingPage();
+      return handleUnauthenticatedRedirects(error as AxiosError);
     }
   };
 }

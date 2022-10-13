@@ -38,7 +38,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       conn
       |> put_resp_content_type("application/json")
       |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
-      |> get("/api/v1/events/fxa")
+      |> post("/api/v1/events/fxa")
 
       # time set for auth_changed_at
       account_after = get_test_account()
@@ -63,7 +63,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       conn
       |> put_resp_content_type("application/json")
       |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
-      |> get("/api/v1/events/fxa")
+      |> post("/api/v1/events/fxa")
 
       account_after = get_test_account()
 
@@ -91,7 +91,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       conn
       |> put_resp_content_type("application/json")
       |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
-      |> get("/api/v1/events/fxa")
+      |> post("/api/v1/events/fxa")
 
       # Account deleted and no hubs
       hubs = Dash.Hub.hubs_for_account(account)

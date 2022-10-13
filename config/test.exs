@@ -44,3 +44,5 @@ config :logger, level: :critical
 config :phoenix, :plug_init_mode, :runtime
 
 config :dash, Dash.HubStat, enable_hub_stats: true
+
+config :dash, DashWeb.Plugs.FxaEventsParser, fxa_jwk_string: "test-aC2KtiGDxtqvNmv"
