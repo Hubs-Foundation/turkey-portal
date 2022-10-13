@@ -43,13 +43,10 @@ defmodule DashWeb.Plugs.FxaEventsParser do
 
     fxa_jwks = Jason.decode!(fxa_key_string)
     [jwk | _] = JOSE.JWK.from_map(fxa_jwks["keys"])
-    iss = "https://#{Dash.AppConfig.auth_server()}"
 
     case JOSE.JWT.verify_strict(jwk, ["RS256"], token) do
       {true, jwt_struct, _} ->
-        %JOSE.JWT{fields: %{"sub" => _fxa_uid, "events" => %{}, "iss" => ^iss} = claims} =
-          jwt_struct
-
+        %JOSE.JWT{fields: claims} = jwt_struct
         {:ok, claims}
 
       _ ->
