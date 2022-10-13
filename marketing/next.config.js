@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 
 if (process.env.ENV == 'prod') {
-  FXA_SERVER = 'TBD111';
-  AUTH_SERVER = 'TBD222';
+  FXA_SERVER = 'accounts.firefox.com';
+  AUTH_SERVER = 'auth.dev.myhubs.net';
   HUB_ROOT_DOMAIN = 'TBD333';
-  DASH_ROOT_DOMAIN = 'TBD444';
+  DASH_ROOT_DOMAIN = 'dashboard.dev.myhubs.net';
   FXA_PAYMENT_URL = 'TBD555';
   PRODUCT_ID = 'TBD666';
   PLAN_ID_EA = 'TBD777';
