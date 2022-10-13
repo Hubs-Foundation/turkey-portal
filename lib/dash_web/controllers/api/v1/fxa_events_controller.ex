@@ -8,7 +8,7 @@ defmodule DashWeb.Api.V1.FxaEventsController do
 
   @password_change "/password-change"
   @delete_user "/delete-user"
-  def index(conn, _) do
+  def create(conn, _) do
     fxa_event = conn.assigns[:fxa_event]
 
     %{
@@ -32,9 +32,10 @@ defmodule DashWeb.Api.V1.FxaEventsController do
 
         true ->
           Logger.warn(
-            "FxaEventsController index: No events matched for the given FxA event. Event is #{event} #{inspect(event_data)}"
+            "FxaEventsController create: No events matched for the given FxA event. Event is #{event} #{inspect(event_data)}"
           )
 
+          # TODO EA make this error before launch
           :error
       end
 
@@ -48,8 +49,11 @@ defmodule DashWeb.Api.V1.FxaEventsController do
         # If response other than 200 is returned, FxA will retry
         Logger.warn("FxaEventsController hit random error: FxA will retry")
 
+        # TODO EA make this error before launch
+        # conn
+        # |> send_resp(500, "Internal Server Error")
         conn
-        |> send_resp(500, "Internal Server Error")
+        |> send_resp(200, [])
     end
   end
 end
