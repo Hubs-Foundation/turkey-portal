@@ -135,3 +135,5 @@ config :dash, Dash.Scheduler,
     # Runs every minute:
     # {"* * * * *", {Dash.HubStat, :job_record_hub_stats, []}}
   ]
+
+config :dash, DashWeb.Plugs.FxaEventsParser, fxa_jwk_string: "dev"

@@ -46,6 +46,8 @@ defmodule DashWeb.Api.V1.FxaEventsController do
       _ ->
         # Webhook event handlers errored
         # If response other than 200 is returned, FxA will retry
+        Logger.warn("FxaEventsController hit random error: FxA will retry")
+
         conn
         |> send_resp(500, "Internal Server Error")
     end

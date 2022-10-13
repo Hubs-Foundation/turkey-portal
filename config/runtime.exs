@@ -39,6 +39,13 @@ if config_env() == :prod do
   config :dash, DashWeb.Endpoint,
     cors_origins: (System.get_env("CORS_ORIGINS") || "") |> String.split(",")
 
+  config :dash, DashWeb.Plugs.FxaEventsParser,
+    fxa_jwk_string:
+      System.get_env("FXA_JWK_STRING") ||
+        raise("""
+        Environment variable FXA_JWK_STRING is missing. Used in FxA webhook event JWT authentication.
+        """)
+
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
   # want to use a different value for prod and you most likely don't want
