@@ -37,10 +37,6 @@ defmodule Dash.FxaEvents do
         )
 
         :ok
-
-      err ->
-        Logger.error("Unknown error in Dash.FxaEvents handle_password_change(), #{inspect(err)}")
-        :ok
     end
   end
 

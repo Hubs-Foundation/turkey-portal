@@ -57,7 +57,7 @@ defmodule DashWeb.Plugs.Auth do
     if !is_nil(account.auth_updated_at) and
          DateTime.compare(iat_to_utc_datetime(issued_at), account.auth_updated_at) == :lt do
       # Issued before auth_updated_at
-      process_jwt(conn, %{is_valid: false, claims: claims})
+      process_jwt(conn, %{is_valid: false, claims: claims}, :redirect_auth_server)
     else
       conn
       |> assign(:account, account)
@@ -77,6 +77,16 @@ defmodule DashWeb.Plugs.Auth do
     |> send_resp(
       401,
       Jason.encode!(get_unauthorized_struct())
+    )
+    |> halt()
+  end
+
+  defp process_jwt(conn, %{is_valid: false, claims: _claims}, :redirect_auth_server) do
+    conn
+    |> DashWeb.LogoutController.remove_cookies()
+    |> send_resp(
+      401,
+      Jason.encode!(unauthorized_auth_redirect_struct())
     )
     |> halt()
   end
@@ -109,9 +119,9 @@ defmodule DashWeb.Plugs.Auth do
 
   def get_cookie_name(), do: @cookie_name
 
-  def get_unauthorized_struct() do
-    %{error: "unauthorized"}
-  end
+  def get_unauthorized_struct, do: %{error: "unauthorized"}
+
+  def unauthorized_auth_redirect_struct, do: %{error: "unauthorized", redirect: "auth"}
 
   def get_subscription_string() do
     @subscription_string
