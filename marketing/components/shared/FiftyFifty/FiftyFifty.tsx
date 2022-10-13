@@ -1,6 +1,7 @@
+import { ReactNode } from 'react';
 import styles from './FiftyFifty.module.scss';
 import Image, { StaticImageData } from 'next/image';
-import { useTabletDown } from 'hooks/useMediaQuery';
+import { useDesktopDown } from 'hooks/useMediaQuery';
 
 /**
   FiftyFifty component can be image left / content right or vice versa
@@ -20,6 +21,7 @@ type FiftyFiftyPropsT = {
   title?: string;
   subTitle?: string;
   body?: string;
+  children?: ReactNode;
   layout?: FiftyFiftyLayoutE;
   classProp?: string;
 };
@@ -33,10 +35,11 @@ const FiftyFifty = ({
   title,
   subTitle,
   body,
+  children,
   layout = FiftyFiftyLayoutE.LEFT,
   classProp = '',
 }: FiftyFiftyPropsT) => {
-  const isTabletDown = useTabletDown();
+  const isDesktopDown = useDesktopDown();
 
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
@@ -46,13 +49,13 @@ const FiftyFifty = ({
           <div className={styles.image_container}>
             <Image
               className={styles.image}
-              src={isTabletDown ? imageMobile : image}
+              src={isDesktopDown ? imageMobile : image}
               alt={imageAlt}
-              layout={isTabletDown ? 'responsive' : 'fill'}
-              objectFit={isTabletDown ? undefined : 'cover'}
-              objectPosition={isTabletDown ? undefined : 'center'}
-              width={isTabletDown ? 800 : undefined}
-              height={isTabletDown ? 700 : undefined}
+              layout={isDesktopDown ? 'responsive' : 'fill'}
+              objectFit={isDesktopDown ? undefined : 'cover'}
+              objectPosition={isDesktopDown ? undefined : 'center'}
+              width={isDesktopDown ? 800 : undefined}
+              height={isDesktopDown ? 700 : undefined}
               placeholder="blur"
             />
           </div>
@@ -66,8 +69,8 @@ const FiftyFifty = ({
             {accentImage && (
               <div className={styles.accent_image}>
                 <Image
-                  width={isTabletDown ? 95 : 164}
-                  height={isTabletDown ? 92 : 159}
+                  width={isDesktopDown ? 95 : 164}
+                  height={isDesktopDown ? 92 : 159}
                   layout="fixed"
                   src={accentImage}
                   alt={accentImageAlt}
@@ -83,6 +86,7 @@ const FiftyFifty = ({
             )}
             {title && <h3>{title}</h3>}
             {body && <p>{body}</p>}
+            {children && <div>{children}</div>}
           </div>
         </div>
       </div>

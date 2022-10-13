@@ -13,7 +13,7 @@
   padding: 20px;
   width: 100%;
 
-  @include tablet-down {
+  @include desktop-down {
     flex-direction: column;
     max-height: initial;
     height: initial;
@@ -29,7 +29,7 @@
 
   &_right,
   &_left {
-    @include tablet-down {
+    @include desktop-down {
       flex-direction: column;
     }
   }
@@ -37,25 +37,25 @@
 
 .image {
   &_wrapper {
-    @include tablet-down {
+    @include desktop-down {
       display: flex;
       justify-content: center;
     }
   }
 
   &_container {
-    @include tablet-down {
+    @include desktop-down {
       width: 100%;
     }
   }
 }
 
 .contents {
-  width: 400px;
+  width: 460px;
   padding: 80px 0 0 20px;
   position: relative;
 
-  @include tablet-down {
+  @include desktop-down {
     padding: 20px;
     width: 100%;
   }
@@ -70,12 +70,13 @@
     margin-bottom: 0;
   }
 
-  p {
+  p,
+  div {
     @include body-md;
   }
 
   &_wrapper {
-    @include tablet-down {
+    @include desktop-down {
       display: flex;
       justify-content: center;
       text-align: center;
@@ -90,7 +91,7 @@
   border-radius: 100px;
 
   &_wrapper {
-    @include tablet-down {
+    @include desktop-down {
       display: flex;
       justify-content: center;
       text-align: center;
@@ -103,7 +104,7 @@
   right: -40px;
   top: -20px;
 
-  @include tablet-down {
+  @include desktop-down {
     top: -40px;
     right: -10px;
   }
