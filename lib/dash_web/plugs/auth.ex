@@ -18,7 +18,9 @@ defmodule DashWeb.Plugs.Auth do
   }
   """
   use DashWeb, :controller
+
   import Plug.Conn
+  require Logger
 
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
@@ -75,7 +77,7 @@ defmodule DashWeb.Plugs.Auth do
     Logger.warn(conn.req_cookies[@cookie_name])
 
     conn
-    |> DashWeb.LogoutController.remove_cookies()
+    |> clear_cookie()
     |> send_resp(
       401,
       Jason.encode!(get_unauthorized_struct())
@@ -85,7 +87,7 @@ defmodule DashWeb.Plugs.Auth do
 
   defp process_jwt(conn, %{is_valid: false, claims: _claims}, :redirect_auth_server) do
     conn
-    |> DashWeb.LogoutController.remove_cookies()
+    |> clear_cookie()
     |> send_resp(
       401,
       Jason.encode!(unauthorized_auth_redirect_struct())
@@ -131,5 +133,20 @@ defmodule DashWeb.Plugs.Auth do
 
   def iat_to_utc_datetime(timestamp_s) do
     DateTime.from_unix!(timestamp_s, :second)
+  end
+
+  def clear_cookie(conn) do
+    cookie_secure = Application.get_env(:dash, __MODULE__)[:cookie_secure]
+
+    put_resp_cookie(
+      conn,
+      @cookie_name,
+      "",
+      path: "/",
+      domain: DashWeb.LogoutController.cluster_domain(conn),
+      httpOnly: true,
+      secure: cookie_secure,
+      max_age: 0
+    )
   end
 end
