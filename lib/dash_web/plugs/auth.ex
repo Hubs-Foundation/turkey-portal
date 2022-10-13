@@ -73,6 +73,7 @@ defmodule DashWeb.Plugs.Auth do
   # Not authorized or empty jwt
   defp process_jwt(conn, %{is_valid: false, claims: _claims}) do
     conn
+    |> DashWeb.LogoutController.remove_cookies()
     |> send_resp(
       401,
       Jason.encode!(get_unauthorized_struct())
