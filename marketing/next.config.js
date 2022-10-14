@@ -1,46 +1,47 @@
 /** @type {import('next').NextConfig} */
 
-// if (process.env.ENV == 'prod') {
-//   FXA_SERVER = 'TBD111';
-//   AUTH_SERVER = 'TBD222';
-//   HUB_ROOT_DOMAIN = 'TBD333';
-//   DASH_ROOT_DOMAIN = 'TBD444';
-//   FXA_PAYMENT_URL = 'TBD555';
-//   PRODUCT_ID = 'TBD666';
-//   PLAN_ID_EA = 'TBD777';
-// } else {
-//   FXA_SERVER = 'accounts.firefox.com';
-//   AUTH_SERVER = 'auth.myhubs.net';
-//   HUB_ROOT_DOMAIN = 'dev.myhubs.net';
-//   DASH_ROOT_DOMAIN = 'dashboard.dev.myhubs.net';
-//   FXA_PAYMENT_URL = 'https://payments-stage.fxa.nonprod.cloudops.mozgcp.net';
-//   PRODUCT_ID = 'prod_KPReWHqwGqZBzc';
-//   PLAN_ID_EA = 'price_1Jkcl3Kb9q6OnNsLFbECmMtd';
-// }
+var _FXA_SERVER = 'DUMMY';
+var _AUTH_SERVER = 'DUMMY';
+var _HUB_ROOT_DOMAIN = 'DUMMY';
+var _DASH_ROOT_DOMAIN = 'DUMMY';
+var _FXA_PAYMENT_URL = 'DUMMY';
+var _PRODUCT_ID = 'DUMMY';
+var _PLAN_ID_EA = 'DUMMY';
 
-FXA_SERVER = 'TBD111';
-AUTH_SERVER = 'TBD222';
-HUB_ROOT_DOMAIN = 'TBD333';
-DASH_ROOT_DOMAIN = 'TBD444';
-FXA_PAYMENT_URL = 'TBD555';
-PRODUCT_ID = 'TBD666';
-PLAN_ID_EA = 'TBD777';
-PROD = process.env.ENV;
+if (process.env.ENV == 'prod') {
+  _FXA_SERVER = 'TBD111';
+  _AUTH_SERVER = 'TBD222';
+  _HUB_ROOT_DOMAIN = 'TBD333';
+  _DASH_ROOT_DOMAIN = 'TBD444';
+  _FXA_PAYMENT_URL = 'TBD555';
+  _PRODUCT_ID = 'TBD666';
+  _PLAN_ID_EA = 'TBD777';
+} else {
+  _FXA_SERVER = 'accounts.firefox.com';
+  _AUTH_SERVER = 'auth.myhubs.net';
+  _HUB_ROOT_DOMAIN = 'dev.myhubs.net';
+  _DASH_ROOT_DOMAIN = 'dashboard.dev.myhubs.net';
+  _FXA_PAYMENT_URL = 'https://payments-stage.fxa.nonprod.cloudops.mozgcp.net';
+  _PRODUCT_ID = 'prod_KPReWHqwGqZBzc';
+  _PLAN_ID_EA = 'price_1Jkcl3Kb9q6OnNsLFbECmMtd';
+}
+
 
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   publicRuntimeConfig: {
-    AUTH_SERVER: AUTH_SERVER,
-    FXA_SERVER: FXA_SERVER,
-    HUB_ROOT_DOMAIN: HUB_ROOT_DOMAIN,
-    FXA_PAYMENT_URL: FXA_PAYMENT_URL,
-    DASH_ROOT_DOMAIN: DASH_ROOT_DOMAIN,
-    PRODUCT_ID: PRODUCT_ID,
-    PLAN_ID_EA: PLAN_ID_EA,
+    AUTH_SERVER: _AUTH_SERVER,
+    FXA_SERVER: _FXA_SERVER,
+    HUB_ROOT_DOMAIN: _HUB_ROOT_DOMAIN,
+    FXA_PAYMENT_URL: _FXA_PAYMENT_URL,
+    DASH_ROOT_DOMAIN: _DASH_ROOT_DOMAIN,
+    PRODUCT_ID: _PRODUCT_ID,
+    PLAN_ID_EA: _PLAN_ID_EA,
   },
 };
 
 console.log('nextConfig: ', nextConfig);
+
 
 module.exports = nextConfig;

@@ -5,6 +5,7 @@ import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import { useRouter } from 'next/router';
 import { DASH_ROOT_DOMAIN, AUTH_SERVER } from 'config';
+import getConfig from 'next/config';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -14,6 +15,8 @@ type MainNavPropsT = {
 const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
   const isDesktopDown = useDesktopDown();
   const router = useRouter();
+  const { publicRuntimeConfig } = getConfig();
+  const { DASH_ROOT_DOMAIN, AUTH_SERVER } = publicRuntimeConfig;
 
   /**
    * Handle Menu Click

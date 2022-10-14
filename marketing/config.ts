@@ -10,4 +10,4 @@ export const {
   PRODUCT_ID,
   PLAN_ID_EA,
 } = publicRuntimeConfig;
-export const DASH_ROOT_DOMAIN_V2 = process.env.NEXT_PUBLIC_DASH_ROOT_DOMAIN_V2;
+// export const DASH_ROOT_DOMAIN_V2 = process.env.NEXT_PUBLIC_DASH_ROOT_DOMAIN_V2;
