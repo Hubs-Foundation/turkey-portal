@@ -26,7 +26,6 @@ if (process.env.ENV == 'prod') {
   _PLAN_ID_EA = 'price_1Jkcl3Kb9q6OnNsLFbECmMtd';
 }
 
-
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -42,6 +41,5 @@ const nextConfig = {
 };
 
 console.log('nextConfig: ', nextConfig);
-
 
 module.exports = nextConfig;
