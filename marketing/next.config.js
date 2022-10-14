@@ -1,7 +1,5 @@
 /** @type {import('next').NextConfig} */
 
-
-
 var FXA_SERVER = 'DUMMY';
 var AUTH_SERVER = 'DUMMY';
 var HUB_ROOT_DOMAIN = 'DUMMY';
@@ -9,7 +7,6 @@ var DASH_ROOT_DOMAIN = 'DUMMY';
 var FXA_PAYMENT_URL = 'DUMMY';
 var PRODUCT_ID = 'DUMMY';
 var PLAN_ID_EA = 'DUMMY';
-
 
 if (process.env.ENV == 'prod') {
   console.log('if', process.env.ENV);
@@ -30,7 +27,6 @@ if (process.env.ENV == 'prod') {
   PRODUCT_ID = 'prod_KPReWHqwGqZBzc';
   PLAN_ID_EA = 'price_1Jkcl3Kb9q6OnNsLFbECmMtd';
 }
-
 
 const nextConfig = {
   reactStrictMode: true,
