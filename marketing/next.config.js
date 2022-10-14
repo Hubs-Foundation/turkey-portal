@@ -1,33 +1,36 @@
 /** @type {import('next').NextConfig} */
 
-// if (process.env.ENV == 'prod') {
-//   console.log('if', process.env.ENV);
-//   FXA_SERVER = 'accounts.firefox.com';
-//   AUTH_SERVER = 'XXXXauth.dev.myhubs.net';
-//   HUB_ROOT_DOMAIN = 'TBD333';
-//   DASH_ROOT_DOMAIN = 'dashboard.dev.myhubs.net';
-//   FXA_PAYMENT_URL = 'TBD555';
-//   PRODUCT_ID = 'TBD666';
-//   PLAN_ID_EA = 'TBD777';
-// } else {
-//   // console.log('else', process.env.ENV);
-//   // FXA_SERVER = 'accounts.firefox.com';
-//   // AUTH_SERVER = 'auth.dev.myhubs.net';
-//   // HUB_ROOT_DOMAIN = 'dev.myhubs.net';
-//   // DASH_ROOT_DOMAIN = 'dashboard.dev.myhubs.net';
-//   // FXA_PAYMENT_URL = 'https://payments-stage.fxa.nonprod.cloudops.mozgcp.net';
-//   // PRODUCT_ID = 'prod_KPReWHqwGqZBzc';
-//   // PLAN_ID_EA = 'price_1Jkcl3Kb9q6OnNsLFbECmMtd';
-// }
 
-FXA_SERVER = 'accounts.firefox.com';
-AUTH_SERVER = 'XXXXauth.dev.myhubs.net';
-HUB_ROOT_DOMAIN = 'TBD333';
-DASH_ROOT_DOMAIN = 'dashboard.dev.myhubs.net';
-FXA_PAYMENT_URL = 'TBD555';
-PRODUCT_ID = 'TBD666';
-PLAN_ID_EA = 'TBD777';
-PROD = process.env.ENV;
+
+var FXA_SERVER = 'DUMMY';
+var AUTH_SERVER = 'DUMMY';
+var HUB_ROOT_DOMAIN = 'DUMMY';
+var DASH_ROOT_DOMAIN = 'DUMMY';
+var FXA_PAYMENT_URL = 'DUMMY';
+var PRODUCT_ID = 'DUMMY';
+var PLAN_ID_EA = 'DUMMY';
+
+
+if (process.env.ENV == 'prod') {
+  console.log('if', process.env.ENV);
+  FXA_SERVER = 'accounts.firefox.com';
+  AUTH_SERVER = 'XXXXauth.dev.myhubs.net';
+  HUB_ROOT_DOMAIN = 'TBD333';
+  DASH_ROOT_DOMAIN = 'dashboard.dev.myhubs.net';
+  FXA_PAYMENT_URL = 'TBD555';
+  PRODUCT_ID = 'TBD666';
+  PLAN_ID_EA = 'TBD777';
+} else {
+  console.log('else', process.env.ENV);
+  FXA_SERVER = 'accounts.firefox.com';
+  AUTH_SERVER = 'auth.dev.myhubs.net';
+  HUB_ROOT_DOMAIN = 'dev.myhubs.net';
+  DASH_ROOT_DOMAIN = 'dashboard.dev.myhubs.net';
+  FXA_PAYMENT_URL = 'https://payments-stage.fxa.nonprod.cloudops.mozgcp.net';
+  PRODUCT_ID = 'prod_KPReWHqwGqZBzc';
+  PLAN_ID_EA = 'price_1Jkcl3Kb9q6OnNsLFbECmMtd';
+}
+
 
 const nextConfig = {
   reactStrictMode: true,
