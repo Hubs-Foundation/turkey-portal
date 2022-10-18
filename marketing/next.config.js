@@ -11,7 +11,7 @@ if (process.env.ENV === 'dev') {
   PRODUCT_ID = process.env.PRODUCT_ID;
   PLAN_ID_EA = process.env.PLAN_ID_EA;
 } else {
-  FXA_SERVER = 'accounts.firefox.com';
+  FXA_SERVER = 'accounts.stage.mozaws.net';
   AUTH_SERVER = 'auth.dev.myhubs.net';
   HUB_ROOT_DOMAIN = 'dev.myhubs.net';
   DASH_ROOT_DOMAIN = 'dashboard.dev.myhubs.net';
