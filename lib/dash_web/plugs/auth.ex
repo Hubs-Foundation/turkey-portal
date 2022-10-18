@@ -29,6 +29,8 @@ defmodule DashWeb.Plugs.Auth do
   def init(default), do: default
 
   def call(conn, _options) do
+    Logger.warn("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    Logger.warn(inspect(conn))    
     results = conn |> get_auth_cookie() |> process_and_verify_jwt()
 
     conn |> process_jwt(results)
