@@ -3,24 +3,11 @@ import { useRouter } from 'next/router';
 import Image, { StaticImageData } from 'next/image';
 import styles from './Hero.module.scss';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
-
-export type HeroImageFileT = {
-  url: StaticImageData;
-};
-
-export type HeroImageFieldT = {
-  title: string;
-  description: string;
-  file: HeroImageFileT;
-};
-
-export type HeroImageT = {
-  fields: HeroImageFieldT;
-};
+import { ImageT } from 'types/Contentful';
 
 export type HeroT = {
-  desktopImage: HeroImageT;
-  mobileImage: HeroImageT;
+  desktopImage: ImageT;
+  mobileImage: ImageT;
   heroAlt: string;
   title: string;
   body: string;

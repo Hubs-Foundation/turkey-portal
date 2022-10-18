@@ -2,7 +2,9 @@ import { ReactNode } from 'react';
 import styles from './FiftyFifty.module.scss';
 import Image, { StaticImageData } from 'next/image';
 import { useDesktopDown } from 'hooks/useMediaQuery';
-
+import { Document } from '@contentful/rich-text-types';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { ImageT } from 'types/Contentful';
 /**
   FiftyFifty component can be image left / content right or vice versa
   use layout to alter image content placement.
@@ -12,15 +14,27 @@ export enum FiftyFiftyLayoutE {
   RIGHT = 'right',
 }
 
-type FiftyFiftyPropsT = {
-  image: StaticImageData;
-  imageMobile: StaticImageData;
+export type FiftyFiftyT = {
+  image: ImageT;
+  imageMobile: ImageT;
   imageAlt: string;
-  accentImage?: StaticImageData;
+  accentImage?: ImageT;
   accentImageAlt?: string;
   title?: string;
   subTitle?: string;
-  body?: string;
+  body?: Document;
+  layout?: FiftyFiftyLayoutE;
+};
+
+type FiftyFiftyPropsT = {
+  image: StaticImageData | string;
+  imageMobile: StaticImageData | string;
+  imageAlt: string;
+  accentImage?: StaticImageData | string;
+  accentImageAlt?: string;
+  title?: string;
+  subTitle?: string;
+  body?: Document;
   children?: ReactNode;
   layout?: FiftyFiftyLayoutE;
   classProp?: string;
@@ -56,7 +70,6 @@ const FiftyFifty = ({
               objectPosition={isDesktopDown ? undefined : 'center'}
               width={isDesktopDown ? 800 : undefined}
               height={isDesktopDown ? 700 : undefined}
-              placeholder="blur"
             />
           </div>
         </div>
@@ -85,7 +98,7 @@ const FiftyFifty = ({
               </div>
             )}
             {title && <h3>{title}</h3>}
-            {body && <p>{body}</p>}
+            {body && <div>{documentToReactComponents(body)}</div>}
             {children && <div>{children}</div>}
           </div>
         </div>

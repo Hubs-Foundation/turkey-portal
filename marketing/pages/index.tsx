@@ -2,7 +2,10 @@ import { StaticImageData } from 'next/image';
 import { useMemo } from 'react';
 import Head from 'next/head';
 import Hero, { HeroT } from '@Shared/Hero/Hero';
-import FiftyFifty, { FiftyFiftyLayoutE } from '@Shared/FiftyFifty/FiftyFifty';
+import FiftyFifty, {
+  FiftyFiftyLayoutE,
+  FiftyFiftyT,
+} from '@Shared/FiftyFifty/FiftyFifty';
 import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
 import TitleDescription from '@Shared/TitleDescription/TitleDescription';
 import Subscribe from '@Shared/Subscribe/Subscribe';
@@ -29,28 +32,28 @@ import heart from '../public/heart.png';
 import spatialAudio from '../public/spatial_audio.jpg';
 import import3dModel from '../public/import_3d_models.jpg';
 import customizable from '../public/customizable.jpg';
+// Services
+import { getHeroEntry, getFiftyFiftyEntry } from 'services/contentful.service';
 
 type HomePropsT = {
   heroData: HeroT;
+  fiftyfiftyData: FiftyFiftyT;
 };
 
 export async function getStaticProps() {
-  const client = createClient({
-    space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID as string,
-    accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_KEY as string,
-  });
-
-  const heroId = '5Ye30v1zUE0V98AxdchWJK';
-  const HeroResponse = await client.getEntry<HeroT>(heroId);
+  const HeroResponse = await getHeroEntry('5Ye30v1zUE0V98AxdchWJK');
+  const FiftyFiftyResponse = await getFiftyFiftyEntry('5Sxpuo9THBr3H5bya51bNd');
   const heroData = HeroResponse.fields;
+  const fiftyfiftyData = FiftyFiftyResponse.fields;
   return {
     props: {
       heroData: heroData,
+      fiftyfiftyData: fiftyfiftyData,
     },
   };
 }
 
-const Home = ({ heroData }: HomePropsT) => {
+const Home = ({ heroData, fiftyfiftyData }: HomePropsT) => {
   const isMobile = useMobileDown();
 
   /**
@@ -140,38 +143,39 @@ const Home = ({ heroData }: HomePropsT) => {
         />
 
         <FiftyFifty
-          imageMobile={engagingFiftyFiftyMobile}
-          image={engagingFiftyfifty}
-          imageAlt="Hubs landscaps with trees and sun and indoore example"
-          title="The many ways to use Hubs"
-        >
-          <ul className="padding-left-15 u-text-left">
+          imageMobile={`https:${fiftyfiftyData.imageMobile.fields.file.url}`}
+          image={`https:${fiftyfiftyData.image.fields.file.url}`}
+          imageAlt={fiftyfiftyData.imageAlt}
+          title={fiftyfiftyData.title}
+          body={fiftyfiftyData.body}
+        ></FiftyFifty>
+
+        {/* <ul className="padding-left-15 u-text-left">
             <li>Host a virtual event</li>
             <li>Create a museum or digital gallery</li>
             <li>Build a space for your favorite hobbies</li>
             <li>Open a classroom to connect with your students</li>
             <li>Host a social hour for your team</li>
             <li>Have a meeting on a planet in outer space</li>
-          </ul>
-        </FiftyFifty>
+          </ul> */}
 
-        <FiftyFifty
+        {/* <FiftyFifty
           imageMobile={makeOwnFiftyFiftyMobile}
           image={makeOwnFiftyFifty}
           imageAlt="Avatars having a conversation in a dining hall"
           title="Make it your own"
           layout={FiftyFiftyLayoutE.RIGHT}
           body="Create a unique Hub by choosing environments and avatars that represent your community. Decorate using our world-building tool Spoke. 3D artists can build their own world from scratch using Blender."
-        />
+        /> */}
 
-        <FiftyFifty
+        {/* <FiftyFifty
           imageMobile={avatarsFiftyfiftyMobile}
           image={avatarsFiftyfifty}
           imageAlt="Diverse display of avatars and fun graphics"
           title="Expressive avatars"
           body="Change your hair, your outfit, your vibe. Choose from a rich array
           of diverse avatars to show off how you’re feeling, or create your own range of different styles that let your personality shine through."
-        />
+        /> */}
 
         <TileSpotlight
           tiles={tiles}
