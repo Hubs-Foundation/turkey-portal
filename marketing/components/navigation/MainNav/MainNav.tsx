@@ -1,19 +1,52 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styles from './MainNav.module.scss';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import { useRouter } from 'next/router';
 import { DASH_ROOT_DOMAIN, AUTH_SERVER } from 'config';
+import { createClient } from 'contentful';
 
 type MainNavPropsT = {
   classProp?: string;
   MobileMenuClick: Function;
 };
 
+type LinkFieldT = {
+  href: string;
+  label: string;
+  text: string;
+};
+
+type LinkT = {
+  fields: LinkFieldT;
+};
+
+type NavigationT = {
+  links: LinkT[];
+  name: string;
+};
+
 const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
   const isDesktopDown = useDesktopDown();
   const router = useRouter();
+  const client = createClient({
+    space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID as string,
+    accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_KEY as string,
+  });
+  const [navLinks, setNavLinks] = useState<LinkT[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await client.getEntry<NavigationT>(
+        '4FsGf6XPSDTPppGDlyFYm9'
+      );
+      const fields = response.fields.links as LinkT[];
+      setNavLinks(fields);
+    };
+
+    fetchData();
+  }, []);
 
   /**
    * Handle Menu Click
@@ -43,17 +76,17 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
             {/* Links  */}
             {!isDesktopDown && (
               <div className={styles.main_nav_links}>
-                <a href="/labs" className={styles.main_nav_link}>
-                  Creator Labs
-                </a>
-
-                <a href="/cloud" className={styles.main_nav_link}>
-                  Hubs Cloud
-                </a>
-
-                <a href="/demo" className={styles.main_nav_link}>
-                  Try our demo
-                </a>
+                {Boolean(navLinks) &&
+                  navLinks.map(({ fields }, i) => (
+                    <a
+                      key={i}
+                      href={fields.href}
+                      aria-label={fields.label}
+                      className={styles.main_nav_link}
+                    >
+                      {fields.text}
+                    </a>
+                  ))}
               </div>
             )}
           </div>

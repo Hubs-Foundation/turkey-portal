@@ -4,8 +4,32 @@ import Image, { StaticImageData } from 'next/image';
 import styles from './Hero.module.scss';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 
+export type HeroImageFileT = {
+  url: StaticImageData;
+};
+
+export type HeroImageFieldT = {
+  title: string;
+  description: string;
+  file: HeroImageFileT;
+};
+
+export type HeroImageT = {
+  fields: HeroImageFieldT;
+};
+
+export type HeroT = {
+  desktopImage: HeroImageT;
+  mobileImage: HeroImageT;
+  heroAlt: string;
+  title: string;
+  body: string;
+  ctaTitle: string;
+  ctaHref: string;
+};
+
 type HeroPropsT = {
-  background: StaticImageData;
+  background: StaticImageData | string;
   title?: string;
   body?: string;
   cta?: string;
@@ -41,7 +65,6 @@ const Hero = ({
           layout="fill"
           objectFit="cover"
           objectPosition="center"
-          placeholder="blur"
         />
         <div className={styles.contents_wrapper}>
           <div className={styles.contents}>

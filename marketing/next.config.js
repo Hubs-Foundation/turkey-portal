@@ -20,6 +20,9 @@ if (process.env.ENV == 'prod') {
 
 const nextConfig = {
   reactStrictMode: true,
+  images: {
+    domains: ['images.ctfassets.net']
+  },
   swcMinify: true,
   publicRuntimeConfig: {
     AUTH_SERVER: AUTH_SERVER,

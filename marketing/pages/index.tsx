@@ -1,7 +1,7 @@
-import type { NextPage } from 'next';
+import { StaticImageData } from 'next/image';
 import { useMemo } from 'react';
 import Head from 'next/head';
-import Hero from '@Shared/Hero/Hero';
+import Hero, { HeroT } from '@Shared/Hero/Hero';
 import FiftyFifty, { FiftyFiftyLayoutE } from '@Shared/FiftyFifty/FiftyFifty';
 import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
 import TitleDescription from '@Shared/TitleDescription/TitleDescription';
@@ -11,6 +11,7 @@ import ValueProps, {
 } from '@Shared/ValueProps/ValueProps';
 import Testimonial from '@Shared/Testimonial/Testimonial';
 import { useMobileDown } from 'hooks/useMediaQuery';
+import { createClient } from 'contentful';
 // Hero Assets
 import HubsMobileHero from '../public/hubs_hero_mobile.jpg';
 import HubsHero from '../public/hubs_hero.jpg';
@@ -29,7 +30,27 @@ import spatialAudio from '../public/spatial_audio.jpg';
 import import3dModel from '../public/import_3d_models.jpg';
 import customizable from '../public/customizable.jpg';
 
-const Home: NextPage = () => {
+type HomePropsT = {
+  heroData: HeroT;
+};
+
+export async function getStaticProps() {
+  const client = createClient({
+    space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID as string,
+    accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_KEY as string,
+  });
+
+  const heroId = '5Ye30v1zUE0V98AxdchWJK';
+  const HeroResponse = await client.getEntry<HeroT>(heroId);
+  const heroData = HeroResponse.fields;
+  return {
+    props: {
+      heroData: heroData,
+    },
+  };
+}
+
+const Home = ({ heroData }: HomePropsT) => {
   const isMobile = useMobileDown();
 
   /**
@@ -101,12 +122,16 @@ const Home: NextPage = () => {
 
       <main>
         <Hero
-          background={isMobile ? HubsMobileHero : HubsHero}
-          title="A whole new world, from the comfort of your home"
-          body="ake control of your online communities with a fully open source virtual world platform that you can make your own."
-          cta="Get Started"
-          ctaLink="/#subscribe"
-          heroAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
+          background={
+            isMobile
+              ? `https:${heroData.mobileImage.fields.file.url}`
+              : `https:${heroData.desktopImage.fields.file.url}`
+          }
+          title={heroData.title}
+          body={heroData.body}
+          cta={heroData.ctaTitle}
+          ctaLink={heroData.ctaHref}
+          heroAlt={heroData.heroAlt}
         />
 
         <TitleDescription
