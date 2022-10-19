@@ -8,6 +8,7 @@ import { getAccount } from './account.service';
 import { RoutesE } from 'types/Routes';
 import { AUTH_SERVER, DASH_ROOT_DOMAIN, MARKETING_PAGE_URL } from 'config';
 import { IncomingMessage } from 'http';
+import { setCookies } from 'cookies-next';
 
 type RedirectDataT = {
   error: String;
@@ -19,10 +20,14 @@ export function requireAuthenticationAndHubsOrSubscription(
   gssp: Function
 ): GetServerSideProps | Redirect {
   return async (context: GetServerSidePropsContext) => {
-    const { req } = context;
+    const { req, res } = context;
 
-    makeTurkeyauthCookie(req, cookieTtlHours)
-
+    const value = getTurkeyauthCookieValue(req)
+    console.log(" ### getTurkeyauthCookieValue, _turkeyauthtoken =>",value)
+    if (value != ""){
+      setCookies("_turkeyauthtoken", value, { req, res, maxAge: 3600 * cookieTtlHours })
+    }
+    
     // If no errors user is authenticated
     try {
       // TODO : MAYBE - Should we make a more explicit way to confirm a JWT here..
@@ -41,19 +46,16 @@ export function requireAuthenticationAndHubsOrSubscription(
   };
 }
 
-function makeTurkeyauthCookie(req:IncomingMessage, cookieTtlHours:number){
+function getTurkeyauthCookieValue(req:IncomingMessage){
   const query = req.url?.split('?')
   if (query != null && 
     query.length == 2 && 
     query[1].startsWith("_turkeyauthtoken") &&
     !query[1].includes('&')) {
       const value = query[1].replace("_turkeyauthtoken", "")
-      console.log("received on url query param: _turkeyauthtoken =>",value)
-      const expires = new Date(Date.now() + cookieTtlHours * 36e5).toUTCString()
-      // document.cookie = "_turkeyauthtoken" + "="  + encodeURIComponent(value) + '; expires=' + expires + '; path=/'
-      req.headers.cookie = "_turkeyauthtoken" + "="  + encodeURIComponent(value) + '; expires=' + expires + '; path=/'
-      
+      return value
   }
+  return ""
 }
 
 function handleUnauthenticatedRedirects(axiosError: AxiosError) {
