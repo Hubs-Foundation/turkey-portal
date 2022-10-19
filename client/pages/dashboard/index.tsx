@@ -174,6 +174,8 @@ export default Dashboard;
 export const getServerSideProps = requireAuthenticationAndHubsOrSubscription(
   (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
+    const { req } = context;
+    console.log('rawHeaders', req.rawHeaders);
     return { props: {} };
   }
 );
