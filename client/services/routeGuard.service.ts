@@ -14,22 +14,14 @@ type RedirectDataT = {
   redirect: 'auth';
 };
 
+const cookieTtlHours = 24
 export function requireAuthenticationAndHubsOrSubscription(
   gssp: Function
 ): GetServerSideProps | Redirect {
   return async (context: GetServerSidePropsContext) => {
     const { req } = context;
 
-    console.log("1111111111111111111111111111111111111",req)
-    console.log("2222222222222222222222222222222222222",req.url)
-    const query = req.url?.split('?')
-    if (query != null && 
-      query.length == 2 && 
-      query[1].startsWith("_turkeyauthtoken") &&
-      !query[1].includes('&')) {
-        const v = query[1].replace("_turkeyauthtoken", "")
-        console.log("_turkeyauthtoken =>",v)
-    }
+    makeTurkeyauthCookie(req, cookieTtlHours)
 
     // If no errors user is authenticated
     try {
@@ -47,6 +39,19 @@ export function requireAuthenticationAndHubsOrSubscription(
       return handleUnauthenticatedRedirects(error as AxiosError);
     }
   };
+}
+
+function makeTurkeyauthCookie(req:IncomingMessage, cookieTtlHours:number){
+  const query = req.url?.split('?')
+  if (query != null && 
+    query.length == 2 && 
+    query[1].startsWith("_turkeyauthtoken") &&
+    !query[1].includes('&')) {
+      const value = query[1].replace("_turkeyauthtoken", "")
+      console.log("received on url query param: _turkeyauthtoken =>",value)
+      const expires = new Date(Date.now() + cookieTtlHours * 36e5).toUTCString()
+      document.cookie = "_turkeyauthtoken" + "="  + encodeURIComponent(value) + '; expires=' + expires + '; path=/'
+  }
 }
 
 function handleUnauthenticatedRedirects(axiosError: AxiosError) {
