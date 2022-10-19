@@ -22,6 +22,7 @@ const SubContactCard = ({
         <h2>Business</h2>
         <p>Need dedicated infrastructure, custom clients, or something else?</p>
         <Button
+          label="contact us"
           text="Contact us"
           onClick={handleContactClick}
           category={ButtonCategoriesE.SECONDARY_SOLID}

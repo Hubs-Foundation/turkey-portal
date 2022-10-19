@@ -69,17 +69,18 @@ const SubscriptionModal = ({
       <div className={styles.footer_wrapper}>
         <div className={styles.footer_container}>
           <Button
+            label="close modal"
             category={ButtonCategoriesE.PRIMARY_CLEAR}
             text="Nevermind"
             classProp="margin-right-10-desktop"
             onClick={handleCloseClick}
           />
           <Button
+            label="go to manage account"
             onClick={onManageAccountClick}
             category={ButtonCategoriesE.PRIMARY_SOLID}
             classProp="margin-bottom-24-mobile"
             text="Continue to Firefox Account"
-            target="_blank"
           />
         </div>
       </div>

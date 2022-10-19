@@ -174,6 +174,7 @@ export default Dashboard;
 export const getServerSideProps = requireAuthenticationAndHubsOrSubscription(
   (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
+    console.log('context', context);
     return { props: {} };
   }
 );

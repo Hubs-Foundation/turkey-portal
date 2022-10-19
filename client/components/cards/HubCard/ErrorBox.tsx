@@ -38,6 +38,7 @@ const ErrorBox = ({
     <div className={`${styles.error_wrapper} ${classProp}`}>
       {onClose && (
         <Button
+          label="close"
           icon="x"
           classProp={styles.close}
           onClick={handleOnClose}
@@ -52,6 +53,7 @@ const ErrorBox = ({
         <div className={styles.error_actions}>
           {canTryAgain && (
             <Button
+              label="try to submit again"
               text="Try again now"
               classProp="margin-right-12"
               onClick={handleTryAgainClick}
@@ -59,6 +61,7 @@ const ErrorBox = ({
           )}
 
           <Button
+            label="contact us"
             text="Contact Us"
             category={ButtonCategoriesE.PRIMARY_OUTLINE}
             onClick={handleContactClick}

@@ -157,6 +157,7 @@ const HubFormCard = ({
       <div className={styles.card_container}>
         <div className={styles.card_header}>
           <Button
+            label="cancel form"
             onClick={handleCancelClick}
             size={ButtonSizesE.LARGE}
             category={ButtonCategoriesE.PRIMARY_CLEAR}
@@ -250,6 +251,7 @@ const HubFormCard = ({
 
           <div className={styles.actions_wrapper}>
             <Button
+              label="cancel form"
               classProp="margin-right-5"
               onClick={handleCancelClick}
               category={ButtonCategoriesE.PRIMARY_CLEAR}
@@ -257,6 +259,7 @@ const HubFormCard = ({
             />
 
             <Button
+              label="submit form"
               type="submit"
               category={ButtonCategoriesE.PRIMARY_SOLID}
               text="update"
