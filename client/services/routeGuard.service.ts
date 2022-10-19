@@ -23,7 +23,6 @@ export function requireAuthenticationAndHubsOrSubscription(
     const { req, res } = context;
 
     const value = getTurkeyauthCookieValue(req)
-    console.log(" ### getTurkeyauthCookieValue, _turkeyauthtoken =>",value)
     if (value != ""){
       setCookies("_turkeyauthtoken", value, { req, res, maxAge: 3600 * cookieTtlHours })
     }
