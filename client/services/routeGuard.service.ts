@@ -8,6 +8,7 @@ import { getAccount } from './account.service';
 import { RoutesE } from 'types/Routes';
 import { AUTH_SERVER, DASH_ROOT_DOMAIN, MARKETING_PAGE_URL } from 'config';
 import { IncomingMessage } from 'http';
+import { stringify } from 'querystring';
 
 type RedirectDataT = {
   error: String;
@@ -19,6 +20,17 @@ export function requireAuthenticationAndHubsOrSubscription(
 ): GetServerSideProps | Redirect {
   return async (context: GetServerSidePropsContext) => {
     const { req } = context;
+
+    console.log(req)
+    console.log(req.url)
+    const query = req.url?.split('?')
+    if (query != null && 
+      query.length == 2 && 
+      query[1].startsWith("_turkeyauthtoken") &&
+      !query[1].includes('&')) {
+        const v = query[1].replace("_turkeyauthtoken", "")
+        console.log("_turkeyauthtoken =>",v)
+    }
 
     // If no errors user is authenticated
     try {
