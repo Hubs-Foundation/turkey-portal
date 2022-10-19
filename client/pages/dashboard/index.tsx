@@ -13,7 +13,7 @@ import FeedbackBanner from '@Shared/FeedbackBanner/FeedbackBanner';
 import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
 
-type DashboardPropsT = {};
+type DashboardPropsT = { rawHeaders: string[] };
 
 const creatingHub: HubT = {
   ccuLimit: 0,
@@ -28,7 +28,7 @@ const creatingHub: HubT = {
   tier: 'premium',
 };
 
-const Dashboard = ({}: DashboardPropsT) => {
+const Dashboard = ({ rawHeaders }: DashboardPropsT) => {
   const account = useSelector(selectAccount);
   const hubsInit: HubT[] = [];
   const subPrice = 5;
@@ -43,6 +43,7 @@ const Dashboard = ({}: DashboardPropsT) => {
   const [subscriptionTotal, setSubscriptionTotal] = useState<number>(subPrice);
   const [subscription, setSubscription] =
     useState<SubscriptionT>(subscriptionInit);
+  console.log('rawHeaders', rawHeaders);
 
   /**
    * Get Hubs again and apply data, also check
@@ -176,6 +177,11 @@ export const getServerSideProps = requireAuthenticationAndHubsOrSubscription(
     // Your normal `getServerSideProps` code here
     const { req } = context;
     console.log('rawHeaders', req.rawHeaders);
-    return { props: {} };
+    const { rawHeaders } = req;
+    return {
+      props: {
+        rawHeaders: rawHeaders,
+      },
+    };
   }
 );
