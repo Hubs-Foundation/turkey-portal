@@ -26,7 +26,7 @@ export function requireAuthenticationAndHubsOrSubscription(
       const account = await getAccount(req.headers as AxiosRequestHeaders);
 
       // User is authenticated
-      if (account.hasHubs || account.hasSubscription) {
+      if (account.hasSubscription) {
         return await gssp(context, account);
       }
 
@@ -159,7 +159,7 @@ export function subscriptionPageRequireAuthentication(
     try {
       const account = await getAccount(req.headers as AxiosRequestHeaders);
 
-      if (account.hasHubs || account.hasSubscription) {
+      if (account.hasSubscription) {
         return redirectToDashboard();
       } else {
         return await gssp(context, account);
