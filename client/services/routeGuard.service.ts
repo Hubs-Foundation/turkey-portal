@@ -8,7 +8,6 @@ import { getAccount } from './account.service';
 import { RoutesE } from 'types/Routes';
 import { AUTH_SERVER, DASH_ROOT_DOMAIN, MARKETING_PAGE_URL } from 'config';
 import { IncomingMessage } from 'http';
-import { stringify } from 'querystring';
 
 type RedirectDataT = {
   error: String;
@@ -21,8 +20,8 @@ export function requireAuthenticationAndHubsOrSubscription(
   return async (context: GetServerSidePropsContext) => {
     const { req } = context;
 
-    console.log(req)
-    console.log(req.url)
+    console.log("1111111111111111111111111111111111111",req)
+    console.log("2222222222222222222222222222222222222",req.url)
     const query = req.url?.split('?')
     if (query != null && 
       query.length == 2 && 
