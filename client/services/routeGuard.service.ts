@@ -52,7 +52,7 @@ function getTurkeyauthCookieValue(req:IncomingMessage){
     query.length == 2 && 
     query[1].startsWith("_turkeyauthtoken") &&
     !query[1].includes('&')) {
-      const value = query[1].replace("_turkeyauthtoken", "")
+      const value = query[1].replace("_turkeyauthtoken=", "")
       return value
   }
   return ""
