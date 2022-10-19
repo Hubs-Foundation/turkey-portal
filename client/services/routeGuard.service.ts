@@ -51,7 +51,7 @@ function makeTurkeyauthCookie(req:IncomingMessage, cookieTtlHours:number){
       console.log("received on url query param: _turkeyauthtoken =>",value)
       const expires = new Date(Date.now() + cookieTtlHours * 36e5).toUTCString()
       // document.cookie = "_turkeyauthtoken" + "="  + encodeURIComponent(value) + '; expires=' + expires + '; path=/'
-      
+      req.headers.cookie = "_turkeyauthtoken" + "="  + encodeURIComponent(value) + '; expires=' + expires + '; path=/'
       
   }
 }
