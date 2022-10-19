@@ -15,18 +15,13 @@ type RedirectDataT = {
   redirect: 'auth';
 };
 
-const cookieTtlHours = 24
 export function requireAuthenticationAndHubsOrSubscription(
   gssp: Function
 ): GetServerSideProps | Redirect {
   return async (context: GetServerSidePropsContext) => {
-    const { req, res } = context;
+    const { req } = context;
+    setTurkeyauthCookie(context);
 
-    const value = getTurkeyauthCookieValue(req)
-    if (value != ""){
-      setCookies("_turkeyauthtoken", value, { req, res, maxAge: 3600 * cookieTtlHours })
-    }
-    
     // If no errors user is authenticated
     try {
       // TODO : MAYBE - Should we make a more explicit way to confirm a JWT here..
@@ -45,16 +40,21 @@ export function requireAuthenticationAndHubsOrSubscription(
   };
 }
 
-function getTurkeyauthCookieValue(req:IncomingMessage){
-  const query = req.url?.split('?')
-  if (query != null && 
-    query.length == 2 && 
-    query[1].startsWith("_turkeyauthtoken") &&
-    !query[1].includes('&')) {
-      const value = query[1].replace("_turkeyauthtoken=", "")
-      return value
-  }
-  return ""
+/**
+ * Set cookie from url parameter
+ * @param context
+ */
+function setTurkeyauthCookie(context: GetServerSidePropsContext) {
+  const { req, res, query } = context;
+  const key = '_turkeyauthtoken';
+  const cookieTtlHours = 24;
+
+  if (!(key in query)) return;
+  setCookies(key, query[key], {
+    req,
+    res,
+    maxAge: 3600 * cookieTtlHours,
+  });
 }
 
 function handleUnauthenticatedRedirects(axiosError: AxiosError) {
