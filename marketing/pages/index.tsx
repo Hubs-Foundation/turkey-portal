@@ -95,7 +95,7 @@ const Home: NextPage = () => {
   return (
     <div className="page_wrapper">
       <Head>
-        <title>Hubs - Private, virtual 3D spaces in your browser</title>
+        <title>Hubs - Private, virtual 3D worlds in your browser</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -103,7 +103,7 @@ const Home: NextPage = () => {
         <Hero
           background={isMobile ? HubsMobileHero : HubsHero}
           title="A whole new world, from the comfort of your home"
-          body="ake control of your online communities with a fully open source virtual world platform that you can make your own."
+          body="take control of your online communities with a fully open source virtual world platform that you can make your own."
           cta="Get Started"
           ctaLink="/#subscribe"
           heroAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
