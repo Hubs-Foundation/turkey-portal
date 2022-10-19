@@ -29,21 +29,13 @@ defmodule DashWeb.Plugs.Auth do
   def init(default), do: default
 
   def call(conn, _options) do
-    Logger.warn("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    Logger.warn(inspect(conn))    
     results = conn |> get_auth_cookie() |> process_and_verify_jwt()
 
     conn |> process_jwt(results)
   end
 
   defp get_auth_cookie(conn) do
-    cookie = conn.req_cookies[@cookie_name]
-    if is_nil(cookie) do
-      cookieValue = conn.query_params[@cookie_name]
-      Logger.warn("cookieValue: #{cookieValue}")
-    end
-    
-    cookie
+    conn.req_cookies[@cookie_name]
   end
 
   # Authorized
