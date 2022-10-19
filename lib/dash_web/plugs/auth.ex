@@ -37,7 +37,13 @@ defmodule DashWeb.Plugs.Auth do
   end
 
   defp get_auth_cookie(conn) do
-    conn.req_cookies[@cookie_name]
+    cookie = conn.req_cookies[@cookie_name]
+    if is_nil(cookie) do
+      cookieHeaderValue = get_req_header(conn, @cookie_name)
+      Logger.warn("cookieHeaderValue: #{cookieHeaderValue}")
+    end
+    
+    cookie
   end
 
   # Authorized
