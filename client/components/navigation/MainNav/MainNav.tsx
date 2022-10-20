@@ -5,8 +5,12 @@ import { logOut } from 'services/account.service';
 import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
 import BlobIcon from '@Logos/BlobIcon/BlobIcon';
-import { RoutesE } from 'types/Routes';
-import { AUTH_SERVER, FXA_SERVER, DASH_ROOT_DOMAIN } from 'config';
+import {
+  AUTH_SERVER,
+  FXA_SERVER,
+  DASH_ROOT_DOMAIN,
+  MARKETING_PAGE_URL,
+} from 'config';
 
 import {
   Button,
@@ -42,9 +46,7 @@ const MainNav = ({
       console.error('Error: issue logging out');
     }
 
-    router.push({
-      pathname: RoutesE.Login,
-    });
+    window.location.href = MARKETING_PAGE_URL;
   }, [router]);
 
   const onManageAccountClick = useCallback(() => {
