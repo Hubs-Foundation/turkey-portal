@@ -37,3 +37,8 @@ const nextConfig = {
 console.log('nextConfig: ', nextConfig);
 
 module.exports = nextConfig;
+module.exports = {
+  env: {
+    ENV: process.env.ENV,
+  },
+}
