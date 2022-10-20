@@ -8,6 +8,7 @@ import { getAccount } from './account.service';
 import { RoutesE } from 'types/Routes';
 import { AUTH_SERVER, DASH_ROOT_DOMAIN, MARKETING_PAGE_URL } from 'config';
 import { IncomingMessage } from 'http';
+import { setCookies } from 'cookies-next';
 
 type RedirectDataT = {
   error: String;
@@ -19,6 +20,7 @@ export function requireAuthenticationAndHubsOrSubscription(
 ): GetServerSideProps | Redirect {
   return async (context: GetServerSidePropsContext) => {
     const { req } = context;
+    setTurkeyauthCookie(context);
 
     // If no errors user is authenticated
     try {
@@ -36,6 +38,23 @@ export function requireAuthenticationAndHubsOrSubscription(
       return handleUnauthenticatedRedirects(error as AxiosError);
     }
   };
+}
+
+/**
+ * Set cookie from url parameter
+ * @param context
+ */
+function setTurkeyauthCookie(context: GetServerSidePropsContext) {
+  const { req, res, query } = context;
+  const key = '_turkeyauthtoken';
+  const cookieTtlHours = 24;
+
+  if (!(key in query)) return;
+  setCookies(key, query[key], {
+    req,
+    res,
+    maxAge: 3600 * cookieTtlHours,
+  });
 }
 
 function handleUnauthenticatedRedirects(axiosError: AxiosError) {
