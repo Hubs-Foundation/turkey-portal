@@ -7,6 +7,7 @@ import { AxiosError, AxiosRequestHeaders } from 'axios';
 import { getAccount } from './account.service';
 import { RoutesE } from 'types/Routes';
 import { AUTH_SERVER, DASH_ROOT_DOMAIN, MARKETING_PAGE_URL } from 'config';
+import { CookiesE } from 'types/Cookies';
 import { IncomingMessage } from 'http';
 import { setCookies } from 'cookies-next';
 
@@ -20,7 +21,19 @@ export function requireAuthenticationAndHubsOrSubscription(
 ): GetServerSideProps | Redirect {
   return async (context: GetServerSidePropsContext) => {
     const { req } = context;
-    setTurkeyauthCookie(context);
+
+    /**
+     * Check if token is on the url param, if so redirect back to the dash with a clean /dashboard
+     * url so it is not exposed in the browser url UI.
+     */
+    if (didSetTurkeyauthCookie(context)) {
+      return {
+        redirect: {
+          destination: RoutesE.Dashboard,
+          permanent: false,
+        },
+      };
+    }
 
     // If no errors user is authenticated
     try {
@@ -44,17 +57,24 @@ export function requireAuthenticationAndHubsOrSubscription(
  * Set cookie from url parameter
  * @param context
  */
-function setTurkeyauthCookie(context: GetServerSidePropsContext) {
+function didSetTurkeyauthCookie(context: GetServerSidePropsContext): boolean {
   const { req, res, query } = context;
-  const key = '_turkeyauthtoken';
+  const key = CookiesE.TurkeyAuthToken;
   const cookieTtlHours = 24;
 
-  if (!(key in query)) return;
+  if (!(key in query)) return false;
   setCookies(key, query[key], {
     req,
     res,
     maxAge: 3600 * cookieTtlHours,
   });
+
+  // Note: the 'setCookie' above does not set cookie in time to be used in the
+  // account authentication that follows this function. This manually adds cookie
+  // to succefully complete account auth.
+  req.headers.cookie = `${key}=${query[key]}`;
+
+  return true;
 }
 
 function handleUnauthenticatedRedirects(axiosError: AxiosError) {
