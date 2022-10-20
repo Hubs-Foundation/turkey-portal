@@ -32,13 +32,11 @@ const nextConfig = {
     PRODUCT_ID: PRODUCT_ID,
     PLAN_ID_EA: PLAN_ID_EA,
   },
+  env: {
+    ENV: process.env.ENV,
+  },
 };
 
 console.log('nextConfig: ', nextConfig);
 
 module.exports = nextConfig;
-module.exports = {
-  env: {
-    ENV: process.env.ENV,
-  },
-}
