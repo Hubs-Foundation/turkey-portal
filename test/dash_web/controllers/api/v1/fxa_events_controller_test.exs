@@ -86,10 +86,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       [_ | _] = hubs
       create_subscriptions(account, 2)
 
-      2 =
-        account
-        |> Dash.Subscription.get_all_subscriptions_for_account()
-        |> length()
+      [_, _] = Dash.Subscription.get_all_subscriptions_for_account(account)
 
       event_struct = get_account_delete_event()
       body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)

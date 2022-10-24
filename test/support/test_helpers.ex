@@ -1,6 +1,7 @@
 defmodule DashWeb.TestHelpers do
   import Phoenix.ConnTest
   require Logger
+  require Integer
 
   @default_test_uid "fake-uid"
   @test_email "email@fake.com"
@@ -133,21 +134,13 @@ defmodule DashWeb.TestHelpers do
   end
 
   # Subscription Helpers
-  def create_subscriptions(account, count) when count <= 1,
-    do: create_subscription(account, count)
-
-  def create_subscriptions(account, count) when count > 1 do
-    create_subscription(account, count)
-    create_subscriptions(account, count - 1)
-  end
-
-  defp create_subscription(account, count) do
-    capability = "foo" <> to_string(count)
-
-    Dash.Subscription.create_subscription(account, %{
-      capability: capability,
-      is_active: rem(count, 2) == 0,
-      change_time: DateTime.utc_now()
-    })
+  def create_subscriptions(account, count) do
+    for i <- count..1 do
+      Dash.Subscription.create_subscription(account, %{
+        capability: "foo#{i}",
+        is_active: Integer.is_even(i),
+        change_time: DateTime.utc_now()
+      })
+    end
   end
 end

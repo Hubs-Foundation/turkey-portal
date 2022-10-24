@@ -3,7 +3,7 @@ defmodule Dash.Subscription do
 
   import Ecto.Changeset
   import Ecto.Query
-  alias Dash.{Repo}
+  alias Dash.Repo
 
   schema "subscriptions" do
     field :capability, :string
@@ -14,38 +14,11 @@ defmodule Dash.Subscription do
     timestamps()
   end
 
-  @doc false
-  def changeset(subscription, attrs) do
+  def changeset(subscription, params) do
     subscription
-    |> cast(attrs, [:capability, :is_active, :change_time, :account_id])
+    |> cast(params, [:capability, :is_active, :change_time, :account_id])
     |> validate_required([:capability, :is_active, :change_time, :account_id])
-    |> validate_unique_capability_to_account()
-  end
-
-  # Check that per account each capability is unique
-  # Account can not have 2x rows of same capability string
-  defp validate_unique_capability_to_account(changeset) do
-    account_id = get_field(changeset, :account_id)
-    capability = get_field(changeset, :capability)
-
-    result =
-      Repo.exists?(
-        from(s in Dash.Subscription,
-          where: s.account_id == ^account_id and s.capability == ^capability
-        )
-      )
-
-    case result do
-      true ->
-        add_error(
-          changeset,
-          :capability,
-          "Duplicate capability for account_id, for each account, should only have unique capabilities"
-        )
-
-      _ ->
-        changeset
-    end
+    |> unique_constraint([:capability, :account_id])
   end
 
   def update_or_create_subscription_for_changeset(
@@ -56,9 +29,7 @@ defmodule Dash.Subscription do
           change_time: change_time
         } = new_subscription_info
       ) do
-    # Get account or create
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-    # Get subscription
     old_subscription = get_one_subscription(account, capability: capability)
 
     case old_subscription do

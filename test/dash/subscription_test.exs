@@ -8,24 +8,19 @@ defmodule Dash.SubscriptionTest do
 
   @capability1 "foo"
   @capability2 "bar"
-  describe "Subscription tests" do
+
+  describe "create_subscription/2" do
     # TODO throws changeset error when adding a capability that matches another capability
     test "can create multiple subscriptions for existing account" do
       create_test_account_and_hub()
-
       fxa_uid = get_default_test_uid()
-
       account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
-
-      assert Subscription.get_all_subscriptions_for_account(account) === []
 
       Subscription.create_subscription(account, %{
         capability: @capability1,
         is_active: true,
         change_time: DateTime.utc_now()
       })
-
-      assert length(Subscription.get_all_subscriptions_for_account(account)) === 1
 
       Subscription.create_subscription(account, %{
         capability: @capability2,
@@ -35,7 +30,9 @@ defmodule Dash.SubscriptionTest do
 
       assert length(Subscription.get_all_subscriptions_for_account(account)) === 2
     end
+  end
 
+  describe "update_or_create_subscription_for_changeset/1" do
     test "Creates account if subscription is added" do
       fxa_uid = get_default_test_uid()
       refute Repo.exists?(from(a in Dash.Account, where: a.fxa_uid == ^fxa_uid))
@@ -50,11 +47,11 @@ defmodule Dash.SubscriptionTest do
       assert Repo.exists?(from(a in Dash.Account, where: a.fxa_uid == ^fxa_uid))
       account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
-      assert length(Subscription.get_all_subscriptions_for_account(account)) == 1
+      assert [_] === Subscription.get_all_subscriptions_for_account(account)
       refute is_nil(Subscription.get_one_subscription(account, capability: @capability1))
     end
 
-    test "Updates subscription if the time is later" do
+    test "Updates subscription if the time changed is later than the one in db" do
       fxa_uid = get_default_test_uid()
       account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
@@ -62,14 +59,14 @@ defmodule Dash.SubscriptionTest do
       earlier = DateTime.add(now, -5000) |> DateTime.truncate(:second)
       later = DateTime.add(now, 5000) |> DateTime.truncate(:second)
 
-      subscription_struct = %{
+      subscription_map = %{
         fxa_uid: fxa_uid,
         capability: @capability1,
         is_active: true,
         change_time: now
       }
 
-      Subscription.update_or_create_subscription_for_changeset(subscription_struct)
+      Subscription.update_or_create_subscription_for_changeset(subscription_map)
 
       assert DateTime.compare(
                Subscription.get_one_subscription(account, capability: @capability1).change_time,
@@ -77,7 +74,7 @@ defmodule Dash.SubscriptionTest do
              ) == :eq
 
       # Does NOT update time for earlier
-      subscription_struct
+      subscription_map
       |> Map.merge(%{change_time: earlier})
       |> Subscription.update_or_create_subscription_for_changeset()
 
@@ -87,7 +84,7 @@ defmodule Dash.SubscriptionTest do
              ) == :eq
 
       # YES update for later
-      subscription_struct
+      subscription_map
       |> Map.merge(%{change_time: later})
       |> Subscription.update_or_create_subscription_for_changeset()
 
@@ -97,7 +94,7 @@ defmodule Dash.SubscriptionTest do
              ) == :eq
 
       # YES update for same time and is_active_changed
-      subscription_struct
+      subscription_map
       |> Map.merge(%{change_time: later, is_active: false})
       |> Subscription.update_or_create_subscription_for_changeset()
 
