@@ -1,14 +1,35 @@
+# syntax=docker/dockerfile:1
+
+# ---- dev stage ----
+ARG ALPINE_LINUX_VERSION=3.16.2
+ARG ELIXIR_VERSION=1.13.4
+ARG NODE_VERSION=18.12.0
+ARG OTP_VERSION=25.1.1
+
+FROM node:$NODE_VERSION-alpine AS node
+
+FROM hexpm/elixir:$ELIXIR_VERSION-erlang-$OTP_VERSION-alpine-$ALPINE_LINUX_VERSION AS dev
+COPY --from=node /usr/lib /usr/lib
+COPY --from=node /usr/local/share /usr/local/share
+COPY --from=node /usr/local/lib /usr/local/lib
+COPY --from=node /usr/local/include /usr/local/include
+COPY --from=node /usr/local/bin /usr/local/bin
+RUN mix do local.hex --force, local.rebar --force
+RUN apk add --no-cache\
+    # required by hex:phoenix_live_reload\
+    inotify-tools
+
 # ---- build stage ----
 FROM elixir:1.13 as builder
 RUN apt-get update -y && apt-get install -y build-essential git \
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
-RUN mix local.rebar --force \ 
+RUN mix local.rebar --force \
     && mix local.hex --force
 ENV MIX_ENV=prod
-COPY mix.exs mix.lock ./    
+COPY mix.exs mix.lock ./
 RUN mix deps.get --only $MIX_ENV
 RUN mkdir config
-COPY config/config.exs config/${MIX_ENV}.exs config/
+COPY config/config.exs config/$MIX_ENV.exs config/
 RUN mix deps.compile
 COPY priv priv
 COPY assets assets

@@ -1,0 +1,9 @@
+*
+!assets/
+!config/config.exs
+!config/prod.exs
+!config/runtime.exs
+!lib/
+!mix.exs
+!mix.lock
+!priv/

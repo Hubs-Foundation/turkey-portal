@@ -1,12 +1,13 @@
 /** @type {import('next').NextConfig} */
+const serverHostname = process.env.SERVER_HOSTNAME || 'localhost';
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['localhost:4000'], // TODO Add other servers
+    domains: [`${serverHostname}:4000`], // TODO Add other servers
   },
   optimizeFonts: false,
   serverRuntimeConfig: {
-    PUBLIC_API_SERVER: 'http://localhost:4000',
+    PUBLIC_API_SERVER: `http://${serverHostname}:4000`,
   },
   publicRuntimeConfig: {
     AUTH_SERVER: process.env.AUTH_SERVER,
