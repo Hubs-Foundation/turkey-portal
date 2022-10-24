@@ -47,7 +47,7 @@ defmodule Dash.SubscriptionTest do
       assert Repo.exists?(from(a in Dash.Account, where: a.fxa_uid == ^fxa_uid))
       account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
-      assert [_] === Subscription.get_all_subscriptions_for_account(account)
+      assert length(Subscription.get_all_subscriptions_for_account(account)) == 1
       refute is_nil(Subscription.get_one_subscription(account, capability: @capability1))
     end
 
