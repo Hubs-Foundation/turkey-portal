@@ -6,14 +6,34 @@ import type {
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 import { getAccount } from './account.service';
 import { RoutesE } from 'types/Routes';
-import { MARKETING_PAGE_URL } from 'config';
+import { AUTH_SERVER, DASH_ROOT_DOMAIN, MARKETING_PAGE_URL } from 'config';
+import { CookiesE } from 'types/Cookies';
 import { IncomingMessage } from 'http';
+import { setCookies } from 'cookies-next';
+
+type RedirectDataT = {
+  error: String;
+  redirect: 'auth';
+};
 
 export function requireAuthenticationAndHubsOrSubscription(
   gssp: Function
 ): GetServerSideProps | Redirect {
   return async (context: GetServerSidePropsContext) => {
     const { req } = context;
+
+    /**
+     * Check if token is on the url param, if so redirect back to the dash with a clean /dashboard
+     * url so it is not exposed in the browser url UI.
+     */
+    if (didSetTurkeyauthCookie(context)) {
+      return {
+        redirect: {
+          destination: RoutesE.Dashboard,
+          permanent: false,
+        },
+      };
+    }
 
     // If no errors user is authenticated
     try {
@@ -28,19 +48,76 @@ export function requireAuthenticationAndHubsOrSubscription(
       // Authenticated, NO hubs OR NO subscription
       return redirectToSubscribe();
     } catch (error) {
-      // User is not authenticated
-      const axiosError = error as AxiosError;
-      const status: Number | undefined = axiosError.response?.status;
-
-      // If status is 401, it's an expected error
-      if (status !== 401) {
-        // Unexpected error
-        console.error('Unexpected error in requireAuthentication');
-        console.error(`Response status: ${status}, error: ${axiosError}`);
-      }
-
-      return redirectToMarketingPage();
+      return handleUnauthenticatedRedirects(error as AxiosError);
     }
+  };
+}
+
+/**
+ * Set cookie from url parameter
+ * @param context
+ */
+function didSetTurkeyauthCookie(context: GetServerSidePropsContext): boolean {
+  const { req, res, query } = context;
+  const key = CookiesE.TurkeyAuthToken;
+  const cookieTtlHours = 24;
+
+  if (!(key in query)) return false;
+  setCookies(key, query[key], {
+    req,
+    res,
+    maxAge: 3600 * cookieTtlHours,
+  });
+
+  // Note: the 'setCookie' above does not set cookie in time to be used in the
+  // account authentication that follows this function. This manually adds cookie
+  // to succefully complete account auth.
+  req.headers.cookie = `${key}=${query[key]}`;
+
+  return true;
+}
+
+function handleUnauthenticatedRedirects(axiosError: AxiosError) {
+  // User is not authenticated
+  const status: Number | undefined = axiosError.response?.status;
+  const data: unknown | undefined = axiosError.response?.data;
+
+  // If status is 401 AND there's a redirect specified, redirect them
+  // Otherwise redirect to marketing page
+  if (
+    status === 401 &&
+    checkRedirectDataType(data) &&
+    data.redirect === 'auth'
+  ) {
+    return redirectToAuthServer();
+  } else if (status !== 401) {
+    // Unexpected error
+    console.error('Unexpected error in requireAuthentication');
+    console.error(`Response status: ${status}, error: ${axiosError}`);
+  }
+
+  return redirectToMarketingPage();
+}
+
+// Type checker if obj is RedirectDataT
+function checkRedirectDataType(
+  obj: unknown | RedirectDataT
+): obj is RedirectDataT {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    'error' in obj &&
+    'redirect' in obj
+  );
+}
+
+function redirectToAuthServer() {
+  return {
+    redirect: {
+      source: '/dashboard',
+      destination: `https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}`,
+      permanent: false,
+    },
   };
 }
 
@@ -48,7 +125,7 @@ function redirectToMarketingPage() {
   return {
     redirect: {
       source: '/dashboard',
-      destination: MARKETING_PAGE_URL, // likely the marketing page
+      destination: MARKETING_PAGE_URL,
       permanent: false,
     },
   };
@@ -127,8 +204,7 @@ export function subscriptionPageRequireAuthentication(
         return await gssp(context, account);
       }
     } catch (error) {
-      // Not Authenticated
-      return redirectToMarketingPage();
+      return handleUnauthenticatedRedirects(error as AxiosError);
     }
   };
 }

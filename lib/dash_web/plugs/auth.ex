@@ -18,7 +18,9 @@ defmodule DashWeb.Plugs.Auth do
   }
   """
   use DashWeb, :controller
+
   import Plug.Conn
+  require Logger
 
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
@@ -57,7 +59,7 @@ defmodule DashWeb.Plugs.Auth do
     if !is_nil(account.auth_updated_at) and
          DateTime.compare(iat_to_utc_datetime(issued_at), account.auth_updated_at) == :lt do
       # Issued before auth_updated_at
-      process_jwt(conn, %{is_valid: false, claims: claims})
+      process_jwt(conn, %{is_valid: false, claims: claims}, :redirect_auth_server)
     else
       conn
       |> assign(:account, account)
@@ -73,9 +75,20 @@ defmodule DashWeb.Plugs.Auth do
   # Not authorized or empty jwt
   defp process_jwt(conn, %{is_valid: false, claims: _claims}) do
     conn
+    |> clear_cookie()
     |> send_resp(
       401,
       Jason.encode!(get_unauthorized_struct())
+    )
+    |> halt()
+  end
+
+  defp process_jwt(conn, %{is_valid: false, claims: _claims}, :redirect_auth_server) do
+    conn
+    |> clear_cookie()
+    |> send_resp(
+      401,
+      Jason.encode!(unauthorized_auth_redirect_struct())
     )
     |> halt()
   end
@@ -108,9 +121,9 @@ defmodule DashWeb.Plugs.Auth do
 
   def get_cookie_name(), do: @cookie_name
 
-  def get_unauthorized_struct() do
-    %{error: "unauthorized"}
-  end
+  def get_unauthorized_struct, do: %{error: "unauthorized"}
+
+  def unauthorized_auth_redirect_struct, do: %{error: "unauthorized", redirect: "auth"}
 
   def get_subscription_string() do
     @subscription_string
@@ -118,5 +131,24 @@ defmodule DashWeb.Plugs.Auth do
 
   def iat_to_utc_datetime(timestamp_s) do
     DateTime.from_unix!(timestamp_s, :second)
+  end
+
+  def clear_cookie(conn) do
+    cookie_secure = Application.get_env(:dash, __MODULE__)[:cookie_secure]
+
+    Logger.warn("cookie_secure is #{cookie_secure}")
+    Logger.warn("cookie domain is #{DashWeb.LogoutController.cluster_domain(conn)}")
+    Logger.warn("cookie domain is #{DashWeb.LogoutController.cluster_domain(conn)}")
+
+    put_resp_cookie(
+      conn,
+      @cookie_name,
+      "",
+      path: "/",
+      domain: DashWeb.LogoutController.cluster_domain(conn),
+      http_only: true,
+      secure: cookie_secure,
+      max_age: 0
+    )
   end
 end

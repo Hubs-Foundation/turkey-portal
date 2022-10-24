@@ -58,7 +58,9 @@ config :dash, Dash.AppConfig,
   auth_server: "auth.local",
   fxa_server: "fxa.turkey.local"
 
-config :dash, DashWeb.Plugs.Auth, auth_pub_key: auth_pub_key
+config :dash, DashWeb.Plugs.Auth,
+  auth_pub_key: auth_pub_key,
+  cookie_secure: false
 
 config :dash, DashWeb.Plugs.BasicAuth,
   # Disable BasicAuth by default in local dev, since it's a bit annoying.
@@ -135,3 +137,5 @@ config :dash, Dash.Scheduler,
     # Runs every minute:
     # {"* * * * *", {Dash.HubStat, :job_record_hub_stats, []}}
   ]
+
+config :dash, DashWeb.Plugs.FxaEventsParser, fxa_jwk_string: "dev-hdwEqn1cHs69TT3"
