@@ -86,7 +86,7 @@ defmodule DashWeb.TestHelpers do
   end
 
   def create_subscription_for_account(account) do
-    capability = Dash.Subscription.get_capability_string()
+    capability = Dash.Subscription.capability_string()
 
     subscription_struct = %{
       fxa_uid: account.fxa_uid,

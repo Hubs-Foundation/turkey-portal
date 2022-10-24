@@ -172,7 +172,7 @@ defmodule Dash.Subscription do
          iat_utc_dt: _,
          fxa_subscriptions: fxa_subscriptions
        }) do
-    capability = get_capability_string()
+    capability = capability_string()
 
     if capability in fxa_subscriptions do
       # ISSUE we did NOT get a webhook event to add an active subscription
@@ -192,7 +192,7 @@ defmodule Dash.Subscription do
          fxa_subscriptions: fxa_subscriptions
        }) do
     # TODO EA expect this to be only 1 subscription
-    capability = get_capability_string()
+    capability = capability_string()
     matches? = capability in fxa_subscriptions == subscription.is_active
     iat_is_later? = iat_later_than_change_time?(iat_utc_dt, subscription.change_time)
 
@@ -220,7 +220,5 @@ defmodule Dash.Subscription do
     DateTime.compare(iat_utc_dt, change_time) == :gt
   end
 
-  def get_capability_string() do
-    Application.get_env(:dash, __MODULE__)[:subscription_capability]
-  end
+  def capability_string, do: Application.get_env(:dash, __MODULE__)[:subscription_capability]
 end

@@ -137,11 +137,8 @@ defmodule Dash.SubscriptionTest do
     end
   end
 
-  describe "Subscription test process_latest_fxa_subscription: cookie and subscriptions comparison" do
-    # Process process_latest_fxa_subscription
-
-    # Happy paths:
-    test "Subscriptions in db matches cookie: Sub is nil, cookie no subs" do
+  describe "process_latest_fxa_subscription/2" do
+    test "when the cookie and db match, user has no subscriptions" do
       fxa_uid = get_default_test_uid()
       account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
@@ -157,10 +154,15 @@ defmodule Dash.SubscriptionTest do
       # Test with iat later
       test_struct1 = %{
         fxa_uid: "uid1",
-        iat: later,
-        change_time: earlier,
-        is_active: false,
-        fxa_subscriptions: []
+        cookie: %{
+          fxa_subscriptions: [],
+          iat: later
+        },
+        db: %{
+          change_time: earlier,
+          is_active: false
+        },
+        expected_result: []
       }
 
       fxa_subscriptions = get_latest_fxa_subscriptions(test_struct1)
@@ -183,7 +185,7 @@ defmodule Dash.SubscriptionTest do
 
     test "Subscriptions in db matches cookie: Sub is_active, cookie subs" do
       %{later: later, earlier: earlier} = get_times()
-      capability = Subscription.get_capability_string()
+      capability = Subscription.capability_string()
 
       # iat later, change_time earlier
       # Sub is_active=true, cookie hasSub
@@ -213,11 +215,11 @@ defmodule Dash.SubscriptionTest do
       assert capability in fxa_subscriptions2
     end
 
-    # Test: subscription and cookie do NOT match, change_time LATER
+    # Happy path test: subscription and cookie do NOT match, change_time LATER
     test "Subscriptions do NOT match db and cookie: cookie NO sub, sub is_active=true, change_time later, match is_active=true" do
       # cookie = no subs , subscription = sub, subscription change_at later
       %{later: later, earlier: earlier} = get_times()
-      capability = Subscription.get_capability_string()
+      capability = Subscription.capability_string()
 
       # iat earlier, change_time later
       # Sub is_active=true, cookie NO subs
@@ -237,7 +239,7 @@ defmodule Dash.SubscriptionTest do
     # Test: subscription and cookie do NOT match
     test "Subscriptions do NOT match db and cookie: cookie YES sub, sub is_active=false, change_time later, match is_active=false" do
       %{later: later, earlier: earlier} = get_times()
-      capability = Subscription.get_capability_string()
+      capability = Subscription.capability_string()
 
       # cookie = yes subs, subscription no subs, subscription change_at later
       test_struct = %{
@@ -256,7 +258,7 @@ defmodule Dash.SubscriptionTest do
     # Not happy paths
     test "NOT Happy path, means something was wrong: Subscriptions do NOT match, iat later, match cookie" do
       %{later: later, earlier: earlier} = get_times()
-      capability = Subscription.get_capability_string()
+      capability = Subscription.capability_string()
 
       # cookie = NO subs, subscription YES subs, iat later
       test_struct1 = %{
@@ -298,6 +300,27 @@ defmodule Dash.SubscriptionTest do
     %{now: now, earlier: earlier, later: later}
   end
 
+  defp test_subscription_comparison(
+         %{cookie: cookie, fxa_subscriptions: fxa_subscriptions} = opts
+       ) do
+    test_struct1 = %{
+      fxa_uid: "uid1",
+      cookie: %{
+        fxa_subscriptions: [],
+        iat: later
+      },
+      db: %{
+        change_time: earlier,
+        is_active: false
+      },
+      expected_result: []
+    }
+
+    account = create_account_and_subscription(opts)
+
+    Subscription.process_latest_fxa_subscription(account, cookie)
+  end
+
   defp get_latest_fxa_subscriptions(%{iat: iat, fxa_subscriptions: fxa_subscriptions} = opts) do
     account = create_account_and_subscription(opts)
 
@@ -310,9 +333,15 @@ defmodule Dash.SubscriptionTest do
   end
 
   # Uses fxa_uid in the struct
-  defp create_account_and_subscription(%{fxa_uid: fxa_uid} = opts) do
+  defp create_account_and_subscription(%{fxa_uid: fxa_uid, db: db} = opts) do
     account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
-    create_subscription(account, opts)
+
+    %{
+      is_active: is_active,
+      change_time: change_time
+    } = db
+
+    create_subscription(account, db)
     account
   end
 
@@ -324,7 +353,7 @@ defmodule Dash.SubscriptionTest do
            change_time: change_time
          }
        ) do
-    capability = Subscription.get_capability_string()
+    capability = Subscription.capability_string()
 
     subscription_struct = %{
       fxa_uid: account.fxa_uid,
