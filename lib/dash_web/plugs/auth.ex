@@ -138,7 +138,6 @@ defmodule DashWeb.Plugs.Auth do
 
     Logger.warn("cookie_secure is #{cookie_secure}")
     Logger.warn("cookie domain is #{DashWeb.LogoutController.cluster_domain(conn)}")
-    Logger.warn("cookie domain is #{DashWeb.LogoutController.cluster_domain(conn)}")
 
     put_resp_cookie(
       conn,
