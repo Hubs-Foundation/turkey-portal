@@ -136,9 +136,6 @@ defmodule DashWeb.Plugs.Auth do
   def clear_cookie(conn) do
     cookie_secure = Application.get_env(:dash, __MODULE__)[:cookie_secure]
 
-    Logger.warn("cookie_secure is #{cookie_secure}")
-    Logger.warn("cookie domain is #{DashWeb.LogoutController.cluster_domain(conn)}")
-
     put_resp_cookie(
       conn,
       @cookie_name,
