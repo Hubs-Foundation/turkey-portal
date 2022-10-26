@@ -1,9 +1,16 @@
-import { useCallback, ReactNode, useContext, useState } from 'react';
+import {
+  useCallback,
+  ReactNode,
+  useContext,
+  useState,
+  UIEventHandler,
+} from 'react';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import { ThemeContext } from 'contexts/ThemeProvider';
 import MainNav from '@Navigation/MainNav/MainNav';
 import Footer from '@Navigation/Footer/Footer';
 import MobileSideNav from '@Navigation/MobileSideNav/MobileSideNav';
+import Banner from '@Navigation/Banner/Banner';
 
 type LayoutWrapperProps = {
   children: ReactNode;
@@ -23,11 +30,21 @@ const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
     setIsMobileMenuOpen((state) => !state);
   }, []);
 
+  const handleScroll: UIEventHandler<HTMLElement> = (event) => {
+    console.log('scrollTop: ', event.currentTarget.scrollTop);
+    console.log('offsetHeight: ', event.currentTarget.offsetHeight);
+  };
+
   return (
     // Hard coding light for deving
     // <main data-theme={themeContext.theme}>
-    <main data-theme="light">
-      <MainNav MobileMenuClick={toggleMobileNav} />
+    <main
+      data-theme="light"
+      onScroll={handleScroll}
+      style={{ height: '100vh' }}
+    >
+      <Banner />
+      {/* <MainNav MobileMenuClick={toggleMobileNav} /> */}
       {isDesktopDown && (
         <MobileSideNav
           MobileMenuClick={toggleMobileNav}
