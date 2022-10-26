@@ -11,6 +11,7 @@ export const {
   HUB_ROOT_DOMAIN,
   MARKETING_PAGE_URL,
   PLAN_ID_EA,
+  EU_PLAN_ID_EA,
   PRODUCT_ID,
 } = publicRuntimeConfig;
 

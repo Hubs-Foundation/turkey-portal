@@ -2,9 +2,11 @@ import { useRouter } from 'next/router';
 import { Button, Icon, IconT } from '@mozilla/lilypad';
 import SubscriptionInfoCopy from './SubscriptionInfoCopy';
 import styles from './SubInfoCard.module.scss';
-import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA } from 'config';
+import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, EU_PLAN_ID_EA } from 'config';
+import { CountriesE } from 'types/Countries';
 
 type SubInfoCardPropsT = {
+  region: string | null;
   classProp?: string;
 };
 
@@ -28,11 +30,19 @@ const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   );
 };
 
-const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
+const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
   const router = useRouter();
 
+  /**
+   * Handle routing user to correct payment plan
+   */
   const handleSubscribeClick = () => {
-    const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_EA}`;
+    // Default to US plan
+    let plan: string = PLAN_ID_EA;
+    if (region && region.toUpperCase() === CountriesE.Germany) {
+      plan = EU_PLAN_ID_EA;
+    }
+    const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${plan}`;
     router.push(url);
   };
 
@@ -71,7 +81,11 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
 
       {/* FOOTER  */}
       <div className={styles.footer}>
-        <Button text="Subscribe" onClick={handleSubscribeClick} />
+        <Button
+          label="subscribe"
+          text="Subscribe"
+          onClick={handleSubscribeClick}
+        />
       </div>
     </div>
   );
