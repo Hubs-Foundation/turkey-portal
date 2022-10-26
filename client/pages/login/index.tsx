@@ -20,7 +20,7 @@ const Login = ({}: LoginPropsT) => {
         <div className={styles.wrapper}>
           <div className={styles.header}>
             <div className={styles.cards}>
-              <SubInfoCard />
+              {/* <SubInfoCard /> */}
               <SubContactCard
                 email="hubs@mozilla.com"
                 subject="Subscription inquiries"
