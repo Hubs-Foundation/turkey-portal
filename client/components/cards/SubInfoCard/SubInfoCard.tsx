@@ -81,11 +81,7 @@ const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
 
       {/* FOOTER  */}
       <div className={styles.footer}>
-        <Button
-          label="subscribe"
-          text="Subscribe"
-          onClick={handleSubscribeClick}
-        />
+        <Button text="Subscribe" onClick={handleSubscribeClick} />
       </div>
     </div>
   );
