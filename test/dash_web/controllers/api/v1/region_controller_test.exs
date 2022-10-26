@@ -1,8 +1,7 @@
 defmodule DashWeb.Api.V1.RegionControllerTest do
   use DashWeb.ConnCase
 
-  describe "index/2" do
-    @tag marked: true
+  describe "show/2" do
     test "should return region if header is present", %{conn: conn} do
       conn =
         conn
@@ -13,7 +12,6 @@ defmodule DashWeb.Api.V1.RegionControllerTest do
                Jason.encode!(%{region: "DE"})
     end
 
-    @tag marked: true
     test "should return nil if region is not present", %{conn: conn} do
       conn = get(conn, "/api/v1/region")
 
