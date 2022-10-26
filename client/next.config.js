@@ -16,7 +16,7 @@ const nextConfig = {
     HUB_ROOT_DOMAIN: process.env.HUB_ROOT_DOMAIN,
     MARKETING_PAGE_URL: process.env.MARKETING_PAGE_URL,
     PLAN_ID_EA: process.env.PLAN_ID_EA,
-    EU_PLAN_ID_EA: process.env.EU_PLAN_ID_EA,
+    PLAN_ID_EA_DE: process.env.PLAN_ID_EA_DE,
     PRODUCT_ID: process.env.PRODUCT_ID,
     PUBLIC_API_SERVER: process.env.PUBLIC_API_SERVER,
   },

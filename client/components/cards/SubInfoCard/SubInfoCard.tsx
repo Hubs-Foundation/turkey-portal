@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { Button, Icon, IconT } from '@mozilla/lilypad';
 import SubscriptionInfoCopy from './SubscriptionInfoCopy';
 import styles from './SubInfoCard.module.scss';
-import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, EU_PLAN_ID_EA } from 'config';
+import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
 import { CountriesE } from 'types/Countries';
 
 type SubInfoCardPropsT = {
@@ -38,10 +38,10 @@ const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
    */
   const handleSubscribeClick = () => {
     // Default to US plan
-    let plan: string = PLAN_ID_EA;
-    if (region && region.toUpperCase() === CountriesE.Germany) {
-      plan = EU_PLAN_ID_EA;
-    }
+    const plan: string =
+      region && region.toUpperCase() === CountriesE.GERMANY
+        ? PLAN_ID_EA_DE
+        : PLAN_ID_EA;
     const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${plan}`;
     router.push(url);
   };

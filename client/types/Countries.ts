@@ -1,3 +1,3 @@
 export enum CountriesE {
-  Germany = 'DE',
+  GERMANY = 'DE',
 }

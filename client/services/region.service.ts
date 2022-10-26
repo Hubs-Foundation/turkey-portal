@@ -11,14 +11,9 @@ export type RegionT = {
  * @returns RegionT
  */
 export const getRegion = async () => {
-  try {
-    return axios
-      .get(`${PUBLIC_API_SERVER}${API_PATH}`, { withCredentials: true })
-      .then((response: AxiosResponse) => {
-        return response.data as RegionT;
-      });
-  } catch (error) {
-    // TODO: Make game plan for error handling
-    console.error('Error', error);
-  }
+  return axios
+    .get(`${PUBLIC_API_SERVER}${API_PATH}`, { withCredentials: true })
+    .then((response: AxiosResponse) => {
+      return response.data as RegionT;
+    });
 };
