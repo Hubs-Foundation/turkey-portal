@@ -4,7 +4,7 @@ import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import { useRouter } from 'next/router';
-import { DASH_ROOT_DOMAIN, AUTH_SERVER } from 'config';
+import { DASH_ROOT_DOMAIN } from 'config';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -77,7 +77,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
                   label="Go to your hubs dashboard"
                   classProp="margin-right-10"
                   category={ButtonCategoriesE.PRIMARY_OUTLINE}
-                  href={`https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}`}
+                  href={`https://${DASH_ROOT_DOMAIN}/dashboard`}
                   text="Go to Dashboard"
                 />
                 <Button
