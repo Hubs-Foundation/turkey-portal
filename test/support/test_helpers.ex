@@ -136,7 +136,7 @@ defmodule DashWeb.TestHelpers do
   # Capability Helpers
   def create_capabilities(account, count) do
     for i <- count..1 do
-      Dash.Capability.create_capability(account, %{
+      Dash.create_capability!(account, %{
         capability: "foo#{i}",
         is_active: Integer.is_even(i),
         change_time: DateTime.utc_now()

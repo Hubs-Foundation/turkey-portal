@@ -53,7 +53,7 @@ defmodule Dash.Account do
       Dash.Hub.delete_hub(hub)
     end
 
-    Dash.Capability.delete_all_capabilities_for_account(account)
+    Dash.delete_all_capabilities_for_account(account)
 
     case Repo.delete(account) do
       {:ok, _} ->

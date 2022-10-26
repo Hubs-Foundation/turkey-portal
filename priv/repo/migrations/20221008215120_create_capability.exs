@@ -10,9 +10,9 @@ defmodule Dash.Repo.Migrations.CreateCapabilities do
       add :account_id, references(:accounts, column: :account_id, on_delete: :nothing),
         null: false
 
-      unique_index(:capabilities, [:capability, :account_id])
-
       timestamps()
     end
+
+    create unique_index(:capabilities, [:capability, :account_id])
   end
 end
