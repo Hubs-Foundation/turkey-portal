@@ -140,7 +140,7 @@ const MainNav = ({
           {!showLoggedOutUi && (
             <div className="flex-align-center">
               <Button
-                label="edit dashbaord"
+                label="edit dashboard"
                 classProp={styles.exit_button}
                 category={ButtonCategoriesE.SECONDARY_OUTLINE}
                 text="Exit Dashboard"

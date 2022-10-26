@@ -38,7 +38,7 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
     window.open(`${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_EA}`);
   }, []);
 
-  const onToggleConfirmation = useCallback((value: boolean) => {
+  const onToggleLocationConfirmation = useCallback((value: boolean) => {
     setLocationConfirmed(value);
   }, []);
 
@@ -79,9 +79,9 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
       <form className="u-content-box margin-top-16 margin-bottom-16">
         <Checkbox
           classProp="u-content-box"
-          onChange={onToggleConfirmation}
+          onChange={onToggleLocationConfirmation}
           checked={locationConfirmed}
-          label="I'm located in UK CAN USA or Germany"
+          label="I'm located in UK, Canada, USA, or Germany"
         />
       </form>
 

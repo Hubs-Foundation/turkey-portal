@@ -38,7 +38,7 @@ const ErrorBox = ({
     <div className={`${styles.error_wrapper} ${classProp}`}>
       {onClose && (
         <Button
-          label="Close"
+          label="close"
           icon="x"
           classProp={styles.close}
           onClick={handleOnClose}
