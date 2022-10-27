@@ -36,9 +36,16 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
       subdomain: storeContext.lastSubmittedSubdomain.subdomain,
     };
 
-    updateHub(hub.hubId, updatedHub).then(() => {
-      refreshHubData && refreshHubData();
-    });
+    const submit = async () => {
+      try {
+        await updateHub(hub.hubId, updatedHub);
+        refreshHubData && refreshHubData();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    submit();
   };
 
   /**
@@ -51,9 +58,16 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
       lastError: '',
     };
 
-    updateHub(hub.hubId, updatedHub).then(() => {
-      setShowRevertError(false);
-    });
+    const submit = async () => {
+      try {
+        await updateHub(hub.hubId, updatedHub);
+        setShowRevertError(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    submit();
   };
 
   /**

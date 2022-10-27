@@ -33,16 +33,23 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
    * Get Hub By ID
    */
   useEffect(() => {
-    getHub(`${hub_id}`).then((hub: HubT) => {
-      if (hub.status === StatusE.UPDATING) {
-        router.push({
-          pathname: RoutesE.Dashboard,
-        });
-        return;
+    const getData = async () => {
+      try {
+        const hub: HubT = await getHub(`${hub_id}`);
+        if (hub.status === StatusE.UPDATING) {
+          router.push({
+            pathname: RoutesE.Dashboard,
+          });
+          return;
+        }
+        setLoading(false);
+        setHub(hub);
+      } catch (error) {
+        console.error(error);
       }
-      setLoading(false);
-      setHub(hub);
-    });
+    };
+
+    getData();
   }, [hub_id, router]);
 
   /**
@@ -97,17 +104,24 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
         name: name,
       };
 
-      updateHub(hub.hubId, updatedHub).then((resp) => {
-        if (resp?.status === 200) {
-          router.push({
-            pathname: RoutesE.Dashboard,
-          });
-        } else {
-          launchToastError('Sorry, there was an error updating this Hub.');
-        }
+      const submit = async () => {
+        try {
+          const resp = await updateHub(hub.hubId, updatedHub);
+          if (resp?.status === 200) {
+            router.push({
+              pathname: RoutesE.Dashboard,
+            });
+          } else {
+            launchToastError('Sorry, there was an error updating this Hub.');
+          }
 
-        setLoading(false);
-      });
+          setLoading(false);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      submit();
     },
     [hub, router]
   );
