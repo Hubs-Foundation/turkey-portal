@@ -1,5 +1,4 @@
 import { useRef, useCallback, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import styles from './MainNav.module.scss';
 import { logOut } from 'services/account.service';
 import { selectAccount } from 'store/accountSlice';
@@ -32,7 +31,6 @@ const MainNav = ({
 }: MainNavPropsT) => {
   const account = useSelector(selectAccount);
   const dropdownRef = useRef<dropdownT>(null);
-  const router = useRouter();
 
   useEffect(() => {
     console.log('showLoggedOutUi', showLoggedOutUi);
@@ -47,7 +45,7 @@ const MainNav = ({
     }
 
     window.location.href = MARKETING_PAGE_URL;
-  }, [router]);
+  }, []);
 
   const onManageAccountClick = useCallback(() => {
     window.open(`https://${FXA_SERVER}/settings`);
