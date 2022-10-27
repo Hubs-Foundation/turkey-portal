@@ -27,6 +27,7 @@ const FeedbackBanner = ({
         <div className={styles.content}>
           <p>{Message}</p>
           <Button
+            label="give feedback"
             onClick={feedbackClick}
             classProp={styles.button}
             category={ButtonCategoriesE.SECONDARY_SOLID}
