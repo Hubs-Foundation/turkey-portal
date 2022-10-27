@@ -48,12 +48,10 @@ const FiftyFifty = ({
         <div className={styles.image_wrapper}>
           <div className={styles.image_container}>
             <Image
-              className={styles.image}
+              className="u-background-image"
+              fill={!isDesktopDown}
               src={isDesktopDown ? imageMobile : image}
               alt={imageAlt}
-              layout={isDesktopDown ? 'responsive' : 'fill'}
-              objectFit={isDesktopDown ? undefined : 'cover'}
-              objectPosition={isDesktopDown ? undefined : 'center'}
               width={isDesktopDown ? 800 : undefined}
               height={isDesktopDown ? 700 : undefined}
               placeholder="blur"
@@ -71,7 +69,6 @@ const FiftyFifty = ({
                 <Image
                   width={isDesktopDown ? 95 : 164}
                   height={isDesktopDown ? 92 : 159}
-                  layout="fixed"
                   src={accentImage}
                   alt={accentImageAlt}
                 />

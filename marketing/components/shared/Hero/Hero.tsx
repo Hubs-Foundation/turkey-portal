@@ -36,11 +36,10 @@ const Hero = ({
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.container}>
         <Image
+          className="u-background-image"
           src={background}
           alt={heroAlt}
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
+          fill={true}
           placeholder="blur"
         />
         <div className={styles.contents_wrapper}>

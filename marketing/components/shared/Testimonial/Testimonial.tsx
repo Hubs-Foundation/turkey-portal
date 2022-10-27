@@ -32,9 +32,8 @@ const Testimonial = ({ classProp = '' }: TestimonialPropsT) => {
                 : testimonialBackground
             }
             alt="blog background"
-            objectFit="cover"
-            objectPosition="center"
-            layout={isDesktopDown ? 'fill' : undefined}
+            className="u-background-image"
+            fill={true}
           />
 
           <div className={styles.content}>
@@ -46,7 +45,6 @@ const Testimonial = ({ classProp = '' }: TestimonialPropsT) => {
                   height={isDesktopDown ? 165 : 230}
                   width={isDesktopDown ? 165 : 230}
                   alt="Jacob Ervin Avatar"
-                  layout="fixed"
                 />
               </div>
             </div>

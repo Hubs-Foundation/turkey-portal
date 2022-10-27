@@ -27,10 +27,9 @@ const Tile = ({ image, imageAlt, title, description }: TilePropsT) => {
         <div className={styles.tile_image}>
           <Image
             src={image}
-            alt={imageAlt}
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
+            alt={imageAlt ? imageAlt : 'Main Tile Image'}
+            className="u-background-image"
+            fill={true}
             placeholder="blur"
           />
         </div>
@@ -57,9 +56,8 @@ const TileSpotlight = ({
         <Image
           src={bubbleTop}
           alt="bubble background"
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
+          className="u-background-image"
+          fill={true}
           placeholder="blur"
         />
       </div>
@@ -89,9 +87,8 @@ const TileSpotlight = ({
         <Image
           src={bubbleBottom}
           alt="bubble background"
-          layout="fill"
-          objectFit="cover"
-          objectPosition="center"
+          className="u-background-image"
+          fill={true}
         />
       </div>
     </section>
