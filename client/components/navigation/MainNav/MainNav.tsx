@@ -140,6 +140,7 @@ const MainNav = ({
           {!showLoggedOutUi && (
             <div className="flex-align-center">
               <Button
+                label="edit dashboard"
                 classProp={styles.exit_button}
                 category={ButtonCategoriesE.SECONDARY_OUTLINE}
                 text="Exit Dashboard"
@@ -170,6 +171,7 @@ const MainNav = ({
           {/* Login Action  */}
           {showLoggedOutUi && (
             <Button
+              label="sign in"
               category={ButtonCategoriesE.SECONDARY_OUTLINE}
               text="Sign In"
               href={`https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}`}

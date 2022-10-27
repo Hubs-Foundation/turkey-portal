@@ -18,7 +18,7 @@
   }
 
   &_title {
-    @include h2();
+    @include heading-lg();
     color: $white;
     margin: 0;
   }
