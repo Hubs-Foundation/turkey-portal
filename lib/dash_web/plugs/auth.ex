@@ -46,7 +46,10 @@ defmodule DashWeb.Plugs.Auth do
       "fxa_pic" => fxa_pic,
       "fxa_displayName" => fxa_display_name,
       "iat" => issued_at,
-      "fxa_subscriptions" => fxa_subscriptions_nil_or_list
+      "fxa_subscriptions" => fxa_subscriptions_nil_or_list,
+      "fxa_cancel_at_period_end" => fxa_cancel_at_period_end,
+      "fxa_current_period_end" => fxa_current_period_end,
+      "fxa_plan_id" => fxa_plan_id
     } = claims
 
     # Ensure fxa_subscriptions is type [] and not nil
@@ -68,6 +71,11 @@ defmodule DashWeb.Plugs.Auth do
         fxa_display_name: fxa_display_name,
         fxa_email: fxa_email,
         has_subscription?: @subscription_string in fxa_subscriptions
+      })
+      |> assign(:fxa_subscription_info, %Dash.FxaSubscriptionInfo{
+        fxa_cancel_at_period_end: fxa_cancel_at_period_end,
+        fxa_current_period_end: fxa_current_period_end,
+        fxa_plan_id: fxa_plan_id
       })
     end
   end
