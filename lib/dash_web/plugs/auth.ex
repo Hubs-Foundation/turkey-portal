@@ -136,7 +136,7 @@ defmodule DashWeb.Plugs.Auth do
       max_age: 0
     )
 
-    if cookie_domain =~ "dev.myhubs.net", do: clear_dev_cookie(conn)
+    if cookie_domain =~ "dev.myhubs.net", do: clear_dev_cookie(conn), else: conn
   end
 
   def clear_dev_cookie(conn) do
