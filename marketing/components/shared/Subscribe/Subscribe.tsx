@@ -3,9 +3,12 @@ import SubContactCard from './SubContactCard/SubContactCard';
 import SubInfoCard from './SubInfoCard/SubInfoCard';
 import styles from './Subscribe.module.scss';
 
-type SubscribePropsT = { classProp?: string };
+type SubscribePropsT = {
+  region: string | null;
+  classProp?: string;
+};
 
-const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
+const Subscribe = ({ region, classProp = '' }: SubscribePropsT) => {
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.swoosh}>
@@ -20,7 +23,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
 
       <div className={styles.container}>
         <div className={styles.cards}>
-          <SubInfoCard />
+          <SubInfoCard region={region} />
           <SubContactCard />
         </div>
       </div>
