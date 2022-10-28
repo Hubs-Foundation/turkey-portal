@@ -139,6 +139,43 @@ defmodule DashWeb.Plugs.AuthTest do
     end
   end
 
+  describe "fxa subscription auth tests" do
+    test "should return redirect to auth struct if subscription period end is earlier than now",
+         %{
+           conn: conn
+         } do
+      yesterday = DateTime.to_unix(DateTime.add(DateTime.utc_now(), -1 * 24 * 60 * 60))
+
+      conn =
+        conn
+        |> put_test_token(
+          claims: %{fxa_current_period_end: yesterday, fxa_cancel_at_period_end: false}
+        )
+        |> get("/api/v1/account")
+
+      assert response(conn, 401) ==
+               Jason.encode!(DashWeb.Plugs.Auth.unauthorized_auth_redirect_struct())
+    end
+
+    test "should return account if subscription period end is default 0 (no subscription)", %{
+      conn: conn
+    } do
+      conn =
+        conn
+        |> put_test_token(
+          claims: %{
+            fxa_subscriptions: nil,
+            fxa_current_period_end: 0,
+            fxa_plan_id: "",
+            fxa_cancel_at_period_end: false
+          }
+        )
+        |> get("/api/v1/account")
+
+      assert response(conn, 200)
+    end
+  end
+
   defp datetime_to_timestamp(datetime) do
     DateTime.to_unix(datetime)
   end

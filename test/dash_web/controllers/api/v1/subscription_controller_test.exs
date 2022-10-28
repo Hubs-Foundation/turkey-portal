@@ -4,7 +4,6 @@ defmodule DashWeb.Api.V1.SubscriptionControllerTest do
   import DashWeb.TestHelpers
 
   describe "show/2" do
-    @tag marked: true
     test "should return values in cookie for subscription current period end and cancel at period end",
          %{conn: conn} do
       in_two_days = DateTime.to_unix(DateTime.add(DateTime.utc_now(), 2 * 24 * 60 * 60))
@@ -21,7 +20,6 @@ defmodule DashWeb.Api.V1.SubscriptionControllerTest do
       assert resp["isCancelled"] == false
     end
 
-    @tag marked: true
     test "should return parsed currency and amount for first plan in string", %{conn: conn} do
       in_two_days = DateTime.to_unix(DateTime.add(DateTime.utc_now(), 2 * 24 * 60 * 60))
 
@@ -39,7 +37,6 @@ defmodule DashWeb.Api.V1.SubscriptionControllerTest do
                })
     end
 
-    @tag marked: true
     test "should return parsed currency and amount for second plan in string", %{conn: conn} do
       in_two_days = DateTime.to_unix(DateTime.add(DateTime.utc_now(), 2 * 24 * 60 * 60))
 
@@ -59,7 +56,6 @@ defmodule DashWeb.Api.V1.SubscriptionControllerTest do
                })
     end
 
-    @tag marked: true
     test "should return nil for currency and amount if plan not found in string", %{conn: conn} do
       in_two_days = DateTime.to_unix(DateTime.add(DateTime.utc_now(), 2 * 24 * 60 * 60))
 
@@ -79,10 +75,12 @@ defmodule DashWeb.Api.V1.SubscriptionControllerTest do
                })
     end
 
-    @tag marked: true
     test "should return nil for currency and amount if plan string is not formatted properly", %{
       conn: conn
     } do
+      previous_value = Application.get_env(:dash, Dash)[:plans]
+      Application.put_env(:dash, Dash, plans: "not-formatted-correctly")
+
       in_two_days = DateTime.to_unix(DateTime.add(DateTime.utc_now(), 2 * 24 * 60 * 60))
 
       conn =
@@ -99,9 +97,10 @@ defmodule DashWeb.Api.V1.SubscriptionControllerTest do
                  subscriptionEndTimestampS: in_two_days,
                  isCancelled: false
                })
+
+      Application.put_env(:dash, Dash, plans: previous_value)
     end
 
-    @tag marked: true
     test "should return default values if user is not subscribed", %{conn: conn} do
       conn =
         conn
