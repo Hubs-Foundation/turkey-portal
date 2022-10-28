@@ -11,7 +11,8 @@ defmodule DashWeb.LogoutController do
     delete_resp_cookie(conn, DashWeb.Plugs.Auth.get_cookie_name(), domain: cluster_domain(conn))
 
     if cluster_domain(conn) =~ "dev.myhubs.net",
-      do: delete_resp_cookie(conn, ".dev.myhubs.net", domain: cluster_domain(conn))
+      do:
+        delete_resp_cookie(conn, DashWeb.Plugs.Auth.get_cookie_name(), domain: ".dev.myhubs.net")
   end
 
   def cluster_domain(conn),
