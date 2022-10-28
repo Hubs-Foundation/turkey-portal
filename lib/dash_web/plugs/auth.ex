@@ -57,26 +57,33 @@ defmodule DashWeb.Plugs.Auth do
       if is_nil(fxa_subscriptions_nil_or_list), do: [], else: fxa_subscriptions_nil_or_list
 
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+    now = DateTime.to_unix(DateTime.utc_now())
 
-    # If token issued before an Authorization change in the account, invalidate token and login again
-    if !is_nil(account.auth_updated_at) and
-         DateTime.compare(iat_to_utc_datetime(issued_at), account.auth_updated_at) == :lt do
-      # Issued before auth_updated_at
-      process_jwt(conn, %{is_valid: false, claims: claims})
-    else
-      conn
-      |> assign(:account, account)
-      |> assign(:fxa_account_info, %Dash.FxaAccountInfo{
-        fxa_pic: fxa_pic,
-        fxa_display_name: fxa_display_name,
-        fxa_email: fxa_email,
-        has_subscription?: @subscription_string in fxa_subscriptions
-      })
-      |> assign(:fxa_subscription_info, %Dash.FxaSubscriptionInfo{
-        fxa_cancel_at_period_end: fxa_cancel_at_period_end,
-        fxa_current_period_end: fxa_current_period_end,
-        fxa_plan_id: fxa_plan_id
-      })
+    cond do
+      !is_nil(account.auth_updated_at) and
+          DateTime.compare(timestamp_s_to_datetime(issued_at), account.auth_updated_at) == :lt ->
+        # If token issued before an Authorization change in the account, invalidate token and login again
+        process_jwt(conn, %{is_valid: false, claims: claims})
+
+      fxa_current_period_end != 0 and fxa_current_period_end < now ->
+        # Current subscription period ended, get next period information
+        process_jwt(conn, %{is_valid: false, claims: claims})
+
+      true ->
+        # Successfully authenticated
+        conn
+        |> assign(:account, account)
+        |> assign(:fxa_account_info, %Dash.FxaAccountInfo{
+          fxa_pic: fxa_pic,
+          fxa_display_name: fxa_display_name,
+          fxa_email: fxa_email,
+          has_subscription?: @subscription_string in fxa_subscriptions
+        })
+        |> assign(:fxa_subscription, %Dash.FxaSubscription{
+          fxa_cancel_at_period_end: fxa_cancel_at_period_end,
+          fxa_current_period_end: fxa_current_period_end,
+          fxa_plan_id: fxa_plan_id
+        })
     end
   end
 
@@ -125,7 +132,7 @@ defmodule DashWeb.Plugs.Auth do
     @subscription_string
   end
 
-  def iat_to_utc_datetime(timestamp_s) do
+  def timestamp_s_to_datetime(timestamp_s) do
     DateTime.from_unix!(timestamp_s, :second)
   end
 

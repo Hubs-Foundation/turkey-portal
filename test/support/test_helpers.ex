@@ -10,8 +10,16 @@ defmodule DashWeb.TestHelpers do
     "fxa_pic" => "https://fake.com/pic.jpg",
     "fxa_displayName" => "Faker McFakerson",
     "fxa_subscriptions" => ["managed-hubs"],
-    "iat" => 1_633_040_007
+    "iat" => 1_633_040_007,
+    "fxa_current_period_end" => 0,
+    "fxa_cancel_at_period_end" => false,
+    "fxa_plan_id" => "plan_test_1"
   }
+
+  defp default_token_claims do
+    next_month_approx = DateTime.to_unix(DateTime.add(DateTime.utc_now(), 30 * 24 * 60 * 60))
+    Map.merge(@default_token_claims, %{"fxa_current_period_end" => next_month_approx})
+  end
 
   @default_token_opts [
     claims: %{},
@@ -45,7 +53,7 @@ defmodule DashWeb.TestHelpers do
     {_meta, public_key_str} = private_key |> JOSE.JWK.to_public() |> JOSE.JWK.to_pem()
     Application.put_env(:dash, DashWeb.Plugs.Auth, %{auth_pub_key: public_key_str})
 
-    claims = Map.merge(@default_token_claims, opts[:claims])
+    claims = Map.merge(default_token_claims(), opts[:claims])
     token_expiry_timestamp = NaiveDateTime.diff(opts[:token_expiry], ~N[1970-01-01 00:00:00])
     jwt = JOSE.JWT.from(Map.merge(%{"exp" => token_expiry_timestamp}, claims))
     {_meta, signed_jwt} = JOSE.JWT.sign(private_key, %{"alg" => "RS256"}, jwt)
