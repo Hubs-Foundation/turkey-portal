@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 /**
- * LOCAL ENVIORNENT
+ * LOCAL ENVIORNMENT
  */
 if (process.env.ENV === 'local') {
   DASH_ROOT_DOMAIN = 'localhost:3000';
@@ -15,7 +15,7 @@ if (process.env.ENV === 'local') {
 }
 
 /**
- * DEVELOPMENT ENVIORNENT
+ * DEVELOPMENT ENVIORNMENT
  */
 if (process.env.ENV === 'dev') {
   DASH_ROOT_DOMAIN = 'dashboard.dev.myhubs.net';
@@ -29,7 +29,7 @@ if (process.env.ENV === 'dev') {
 }
 
 /**
- * PRODUCTION ENVIORNENT
+ * PRODUCTION ENVIORNMENT
  */
 if (process.env.ENV === 'prod' || process.env.ENV === undefined) {
   DASH_ROOT_DOMAIN = 'dashboard.hubs.mozilla.com';
