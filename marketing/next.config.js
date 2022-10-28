@@ -31,7 +31,7 @@ if (process.env.ENV === 'dev') {
 /**
  * PRODUCTION ENVIORNENT
  */
-if (process.env.ENV === 'prod') {
+if (process.env.ENV === 'prod' || process.env.ENV === undefined) {
   DASH_ROOT_DOMAIN = 'dashboard.hubs.mozilla.com';
   FXA_PAYMENT_URL = 'https://payments-stage.fxa.nonprod.cloudops.mozgcp.net'; //this can't be right for prod
   FXA_SERVER = 'accounts.firefox.com';
