@@ -61,3 +61,4 @@ Run `mix dash` and `mix help dash.<task_name>` for more info.
 - AUTH_SERVER - Server used for login links. e.g. "auth.myhubs.net"
 - FXA_SERVER - Firefox Accounts server used for account management links. e.g. "accounts.firefox.com"
 - FXA_JWK_STRING - Used to verify token in FxA webhook, the payload from the Subplat/FxA endpoint with the live public keys is stringified by Jason.encode!()
+- PLANS - Used in getting currency and amount, MUST BE IN THIS FORMAT: "plan_id1,USD,10;plan_id2,EURO,20"
