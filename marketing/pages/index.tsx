@@ -182,7 +182,7 @@ const Home = ({ region }: HomePropsT) => {
         <ValueProps values={values} />
 
         <div id="subscribe">
-          <Subscribe />
+          <Subscribe region={region} />
         </div>
 
         <Testimonial />
