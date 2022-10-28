@@ -24,6 +24,24 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
   );
 
   /**
+   * Submit Update Hub
+   * @param updatedHub
+   * @param callback
+   */
+  const submit = async (updatedHub: UpdateHubT, callback: Function) => {
+    try {
+      const resp = await updateHub(hub.hubId, updatedHub);
+      if (resp?.status === 200) {
+        callback();
+      } else {
+        handleError();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  /**
    * Updating Hub has failed - try again
    */
   const onTryReupdate = () => {
@@ -36,16 +54,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
       subdomain: storeContext.lastSubmittedSubdomain.subdomain,
     };
 
-    const submit = async () => {
-      try {
-        await updateHub(hub.hubId, updatedHub);
-        refreshHubData && refreshHubData();
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    submit();
+    submit(updatedHub, () => refreshHubData && refreshHubData());
   };
 
   /**
@@ -57,17 +66,11 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
       ...hub,
       lastError: '',
     };
+    submit(updatedHub, () => setShowRevertError(false));
+  };
 
-    const submit = async () => {
-      try {
-        await updateHub(hub.hubId, updatedHub);
-        setShowRevertError(false);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    submit();
+  const handleError = () => {
+    console.error('Sorry, there was an error updating this Hub.');
   };
 
   /**
