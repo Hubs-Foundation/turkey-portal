@@ -17,7 +17,7 @@
 
   h1 {
     color: $color-text-reverse;
-    @include h2;
+    @include heading-lg;
     text-align: center;
     margin: 0 0 16px;
   }

@@ -7,7 +7,7 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
       conn = get(conn, "/api/v1/account")
 
       assert response(conn, 401) ==
-               Jason.encode!(DashWeb.Plugs.Auth.get_unauthorized_struct())
+               Jason.encode!(DashWeb.Plugs.Auth.unauthorized_auth_redirect_struct())
     end
 
     test "should error for unverified tokens", %{conn: conn} do
@@ -20,7 +20,7 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
         |> get("/api/v1/account")
 
       assert response(conn, 401) ==
-               Jason.encode!(DashWeb.Plugs.Auth.get_unauthorized_struct())
+               Jason.encode!(DashWeb.Plugs.Auth.unauthorized_auth_redirect_struct())
     end
 
     test "should error for expired tokens", %{conn: conn} do
@@ -30,7 +30,7 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
         |> get("/api/v1/account")
 
       assert response(conn, 401) ==
-               Jason.encode!(DashWeb.Plugs.Auth.get_unauthorized_struct())
+               Jason.encode!(DashWeb.Plugs.Auth.unauthorized_auth_redirect_struct())
     end
 
     test "should return account info for authorized users", %{conn: conn} do

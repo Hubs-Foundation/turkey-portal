@@ -11,6 +11,7 @@ import ValueProps, {
 } from '@Shared/ValueProps/ValueProps';
 import Testimonial from '@Shared/Testimonial/Testimonial';
 import { useMobileDown } from 'hooks/useMediaQuery';
+import type { GetServerSidePropsContext } from 'next';
 // Hero Assets
 import HubsMobileHero from '../public/hubs_hero_mobile.jpg';
 import HubsHero from '../public/hubs_hero.jpg';
@@ -184,5 +185,11 @@ const Home: NextPage = () => {
     </div>
   );
 };
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  return {
+    props: {}, // will be passed to the page component as props
+  };
+}
 
 export default Home;

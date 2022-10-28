@@ -1,10 +1,12 @@
-import { useRouter } from 'next/router';
-import { Button, Icon, IconT } from '@mozilla/lilypad';
+import { useCallback, useState } from 'react';
+import { Button, Icon, IconT, Checkbox } from '@mozilla/lilypad';
 import SubscriptionInfoCopy from './SubscriptionInfoCopy';
 import styles from './SubInfoCard.module.scss';
-import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA } from 'config';
+import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
+import { CountriesE } from 'types/Countries';
 
 type SubInfoCardPropsT = {
+  region: string | null;
   classProp?: string;
 };
 
@@ -14,10 +16,13 @@ type InfoBlockPropsT = {
   description: string;
 };
 
+// INFO BLOCK COMPONENT
 const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   return (
     <div className={styles.info_wrapper}>
-      <Icon name={icon} size={20} classProp="margin-right-20 margin-top-2" />
+      <div className="flex-box">
+        <Icon name={icon} size={30} classProp="margin-right-20" />
+      </div>
       <div className="u-body-md">
         <p>
           {' '}
@@ -28,13 +33,25 @@ const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   );
 };
 
-const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
-  const router = useRouter();
+const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
+  const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
 
-  const handleSubscribeClick = () => {
-    const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_EA}`;
-    router.push(url);
-  };
+  /**
+   * Handle routing user to correct payment plan
+   */
+  const handleSubscribeClick = useCallback(() => {
+    // Default to US plan
+    const plan: string =
+      region && region.toUpperCase() === CountriesE.GERMANY
+        ? PLAN_ID_EA_DE
+        : PLAN_ID_EA;
+    const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${plan}`;
+    window.open(url);
+  }, [region]);
+
+  const onToggleLocationConfirmation = useCallback((value: boolean) => {
+    setLocationConfirmed(value);
+  }, []);
 
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
@@ -69,9 +86,24 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
         })}
       </div>
 
+      {/* LOCATION CONFIRMATION  */}
+      <form className="u-content-box margin-top-16 margin-bottom-16">
+        <Checkbox
+          classProp="u-content-box"
+          onChange={onToggleLocationConfirmation}
+          checked={locationConfirmed}
+          label="I'm located in UK, Canada, USA, or Germany"
+        />
+      </form>
+
       {/* FOOTER  */}
       <div className={styles.footer}>
-        <Button text="Subscribe" onClick={handleSubscribeClick} />
+        <Button
+          label="Subscribe to hubs"
+          text="Subscribe"
+          onClick={handleSubscribeClick}
+          disabled={!locationConfirmed}
+        />
       </div>
     </div>
   );
