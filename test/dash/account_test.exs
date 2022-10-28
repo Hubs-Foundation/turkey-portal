@@ -23,7 +23,7 @@ defmodule Dash.AccountTest do
       Dash.Account.delete_account_and_hubs(fxa_uid)
 
       hubs = Dash.Hub.hubs_for_account(account)
-      assert hubs === []
+      assert [] === hubs
       assert nil == Dash.Account.account_for_fxa_uid(fxa_uid)
     end
   end

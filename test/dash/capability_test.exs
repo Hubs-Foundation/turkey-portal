@@ -1,8 +1,8 @@
 defmodule Dash.CapabilityTest do
   use Dash.DataCase
+
   import Ecto.Query
   import DashWeb.TestHelpers
-
   alias Dash.{Repo, Account}
   require Logger
 
@@ -66,8 +66,8 @@ defmodule Dash.CapabilityTest do
       assert Repo.exists?(from(a in Dash.Account, where: a.fxa_uid == ^fxa_uid))
       account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
-      assert length(Dash.get_all_capabilities_for_account(account)) == 1
-      refute is_nil(Dash.get_one_capability(account, capability: @capability1))
+      assert [_] = Dash.get_all_capabilities_for_account(account)
+      assert Dash.get_one_capability(account, capability: @capability1)
     end
 
     test "Updates capability if the time_changed is later than the one in db" do
@@ -83,7 +83,7 @@ defmodule Dash.CapabilityTest do
       Dash.update_or_create_capability_for_changeset(capability_map)
 
       capability_map
-      |> Map.merge(%{change_time: later})
+      |> Map.put(:change_time, later)
       |> Dash.update_or_create_capability_for_changeset()
 
       assert DateTime.compare(
@@ -105,7 +105,7 @@ defmodule Dash.CapabilityTest do
       Dash.update_or_create_capability_for_changeset(capability_map)
 
       capability_map
-      |> Map.merge(%{change_time: earlier})
+      |> Map.put(:change_time, earlier)
       |> Dash.update_or_create_capability_for_changeset()
 
       assert DateTime.compare(
@@ -114,7 +114,7 @@ defmodule Dash.CapabilityTest do
              ) == :eq
     end
 
-    test "Update capability if time_changed is same and is_active changed than one in db" do
+    test "updates capability if time_changed is unchanged and is_active is changed" do
       %{fxa_uid: fxa_uid, account: account, now: now} = setup()
 
       capability_map = %{
@@ -138,33 +138,20 @@ defmodule Dash.CapabilityTest do
       assert Dash.get_one_capability(account, capability: @capability1).is_active ==
                false
     end
+  end
 
-    test "Delete capabilities of ONLY the selected account" do
-      fxa_uid = get_default_test_uid()
-      account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      account1 = Account.find_or_create_account_for_fxa_uid(fxa_uid <> "1")
-      account2 = Account.find_or_create_account_for_fxa_uid(fxa_uid <> "2")
-      account3 = Account.find_or_create_account_for_fxa_uid(fxa_uid <> "3")
+  test "delete capabilities of ONLY the selected account" do
+    fxa_uid = get_default_test_uid()
+    other_account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
+    create_capabilities(other_account, 1)
 
-      count = 1
-      count1 = 3
-      count2 = 4
-      count3 = 2
+    for i <- 1..4 do
+      account = Account.find_or_create_account_for_fxa_uid("#{fxa_uid}#{i}")
+      create_capabilities(account, i)
 
-      create_capabilities(account, count)
-      create_capabilities(account1, count1)
-      create_capabilities(account2, count2)
-      create_capabilities(account3, count3)
-
-      {num, nil} = Dash.delete_all_capabilities_for_account(account)
-      {num1, nil} = Dash.delete_all_capabilities_for_account(account1)
-      {num2, nil} = Dash.delete_all_capabilities_for_account(account2)
-
-      assert num == count
-      assert num1 == count1
-      assert num2 == count2
-
-      assert length(Dash.get_all_capabilities_for_account(account3)) == count3
+      assert {i, nil} === Dash.delete_all_capabilities_for_account(account)
+      assert [] !== Dash.get_all_capabilities_for_account(account)
+      assert [_] = Dash.get_all_capabilities_for_account(other_account)
     end
   end
 
