@@ -31,7 +31,7 @@ defmodule Dash do
   end
 
   @doc """
-  String that follows this format "plan_id_123,USD,20;plan_id_234,EURO,20;plan_id_345,RMB,20"
+  String that follows this format "plan_id_123,USD,20;plan_id_234,EUR,20;plan_id_345,RMB,20"
   """
   def plan_currency_amount(), do: Application.get_env(:dash, __MODULE__)[:plans]
 end

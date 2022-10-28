@@ -49,7 +49,7 @@ defmodule DashWeb.Api.V1.SubscriptionControllerTest do
 
       assert response(conn, 200) ==
                Jason.encode!(%{
-                 currency: "EURO",
+                 currency: "EUR",
                  amount: "20",
                  subscriptionEndTimestampS: in_two_days,
                  isCancelled: false
