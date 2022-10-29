@@ -1,10 +1,4 @@
-import {
-  useCallback,
-  useState,
-  useRef,
-  useEffect,
-  UIEventHandler,
-} from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import styles from './MainNav.module.scss';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
@@ -20,19 +14,6 @@ type MainNavPropsT = {
 const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
   const isDesktopDown = useDesktopDown();
   const router = useRouter();
-  const [hideBanner, setHideBanner] = useState<boolean>(false);
-
-  const onScroll = useCallback((e: Event) => {
-    const window = e.currentTarget as Window;
-    setHideBanner(window.scrollY > 40);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener('scroll', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-    };
-  }, []);
 
   /**
    * Handle Menu Click
@@ -49,11 +30,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
    * Main Nav JSX
    */
   return (
-    <nav
-      className={`${styles.main_nav} ${classProp} ${
-        hideBanner && styles.main_nav_go_home
-      }`}
-    >
+    <nav className={`${styles.main_nav} ${classProp}`}>
       <div className={styles.banner_gradient} />
 
       <div className={styles.main_nav_wrapper}>

@@ -1,3 +1,5 @@
+@use 'styles/boilerplate.scss' as *;
+
 @use 'styles/boilerplate' as *;
 
 .down_arrow {
@@ -125,20 +127,60 @@
   margin-bottom: 10px;
 }
 
-.expand_wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: #ffffff;
-  box-shadow: 0 3px 8px rgba(#000000, 0.3);
-  z-index: 2;
-  padding: 24px 0 40px;
-  display: flex;
-  justify-content: center;
+.section {
+  &_wrapper {
+    background: $gradient-warm;
+  }
 
-  @include tablet-up {
-    padding: 48px 0 70px;
+  &_container {
+    display: flex;
+    justify-content: center;
+    padding: 142px 20px 127px;
+  }
+}
+
+.card {
+  &_wrapper {
+    padding: 32px 32px 32px 71px;
+    max-width: $container-max-width;
+    background-color: $color-background-neutral-0;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.32);
+    border-radius: 20px;
+  }
+
+  &_header {
+    text-align: center;
+
+    h2 {
+      @include heading-lg;
+      margin: 0 0 16px;
+    }
+
+    p {
+      @include body-md;
+      margin: 0 0 32px;
+    }
+  }
+}
+
+.swoosh_container {
+  height: 280px;
+  width: 100%;
+  position: relative;
+}
+
+.swoosh {
+  position: relative;
+  height: 100px;
+  width: 100%;
+
+  @include tablet-down {
+    height: 50px;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
   }
 }
 
@@ -177,7 +219,6 @@
 }
 
 .expand_container {
-  max-width: 960px;
 }
 
 .expand_header {
@@ -211,7 +252,7 @@
   }
 }
 
-.expand_contents {
+.card_contents {
   display: flex;
   flex-direction: column;
 
@@ -224,9 +265,10 @@
   margin-left: 0 !important;
 }
 
-.expand_form {
+.form {
   display: flex;
   justify-content: center;
+  margin-left: 90px;
 }
 
 .expand_messaging {

@@ -6,6 +6,7 @@ import FiftyFifty, { FiftyFiftyLayoutE } from '@Shared/FiftyFifty/FiftyFifty';
 import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
 import TitleDescription from '@Shared/TitleDescription/TitleDescription';
 import Subscribe from '@Shared/Subscribe/Subscribe';
+import EmailSignUp from '@Shared/EmailSignUp/EmailSignUp';
 import ValueProps, {
   TilePropsT as ValuePropsT,
 } from '@Shared/ValueProps/ValueProps';
@@ -181,6 +182,7 @@ const Home: NextPage = () => {
         </div>
 
         <Testimonial />
+        <EmailSignUp />
       </main>
     </div>
   );
