@@ -6,7 +6,7 @@ defmodule DashWeb.Api.V1.SubscriptionControllerTest do
   describe "show/2" do
     test "should return values in cookie for subscription current period end and cancel at period end",
          %{conn: conn} do
-      in_two_days = DateTime.to_unix(DateTime.add(DateTime.utc_now(), 2 * 24 * 60 * 60))
+      in_two_days = in_two_days()
 
       conn =
         conn
@@ -21,7 +21,7 @@ defmodule DashWeb.Api.V1.SubscriptionControllerTest do
     end
 
     test "should return parsed currency and amount for first plan in string", %{conn: conn} do
-      in_two_days = DateTime.to_unix(DateTime.add(DateTime.utc_now(), 2 * 24 * 60 * 60))
+      in_two_days = in_two_days()
 
       conn =
         conn
@@ -38,7 +38,7 @@ defmodule DashWeb.Api.V1.SubscriptionControllerTest do
     end
 
     test "should return parsed currency and amount for second plan in string", %{conn: conn} do
-      in_two_days = DateTime.to_unix(DateTime.add(DateTime.utc_now(), 2 * 24 * 60 * 60))
+      in_two_days = in_two_days()
 
       conn =
         conn
@@ -57,7 +57,7 @@ defmodule DashWeb.Api.V1.SubscriptionControllerTest do
     end
 
     test "should return nil for currency and amount if plan not found in string", %{conn: conn} do
-      in_two_days = DateTime.to_unix(DateTime.add(DateTime.utc_now(), 2 * 24 * 60 * 60))
+      in_two_days = in_two_days()
 
       conn =
         conn
@@ -81,7 +81,7 @@ defmodule DashWeb.Api.V1.SubscriptionControllerTest do
       previous_value = Application.get_env(:dash, Dash)[:plans]
       Application.put_env(:dash, Dash, plans: "not-formatted-correctly")
 
-      in_two_days = DateTime.to_unix(DateTime.add(DateTime.utc_now(), 2 * 24 * 60 * 60))
+      in_two_days = in_two_days()
 
       conn =
         conn
@@ -118,4 +118,10 @@ defmodule DashWeb.Api.V1.SubscriptionControllerTest do
                })
     end
   end
+
+  defp in_two_days,
+    do:
+      DateTime.utc_now()
+      |> DateTime.add(2 * 24 * 60 * 60)
+      |> DateTime.to_unix()
 end

@@ -1,3 +1,4 @@
 defmodule Dash.FxaSubscription do
-  defstruct [:fxa_cancel_at_period_end, :fxa_current_period_end, :fxa_plan_id]
+  @enforce_keys [:fxa_cancel_at_period_end, :fxa_current_period_end, :fxa_plan_id]
+  defstruct @enforce_keys
 end

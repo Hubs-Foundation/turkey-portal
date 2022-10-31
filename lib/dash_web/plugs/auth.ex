@@ -38,7 +38,6 @@ defmodule DashWeb.Plugs.Auth do
     conn.req_cookies[@cookie_name]
   end
 
-  # Authorized
   defp process_jwt(conn, %{is_valid: true, claims: claims}) do
     %{
       "fxa_email" => fxa_email,
@@ -60,8 +59,8 @@ defmodule DashWeb.Plugs.Auth do
     now = DateTime.to_unix(DateTime.utc_now())
 
     cond do
-      !is_nil(account.auth_updated_at) and
-          DateTime.compare(timestamp_s_to_datetime(issued_at), account.auth_updated_at) == :lt ->
+      not is_nil(account.auth_updated_at) and
+          DateTime.compare(unix_to_datetime(issued_at), account.auth_updated_at) == :lt ->
         # If token issued before an Authorization change in the account, invalidate token and login again
         process_jwt(conn, %{is_valid: false, claims: claims})
 
@@ -132,8 +131,8 @@ defmodule DashWeb.Plugs.Auth do
     @subscription_string
   end
 
-  def timestamp_s_to_datetime(timestamp_s) do
-    DateTime.from_unix!(timestamp_s, :second)
+  def unix_to_datetime(unix_time) do
+    DateTime.from_unix!(unix_time, :second)
   end
 
   def clear_cookie(conn) do

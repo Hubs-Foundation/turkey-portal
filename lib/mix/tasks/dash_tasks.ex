@@ -121,7 +121,9 @@ defmodule Mix.Tasks.Dash.GenerateLocalToken do
     token_expiry_timestamp = NaiveDateTime.diff(~N[3000-01-01 00:00:00], ~N[1970-01-01 00:00:00])
 
     in_approx_three_months =
-      DateTime.to_unix(DateTime.add(DateTime.utc_now(), 3 * 30 * 24 * 60 * 60))
+      DateTime.utc_now()
+      |> DateTime.add(3 * 30 * 24 * 60 * 60)
+      |> DateTime.to_unix()
 
     claims =
       Map.merge(

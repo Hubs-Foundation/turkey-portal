@@ -17,8 +17,12 @@ defmodule DashWeb.TestHelpers do
   }
 
   defp default_token_claims do
-    next_month_approx = DateTime.to_unix(DateTime.add(DateTime.utc_now(), 30 * 24 * 60 * 60))
-    Map.merge(@default_token_claims, %{"fxa_current_period_end" => next_month_approx})
+    next_month_approx =
+      DateTime.utc_now()
+      |> DateTime.add(30 * 24 * 60 * 60)
+      |> DateTime.to_unix()
+
+    Map.put(@default_token_claims, "fxa_current_period_end", next_month_approx)
   end
 
   @default_token_opts [

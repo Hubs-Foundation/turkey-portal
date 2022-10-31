@@ -144,7 +144,10 @@ defmodule DashWeb.Plugs.AuthTest do
          %{
            conn: conn
          } do
-      yesterday = DateTime.to_unix(DateTime.add(DateTime.utc_now(), -1 * 24 * 60 * 60))
+      yesterday =
+        DateTime.utc_now()
+        |> DateTime.add(-1 * 24 * 60 * 60)
+        |> DateTime.to_unix()
 
       conn =
         conn
