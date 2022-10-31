@@ -54,7 +54,7 @@ defmodule Dash.CapabilityTest do
   describe "update_or_create_capability_for_changeset/1" do
     test "Creates account if capability is added" do
       fxa_uid = get_default_test_uid()
-      refute Repo.exists?(from(a in Dash.Account, where: a.fxa_uid == ^fxa_uid))
+      false = Repo.exists?(from(a in Dash.Account, where: a.fxa_uid == ^fxa_uid))
 
       Dash.update_or_create_capability_for_changeset(%{
         fxa_uid: fxa_uid,
@@ -71,7 +71,8 @@ defmodule Dash.CapabilityTest do
     end
 
     test "Updates capability if the time_changed is later than the one in db" do
-      %{fxa_uid: fxa_uid, account: account, now: now, later: later} = setup()
+      %{fxa_uid: fxa_uid, account: account, now: now} = setup()
+      later = DateTime.add(now, 5000) |> DateTime.truncate(:second)
 
       capability_map = %{
         fxa_uid: fxa_uid,
@@ -93,7 +94,8 @@ defmodule Dash.CapabilityTest do
     end
 
     test "Does NOT update capability if time_changed is earlier than one in db" do
-      %{fxa_uid: fxa_uid, account: account, now: now, earlier: earlier} = setup()
+      %{fxa_uid: fxa_uid, account: account, now: now} = setup()
+      earlier = DateTime.add(now, -5000) |> DateTime.truncate(:second)
 
       capability_map = %{
         fxa_uid: fxa_uid,
@@ -140,18 +142,20 @@ defmodule Dash.CapabilityTest do
     end
   end
 
-  test "delete capabilities of ONLY the selected account" do
-    fxa_uid = get_default_test_uid()
-    other_account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
-    create_capabilities(other_account, 1)
+  describe "delete_all_capabilities_for_account/1" do
+    test "delete capabilities of ONLY the selected account" do
+      fxa_uid = get_default_test_uid()
+      other_account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
+      create_capabilities(other_account, 1)
 
-    for i <- 1..4 do
-      account = Account.find_or_create_account_for_fxa_uid("#{fxa_uid}#{i}")
-      create_capabilities(account, i)
+      for i <- 1..4 do
+        account = Account.find_or_create_account_for_fxa_uid("#{fxa_uid}#{i}")
+        create_capabilities(account, i)
 
-      assert {i, nil} === Dash.delete_all_capabilities_for_account(account)
-      assert [] !== Dash.get_all_capabilities_for_account(account)
-      assert [_] = Dash.get_all_capabilities_for_account(other_account)
+        assert {i, nil} === Dash.delete_all_capabilities_for_account(account)
+        assert [] === Dash.get_all_capabilities_for_account(account)
+        assert [_] = Dash.get_all_capabilities_for_account(other_account)
+      end
     end
   end
 
@@ -160,9 +164,7 @@ defmodule Dash.CapabilityTest do
     account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
     now = DateTime.utc_now() |> DateTime.truncate(:second)
-    earlier = DateTime.add(now, -5000) |> DateTime.truncate(:second)
-    later = DateTime.add(now, 5000) |> DateTime.truncate(:second)
 
-    %{fxa_uid: fxa_uid, account: account, now: now, earlier: earlier, later: later}
+    %{fxa_uid: fxa_uid, account: account, now: now}
   end
 end

@@ -29,7 +29,6 @@ defmodule Dash do
   defp outdated?(%Capability{change_time: old_time}, change_time),
     do: DateTime.compare(old_time, change_time) != :gt
 
-  # Throws error if changeset is invalid
   @spec update_capability!(
           %Capability{},
           %{change_time: any, is_active: any}
@@ -49,13 +48,17 @@ defmodule Dash do
   @spec get_one_capability(%Account{}, capability: String.t()) ::
           %Capability{} | nil
   def get_one_capability(%Account{} = account, capability: capability) do
-    Capability |> Repo.get_by(capability: capability, account_id: account.account_id)
+    Repo.get_by(Capability, capability: capability, account_id: account.account_id)
   end
 
   @spec get_all_capabilities_for_account(%Account{}) ::
           [%Capability{}] | []
   def get_all_capabilities_for_account(%Account{} = account) do
-    Capability |> Repo.all(account_id: account.account_id)
+    Repo.all(
+      from(c in Capability,
+        where: c.account_id == ^account.account_id
+      )
+    )
   end
 
   @spec create_capability!(%Account{}, %{
@@ -81,8 +84,8 @@ defmodule Dash do
 
   def delete_all_capabilities_for_account(%Account{} = account) do
     Repo.delete_all(
-      from(s in Capability,
-        where: s.account_id == ^account.account_id
+      from(c in Capability,
+        where: c.account_id == ^account.account_id
       )
     )
   end
