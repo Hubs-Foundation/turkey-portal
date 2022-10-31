@@ -48,6 +48,7 @@ See [/README.md](/README.md) 'README' in root project.
 - FXA_PAYMENT_URL - subscription payment url
 - PRODUCT_ID - subscription payment ID
 - PLAN_ID_EA - subscription payment Early Access ID
+- PLAN_ID_EA_DE - subscription payment Early Access ID for Germany
 
 To authenticate using local cookies, see [README.md:"Create a local user"](/README.md#create-a-local-user) to paste development cookies into the browser and create a local user with or without a hubs subscription.
 

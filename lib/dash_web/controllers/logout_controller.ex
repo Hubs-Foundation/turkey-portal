@@ -12,5 +12,5 @@ defmodule DashWeb.LogoutController do
   end
 
   def cluster_domain(conn),
-    do: ".#{conn.host |> String.split(".") |> Enum.take(-2) |> Enum.join(".")}"
+    do: conn.host
 end
