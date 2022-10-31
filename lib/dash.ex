@@ -72,9 +72,9 @@ defmodule Dash do
           capability: _capability,
           is_active: _is_active,
           change_time: _change_time
-        } = capability
+        } = params
       ) do
-    new_capability = Map.put(capability, :account_id, account.account_id)
+    new_capability = Map.put(params, :account_id, account.account_id)
 
     %Capability{}
     |> Capability.changeset(new_capability)
