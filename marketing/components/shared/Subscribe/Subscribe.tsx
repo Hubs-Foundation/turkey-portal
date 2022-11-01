@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import SubContactCard from './SubContactCard/SubContactCard';
+import SubCard from './SubCard/SubCard';
 import SubInfoCard from './SubInfoCard/SubInfoCard';
 import styles from './Subscribe.module.scss';
 
@@ -20,8 +20,34 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
 
       <div className={styles.container}>
         <div className={styles.cards}>
+          {/* TRY IT OUT  */}
+          <SubCard
+            title="Try it out"
+            classProp={styles.card_one}
+            cta="Try Mozilla's Hub"
+            ctaUrl="/demo"
+          >
+            <p>Create a personal, private room, hosted on Mozilla's Hub.</p>
+            <p>Customize personal avatar</p>
+            <p>
+              Enjoy features like spatial audio and sharing media with your
+              guests
+            </p>
+          </SubCard>
+
+          {/* SUBSCRIBE  */}
           <SubInfoCard />
-          <SubContactCard />
+
+          {/* BUSINESS TIER  */}
+          <SubCard
+            title="Business"
+            cta="Contact us"
+            ctaUrl="mailto:hubs@mozilla.com?subject=Subscription inquiries"
+          >
+            <p>
+              Need dedicated infrastructure, custom clients, or something else?
+            </p>
+          </SubCard>
         </div>
       </div>
 

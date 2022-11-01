@@ -13,8 +13,11 @@
   flex-direction: column;
   justify-content: center;
 
-  @include mobile-down {
+  @media (max-width: 899px) {
     width: 100%;
+  }
+
+  @include tablet-down {
     padding: 40px 65px;
   }
 }
