@@ -26,7 +26,7 @@ const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
   return (
     // Hard coding light for deving
     // <main data-theme={themeContext.theme}>
-    <main data-theme="light" style={{ height: '100vh' }}>
+    <main data-theme="light">
       <MainNav MobileMenuClick={toggleMobileNav} />
       {isDesktopDown && (
         <MobileSideNav
