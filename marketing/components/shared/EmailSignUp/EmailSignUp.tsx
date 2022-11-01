@@ -149,6 +149,7 @@ const EmailSignUp = () => {
                 )
               ) : (
                 <div className="flex-box">
+                  {/* EMAIL  INPUT*/}
                   <Controller
                     name="email"
                     control={control}
@@ -165,8 +166,7 @@ const EmailSignUp = () => {
                     )}
                   />
 
-                  {/* {radioFormOptions.map((option, i) => { */}
-                  {/* return ( */}
+                  {/* EMAIL FORMAT RADIO SELECT  */}
                   <Controller
                     name="email_format"
                     control={control}
@@ -209,14 +209,14 @@ const EmailSignUp = () => {
                     label={<Label />}
                   />
 
-                  <div className="padding-top-16">
-                    <Button
-                      label="submit"
-                      type="submit"
-                      disabled={!confirm}
-                      text="Join the Mailing List"
-                    />
-                  </div>
+                  {/* SUBMIT  */}
+                  <Button
+                    classProp="margin-top-16"
+                    label="submit"
+                    type="submit"
+                    disabled={!confirm}
+                    text="Join the Mailing List"
+                  />
                 </div>
               )}
             </form>

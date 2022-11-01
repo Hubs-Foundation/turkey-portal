@@ -1,6 +1,5 @@
 import styles from './Error.module.scss';
 import Image from 'next/image';
-// Images
 import critical from '../../../../public/critical.png';
 
 const Error = () => {
