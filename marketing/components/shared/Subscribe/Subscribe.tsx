@@ -27,7 +27,9 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
             cta="Try Mozilla's Hub"
             ctaUrl="/demo"
           >
-            <p>Create a personal, private room, hosted on Mozilla's Hub.</p>
+            <p>
+              Create a personal, private room, hosted on Mozilla&apos;s Hub.
+            </p>
             <p>Customize personal avatar</p>
             <p>
               Enjoy features like spatial audio and sharing media with your
