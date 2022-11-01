@@ -61,6 +61,15 @@ defmodule Dash do
     )
   end
 
+  @spec get_all_active_capabilities_for_account(%Dash.Account{}) :: [String.t()] | []
+  def get_all_active_capabilities_for_account(%Account{} = account) do
+    from(c in Capability,
+      where: c.account_id == ^account.account_id and c.is_active == ^true
+    )
+    |> Repo.all()
+    |> Enum.map(fn capability -> capability.capability end)
+  end
+
   @spec create_capability!(%Account{}, %{
           :capability => String.t(),
           :change_time => %DateTime{},
@@ -82,11 +91,20 @@ defmodule Dash do
     |> Repo.insert!()
   end
 
+  @spec delete_all_capabilities_for_account(%Dash.Account{}) :: {integer, nil}
   def delete_all_capabilities_for_account(%Account{} = account) do
     Repo.delete_all(
       from(c in Capability,
         where: c.account_id == ^account.account_id
       )
     )
+  end
+
+  def delete_all_hubs_for_account(%Dash.Account{} = account) do
+    hubs = Dash.Hub.hubs_for_account(account)
+
+    for hub <- hubs do
+      Dash.Hub.delete_hub(hub)
+    end
   end
 end

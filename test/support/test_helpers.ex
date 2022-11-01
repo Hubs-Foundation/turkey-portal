@@ -61,7 +61,7 @@ defmodule DashWeb.TestHelpers do
     Dash.Account.account_for_fxa_uid(@default_test_uid)
   end
 
-  def create_test_account_and_hub(opts \\ [subdomain: nil, fxa_uid: nil]) do
+  def create_test_account_and_hub(opts \\ [subdomain: nil, fxa_uid: nil, subscribe?: true]) do
     account = Dash.Account.find_or_create_account_for_fxa_uid(opts[:fxa_uid] || @default_test_uid)
 
     hub =
@@ -77,7 +77,21 @@ defmodule DashWeb.TestHelpers do
       |> Ecto.Changeset.put_assoc(:account, account)
       |> Dash.Repo.insert!()
 
+    if opts[:subscribe?],
+      do: subscribe_test_account(opts[:fxa_uid] || @default_test_uid)
+
     %{account: account, hub: hub}
+  end
+
+  def subscribe_test_account(fxa_uid) do
+    fxa_uid = if is_nil(fxa_uid), do: @default_test_uid, else: fxa_uid
+
+    Dash.update_or_create_capability_for_changeset(%{
+      fxa_uid: fxa_uid,
+      capability: DashWeb.Plugs.Auth.capability_string(),
+      change_time: DateTime.truncate(DateTime.utc_now(), :second),
+      is_active: true
+    })
   end
 
   def merge_module_config(app, key, configs) do

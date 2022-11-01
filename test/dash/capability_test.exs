@@ -31,7 +31,7 @@ defmodule Dash.CapabilityTest do
     end
 
     test "can create multiple capabilities for existing account" do
-      create_test_account_and_hub()
+      create_test_account_and_hub(subscribe?: false)
       fxa_uid = get_default_test_uid()
       account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
 

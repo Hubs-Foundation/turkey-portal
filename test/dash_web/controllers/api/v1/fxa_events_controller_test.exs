@@ -75,14 +75,17 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   describe "FxA Events Controller Webhook: Account delete change events" do
     test "should return 200 and delete user event handled correctly", %{conn: conn} do
       expect_orch_delete()
-      create_test_account_and_hub()
+      create_test_account_and_hub(subscribe?: false)
       fxa_uid = get_default_test_uid()
 
       account = Dash.Account.account_for_fxa_uid(fxa_uid)
+
+      create_capabilities(account, 1)
+      subscribe_test_account(nil)
+
       %Dash.Account{} = account
       hubs = Dash.Hub.hubs_for_account(account)
-      [_ | _] = hubs
-      create_capabilities(account, 2)
+      [_] = hubs
       [_, _] = Dash.get_all_capabilities_for_account(account)
 
       event_struct = get_account_delete_event()
@@ -107,6 +110,9 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     end
   end
 
+  describe "Subscription changed event" do
+  end
+
   defp get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct) do
     %{
       "iss" => "https://accounts.fxa.local/",
@@ -129,6 +135,18 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   defp get_account_delete_event() do
     %{
       "https://schemas.accounts.fxa.local/event/delete-user" => %{}
+    }
+  end
+
+  def get_subscription_changed_event(%{capabilities_list: list, is_active: is_active}) do
+    now = DateTime.to_unix(DateTime.utc_now())
+
+    %{
+      "https://schemas.accounts.firefox.com/event/subscription-state-change" => %{
+        "capabilities" => list,
+        "isActive" => is_active,
+        "changeTime" => now
+      }
     }
   end
 end

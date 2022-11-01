@@ -20,11 +20,10 @@ defmodule DashWeb.Plugs.Auth do
   use DashWeb, :controller
 
   import Plug.Conn
-  require Logger
 
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
-  @subscription_string "managed-hubs"
+  @capabilities_string "managed-hubs"
 
   def init(default), do: default
 
@@ -45,15 +44,12 @@ defmodule DashWeb.Plugs.Auth do
       "sub" => fxa_uid,
       "fxa_pic" => fxa_pic,
       "fxa_displayName" => fxa_display_name,
-      "iat" => issued_at,
-      "fxa_subscriptions" => fxa_subscriptions_nil_or_list
+      "iat" => issued_at
     } = claims
 
-    # Ensure fxa_subscriptions is type [] and not nil
-    fxa_subscriptions =
-      if is_nil(fxa_subscriptions_nil_or_list), do: [], else: fxa_subscriptions_nil_or_list
-
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+
+    active_capabilities = Dash.get_all_active_capabilities_for_account(account)
 
     # If token issued before an Authorization change in the account, invalidate token and login again
     if !is_nil(account.auth_updated_at) and
@@ -67,7 +63,7 @@ defmodule DashWeb.Plugs.Auth do
         fxa_pic: fxa_pic,
         fxa_display_name: fxa_display_name,
         fxa_email: fxa_email,
-        has_subscription?: @subscription_string in fxa_subscriptions
+        has_subscription?: @capabilities_string in active_capabilities
       })
     end
   end
@@ -113,10 +109,6 @@ defmodule DashWeb.Plugs.Auth do
 
   def unauthorized_auth_redirect_struct, do: %{error: "unauthorized", redirect: "auth"}
 
-  def get_subscription_string() do
-    @subscription_string
-  end
-
   def iat_to_utc_datetime(timestamp_s) do
     DateTime.from_unix!(timestamp_s, :second)
   end
@@ -135,4 +127,6 @@ defmodule DashWeb.Plugs.Auth do
       max_age: 0
     )
   end
+
+  def capability_string, do: @capabilities_string
 end
