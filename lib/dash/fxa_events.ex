@@ -50,6 +50,30 @@ defmodule Dash.FxaEvents do
     end
   end
 
+  def handle_subscription_changed_event(
+        fxa_uid,
+        %{"capabilities" => capabilities, "isActive" => is_active, "changeTime" => change_time} =
+          _event_data
+      ) do
+    change_time_dt = fxa_timestamp_str_to_utc_datetime(change_time)
+
+    for capability <- capabilities do
+      Dash.update_or_create_capability_for_changeset(%{
+        fxa_uid: fxa_uid,
+        capability: capability,
+        is_active: is_active,
+        change_time: change_time_dt
+      })
+
+      if is_active == false and capability == DashWeb.Plugs.Auth.capability_string() do
+        account = Dash.Account.account_for_fxa_uid(fxa_uid)
+        Dash.delete_all_hubs_for_account(account)
+      end
+    end
+
+    Dash.Account.set_auth_updated_at(fxa_uid, change_time_dt)
+  end
+
   def fxa_timestamp_str_to_utc_datetime(fxa_timestamp_str) when is_binary(fxa_timestamp_str) do
     {timestamp, _} = Integer.parse(fxa_timestamp_str)
 

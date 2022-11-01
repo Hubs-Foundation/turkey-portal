@@ -47,11 +47,7 @@ defmodule Dash.Account do
   def delete_account_and_hubs(fxa_uid) do
     account = account_for_fxa_uid(fxa_uid)
 
-    hubs = Dash.Hub.hubs_for_account(account)
-
-    for hub <- hubs do
-      Dash.Hub.delete_hub(hub)
-    end
+    Dash.delete_all_hubs_for_account(account)
 
     Dash.delete_all_capabilities_for_account(account)
 

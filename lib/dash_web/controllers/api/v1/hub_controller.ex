@@ -2,6 +2,7 @@ defmodule DashWeb.Api.V1.HubController do
   use DashWeb, :controller
 
   alias Dash.Hub
+  require Logger
 
   def action(conn, _) do
     args = [conn, conn.params, conn.assigns[:account]]
@@ -20,6 +21,8 @@ defmodule DashWeb.Api.V1.HubController do
     fxa_account_info = conn.assigns[:fxa_account_info]
     fxa_email = fxa_account_info.fxa_email
     has_subscription? = fxa_account_info.has_subscription?
+
+    Logger.error("HAS SUBSCRIPTION: #{has_subscription?}")
 
     case Hub.ensure_default_hub_is_ready(account, fxa_email, has_subscription?) do
       {:ok} ->
