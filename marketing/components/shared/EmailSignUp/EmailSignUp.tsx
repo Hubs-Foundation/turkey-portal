@@ -35,47 +35,53 @@ const EmailSignUp = () => {
   /**
    * On Form Error
    */
-  const newsletterError = () => {
+  const newsletterError = useCallback(() => {
     setResponseStatus(false);
     setSubmitted(true);
-  };
+  }, []);
 
   /**
    * On Form Success
    */
-  const newsletterSuccess = () => {
+  const newsletterSuccess = useCallback(() => {
     setResponseStatus(true);
     setSubmitted(true);
-  };
+  }, []);
 
   /**
    * On AJAX Resp
    */
-  const handleResponse = (resp: BasketResponseT) => {
-    const { status, statusText } = resp;
-    status !== 200 || statusText !== 'OK'
-      ? newsletterError()
-      : newsletterSuccess();
-  };
+  const handleResponse = useCallback(
+    (resp: BasketResponseT) => {
+      const { status, statusText } = resp;
+      status !== 200 || statusText !== 'OK'
+        ? newsletterError()
+        : newsletterSuccess();
+    },
+    [newsletterError, newsletterSuccess]
+  );
 
-  const onSubmit = useCallback(async (subscription: NewSubscription) => {
-    const { email, email_format } = subscription;
-    const body: BasketBodyT = {
-      email: email,
-      format: email_format,
-      newsletters: 'hubs',
-      lang: navigator.language,
-      source_url: window.location.origin,
-    };
+  const onSubmit = useCallback(
+    async (subscription: NewSubscription) => {
+      const { email, email_format } = subscription;
+      const body: BasketBodyT = {
+        email: email,
+        format: email_format,
+        newsletters: 'hubs',
+        lang: navigator.language,
+        source_url: window.location.origin,
+      };
 
-    try {
-      const resp = await subscribe(body);
-      handleResponse(resp);
-    } catch (error) {
-      console.error(error);
-      newsletterError();
-    }
-  }, []);
+      try {
+        const resp = await subscribe(body);
+        handleResponse(resp);
+      } catch (error) {
+        console.error(error);
+        newsletterError();
+      }
+    },
+    [handleResponse, newsletterError]
+  );
 
   /**
    * Checkbox Confirm
@@ -91,7 +97,7 @@ const EmailSignUp = () => {
   const Label = () => {
     return (
       <>
-        I'm okay with Mozilla handling my info as explained in this <br />
+        I&apos;m okay with Mozilla handling my info as explained in this <br />
         <a
           href="https://www.mozilla.org/en-US/privacy/websites/"
           rel="noopener noreferrer"
@@ -120,8 +126,8 @@ const EmailSignUp = () => {
             <p>
               Sign up here to get updates on what is new with Hubs and we will
               keep you up to date with the latest {!isDesktopDown && <br />}{' '}
-              news, updates, and product offerings. We can't wait to show you
-              what we have been working on!
+              news, updates, and product offerings. We can&apos;t wait to show
+              you what we have been working on!
             </p>
           </div>
 
@@ -129,7 +135,7 @@ const EmailSignUp = () => {
             {/* IMAGE  */}
             {!isDesktopDown && (
               <div className={styles.card_image}>
-                <Image width={440} src={donutMailMan} />
+                <Image width={440} src={donutMailMan} alt="donut mail man" />
               </div>
             )}
 
