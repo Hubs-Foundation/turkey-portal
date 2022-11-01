@@ -33,6 +33,10 @@
   @include body-md-bold();
 }
 
+.u-primary-link {
+  @include primary-link();
+}
+
 // ---------------------------------
 //   Colors
 // ---------------------------------
@@ -329,7 +333,7 @@ MARGIN
     margin-bottom: 15px;
   }
 
-  &-15 {
+  &-16 {
     margin-bottom: 16px;
   }
 
@@ -363,6 +367,10 @@ MARGIN
 
   &-10 {
     margin-left: 10px;
+  }
+
+  &-13 {
+    margin-left: 13px;
   }
 
   &-15 {

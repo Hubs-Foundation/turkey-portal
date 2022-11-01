@@ -2,23 +2,17 @@
 
 .error {
   &_wrapper {
+    margin-top: 40px;
     display: flex;
+
+    h3 {
+      @include heading-xs;
+      margin: 4px 0 8px;
+    }
   }
 
   &_icon {
     margin-right: 20px;
-    height: 32px;
-    width: 32px;
-  }
-
-  &_title {
-    font-family: 'Space Grotesk';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 26px;
-    margin-bottom: 8px;
-    color: #d32947;
   }
 
   &_body {

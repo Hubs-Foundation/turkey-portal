@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import styles from './Success.module.scss';
-import { Button } from '@mozilla/lilypad';
 import Image from 'next/image';
 
 // Images
@@ -10,24 +9,12 @@ const Success = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className={styles.success_wrapper}>
-      <Image src={cone} className={styles.success_image} alt="celebrate" />
-
-      <div>
-        <h3 className={styles.success_title}>You're on the list</h3>
-        <p className={styles.success_body}>
-          Keep an eye out for product updates and an invite to join us as a
-          tester.
-        </p>
-        <Button
-          label="confirm"
-          text="Got it"
-          onClick={() => {
-            setIsExpanded(false);
-          }}
-        />
+    <section className={styles.success_wrapper}>
+      <div className="flex-box">
+        <h3>You're on the list</h3>
+        <Image src={cone} width={100} height={100} alt="celebrate" />
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -1,20 +1,16 @@
-import { useState } from 'react';
 import styles from './Error.module.scss';
-import { Button } from '@mozilla/lilypad';
 import Image from 'next/image';
 // Images
 import critical from '../../../../public/critical.png';
 
 const Error = () => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
   return (
-    <div className={styles.error_wrapper}>
-      <div>
-        <Image src={critical} className={styles.error_icon} alt="warning" />
+    <section className={styles.error_wrapper}>
+      <div className="margin-right-10">
+        <Image src={critical} width={30} height={30} alt="warning" />
       </div>
       <div>
-        <h3 className={styles.error_title}>We ran into a problem</h3>
+        <h3>We ran into a problem</h3>
 
         <p className={styles.error_body}>
           Sorry, we were unable to add you to the mailing list, please try again
@@ -22,21 +18,15 @@ const Error = () => {
           <a
             href="https://discord.com/invite/dFJncWwHun"
             rel="noopener noreferrer"
+            className="u-primary-link"
             target="_blank"
           >
             Discord
           </a>
           .
         </p>
-        <Button
-          label="confirm"
-          text="Got it"
-          onClick={() => {
-            setIsExpanded(false);
-          }}
-        />
       </div>
-    </div>
+    </section>
   );
 };
 

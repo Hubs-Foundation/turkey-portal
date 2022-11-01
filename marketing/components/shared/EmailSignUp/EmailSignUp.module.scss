@@ -130,22 +130,40 @@
 .section {
   &_wrapper {
     background: $gradient-warm;
+
+    @include desktop-down {
+      background: $color-background-neutral-0;
+    }
   }
 
   &_container {
     display: flex;
     justify-content: center;
     padding: 142px 20px 127px;
+    @include desktop-down {
+      padding: 0 20px 20px;
+    }
   }
 }
 
+/**
+ CARD STYLES
+**/
 .card {
   &_wrapper {
     padding: 32px 32px 32px 71px;
     max-width: $container-max-width;
+    width: $container-max-width;
     background-color: $color-background-neutral-0;
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.32);
     border-radius: 20px;
+
+    @include desktop-down {
+      padding: 0px;
+      width: 390px;
+      box-shadow: none;
+      border-radius: 0;
+    }
   }
 
   &_header {
@@ -160,6 +178,20 @@
       @include body-md;
       margin: 0 0 32px;
     }
+  }
+
+  &_contents {
+    display: flex;
+    flex-direction: column;
+
+    @include tablet-large-up {
+      flex-direction: row;
+    }
+  }
+
+  &_image {
+    width: 440px;
+    margin: 40px 90px 0 0;
   }
 }
 
@@ -185,13 +217,10 @@
 }
 
 .banner_gradient {
-  order: -3;
   padding: 4px;
-  background: radial-gradient(
-    147.61% 1186.51% at 110.24% -15.63%,
-    #ff806f 36.82%,
-    #ffff98 100%
-  );
+  background: $gradient-warm;
+  border-radius: 20px;
+  margin-bottom: 16px;
 }
 
 .radio_override {
@@ -252,23 +281,23 @@
   }
 }
 
-.card_contents {
-  display: flex;
-  flex-direction: column;
-
-  @include tablet-large-up {
-    flex-direction: row;
-  }
-}
-
 .checkbox_label {
   margin-left: 0 !important;
 }
 
+/**
+ CARD STYLES
+**/
 .form {
   display: flex;
   justify-content: center;
-  margin-left: 90px;
+  max-width: 540px;
+  flex-grow: 1;
+
+  &_legend {
+    padding: 0;
+    margin-bottom: 10px;
+  }
 }
 
 .expand_messaging {
@@ -296,20 +325,8 @@
   }
 }
 
-.expand_form_fields {
-  width: 300px;
-
-  @include tablet-up {
-    width: initial;
-  }
-}
-
-.expand_actions {
-  display: flex;
-
-  button[type='submit'] {
-    margin-right: 10px;
-  }
+.actions {
+  padding-top: 16px;
 }
 
 .expand_form_field {
