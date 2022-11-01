@@ -5,6 +5,7 @@ import { Checkbox, Input, RadioButton, Button } from '@mozilla/lilypad';
 import Image from 'next/image';
 import Success from './Success/Success';
 import Error from './Error/Error';
+import Swoosh from '@Shared/Swoosh/Swoosh';
 import {
   subscribe,
   BasketBodyT,
@@ -105,22 +106,16 @@ const EmailSignUp = () => {
 
   return (
     <section className={styles.section_wrapper}>
-      {!isDesktopDown && (
-        <div className={styles.swoosh}>
-          <svg viewBox="0 70 500 60" preserveAspectRatio="none">
-            <rect x="0" y="0" width="500" height="500" fill="transparent" />
-            <path
-              d="M0,100 C150,200 350,0 500,100 L500,00 L0,0 Z"
-              fill="#ffffff"
-            ></path>
-          </svg>
-        </div>
-      )}
+      {!isDesktopDown && <Swoosh />}
 
       <div className={styles.section_container}>
         <div className={styles.card_wrapper}>
           <div className={styles.card_header}>
-            {isDesktopDown && <div className={styles.banner_gradient}></div>}
+            {isDesktopDown && (
+              <div className={styles.bar_wrapper}>
+                <div className={styles.bar}></div>
+              </div>
+            )}
             <h2>Get immersed in Hubs!</h2>
             <p>
               Sign up here to get updates on what is new with Hubs and we will
@@ -147,7 +142,7 @@ const EmailSignUp = () => {
                   <Error />
                 )
               ) : (
-                <div className={styles.expand_form_fields}>
+                <div className="flex-box">
                   <Controller
                     name="email"
                     control={control}
@@ -208,7 +203,7 @@ const EmailSignUp = () => {
                     label={<Label />}
                   />
 
-                  <div className={styles.actions}>
+                  <div className="padding-top-16">
                     <Button
                       label="submit"
                       type="submit"

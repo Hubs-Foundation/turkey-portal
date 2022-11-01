@@ -9,7 +9,7 @@
     "lint": "next lint && prettier -c ."
   },
   "dependencies": {
-    "@mozilla/lilypad": "^1.1.4",
+    "@mozilla/lilypad": "^1.1.5",
     "axios": "^1.1.3",
     "next": "12.2.4",
     "qs": "^6.11.0",
