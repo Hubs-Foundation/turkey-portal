@@ -97,8 +97,14 @@
 
 .footer {
   display: flex;
+  justify-content: center;
 
   button {
     flex-grow: 1;
+
+    @include desktop-large-to-tablet {
+      flex-grow: 0;
+      width: 335px;
+    }
   }
 }
