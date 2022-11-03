@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 
 /**
- * LOCAL ENVIORNMENT
+ * LOCAL ENVIRONMENT
  */
 if (process.env.ENV === 'local') {
   DASH_ROOT_DOMAIN = 'localhost:3000';
@@ -15,7 +15,7 @@ if (process.env.ENV === 'local') {
 }
 
 /**
- * DEVELOPMENT ENVIORNMENT
+ * DEVELOPMENT ENVIRONMENT
  */
 if (process.env.ENV === 'dev') {
   DASH_ROOT_DOMAIN = 'dashboard.dev.myhubs.net';
@@ -29,13 +29,13 @@ if (process.env.ENV === 'dev') {
 }
 
 /**
- * PRODUCTION ENVIORNMENT
+ * PRODUCTION ENVIRONMENT
  */
 if (process.env.ENV === 'prod' || process.env.ENV === undefined) {
   DASH_ROOT_DOMAIN = 'dashboard.hubs.mozilla.com';
   FXA_PAYMENT_URL = 'https://payments-stage.fxa.nonprod.cloudops.mozgcp.net'; //this can't be right for prod
   FXA_SERVER = 'accounts.firefox.com';
-  HUB_ROOT_DOMAIN = 'marketing.myhubs.dev'; // will be swithced to hubs.mozilla.com on release day
+  HUB_ROOT_DOMAIN = 'marketing.myhubs.dev'; // will be switched to hubs.mozilla.com on release day
   PLAN_ID_EA = 'price_1Jkcl3Kb9q6OnNsLFbECmMtd'; //same as ^^
   PRODUCT_ID = 'prod_KPReWHqwGqZBzc'; // same as ^
   PLAN_ID_EA_DE = 'price_1LqkLwKb9q6OnNsLlWHZfPOu';
