@@ -13,6 +13,7 @@ import ValueProps, {
 import Testimonial from '@Shared/Testimonial/Testimonial';
 import { useMobileDown } from 'hooks/useMediaQuery';
 import type { GetServerSidePropsContext } from 'next';
+import { getRegion } from 'services/region.service';
 // Hero Assets
 import HubsMobileHero from '../public/hubs_hero_mobile.jpg';
 import HubsHero from '../public/hubs_hero.jpg';
@@ -31,7 +32,11 @@ import spatialAudio from '../public/spatial_audio.jpg';
 import import3dModel from '../public/import_3d_models.jpg';
 import customizable from '../public/customizable.jpg';
 
-const Home: NextPage = () => {
+type HomePropsT = {
+  region: string | null;
+};
+
+const Home = ({ region }: HomePropsT) => {
   const isMobile = useMobileDown();
 
   /**
@@ -178,7 +183,7 @@ const Home: NextPage = () => {
         <ValueProps values={values} />
 
         <div id="subscribe">
-          <Subscribe />
+          <Subscribe region={region} />
         </div>
 
         <Testimonial />
@@ -189,9 +194,18 @@ const Home: NextPage = () => {
 };
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  return {
-    props: {}, // will be passed to the page component as props
-  };
+  try {
+    const regionData = await getRegion();
+    const region = regionData?.region;
+
+    return {
+      props: {
+        region,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export default Home;

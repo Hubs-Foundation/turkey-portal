@@ -2,9 +2,11 @@ import { useCallback, useState } from 'react';
 import { Button, Icon, IconT, Checkbox } from '@mozilla/lilypad';
 import SubscriptionInfoCopy from './SubscriptionInfoCopy';
 import styles from './SubInfoCard.module.scss';
-import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA } from 'config';
+import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
+import { CountriesE } from 'types/Countries';
 
 type SubInfoCardPropsT = {
+  region: string | null;
   classProp?: string;
 };
 
@@ -31,12 +33,21 @@ const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   );
 };
 
-const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
+const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
 
+  /**
+   * Handle routing user to correct payment plan
+   */
   const handleSubscribeClick = useCallback(() => {
-    window.open(`${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_EA}`);
-  }, []);
+    // Default to US plan
+    const plan: string =
+      region && region.toUpperCase() === CountriesE.GERMANY
+        ? PLAN_ID_EA_DE
+        : PLAN_ID_EA;
+    const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${plan}`;
+    window.open(url);
+  }, [region]);
 
   const onToggleConfirmation = useCallback((value: boolean) => {
     setLocationConfirmed(value);
