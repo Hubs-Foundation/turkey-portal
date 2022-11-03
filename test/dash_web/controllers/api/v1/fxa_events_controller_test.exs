@@ -108,6 +108,8 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   end
 
   describe "Subscription changed event" do
+    test "Should update iat and add capability to account for true"
+    test "Should delete hubs on is_active false event"
   end
 
   defp get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct) do
