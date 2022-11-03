@@ -81,13 +81,9 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const [hubs, subscription] = await Promise.all([
-          getHubs(),
-          getSubscription(),
-        ]);
+        const hubs = await getHubs();
         setHubs(hubs);
         setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
-        // setSubscription(subscription);
         setIsLoading(false);
       } catch (error) {
         console.error(error);
