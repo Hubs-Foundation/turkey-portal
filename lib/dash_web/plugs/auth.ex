@@ -123,13 +123,31 @@ defmodule DashWeb.Plugs.Auth do
 
   def clear_cookie(conn) do
     cookie_secure = Application.get_env(:dash, __MODULE__)[:cookie_secure]
+    cookie_domain = DashWeb.LogoutController.cluster_domain(conn)
 
     put_resp_cookie(
       conn,
       @cookie_name,
       "",
       path: "/",
-      domain: DashWeb.LogoutController.cluster_domain(conn),
+      domain: cookie_domain,
+      http_only: true,
+      secure: cookie_secure,
+      max_age: 0
+    )
+
+    if cookie_domain =~ "dev.myhubs.net", do: clear_dev_cookie(conn), else: conn
+  end
+
+  def clear_dev_cookie(conn) do
+    cookie_secure = Application.get_env(:dash, __MODULE__)[:cookie_secure]
+
+    put_resp_cookie(
+      conn,
+      @cookie_name,
+      "",
+      path: "/",
+      domain: ".dev.myhubs.net",
       http_only: true,
       secure: cookie_secure,
       max_age: 0
