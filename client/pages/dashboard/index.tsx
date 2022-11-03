@@ -13,7 +13,7 @@ import FeedbackBanner from '@Shared/FeedbackBanner/FeedbackBanner';
 import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
 
-type DashboardPropsT = { rawHeaders: string[] };
+type DashboardPropsT = {};
 
 const creatingHub: HubT = {
   ccuLimit: 0,
@@ -28,7 +28,7 @@ const creatingHub: HubT = {
   tier: 'premium',
 };
 
-const Dashboard = ({ rawHeaders }: DashboardPropsT) => {
+const Dashboard = ({}: DashboardPropsT) => {
   const account = useSelector(selectAccount);
   const hubsInit: HubT[] = [];
   const subPrice = 5;
@@ -36,24 +36,29 @@ const Dashboard = ({ rawHeaders }: DashboardPropsT) => {
     nextPayment: '',
     endOfCycle: '',
   };
-  const [hubs, setHubs] = useState(hubsInit);
+  const [hubs, setHubs] = useState<HubT[]>(hubsInit);
   const [hasUpdatingCreatingHub, setHasUpdatingCreatingHub] =
     useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [subscriptionTotal, setSubscriptionTotal] = useState<number>(subPrice);
   const [subscription, setSubscription] =
     useState<SubscriptionT>(subscriptionInit);
-  console.log('rawHeaders', rawHeaders);
 
   /**
    * Get Hubs again and apply data, also check
    * data for updates and fails.
    */
-  const applyHubs = useCallback(() => {
-    getHubs().then((hubs) => {
-      setHubs(hubs);
-      setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
-    });
+  const refreshHubData = useCallback(() => {
+    const getData = async () => {
+      try {
+        const hubs: HubT[] = await getHubs();
+        setHubs(hubs);
+        setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getData();
   }, []);
 
   /**
@@ -70,39 +75,35 @@ const Dashboard = ({ rawHeaders }: DashboardPropsT) => {
   useEffect(() => {
     let updateIntervalId: NodeJS.Timeout;
     if (hasUpdatingCreatingHub) {
-      updateIntervalId = setInterval(applyHubs, 1000);
+      updateIntervalId = setInterval(refreshHubData, 1000);
     }
     return () => {
       clearInterval(updateIntervalId);
     };
-  }, [hasUpdatingCreatingHub, applyHubs]);
-
-  const refreshHubData = useCallback(() => {
-    getHubs().then((hubs) => {
-      setHubs(hubs);
-      setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
-    });
-  }, []);
+  }, [hasUpdatingCreatingHub, refreshHubData]);
 
   /**
    * Get All Hubs
    */
   useEffect(() => {
     const getData = async () => {
-      const [hubs, subscription] = await Promise.all([
-        getHubs(),
-        getSubscription(),
-      ]);
-
-      setHubs(hubs);
-      setSubscriptionTotal(hubs.length * subPrice);
-      setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
-      setSubscription(subscription);
-      setIsLoading(false);
+      try {
+        const [hubs, subscription] = await Promise.all([
+          getHubs(),
+          getSubscription(),
+        ]);
+        setHubs(hubs);
+        setSubscriptionTotal(hubs.length * subPrice);
+        setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
+        setSubscription(subscription);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     // TODO: Error state
-    getData().catch(console.error);
+    getData();
   }, []);
 
   return (
@@ -175,13 +176,8 @@ export default Dashboard;
 export const getServerSideProps = requireAuthenticationAndHubsOrSubscription(
   (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
-    const { req } = context;
-    console.log('rawHeaders', req.rawHeaders);
-    const { rawHeaders } = req;
     return {
-      props: {
-        rawHeaders: rawHeaders,
-      },
+      props: {},
     };
   }
 );
