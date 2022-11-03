@@ -33,6 +33,10 @@
   @include body-md-bold();
 }
 
+.u-primary-link {
+  @include primary-link();
+}
+
 // ---------------------------------
 //   Colors
 // ---------------------------------
@@ -264,6 +268,10 @@ PADDING
     padding-top: 15px;
   }
 
+  &-16 {
+    padding-top: 16px;
+  }
+
   &-20 {
     padding-top: 20px;
   }
@@ -329,7 +337,7 @@ MARGIN
     margin-bottom: 15px;
   }
 
-  &-15 {
+  &-16 {
     margin-bottom: 16px;
   }
 
@@ -363,6 +371,10 @@ MARGIN
 
   &-10 {
     margin-left: 10px;
+  }
+
+  &-13 {
+    margin-left: 13px;
   }
 
   &-15 {
