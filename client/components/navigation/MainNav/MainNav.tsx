@@ -1,4 +1,4 @@
-import { useRef, useCallback, useEffect } from 'react';
+import { useRef, useCallback } from 'react';
 import styles from './MainNav.module.scss';
 import { logOut } from 'services/account.service';
 import { selectAccount } from 'store/accountSlice';
@@ -31,10 +31,6 @@ const MainNav = ({
 }: MainNavPropsT) => {
   const account = useSelector(selectAccount);
   const dropdownRef = useRef<dropdownT>(null);
-
-  useEffect(() => {
-    console.log('showLoggedOutUi', showLoggedOutUi);
-  }, [showLoggedOutUi]);
 
   const onLogOutClick = useCallback(async () => {
     dropdownRef.current?.closeDropdown();

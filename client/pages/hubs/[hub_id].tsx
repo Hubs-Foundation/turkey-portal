@@ -13,21 +13,17 @@ import 'react-toastify/dist/ReactToastify.css';
 import styles from './[hub_id].module.scss';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
 import SubCard from '@Cards/SubCard/SubCard';
+import { AxiosRequestHeaders } from 'axios';
 
-type HubDetailsViewPropsT = {};
+type HubDetailsViewPropsT = {
+  subscription: SubscriptionT;
+};
 
-const HubDetailsView = ({}: HubDetailsViewPropsT) => {
-  // TODO : Get real sub data
-  const subscriptionInit: SubscriptionT = {
-    nextPayment: '',
-    endOfCycle: '',
-  };
+const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
   const router = useRouter();
   const [hub, setHub] = useState<HubT | null>(null);
   const [loading, setLoading] = useState(true);
   const { hub_id } = router.query;
-  const [subscription, setSubscription] =
-    useState<SubscriptionT>(subscriptionInit);
 
   /**
    * Get Hub By ID
@@ -51,15 +47,6 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
 
     getData();
   }, [hub_id, router]);
-
-  /**
-   * Get Hub Subscription
-   */
-  useEffect(() => {
-    getSubscription().then((subscription) => {
-      setSubscription(subscription);
-    });
-  }, []);
 
   /**
    * Toast Error
@@ -151,7 +138,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
           </div>
 
           {/* SUBSCRIPTION WIDGET  */}
-          {hub && (
+          {subscription && (
             <SubCard
               subdomain={hub.subdomain}
               classProp={styles.subcard}
@@ -173,11 +160,22 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
   );
 };
 
-export default HubDetailsView;
-
 export const getServerSideProps = requireAuthenticationAndHubsOrSubscription(
-  (context: GetServerSidePropsContext) => {
+  async (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
-    return { props: {} };
+    try {
+      const subscription = await getSubscription(
+        context.req.headers as AxiosRequestHeaders
+      );
+      return {
+        props: {
+          subscription,
+        },
+      };
+    } catch (error) {
+      console.error(error);
+    }
   }
 );
+
+export default HubDetailsView;
