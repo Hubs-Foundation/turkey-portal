@@ -325,7 +325,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   end
 
   describe "Hub Ready state tests" do
-    @tag marked: true
     test "should call ret /health endpoint at least 1 time", %{conn: conn} do
       # TODO To refine test make this test call /health endpoint 3 times
       max_expected_calls = 3
@@ -402,6 +401,28 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       account = get_test_account()
 
       assert !Hub.has_hubs(account)
+    end
+
+    test "capability is_active=false, do NOT make default hub and return 200 with empty array", %{
+      conn: conn
+    } do
+      fxa_uid = "not-have-active-subscription"
+      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+
+      Dash.create_capability!(account, %{
+        capability: DashWeb.Plugs.Auth.capability_string(),
+        is_active: false,
+        change_time: DateTime.utc_now()
+      })
+
+      conn =
+        conn
+        |> put_test_token(claims: %{fxa_subscriptions: []}, sub: fxa_uid)
+        |> get("/api/v1/hubs")
+
+      assert Jason.encode!([]) == response(conn, 200)
+
+      assert not Hub.has_hubs(account)
     end
 
     # TODO for some reason the FeatureFlags are not allowing for POST request to be enabled inside setup or test block

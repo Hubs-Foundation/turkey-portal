@@ -157,4 +157,54 @@ defmodule DashWeb.TestHelpers do
       })
     end
   end
+
+  def get_subscription_changed_event(
+        opts \\ [event_only: true, capabilities: nil, is_active: true, change_time: nil]
+      ) do
+    default_opts = [event_only: true, capabilities: nil, is_active: true, change_time: nil]
+
+    opts = Keyword.merge(default_opts, opts)
+
+    true = opts[:event_only]
+    %{now: now} = now_earlier_later_unix_millisecond()
+    change_time = if is_nil(opts[:change_time]), do: now, else: opts[:change_time]
+
+    capabilities =
+      case opts[:capabilities] do
+        nil -> [DashWeb.Plugs.Auth.capability_string()]
+        list -> list
+      end
+
+    event = %{
+      "capabilities" => capabilities,
+      "isActive" => opts[:is_active],
+      "changeTime" => change_time
+    }
+
+    if opts[:event_only] do
+      event
+    else
+      %{
+        "https://schemas.accounts.firefox.com/event/subscription-state-change" => event
+      }
+    end
+  end
+
+  def now_earlier_later_unix_millisecond() do
+    %{now: now, earlier: earlier, later: later} = now_earlier_later_dt_s()
+
+    %{
+      now: DateTime.to_unix(now, :millisecond),
+      earlier: DateTime.to_unix(earlier, :millisecond),
+      later: DateTime.to_unix(later, :millisecond)
+    }
+  end
+
+  def now_earlier_later_dt_s() do
+    now = DateTime.utc_now() |> DateTime.truncate(:second)
+    later = DateTime.add(now, 5000) |> DateTime.truncate(:second)
+    earlier = DateTime.add(now, -5000) |> DateTime.truncate(:second)
+
+    %{now: now, earlier: earlier, later: later}
+  end
 end

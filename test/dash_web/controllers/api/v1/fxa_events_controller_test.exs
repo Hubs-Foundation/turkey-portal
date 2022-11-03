@@ -44,7 +44,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       account_after = get_test_account()
 
       assert account_after.auth_updated_at ==
-               Dash.FxaEvents.fxa_timestamp_str_to_utc_datetime(Integer.to_string(timestamp_ms))
+               Dash.FxaEvents.unix_to_utc_datetime(Integer.to_string(timestamp_ms))
     end
 
     # Account is not created if the account never existed and we receive a password change event
@@ -135,18 +135,6 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   defp get_account_delete_event() do
     %{
       "https://schemas.accounts.fxa.local/event/delete-user" => %{}
-    }
-  end
-
-  def get_subscription_changed_event(%{capabilities_list: list, is_active: is_active}) do
-    now = DateTime.to_unix(DateTime.utc_now())
-
-    %{
-      "https://schemas.accounts.firefox.com/event/subscription-state-change" => %{
-        "capabilities" => list,
-        "isActive" => is_active,
-        "changeTime" => now
-      }
     }
   end
 end

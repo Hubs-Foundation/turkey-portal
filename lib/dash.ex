@@ -103,6 +103,9 @@ defmodule Dash do
   def delete_all_hubs_for_account(%Dash.Account{} = account) do
     hubs = Dash.Hub.hubs_for_account(account)
 
+    # TODO DELETE
+    [%Dash.Hub{}] = hubs
+
     for hub <- hubs do
       Dash.Hub.delete_hub(hub)
     end
