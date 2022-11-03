@@ -87,12 +87,7 @@ if config_env() == :prod do
         Environment variable AUTH_PUBLIC_KEY is missing. Used in JWT authentication.
         """)
 
-  config :dash, Dash,
-    plans:
-      System.get_env("PLANS") ||
-        raise("""
-        Environment variable PLANS is missing. Used in subscription parsing.
-        """)
+  config :dash, Dash, plans: System.fetch_env!("PLANS")
 
   # ## Using releases
   #
