@@ -8,16 +8,11 @@ import { UpdateHubT } from 'types/General';
  * @returns Hubs[]
  */
 export const getHubs = async () => {
-  try {
-    return axios
-      .get(`${PUBLIC_API_SERVER}${API_PATH}`, { withCredentials: true })
-      .then((response) => {
-        return response.data;
-      });
-  } catch (error) {
-    // TODO: Make game plan for error handling
-    console.error('Error', error);
-  }
+  return axios
+    .get(`${PUBLIC_API_SERVER}${API_PATH}`, { withCredentials: true })
+    .then((response) => {
+      return response.data;
+    });
 };
 
 /**
@@ -26,18 +21,13 @@ export const getHubs = async () => {
  * @returns Hub{}
  */
 export const getHub = async (hubId: string) => {
-  try {
-    return axios
-      .get(`${PUBLIC_API_SERVER}${API_PATH}/${hubId}`, {
-        withCredentials: true,
-      })
-      .then((response: AxiosResponse) => {
-        return response.data;
-      });
-  } catch (error) {
-    // TODO: Make game plan for error handling
-    console.error('Error', error);
-  }
+  return axios
+    .get(`${PUBLIC_API_SERVER}${API_PATH}/${hubId}`, {
+      withCredentials: true,
+    })
+    .then((response: AxiosResponse) => {
+      return response.data;
+    });
 };
 
 /**
@@ -50,8 +40,8 @@ export const validateHubSubdomain = async (
   hubId: string,
   subdomain: string
 ) => {
-  try {
-    return PUBLIC_API_SERVER.post(
+  return axios
+    .post(
       `${PUBLIC_API_SERVER}${API_PATH}/validate_subdomain`,
       {
         excludedHubId: hubId,
@@ -60,13 +50,10 @@ export const validateHubSubdomain = async (
       {
         withCredentials: true,
       }
-    ).then((response: AxiosResponse) => {
+    )
+    .then((response: AxiosResponse) => {
       return response.data;
     });
-  } catch (error) {
-    // TODO: Make game plan for error handling
-    console.error('Error', error);
-  }
 };
 
 /**
@@ -79,13 +66,14 @@ export const validateHubSubdomain = async (
  */
 export const updateHub = async (hubId: string, hub: UpdateHubT) => {
   if (!hub) return;
-  try {
-    return axios.patch(`${PUBLIC_API_SERVER}${API_PATH}/${hubId}`, hub, {
+
+  return axios
+    .patch(`${PUBLIC_API_SERVER}${API_PATH}/${hubId}`, hub, {
       withCredentials: true,
+    })
+    .then((resp: AxiosResponse) => {
+      return resp;
     });
-  } catch (error) {
-    console.error(error);
-  }
 };
 
 /**
