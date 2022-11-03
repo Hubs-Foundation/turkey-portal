@@ -165,7 +165,6 @@ defmodule DashWeb.TestHelpers do
 
     opts = Keyword.merge(default_opts, opts)
 
-    true = opts[:event_only]
     %{now: now} = now_earlier_later_unix_millisecond()
     change_time = if is_nil(opts[:change_time]), do: now, else: opts[:change_time]
 
