@@ -90,6 +90,12 @@
   }
 }
 
+@mixin desktop-large-to-tablet {
+  @media (min-width: $breakpoint-tablet) and (max-width: $breakpoint-desktop-large) {
+    @content;
+  }
+}
+
 @mixin hd-up {
   @media (min-width: $breakpoint-hd) {
     @content;

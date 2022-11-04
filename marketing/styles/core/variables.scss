@@ -131,11 +131,7 @@ $blue: #0d73a6;
 $light-blue: #e0f5ff;
 $link-blue: #007ab8;
 $purple: #663df5;
-$gradient-warm: radial-gradient(
-  147.61% 1186.51% at 110.24% -15.63%,
-  #ff806f 36.82%,
-  #ffff98 100%
-);
+$gradient-warm: linear-gradient(270deg, #ff806f 0%, #ffff98 100%);
 $gradient-rainbow: linear-gradient(
   107.97deg,
   #489cbe 6.73%,
