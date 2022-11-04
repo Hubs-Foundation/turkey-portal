@@ -152,51 +152,6 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     end
   end
 
-  describe "Subscription changed event" do
-    test "Should update iat and add capability to account for true", %{conn: conn} do
-      fxa_uid = get_default_test_uid()
-
-      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-
-      nil = account.auth_updated_at
-
-      event_struct = get_subscription_changed_event(event_only: false)
-      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
-
-      conn =
-        conn
-        |> put_resp_content_type("application/json")
-        |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
-        |> post("/api/v1/events/fxa")
-
-      assert response(conn, 200)
-      account = Dash.Account.account_for_fxa_uid(fxa_uid)
-      refute is_nil(account.auth_updated_at)
-    end
-
-    test "Should delete hubs on is_active false event", %{conn: conn} do
-      expect_orch_delete()
-      create_test_account_and_hub()
-      fxa_uid = get_default_test_uid()
-
-      account = Dash.Account.account_for_fxa_uid(fxa_uid)
-      hubs = Dash.Hub.hubs_for_account(account)
-      [_] = hubs
-
-      event_struct = get_subscription_changed_event(event_only: false, is_active: false)
-      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
-
-      conn =
-        conn
-        |> put_resp_content_type("application/json")
-        |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
-        |> post("/api/v1/events/fxa")
-
-      assert response(conn, 200)
-      assert [] = Dash.Hub.hubs_for_account(account)
-    end
-  end
-
   defp get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct) do
     %{
       "iss" => "https://accounts.fxa.local/",

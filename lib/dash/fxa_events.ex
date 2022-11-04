@@ -55,11 +55,7 @@ defmodule Dash.FxaEvents do
         %{"capabilities" => capabilities, "isActive" => is_active, "changeTime" => change_time} =
           _event_data
       ) do
-<<<<<<< HEAD
-    change_time_dt = fxa_timestamp_str_to_utc_datetime(change_time)
-=======
     change_time_dt = unix_to_utc_datetime(change_time)
->>>>>>> fxa-subscription-auth-event
 
     for capability <- capabilities do
       Dash.update_or_create_capability_for_changeset(%{
@@ -78,11 +74,7 @@ defmodule Dash.FxaEvents do
     Dash.Account.set_auth_updated_at(fxa_uid, change_time_dt)
   end
 
-<<<<<<< HEAD
-  def fxa_timestamp_str_to_utc_datetime(fxa_timestamp_str) when is_binary(fxa_timestamp_str) do
-=======
   def unix_to_utc_datetime(fxa_timestamp_str) when is_binary(fxa_timestamp_str) do
->>>>>>> fxa-subscription-auth-event
     {timestamp, _} = Integer.parse(fxa_timestamp_str)
 
     timestamp
