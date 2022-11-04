@@ -88,15 +88,12 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       event_struct = get_account_delete_event()
       body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
 
-      conn =
-        conn
-        |> put_resp_content_type("application/json")
-        |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
-        |> post("/api/v1/events/fxa")
+      assert conn
+             |> put_resp_content_type("application/json")
+             |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> post("/api/v1/events/fxa")
+             |> response(200)
 
-      assert response(conn, 200)
-
-      # Account deleted and no hubs
       hubs = Dash.Hub.hubs_for_account(account)
       assert [] === hubs
 
