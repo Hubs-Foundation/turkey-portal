@@ -37,34 +37,48 @@ defmodule DashWeb.Plugs.Auth do
     conn.req_cookies[@cookie_name]
   end
 
-  # Authorized
   defp process_jwt(conn, %{is_valid: true, claims: claims}) do
     %{
       "fxa_email" => fxa_email,
       "sub" => fxa_uid,
       "fxa_pic" => fxa_pic,
       "fxa_displayName" => fxa_display_name,
-      "iat" => issued_at
+      "iat" => issued_at,
+      "fxa_cancel_at_period_end" => fxa_cancel_at_period_end,
+      "fxa_current_period_end" => fxa_current_period_end,
+      "fxa_plan_id" => fxa_plan_id
     } = claims
 
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+    now = DateTime.to_unix(DateTime.utc_now())
 
     active_capabilities = Dash.get_all_active_capabilities_for_account(account)
 
-    # If token issued before an Authorization change in the account, invalidate token and login again
-    if !is_nil(account.auth_updated_at) and
-         DateTime.compare(iat_to_utc_datetime(issued_at), account.auth_updated_at) == :lt do
-      # Issued before auth_updated_at
-      process_jwt(conn, %{is_valid: false, claims: claims})
-    else
-      conn
-      |> assign(:account, account)
-      |> assign(:fxa_account_info, %Dash.FxaAccountInfo{
-        fxa_pic: fxa_pic,
-        fxa_display_name: fxa_display_name,
-        fxa_email: fxa_email,
-        has_subscription?: @capabilities_string in active_capabilities
-      })
+    cond do
+      not is_nil(account.auth_updated_at) and
+          DateTime.compare(unix_to_datetime(issued_at), account.auth_updated_at) == :lt ->
+        # If token issued before an Authorization change in the account, invalidate token and login again
+        process_jwt(conn, %{is_valid: false, claims: claims})
+
+      fxa_current_period_end != 0 and fxa_current_period_end < now ->
+        # Current subscription period ended, get next period information
+        process_jwt(conn, %{is_valid: false, claims: claims})
+
+      true ->
+        # Successfully authenticated
+        conn
+        |> assign(:account, account)
+        |> assign(:fxa_account_info, %Dash.FxaAccountInfo{
+          fxa_pic: fxa_pic,
+          fxa_display_name: fxa_display_name,
+          fxa_email: fxa_email,
+          has_subscription?: @capabilities_string in active_capabilities
+        })
+        |> assign(:fxa_subscription, %Dash.FxaSubscription{
+          fxa_cancel_at_period_end: fxa_cancel_at_period_end,
+          fxa_current_period_end: fxa_current_period_end,
+          fxa_plan_id: fxa_plan_id
+        })
     end
   end
 
@@ -109,11 +123,29 @@ defmodule DashWeb.Plugs.Auth do
 
   def unauthorized_auth_redirect_struct, do: %{error: "unauthorized", redirect: "auth"}
 
-  def iat_to_utc_datetime(timestamp_s) do
-    DateTime.from_unix!(timestamp_s, :second)
+  def unix_to_datetime(unix_time) do
+    DateTime.from_unix!(unix_time, :second)
   end
 
   def clear_cookie(conn) do
+    cookie_secure = Application.get_env(:dash, __MODULE__)[:cookie_secure]
+    cookie_domain = DashWeb.LogoutController.cluster_domain(conn)
+
+    put_resp_cookie(
+      conn,
+      @cookie_name,
+      "",
+      path: "/",
+      domain: cookie_domain,
+      http_only: true,
+      secure: cookie_secure,
+      max_age: 0
+    )
+
+    if cookie_domain =~ "dev.myhubs.net", do: clear_dev_cookie(conn), else: conn
+  end
+
+  def clear_dev_cookie(conn) do
     cookie_secure = Application.get_env(:dash, __MODULE__)[:cookie_secure]
 
     put_resp_cookie(
@@ -121,7 +153,7 @@ defmodule DashWeb.Plugs.Auth do
       @cookie_name,
       "",
       path: "/",
-      domain: DashWeb.LogoutController.cluster_domain(conn),
+      domain: ".dev.myhubs.net",
       http_only: true,
       secure: cookie_secure,
       max_age: 0

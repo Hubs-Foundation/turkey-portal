@@ -111,23 +111,36 @@ const HubFormCard = ({
       return;
     }
 
-    // Validate subdomain
-    validateHubSubdomain(hub.hubId, newSubdomain).then(({ error, success }) => {
-      if (error) {
-        switch (error) {
-          case DomainErrorsE.SUBDOMAIN_TAKEN:
-            setDomainValidationError('subdomain is taken');
-            break;
-          case DomainErrorsE.SUBDOMAIN_DENIED:
-            setDomainValidationError('subdomain is denied');
-            break;
-        }
-      }
+    const setValidation = async () => {
+      try {
+        // Validate subdomain
+        const { error, success } = await validateHubSubdomain(
+          hub.hubId,
+          newSubdomain
+        );
 
-      success && setDomainValidationError('');
-      setIsValidDomain(success);
-      setIsEditingDomain(false);
-    });
+        // On Error
+        if (error) {
+          switch (error) {
+            case DomainErrorsE.SUBDOMAIN_TAKEN:
+              setDomainValidationError('subdomain is taken');
+              break;
+            case DomainErrorsE.SUBDOMAIN_DENIED:
+              setDomainValidationError('subdomain is denied');
+              break;
+          }
+        }
+
+        // On Success
+        success && setDomainValidationError('');
+        setIsValidDomain(success);
+        setIsEditingDomain(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    setValidation();
   };
 
   /**

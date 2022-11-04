@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import styles from './SubCard.module.scss';
 import CardButton from '../../shared/CardButton/CardButton';
+import { MonthE } from 'types/Date';
 import { SubscriptionT } from 'services/subscription.service';
 import Modal from '@Shared/Modal/Modal';
 import SubscriptionModal from 'components/Modals/SubscriptionModal/SubscriptionModal';
@@ -17,8 +18,6 @@ type SubCardPropsT = {
 const SubCard = ({
   subdomain,
   subscription,
-  price = 5,
-  currency = 'USD',
   classProp = '',
 }: SubCardPropsT) => {
   const [showModal, setShowModal] = useState<Boolean>(false);
@@ -37,6 +36,9 @@ const SubCard = ({
     setShowModal(false);
   };
 
+  /**
+   * Route to Admin Panel
+   */
   const handleAdminPanelClick = useCallback(() => {
     window.open(`https://${subdomain}.${HUB_ROOT_DOMAIN}/admin`);
   }, [subdomain]);
@@ -47,6 +49,24 @@ const SubCard = ({
   const onManageAccountClick = useCallback(() => {
     window.open(`https://${FXA_SERVER}/settings`);
   }, []);
+
+  /**
+   * Get Formatted Date
+   */
+
+  const subscriptionDate = useCallback(
+    (fullDate?: boolean) => {
+      const date = new Date(subscription.subscriptionEndTimestampS);
+      const options: Intl.DateTimeFormatOptions = {
+        year: fullDate ? 'numeric' : undefined,
+        month: 'long',
+        day: 'numeric',
+      };
+      // TODO : Tech Debt - when adding localization be sure to update this date format country code
+      return date.toLocaleDateString('US', options);
+    },
+    [subscription]
+  );
 
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
@@ -65,15 +85,22 @@ const SubCard = ({
           {/* PAYMENT */}
           <div className={styles.header_block}>
             <div>
-              <span className={styles.price}>${price.toFixed(2)}</span>
-              <span className={styles.currency}>{currency}</span>
+              <span className={styles.price}>
+                {/* TODO - tech debt localization
+                  Use something like https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat 
+                  or i18next to localize the price here - check with backend if they are already formatting anything since currency is being deliverd
+                  with response 
+                */}
+                ${Number(subscription.amount).toFixed(2)}
+              </span>
+              <span className={styles.currency}>{subscription.currency}</span>
             </div>
             <div className={styles.label}>Monthly Payment</div>
           </div>
 
           {/* NEXT PAYMENT */}
           <div className={styles.header_block}>
-            <div className={styles.month}>{subscription.nextPayment}</div>
+            <div className={styles.month}>{subscriptionDate(false)}</div>
             <div className={styles.label}>Next Payment</div>
           </div>
         </div>
@@ -105,7 +132,7 @@ const SubCard = ({
       {showModal && (
         <Modal onClose={handleCloseModal}>
           <SubscriptionModal
-            cancelDate={subscription.endOfCycle}
+            cancelDate={subscriptionDate(true)}
             subdomain={subdomain}
             onClose={handleCloseModal}
           />

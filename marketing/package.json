@@ -9,14 +9,18 @@
     "lint": "next lint && prettier -c ."
   },
   "dependencies": {
-    "@mozilla/lilypad": "^1.1.3",
+    "axios": "^1.1.3",
+    "@mozilla/lilypad": "^1.1.5",
     "next": "12.2.4",
+    "qs": "^6.11.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-form": "^7.38.0",
     "sass": "^1.54.1"
   },
   "devDependencies": {
     "@types/node": "18.6.3",
+    "@types/qs": "^6.9.7",
     "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",
     "eslint": "8.21.0",
