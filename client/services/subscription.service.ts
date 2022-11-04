@@ -10,7 +10,7 @@ export type SubscriptionT = {
 };
 
 /**
- * Get Subplate Subscription Data
+ * Get Subplat Subscription Data
  * @returns Subscription:SubscriptionT{}
  */
 export const getSubscription = async (headers?: AxiosRequestHeaders) => {

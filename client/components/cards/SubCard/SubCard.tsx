@@ -53,13 +53,17 @@ const SubCard = ({
   /**
    * Get Formatted Date
    */
+
   const subscriptionDate = useCallback(
     (fullDate?: boolean) => {
       const date = new Date(subscription.subscriptionEndTimestampS);
-      const formattedDate = fullDate
-        ? `${MonthE[date.getMonth()]} ${date.getDay()}, ${date.getFullYear()}`
-        : `${MonthE[date.getMonth()]} ${date.getDay()}`;
-      return formattedDate;
+      const options: Intl.DateTimeFormatOptions = {
+        year: fullDate ? 'numeric' : undefined,
+        month: 'long',
+        day: 'numeric',
+      };
+      // TODO : Tech Debt - when adding localization be sure to update this date format country code
+      return date.toLocaleDateString('US', options);
     },
     [subscription]
   );
@@ -82,6 +86,11 @@ const SubCard = ({
           <div className={styles.header_block}>
             <div>
               <span className={styles.price}>
+                {/* TODO - tech debt localization
+                  Use something like https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat 
+                  or i18next to localize the price here - check with backend if they are already formatting anything since currency is being deliverd
+                  with response 
+                */}
                 ${Number(subscription.amount).toFixed(2)}
               </span>
               <span className={styles.currency}>{subscription.currency}</span>

@@ -31,8 +31,7 @@ const creatingHub: HubT = {
 
 const Dashboard = ({ subscription }: DashboardPropsT) => {
   const account = useSelector(selectAccount);
-  const hubsInit: HubT[] = [];
-  const [hubs, setHubs] = useState<HubT[]>(hubsInit);
+  const [hubs, setHubs] = useState<HubT[]>([]);
   const [hasUpdatingCreatingHub, setHasUpdatingCreatingHub] =
     useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
