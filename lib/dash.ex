@@ -66,21 +66,19 @@ defmodule Dash do
           :change_time => %DateTime{},
           :is_active => boolean()
         }) :: %Capability{}
-  def create_capability!(
-        %Account{} = account,
-        %{
-          capability: _capability,
-          is_active: _is_active,
-          change_time: _change_time
-        } = params
-      ) do
-    new_capability = Map.put(params, :account_id, account.account_id)
-
-    %Capability{}
-    |> Capability.changeset(new_capability)
-    |> Ecto.Changeset.put_assoc(:account, account)
-    |> Repo.insert!()
-  end
+  def create_capability!(%Account{account_id: account_id}, %{
+        capability: capability,
+        change_time: %DateTime{} = change_time,
+        is_active: is_active
+      })
+      when is_binary(capability) and is_boolean(is_active),
+      do:
+        Repo.insert!(%Capability{
+          account_id: account_id,
+          capability: capability,
+          change_time: DateTime.truncate(change_time, :second),
+          is_active: is_active
+        })
 
   def delete_all_capabilities_for_account(%Account{} = account) do
     Repo.delete_all(

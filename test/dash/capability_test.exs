@@ -21,7 +21,7 @@ defmodule Dash.CapabilityTest do
         change_time: DateTime.utc_now()
       })
 
-      assert_raise Ecto.InvalidChangesetError, fn ->
+      assert_raise Ecto.ConstraintError, fn ->
         Dash.create_capability!(account, %{
           capability: @capability1,
           is_active: true,
