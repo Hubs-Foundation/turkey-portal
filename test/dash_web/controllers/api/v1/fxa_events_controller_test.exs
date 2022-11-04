@@ -176,16 +176,4 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       "https://schemas.accounts.fxa.local/event/delete-user" => %{}
     }
   end
-
-  def get_subscription_changed_event(%{capabilities_list: list, is_active: is_active}) do
-    now = DateTime.to_unix(DateTime.utc_now())
-
-    %{
-      "https://schemas.accounts.firefox.com/event/subscription-state-change" => %{
-        "capabilities" => list,
-        "isActive" => is_active,
-        "changeTime" => now
-      }
-    }
-  end
 end
