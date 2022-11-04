@@ -21,13 +21,17 @@
 .cards {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
+  @include desktop-large-down {
+    flex-wrap: wrap;
+  }
 }
 
-.swoosh_container {
-  height: 280px;
-  width: 100%;
-  position: relative;
+.card {
+  &_one {
+    @include desktop-large-down {
+      order: 2;
+    }
+  }
 }
 
 .swoosh {
