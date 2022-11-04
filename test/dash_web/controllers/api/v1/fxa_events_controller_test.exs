@@ -75,29 +75,32 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   describe "FxA Events Controller Webhook: Account delete change events" do
     test "should return 200 and delete user event handled correctly", %{conn: conn} do
       expect_orch_delete()
-      # Create Account
       create_test_account_and_hub()
       fxa_uid = get_default_test_uid()
 
-      # Account exists and has hubs
       account = Dash.Account.account_for_fxa_uid(fxa_uid)
       %Dash.Account{} = account
       hubs = Dash.Hub.hubs_for_account(account)
       [_ | _] = hubs
+      create_capabilities(account, 2)
+      [_, _] = Dash.get_all_capabilities_for_account(account)
 
       event_struct = get_account_delete_event()
       body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
 
-      conn
-      |> put_resp_content_type("application/json")
-      |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
-      |> post("/api/v1/events/fxa")
+      assert conn
+             |> put_resp_content_type("application/json")
+             |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> post("/api/v1/events/fxa")
+             |> response(200)
 
-      # Account deleted and no hubs
       hubs = Dash.Hub.hubs_for_account(account)
-      assert hubs === []
-      account = Dash.Account.account_for_fxa_uid(fxa_uid)
-      assert account == nil
+      assert [] === hubs
+
+      assert [] ===
+               Dash.get_all_capabilities_for_account(account)
+
+      assert nil == Dash.Account.account_for_fxa_uid(fxa_uid)
     end
   end
 

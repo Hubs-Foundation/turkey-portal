@@ -1,6 +1,7 @@
 defmodule DashWeb.TestHelpers do
   import Phoenix.ConnTest
   require Logger
+  require Integer
 
   @default_test_uid "fake-uid"
   @test_email "email@fake.com"
@@ -142,5 +143,16 @@ defmodule DashWeb.TestHelpers do
     Mox.expect(Dash.HttpMock, :request, fn _, _body, _headers, _opts, _ ->
       {:ok, %HTTPoison.Response{status_code: 202}}
     end)
+  end
+
+  # Capability Helpers
+  def create_capabilities(account, count) do
+    for i <- count..1 do
+      Dash.create_capability!(account, %{
+        capability: "foo#{i}",
+        is_active: Integer.is_even(i),
+        change_time: DateTime.utc_now()
+      })
+    end
   end
 end
