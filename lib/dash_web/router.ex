@@ -42,6 +42,10 @@ defmodule DashWeb.Router do
   # end
 
   scope "/api/v1", DashWeb do
+    resources("/region", Api.V1.RegionController, only: [:show], singleton: true)
+  end
+
+  scope "/api/v1", DashWeb do
     pipe_through :basic_auth
     resources("/logout", LogoutController, [:index])
   end
@@ -50,6 +54,7 @@ defmodule DashWeb.Router do
     pipe_through [:basic_auth, :jwt_authenticated]
 
     resources("/account", Api.V1.AccountController, [:index])
+    resources("/subscription", Api.V1.SubscriptionController, only: [:show], singleton: true)
   end
 
   scope "/api/v1", DashWeb do

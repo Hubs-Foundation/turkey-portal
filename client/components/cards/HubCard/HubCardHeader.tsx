@@ -41,6 +41,7 @@ const HubCardHeader = ({
       {/* Edit Hubs Details  */}
       {status !== StatusE.CREATING && status !== StatusE.UPDATING && (
         <Button
+          label="edit details"
           onClick={handleSettingClick}
           text="Edit Details"
           category={ButtonCategoriesE.PRIMARY_OUTLINE}

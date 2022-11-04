@@ -24,6 +24,8 @@ config :dash, Dash.AppConfig, host: "dashboard.cluster.turkey.local"
 
 config :dash, DashWeb.Plugs.BasicAuth, enabled: false
 
+config :dash, Dash, plans: "plan_test_1,USD,10;plan_test_2,EUR,20"
+
 config :dash, DashWeb.Plugs.Auth,
   auth_server: "test.auth.server",
   cookie_secure: false

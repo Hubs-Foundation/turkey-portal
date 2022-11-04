@@ -111,23 +111,36 @@ const HubFormCard = ({
       return;
     }
 
-    // Validate subdomain
-    validateHubSubdomain(hub.hubId, newSubdomain).then(({ error, success }) => {
-      if (error) {
-        switch (error) {
-          case DomainErrorsE.SUBDOMAIN_TAKEN:
-            setDomainValidationError('subdomain is taken');
-            break;
-          case DomainErrorsE.SUBDOMAIN_DENIED:
-            setDomainValidationError('subdomain is denied');
-            break;
-        }
-      }
+    const setValidation = async () => {
+      try {
+        // Validate subdomain
+        const { error, success } = await validateHubSubdomain(
+          hub.hubId,
+          newSubdomain
+        );
 
-      success && setDomainValidationError('');
-      setIsValidDomain(success);
-      setIsEditingDomain(false);
-    });
+        // On Error
+        if (error) {
+          switch (error) {
+            case DomainErrorsE.SUBDOMAIN_TAKEN:
+              setDomainValidationError('subdomain is taken');
+              break;
+            case DomainErrorsE.SUBDOMAIN_DENIED:
+              setDomainValidationError('subdomain is denied');
+              break;
+          }
+        }
+
+        // On Success
+        success && setDomainValidationError('');
+        setIsValidDomain(success);
+        setIsEditingDomain(false);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    setValidation();
   };
 
   /**
@@ -157,6 +170,7 @@ const HubFormCard = ({
       <div className={styles.card_container}>
         <div className={styles.card_header}>
           <Button
+            label="cancel"
             onClick={handleCancelClick}
             size={ButtonSizesE.LARGE}
             category={ButtonCategoriesE.PRIMARY_CLEAR}
@@ -250,6 +264,7 @@ const HubFormCard = ({
 
           <div className={styles.actions_wrapper}>
             <Button
+              label="cancel"
               classProp="margin-right-5"
               onClick={handleCancelClick}
               category={ButtonCategoriesE.PRIMARY_CLEAR}
@@ -257,6 +272,7 @@ const HubFormCard = ({
             />
 
             <Button
+              label="update"
               type="submit"
               category={ButtonCategoriesE.PRIMARY_SOLID}
               text="update"

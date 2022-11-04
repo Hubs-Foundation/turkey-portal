@@ -2,9 +2,11 @@ import { useCallback, useState } from 'react';
 import { Button, Icon, IconT, Checkbox } from '@mozilla/lilypad';
 import SubscriptionInfoCopy from './SubscriptionInfoCopy';
 import styles from './SubInfoCard.module.scss';
-import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA } from 'config';
+import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
+import { CountriesE } from 'types/Countries';
 
 type SubInfoCardPropsT = {
+  region: string | null;
   classProp?: string;
 };
 
@@ -31,12 +33,21 @@ const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   );
 };
 
-const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
+const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
 
+  /**
+   * Handle routing user to correct payment plan
+   */
   const handleSubscribeClick = useCallback(() => {
-    window.open(`${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_EA}`);
-  }, []);
+    // Default to US plan
+    const plan: string =
+      region && region.toUpperCase() === CountriesE.GERMANY
+        ? PLAN_ID_EA_DE
+        : PLAN_ID_EA;
+    const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${plan}`;
+    window.open(url);
+  }, [region]);
 
   const onToggleConfirmation = useCallback((value: boolean) => {
     setLocationConfirmed(value);
@@ -47,8 +58,9 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
       <div className={styles.banner_gradient} />
 
       {/* HEADER  */}
-      <div>
-        <h2 className={styles.title}>Early Access Hub</h2>
+      <h2 className={styles.title}>Early Access Hub</h2>
+
+      <div className={styles.container}>
         <div className={styles.price_wrapper}>
           <div className={styles.price_container}>
             <div className={styles.price}>
@@ -59,31 +71,31 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
             <p className={styles.price_cadence}>per month</p>
           </div>
         </div>
-      </div>
 
-      {/* CONTENT  */}
-      <div className={styles.content}>
-        {SubscriptionInfoCopy.map(({ label, description, icon }, i) => {
-          return (
-            <InfoBlock
-              key={i}
-              icon={icon}
-              label={label}
-              description={description}
+        {/* CONTENT  */}
+        <div>
+          {SubscriptionInfoCopy.map(({ label, description, icon }, i) => {
+            return (
+              <InfoBlock
+                key={i}
+                icon={icon}
+                label={label}
+                description={description}
+              />
+            );
+          })}
+
+          {/* LOCATION CONFIRMATION  */}
+          <form className="u-content-box margin-top-16 margin-bottom-16">
+            <Checkbox
+              classProp="u-content-box"
+              onChange={onToggleConfirmation}
+              checked={locationConfirmed}
+              label="I'm located in UK CAN USA or Germany"
             />
-          );
-        })}
+          </form>
+        </div>
       </div>
-
-      {/* LOCATION CONFIRMATION  */}
-      <form className="u-content-box margin-top-16 margin-bottom-16">
-        <Checkbox
-          classProp="u-content-box"
-          onChange={onToggleConfirmation}
-          checked={locationConfirmed}
-          label="I'm located in UK CAN USA or Germany"
-        />
-      </form>
 
       {/* FOOTER  */}
       <div className={styles.footer}>
