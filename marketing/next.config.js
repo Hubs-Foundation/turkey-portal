@@ -25,7 +25,7 @@ if (process.env.ENV === 'dev') {
   PLAN_ID_EA = 'price_1Jkcl3Kb9q6OnNsLFbECmMtd';
   PRODUCT_ID = 'prod_KPReWHqwGqZBzc';
   PLAN_ID_EA_DE = 'price_1LqkLwKb9q6OnNsLlWHZfPOu';
-  PUBLIC_API_SERVER = 'http://localhost:4000';
+  PUBLIC_API_SERVER = 'https://dashboard.dev.myhubs.net';
 }
 
 /**
