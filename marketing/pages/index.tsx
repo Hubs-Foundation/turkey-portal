@@ -1,4 +1,3 @@
-import type { NextPage } from 'next';
 import { useMemo } from 'react';
 import Head from 'next/head';
 import Hero from '@Shared/Hero/Hero';
@@ -204,6 +203,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       },
     };
   } catch (error) {
+    //TODO when server side error add a better response UI here..
+    return {
+      props: {},
+    };
     console.error(error);
   }
 }
