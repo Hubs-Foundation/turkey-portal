@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     domains: ['localhost:4000'], // TODO Add other servers
   },
+  optimizeFonts: false,
   serverRuntimeConfig: {
     PUBLIC_API_SERVER: 'http://localhost:4000',
   },

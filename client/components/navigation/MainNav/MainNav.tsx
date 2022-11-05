@@ -59,6 +59,7 @@ const MainNav = ({
           size={40}
           alt="profile picture"
         />
+
         <div className={styles.account_details}>
           <div className={styles.account_label}>Signed in as</div>
           <div className={styles.account_email}>{account.email}</div>
@@ -148,11 +149,13 @@ const MainNav = ({
                   <div className={styles.main_nav_account}>
                     {account.profilePic && (
                       <span className="flex-align-center">
-                        <Avatar
-                          src={account.profilePic}
-                          size={50}
-                          alt="profile picture"
-                        />
+                        <button className="u-button-wrapper">
+                          <Avatar
+                            src={account.profilePic}
+                            size={50}
+                            alt="profile picture"
+                          />
+                        </button>
                       </span>
                     )}
                   </div>
