@@ -93,10 +93,8 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
     getData();
     // TODO : Tech Debt - first account call is not showing that the hub is being created on attribute "hasCreatingHubs".
     // this is because the getHubs call above kicks off the creation if there are no hubs.. this is a bandaid to just call
-    // the account data again and see if the "hasCreatingHubs" is true. In the futer
-    // I beleive we will handle this in a more efficient way.
+    // the account data again and see if the "hasCreatingHubs" is true.
     setTimeout(() => {
-      console.log('trying to refresh account data');
       refreshAccountData();
     }, 2000);
   }, []);
