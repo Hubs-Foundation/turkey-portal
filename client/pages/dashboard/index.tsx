@@ -95,7 +95,10 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
     // this is because the getHubs call above kicks off the creation if there are no hubs.. this is a bandaid to just call
     // the account data again and see if the "hasCreatingHubs" is true. In the futer
     // I beleive we will handle this in a more efficient way.
-    refreshAccountData();
+    setTimeout(() => {
+      console.log('trying to refresh account data');
+      refreshAccountData();
+    }, 2000);
   }, []);
 
   return (
