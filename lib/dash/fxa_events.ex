@@ -50,6 +50,25 @@ defmodule Dash.FxaEvents do
     end
   end
 
+  def handle_profile_change(fxa_uid, %{"email" => new_email} = _event_data) do
+    account = Dash.Account.account_for_fxa_uid(fxa_uid)
+
+    case Dash.change_email(account, new_email) do
+      :ok ->
+        :ok
+
+      :error ->
+        Logger.error(
+          "FxA profile event error: Could not update the accounts email with new email"
+        )
+
+        :ok
+    end
+  end
+
+  # Not an email changed event, other profile data changed, no action
+  def handle_profile_change(_fxa_uid, _event_data), do: :ok
+
   def fxa_timestamp_str_to_utc_datetime(fxa_timestamp_str) when is_binary(fxa_timestamp_str) do
     {timestamp, _} = Integer.parse(fxa_timestamp_str)
 

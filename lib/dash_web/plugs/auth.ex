@@ -55,7 +55,7 @@ defmodule DashWeb.Plugs.Auth do
     fxa_subscriptions =
       if is_nil(fxa_subscriptions_nil_or_list), do: [], else: fxa_subscriptions_nil_or_list
 
-    account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+    account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid, fxa_email)
     now = DateTime.to_unix(DateTime.utc_now())
 
     cond do

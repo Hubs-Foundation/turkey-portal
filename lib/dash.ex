@@ -3,6 +3,7 @@ defmodule Dash do
   Boundary of Dash context
   """
   import Ecto.Query
+  require Logger
   alias Dash.{Account, Capability, Repo}
 
   def update_or_create_capability_for_changeset(
@@ -112,4 +113,74 @@ defmodule Dash do
       :dash
       |> Application.fetch_env!(__MODULE__)
       |> Keyword.fetch!(:plans)
+
+  @spec change_email(
+          nil
+          | %Dash.Account{
+              __meta__: any,
+              account_id: any,
+              auth_updated_at: any,
+              email: any,
+              fxa_uid: any,
+              inserted_at: any,
+              updated_at: any
+            },
+          binary
+        ) :: :ok | :error
+  def change_email(nil, _email), do: :ok
+
+  def change_email(%Dash.Account{email: old_email} = account, email) do
+    change_email(account, old_email, email)
+  end
+
+  defp change_email(%Dash.Account{} = account, nil, email)
+       when is_binary(email) do
+    Dash.Account.add_email_to_account(account, email)
+
+    case Dash.Hub.hubs_for_account(account) do
+      [_ | _] ->
+        Logger.error(
+          "Can't update hubs admin email for account with fxa_uid #{account.fxa_uid} because old email did not exist."
+        )
+
+        :error
+
+      [] ->
+        :ok
+    end
+  end
+
+  defp change_email(%Dash.Account{} = account, old_email, email)
+       when is_binary(old_email) and is_binary(email) do
+    case Dash.Account.update_email(account, email) do
+      :ok ->
+        update_hubs_admin_emails(account, old_email, email)
+        :ok
+
+      :error ->
+        :error
+    end
+  end
+
+  defp update_hubs_admin_emails(%Dash.Account{} = account, old_email, email) do
+    hubs = Dash.Hub.hubs_for_account(account)
+
+    for hub <- hubs do
+      case Dash.RetClient.update_hub_admin_email(hub, old_email, email) do
+        :ok ->
+          :ok
+
+        :error ->
+          Logger.error("Could not update hub's admin email, fxa_uid is #{account.fxa_uid}")
+          :error
+
+        {:error, err} ->
+          Logger.error(
+            "Could not update hub's admin email, fxa_uid is #{account.fxa_uid}, error is: #{inspect(err)}"
+          )
+
+          :error
+      end
+    end
+  end
 end

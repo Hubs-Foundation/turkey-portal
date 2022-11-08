@@ -165,6 +165,36 @@ defmodule Dash.RetClient do
     end
   end
 
+  @change_email_for_login "change_email_for_login"
+  def update_hub_admin_email(%Dash.Hub{hub_id: hub_id} = _hub, old_email, new_email) do
+    response =
+      get_http_client().patch(
+        ret_host_url(hub_id) <> @ret_internal_scope <> @change_email_for_login,
+        %{old_email: old_email, new_email: new_email},
+        [{"x-ret-dashboard-access-key", get_ret_access_key()}],
+        hackney: [:insecure]
+      )
+
+    case response do
+      {:ok, %{status_code: 200}} ->
+        :ok
+
+      {:ok, %{status_code: status_code}} ->
+        Logger.error(
+          "Unexpected status code. Failed to update admin email for hub. Status code: #{status_code}"
+        )
+
+        :error
+
+      {:error, err} ->
+        Logger.error(
+          "Unexpected error occurred updating admin email for hub. Error: #{inspect(err)}"
+        )
+
+        {:error, err}
+    end
+  end
+
   defp get_ret_access_key() do
     Application.get_env(:dash, Dash.RetClient)[:dashboard_ret_access_key]
   end
