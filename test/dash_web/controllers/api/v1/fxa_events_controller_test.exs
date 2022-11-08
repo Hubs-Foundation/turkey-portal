@@ -126,7 +126,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
 
       assert response(conn, 200)
       account = Dash.Account.account_for_fxa_uid(fxa_uid)
-      refute is_nil(account.auth_updated_at)
+      assert account.auth_updated_at
     end
 
     test "Should delete hubs on is_active false event", %{conn: conn} do

@@ -96,7 +96,7 @@ defmodule DashWeb.TestHelpers do
   end
 
   def subscribe_test_account(fxa_uid) do
-    fxa_uid = if is_nil(fxa_uid), do: @default_test_uid, else: fxa_uid
+    fxa_uid = fxa_uid || @default_test_uid
 
     Dash.update_or_create_capability_for_changeset(%{
       fxa_uid: fxa_uid,
@@ -170,21 +170,15 @@ defmodule DashWeb.TestHelpers do
     end
   end
 
-  def get_subscription_changed_event(
-        opts \\ [event_only: true, capabilities: nil, is_active: true, change_time: nil]
-      ) do
+  def get_subscription_changed_event(opts \\ []) do
     default_opts = [event_only: true, capabilities: nil, is_active: true, change_time: nil]
 
     opts = Keyword.merge(default_opts, opts)
 
     %{now: now} = now_earlier_later_unix_millisecond()
-    change_time = if is_nil(opts[:change_time]), do: now, else: opts[:change_time]
+    change_time = opts[:change_time] || now
 
-    capabilities =
-      case opts[:capabilities] do
-        nil -> [DashWeb.Plugs.Auth.capability_string()]
-        list -> list
-      end
+    capabilities = opts[:capabilities] || [DashWeb.Plugs.Auth.capability_string()]
 
     event = %{
       "capabilities" => capabilities,

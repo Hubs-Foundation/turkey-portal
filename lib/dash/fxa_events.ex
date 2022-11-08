@@ -65,7 +65,7 @@ defmodule Dash.FxaEvents do
         change_time: change_time_dt
       })
 
-      if is_active == false and capability == DashWeb.Plugs.Auth.capability_string() do
+      if not is_active and capability == DashWeb.Plugs.Auth.capability_string() do
         account = Dash.Account.account_for_fxa_uid(fxa_uid)
         Dash.delete_all_hubs_for_account(account)
       end

@@ -325,7 +325,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   end
 
   describe "Hub Ready state tests" do
-    @tag marked: true
     test "should call ret /health endpoint at least 1 time", %{conn: conn} do
       # TODO To refine test make this test call /health endpoint 3 times
       max_expected_calls = 3

@@ -216,12 +216,7 @@ defmodule Dash.CapabilityTest do
 
       create_capability(other_account, "foo", true)
       create_capability(other_account, "bar", true)
-
-      Dash.create_capability!(other_account, %{
-        capability: "baz",
-        is_active: true,
-        change_time: DateTime.utc_now()
-      })
+      create_capability(other_account, "baz", true)
 
       assert [] = Dash.get_all_active_capabilities_for_account(account)
 

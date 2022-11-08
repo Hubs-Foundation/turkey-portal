@@ -61,13 +61,14 @@ defmodule Dash do
     )
   end
 
-  @spec get_all_active_capabilities_for_account(%Dash.Account{}) :: [String.t()] | []
+  @spec get_all_active_capabilities_for_account(%Account{}) :: [String.t()]
   def get_all_active_capabilities_for_account(%Account{} = account) do
-    from(c in Capability,
-      where: c.account_id == ^account.account_id and c.is_active == ^true
+    Repo.all(
+      from c in Capability,
+        where: c.is_active,
+        where: c.account_id == ^account.account_id,
+        select: c.capability
     )
-    |> Repo.all()
-    |> Enum.map(fn capability -> capability.capability end)
   end
 
   @spec create_capability!(%Account{}, %{
@@ -89,7 +90,7 @@ defmodule Dash do
           is_active: is_active
         })
 
-  @spec delete_all_capabilities_for_account(%Dash.Account{}) :: {integer, nil}
+  @spec delete_all_capabilities_for_account(%Account{}) :: {integer, nil}
   def delete_all_capabilities_for_account(%Account{} = account) do
     Repo.delete_all(
       from(c in Capability,
@@ -123,7 +124,7 @@ defmodule Dash do
       |> Application.fetch_env!(__MODULE__)
       |> Keyword.fetch!(:plans)
 
-  def delete_all_hubs_for_account(%Dash.Account{} = account) do
+  def delete_all_hubs_for_account(%Account{} = account) do
     hubs = Dash.Hub.hubs_for_account(account)
 
     for hub <- hubs do
