@@ -105,7 +105,6 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   end
 
   describe "Profile and account email changed event" do
-    @tag marked: true
     test "should return :ok for any profile changes that is not email", %{conn: conn} do
       fxa_uid = get_default_test_uid()
       Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
