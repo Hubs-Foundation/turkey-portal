@@ -104,6 +104,44 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     end
   end
 
+  describe "Profile and account email changed event" do
+    @tag marked: true
+    test "should return :ok for any profile changes that is not email", %{conn: conn} do
+      fxa_uid = get_default_test_uid()
+      Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+      event_struct = get_profile_changed_event()
+      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
+
+      assert conn
+             |> put_resp_content_type("application/json")
+             |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> post("/api/v1/events/fxa")
+             |> response(200)
+    end
+
+    test "should return :ok for email changes for account", %{conn: conn} do
+      create_test_account_and_hub()
+      fxa_uid = get_default_test_uid()
+
+      account = Dash.Account.account_for_fxa_uid(fxa_uid)
+      %Dash.Account{} = account
+      nil = account.email
+
+      new_email = "new@new.new"
+      event_struct = get_email_changed_event(new_email)
+      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
+
+      assert conn
+             |> put_resp_content_type("application/json")
+             |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> post("/api/v1/events/fxa")
+             |> response(200)
+
+      updated_account = Dash.Account.account_for_fxa_uid(fxa_uid)
+      assert new_email === updated_account.email
+    end
+  end
+
   defp get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct) do
     %{
       "iss" => "https://accounts.fxa.local/",
@@ -126,6 +164,22 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   defp get_account_delete_event() do
     %{
       "https://schemas.accounts.fxa.local/event/delete-user" => %{}
+    }
+  end
+
+  defp get_email_changed_event(email) do
+    %{
+      "https://schemas.accounts.firefox.com/event/profile-change" => %{
+        "email" => email
+      }
+    }
+  end
+
+  defp get_profile_changed_event() do
+    %{
+      "https://schemas.accounts.firefox.com/event/profile-change" => %{
+        "displayName" => "display-name"
+      }
     }
   end
 end

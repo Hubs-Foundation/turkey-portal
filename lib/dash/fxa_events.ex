@@ -50,6 +50,7 @@ defmodule Dash.FxaEvents do
     end
   end
 
+  @spec handle_profile_change(any, any) :: :ok
   def handle_profile_change(fxa_uid, %{"email" => new_email} = _event_data) do
     account = Dash.Account.account_for_fxa_uid(fxa_uid)
 

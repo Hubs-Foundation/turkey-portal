@@ -35,7 +35,7 @@ defmodule Dash.AccountTest do
 
       updated_account = Dash.Account.add_email_to_account(account, new_email)
       assert %Dash.Account{} = updated_account
-      new_email == updated_account.email
+      assert new_email === updated_account.email
     end
   end
 
@@ -46,7 +46,7 @@ defmodule Dash.AccountTest do
 
       updated_account = Dash.Account.add_email_to_account(account, new_email)
       assert %Dash.Account{} = updated_account
-      new_email == updated_account.email
+      assert new_email === updated_account.email
     end
 
     test "Adds new email to account with previous email, returns :ok" do
@@ -56,7 +56,7 @@ defmodule Dash.AccountTest do
       result = Dash.Account.update_email(account, new_email)
 
       updated_account = Dash.Account.find_or_create_account_for_fxa_uid("fxa_uid")
-      new_email == updated_account.email
+      assert new_email === updated_account.email
       assert :ok === result
     end
   end

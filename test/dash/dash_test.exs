@@ -23,7 +23,7 @@ defmodule Dash.Test do
       result = Dash.change_email(account_without_email, @new_email)
 
       updated_account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      assert @new_email == updated_account.email
+      assert @new_email = updated_account.email
       assert :ok === result
     end
 
@@ -38,7 +38,7 @@ defmodule Dash.Test do
       result = Dash.change_email(account_without_email, @new_email)
 
       updated_account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      assert @new_email == updated_account.email
+      assert @new_email = updated_account.email
       assert :error === result
     end
 
@@ -49,7 +49,7 @@ defmodule Dash.Test do
       result = Dash.change_email(account_with_email, @new_email)
 
       updated_account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      assert @new_email == updated_account.email
+      assert @new_email = updated_account.email
       assert :ok === result
     end
 
@@ -64,7 +64,7 @@ defmodule Dash.Test do
       result = Dash.change_email(account_with_email, @new_email)
 
       updated_account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      assert @new_email === updated_account.email
+      assert @new_email = updated_account.email
       assert :ok === result
     end
 
@@ -79,7 +79,7 @@ defmodule Dash.Test do
       result = Dash.change_email(account_with_email, @new_email)
 
       updated_account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      assert @new_email === updated_account.email
+      assert @new_email = updated_account.email
       assert :ok === result
     end
   end
