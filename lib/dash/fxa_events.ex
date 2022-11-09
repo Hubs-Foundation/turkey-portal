@@ -4,6 +4,7 @@ defmodule Dash.FxaEvents do
   """
   require Logger
 
+  @type event_data :: %{String.t() => String.t() | [String.t(), ...]}
   @doc """
   Example password change event
   {
@@ -14,7 +15,7 @@ defmodule Dash.FxaEvents do
     "jti": "e19ed6c5-4816-4171-aa43-56ffe80dbda1",
     "events": {
       "https://schemas.accounts.firefox.com/event/password-change": {
-          "changeTime": 1565721242227
+          "changeTime": "1565721242227"
       }
     }
   }
@@ -50,20 +51,13 @@ defmodule Dash.FxaEvents do
     end
   end
 
-  @spec handle_profile_change(any, any) :: :ok
-  def handle_profile_change(fxa_uid, %{"email" => new_email} = _event_data) do
+  @spec handle_profile_change(String.t(), event_data) :: :ok
+  def handle_profile_change(fxa_uid, %{"email" => new_email}) do
     account = Dash.Account.account_for_fxa_uid(fxa_uid)
 
-    case Dash.change_email(account, new_email) do
-      :ok ->
-        :ok
-
-      :error ->
-        Logger.error(
-          "FxA profile event error: Could not update the accounts email with new email"
-        )
-
-        :ok
+    with :error <- Dash.change_email(account, new_email) do
+      Logger.error("FxA profile event error: Could not update the accounts email with new email")
+      :ok
     end
   end
 

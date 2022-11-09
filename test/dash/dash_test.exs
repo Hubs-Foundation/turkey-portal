@@ -27,7 +27,7 @@ defmodule Dash.Test do
       assert :ok === result
     end
 
-    test "should return :error, account has no previously set email, has hubs" do
+    test "should raise, account has no previously set email, has hubs" do
       expect_ret_patch_update_email()
       expect_orch_post()
 
@@ -35,11 +35,7 @@ defmodule Dash.Test do
       account_without_email = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
       Dash.Hub.create_default_hub(account_without_email, @old_email)
 
-      result = Dash.change_email(account_without_email, @new_email)
-
-      updated_account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      assert @new_email = updated_account.email
-      assert :error === result
+      assert_raise MatchError, fn -> Dash.change_email(account_without_email, @new_email) end
     end
 
     test "should return :ok, account has previously set email and has no hubs" do

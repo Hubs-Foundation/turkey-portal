@@ -119,11 +119,8 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     end
 
     test "should return :ok for email changes for account", %{conn: conn} do
-      create_test_account_and_hub()
       fxa_uid = get_default_test_uid()
-
-      account = Dash.Account.account_for_fxa_uid(fxa_uid)
-      %Dash.Account{} = account
+      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
       nil = account.email
 
       new_email = "new@new.new"

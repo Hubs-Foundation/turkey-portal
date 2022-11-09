@@ -129,30 +129,13 @@ defmodule Dash do
         ) :: :ok | :error
   def change_email(nil, _email), do: :ok
 
-  def change_email(%Dash.Account{email: old_email} = account, email) do
-    change_email(account, old_email, email)
+  def change_email(%Dash.Account{email: nil} = account, email) when is_binary(email) do
+    [] = Dash.Hub.hubs_for_account(account)
+    update_email(account, email)
   end
 
-  defp change_email(%Dash.Account{} = account, nil, email)
-       when is_binary(email) do
-    Dash.Account.add_email_to_account(account, email)
-
-    case Dash.Hub.hubs_for_account(account) do
-      [_ | _] ->
-        Logger.error(
-          "Can't update hubs admin email for account with fxa_uid #{account.fxa_uid} because old email did not exist."
-        )
-
-        :error
-
-      [] ->
-        :ok
-    end
-  end
-
-  defp change_email(%Dash.Account{} = account, old_email, email)
-       when is_binary(old_email) and is_binary(email) do
-    case Dash.Account.update_email(account, email) do
+  def change_email(%Dash.Account{email: old_email} = account, email) when is_binary(email) do
+    case update_email(account, email) do
       :ok ->
         update_hubs_admin_emails(account, old_email, email)
         :ok
@@ -163,9 +146,7 @@ defmodule Dash do
   end
 
   defp update_hubs_admin_emails(%Dash.Account{} = account, old_email, email) do
-    hubs = Dash.Hub.hubs_for_account(account)
-
-    for hub <- hubs do
+    for hub <- Dash.Hub.hubs_for_account(account) do
       case Dash.RetClient.update_hub_admin_email(hub, old_email, email) do
         :ok ->
           :ok
@@ -181,6 +162,27 @@ defmodule Dash do
 
           :error
       end
+    end
+  end
+
+  @spec add_email_to_account(%Account{}, binary) :: %Account{}
+  def add_email_to_account(%Account{} = account, email) when is_binary(email) do
+    account
+    |> Ecto.Changeset.change(email: email)
+    |> Repo.update!()
+  end
+
+  @spec update_email(%Account{}, binary) :: :ok | :error
+  def update_email(%Account{} = account, email) when is_binary(email) do
+    case account
+         |> Ecto.Changeset.change(email: email)
+         |> Repo.update() do
+      {:ok, _struct} ->
+        :ok
+
+      {:error, _changeset} ->
+        Logger.error("Issue updating account with email")
+        :error
     end
   end
 end

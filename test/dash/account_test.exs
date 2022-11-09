@@ -33,7 +33,7 @@ defmodule Dash.AccountTest do
       new_email = "new@new.new"
       account = Dash.Account.find_or_create_account_for_fxa_uid("fxa_uid")
 
-      updated_account = Dash.Account.add_email_to_account(account, new_email)
+      updated_account = Dash.add_email_to_account(account, new_email)
       assert %Dash.Account{} = updated_account
       assert new_email === updated_account.email
     end
@@ -44,7 +44,7 @@ defmodule Dash.AccountTest do
       new_email = "new@new.new"
       account = Dash.Account.find_or_create_account_for_fxa_uid("fxa_uid")
 
-      updated_account = Dash.Account.add_email_to_account(account, new_email)
+      updated_account = Dash.add_email_to_account(account, new_email)
       assert %Dash.Account{} = updated_account
       assert new_email === updated_account.email
     end
@@ -53,7 +53,7 @@ defmodule Dash.AccountTest do
       new_email = "new@new.new"
       account = Dash.Account.find_or_create_account_for_fxa_uid("fxa_uid", "old@old.old")
 
-      result = Dash.Account.update_email(account, new_email)
+      result = Dash.update_email(account, new_email)
 
       updated_account = Dash.Account.find_or_create_account_for_fxa_uid("fxa_uid")
       assert new_email === updated_account.email

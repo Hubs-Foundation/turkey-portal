@@ -32,7 +32,7 @@ defmodule Dash.Account do
 
     case account do
       %Dash.Account{} ->
-        if is_nil(account.email), do: add_email_to_account(account, email), else: account
+        if is_nil(account.email), do: Dash.add_email_to_account(account, email), else: account
 
       nil ->
         create_account_for_fxa_uid(fxa_uid, email)
@@ -51,38 +51,8 @@ defmodule Dash.Account do
     end
   end
 
-  @spec add_email_to_account(%Dash.Account{}, binary) :: %Dash.Account{}
-  def add_email_to_account(%Dash.Account{} = account, email) when is_binary(email) do
-    case account
-         |> change(email: email)
-         |> Dash.Repo.update() do
-      {:ok, _struct} ->
-        account_for_fxa_uid(account.fxa_uid)
-
-      {:error, _changeset} ->
-        Logger.error("Issue updating account with new email")
-        account
-    end
-  end
-
-  @spec update_email(%Dash.Account{}, binary) :: :ok | :error
-  def update_email(%Dash.Account{} = account, email) when is_binary(email) do
-    case account
-         |> change(email: email)
-         |> Dash.Repo.update() do
-      {:ok, _struct} ->
-        :ok
-
-      {:error, _changeset} ->
-        Logger.error("Issue updating account with email")
-        :error
-    end
-  end
-
   defp create_account_for_fxa_uid(fxa_uid, email) when is_binary(fxa_uid) do
-    %Dash.Account{}
-    |> Dash.Account.changeset(%{fxa_uid: fxa_uid, email: email})
-    |> Dash.Repo.insert!()
+    Repo.insert!(%Dash.Account{fxa_uid: fxa_uid, email: email})
   end
 
   defp create_account_for_fxa_uid(fxa_uid) when is_binary(fxa_uid) do
