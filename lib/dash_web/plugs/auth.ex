@@ -20,11 +20,10 @@ defmodule DashWeb.Plugs.Auth do
   use DashWeb, :controller
 
   import Plug.Conn
-  require Logger
 
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
-  @subscription_string "managed-hubs"
+  @capabilities_string "managed-hubs"
 
   def init(default), do: default
 
@@ -45,18 +44,15 @@ defmodule DashWeb.Plugs.Auth do
       "fxa_pic" => fxa_pic,
       "fxa_displayName" => fxa_display_name,
       "iat" => issued_at,
-      "fxa_subscriptions" => fxa_subscriptions_nil_or_list,
       "fxa_cancel_at_period_end" => fxa_cancel_at_period_end,
       "fxa_current_period_end" => fxa_current_period_end,
       "fxa_plan_id" => fxa_plan_id
     } = claims
 
-    # Ensure fxa_subscriptions is type [] and not nil
-    fxa_subscriptions =
-      if is_nil(fxa_subscriptions_nil_or_list), do: [], else: fxa_subscriptions_nil_or_list
-
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
     now = DateTime.to_unix(DateTime.utc_now())
+
+    active_capabilities = Dash.get_all_active_capabilities_for_account(account)
 
     cond do
       not is_nil(account.auth_updated_at) and
@@ -76,7 +72,7 @@ defmodule DashWeb.Plugs.Auth do
           fxa_pic: fxa_pic,
           fxa_display_name: fxa_display_name,
           fxa_email: fxa_email,
-          has_subscription?: @subscription_string in fxa_subscriptions
+          has_subscription?: @capabilities_string in active_capabilities
         })
         |> assign(:fxa_subscription, %Dash.FxaSubscription{
           fxa_cancel_at_period_end: fxa_cancel_at_period_end,
@@ -127,10 +123,6 @@ defmodule DashWeb.Plugs.Auth do
 
   def unauthorized_auth_redirect_struct, do: %{error: "unauthorized", redirect: "auth"}
 
-  def get_subscription_string() do
-    @subscription_string
-  end
-
   def unix_to_datetime(unix_time) do
     DateTime.from_unix!(unix_time, :second)
   end
@@ -167,4 +159,6 @@ defmodule DashWeb.Plugs.Auth do
       max_age: 0
     )
   end
+
+  def capability_string, do: @capabilities_string
 end

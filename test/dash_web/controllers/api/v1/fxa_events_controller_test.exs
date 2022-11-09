@@ -44,7 +44,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       account_after = get_test_account()
 
       assert account_after.auth_updated_at ==
-               Dash.FxaEvents.fxa_timestamp_str_to_utc_datetime(Integer.to_string(timestamp_ms))
+               Dash.FxaEvents.unix_to_utc_datetime(Integer.to_string(timestamp_ms))
     end
 
     # Account is not created if the account never existed and we receive a password change event
@@ -75,14 +75,17 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   describe "FxA Events Controller Webhook: Account delete change events" do
     test "should return 200 and delete user event handled correctly", %{conn: conn} do
       expect_orch_delete()
-      create_test_account_and_hub()
+      create_test_account_and_hub(subscribe?: false)
       fxa_uid = get_default_test_uid()
 
       account = Dash.Account.account_for_fxa_uid(fxa_uid)
+
+      create_capabilities(account, 1)
+      subscribe_test_account(nil)
+
       %Dash.Account{} = account
       hubs = Dash.Hub.hubs_for_account(account)
-      [_ | _] = hubs
-      create_capabilities(account, 2)
+      [_] = hubs
       [_, _] = Dash.get_all_capabilities_for_account(account)
 
       event_struct = get_account_delete_event()
@@ -101,6 +104,51 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
                Dash.get_all_capabilities_for_account(account)
 
       assert nil == Dash.Account.account_for_fxa_uid(fxa_uid)
+    end
+  end
+
+  describe "Subscription changed event" do
+    test "Should update iat and add capability to account for true", %{conn: conn} do
+      fxa_uid = get_default_test_uid()
+
+      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+
+      nil = account.auth_updated_at
+
+      event_struct = get_subscription_changed_event(event_only: false)
+      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
+
+      conn =
+        conn
+        |> put_resp_content_type("application/json")
+        |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+        |> post("/api/v1/events/fxa")
+
+      assert response(conn, 200)
+      account = Dash.Account.account_for_fxa_uid(fxa_uid)
+      assert account.auth_updated_at
+    end
+
+    test "Should delete hubs on is_active false event", %{conn: conn} do
+      expect_orch_delete()
+      create_test_account_and_hub()
+      fxa_uid = get_default_test_uid()
+
+      account = Dash.Account.account_for_fxa_uid(fxa_uid)
+      hubs = Dash.Hub.hubs_for_account(account)
+      [_] = hubs
+
+      event_struct = get_subscription_changed_event(event_only: false, is_active: false)
+      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
+
+      conn =
+        conn
+        |> put_resp_content_type("application/json")
+        |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+        |> post("/api/v1/events/fxa")
+
+      assert response(conn, 200)
+      assert [] = Dash.Hub.hubs_for_account(account)
     end
   end
 

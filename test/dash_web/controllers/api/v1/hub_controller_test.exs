@@ -336,6 +336,8 @@ defmodule DashWeb.Api.V1.HubControllerTest do
         max_expected_calls: max_expected_calls + 1
       )
 
+      subscribe_test_account(nil)
+
       stub_ret_get()
       expect_orch_post()
 
@@ -348,6 +350,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       stub_ret_get()
       expect_orch_post()
       stub_ret_health_check(status_code: :service_unavailable)
+      subscribe_test_account(nil)
 
       body =
         conn
@@ -363,6 +366,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     test "should call /health endpoint ONLY once, if hubs is already ready", %{conn: conn} do
       # TODO To refine tests move these tests to own module that has setup :verify_on_exit!
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
+      subscribe_test_account(nil)
 
       stub_ret_get()
       expect_orch_post()
@@ -399,6 +403,28 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       assert !Hub.has_hubs(account)
     end
 
+    test "capability is_active=false, do NOT make default hub and return 200 with empty array", %{
+      conn: conn
+    } do
+      fxa_uid = "not-have-active-subscription"
+      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+
+      Dash.create_capability!(account, %{
+        capability: DashWeb.Plugs.Auth.capability_string(),
+        is_active: false,
+        change_time: DateTime.utc_now()
+      })
+
+      conn =
+        conn
+        |> put_test_token(claims: %{fxa_subscriptions: []}, sub: fxa_uid)
+        |> get("/api/v1/hubs")
+
+      assert Jason.encode!([]) == response(conn, 200)
+
+      assert not Hub.has_hubs(account)
+    end
+
     # TODO for some reason the FeatureFlags are not allowing for POST request to be enabled inside setup or test block
     # Ignore test for now, since POST isn't enabled for dev or production
     # This test is working when POST is enabled
@@ -420,6 +446,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     test "IS subscribed, can get default Hub", %{conn: conn} do
       stub_ret_get()
       expect_orch_post()
+      subscribe_test_account(nil)
 
       # Account with subscription, use index request and has_hubs
       conn =
