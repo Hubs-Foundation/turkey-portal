@@ -3,12 +3,12 @@ import styles from './MainNav.module.scss';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 import { useDesktopDown } from 'hooks/useMediaQuery';
-import { useRouter } from 'next/router';
-import { DASH_ROOT_DOMAIN } from 'config';
+import { useRouter } from 'next/navigation';
+import { DASH_ROOT_DOMAIN } from 'configV2';
 
 type MainNavPropsT = {
   classProp?: string;
-  MobileMenuClick: Function;
+  MobileMenuClick?: Function;
 };
 
 const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {

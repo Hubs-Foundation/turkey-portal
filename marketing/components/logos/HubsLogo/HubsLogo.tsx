@@ -1,6 +1,6 @@
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import { useCallback } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import styles from './HubsLogo.module.scss';
 import logoDark from '../../../public/hubs_logo_dark.svg';
 import logoLight from '../../../public/hubs_logo_light.svg';

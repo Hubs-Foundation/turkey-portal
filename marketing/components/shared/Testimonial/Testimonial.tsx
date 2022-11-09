@@ -1,4 +1,5 @@
-import Image from 'next/image';
+'use client';
+import Image from 'next/legacy/image';
 import styles from './Testimonial.module.scss';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import jacobErvinAvatar from '../../../public/jacob_ervinAvatar.png';

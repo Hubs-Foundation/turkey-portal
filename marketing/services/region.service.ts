@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 const API_PATH = '/api/v1/region';
-import { PUBLIC_API_SERVER } from 'config';
+import { PUBLIC_API_SERVER } from 'configV2';
 
 export type RegionT = {
   region: string | null;

@@ -1,6 +1,8 @@
+'use client';
+
 import styles from './Footer.module.scss';
 import HubsLogo, { LogoCategoryE } from '@Logos/HubsLogo/HubsLogo';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import hubDuck from '../../../public/hub_duck.svg';
 import mozillaLogo from '../../../public/mozilla_logo.svg';
 import twitch from '../../../public/twitch.svg';

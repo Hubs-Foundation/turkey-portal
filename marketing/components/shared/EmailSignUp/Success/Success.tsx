@@ -1,5 +1,5 @@
 import styles from './Success.module.scss';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import cone from '../../../../public/cone.png';
 
 const Success = () => {

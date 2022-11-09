@@ -58,6 +58,7 @@ const nextConfig = {
   env: {
     ENV: process.env.ENV,
   },
+  experimental: { appDir: true },
 };
 
 console.log('nextConfig: ', nextConfig);

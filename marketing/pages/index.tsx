@@ -107,7 +107,8 @@ const Home = ({ region }: HomePropsT) => {
 
       <main>
         <Hero
-          background={isMobile ? HubsMobileHero : HubsHero}
+          background={HubsHero}
+          backgroundMobile={HubsMobileHero}
           title="A whole new world, from the comfort of your home"
           body="take control of your online communities with a fully open source virtual world platform that you can make your own."
           cta="Get Started"

@@ -1,4 +1,6 @@
-import Image, { StaticImageData } from 'next/image';
+'use client';
+
+import Image, { StaticImageData } from 'next/legacy/image';
 import styles from './TileSpotlight.module.scss';
 import bubbleTop from '../../../public/bubble-top.png';
 import bubbleBottom from '../../../public/bubble-bottom.png';

@@ -1,8 +1,9 @@
+'use client';
 import { useState, useCallback } from 'react';
 import styles from './EmailSignUp.module.scss';
 import { useForm, Controller } from 'react-hook-form';
 import { Checkbox, Input, RadioButton, Button } from '@mozilla/lilypad';
-import Image from 'next/image';
+import Image from 'next/legacy/image';
 import Success from './Success/Success';
 import Error from './Error/Error';
 import Swoosh from '@Shared/Swoosh/Swoosh';
@@ -170,7 +171,7 @@ const EmailSignUp = () => {
                   <Controller
                     name="email_format"
                     control={control}
-                    render={({ field: { onChange, value, ...props } }) => (
+                    render={({ field: { onChange, value } }) => (
                       <>
                         <fieldset
                           id="sb_radio"
@@ -185,7 +186,6 @@ const EmailSignUp = () => {
                               value="html"
                               id="html_id"
                               groupName="emailFormat"
-                              {...props}
                             />
                             <RadioButton
                               groupValue={value}
@@ -193,7 +193,6 @@ const EmailSignUp = () => {
                               value="text"
                               id="text_id"
                               groupName="emailFormat"
-                              {...props}
                             />
                           </div>
                         </fieldset>

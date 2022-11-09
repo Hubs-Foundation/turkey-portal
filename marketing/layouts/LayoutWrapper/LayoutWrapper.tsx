@@ -4,6 +4,15 @@ import { ThemeContext } from 'contexts/ThemeProvider';
 import MainNav from '@Navigation/MainNav/MainNav';
 import Footer from '@Navigation/Footer/Footer';
 import MobileSideNav from '@Navigation/MobileSideNav/MobileSideNav';
+import { Inter, Space_Grotesk } from '@next/font/google';
+
+const inter = Inter({
+  variable: '--inter-font',
+});
+
+const space_grotesk = Space_Grotesk({
+  variable: '--space_grotesk-font',
+});
 
 type LayoutWrapperProps = {
   children: ReactNode;
@@ -26,7 +35,10 @@ const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
   return (
     // Hard coding light for deving
     // <main data-theme={themeContext.theme}>
-    <main data-theme="light">
+    <main
+      data-theme="light"
+      className={`${inter.variable} ${space_grotesk.variable}`}
+    >
       <MainNav MobileMenuClick={toggleMobileNav} />
       {isDesktopDown && (
         <MobileSideNav

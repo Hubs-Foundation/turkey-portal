@@ -1,6 +1,8 @@
+'use client';
+
 import { ReactNode } from 'react';
 import styles from './FiftyFifty.module.scss';
-import Image, { StaticImageData } from 'next/image';
+import Image, { StaticImageData } from 'next/legacy/image';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 
 /**
@@ -22,7 +24,7 @@ type FiftyFiftyPropsT = {
   subTitle?: string;
   body?: string;
   children?: ReactNode;
-  layout?: FiftyFiftyLayoutE;
+  layout?: 'left' | 'right';
   classProp?: string;
 };
 
@@ -36,7 +38,7 @@ const FiftyFifty = ({
   subTitle,
   body,
   children,
-  layout = FiftyFiftyLayoutE.LEFT,
+  layout,
   classProp = '',
 }: FiftyFiftyPropsT) => {
   const isDesktopDown = useDesktopDown();

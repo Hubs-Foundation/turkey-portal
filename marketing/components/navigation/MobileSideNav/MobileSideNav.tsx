@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { Button, ButtonCategoriesE, ButtonSizesE } from '@mozilla/lilypad';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import styles from './MobileSideNav.module.scss';
-import { DASH_ROOT_DOMAIN } from 'config';
+import { DASH_ROOT_DOMAIN } from 'configV2';
 
 type MobileSideNavPropsT = {
   isOpen: boolean;

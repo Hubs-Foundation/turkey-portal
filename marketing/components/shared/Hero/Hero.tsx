@@ -1,11 +1,15 @@
+'use client';
+
 import { useCallback } from 'react';
-import { useRouter } from 'next/router';
-import Image, { StaticImageData } from 'next/image';
+import { useRouter } from 'next/navigation';
+import Image, { StaticImageData } from 'next/legacy/image';
 import styles from './Hero.module.scss';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
+import { useMobileDown } from 'hooks/useMediaQuery';
 
 type HeroPropsT = {
   background: StaticImageData;
+  backgroundMobile: StaticImageData;
   title?: string;
   body?: string;
   cta?: string;
@@ -17,6 +21,7 @@ type HeroPropsT = {
 
 const Hero = ({
   background,
+  backgroundMobile,
   title,
   body,
   cta,
@@ -25,6 +30,7 @@ const Hero = ({
   heroAlt = 'hero image',
   classProp = '',
 }: HeroPropsT) => {
+  const isMobile = useMobileDown();
   const router = useRouter();
 
   const onCtaClick = useCallback(() => {
@@ -36,7 +42,7 @@ const Hero = ({
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.container}>
         <Image
-          src={background}
+          src={isMobile ? backgroundMobile : background}
           alt={heroAlt}
           layout="fill"
           objectFit="cover"

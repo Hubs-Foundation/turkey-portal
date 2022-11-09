@@ -1,4 +1,5 @@
-import Image from 'next/image';
+'use client';
+
 import SubCard from './SubCard/SubCard';
 import SubInfoCard from './SubInfoCard/SubInfoCard';
 import styles from './Subscribe.module.scss';

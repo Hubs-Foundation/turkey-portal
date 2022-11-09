@@ -2,8 +2,8 @@
 //   Font Setup
 // -----------------
 $font-size-base: 16; // base size in px
-$primary-font: 'Inter';
-$secondary-font: 'Space Grotesk';
+$primary-font: var(--inter-font);
+$secondary-font: var(--space_grotesk-font);
 $backup-font: 'Arial';
 
 /**
