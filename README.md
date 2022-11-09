@@ -11,11 +11,11 @@ This codebase can be run locally using either containers or bare metal.
 1. [Install Docker Compose](https://docs.docker.com/compose/install)
 2. [Install Mutagen Compose](https://github.com/mutagen-io/mutagen-compose#system-requirements)
 3. Create `./client/.npmrc` with the following contents, replacing
-   `{GITHUB_USERNAME}` with your GitHub username and `{AUTH_TOKEN}` with your
-   GitHub [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token):
+   `{AUTH_TOKEN}` with your GitHub
+   [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token):
    ```
     registry=https://registry.npmjs.org/
-    @{GITHUB_USERNAME}:registry=https://npm.pkg.github.com/
+    @github:registry=https://npm.pkg.github.com/
     //npm.pkg.github.com/:_authToken={AUTH_TOKEN}
    ```
 4. Initialize the services with `bin/init`
