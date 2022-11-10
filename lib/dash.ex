@@ -62,6 +62,16 @@ defmodule Dash do
     )
   end
 
+  @spec get_all_active_capabilities_for_account(%Account{}) :: [String.t()]
+  def get_all_active_capabilities_for_account(%Account{} = account) do
+    Repo.all(
+      from c in Capability,
+        where: c.is_active,
+        where: c.account_id == ^account.account_id,
+        select: c.capability
+    )
+  end
+
   @spec create_capability!(%Account{}, %{
           :capability => String.t(),
           :change_time => %DateTime{},
@@ -81,6 +91,7 @@ defmodule Dash do
           is_active: is_active
         })
 
+  @spec delete_all_capabilities_for_account(%Account{}) :: {integer, nil}
   def delete_all_capabilities_for_account(%Account{} = account) do
     Repo.delete_all(
       from(c in Capability,
@@ -183,6 +194,14 @@ defmodule Dash do
       {:error, _changeset} ->
         Logger.error("Issue updating account with email")
         :error
+    end
+  end
+
+  def delete_all_hubs_for_account(%Account{} = account) do
+    hubs = Dash.Hub.hubs_for_account(account)
+
+    for hub <- hubs do
+      Dash.Hub.delete_hub(hub)
     end
   end
 end

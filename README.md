@@ -52,13 +52,13 @@ Run `mix dash` and `mix help dash.<task_name>` for more info.
 
 ## Production environment variables
 
-- DASHBOARD_ACCESS_KEY - Access key for communicating with reticulum. Should be a strong secret that is shared with reticulum.
-- CORS_ORIGINS - Comma separated list of origins to allow CORS requests.
-- SECRET_KEY_BASE - Base secret key. This should be a strong cryptographcially generated secret.
-- BASIC_AUTH_USERNAME - Username for site-wide basic auth.
-- BASIC_AUTH_PASSWORD - Password for site-wide basic auth.
 - AUTH_PUBLIC_KEY - Public key for JWT auth provided by auth server. Used in authentication.
 - AUTH_SERVER - Server used for login links. e.g. "auth.myhubs.net"
-- FXA_SERVER - Firefox Accounts server used for account management links. e.g. "accounts.firefox.com"
+- BASIC_AUTH_USERNAME - Username for site-wide basic auth.
+- BASIC_AUTH_PASSWORD - Password for site-wide basic auth.
+- CORS_ORIGINS - Comma separated list of origins to allow CORS requests.
+- DASHBOARD_ACCESS_KEY - Access key for communicating with reticulum. Should be a strong secret that is shared with reticulum.
 - FXA_JWK_STRING - Used to verify token in FxA webhook, the payload from the Subplat/FxA endpoint with the live public keys is stringified by Jason.encode!()
+- FXA_SERVER - Firefox Accounts server used for account management links. e.g. "accounts.firefox.com"
+- SECRET_KEY_BASE - Base secret key. This should be a strong cryptographcially generated secret.
 - PLANS - Used in getting currency and amount, MUST BE IN THIS FORMAT: "plan_id1,USD,10;plan_id2,EUR,20"

@@ -25,6 +25,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
 
       stub_ret_get()
       expect_orch_post()
+      subscribe_test_account(nil)
 
       conn =
         conn
@@ -49,6 +50,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
     test "should respond with 200 if user is on ApprovedEmailList and authorized", %{conn: conn} do
       stub_ret_get()
       expect_orch_post()
+      subscribe_test_account(nil)
 
       email = get_test_email()
 

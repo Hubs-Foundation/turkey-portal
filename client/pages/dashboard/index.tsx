@@ -11,6 +11,7 @@ import { getSubscription, SubscriptionT } from 'services/subscription.service';
 import { getHubs } from 'services/hub.service';
 import FeedbackBanner from '@Shared/FeedbackBanner/FeedbackBanner';
 import { selectAccount } from 'store/accountSlice';
+import { initAccountData as refreshAccountData } from 'store/storeInit';
 import { useSelector } from 'react-redux';
 import { AxiosRequestHeaders } from 'axios';
 
@@ -89,8 +90,13 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
       }
     };
 
-    // TODO: Error state
     getData();
+    // TODO : Tech Debt - first account call is not showing that the hub is being created on attribute "hasCreatingHubs".
+    // this is because the getHubs call above kicks off the creation if there are no hubs.. this is a bandaid to just call
+    // the account data again and see if the "hasCreatingHubs" is true.
+    setTimeout(() => {
+      refreshAccountData();
+    }, 2000);
   }, []);
 
   return (

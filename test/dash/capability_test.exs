@@ -31,7 +31,7 @@ defmodule Dash.CapabilityTest do
     end
 
     test "can create multiple capabilities for existing account" do
-      create_test_account_and_hub()
+      create_test_account_and_hub(subscribe?: false)
       fxa_uid = get_default_test_uid()
       account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
@@ -157,6 +157,79 @@ defmodule Dash.CapabilityTest do
         assert [_] = Dash.get_all_capabilities_for_account(other_account)
       end
     end
+  end
+
+  describe "get_all_active_capabilities_for_account/1" do
+    test "should return ONLY active capabilities names in a list for account" do
+      fxa_uid = get_default_test_uid()
+      account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
+
+      create_capability(account, "foo", true)
+      create_capability(account, "bar", true)
+      create_capability(account, "baz", false)
+
+      assert [_, _] = Dash.get_all_active_capabilities_for_account(account)
+    end
+
+    test "should return empty array if there are NO capabilities for account" do
+      fxa_uid = get_default_test_uid()
+      account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
+      assert [] = Dash.get_all_active_capabilities_for_account(account)
+    end
+
+    test "should return empty array if there are only is_active false capabilities for account" do
+      fxa_uid = get_default_test_uid()
+      account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
+
+      create_capability(account, "foo", false)
+      create_capability(account, "bar", false)
+
+      assert [] = Dash.get_all_active_capabilities_for_account(account)
+    end
+
+    test "should return active capabilities for one account, not other accounts" do
+      fxa_uid = get_default_test_uid()
+      account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
+      other_account = Account.find_or_create_account_for_fxa_uid("#{fxa_uid}-123")
+
+      create_capability(account, "foo", false)
+      create_capability(account, "bar", true)
+      create_capability(account, "baz", true)
+
+      create_capability(other_account, "foo", true)
+      create_capability(other_account, "bar", false)
+      create_capability(other_account, "foobarbaz", true)
+
+      account_capabilities = Dash.get_all_active_capabilities_for_account(account)
+      assert [_, _] = account_capabilities
+      assert Enum.member?(account_capabilities, "bar")
+      assert Enum.member?(account_capabilities, "baz")
+    end
+
+    test "should return empty array for one account for one account if no capabilities, not other accounts capabilities" do
+      fxa_uid = get_default_test_uid()
+      account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
+      other_account = Account.find_or_create_account_for_fxa_uid("#{fxa_uid}-123")
+
+      create_capability(account, "foo", false)
+      create_capability(account, "bar", false)
+
+      create_capability(other_account, "foo", true)
+      create_capability(other_account, "bar", true)
+      create_capability(other_account, "baz", true)
+
+      assert [] = Dash.get_all_active_capabilities_for_account(account)
+
+      assert [_, _, _] = Dash.get_all_active_capabilities_for_account(other_account)
+    end
+  end
+
+  defp create_capability(account, capability_name, is_active) do
+    Dash.create_capability!(account, %{
+      capability: capability_name,
+      is_active: is_active,
+      change_time: DateTime.utc_now()
+    })
   end
 
   defp setup() do
