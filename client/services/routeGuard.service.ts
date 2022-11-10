@@ -16,7 +16,7 @@ type RedirectDataT = {
   redirect: 'auth';
 };
 
-export function requireAuthenticationAndHubsOrSubscription(
+export function requireAuthenticationAndSubscription(
   gssp: Function
 ): GetServerSideProps | Redirect {
   return async (context: GetServerSidePropsContext) => {
@@ -41,7 +41,7 @@ export function requireAuthenticationAndHubsOrSubscription(
       const account = await getAccount(req.headers as AxiosRequestHeaders);
 
       // User is authenticated
-      if (account.hasHubs || account.hasSubscription) {
+      if (account.hasSubscription) {
         return await gssp(context, account);
       }
 
@@ -198,7 +198,7 @@ export function subscriptionPageRequireAuthentication(
     try {
       const account = await getAccount(req.headers as AxiosRequestHeaders);
 
-      if (account.hasHubs || account.hasSubscription) {
+      if (account.hasSubscription) {
         return redirectToDashboard();
       } else {
         return await gssp(context, account);

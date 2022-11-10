@@ -6,7 +6,7 @@ import styles from './dashboard.module.scss';
 import HubCard from '@Cards/HubCard/HubCard';
 import SubCard from '@Cards/SubCard/SubCard';
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
-import { requireAuthenticationAndHubsOrSubscription } from 'services/routeGuard.service';
+import { requireAuthenticationAndSubscription } from 'services/routeGuard.service';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
 import { getHubs } from 'services/hub.service';
 import FeedbackBanner from '@Shared/FeedbackBanner/FeedbackBanner';
@@ -165,7 +165,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
 
 export default Dashboard;
 
-export const getServerSideProps = requireAuthenticationAndHubsOrSubscription(
+export const getServerSideProps = requireAuthenticationAndSubscription(
   async (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
     try {
