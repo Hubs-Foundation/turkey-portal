@@ -3,6 +3,7 @@ defmodule Dash do
   Boundary of Dash context
   """
   import Ecto.Query
+  require Logger
   alias Dash.{Account, Capability, Repo}
 
   def update_or_create_capability_for_changeset(
@@ -123,6 +124,78 @@ defmodule Dash do
       :dash
       |> Application.fetch_env!(__MODULE__)
       |> Keyword.fetch!(:plans)
+
+  @spec change_email(
+          nil
+          | %Dash.Account{
+              __meta__: any,
+              account_id: any,
+              auth_updated_at: any,
+              email: any,
+              fxa_uid: any,
+              inserted_at: any,
+              updated_at: any
+            },
+          binary
+        ) :: :ok | :error
+  def change_email(nil, _email), do: :ok
+
+  def change_email(%Dash.Account{email: nil} = account, email) when is_binary(email) do
+    [] = Dash.Hub.hubs_for_account(account)
+    update_email(account, email)
+  end
+
+  def change_email(%Dash.Account{email: old_email} = account, email) when is_binary(email) do
+    case update_email(account, email) do
+      :ok ->
+        update_hubs_admin_emails(account, old_email, email)
+        :ok
+
+      :error ->
+        :error
+    end
+  end
+
+  defp update_hubs_admin_emails(%Dash.Account{} = account, old_email, email) do
+    for hub <- Dash.Hub.hubs_for_account(account) do
+      case Dash.RetClient.update_hub_admin_email(hub, old_email, email) do
+        :ok ->
+          :ok
+
+        :error ->
+          Logger.error("Could not update hub's admin email, fxa_uid is #{account.fxa_uid}")
+          :error
+
+        {:error, err} ->
+          Logger.error(
+            "Could not update hub's admin email, fxa_uid is #{account.fxa_uid}, error is: #{inspect(err)}"
+          )
+
+          :error
+      end
+    end
+  end
+
+  @spec add_email_to_account(%Account{}, binary) :: %Account{}
+  def add_email_to_account(%Account{} = account, email) when is_binary(email) do
+    account
+    |> Ecto.Changeset.change(email: email)
+    |> Repo.update!()
+  end
+
+  @spec update_email(%Account{}, binary) :: :ok | :error
+  def update_email(%Account{} = account, email) when is_binary(email) do
+    case account
+         |> Ecto.Changeset.change(email: email)
+         |> Repo.update() do
+      {:ok, _struct} ->
+        :ok
+
+      {:error, _changeset} ->
+        Logger.error("Issue updating account with email")
+        :error
+    end
+  end
 
   def delete_all_hubs_for_account(%Account{} = account) do
     hubs = Dash.Hub.hubs_for_account(account)

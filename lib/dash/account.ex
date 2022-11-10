@@ -10,19 +10,33 @@ defmodule Dash.Account do
   schema "accounts" do
     field :fxa_uid, :string
     field :auth_updated_at, :utc_datetime
+    field :email, :string
 
     timestamps()
   end
 
   def changeset(account, attrs) do
     account
-    |> cast(attrs, [:fxa_uid])
+    |> cast(attrs, [:fxa_uid, :email])
     |> validate_required([:fxa_uid])
     |> unique_constraint(:fxa_uid)
   end
 
   def account_for_fxa_uid(fxa_uid) when is_binary(fxa_uid) do
     Repo.get_by(Dash.Account, fxa_uid: fxa_uid)
+  end
+
+  def find_or_create_account_for_fxa_uid(fxa_uid, email)
+      when is_binary(fxa_uid) and is_binary(email) do
+    account = account_for_fxa_uid(fxa_uid)
+
+    case account do
+      %Dash.Account{} ->
+        if is_nil(account.email), do: Dash.add_email_to_account(account, email), else: account
+
+      nil ->
+        create_account_for_fxa_uid(fxa_uid, email)
+    end
   end
 
   def find_or_create_account_for_fxa_uid(fxa_uid) when is_binary(fxa_uid) do
@@ -35,6 +49,10 @@ defmodule Dash.Account do
       nil ->
         create_account_for_fxa_uid(fxa_uid)
     end
+  end
+
+  defp create_account_for_fxa_uid(fxa_uid, email) when is_binary(fxa_uid) do
+    Repo.insert!(%Dash.Account{fxa_uid: fxa_uid, email: email})
   end
 
   defp create_account_for_fxa_uid(fxa_uid) when is_binary(fxa_uid) do

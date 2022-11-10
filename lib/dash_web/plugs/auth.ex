@@ -49,7 +49,7 @@ defmodule DashWeb.Plugs.Auth do
       "fxa_plan_id" => fxa_plan_id
     } = claims
 
-    account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+    account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid, fxa_email)
     now = DateTime.to_unix(DateTime.utc_now())
 
     active_capabilities = Dash.get_all_active_capabilities_for_account(account)
