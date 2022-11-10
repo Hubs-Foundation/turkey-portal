@@ -48,10 +48,11 @@ x-mutagen:
       ignore:
         paths:
           - ".DS_Store"
+          - ".dockerignore"
           - ".gitignore"
-          - "docker-compose.yml"
           - "Dockerfile"
-          - "/node_modules/"
+          - "docker-compose.yml"
+          - "/bin/"
         vcs: true
       mode: "two-way-resolved"
     code:
