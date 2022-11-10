@@ -11,47 +11,75 @@ import { CookiesE } from 'types/Cookies';
 import { IncomingMessage } from 'http';
 import { setCookies } from 'cookies-next';
 
-type RedirectDataT = {
-  error: String;
-  redirect: 'auth';
+type UnauthenticatedResponseT = {
+  status: Number | undefined;
+  data: {
+    error: string;
+    redirect: string;
+  };
 };
 
-export function requireAuthenticationAndHubsOrSubscription(
-  gssp: Function
-): GetServerSideProps | Redirect {
-  return async (context: GetServerSidePropsContext) => {
-    const { req } = context;
+/**************************
+ *  RE-DIRECT UTILITIES
+ **************************/
 
-    /**
-     * Check if token is on the url param, if so redirect back to the dash with a clean /dashboard
-     * url so it is not exposed in the browser url UI.
-     */
-    if (didSetTurkeyauthCookie(context)) {
-      return {
-        redirect: {
-          destination: RoutesE.Dashboard,
-          permanent: false,
-        },
-      };
-    }
+const redirectConfig = {
+  auth: {
+    source: RoutesE.Dashboard,
+    destination: `https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}`,
+    permanent: false,
+  },
+  marketing: {
+    source: RoutesE.Dashboard,
+    destination: MARKETING_PAGE_URL,
+    permanent: false,
+  },
+  dashboard: {
+    destination: RoutesE.Dashboard,
+    permanent: false,
+  },
+  subscription: {
+    source: RoutesE.Dashboard,
+    destination: RoutesE.Subscribe,
+    permanent: false,
+  },
+};
 
-    // If no errors user is authenticated
-    try {
-      // TODO : MAYBE - Should we make a more explicit way to confirm a JWT here..
-      const account = await getAccount(req.headers as AxiosRequestHeaders);
-
-      // User is authenticated
-      if (account.hasHubs || account.hasSubscription) {
-        return await gssp(context, account);
-      }
-
-      // Authenticated, NO hubs OR NO subscription
-      return redirectToSubscribe();
-    } catch (error) {
-      return handleUnauthenticatedRedirects(error as AxiosError);
-    }
-  };
+/**
+ * To Auth
+ * @returns redirect
+ */
+function redirectToAuthServer() {
+  return { redirect: redirectConfig.auth };
 }
+
+/**
+ * To Marketing Page
+ * @returns redirect
+ */
+function redirectToMarketingPage() {
+  return { redirect: redirectConfig.marketing };
+}
+
+/**
+ * To Dashboard
+ * @returns redirect
+ */
+function redirectToDashboard() {
+  return { redirect: redirectConfig.dashboard };
+}
+
+/**
+ * To Subscription
+ * @returns redirect
+ */
+function redirectToSubscribe() {
+  return { redirect: redirectConfig.subscription };
+}
+
+/**************************
+ *  PRIVATE UTILITIES
+ **************************/
 
 /**
  * Set cookie from url parameter
@@ -77,108 +105,72 @@ function didSetTurkeyauthCookie(context: GetServerSidePropsContext): boolean {
   return true;
 }
 
+/**
+ * Handle redirects for authentication errors
+ * @param axiosError
+ * @returns
+ */
 function handleUnauthenticatedRedirects(axiosError: AxiosError) {
-  // User is not authenticated
-  const status: Number | undefined = axiosError.response?.status;
-  const data: unknown | undefined = axiosError.response?.data;
+  const { status, data } = axiosError.response as UnauthenticatedResponseT;
 
-  // If status is 401 AND there's a redirect specified, redirect them
-  // Otherwise redirect to marketing page
-  if (
-    status === 401 &&
-    checkRedirectDataType(data) &&
-    data.redirect === 'auth'
-  ) {
+  // If Redirect specified send them to auth
+  if (status === 401 && data?.redirect === 'auth') {
     return redirectToAuthServer();
-  } else if (status !== 401) {
-    // Unexpected error
-    console.error('Unexpected error in requireAuthentication');
-    console.error(`Response status: ${status}, error: ${axiosError}`);
   }
 
+  // Unexpected error
+  if (status !== 401) {
+    console.error(
+      `Unexpected error in requireAuthentication. Response status: ${status}, error: ${axiosError}`
+    );
+  }
+
+  // If no auth specified default to marketing page
   return redirectToMarketingPage();
 }
 
-// Type checker if obj is RedirectDataT
-function checkRedirectDataType(
-  obj: unknown | RedirectDataT
-): obj is RedirectDataT {
-  return (
-    typeof obj === 'object' &&
-    obj !== null &&
-    'error' in obj &&
-    'redirect' in obj
-  );
-}
-
-function redirectToAuthServer() {
-  return {
-    redirect: {
-      source: '/dashboard',
-      destination: `https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}`,
-      permanent: false,
-    },
-  };
-}
-
-function redirectToMarketingPage() {
-  return {
-    redirect: {
-      source: '/dashboard',
-      destination: MARKETING_PAGE_URL,
-      permanent: false,
-    },
-  };
-}
-
-function redirectToDashboard() {
-  return {
-    redirect: {
-      destination: RoutesE.Dashboard,
-      permanent: false,
-    },
-  };
-}
-
-function redirectToSubscribe() {
-  return {
-    redirect: {
-      source: '/dashboard',
-      destination: '/subscribe',
-      permanent: false,
-    },
-  };
-}
-
-// TODO EA remove this function when unauthenticated users are no longer redirected to marketing page
-const FALSE = 'false';
-type QueryRedirectT = {
-  redirect?: string;
-};
+/**************************
+ *  PUBLIC ROUTE GUARDS
+ **************************/
 
 /**
- * Local development only
- * Used for pasting document.cookie into the browser for local testing purposes
- * Checks for /subscribe page, then for "?redirect=false" in query params, then if we're on localhost
- *
- * @param req
- * @param query
- * @returns boolean
+ * Dashboard Route Guard
+ * @param gssp
+ * @returns
  */
-function shouldNotRedirect(
-  req: IncomingMessage,
-  query: QueryRedirectT
-): boolean {
-  if (
-    req.url?.includes('/subscribe') &&
-    query.redirect === FALSE &&
-    req.headers.host?.includes('localhost')
-  )
-    return true;
-  else return false;
+export function requireAuthenticationAndHubsOrSubscription(
+  gssp: Function
+): GetServerSideProps | Redirect {
+  return async (context: GetServerSidePropsContext) => {
+    const { req } = context;
+
+    /**
+     * Check if token is on the url param, if so redirect back to the dash with a clean /dashboard
+     * url so it is not exposed in the browser url UI.
+     */
+    if (didSetTurkeyauthCookie(context)) {
+      return redirectToDashboard();
+    }
+
+    // If no errors user is authenticated
+    try {
+      const account = await getAccount(req.headers as AxiosRequestHeaders);
+
+      // User is authenticated
+      if (account.hasSubscription) {
+        return await gssp(context, account);
+      }
+
+      // Authenticated, NO hubs OR NO subscription
+      return redirectToSubscribe();
+    } catch (error) {
+      return handleUnauthenticatedRedirects(error as AxiosError);
+    }
+  };
 }
 
 /**
+ * Subscription Route Guard
  * For authenticated subscribe page,redirect to /dashboard if you have hubs or subscription
  * Authenticated NO hubs AND NO subscription, stay on /subscribe page
  * Authenticated YES hubs OR YES subscription, redirect to /dashboard
@@ -192,44 +184,49 @@ export function subscriptionPageRequireAuthentication(
   return async (context) => {
     const { req, query } = context;
 
-    // shouldNotRedirect() Local development only
+    // Local development only
+    // - start
     if (shouldNotRedirect(req, query)) return await gssp(context);
+    // - end
 
     try {
       const account = await getAccount(req.headers as AxiosRequestHeaders);
-
-      if (account.hasHubs || account.hasSubscription) {
+      if (account.hasSubscription) {
         return redirectToDashboard();
-      } else {
-        return await gssp(context, account);
       }
+
+      return await gssp(context, account);
     } catch (error) {
       return handleUnauthenticatedRedirects(error as AxiosError);
     }
   };
 }
 
+/**************************
+ *  LOCL DEV UTILITIES
+ **************************/
+
 /**
- * Route User If Logged in and visits login/signup page
- * @param gssp
- * @returns GetServerSideProps
+ * Local development only
+ * Used for pasting document.cookie into the browser for local testing purposes
+ * Checks for /subscribe page, then for "?redirect=false" in query params, then if we're on localhost
+ *
+ * @param req
+ * @param query
+ * @returns boolean
  */
-export function checkLoggedIn(gssp: Function): GetServerSideProps {
-  return async (context) => {
-    const { req } = context;
-
-    try {
-      await getAccount(req.headers as AxiosRequestHeaders);
-
-      // If Authenticated Redirect to Dashboard.
-      return {
-        redirect: {
-          destination: RoutesE.Dashboard,
-          permanent: false,
-        },
-      };
-    } catch (error) {
-      return await gssp(context);
-    }
-  };
+function shouldNotRedirect(
+  req: IncomingMessage,
+  query: {
+    redirect?: string;
+  }
+): boolean {
+  if (
+    req.url?.includes('/subscribe') &&
+    query.redirect === 'false' &&
+    req.headers.host?.includes('localhost')
+  ) {
+    return true;
+  }
+  return false;
 }
