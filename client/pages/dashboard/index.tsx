@@ -159,7 +159,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
 
 export default Dashboard;
 
-export const getServerSideProps = requireAuthenticationAndHubsOrSubscription(
+export const getServerSideProps = requireAuthenticationAndSubscription(
   async (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
     try {
@@ -172,7 +172,6 @@ export const getServerSideProps = requireAuthenticationAndHubsOrSubscription(
         },
       };
     } catch (error) {
-      requireAuthenticationAndSubscription;
       console.error(error);
     }
   }
