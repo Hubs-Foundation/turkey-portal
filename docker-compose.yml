@@ -1,0 +1,63 @@
+version: "3.9"
+services:
+  client:
+    build:
+      context: .
+      target: dev
+    command: npm run dev
+    environment:
+      SERVER_HOSTNAME: server
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/favicon.ico"]
+    ports:
+      - "3000:3000"
+    volumes:
+      - code:/code
+    working_dir: /code/client
+  db:
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    healthcheck:
+      test: ["CMD", "pg_isready"]
+    image: "postgres:14-alpine"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  server:
+    build:
+      context: .
+      target: dev
+    command: mix phx.server
+    depends_on:
+      - db
+    environment:
+      DB_HOSTNAME: db
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4000/favicon.ico"]
+    ports:
+      - "4000:4000"
+    volumes:
+      - code:/code
+    working_dir: /code
+volumes:
+  code:
+  pgdata:
+x-mutagen:
+  sync:
+    defaults:
+      ignore:
+        paths:
+          - ".DS_Store"
+          - ".gitignore"
+          - "docker-compose.yml"
+          - "Dockerfile"
+          - "/node_modules/"
+        vcs: true
+      mode: "two-way-resolved"
+    code:
+      alpha: .
+      beta: "volume://code"
+      ignore:
+        paths:
+          - "/_build/"
+          - "/client/node_modules/"

@@ -1,20 +1,60 @@
 # Dash
 
-## Dependencies
+## Setup
 
-Install and start PostgreSQL (https://www.postgresql.org/). In development, use "postgres" for the username and password
+This codebase can be run locally using either containers or bare metal.
 
-Install and use asdf to manage erlang and elixir dependencies: https://asdf-vm.com/
+### Containers
 
-asdf will use the versions specified in the `.tool-versions` file. Just run `asdf install`.
+#### Initial Setup
 
-## Start the Phoenix server
+1. [Install Docker Compose](https://docs.docker.com/compose/install)
+2. [Install Mutagen Compose](https://github.com/mutagen-io/mutagen-compose#system-requirements)
+3. Create `./client/.npmrc` with the following contents, replacing
+   `{AUTH_TOKEN}` with a GitHub
+   [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token):
+   ```
+    registry=https://registry.npmjs.org/
+    @github:registry=https://npm.pkg.github.com/
+    //npm.pkg.github.com/:_authToken={AUTH_TOKEN}
+   ```
+4. Initialize the services with `bin/init`
 
-- Install server dependencies with `mix deps.get`
-- Create and migrate your database with `mix ecto.setup`
-- Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+#### Orchestration
 
-## Create a local user
+* Start containers with `bin/up`
+* Stop containers `bin/down`
+* Observe running containers with `bin/observe`[^1]
+* Restore the services to a fresh state with `bin/reset`
+
+[^1]: Requires `tmux` and `watch` program files in the user’s path
+
+#### Command Execution
+
+Common commands can be easily executed inside a running container from your
+shell using the scripts inside the given service’s `bin/` directory.  For
+example, calling `bin/mix deps.get` from `./` will download the dependencies
+for the server.  Calling `bin/npx prettier --write .` from `./client/` will
+format the client files using Prettier.
+
+When executing the `mix` tasks referenced in this README, use `bin/mix`.
+
+### Bare Metal
+
+#### Initial Setup
+
+1. Install and start [PostgreSQL](https://www.postgresql.org/). In development,
+   use "postgres" for the username and password.
+2. Install and use [asdf](https://asdf-vm.com/) to manage Erlang and Elixir dependencies
+3. Run `asdf install` to install the language versions in the `.tool-versions` file
+
+#### Running
+1. Install server dependencies with `mix deps.get`
+2. Create and migrate your database with `mix ecto.setup`
+3. Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix
+   phx.server`
+
+## User Creation
 
 Run the following commands to create a local user and a test hub:
 

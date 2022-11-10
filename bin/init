@@ -1,0 +1,6 @@
+#!/bin/bash
+basedir=$(dirname "$0")/..
+mutagen-compose -f "$basedir/docker-compose.yml" run --rm server sh -c 'mix do deps.get, deps.compile, ecto.create' &&
+mutagen-compose -f "$basedir/docker-compose.yml" run --rm client sh -c '[ -d "node_modules" ] || npm ci'
+
+mutagen-compose down
