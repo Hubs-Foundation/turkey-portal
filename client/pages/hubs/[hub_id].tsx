@@ -160,8 +160,8 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
   );
 };
 
-export const getServerSideProps = requireAuthenticationAndHubsOrSubscription(
-  async (context: GetServerSideProrequireAuthenticationAndSubscription
+export const getServerSideProps = requireAuthenticationAndSubscription(
+  async (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
     try {
       const subscription = await getSubscription(
