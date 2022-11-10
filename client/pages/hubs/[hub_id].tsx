@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { HubT, UpdateHubT, StatusE } from 'types/General';
 import { RoutesE } from 'types/Routes';
 import { getHub, updateHub } from 'services/hub.service';
-import { requireAuthenticationAndHubsOrSubscription } from 'services/routeGuard.service';
+import { requireAuthenticationAndSubscription } from 'services/routeGuard.service';
 import Head from 'next/head';
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
 import { ToastContainer, toast } from 'react-toastify';
@@ -161,7 +161,7 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
 };
 
 export const getServerSideProps = requireAuthenticationAndHubsOrSubscription(
-  async (context: GetServerSidePropsContext) => {
+  async (context: GetServerSideProrequireAuthenticationAndSubscription
     // Your normal `getServerSideProps` code here
     try {
       const subscription = await getSubscription(

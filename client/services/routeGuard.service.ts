@@ -16,7 +16,7 @@ type RedirectDataT = {
   redirect: 'auth';
 };
 
-export function requireAuthenticationAndHubsOrSubscription(
+export function requireAuthenticationAndSubscription(
   gssp: Function
 ): GetServerSideProps | Redirect {
   return async (context: GetServerSidePropsContext) => {
