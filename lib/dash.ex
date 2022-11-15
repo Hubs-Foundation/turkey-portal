@@ -204,4 +204,18 @@ defmodule Dash do
       Dash.Hub.delete_hub(hub)
     end
   end
+
+  def fxa_uid_to_deleted_list(fxa_uid) when is_binary(fxa_uid) do
+    %Dash.DeletedFxaAccount{}
+    |> Dash.DeletedFxaAccount.changeset(%{fxa_uid: fxa_uid})
+    |> Dash.Repo.insert!()
+  end
+
+  def was_deleted?(fxa_uid) when is_binary(fxa_uid) do
+    Repo.exists?(
+      from(d in Dash.DeletedFxaAccount,
+        where: d.fxa_uid == ^fxa_uid
+      )
+    )
+  end
 end

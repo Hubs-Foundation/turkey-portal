@@ -55,6 +55,9 @@ defmodule DashWeb.Plugs.Auth do
     active_capabilities = Dash.get_all_active_capabilities_for_account(account)
 
     cond do
+      Dash.was_deleted?(fxa_uid) ->
+        process_jwt(conn, %{is_valid: false, claims: claims})
+
       not is_nil(account.auth_updated_at) and
           DateTime.compare(unix_to_datetime(issued_at), account.auth_updated_at) == :lt ->
         # If token issued before an Authorization change in the account, invalidate token and login again
@@ -66,6 +69,7 @@ defmodule DashWeb.Plugs.Auth do
 
       true ->
         # Successfully authenticated
+
         conn
         |> assign(:account, account)
         |> assign(:fxa_account_info, %Dash.FxaAccountInfo{

@@ -44,6 +44,7 @@ defmodule Dash.FxaEvents do
   def handle_account_deletion_event(fxa_uid) do
     case Dash.Account.delete_account_and_hubs(fxa_uid) do
       :ok ->
+        Dash.fxa_uid_to_deleted_list(fxa_uid)
         :ok
 
       :error ->
