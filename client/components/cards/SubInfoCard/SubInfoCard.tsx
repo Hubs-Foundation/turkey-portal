@@ -37,7 +37,7 @@ const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
 
   /**
-   * Check is region is german of not
+   * Check If Germany or not
    * @retun Boolean
    */
   const isGermany = useCallback((): boolean => {
