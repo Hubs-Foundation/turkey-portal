@@ -269,7 +269,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       send(stub_pid, {:continue})
       assert %{"subdomain" => "new-subdomain"} = get_hub(conn, hub)
     end
-
   end
 
   describe "Subdomain validation" do
