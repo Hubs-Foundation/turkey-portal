@@ -385,3 +385,78 @@ MARGIN
     margin-left: 20px;
   }
 }
+
+// Create Size Value Array
+$start: 1;
+$end: 100;
+$array: '';
+$unit: 'px';
+
+@for $i from $start + 1 through $end {
+  $array: append($array, $i, comma);
+  $array: set-nth($array, 1, $start);
+}
+
+@each $size in $array {
+  /**
+  PADDING
+  **/
+
+  // Padding: General
+  .p-#{$size} {
+    padding: #{$size}#{$unit};
+  }
+
+  // Padding: Horizontal
+  .px-#{$size} {
+    padding-left: #{$size}#{$unit};
+    padding-right: #{$size}#{$unit};
+  }
+
+  // Padding: Vertical
+  .py-#{$size} {
+    padding-top: #{$size}#{$unit};
+    padding-bottom: #{$size}#{$unit};
+  }
+
+  // Padding: Top
+  .pt-#{$size} {
+    padding-top: #{$size}#{$unit};
+  }
+
+  // Padding: Top
+  .pb-#{$size} {
+    padding-bottom: #{$size}#{$unit};
+  }
+
+  /**
+  MARGIN
+  **/
+
+  // Margin: General
+  .m-#{$size} {
+    margin: #{$size}#{$unit};
+  }
+
+  // Margin: Horizontal
+  .mx-#{$size} {
+    margin-left: #{$size}#{$unit};
+    margin-right: #{$size}#{$unit};
+  }
+
+  // Margin: Vertical
+  .my-#{$size} {
+    margin-top: #{$size}#{$unit};
+    margin-bottom: #{$size}#{$unit};
+  }
+
+  // Margin: Top
+  .mt-#{$size} {
+    margin-top: #{$size}#{$unit};
+  }
+
+  // Margin: Top
+  .mb-#{$size} {
+    margin-bottom: #{$size}#{$unit};
+  }
+}
