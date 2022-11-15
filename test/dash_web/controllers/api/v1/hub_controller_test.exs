@@ -270,23 +270,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       assert %{"subdomain" => "new-subdomain"} = get_hub(conn, hub)
     end
 
-    test "should call reticulum to rewrite assets", %{conn: conn} do
-      stub_ret_health_check()
-      stub_orch_patch()
-
-      expect_ret_rewrite_assets(fn body ->
-        json = Jason.decode!(body)
-        assert json["old_domain"] =~ ~r/^old-subdomain/
-        assert json["new_domain"] =~ ~r/^new-subdomain/
-      end)
-
-      %{hub: hub} = create_test_account_and_hub(subdomain: "old-subdomain")
-
-      conn |> patch_subdomain(hub, "new-subdomain", expected_status: :ok)
-
-      %{"subdomain" => patched_subdomain} = get_hub(conn, hub)
-      assert patched_subdomain == "new-subdomain"
-    end
   end
 
   describe "Subdomain validation" do
