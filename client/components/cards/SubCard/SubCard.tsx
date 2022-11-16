@@ -88,7 +88,7 @@ const SubCard = ({
               <span className={styles.price}>
                 {/* TODO - tech debt localization
                   Use something like https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat 
-                  or i18next to localize the price here - check with backend if they are already formatting anything since currency is being deliverd
+                  or i18next to localize the price here - check with backend if they are already formatting anything since currency is being delivered
                   with response 
                 */}
                 {convertCurrency(subscription.currency)}

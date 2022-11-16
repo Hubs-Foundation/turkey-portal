@@ -1,4 +1,4 @@
-import { CountrieCurrency } from 'types/Countries';
+import { RegionCurrency, RegionsT } from 'types/Countries';
 
 /**
  * Convert abbrev to symbol
@@ -6,7 +6,7 @@ import { CountrieCurrency } from 'types/Countries';
  * @returns
  */
 export const convertCurrency = (currency: string | null) => {
-  const { US, DE } = CountrieCurrency;
+  const { US, DE } = RegionCurrency;
   if (!currency) return;
   switch (currency.toUpperCase()) {
     case DE.abbrev:
@@ -16,4 +16,15 @@ export const convertCurrency = (currency: string | null) => {
     default:
       return US.symbol;
   }
+};
+
+/**
+ * Get meta data about a region
+ * @param region
+ * @returns RegionCurrency[country code]
+ */
+export const getCurrencyMeta = (region: RegionsT) => {
+  if (!region) return RegionCurrency.US;
+
+  return RegionCurrency[region];
 };

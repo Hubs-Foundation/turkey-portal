@@ -2,7 +2,9 @@ export enum CountriesE {
   GERMANY = 'DE',
 }
 
-export const CountrieCurrency = {
+export type RegionsT = 'DE' | 'US';
+
+export const RegionCurrency = {
   DE: {
     abbrev: 'EURO',
     symbol: '€',
