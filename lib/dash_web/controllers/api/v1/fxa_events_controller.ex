@@ -24,7 +24,8 @@ defmodule DashWeb.Api.V1.FxaEventsController do
       |> Map.to_list()
       |> List.first()
 
-    Logger.warn("Testing event_data #{event} and event_data is: #{inspect(event_data)}")
+    Logger.warn("Testing event_data #{event} and FULL fxa_event is: #{inspect(fxa_event)}")
+    Logger.warn("Passing in event_data #{event_data}")
 
     result =
       cond do
