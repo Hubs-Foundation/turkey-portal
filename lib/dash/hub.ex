@@ -186,9 +186,11 @@ defmodule Dash.Hub do
   def delete_hub(%Dash.Hub{} = hub) do
     with :ok <- delete_hub_instance(hub) do
       delete_hub_record(hub)
+      :ok
     else
       _ ->
         Logger.error("Issue deleting hub")
+        :error
     end
   end
 

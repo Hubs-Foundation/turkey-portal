@@ -578,17 +578,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end)
   end
 
-  defp expect_ret_rewrite_assets(body_callback) do
-    Dash.HttpMock
-    |> Mox.expect(:post, 1, fn url, body, _headers, _opts ->
-      cond do
-        url =~ ~r/rewrite_assets$/ ->
-          body_callback.(body)
-          {:ok, %HTTPoison.Response{status_code: 200}}
-      end
-    end)
-  end
-
   # Used only in /health tests
   defp expect_ret_wait_on_health(
          time_until_healthy_ms: time_until_healthy_ms,

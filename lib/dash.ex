@@ -203,5 +203,7 @@ defmodule Dash do
     for hub <- hubs do
       Dash.Hub.delete_hub(hub)
     end
+
+    :ok
   end
 end
