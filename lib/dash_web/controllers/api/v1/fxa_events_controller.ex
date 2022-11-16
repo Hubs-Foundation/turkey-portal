@@ -24,6 +24,8 @@ defmodule DashWeb.Api.V1.FxaEventsController do
       |> Map.to_list()
       |> List.first()
 
+    Logger.warn("Testing event_data #{event} and event_data is: #{inspect(event_data)}")
+
     result =
       cond do
         event =~ @password_change ->
@@ -36,7 +38,6 @@ defmodule DashWeb.Api.V1.FxaEventsController do
           Dash.FxaEvents.handle_profile_change(fxa_uid, event_data)
 
         event =~ @subscription_changed ->
-          IO.inspect(event_data)
           Dash.FxaEvents.handle_subscription_changed_event(fxa_uid, event_data)
 
         true ->
