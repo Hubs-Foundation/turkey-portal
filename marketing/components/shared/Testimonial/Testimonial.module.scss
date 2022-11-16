@@ -16,10 +16,6 @@
 
 .header {
   text-align: center;
-
-  h2 {
-    @include heading-lg;
-  }
 }
 
 .content {

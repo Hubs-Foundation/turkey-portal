@@ -5,7 +5,7 @@ import critical from '../../../../public/critical.png';
 const Error = () => {
   return (
     <section className={styles.error_wrapper}>
-      <div className="margin-right-10">
+      <div className="mr-10">
         <Image src={critical} width={30} height={30} alt="warning" />
       </div>
       <div>

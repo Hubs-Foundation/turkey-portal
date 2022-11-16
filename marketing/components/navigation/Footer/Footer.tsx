@@ -145,7 +145,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
             <div className="u-body-md u-color-text-reverse">
               Follow @MozillaHubs
             </div>
-            <div className="flex-justify-between margin-top-20">
+            <div className="flex-justify-between mt-20">
               <a onClick={handleDiscordClick} href="#">
                 <Image
                   width={isDesktopDown ? 36 : ''}

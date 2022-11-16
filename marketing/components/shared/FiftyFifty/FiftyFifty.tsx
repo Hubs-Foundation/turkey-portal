@@ -78,15 +78,15 @@ const FiftyFifty = ({
               </div>
             )}
             {subTitle ? (
-              <h4>{subTitle}</h4>
+              <h4 className="u-heading-sm">{subTitle}</h4>
             ) : (
               <div className={styles.bar_wrapper}>
                 <div className={styles.bar} />
               </div>
             )}
-            {title && <h3>{title}</h3>}
-            {body && <p>{body}</p>}
-            {children && <div>{children}</div>}
+            {title && <h3 className="u-heading-xxl mt-4 mb-18">{title}</h3>}
+            {body && <p className="u-body-md">{body}</p>}
+            {children && <div className="u-body-md">{children}</div>}
           </div>
         </div>
       </div>

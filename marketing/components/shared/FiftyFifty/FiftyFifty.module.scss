@@ -60,21 +60,6 @@
     width: 100%;
   }
 
-  h3 {
-    @include heading-xxl;
-    margin: 4px 0 18px;
-  }
-
-  h4 {
-    @include heading-sm;
-    margin-bottom: 0;
-  }
-
-  p,
-  div {
-    @include body-md;
-  }
-
   &_wrapper {
     @include desktop-down {
       display: flex;

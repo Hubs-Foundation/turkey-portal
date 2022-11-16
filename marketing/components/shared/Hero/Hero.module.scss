@@ -51,16 +51,6 @@
   }
 }
 
-.title {
-  @include heading-xxl;
-  margin: 0 0 16px;
-}
-
-.body {
-  margin: 0 0 24px;
-  @include body-md;
-}
-
 .backgroundImage {
   z-index: -1;
 }

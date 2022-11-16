@@ -56,16 +56,6 @@
 
   &_header {
     text-align: center;
-
-    h2 {
-      @include heading-lg;
-      margin: 0 0 16px;
-    }
-
-    p {
-      @include body-md;
-      margin: 0 0 32px;
-    }
   }
 
   &_contents {

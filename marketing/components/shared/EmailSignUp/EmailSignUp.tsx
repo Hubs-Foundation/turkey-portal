@@ -122,8 +122,8 @@ const EmailSignUp = () => {
                 <div className={styles.bar}></div>
               </div>
             )}
-            <h2>Get immersed in Hubs!</h2>
-            <p>
+            <h2 className="u-heading-lg mb-16">Get immersed in Hubs!</h2>
+            <p className="u-body-md mb-32">
               Sign up here to get updates on what is new with Hubs and we will
               keep you up to date with the latest {!isDesktopDown && <br />}{' '}
               news, updates, and product offerings. We can&apos;t wait to show
@@ -160,7 +160,7 @@ const EmailSignUp = () => {
                         label="Email Address"
                         placeholder="name@email.com"
                         required={true}
-                        classProp="margin-bottom-16"
+                        classProp="mb-16"
                         {...field}
                       />
                     )}
@@ -175,7 +175,7 @@ const EmailSignUp = () => {
                         <fieldset
                           id="sb_radio"
                           onChange={onChange}
-                          className="margin-bottom-16"
+                          className="mb-16"
                         >
                           <legend className={styles.form_legend}>Format</legend>
                           <div className="flex">
@@ -203,7 +203,7 @@ const EmailSignUp = () => {
 
                   {/* CONFIRMATION CHECKBOX  */}
                   <Checkbox
-                    classProp="u-content-box margin-left-13"
+                    classProp="u-content-box ml-13"
                     onChange={onConfirm}
                     checked={confirm}
                     label={<Label />}
@@ -211,7 +211,7 @@ const EmailSignUp = () => {
 
                   {/* SUBMIT  */}
                   <Button
-                    classProp="margin-top-16"
+                    classProp="mt-16"
                     label="submit"
                     type="submit"
                     disabled={!confirm}

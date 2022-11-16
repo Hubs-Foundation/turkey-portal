@@ -47,7 +47,7 @@ const MobileSideNav = ({
       >
         <div className={styles.banner_gradient} />
         <div className={styles.nav_container}>
-          <div className="flex-justify-end padding-20">
+          <div className="flex-justify-end p-20">
             <Button
               label="close mobile navigation"
               category={ButtonCategoriesE.PRIMARY_CLEAR}
@@ -59,12 +59,12 @@ const MobileSideNav = ({
           </div>
 
           {/* Logo */}
-          <div className="flex-justify-center margin-bottom-10">
+          <div className="flex-justify-center mb-10">
             <HubsLogo />
           </div>
 
           {/* LINKS  */}
-          <ul className="margin-0">
+          <ul className="m-0">
             <li>
               <a className={styles.nav_link} href="/labs">
                 Creator Labs
@@ -84,8 +84,8 @@ const MobileSideNav = ({
           </ul>
 
           {/* ACTIONS  */}
-          <div className="padding-24">
-            <div className="margin-bottom-10 flex">
+          <div className="p-24">
+            <div className="mb-10 flex">
               <Button
                 label="Get started and subscribe to Hubs"
                 classProp="flex-grow-1 "

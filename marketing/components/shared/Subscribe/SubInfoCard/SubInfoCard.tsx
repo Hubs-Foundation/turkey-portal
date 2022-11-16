@@ -21,7 +21,7 @@ const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   return (
     <div className={styles.info_wrapper}>
       <div className="flex-box">
-        <Icon name={icon} size={30} classProp="margin-right-20 margin-top-2 " />
+        <Icon name={icon} size={30} classProp="mr-20 mt-2 " />
       </div>
       <div className="u-body-md">
         <p>
@@ -65,8 +65,8 @@ const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
           <div className={styles.price_container}>
             <div className={styles.price}>
               {/* TODO pull price and currency from subplat here  */}
-              <h2>$20</h2>
-              <p>USD</p>
+              <h2 className="u-heading-lg mr-4">$20</h2>
+              <p className="u-body-md">USD</p>
             </div>
             <p className={styles.price_cadence}>per month</p>
           </div>
@@ -86,7 +86,7 @@ const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
           })}
 
           {/* LOCATION CONFIRMATION  */}
-          <form className="u-content-box margin-top-16 margin-bottom-16">
+          <form className="u-content-box mt-16 mb-16">
             <Checkbox
               classProp="u-content-box"
               onChange={onToggleConfirmation}

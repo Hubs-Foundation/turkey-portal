@@ -45,16 +45,6 @@
   align-items: baseline;
   margin: 0;
 
-  h2 {
-    @include heading-lg;
-    margin: 0 4px 0 0;
-  }
-
-  p {
-    @include body-md;
-    margin: 0;
-  }
-
   &_wrapper {
     background-color: $color-background-subtle-callout;
     border-radius: 20px;
