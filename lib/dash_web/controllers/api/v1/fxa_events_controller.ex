@@ -36,6 +36,7 @@ defmodule DashWeb.Api.V1.FxaEventsController do
           Dash.FxaEvents.handle_profile_change(fxa_uid, event_data)
 
         event =~ @subscription_changed ->
+          IO.inspect(event_data)
           Dash.FxaEvents.handle_subscription_changed_event(fxa_uid, event_data)
 
         true ->
@@ -57,11 +58,8 @@ defmodule DashWeb.Api.V1.FxaEventsController do
         # If response other than 200 is returned, FxA will retry
         Logger.warn("FxaEventsController hit random error: FxA will retry")
 
-        # TODO EA make this error before launch
-        # conn
-        # |> send_resp(500, "Internal Server Error")
         conn
-        |> send_resp(200, [])
+        |> send_resp(500, "Internal Server Error")
     end
   end
 end
