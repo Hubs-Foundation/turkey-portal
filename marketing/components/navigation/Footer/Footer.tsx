@@ -107,7 +107,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
               href="https://hubs.mozilla.com/docs/welcome.html"
               className={styles.link}
             >
-              Checkout Out Our Guides
+              Check Out Our Guides
             </a>
             <a
               target="_blank"
