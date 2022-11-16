@@ -1,11 +1,11 @@
 import { useState, useCallback } from 'react';
 import styles from './SubCard.module.scss';
 import CardButton from '../../shared/CardButton/CardButton';
-import { MonthE } from 'types/Date';
 import { SubscriptionT } from 'services/subscription.service';
 import Modal from '@Shared/Modal/Modal';
 import SubscriptionModal from 'components/Modals/SubscriptionModal/SubscriptionModal';
 import { HUB_ROOT_DOMAIN, FXA_SERVER } from 'config';
+import { convertCurrency } from 'util/utilities';
 
 type SubCardPropsT = {
   subdomain: string;
@@ -88,10 +88,11 @@ const SubCard = ({
               <span className={styles.price}>
                 {/* TODO - tech debt localization
                   Use something like https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat 
-                  or i18next to localize the price here - check with backend if they are already formatting anything since currency is being deliverd
+                  or i18next to localize the price here - check with backend if they are already formatting anything since currency is being delivered
                   with response 
                 */}
-                ${Number(subscription.amount).toFixed(2)}
+                {convertCurrency(subscription.currency)}
+                {Number(subscription.amount).toFixed(2)}
               </span>
               <span className={styles.currency}>{subscription.currency}</span>
             </div>
