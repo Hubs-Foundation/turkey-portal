@@ -64,6 +64,7 @@ defmodule Dash.FxaEvents do
   # Not an email changed event, other profile data changed, no action
   def handle_profile_change(_fxa_uid, _event_data), do: :ok
 
+  @spec handle_subscription_changed_event(String.t(), event_data) :: :ok | :error
   def handle_subscription_changed_event(
         fxa_uid,
         %{"capabilities" => capabilities, "isActive" => is_active, "changeTime" => change_time} =
@@ -86,6 +87,8 @@ defmodule Dash.FxaEvents do
     end
 
     Dash.Account.set_auth_updated_at(fxa_uid, change_time_dt)
+
+    :ok
   end
 
   def unix_to_utc_datetime(fxa_timestamp_str) when is_binary(fxa_timestamp_str) do
