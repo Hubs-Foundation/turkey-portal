@@ -230,38 +230,112 @@ $unit: 'px';
   // Padding: General
   .p-#{$size} {
     padding: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        padding: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        padding: #{$size}#{$unit};
+      }
+    }
   }
 
   // Padding: Horizontal
   .px-#{$size} {
     padding-left: #{$size}#{$unit};
     padding-right: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        padding-left: #{$size}#{$unit};
+        padding-right: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        padding-left: #{$size}#{$unit};
+        padding-right: #{$size}#{$unit};
+      }
+    }
   }
 
   // Padding: Vertical
   .py-#{$size} {
     padding-top: #{$size}#{$unit};
     padding-bottom: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        padding-top: #{$size}#{$unit};
+        padding-bottom: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        padding-top: #{$size}#{$unit};
+        padding-bottom: #{$size}#{$unit};
+      }
+    }
   }
 
   // Padding: Top
   .pt-#{$size} {
     padding-top: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        padding-top: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        padding-top: #{$size}#{$unit};
+      }
+    }
   }
 
   // Padding: Top
   .pb-#{$size} {
     padding-bottom: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        padding-bottom: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        padding-bottom: #{$size}#{$unit};
+      }
+    }
   }
 
   // Margin: Right
   .pr-#{$size} {
     padding-right: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        padding-right: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        padding-right: #{$size}#{$unit};
+      }
+    }
   }
 
   // Margin: Left
   .pl-#{$size} {
     padding-left: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        padding-left: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        padding-left: #{$size}#{$unit};
+      }
+    }
   }
 
   /**
@@ -271,37 +345,111 @@ $unit: 'px';
   // Margin: General
   .m-#{$size} {
     margin: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        margin: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        margin: #{$size}#{$unit};
+      }
+    }
   }
 
   // Margin: Horizontal
   .mx-#{$size} {
     margin-left: #{$size}#{$unit};
     margin-right: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        margin-left: #{$size}#{$unit};
+        margin-right: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        margin-left: #{$size}#{$unit};
+        margin-right: #{$size}#{$unit};
+      }
+    }
   }
 
   // Margin: Vertical
   .my-#{$size} {
     margin-top: #{$size}#{$unit};
     margin-bottom: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        margin-top: #{$size}#{$unit};
+        margin-bottom: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        margin-top: #{$size}#{$unit};
+        margin-bottom: #{$size}#{$unit};
+      }
+    }
   }
 
   // Margin: Top
   .mt-#{$size} {
     margin-top: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        margin-top: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        margin-top: #{$size}#{$unit};
+      }
+    }
   }
 
   // Margin: Top
   .mb-#{$size} {
     margin-bottom: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        margin-bottom: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        margin-bottom: #{$size}#{$unit};
+      }
+    }
   }
 
   // Margin: Right
   .mr-#{$size} {
     margin-right: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        margin-right: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        margin-right: #{$size}#{$unit};
+      }
+    }
   }
 
   // Margin: Left
   .ml-#{$size} {
     margin-left: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        margin-left: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        margin-left: #{$size}#{$unit};
+      }
+    }
   }
 }
