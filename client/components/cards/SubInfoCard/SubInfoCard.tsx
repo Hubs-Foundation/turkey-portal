@@ -69,7 +69,7 @@ const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
     const plan: string = isEuro() ? PLAN_ID_EA_DE : PLAN_ID_EA;
     const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${plan}`;
     window.open(url);
-  }, [region]);
+  }, [isEuro]);
 
   const onToggleLocationConfirmation = useCallback((value: boolean) => {
     setLocationConfirmed(value);
