@@ -22,7 +22,7 @@ const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   return (
     <div className={styles.info_wrapper}>
       <div className="flex-box">
-        <Icon name={icon} size={30} classProp="margin-right-20" />
+        <Icon name={icon} size={30} classProp="mr-20" />
       </div>
       <div className="u-body-md">
         <p>
@@ -69,7 +69,7 @@ const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
     const plan: string = isEuro() ? PLAN_ID_EA_DE : PLAN_ID_EA;
     const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${plan}`;
     window.open(url);
-  }, [region]);
+  }, [isEuro]);
 
   const onToggleLocationConfirmation = useCallback((value: boolean) => {
     setLocationConfirmed(value);
@@ -107,7 +107,7 @@ const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
       </div>
 
       {/* LOCATION CONFIRMATION  */}
-      <form className="u-content-box margin-top-16 margin-bottom-16">
+      <form className="u-content-box mt-16 mb-16">
         <Checkbox
           classProp="u-content-box"
           onChange={onToggleLocationConfirmation}

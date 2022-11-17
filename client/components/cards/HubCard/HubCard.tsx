@@ -115,7 +115,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
           {/* Did Revert Error  */}
           {showRevertError && (
             <ErrorBox
-              classProp="margin-bottom-12"
+              classProp="mb-12"
               message={Message.updateSubdomainErrorMessage}
               onTryAgainClick={onTryReupdate}
               canTryAgain={canTryAgain()}

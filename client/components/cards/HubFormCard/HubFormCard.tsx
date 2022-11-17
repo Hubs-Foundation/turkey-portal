@@ -175,7 +175,7 @@ const HubFormCard = ({
             size={ButtonSizesE.LARGE}
             category={ButtonCategoriesE.PRIMARY_CLEAR}
             icon="arrow-left"
-            classProp="margin-right-5"
+            classProp="mr-5"
           />
           <h1 className={styles.title}>Hub Details</h1>
         </div>
@@ -217,7 +217,7 @@ const HubFormCard = ({
                       onFocus={handleOnFocus}
                       minLength={3}
                       maxLength={63}
-                      classProp="margin-bottom-10"
+                      classProp="mr-10"
                       placeholder="Web Address (URL)"
                       label="Web Address (URL)"
                       info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
@@ -265,7 +265,7 @@ const HubFormCard = ({
           <div className={styles.actions_wrapper}>
             <Button
               label="cancel"
-              classProp="margin-right-5"
+              classProp="mr-5"
               onClick={handleCancelClick}
               category={ButtonCategoriesE.PRIMARY_CLEAR}
               text="Cancel"
