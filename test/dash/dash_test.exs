@@ -84,11 +84,11 @@ defmodule Dash.Test do
     test "true if has account" do
       fxa_uid = "fxa_uid_test"
       Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      assert true === Dash.has_account_for_fxa_uid?(fxa_uid)
+      assert Dash.has_account_for_fxa_uid?(fxa_uid)
     end
 
     test "false if no account" do
-      assert false === Dash.has_account_for_fxa_uid?("fxa-uid")
+      refute Dash.has_account_for_fxa_uid?("fxa-uid")
     end
   end
 
@@ -97,13 +97,13 @@ defmodule Dash.Test do
       fxa_uid = "fxa_uid_test"
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
       create_capabilities(account, 1)
-      assert true === Dash.has_capability?(account)
+      assert Dash.has_capability?(account)
     end
 
     test "false if account has no capabilities" do
       fxa_uid = "fxa_uid_test"
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      assert false === Dash.has_capability?(account)
+      refute Dash.has_capability?(account)
     end
   end
 
@@ -117,7 +117,7 @@ defmodule Dash.Test do
 
       Dash.handle_first_sign_in_initialize_subscriptions(account, [], now)
 
-      assert false === Dash.has_capability?(account)
+      refute Dash.has_capability?(account)
       assert [] = Dash.get_all_active_capabilities_for_account(account)
     end
 
@@ -135,7 +135,7 @@ defmodule Dash.Test do
         now
       )
 
-      assert true === Dash.has_capability?(account)
+      assert Dash.has_capability?(account)
 
       active_capabilities = Dash.get_all_active_capabilities_for_account(account)
       assert [_] = active_capabilities
