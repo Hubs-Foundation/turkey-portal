@@ -217,9 +217,7 @@ defmodule Dash do
   end
 
   def fxa_uid_to_deleted_list(fxa_uid) when is_binary(fxa_uid) do
-    %Dash.DeletedFxaAccount{}
-    |> Dash.DeletedFxaAccount.changeset(%{fxa_uid: fxa_uid})
-    |> Dash.Repo.insert!()
+    Dash.Repo.insert!(%Dash.DeletedFxaAccount{fxa_uid: fxa_uid})
   end
 
   def was_deleted?(fxa_uid) when is_binary(fxa_uid) do

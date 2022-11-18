@@ -9,6 +9,5 @@ defmodule Dash.Repo.Migrations.CreateDeletedFxaAccounts do
     end
 
     create unique_index(:deleted_fxa_accounts, [:fxa_uid])
-    create index(:deleted_fxa_accounts, [:fxa_uid])
   end
 end
