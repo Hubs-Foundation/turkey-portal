@@ -20,7 +20,7 @@ defmodule Dash.AccountTest do
       hubs = Dash.Hub.hubs_for_account(account)
       [_ | _] = hubs
 
-      Dash.Account.delete_account_and_hubs(fxa_uid)
+      Dash.Account.delete_account_and_hubs(account)
 
       hubs = Dash.Hub.hubs_for_account(account)
       assert [] === hubs
@@ -58,14 +58,6 @@ defmodule Dash.AccountTest do
       updated_account = Dash.Account.find_or_create_account_for_fxa_uid("fxa_uid")
       assert new_email === updated_account.email
       assert :ok === result
-    end
-  end
-
-  describe "has_capability?" do
-    test "if account has no capabilities in db, returns false" do
-    end
-
-    test "if account has capabilities in db, returns true" do
     end
   end
 end

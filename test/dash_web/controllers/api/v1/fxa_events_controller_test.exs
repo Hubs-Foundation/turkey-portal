@@ -201,7 +201,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
              |> post("/api/v1/events/fxa")
              |> response(200)
 
-      assert false = Dash.has_account_for_fxa_uid?(fxa_uid)
+      assert false === Dash.has_account_for_fxa_uid?(fxa_uid)
     end
 
     test "No account is created password changed event", %{conn: conn} do
@@ -219,7 +219,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
              |> post("/api/v1/events/fxa")
              |> response(200)
 
-      assert false = Dash.has_account_for_fxa_uid?(fxa_uid)
+      assert false === Dash.has_account_for_fxa_uid?(fxa_uid)
     end
 
     test "No account is created for profile changed event", %{conn: conn} do
@@ -234,7 +234,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
              |> post("/api/v1/events/fxa")
              |> response(200)
 
-      assert false = Dash.has_account_for_fxa_uid?(fxa_uid)
+      assert false === Dash.has_account_for_fxa_uid?(fxa_uid)
     end
 
     test "Account is created for subscription changed event", %{conn: conn} do
@@ -251,7 +251,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
              |> post("/api/v1/events/fxa")
              |> response(200)
 
-      assert true = Dash.has_account_for_fxa_uid?(fxa_uid)
+      assert true === Dash.has_account_for_fxa_uid?(fxa_uid)
     end
   end
 

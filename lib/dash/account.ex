@@ -61,10 +61,8 @@ defmodule Dash.Account do
     |> Dash.Repo.insert!()
   end
 
-  @spec delete_account_and_hubs(String.t()) :: :error | :ok
-  def delete_account_and_hubs(fxa_uid) do
-    account = account_for_fxa_uid(fxa_uid)
-
+  @spec delete_account_and_hubs(%Dash.Account{}) :: :error | :ok
+  def delete_account_and_hubs(%Dash.Account{} = account) do
     Dash.delete_all_hubs_for_account(account)
 
     Dash.delete_all_capabilities_for_account(account)

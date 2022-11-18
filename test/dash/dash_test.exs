@@ -84,11 +84,11 @@ defmodule Dash.Test do
     test "true if has account" do
       fxa_uid = "fxa_uid_test"
       Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      assert true = Dash.has_account_for_fxa_uid?(fxa_uid)
+      assert true === Dash.has_account_for_fxa_uid?(fxa_uid)
     end
 
     test "false if no account" do
-      assert false = Dash.has_account_for_fxa_uid?("fxa-uid")
+      assert false === Dash.has_account_for_fxa_uid?("fxa-uid")
     end
   end
 
@@ -97,21 +97,49 @@ defmodule Dash.Test do
       fxa_uid = "fxa_uid_test"
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
       create_capabilities(account, 1)
-      assert true = Dash.has_capability?(account)
+      assert true === Dash.has_capability?(account)
     end
 
     test "false if account has no capabilities" do
       fxa_uid = "fxa_uid_test"
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      assert false = Dash.has_capability?(account)
+      assert false === Dash.has_capability?(account)
     end
   end
 
   describe "handle_first_sign_in_initialize_subscriptions/3" do
     test "no fxa subscriptions in cookie" do
+      %{now: now} = now_earlier_later_dt_s()
+      fxa_uid = "fxa_uid_test"
+      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+
+      false = Dash.has_capability?(account)
+
+      Dash.handle_first_sign_in_initialize_subscriptions(account, [], now)
+
+      assert false === Dash.has_capability?(account)
+      assert [] = Dash.get_all_active_capabilities_for_account(account)
     end
 
-    test "if has fxa_subscriptions in cookie, create capability for account" do
+    test "if has fxa_subscriptions in cookie, capability is created for account" do
+      %{now: now} = now_earlier_later_dt_s()
+      fxa_uid = "fxa_uid_test"
+      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+      capability = DashWeb.Plugs.Auth.capability_string()
+
+      false = Dash.has_capability?(account)
+
+      Dash.handle_first_sign_in_initialize_subscriptions(
+        account,
+        [capability],
+        now
+      )
+
+      assert true === Dash.has_capability?(account)
+
+      active_capabilities = Dash.get_all_active_capabilities_for_account(account)
+      assert [_] = active_capabilities
+      assert capability in active_capabilities
     end
   end
 
