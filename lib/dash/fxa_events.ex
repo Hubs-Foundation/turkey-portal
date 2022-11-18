@@ -49,7 +49,7 @@ defmodule Dash.FxaEvents do
         :ok
 
       %Dash.Account{} ->
-        Dash.Account.delete_account_and_hubs(account)
+        Dash.Account.delete_account_and_hubs(account, fxa_uid)
     end
   end
 

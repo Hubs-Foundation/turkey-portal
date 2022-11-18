@@ -253,6 +253,25 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
 
       assert true === Dash.has_account_for_fxa_uid?(fxa_uid)
     end
+
+    test "Deleted account is added to deleted_fxa_account table", %{conn: conn} do
+      expect_orch_delete()
+      fxa_uid = get_default_test_uid()
+      create_test_account_and_hub()
+
+      true = Dash.has_account_for_fxa_uid?(fxa_uid)
+
+      event_struct = get_account_delete_event()
+      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
+
+      assert conn
+             |> put_resp_content_type("application/json")
+             |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> post("/api/v1/events/fxa")
+             |> response(200)
+
+      assert Dash.was_deleted?(fxa_uid)
+    end
   end
 
   defp get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct) do
