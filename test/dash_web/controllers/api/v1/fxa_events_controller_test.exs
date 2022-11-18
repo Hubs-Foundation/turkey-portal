@@ -186,6 +186,75 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     end
   end
 
+  describe "create/2" do
+    test "No account is created for delete account event", %{conn: conn} do
+      fxa_uid = get_default_test_uid()
+
+      false = Dash.has_account_for_fxa_uid?(fxa_uid)
+
+      event_struct = get_account_delete_event()
+      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
+
+      assert conn
+             |> put_resp_content_type("application/json")
+             |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> post("/api/v1/events/fxa")
+             |> response(200)
+
+      assert false === Dash.has_account_for_fxa_uid?(fxa_uid)
+    end
+
+    test "No account is created password changed event", %{conn: conn} do
+      fxa_uid = get_default_test_uid()
+
+      false = Dash.has_account_for_fxa_uid?(fxa_uid)
+
+      timestamp_ms = 1_565_721_242_227
+      event_struct = get_password_change_event(time: timestamp_ms)
+      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
+
+      assert conn
+             |> put_resp_content_type("application/json")
+             |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> post("/api/v1/events/fxa")
+             |> response(200)
+
+      assert false === Dash.has_account_for_fxa_uid?(fxa_uid)
+    end
+
+    test "No account is created for profile changed event", %{conn: conn} do
+      fxa_uid = get_default_test_uid()
+
+      event_struct = get_profile_changed_event()
+      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
+
+      assert conn
+             |> put_resp_content_type("application/json")
+             |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> post("/api/v1/events/fxa")
+             |> response(200)
+
+      assert false === Dash.has_account_for_fxa_uid?(fxa_uid)
+    end
+
+    test "Account is created for subscription changed event", %{conn: conn} do
+      fxa_uid = get_default_test_uid()
+
+      false = Dash.has_account_for_fxa_uid?(fxa_uid)
+
+      event_struct = get_subscription_changed_event(event_only: false)
+      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
+
+      assert conn
+             |> put_resp_content_type("application/json")
+             |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> post("/api/v1/events/fxa")
+             |> response(200)
+
+      assert true === Dash.has_account_for_fxa_uid?(fxa_uid)
+    end
+  end
+
   defp get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct) do
     %{
       "iss" => "https://accounts.fxa.local/",

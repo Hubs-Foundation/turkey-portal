@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const serverHostname = process.env.SERVER_HOSTNAME || 'localhost';
+const serverHostname = process.env.SERVER_HOSTNAME || '127.0.0.1';
 const nextConfig = {
   reactStrictMode: true,
   images: {

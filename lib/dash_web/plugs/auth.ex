@@ -44,13 +44,27 @@ defmodule DashWeb.Plugs.Auth do
       "fxa_pic" => fxa_pic,
       "fxa_displayName" => fxa_display_name,
       "iat" => issued_at,
+      "fxa_subscriptions" => maybe_fxa_subscriptions,
       "fxa_cancel_at_period_end" => fxa_cancel_at_period_end,
       "fxa_current_period_end" => fxa_current_period_end,
       "fxa_plan_id" => fxa_plan_id
     } = claims
 
+    fxa_subscriptions = maybe_fxa_subscriptions || []
+
+    users_first_sign_in? =
+      not Dash.has_account_for_fxa_uid?(fxa_uid) and not Dash.was_deleted?(fxa_uid)
+
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid, fxa_email)
     now = DateTime.to_unix(DateTime.utc_now())
+
+    if users_first_sign_in? do
+      Dash.handle_first_sign_in_initialize_subscriptions(
+        account,
+        fxa_subscriptions,
+        unix_to_datetime(issued_at)
+      )
+    end
 
     active_capabilities = Dash.get_all_active_capabilities_for_account(account)
 

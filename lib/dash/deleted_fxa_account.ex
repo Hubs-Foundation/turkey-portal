@@ -2,8 +2,6 @@ defmodule Dash.DeletedFxaAccount do
   use Ecto.Schema
   import Ecto.Changeset
 
-  # @primary_key {:fxa_uid, :id}
-
   schema "deleted_fxa_accounts" do
     field :fxa_uid, :string
 

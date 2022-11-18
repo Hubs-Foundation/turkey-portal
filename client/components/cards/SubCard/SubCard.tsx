@@ -118,7 +118,7 @@ const SubCard = ({
         <CardButton
           onClick={onCancelSubClick}
           icon="settings"
-          title="Cancel subscription"
+          title="Cancel Subscription"
         />
       </div>
 
