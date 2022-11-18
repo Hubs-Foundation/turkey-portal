@@ -3,7 +3,8 @@ import { Button, Icon, IconT, Checkbox } from '@mozilla/lilypad';
 import SubscriptionInfoCopy from './SubscriptionInfoCopy';
 import styles from './SubInfoCard.module.scss';
 import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
-import { CountriesE } from 'types/Countries';
+import { CountriesE, RegionsT } from 'types/Countries';
+import { getCurrencyMeta } from 'util/utilities';
 
 type SubInfoCardPropsT = {
   region: string | null;
@@ -33,21 +34,42 @@ const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   );
 };
 
+// PRICE DISPLAY COMPONENT
+type PricePropsT = {
+  region: RegionsT;
+};
+
+const Price = ({ region }: PricePropsT) => {
+  const currency = getCurrencyMeta(region);
+
+  return (
+    <>
+      <h2>{currency.symbol}20</h2>
+      <p>{currency.abbrev}</p>
+    </>
+  );
+};
+
 const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
+
+  /**
+   * Check If Euro Region or not
+   * @return Boolean
+   */
+  const isEuro = useCallback((): boolean => {
+    return Boolean(region && region.toUpperCase() === CountriesE.GERMANY);
+  }, [region]);
 
   /**
    * Handle routing user to correct payment plan
    */
   const handleSubscribeClick = useCallback(() => {
     // Default to US plan
-    const plan: string =
-      region && region.toUpperCase() === CountriesE.GERMANY
-        ? PLAN_ID_EA_DE
-        : PLAN_ID_EA;
+    const plan: string = isEuro() ? PLAN_ID_EA_DE : PLAN_ID_EA;
     const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${plan}`;
     window.open(url);
-  }, [region]);
+  }, [isEuro]);
 
   const onToggleLocationConfirmation = useCallback((value: boolean) => {
     setLocationConfirmed(value);
@@ -63,9 +85,7 @@ const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
         <div className={styles.price_wrapper}>
           <div className={styles.price_container}>
             <div className={styles.price}>
-              {/* TODO pull price and currency from subplat here  */}
-              <h2>$20</h2>
-              <p>USD</p>
+              <Price region={region as RegionsT} />
             </div>
             <p className={styles.price_cadence}>per month</p>
           </div>

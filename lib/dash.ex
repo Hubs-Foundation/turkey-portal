@@ -203,6 +203,8 @@ defmodule Dash do
     for hub <- hubs do
       Dash.Hub.delete_hub(hub)
     end
+
+    :ok
   end
 
   def fxa_uid_to_deleted_list(fxa_uid) when is_binary(fxa_uid) do

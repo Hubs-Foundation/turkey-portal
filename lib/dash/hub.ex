@@ -186,9 +186,11 @@ defmodule Dash.Hub do
   def delete_hub(%Dash.Hub{} = hub) do
     with :ok <- delete_hub_instance(hub) do
       delete_hub_record(hub)
+      :ok
     else
       _ ->
         Logger.error("Issue deleting hub")
+        :error
     end
   end
 
@@ -287,8 +289,7 @@ defmodule Dash.Hub do
     Task.Supervisor.async(Dash.TaskSupervisor, fn ->
       with {:ok, %{status_code: status_code}} when status_code < 400 <-
              Dash.OrchClient.update_subdomain(updated_hub),
-           {:ok} <- RetClient.wait_until_healthy(updated_hub),
-           {:ok} <- RetClient.rewrite_assets(previous_hub, updated_hub) do
+           {:ok} <- RetClient.wait_until_healthy(updated_hub) do
         set_hub_to_ready(updated_hub)
       else
         err ->

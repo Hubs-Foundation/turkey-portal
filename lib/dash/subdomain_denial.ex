@@ -17,7 +17,15 @@ defmodule Dash.SubdomainDenial do
     "hubs",
     "mail",
     "orch",
-    "prometheus"
+    "prometheus",
+    "spoke",
+    "thunderbird",
+    "pocket",
+    "rally",
+    "relay",
+    "mdn",
+    "demo",
+    "official"
   ]
 
   @partial_reserved_subdomains [
