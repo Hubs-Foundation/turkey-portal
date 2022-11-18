@@ -80,6 +80,31 @@ defmodule Dash.Test do
     end
   end
 
+  describe "was_deleted?/1" do
+    test "if on deleted list, should return true" do
+      fxa_uid = "fxa_uid_test"
+      Dash.fxa_uid_to_deleted_list(fxa_uid)
+
+      assert true === Dash.was_deleted?(fxa_uid)
+    end
+
+    test "if NOT on deleted list, should return false" do
+      fxa_uid = "fxa_uid_test"
+
+      assert false === Dash.was_deleted?(fxa_uid)
+    end
+  end
+
+  describe "fxa_uid_to_deleted_list/1" do
+    test "adds fxa_uid to the deleted list" do
+      fxa_uid = "fxa_uid_test"
+      false = Dash.was_deleted?(fxa_uid)
+
+      Dash.fxa_uid_to_deleted_list(fxa_uid)
+      assert true === Dash.was_deleted?(fxa_uid)
+    end
+  end
+
   defp stub_failed_ret_patch_update_email() do
     Dash.HttpMock
     |> Mox.stub(:patch, fn url, _body, _headers, _opts ->

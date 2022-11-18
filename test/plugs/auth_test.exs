@@ -179,6 +179,21 @@ defmodule DashWeb.Plugs.AuthTest do
     end
   end
 
+  describe "account was deleted tests" do
+    test "returns 401, if account was deleted", %{conn: conn} do
+      fxa_uid = get_default_test_uid()
+      Dash.fxa_uid_to_deleted_list(fxa_uid)
+
+      conn =
+        conn
+        |> put_test_token(@valid_expiration)
+        |> get("/api/v1/account")
+
+      assert response(conn, 401) ==
+               Jason.encode!(DashWeb.Plugs.Auth.unauthorized_auth_redirect_struct())
+    end
+  end
+
   defp datetime_to_timestamp(datetime) do
     DateTime.to_unix(datetime)
   end

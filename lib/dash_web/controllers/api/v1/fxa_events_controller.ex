@@ -11,7 +11,6 @@ defmodule DashWeb.Api.V1.FxaEventsController do
   @profile_change "/profile-change"
   @subscription_changed "/subscription-state-change"
   def create(conn, _) do
-    IO.puts("5")
     fxa_event = conn.assigns[:fxa_event]
 
     %{

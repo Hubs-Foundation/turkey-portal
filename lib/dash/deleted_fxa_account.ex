@@ -10,7 +10,6 @@ defmodule Dash.DeletedFxaAccount do
     timestamps()
   end
 
-  @doc false
   def changeset(deleted_fxa_account, attrs) do
     deleted_fxa_account
     |> cast(attrs, [:fxa_uid])
