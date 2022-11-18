@@ -80,6 +80,41 @@ defmodule Dash.Test do
     end
   end
 
+  describe "has_account_for_fxa_uid?/1" do
+    test "true if has account" do
+      fxa_uid = "fxa_uid_test"
+      Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+      assert true = Dash.has_account_for_fxa_uid?(fxa_uid)
+    end
+
+    test "false if no account" do
+      assert false = Dash.has_account_for_fxa_uid?("fxa-uid")
+    end
+  end
+
+  describe "has_capability?/1" do
+    test "true if account has any capabilities" do
+      fxa_uid = "fxa_uid_test"
+      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+      create_capabilities(account, 1)
+      assert true = Dash.has_capability?(account)
+    end
+
+    test "false if account has no capabilities" do
+      fxa_uid = "fxa_uid_test"
+      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+      assert false = Dash.has_capability?(account)
+    end
+  end
+
+  describe "handle_first_sign_in_initialize_subscriptions/3" do
+    test "no fxa subscriptions in cookie" do
+    end
+
+    test "if has fxa_subscriptions in cookie, create capability for account" do
+    end
+  end
+
   defp stub_failed_ret_patch_update_email() do
     Dash.HttpMock
     |> Mox.stub(:patch, fn url, _body, _headers, _opts ->

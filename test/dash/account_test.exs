@@ -60,4 +60,12 @@ defmodule Dash.AccountTest do
       assert :ok === result
     end
   end
+
+  describe "has_capability?" do
+    test "if account has no capabilities in db, returns false" do
+    end
+
+    test "if account has capabilities in db, returns true" do
+    end
+  end
 end
