@@ -69,7 +69,6 @@ defmodule Dash.Account do
 
     case Repo.delete(account) do
       {:ok, _} ->
-        Dash.fxa_uid_to_deleted_list(fxa_uid)
         :ok
 
       {:error, changeset} ->

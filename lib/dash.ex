@@ -216,8 +216,10 @@ defmodule Dash do
     :ok
   end
 
-  def fxa_uid_to_deleted_list(fxa_uid) when is_binary(fxa_uid) do
+  @spec fxa_uid_to_deleted_list!(String.t()) :: :ok
+  def fxa_uid_to_deleted_list!(fxa_uid) when is_binary(fxa_uid) do
     Dash.Repo.insert!(%Dash.DeletedFxaAccount{fxa_uid: fxa_uid})
+    :ok
   end
 
   def was_deleted?(fxa_uid) when is_binary(fxa_uid) do

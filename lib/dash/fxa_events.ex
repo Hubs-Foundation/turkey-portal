@@ -50,6 +50,7 @@ defmodule Dash.FxaEvents do
 
       %Dash.Account{} ->
         Dash.Account.delete_account_and_hubs(account, fxa_uid)
+        Dash.fxa_uid_to_deleted_list!(fxa_uid)
     end
   end
 

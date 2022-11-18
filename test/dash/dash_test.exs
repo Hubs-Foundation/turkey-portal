@@ -83,7 +83,7 @@ defmodule Dash.Test do
   describe "was_deleted?/1" do
     test "if on deleted list, should return true" do
       fxa_uid = "fxa_uid_test"
-      Dash.fxa_uid_to_deleted_list(fxa_uid)
+      Dash.fxa_uid_to_deleted_list!(fxa_uid)
 
       assert true === Dash.was_deleted?(fxa_uid)
     end
@@ -95,12 +95,12 @@ defmodule Dash.Test do
     end
   end
 
-  describe "fxa_uid_to_deleted_list/1" do
+  describe "fxa_uid_to_deleted_list!/1" do
     test "adds fxa_uid to the deleted list" do
       fxa_uid = "fxa_uid_test"
       false = Dash.was_deleted?(fxa_uid)
 
-      Dash.fxa_uid_to_deleted_list(fxa_uid)
+      Dash.fxa_uid_to_deleted_list!(fxa_uid)
       assert true === Dash.was_deleted?(fxa_uid)
     end
   end
