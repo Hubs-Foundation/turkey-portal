@@ -94,15 +94,19 @@ const SubCard = ({
                 {convertCurrency(subscription.currency)}
                 {Number(subscription.amount).toFixed(2)}
               </span>
-              <span className={styles.currency}>{subscription.currency}</span>
+              <span className={styles.currency}>
+                {subscription.currency} (+tax)
+              </span>
             </div>
             <div className={styles.label}>Monthly Payment</div>
           </div>
 
           {/* NEXT PAYMENT */}
           <div className={styles.header_block}>
-            <div className={styles.month}>{subscriptionDate(false)}</div>
-            <div className={styles.label}>Next Payment</div>
+            <div className="flex-box">
+              <div className={styles.month}>{subscriptionDate(false)}</div>
+              <div className={styles.label}>Next Payment</div>
+            </div>
           </div>
         </div>
 

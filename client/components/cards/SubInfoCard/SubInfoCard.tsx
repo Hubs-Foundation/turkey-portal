@@ -87,7 +87,7 @@ const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
             <div className={styles.price}>
               <Price region={region as RegionsT} />
             </div>
-            <p className={styles.price_cadence}>per month</p>
+            <p className={styles.price_cadence}>per month + tax</p>
           </div>
         </div>
       </div>
