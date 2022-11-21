@@ -23,6 +23,20 @@ services:
     image: "postgres:14-alpine"
     volumes:
       - pgdata:/var/lib/postgresql/data
+  marketing:
+    build:
+      context: .
+      target: dev
+    command: npm run dev
+    environment:
+      SERVER_HOSTNAME: server
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3030/favicon.ico"]
+    ports:
+      - "3030:3030"
+    volumes:
+      - code:/code
+    working_dir: /code/marketing
   server:
     build:
       context: .

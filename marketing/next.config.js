@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 
+const serverHostname = process.env.SERVER_HOSTNAME || '127.0.0.1';
+
 /**
  * LOCAL ENVIRONMENT
  */
@@ -11,7 +13,7 @@ if (process.env.ENV === 'local') {
   PLAN_ID_EA = 'price_id123';
   PRODUCT_ID = 'prod_KPReWHqwGqZBzc';
   PLAN_ID_EA_DE = 'price_germany_id123';
-  PUBLIC_API_SERVER = 'http://localhost:4000';
+  PUBLIC_API_SERVER = `http://${serverHostname}:4000`;
 }
 
 /**

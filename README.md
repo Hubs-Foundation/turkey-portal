@@ -10,7 +10,7 @@ This codebase can be run locally using either containers or bare metal.
 
 1. [Install Docker Compose](https://docs.docker.com/compose/install)
 2. [Install Mutagen Compose](https://github.com/mutagen-io/mutagen-compose#system-requirements)
-3. Create `./client/.npmrc` with the following contents, replacing
+3. Create `./client/.npmrc` and `./marketing/.npmrc` with the following contents, replacing
    `{AUTH_TOKEN}` with a GitHub
    [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token):
    ```
