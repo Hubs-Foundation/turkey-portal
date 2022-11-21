@@ -82,12 +82,13 @@ const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
       <h2 className={styles.title}>Early Access Hub</h2>
 
       <div className={styles.container}>
+        {/* PRICE */}
         <div className={styles.price_wrapper}>
           <div className={styles.price_container}>
             <div className={styles.price}>
               <Price region={region as RegionsT} />
             </div>
-            <p className={styles.price_cadence}>per month</p>
+            <p className={styles.price_cadence}>per month + tax</p>
           </div>
         </div>
 
