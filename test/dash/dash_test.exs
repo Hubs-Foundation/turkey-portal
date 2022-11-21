@@ -101,7 +101,7 @@ defmodule Dash.Test do
       false = Dash.was_deleted?(fxa_uid)
 
       Dash.fxa_uid_to_deleted_list!(fxa_uid)
-      assert true === Dash.was_deleted?(fxa_uid)
+      assert Dash.was_deleted?(fxa_uid)
     end
   end
 
