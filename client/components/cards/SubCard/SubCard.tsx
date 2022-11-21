@@ -56,7 +56,8 @@ const SubCard = ({
 
   const subscriptionDate = useCallback(
     (fullDate?: boolean) => {
-      const date = new Date(subscription.subscriptionEndTimestampS);
+      const date = new Date(Date.UTC(1970, 0, 1)); // Epoch
+      date.setUTCSeconds(subscription.subscriptionEndTimestampS);
       const options: Intl.DateTimeFormatOptions = {
         year: fullDate ? 'numeric' : undefined,
         month: 'long',
