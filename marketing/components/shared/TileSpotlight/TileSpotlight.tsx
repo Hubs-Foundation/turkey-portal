@@ -38,7 +38,9 @@ const Tile = ({ image, imageAlt, title, description }: TilePropsT) => {
         <div className={styles.tile_content}>
           <div className={styles.tile_bar} />
           <h3>{title}</h3>
-          <p>{description}</p>
+          <div className={styles.desc_wrapper}>
+            <p className={styles.desc}>{description}</p>
+          </div>
         </div>
       </div>
     </section>

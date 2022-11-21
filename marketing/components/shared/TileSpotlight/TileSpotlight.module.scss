@@ -10,6 +10,7 @@
 
 .container {
   max-width: $container-max-width;
+  z-index: 1;
 }
 
 .header {
@@ -51,7 +52,15 @@
     background: $color-background-neutral-0;
     box-shadow: 0px 3px 19px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
-    overflow: hidden;
+    &:hover {
+      .desc_wrapper {
+        opacity: 1;
+        max-height: 400px;
+      }
+      .tile_image {
+        height: 207px;
+      }
+    }
   }
 
   &_container {
@@ -59,9 +68,17 @@
   }
 
   &_image {
+    transition: 0.5s;
     position: relative;
-    height: 207px;
+    height: 275px;
     width: 100%;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    overflow: hidden;
+
+    @include tablet-down {
+      height: 207px;
+    }
   }
 
   &_bar {
@@ -76,6 +93,7 @@
 
   &_content {
     padding: 24px;
+    position: relative;
 
     h3 {
       @include heading-md;
@@ -86,6 +104,28 @@
       @include body-md;
       margin: 0;
     }
+  }
+}
+
+.desc_wrapper {
+  max-height: 0px;
+  opacity: 0;
+  transition: 0.5s;
+  position: absolute;
+  z-index: 2;
+  background: white;
+  left: 0;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  padding: 0px 24px 24px 24px;
+  box-shadow: 0px 16px 10px -11px rgba(0, 0, 0, 0.25);
+
+  @include tablet-down {
+    opacity: 1;
+    max-height: 400px;
+    position: relative;
+    box-shadow: none;
+    padding: 0;
   }
 }
 
