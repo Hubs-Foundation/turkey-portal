@@ -10,6 +10,7 @@ type HubCardFooterPropsT = {
 
 const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
   const { tier, currentStorageMb, storageLimitMb } = hub;
+  const formattedTier = tier.replace(/_/g, ' ');
   const [storageState, setStorageState] = useState<StorageStateE>(
     StorageStateE.DEFAULT
   );
@@ -56,7 +57,7 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
       <div className={styles.footer_block}>
         <div className="u-text-center">
           <Badge
-            name={tier}
+            name={formattedTier}
             classProp="margin-bottom-12 u-block"
             category={BadgeCategoriesE.PRIMARY}
           />
