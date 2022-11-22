@@ -46,10 +46,14 @@ defmodule Dash.FxaEvents do
 
     case account do
       nil ->
+        Logger.warn("FxA account deletion error: No account for fxa_uid to delete")
+
+        Dash.fxa_uid_to_deleted_list!(fxa_uid)
         :ok
 
       %Dash.Account{} ->
         Dash.Account.delete_account_and_hubs(account)
+        Dash.fxa_uid_to_deleted_list!(fxa_uid)
     end
   end
 

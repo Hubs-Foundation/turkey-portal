@@ -216,6 +216,20 @@ defmodule Dash do
     :ok
   end
 
+  @spec fxa_uid_to_deleted_list!(String.t()) :: :ok
+  def fxa_uid_to_deleted_list!(fxa_uid) when is_binary(fxa_uid) do
+    Dash.Repo.insert!(%Dash.DeletedFxaAccount{fxa_uid: fxa_uid})
+    :ok
+  end
+
+  def was_deleted?(fxa_uid) when is_binary(fxa_uid) do
+    Repo.exists?(
+      from(d in Dash.DeletedFxaAccount,
+        where: d.fxa_uid == ^fxa_uid
+      )
+    )
+  end
+
   def handle_first_sign_in_initialize_subscriptions(%Account{} = account, fxa_subscriptions, dt) do
     capability_string = DashWeb.Plugs.Auth.capability_string()
 

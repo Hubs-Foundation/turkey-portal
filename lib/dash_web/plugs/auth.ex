@@ -28,13 +28,39 @@ defmodule DashWeb.Plugs.Auth do
   def init(default), do: default
 
   def call(conn, _options) do
-    results = conn |> get_auth_cookie() |> process_and_verify_jwt()
+    results =
+      conn
+      |> get_auth_cookie()
+      |> process_and_verify_jwt()
+      |> validate_fxa_uid()
+      |> validate_fxa_subscription_period_end()
 
     conn |> process_jwt(results)
   end
 
   defp get_auth_cookie(conn) do
     conn.req_cookies[@cookie_name]
+  end
+
+  defp validate_fxa_uid(%{is_valid: false, claims: _claims} = results), do: results
+
+  defp validate_fxa_uid(%{is_valid: true, claims: %{"sub" => sub} = claims}) do
+    %{is_valid: not Dash.was_deleted?(sub), claims: claims}
+  end
+
+  defp validate_fxa_subscription_period_end(%{is_valid: false, claims: _claims} = results),
+    do: results
+
+  defp validate_fxa_subscription_period_end(%{
+         is_valid: true,
+         claims: %{"fxa_current_period_end" => fxa_current_period_end} = claims
+       }) do
+    now = DateTime.to_unix(DateTime.utc_now())
+
+    %{
+      is_valid: not (fxa_current_period_end != 0 and fxa_current_period_end < now),
+      claims: claims
+    }
   end
 
   defp process_jwt(conn, %{is_valid: true, claims: claims}) do
@@ -55,7 +81,6 @@ defmodule DashWeb.Plugs.Auth do
     users_first_sign_in? = not Dash.has_account_for_fxa_uid?(fxa_uid)
 
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid, fxa_email)
-    now = DateTime.to_unix(DateTime.utc_now())
 
     if users_first_sign_in? do
       Dash.handle_first_sign_in_initialize_subscriptions(
@@ -73,12 +98,9 @@ defmodule DashWeb.Plugs.Auth do
         # If token issued before an Authorization change in the account, invalidate token and login again
         process_jwt(conn, %{is_valid: false, claims: claims})
 
-      fxa_current_period_end != 0 and fxa_current_period_end < now ->
-        # Current subscription period ended, get next period information
-        process_jwt(conn, %{is_valid: false, claims: claims})
-
       true ->
         # Successfully authenticated
+
         conn
         |> assign(:account, account)
         |> assign(:fxa_account_info, %Dash.FxaAccountInfo{

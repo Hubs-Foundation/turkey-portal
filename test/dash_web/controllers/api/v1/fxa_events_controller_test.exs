@@ -184,6 +184,29 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       assert response(conn, 200)
       assert [] = Dash.Hub.hubs_for_account(account)
     end
+
+    test "Should delete hubs on is_active false event and should NOT add to deleted account list",
+         %{conn: conn} do
+      expect_orch_delete()
+      create_test_account_and_hub()
+      fxa_uid = get_default_test_uid()
+
+      account = Dash.Account.account_for_fxa_uid(fxa_uid)
+      hubs = Dash.Hub.hubs_for_account(account)
+      [_] = hubs
+
+      event_struct = get_subscription_changed_event(event_only: false, is_active: false)
+      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
+
+      conn =
+        conn
+        |> put_resp_content_type("application/json")
+        |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+        |> post("/api/v1/events/fxa")
+
+      assert response(conn, 200)
+      refute Dash.was_deleted?(fxa_uid)
+    end
   end
 
   describe "create/2" do
@@ -252,6 +275,25 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
              |> response(200)
 
       assert true === Dash.has_account_for_fxa_uid?(fxa_uid)
+    end
+
+    test "Deleted account is added to deleted_fxa_account table", %{conn: conn} do
+      expect_orch_delete()
+      fxa_uid = get_default_test_uid()
+      create_test_account_and_hub()
+
+      true = Dash.has_account_for_fxa_uid?(fxa_uid)
+
+      event_struct = get_account_delete_event()
+      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
+
+      assert conn
+             |> put_resp_content_type("application/json")
+             |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> post("/api/v1/events/fxa")
+             |> response(200)
+
+      assert Dash.was_deleted?(fxa_uid)
     end
   end
 
