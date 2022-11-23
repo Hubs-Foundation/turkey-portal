@@ -41,7 +41,7 @@ const ErroringHub: HubT = {
   currentCcu: 0,
   currentStorageMb: 0,
   hubId: '',
-  name: 'Untitled Hub',
+  name: 'Erred Hub',
   status: StatusE.ERROR,
   lastError: LastErrorE.ERROR,
   storageLimitMb: 0,

@@ -144,7 +144,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
             and we need a "catch all" error status to show the user.
           */}
           {lastError === LastErrorE.ERROR && (
-            <ErrorBox message={Message.error} />
+            <ErrorBox message={Message.errorMessage} />
           )}
 
           {/* Loading Subdomain Updates  */}
