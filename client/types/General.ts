@@ -16,6 +16,7 @@ export enum LastErrorE {
   SUBDOMAIN_ERROR = 'subdomainError',
   SUBDOMAIN_REVERTED = 'subdomainReverted',
   CREATING_ERROR = 'creatingError',
+  ERROR = 'error',
 }
 
 export type HubT = {
