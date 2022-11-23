@@ -3,8 +3,8 @@
  * Note: feel free to break-out into other files if you feel the need
  */
 
-export type TierT = 'mvp' | 'free' | 'early_access';
-export type FormattedTierT = 'Mvp' | 'Free' | 'Early Access';
+export type TierT = 'mvp' | 'free' | 'early_access' | 'premium';
+export type FormattedTierT = 'Mvp' | 'Free' | 'Early Access' | 'Premium';
 
 export type FormattedTierMapT = {
   [key: string]: FormattedTierT;
