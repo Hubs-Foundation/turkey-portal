@@ -30,7 +30,7 @@ const Subscribe = ({ region }: SubscribePropsT) => {
           </div>
 
           <div className={styles.cards}>
-            <SubInfoCard region={region} />
+            <SubInfoCard />
             <SubContactCard
               email="hubs@mozilla.com"
               subject="Subscription inquiries"
