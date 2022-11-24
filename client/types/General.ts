@@ -3,7 +3,12 @@
  * Note: feel free to break-out into other files if you feel the need
  */
 
-export type TierT = 'free' | 'premium';
+export type TierT = 'mvp' | 'free' | 'early_access' | 'premium';
+export type FormattedTierT = 'Mvp' | 'Free' | 'Early Access' | 'Premium';
+
+export type FormattedTierMapT = {
+  [key: string]: FormattedTierT;
+};
 
 export enum StatusE {
   CREATING = 'creating',
@@ -32,6 +37,7 @@ export type HubT = {
   tier: TierT;
 };
 
+// TODO Do we still need this?
 export type UpdateHubT = {
   name: string;
   ccuLimit: number;
