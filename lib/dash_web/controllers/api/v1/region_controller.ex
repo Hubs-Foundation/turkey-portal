@@ -11,7 +11,6 @@ defmodule DashWeb.Api.V1.RegionController do
 
         [] ->
           nil
-          "DE"
       end
 
     conn
