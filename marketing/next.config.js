@@ -40,7 +40,7 @@ if (process.env.ENV === 'prod' || process.env.ENV === undefined) {
   HUB_ROOT_DOMAIN = 'hubs.mozilla.com';
   PLAN_ID_EA = 'price_1M4SjzJNcmPzuWtRyXTlz0Jn';
   PRODUCT_ID = 'prod_Mo4tS8uH9y3Mj5';
-  PLAN_ID_EA_DE = 'price_1M4SjzJNcmPzuWtRsHpLFrYB';
+  PLAN_ID_EA_DE = 'price_1M9EJVJNcmPzuWtRbMGiQVgD';
   PUBLIC_API_SERVER = 'https://dashboard.hubs.mozilla.com';
 }
 
