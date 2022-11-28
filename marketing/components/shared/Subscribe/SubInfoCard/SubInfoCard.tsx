@@ -125,7 +125,7 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
               classProp="u-content-box"
               onChange={onToggleConfirmation}
               checked={locationConfirmed}
-              label="I'm located in UK CAN USA or Germany"
+              label="I'm located in UK, Canada, USA, or Germany"
             />
           </form>
         </div>
