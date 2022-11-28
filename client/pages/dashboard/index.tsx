@@ -52,8 +52,7 @@ const ErroringHub: HubT = {
 const Dashboard = ({ subscription }: DashboardPropsT) => {
   const account = useSelector(selectAccount);
   const [hubs, setHubs] = useState<HubT[]>([]);
-  const [hasUpdatingCreatingHub, setHasUpdatingCreatingHub] =
-    useState<boolean>(false);
+  const [hasUpdatingHub, setHasUpdatingHub] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   /**
@@ -74,7 +73,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
       try {
         const hubs: HubT[] = await getHubs();
         setHubs(hubs);
-        setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
+        setHasUpdatingHub(checkIfUpdating(hubs));
       } catch (error) {
         setDefaultErrorStateHub();
         console.error(error);
@@ -84,27 +83,25 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
   }, []);
 
   /**
-   * Check if hub is being created or is updating
+   * Check if hub is being updated
    * @param hubs HubT
    * @returns boolean
    */
-  const checkIfCreatingUpdating = (hubs: HubT[]): boolean => {
-    return hubs.some(
-      ({ status }) => status === 'creating' || status === 'updating'
-    );
+  const checkIfUpdating = (hubs: HubT[]): boolean => {
+    return hubs.some(({ status }) => status === 'updating');
   };
 
   useEffect(() => {
     let updateIntervalId: NodeJS.Timeout;
-    const pollingInterval = 10000;
+    const pollingInterval = 10_000;
 
-    if (hasUpdatingCreatingHub) {
+    if (hasUpdatingHub) {
       updateIntervalId = setInterval(refreshHubData, pollingInterval);
     }
     return () => {
       clearInterval(updateIntervalId);
     };
-  }, [hasUpdatingCreatingHub, refreshHubData]);
+  }, [hasUpdatingHub, refreshHubData]);
 
   /**
    * Get All Hubs
@@ -114,7 +111,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
       try {
         const hubs = await getHubs();
         setHubs(hubs);
-        setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
+        setHasUpdatingHub(checkIfUpdating(hubs));
         setIsLoading(false);
       } catch (error) {
         setDefaultErrorStateHub();
