@@ -10,9 +10,9 @@ The utility classes provided here should not dominate the JSX className. These a
 
 #### Margin and Padding
 
-These classes are used for fast margin or padding with aditional mobile/tablet responsive behavior. Any size from 0-100 is available to use in the following pattern
+These classes are used for fast margin or padding with aditional mobile or desktop responsive behavior. Any size from 0-100 is available to use in the following pattern:
 
-##### Key
+#### Key
 
 m = margin
 p = padding
@@ -23,7 +23,7 @@ l = left
 mb = mobile
 dt = desktop
 
-##### Pattern
+#### Pattern
 
 { attribute }{ direction }-{ size }-{ mobile or desktop }
 
