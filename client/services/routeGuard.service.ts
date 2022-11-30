@@ -5,11 +5,17 @@ import type {
 } from 'next';
 import { AxiosError, AxiosRequestHeaders } from 'axios';
 import { getAccount } from './account.service';
-import { RoutesE } from 'types/Routes';
-import { AUTH_SERVER, DASH_ROOT_DOMAIN, MARKETING_PAGE_URL } from 'config';
+import {
+  redirectToAuthServer,
+  redirectToMarketingPage,
+  redirectToDashboard,
+  redirectToSubscribe,
+} from '../util/redirects';
+import { RoutesE } from '../types/Routes';
 import { CookiesE } from 'types/Cookies';
 import { IncomingMessage } from 'http';
 import { setCookies } from 'cookies-next';
+import { localFeature } from '../util/featureFlag';
 
 type UnauthenticatedResponseT = {
   status: Number | undefined;
@@ -18,64 +24,6 @@ type UnauthenticatedResponseT = {
     redirect: string;
   };
 };
-
-/**************************
- *  RE-DIRECT UTILITIES
- **************************/
-
-const redirectConfig = {
-  auth: {
-    source: RoutesE.Dashboard,
-    destination: `https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}`,
-    permanent: false,
-  },
-  marketing: {
-    source: RoutesE.Dashboard,
-    destination: MARKETING_PAGE_URL,
-    permanent: false,
-  },
-  dashboard: {
-    destination: RoutesE.Dashboard,
-    permanent: false,
-  },
-  subscription: {
-    source: RoutesE.Dashboard,
-    destination: RoutesE.Subscribe,
-    permanent: false,
-  },
-};
-
-/**
- * To Auth
- * @returns redirect
- */
-function redirectToAuthServer() {
-  return { redirect: redirectConfig.auth };
-}
-
-/**
- * To Marketing Page
- * @returns redirect
- */
-function redirectToMarketingPage() {
-  return { redirect: redirectConfig.marketing };
-}
-
-/**
- * To Dashboard
- * @returns redirect
- */
-function redirectToDashboard() {
-  return { redirect: redirectConfig.dashboard };
-}
-
-/**
- * To Subscription
- * @returns redirect
- */
-function redirectToSubscribe() {
-  return { redirect: redirectConfig.subscription };
-}
 
 /**************************
  *  PRIVATE UTILITIES
@@ -149,12 +97,7 @@ export function requireAuthenticationAndSubscription(
      * url so it is not exposed in the browser url UI.
      */
     if (didSetTurkeyauthCookie(context)) {
-      return {
-        redirect: {
-          destination: RoutesE.Dashboard,
-          permanent: false,
-        },
-      };
+      return redirectToDashboard();
     }
 
     // If no errors user is authenticated
@@ -191,7 +134,8 @@ export function subscriptionPageRequireAuthentication(
 
     // Local development only
     // - start
-    if (shouldNotRedirect(req, query)) return await gssp(context);
+    if (localFeature() && shouldNotRedirect(req, query))
+      return await gssp(context);
     // - end
 
     try {
@@ -226,12 +170,7 @@ function shouldNotRedirect(
     redirect?: string;
   }
 ): boolean {
-  if (
-    req.url?.includes('/subscribe') &&
-    query.redirect === 'false' &&
-    req.headers.host?.includes('localhost')
-  ) {
-    return true;
-  }
-  return false;
+  return Boolean(
+    req.url?.includes(RoutesE.Subscribe) && query.redirect === 'false'
+  );
 }

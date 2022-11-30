@@ -13,6 +13,7 @@ export const {
   PLAN_ID_EA,
   PLAN_ID_EA_DE,
   PRODUCT_ID,
+  ENV,
 } = publicRuntimeConfig;
 
 export const DUMMY = publicRuntimeConfig.dummy;
