@@ -27,5 +27,5 @@ These classes are used for fast margin or padding with aditional mobile or deskt
 
 { attribute }{ direction }-{ size }-{ mobile or desktop }
 
-Say you want a class with margin right 20px, the class would look like '.mr-20'. Let's say you wanted
-that 20px to only display on mobile the class would be '.mr-20-mb'.
+Say you want a class with margin right 20px, the class would look like 'mr-20'. Let's say you wanted
+that 20px to only display on mobile the class would be 'mr-20-mb'.
