@@ -5,24 +5,12 @@
 // ---------------------------------
 //   Quick Typograpjhy
 // ---------------------------------
-.u-font-12 {
-  @include font-size(12);
-}
+$fontSizes: 12, 14, 16, 18, 20;
 
-.u-font-14 {
-  @include font-size(14);
-}
-
-.u-font-16 {
-  @include font-size(16);
-}
-
-.u-font-18 {
-  @include font-size(18);
-}
-
-.u-capitalize {
-  text-transform: capitalize;
+@each $fontSize in $fontSizes {
+  .u-font-#{$fontSize} {
+    @include font-size($fontSize);
+  }
 }
 
 // Body Text
@@ -61,6 +49,10 @@
 
 .u-heading-xxs {
   @include heading-xxs();
+}
+
+.u-capitalize {
+  text-transform: capitalize;
 }
 
 // ---------------------------------
