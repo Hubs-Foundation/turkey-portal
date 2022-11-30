@@ -14,14 +14,14 @@ These classes are used for fast margin or padding with aditional mobile or deskt
 
 #### Key
 
-m = margin
-p = padding
-t = top
-r = right
-b = bottom
-l = left
-mb = mobile
-dt = desktop
+- m = margin
+- p = padding
+- t = top
+- r = right
+- b = bottom
+- l = left
+- mb = show only on mobile
+- dt = show only on desktop
 
 #### Pattern
 
