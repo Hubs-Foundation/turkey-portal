@@ -10,7 +10,7 @@ This codebase can be run locally using either containers or bare metal.
 
 1. [Install Docker Compose](https://docs.docker.com/compose/install)
 2. [Install Mutagen Compose](https://github.com/mutagen-io/mutagen-compose#system-requirements)
-3. Create `./client/.npmrc` with the following contents, replacing
+3. Create `./client/.npmrc` and `./marketing/.npmrc` with the following contents, replacing
    `{AUTH_TOKEN}` with a GitHub
    [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token):
    ```
@@ -22,19 +22,19 @@ This codebase can be run locally using either containers or bare metal.
 
 #### Orchestration
 
-* Start containers with `bin/up`
-* Stop containers `bin/down`
-* Observe running containers with `bin/observe`[^1]
-* Restore the services to a fresh state with `bin/reset`
+- Start containers with `bin/up`
+- Stop containers `bin/down`
+- Observe running containers with `bin/observe`[^1]
+- Restore the services to a fresh state with `bin/reset`
 
 [^1]: Requires `tmux` and `watch` program files in the user’s path
 
 #### Command Execution
 
 Common commands can be easily executed inside a running container from your
-shell using the scripts inside the given service’s `bin/` directory.  For
+shell using the scripts inside the given service’s `bin/` directory. For
 example, calling `bin/mix deps.get` from `./` will download the dependencies
-for the server.  Calling `bin/npx prettier --write .` from `./client/` will
+for the server. Calling `bin/npx prettier --write .` from `./client/` will
 format the client files using Prettier.
 
 When executing the `mix` tasks referenced in this README, use `bin/mix`.
@@ -49,10 +49,10 @@ When executing the `mix` tasks referenced in this README, use `bin/mix`.
 3. Run `asdf install` to install the language versions in the `.tool-versions` file
 
 #### Running
+
 1. Install server dependencies with `mix deps.get`
 2. Create and migrate your database with `mix ecto.setup`
-3. Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix
-   phx.server`
+3. Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
 ## User Creation
 
@@ -83,6 +83,18 @@ document.cookie='_turkeyauthtoken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiO
 
 document.cookie='_turkeyauthtoken=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjMyNTAzNjgwMDAwLCJmeGFfY2FuY2VsX2F0X3BlcmlvZF9lbmQiOmZhbHNlLCJmeGFfY3VycmVudF9wZXJpb2RfZW5kIjowLCJmeGFfZGlzcGxheU5hbWUiOiJMb2NhbCBVc2VyIiwiZnhhX2VtYWlsIjoibG9jYWwtdXNlckB0dXJrZXkubG9jYWwiLCJmeGFfcGljIjoiaHR0cDovL2xvY2FsaG9zdDo0MDAwL2ltYWdlcy9sb2NhbC11c2VyLnN2ZyIsImZ4YV9wbGFuX2lkIjoiIiwiZnhhX3N1YnNjcmlwdGlvbnMiOm51bGwsImlhdCI6MTY2NDY1OTAwMywic3ViIjoibG9jYWwtdXNlci11aWQifQ.st0ALbXyEU34g_Boc7QZ6NLslAs51uIjNoBAXn1HEO5c6xgFofiXmQhsyEbUIUWp9FvhKJosc6BrI9gvRcp0SA;path=/;max-age=34560000'
 
+```
+
+### Use this to send a subscription changed event to the api via a CURL - Is Subscribed
+
+```
+curl -X POST "http://localhost:4000/api/v1/events/fxa" -H "authorization: Bearer {\"iss\":\"https://accounts.firefox.com/\",\"sub\":\"local-user-uid\",\"aud\":\"REMOTE_SYSTEM\",\"iat\":12345,\"jti\":\"e19ed6c5-4816-4171-aa43-56ffe80dbda1\",\"events\":{\"https://schemas.accounts.firefox.com/event/subscription-state-change\":{\"changeTime\":1663196637000,\"capabilities\":[\"managed-hubs\"],\"isActive\":true}}}"
+```
+
+### Use this to send a subscription changed event to the api via a CURL - Is Not Subscribed
+
+```
+curl -X POST "http://localhost:4000/api/v1/events/fxa" -H "authorization: Bearer {\"iss\":\"https://accounts.firefox.com/\",\"sub\":\"local-user-uid\",\"aud\":\"REMOTE_SYSTEM\",\"iat\":12345,\"jti\":\"e19ed6c5-4816-4171-aa43-56ffe80dbda1\",\"events\":{\"https://schemas.accounts.firefox.com/event/subscription-state-change\":{\"changeTime\":1663196637000,\"capabilities\":[\"managed-hubs\"],\"isActive\":false}}}"
 ```
 
 ## Utilities

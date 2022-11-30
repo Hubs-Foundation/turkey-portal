@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
 import { useEffect, useState, useCallback } from 'react';
-import { HubT, StatusE } from 'types/General';
+import { HubT, LastErrorE, StatusE } from 'types/General';
 import styles from './dashboard.module.scss';
 import HubCard from '@Cards/HubCard/HubCard';
 import SubCard from '@Cards/SubCard/SubCard';
@@ -30,12 +30,39 @@ const creatingHub: HubT = {
   tier: 'premium',
 };
 
+/**
+ * This is a default "catch all" Error Hub
+ * state. Usually the user will see this if the
+ * http request fails completely when calling hubs
+ * api.
+ */
+const ErroringHub: HubT = {
+  ccuLimit: 0,
+  currentCcu: 0,
+  currentStorageMb: 0,
+  hubId: '',
+  name: 'Erred Hub',
+  status: StatusE.ERROR,
+  lastError: LastErrorE.ERROR,
+  storageLimitMb: 0,
+  subdomain: '',
+  tier: 'premium',
+};
+
 const Dashboard = ({ subscription }: DashboardPropsT) => {
   const account = useSelector(selectAccount);
   const [hubs, setHubs] = useState<HubT[]>([]);
-  const [hasUpdatingCreatingHub, setHasUpdatingCreatingHub] =
-    useState<boolean>(false);
+  const [hasUpdatingHub, setHasUpdatingHub] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  /**
+   * Hubs call failed:
+   * Manually set Error state Hub in UI
+   */
+  const setDefaultErrorStateHub = () => {
+    setHubs([ErroringHub]);
+    setIsLoading(false);
+  };
 
   /**
    * Get Hubs again and apply data, also check
@@ -46,8 +73,9 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
       try {
         const hubs: HubT[] = await getHubs();
         setHubs(hubs);
-        setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
+        setHasUpdatingHub(checkIfUpdating(hubs));
       } catch (error) {
+        setDefaultErrorStateHub();
         console.error(error);
       }
     };
@@ -55,25 +83,25 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
   }, []);
 
   /**
-   * Check if hub is being created or is updating
+   * Check if hub is being updated
    * @param hubs HubT
    * @returns boolean
    */
-  const checkIfCreatingUpdating = (hubs: HubT[]): boolean => {
-    return hubs.some(
-      ({ status }) => status === 'creating' || status === 'updating'
-    );
+  const checkIfUpdating = (hubs: HubT[]): boolean => {
+    return hubs.some(({ status }) => status === 'updating');
   };
 
   useEffect(() => {
     let updateIntervalId: NodeJS.Timeout;
-    if (hasUpdatingCreatingHub) {
-      updateIntervalId = setInterval(refreshHubData, 1000);
+    const pollingInterval = 10_000;
+
+    if (hasUpdatingHub) {
+      updateIntervalId = setInterval(refreshHubData, pollingInterval);
     }
     return () => {
       clearInterval(updateIntervalId);
     };
-  }, [hasUpdatingCreatingHub, refreshHubData]);
+  }, [hasUpdatingHub, refreshHubData]);
 
   /**
    * Get All Hubs
@@ -83,9 +111,10 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
       try {
         const hubs = await getHubs();
         setHubs(hubs);
-        setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
+        setHasUpdatingHub(checkIfUpdating(hubs));
         setIsLoading(false);
       } catch (error) {
+        setDefaultErrorStateHub();
         console.error(error);
       }
     };

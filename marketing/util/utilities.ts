@@ -6,7 +6,7 @@ import { RegionCurrency, RegionsT } from 'types/Countries';
  * @returns RegionCurrency[country code]
  */
 export const getCurrencyMeta = (region: RegionsT) => {
-  if (!region) return RegionCurrency.US;
-
-  return RegionCurrency[region];
+  return region && RegionCurrency[region]
+    ? RegionCurrency[region]
+    : RegionCurrency.US;
 };

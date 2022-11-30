@@ -3,7 +3,7 @@ const API_PATH = '/api/v1/subscription';
 import { PUBLIC_API_SERVER } from 'config';
 
 export type SubscriptionT = {
-  currency: string | null; // "USD", "EURO"
+  currency: string | null; // "USD", "EUR"
   amount: string | null;
   subscriptionEndTimestampS: number;
   isCancelled: boolean;
