@@ -9,7 +9,10 @@ import { UpdateHubT } from 'types/General';
  */
 export const getHubs = async () => {
   return axios
-    .get(`${PUBLIC_API_SERVER}${API_PATH}`, { withCredentials: true })
+    .get(`${PUBLIC_API_SERVER}${API_PATH}`, {
+      withCredentials: true,
+      timeout: 300_000,
+    })
     .then((response) => {
       return response.data;
     });

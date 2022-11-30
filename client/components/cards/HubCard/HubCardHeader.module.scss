@@ -32,7 +32,8 @@
       border: $color-status-offline 2px solid;
     }
 
-    &_subdomainError {
+    &_subdomainError,
+    &_error {
       background-color: $color-semantic-critical;
     }
   }

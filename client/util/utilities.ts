@@ -24,7 +24,7 @@ export const convertCurrency = (currency: string | null) => {
  * @returns RegionCurrency[country code]
  */
 export const getCurrencyMeta = (region: RegionsT) => {
-  if (!region) return RegionCurrency.US;
-
-  return RegionCurrency[region];
+  return region && RegionCurrency[region]
+    ? RegionCurrency[region]
+    : RegionCurrency.US;
 };

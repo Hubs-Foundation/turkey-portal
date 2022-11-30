@@ -1,11 +1,18 @@
 import { Badge, ProgressBar, BadgeCategoriesE, Icon } from '@mozilla/lilypad';
-import { StorageStateE, HubT } from 'types/General';
+import { StorageStateE, HubT, FormattedTierMapT } from 'types/General';
 import { useState, useEffect, useCallback } from 'react';
 import styles from './HubCardFooter.module.scss';
 
 type HubCardFooterPropsT = {
   hub: HubT;
   classProp?: string;
+};
+
+const FormattedTierMap: FormattedTierMapT = {
+  ['early_access']: 'Early Access',
+  mvp: 'Mvp',
+  free: 'Free',
+  premium: 'Premium',
 };
 
 const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
@@ -56,8 +63,8 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
       <div className={styles.footer_block}>
         <div className="u-text-center">
           <Badge
-            name={tier}
             classProp="mb-12 u-block"
+            name={FormattedTierMap[tier]}
             category={BadgeCategoriesE.PRIMARY}
           />
           <div>Hub Tier</div>

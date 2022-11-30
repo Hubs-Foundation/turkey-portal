@@ -1,13 +1,13 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button, Icon, IconT, Checkbox } from '@mozilla/lilypad';
 import SubscriptionInfoCopy from './SubscriptionInfoCopy';
 import styles from './SubInfoCard.module.scss';
 import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
 import { CountriesE, RegionsT } from 'types/Countries';
 import { getCurrencyMeta } from 'util/utilities';
+import { getRegion, RegionT, RegionObjT } from 'services/region.service';
 
 type SubInfoCardPropsT = {
-  region: string | null;
   classProp?: string;
 };
 
@@ -50,8 +50,22 @@ const Price = ({ region }: PricePropsT) => {
   );
 };
 
-const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
+const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
+  const [region, setRegion] = useState<RegionT>(null);
+
+  useEffect(() => {
+    const fetchRegion = async () => {
+      try {
+        const data: RegionObjT = await getRegion();
+        setRegion(data.region);
+      } catch (e) {
+        console.error(e);
+        setRegion(null);
+      }
+    };
+    fetchRegion();
+  }, []);
 
   /**
    * Check If Euro Region or not
@@ -87,7 +101,7 @@ const SubInfoCard = ({ region, classProp = '' }: SubInfoCardPropsT) => {
             <div className={styles.price}>
               <Price region={region as RegionsT} />
             </div>
-            <p className={styles.price_cadence}>per month</p>
+            <p className={styles.price_cadence}>per month + tax</p>
           </div>
         </div>
       </div>

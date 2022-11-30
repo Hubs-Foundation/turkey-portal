@@ -13,7 +13,8 @@ defmodule DashWeb.Api.V1.RegionController do
           nil
       end
 
-    conn |> send_resp(200, Jason.encode!(%{region: region}))
+    conn
+    |> send_resp(200, Jason.encode!(%{region: region}))
   end
 
   def region_header, do: @region_header

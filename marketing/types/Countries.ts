@@ -6,7 +6,7 @@ export type RegionsT = 'DE' | 'US';
 
 export const RegionCurrency = {
   DE: {
-    abbrev: 'Euro',
+    abbrev: 'EUR',
     symbol: '€',
   },
   US: {

@@ -139,6 +139,14 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
             <ErrorBox message={Message.createFailMessage} />
           )}
 
+          {/* Default Error 
+            This error takes place if the communication with the server fails (http server error) 
+            and we need a "catch all" error status to show the user.
+          */}
+          {lastError === LastErrorE.ERROR && (
+            <ErrorBox message={Message.errorMessage} />
+          )}
+
           {/* Loading Subdomain Updates  */}
           {loadingVisible && (
             <HubLoading

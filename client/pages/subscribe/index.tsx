@@ -30,7 +30,7 @@ const Subscribe = ({ region }: SubscribePropsT) => {
           </div>
 
           <div className={styles.cards}>
-            <SubInfoCard region={region} />
+            <SubInfoCard />
             <SubContactCard
               email="hubs@mozilla.com"
               subject="Subscription inquiries"
@@ -47,17 +47,8 @@ export default Subscribe;
 export const getServerSideProps = subscriptionPageRequireAuthentication(
   async (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
-    try {
-      const regionData = await getRegion();
-      const region = regionData?.region;
-
-      return {
-        props: {
-          region,
-        },
-      };
-    } catch (error) {
-      console.error(error);
-    }
+    return {
+      props: {},
+    };
   }
 );

@@ -46,6 +46,15 @@ defmodule Dash do
     |> Dash.Repo.update!()
   end
 
+  @spec has_capability?(%Dash.Account{}) :: boolean
+  def has_capability?(%Account{} = account) do
+    Repo.exists?(
+      from(c in Capability,
+        where: c.account_id == ^account.account_id
+      )
+    )
+  end
+
   @spec get_one_capability(%Account{}, capability: String.t()) ::
           %Capability{} | nil
   def get_one_capability(%Account{} = account, capability: capability) do
@@ -203,5 +212,44 @@ defmodule Dash do
     for hub <- hubs do
       Dash.Hub.delete_hub(hub)
     end
+
+    :ok
+  end
+
+  @spec fxa_uid_to_deleted_list!(String.t()) :: :ok
+  def fxa_uid_to_deleted_list!(fxa_uid) when is_binary(fxa_uid) do
+    Dash.Repo.insert!(%Dash.DeletedFxaAccount{fxa_uid: fxa_uid})
+    :ok
+  end
+
+  def was_deleted?(fxa_uid) when is_binary(fxa_uid) do
+    Repo.exists?(
+      from(d in Dash.DeletedFxaAccount,
+        where: d.fxa_uid == ^fxa_uid
+      )
+    )
+  end
+
+  def handle_first_sign_in_initialize_subscriptions(%Account{} = account, fxa_subscriptions, dt) do
+    capability_string = DashWeb.Plugs.Auth.capability_string()
+
+    if capability_string in fxa_subscriptions and not Dash.has_capability?(account) do
+      # Handle special case where FxA does not send a subscription changed fxa event
+      # if a user signs up for an FxA account on the same page of signing up for the subscription
+      # we need to create a record of that capability in our database
+      Dash.create_capability!(account, %{
+        capability: capability_string,
+        change_time: dt,
+        is_active: true
+      })
+    end
+  end
+
+  def has_account_for_fxa_uid?(fxa_uid) when is_binary(fxa_uid) do
+    Repo.exists?(
+      from(a in Account,
+        where: a.fxa_uid == ^fxa_uid
+      )
+    )
   end
 end

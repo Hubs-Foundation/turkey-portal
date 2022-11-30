@@ -42,12 +42,18 @@ defmodule Dash.FxaEvents do
   end
 
   def handle_account_deletion_event(fxa_uid) do
-    case Dash.Account.delete_account_and_hubs(fxa_uid) do
-      :ok ->
+    account = Dash.Account.account_for_fxa_uid(fxa_uid)
+
+    case account do
+      nil ->
+        Logger.warn("FxA account deletion error: No account for fxa_uid to delete")
+
+        Dash.fxa_uid_to_deleted_list!(fxa_uid)
         :ok
 
-      :error ->
-        Logger.error("Error in handle_account_deletion_event.")
+      %Dash.Account{} ->
+        Dash.Account.delete_account_and_hubs(account)
+        Dash.fxa_uid_to_deleted_list!(fxa_uid)
     end
   end
 
@@ -64,6 +70,7 @@ defmodule Dash.FxaEvents do
   # Not an email changed event, other profile data changed, no action
   def handle_profile_change(_fxa_uid, _event_data), do: :ok
 
+  @spec handle_subscription_changed_event(String.t(), event_data) :: :ok | :error
   def handle_subscription_changed_event(
         fxa_uid,
         %{"capabilities" => capabilities, "isActive" => is_active, "changeTime" => change_time} =
@@ -86,6 +93,8 @@ defmodule Dash.FxaEvents do
     end
 
     Dash.Account.set_auth_updated_at(fxa_uid, change_time_dt)
+
+    :ok
   end
 
   def unix_to_utc_datetime(fxa_timestamp_str) when is_binary(fxa_timestamp_str) do

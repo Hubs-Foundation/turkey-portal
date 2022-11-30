@@ -56,7 +56,8 @@ const SubCard = ({
 
   const subscriptionDate = useCallback(
     (fullDate?: boolean) => {
-      const date = new Date(subscription.subscriptionEndTimestampS);
+      const date = new Date(Date.UTC(1970, 0, 1)); // Epoch
+      date.setUTCSeconds(subscription.subscriptionEndTimestampS);
       const options: Intl.DateTimeFormatOptions = {
         year: fullDate ? 'numeric' : undefined,
         month: 'long',
@@ -94,15 +95,19 @@ const SubCard = ({
                 {convertCurrency(subscription.currency)}
                 {Number(subscription.amount).toFixed(2)}
               </span>
-              <span className={styles.currency}>{subscription.currency}</span>
+              <span className={styles.currency}>
+                {subscription.currency} (+tax)
+              </span>
             </div>
             <div className={styles.label}>Monthly Payment</div>
           </div>
 
           {/* NEXT PAYMENT */}
           <div className={styles.header_block}>
-            <div className={styles.month}>{subscriptionDate(false)}</div>
-            <div className={styles.label}>Next Payment</div>
+            <div className="flex-box">
+              <div className={styles.month}>{subscriptionDate(false)}</div>
+              <div className={styles.label}>Next Payment</div>
+            </div>
           </div>
         </div>
 
@@ -118,7 +123,7 @@ const SubCard = ({
         <CardButton
           onClick={onCancelSubClick}
           icon="settings"
-          title="Cancel subscription"
+          title="Cancel Subscription"
         />
       </div>
 

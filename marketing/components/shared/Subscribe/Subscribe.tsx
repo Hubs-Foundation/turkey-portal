@@ -4,11 +4,10 @@ import SubInfoCard from './SubInfoCard/SubInfoCard';
 import styles from './Subscribe.module.scss';
 
 type SubscribePropsT = {
-  region: string | null;
   classProp?: string;
 };
 
-const Subscribe = ({ region, classProp = '' }: SubscribePropsT) => {
+const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.swoosh}>
@@ -41,7 +40,7 @@ const Subscribe = ({ region, classProp = '' }: SubscribePropsT) => {
           </SubCard>
 
           {/* SUBSCRIBE  */}
-          <SubInfoCard region={region} />
+          <SubInfoCard />
 
           {/* BUSINESS TIER  */}
           <SubCard

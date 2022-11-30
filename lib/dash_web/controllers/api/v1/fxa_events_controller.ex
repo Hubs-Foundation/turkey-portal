@@ -24,6 +24,9 @@ defmodule DashWeb.Api.V1.FxaEventsController do
       |> Map.to_list()
       |> List.first()
 
+    Logger.warn("Testing event_data #{event} and FULL fxa_event is: #{inspect(fxa_event)}")
+    Logger.warn("Passing in event_data #{inspect(event_data)}")
+
     result =
       cond do
         event =~ @password_change ->
@@ -57,11 +60,8 @@ defmodule DashWeb.Api.V1.FxaEventsController do
         # If response other than 200 is returned, FxA will retry
         Logger.warn("FxaEventsController hit random error: FxA will retry")
 
-        # TODO EA make this error before launch
-        # conn
-        # |> send_resp(500, "Internal Server Error")
         conn
-        |> send_resp(200, [])
+        |> send_resp(500, "Internal Server Error")
     end
   end
 end

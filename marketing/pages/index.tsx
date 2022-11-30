@@ -182,7 +182,7 @@ const Home = ({ region }: HomePropsT) => {
         <ValueProps values={values} />
 
         <div id="subscribe">
-          <Subscribe region={region} />
+          <Subscribe />
         </div>
 
         <Testimonial />
@@ -191,24 +191,5 @@ const Home = ({ region }: HomePropsT) => {
     </div>
   );
 };
-
-export async function getServerSideProps(context: GetServerSidePropsContext) {
-  try {
-    const regionData = await getRegion();
-    const region = regionData?.region;
-
-    return {
-      props: {
-        region,
-      },
-    };
-  } catch (error) {
-    //TODO when server side error add a better response UI here..
-    return {
-      props: {},
-    };
-    console.error(error);
-  }
-}
 
 export default Home;
