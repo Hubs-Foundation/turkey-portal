@@ -1,0 +1,11 @@
+@use '../boilerplate.scss' as *;
+
+.page_wrapper {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 100vh;
+  background: $gradient-rainbow;
+  padding-top: 88px;
+  margin: 0;
+}

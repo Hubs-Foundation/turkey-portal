@@ -127,11 +127,7 @@ $color-interactions-menu-inactive: var(--color-interactions-menu-inactive);
 
 // ---- Primary Brand Colors ---------------------
 $black: #231f20;
-$dark-teal: #1c7f8d;
 $blue: #0d73a6;
-$light-blue: #e0f5ff;
-$link-blue: #007ab8;
-$purple: #663df5;
 $gradient-warm: radial-gradient(
   147.61% 1186.51% at 110.24% -15.63%,
   #ff806f 36.82%,
@@ -145,27 +141,11 @@ $gradient-rainbow: linear-gradient(
   #a67878 104.75%
 );
 
-// ---- Accent Colors ---------------------
-$teal: #23a2b3;
-$light-teal: rgba($teal, 0.1);
-$pink: #d83a94;
-$blue-neon: #4d4dff;
-$yellow-neon: #f1ea57;
-$peach: #d96868;
-$tan: #e5dfd8;
-
 // ---- Utility Colors  ---------------------
 $white: #ffffff;
 $off-white: #ddd;
 $grey: #868686;
 $accent-grey: #e0e0e0;
-$form-gray: #c9c9c9;
-$semi-dark-grey: #767474;
-$dark-grey: #393536;
-$red: #d42828;
-$green: #3dc278;
-$loading-grey: #f8f8f8;
-$light-grey: #f5f5f5;
 
 // ---- Break Points ---------------------
 $breakpoint-mobile: 580px;
