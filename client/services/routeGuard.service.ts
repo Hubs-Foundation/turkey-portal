@@ -152,7 +152,7 @@ export function subscriptionPageRequireAuthentication(
 }
 
 /**************************
- *  LOCL DEV UTILITIES
+ *  LOCAL DEV UTILITIES
  **************************/
 
 /**
