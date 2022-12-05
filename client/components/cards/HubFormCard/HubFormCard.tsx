@@ -190,7 +190,7 @@ const HubFormCard = ({
               render={({ field }) => (
                 <Input
                   maxLength={24}
-                  classProp="u-width-100"
+                  classProp="width-100"
                   label="Hub Name"
                   placeholder="Hub Name"
                   required={true}

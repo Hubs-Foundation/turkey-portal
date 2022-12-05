@@ -17,7 +17,7 @@ const Error = () => {
           <a
             href="https://discord.com/invite/dFJncWwHun"
             rel="noopener noreferrer"
-            className="u-primary-link"
+            className="primary-link"
             target="_blank"
           >
             Discord

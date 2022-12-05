@@ -42,12 +42,12 @@ const SubscriptionModal = ({
 
       {/* MODAL CONTENTS  */}
       <div className={styles.content}>
-        <p className="u-body-md">
+        <p className="body-md">
           This will stop the auto renew of <b>{subdomain}</b> on {cancelDate}.
           As a result, <b>the following will occur after {cancelDate}:</b>
         </p>
 
-        <ul className="u-body-md">
+        <ul className="body-md">
           <li>The Hub will be deleted.</li>
           <li>
             All assets (avatars, scenes, 3D models) installed on the hub will be
@@ -59,7 +59,7 @@ const SubscriptionModal = ({
           </li>
         </ul>
 
-        <p className="u-body-md">
+        <p className="body-md">
           If you are happy to proceed, please continue to your Firefox Accounts
           page where you can finish cancelling your subscription.
         </p>

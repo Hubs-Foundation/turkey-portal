@@ -61,9 +61,9 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
     <div className={`${styles.footer} ${classProp}`}>
       {/* Tier Information  */}
       <div className={styles.footer_block}>
-        <div className="u-text-center">
+        <div className="text-center">
           <Badge
-            classProp="mb-12 u-block"
+            classProp="mb-12 block"
             name={FormattedTierMap[tier]}
             category={BadgeCategoriesE.PRIMARY}
           />
@@ -73,9 +73,9 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
 
       {/* Storage Information  */}
       <div className={styles.footer_block}>
-        <div className="u-text-center">
+        <div className="text-center">
           <div className={`mb-12 ${styles['status_' + storageState]}`}>
-            <span className="u-color-text-main">{round(currentStorageMb)}</span>
+            <span className="color-text-main">{round(currentStorageMb)}</span>
             <span>/{storageLimitMb} MB</span>
           </div>
           <div className="flex-justify-center">

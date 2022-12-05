@@ -126,7 +126,7 @@ const Home = ({ region }: HomePropsT) => {
           imageAlt="Hubs landscaps with trees and sun and indoore example"
           title="The many ways to use Hubs"
         >
-          <ul className="pl-15 u-text-left">
+          <ul className="pl-15 text-left">
             <li>Host a virtual event</li>
             <li>Create a museum or digital gallery</li>
             <li>Build a space for your favorite hobbies</li>

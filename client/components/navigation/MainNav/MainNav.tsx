@@ -149,7 +149,7 @@ const MainNav = ({
                   <div className={styles.main_nav_account}>
                     {account.profilePic && (
                       <span className="flex-align-center">
-                        <button className="u-button-wrapper">
+                        <button className="button-wrapper">
                           <Avatar
                             src={account.profilePic}
                             size={50}

@@ -142,7 +142,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
 
           {/* SOCIAL */}
           <div className={styles.link_block}>
-            <div className="u-body-md u-color-text-reverse">
+            <div className="body-md color-text-reverse">
               Follow @MozillaHubs
             </div>
             <div className="flex-justify-between mt-20">

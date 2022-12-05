@@ -8,57 +8,57 @@
 $fontSizes: 12, 14, 16, 18, 20;
 
 @each $fontSize in $fontSizes {
-  .u-font-#{$fontSize} {
+  .font-#{$fontSize} {
     @include font-size($fontSize);
   }
 }
 
 // Body Text
-.u-body-md {
+.body-md {
   @include body-md();
 }
 
-.u-body-md-bold {
+.body-md-bold {
   @include body-md-bold();
 }
 
 // Heading
-.u-heading-xxl {
+.heading-xxl {
   @include heading-xxl();
 }
 
-.u-heading-xl {
+.heading-xl {
   @include heading-xl();
 }
 
-.u-heading-lg {
+.heading-lg {
   @include heading-lg();
 }
 
-.u-heading-md {
+.heading-md {
   @include heading-md();
 }
 
-.u-heading-sm {
+.heading-sm {
   @include heading-sm();
 }
 
-.u-heading-xs {
+.heading-xs {
   @include heading-xs();
 }
 
-.u-heading-xxs {
+.heading-xxs {
   @include heading-xxs();
 }
 
-.u-capitalize {
+.capitalize {
   text-transform: capitalize;
 }
 
 // ---------------------------------
 //   Quick Media-Q
 // ---------------------------------
-.u-no-mobile {
+.no-mobile {
   @include mobile-down {
     display: none !important;
   }
@@ -67,7 +67,7 @@ $fontSizes: 12, 14, 16, 18, 20;
 // ---------------------------------
 //   Colors
 // ---------------------------------
-.u-color-text-main {
+.color-text-main {
   color: $color-text-main;
 }
 
@@ -75,41 +75,41 @@ $fontSizes: 12, 14, 16, 18, 20;
 //   Visibility
 // ---------------------------------
 
-.u-hidden {
+.hidden {
   display: none !important;
 }
 
-.u-hidden-mobile-only {
+.hidden-mobile-only {
   @include mobile-only {
     display: none !important;
   }
 }
 
-.u-hidden-tablet-up {
+.hidden-tablet-up {
   @include tablet-up {
     display: none !important;
   }
 }
 
-.u-hidden-tablet-only {
+.hidden-tablet-only {
   @include tablet-only {
     display: none !important;
   }
 }
 
-.u-hidden-desktop-up {
+.hidden-desktop-up {
   @include desktop-up {
     display: none !important;
   }
 }
 
-.u-hidden-desktop-only {
+.hidden-desktop-only {
   @include desktop-only {
     display: none !important;
   }
 }
 
-.u-hidden-hd-up {
+.hidden-hd-up {
   @include hd-up {
     display: none !important;
   }
@@ -119,7 +119,7 @@ $fontSizes: 12, 14, 16, 18, 20;
 //   Misc
 // ---------------------------------
 
-.u-sr-only {
+.sr-only {
   border: 0 !important;
   clip: rect(1px, 1px, 1px, 1px) !important;
   -webkit-clip-path: inset(50%) !important;
@@ -133,7 +133,7 @@ $fontSizes: 12, 14, 16, 18, 20;
   white-space: nowrap !important;
 }
 
-.u-clear-button {
+.clear-button {
   cursor: pointer;
   border: none;
   background-color: transparent;
@@ -142,15 +142,15 @@ $fontSizes: 12, 14, 16, 18, 20;
   padding: 0;
 }
 
-.u-block {
+.block {
   display: block;
 }
 
-.u-pointer {
+.pointer {
   cursor: pointer;
 }
 
-.u-no-link {
+.no-link {
   &,
   &:hover {
     text-decoration: none;
@@ -158,52 +158,52 @@ $fontSizes: 12, 14, 16, 18, 20;
   }
 }
 
-.u-overflow-x-hidden {
+.overflow-x-hidden {
   overflow-x: hidden;
 }
 
-.u-text-center {
+.text-center {
   text-align: center;
 }
 
-.u-text-right {
+.text-right {
   text-align: right;
 }
 
-.u-text-left {
+.text-left {
   text-align: left;
 }
 
-.u-uppercase {
+.uppercase {
   text-transform: uppercase;
 }
 
-.u-title-case {
+.title-case {
   text-transform: capitalize;
 }
 
-.u-left-absolute {
+.left-absolute {
   position: absolute;
   left: 0;
 }
 
-.u-right-absolute {
+.right-absolute {
   position: absolute;
   right: 0;
 }
 
-.u-width-100 {
+.width-100 {
   width: 100%;
 }
 
-.u-content-box {
+.content-box {
   &,
   & * {
     box-sizing: content-box;
   }
 }
 
-.u-button-wrapper {
+.button-wrapper {
   border: 0;
   background: transparent;
   padding: 0;

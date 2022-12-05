@@ -24,10 +24,10 @@ const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
       <div className="flex-box">
         <Icon name={icon} size={30} classProp="mr-20" />
       </div>
-      <div className="u-body-md">
+      <div className="body-md">
         <p>
           {' '}
-          <span className="u-body-md-bold">{label}</span> <br /> {description}
+          <span className="body-md-bold">{label}</span> <br /> {description}
         </p>
       </div>
     </div>
@@ -121,9 +121,9 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
       </div>
 
       {/* LOCATION CONFIRMATION  */}
-      <form className="u-content-box mt-16 mb-16">
+      <form className="content-box mt-16 mb-16">
         <Checkbox
-          classProp="u-content-box"
+          classProp="content-box"
           onChange={onToggleLocationConfirmation}
           checked={locationConfirmed}
           label="I'm located in UK, Canada, USA, or Germany"
