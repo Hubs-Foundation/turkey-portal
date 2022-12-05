@@ -66,8 +66,7 @@ defmodule Dash.Hub do
 
   @spec hubs_for_account(%Dash.Account{}) :: [%Dash.Hub{}]
   def hubs_for_account(%Dash.Account{} = account) do
-    from(h in Dash.Hub, where: h.account_id == ^account.account_id)
-    |> Repo.all()
+    Repo.all(from h in Dash.Hub, where: h.account_id == ^account.account_id)
   end
 
   def hubs_with_usage_stats_for_account(%Dash.Account{} = account) do
@@ -77,14 +76,16 @@ defmodule Dash.Hub do
 
   # Returns a boolean of whether the account has a hub
   def has_hubs(%Dash.Account{} = account) do
-    Repo.exists?(from(h in Dash.Hub, where: h.account_id == ^account.account_id))
+    Repo.exists?(from h in Dash.Hub, where: h.account_id == ^account.account_id)
   end
 
   # TODO EA remove
   def has_creating_hubs(%Dash.Account{} = account) do
     has_hubs(account) &&
       Repo.exists?(
-        from(h in Dash.Hub, where: h.account_id == ^account.account_id and h.status == :creating)
+        from h in Dash.Hub,
+          where: h.account_id == ^account.account_id,
+          where: h.status == :creating
       )
   end
 
@@ -165,8 +166,11 @@ defmodule Dash.Hub do
   end
 
   def get_all_ready_hub_ids() do
-    from(h in Dash.Hub, where: h.status == :ready, select: h.hub_id)
-    |> Repo.all()
+    Repo.all(
+      from h in Dash.Hub,
+        where: h.status == :ready,
+        select: h.hub_id
+    )
   end
 
   @spec delete_hub(String.t(), String.t()) :: %Dash.Hub{} | :error
@@ -276,9 +280,9 @@ defmodule Dash.Hub do
 
   defp subdomain_exists(excluded_hub_id, subdomain) do
     Repo.exists?(
-      from(h in Dash.Hub,
-        where: h.hub_id != ^excluded_hub_id and h.subdomain == ^subdomain
-      )
+      from h in Dash.Hub,
+        where: h.hub_id != ^excluded_hub_id,
+        where: h.subdomain == ^subdomain
     )
   end
 
