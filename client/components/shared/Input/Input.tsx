@@ -6,6 +6,7 @@ import {
   useRef,
   forwardRef,
   useImperativeHandle,
+  FocusEventHandler,
 } from 'react';
 import styles from './Input.module.scss';
 import Icon from '@Shared/Icon/Icon';
@@ -28,16 +29,18 @@ export enum InputIconColorE {
 }
 
 type InputProps = {
+  id: string;
   label: string;
   placeholder: string;
   name: string;
   type?: InputT;
   info?: string;
   classProp?: string;
-  onChange?: Function;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
   validator?: Function;
   required?: boolean;
   customErrorMessage?: string;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
   pattern?: string;
   maxLength?: number;
   minLength?: number;
@@ -49,6 +52,7 @@ type InputProps = {
 const Input = forwardRef(
   (
     {
+      id,
       label,
       placeholder,
       type = 'text',
@@ -56,6 +60,7 @@ const Input = forwardRef(
       info = '',
       classProp = '',
       onChange,
+      onBlur,
       validator = () => true,
       required = false,
       customErrorMessage,
@@ -88,15 +93,15 @@ const Input = forwardRef(
      * Handle Input Change
      * @param event
      */
-    const handleOnChange: ChangeEventHandler<HTMLInputElement> = (
-      event: ChangeEvent<HTMLInputElement>
-    ) => {
-      const newValue = event.target.value;
-      onChange && onChange(newValue);
-      // If initial value was empty any change makes form dirty
-      const isDirty = initialValue === '' ? true : initialValue !== newValue;
-      setIsDirty(isDirty);
-    };
+    // const handleOnChange: ChangeEventHandler<HTMLInputElement> = (
+    //   event: ChangeEvent<HTMLInputElement>
+    // ) => {
+    //   const newValue = event.target.value;
+    //   onChange && onChange(newValue);
+    //   // If initial value was empty any change makes form dirty
+    //   const isDirty = initialValue === '' ? true : initialValue !== newValue;
+    //   setIsDirty(isDirty);
+    // };
 
     /**
      * Validate Input
@@ -137,13 +142,15 @@ const Input = forwardRef(
         </label>
 
         <input
+          id={id}
           ref={inputRef}
           type={type}
           name={name}
           value={value}
           required={required}
           placeholder={placeholder ? placeholder : label}
-          onChange={handleOnChange}
+          onChange={onChange}
+          onBlur={onBlur}
           maxLength={maxLength}
           minLength={minLength}
           pattern={pattern}

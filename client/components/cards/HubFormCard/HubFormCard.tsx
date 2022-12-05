@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import styles from './HubFormCard.module.scss';
 import { HUB_ROOT_DOMAIN } from 'config';
@@ -7,12 +7,30 @@ import {
   ButtonCategoriesE,
   ButtonSizesE,
   Icon,
-  Input,
 } from '@mozilla/lilypad';
+import Input from '../../shared/Input/Input';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { validateHubSubdomain } from 'services/hub.service';
 import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
 import { RoutesE } from 'types/Routes';
+import { useFormik } from 'formik';
+import { Formik, Field, Form, FormikHelpers } from 'formik';
+
+const validate = (values: Values) => {
+  console.log('values', values);
+  const errors: Values = {
+    name: '',
+    subdomain: '',
+  };
+  errors.name = !values.name ? 'Required Name' : '';
+
+  return errors;
+};
+
+interface Values {
+  name: string;
+  subdomain: string;
+}
 
 export type HubFormCardT = {
   name: string;
@@ -44,6 +62,22 @@ const HubFormCard = ({
   const [domainValidationError, setDomainValidationError] =
     useState<string>('');
   const [isEditingDomain, setIsEditingDomain] = useState(false);
+
+  const formik = useFormik({
+    initialValues: {
+      name: 'nick',
+      subdomain: 'nicksdomain',
+    },
+
+    validate,
+    onSubmit: (values) => {
+      console.log('values', values);
+    },
+  });
+
+  useEffect(() => {
+    console.log(formik);
+  }, [formik]);
 
   const router = useRouter();
   // TODO - react hook form is always saying inputs are valid when they are not
@@ -180,9 +214,41 @@ const HubFormCard = ({
           <h1 className={styles.title}>Hub Details</h1>
         </div>
 
-        <form onSubmit={handleSubmit(handleFormSubmit)}>
-          <div className={styles.form_contents}>
-            {/* HUB NAME  */}
+        <form onSubmit={formik.handleSubmit}>
+          {/* <Field id="name" name="name" placeholder="John" />
+            <Field id="subdomain" name="subdomain" placeholder="Johnsdomain" /> */}
+          <Input
+            maxLength={24}
+            classProp="u-width-100"
+            label="Hub Name"
+            placeholder="Hub Name"
+            required={true}
+            info="Character Limit 24"
+            name="name"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.name}
+            id="name"
+          />
+
+          <Input
+            id="subdomain"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.subdomain}
+            minLength={3}
+            maxLength={63}
+            name="subdomain"
+            classProp="margin-bottom-10"
+            placeholder="Web Address (URL)"
+            label="Web Address (URL)"
+            info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
+            pattern="[a-zA-Z0-9-]+"
+            validator={handleNameValidator}
+            customErrorMessage={addressErrorMessage}
+            required={true}
+          />
+          {/* <div className={styles.form_contents}>
             <Controller
               name="name"
               control={control}
@@ -200,7 +266,6 @@ const HubFormCard = ({
               )}
             />
 
-            {/* HUB SUBDOMAIN / ADDRESS  */}
             <div className={styles.address_wrapper}>
               <Controller
                 name="subdomain"
@@ -254,13 +319,12 @@ const HubFormCard = ({
               </div>
             </div>
 
-            {/* Note: this error messaging is specific to domain serverside validation  */}
             {!isValidDomain && domainValidationError.length ? (
               <div className={styles.error_message}>
                 Please enter another address, the {domainValidationError}.
               </div>
             ) : null}
-          </div>
+          </div> */}
 
           <div className={styles.actions_wrapper}>
             <Button
