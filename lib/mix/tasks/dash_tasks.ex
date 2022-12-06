@@ -21,8 +21,9 @@ defmodule Mix.Tasks.Dash.ListHubs do
 
   def run([fxa_uid]) do
     account = Dash.Account |> Dash.Repo.get_by(fxa_uid: fxa_uid)
+    query = from h in Dash.Hub, where: h.account_id == ^account.account_id
 
-    from(h in Dash.Hub, where: h.account_id == ^account.account_id)
+    query
     |> Dash.Repo.all()
     |> IO.inspect()
   end

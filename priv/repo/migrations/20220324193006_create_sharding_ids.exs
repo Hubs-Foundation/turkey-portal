@@ -2,9 +2,9 @@ defmodule Dash.Repo.Migrations.CreateShardingIds do
   use Ecto.Migration
 
   def up do
-    execute("create sequence table_id_seq")
+    execute "create sequence table_id_seq"
 
-    execute("""
+    execute """
     CREATE OR REPLACE FUNCTION next_id(OUT result bigint) AS $$
     DECLARE
     our_epoch bigint := 1648150338000;
@@ -20,6 +20,6 @@ defmodule Dash.Repo.Migrations.CreateShardingIds do
     result := result | (seq_id);
     END;
     $$ LANGUAGE PLPGSQL;
-    """)
+    """
   end
 end

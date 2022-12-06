@@ -3,7 +3,7 @@ defmodule Dash.Repo.Migrations.RemoveInstanceUuidFromHubs do
 
   def change do
     alter table(:hubs) do
-      remove(:instance_uuid)
+      remove :instance_uuid
     end
   end
 end

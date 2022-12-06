@@ -48,11 +48,7 @@ defmodule Dash do
 
   @spec has_capability?(%Dash.Account{}) :: boolean
   def has_capability?(%Account{} = account) do
-    Repo.exists?(
-      from(c in Capability,
-        where: c.account_id == ^account.account_id
-      )
-    )
+    Repo.exists?(from c in Capability, where: c.account_id == ^account.account_id)
   end
 
   @spec get_one_capability(%Account{}, capability: String.t()) ::
@@ -64,11 +60,7 @@ defmodule Dash do
   @spec get_all_capabilities_for_account(%Account{}) ::
           [%Capability{}] | []
   def get_all_capabilities_for_account(%Account{} = account) do
-    Repo.all(
-      from(c in Capability,
-        where: c.account_id == ^account.account_id
-      )
-    )
+    Repo.all(from c in Capability, where: c.account_id == ^account.account_id)
   end
 
   @spec get_all_active_capabilities_for_account(%Account{}) :: [String.t()]
@@ -102,11 +94,7 @@ defmodule Dash do
 
   @spec delete_all_capabilities_for_account(%Account{}) :: {integer, nil}
   def delete_all_capabilities_for_account(%Account{} = account) do
-    Repo.delete_all(
-      from(c in Capability,
-        where: c.account_id == ^account.account_id
-      )
-    )
+    Repo.delete_all(from c in Capability, where: c.account_id == ^account.account_id)
   end
 
   def currency_and_amount_for_plan(""), do: {nil, nil}
@@ -223,11 +211,7 @@ defmodule Dash do
   end
 
   def was_deleted?(fxa_uid) when is_binary(fxa_uid) do
-    Repo.exists?(
-      from(d in Dash.DeletedFxaAccount,
-        where: d.fxa_uid == ^fxa_uid
-      )
-    )
+    Repo.exists?(from d in Dash.DeletedFxaAccount, where: d.fxa_uid == ^fxa_uid)
   end
 
   def handle_first_sign_in_initialize_subscriptions(%Account{} = account, fxa_subscriptions, dt) do
@@ -246,10 +230,6 @@ defmodule Dash do
   end
 
   def has_account_for_fxa_uid?(fxa_uid) when is_binary(fxa_uid) do
-    Repo.exists?(
-      from(a in Account,
-        where: a.fxa_uid == ^fxa_uid
-      )
-    )
+    Repo.exists?(from a in Account, where: a.fxa_uid == ^fxa_uid)
   end
 end
