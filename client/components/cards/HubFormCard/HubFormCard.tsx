@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, FocusEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import styles from './HubFormCard.module.scss';
 import { HUB_ROOT_DOMAIN } from 'config';
@@ -7,30 +7,13 @@ import {
   ButtonCategoriesE,
   ButtonSizesE,
   Icon,
+  Input,
 } from '@mozilla/lilypad';
-import Input from '../../shared/Input/Input';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { validateHubSubdomain } from 'services/hub.service';
 import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
 import { RoutesE } from 'types/Routes';
 import { useFormik } from 'formik';
-import { Formik, Field, Form, FormikHelpers } from 'formik';
-
-const validate = (values: Values) => {
-  console.log('values', values);
-  const errors: Values = {
-    name: '',
-    subdomain: '',
-  };
-  errors.name = !values.name ? 'Required Name' : '';
-
-  return errors;
-};
-
-interface Values {
-  name: string;
-  subdomain: string;
-}
+import validate, { FormValues } from './Validate';
 
 export type HubFormCardT = {
   name: string;
@@ -62,60 +45,30 @@ const HubFormCard = ({
   const [domainValidationError, setDomainValidationError] =
     useState<string>('');
   const [isEditingDomain, setIsEditingDomain] = useState(false);
+  const router = useRouter();
 
+  /**
+   * Init Formik
+   */
   const formik = useFormik({
     initialValues: {
-      name: 'nick',
-      subdomain: 'nicksdomain',
-    },
-
-    validate,
-    onSubmit: (values) => {
-      console.log('values', values);
-    },
-  });
-
-  useEffect(() => {
-    console.log(formik);
-  }, [formik]);
-
-  const router = useRouter();
-  // TODO - react hook form is always saying inputs are valid when they are not
-  const {
-    control,
-    handleSubmit,
-    formState: { isValid, errors, dirtyFields },
-    getValues,
-  } = useForm<HubFormCardT>({
-    defaultValues: {
       name: hub.name,
       subdomain: hub.subdomain,
     },
+    validate,
+    onSubmit: (data: FormValues) => {
+      // Domain does not pass serverside validation
+      if (!isValidDomain) return;
+
+      onSubmit && onSubmit(data);
+      // Store away the last submitted subdomain incase we need to re-try.
+      const subdomain: SubdomainRetryT = {
+        subdomain: data.subdomain,
+        hubId: hub.hubId,
+      };
+      storeContext.handleSubdomainChange(subdomain);
+    },
   });
-
-  /**
-   * Submit Form
-   * @param data
-   */
-
-  /**
-   * Show a different error for when a subdomain
-   * is already in use by another user, vs when a subdomain
-   * is invalid or forbidden. The validate_subdomain API returns
-   * either subdomain_taken or subdomain_denied.
-   */
-  const handleFormSubmit: SubmitHandler<HubFormCardT> = (data) => {
-    // Domain does not pass serverside validation
-    if (!isValidDomain) return;
-
-    onSubmit && onSubmit(data);
-    // Store away the last submitted subdomain incase we need to re-try.
-    const subdomain: SubdomainRetryT = {
-      subdomain: data.subdomain,
-      hubId: hub.hubId,
-    };
-    storeContext.handleSubdomainChange(subdomain);
-  };
 
   /**
    * Cancel Click ( Router )
@@ -129,33 +82,40 @@ const HubFormCard = ({
   /**
    * Handle Subdomain Input Blur
    */
-  const handleOnBlur = (isValid: boolean | undefined) => {
-    const newSubdomain = getValues('subdomain');
+  const handleOnBlur = (event: FocusEventHandler) => {
+    formik.handleBlur(event);
+    const { value, initialValue, error } = formik.getFieldMeta('subdomain');
 
     // Data has not been edited
-    if (hub.subdomain === newSubdomain) {
+    if (value === initialValue) {
       setIsValidDomain(true);
       setIsEditingDomain(false);
       return;
     }
 
-    if (!isValid) {
+    if (error) {
       setIsValidDomain(false);
       setIsEditingDomain(false);
       return;
     }
 
+    /**
+     * Show a different error for when a subdomain
+     * is already in use by another user, vs when a subdomain
+     * is invalid or forbidden. The validate_subdomain API returns
+     * either subdomain_taken or subdomain_denied.
+     */
     const setValidation = async () => {
       try {
         // Validate subdomain
-        const { error, success } = await validateHubSubdomain(
+        const { error: validateError, success } = await validateHubSubdomain(
           hub.hubId,
-          newSubdomain
+          value
         );
 
         // On Error
-        if (error) {
-          switch (error) {
+        if (validateError) {
+          switch (validateError) {
             case DomainErrorsE.SUBDOMAIN_TAKEN:
               setDomainValidationError('subdomain is taken');
               break;
@@ -215,87 +175,39 @@ const HubFormCard = ({
         </div>
 
         <form onSubmit={formik.handleSubmit}>
-          {/* <Field id="name" name="name" placeholder="John" />
-            <Field id="subdomain" name="subdomain" placeholder="Johnsdomain" /> */}
-          <Input
-            maxLength={24}
-            classProp="u-width-100"
-            label="Hub Name"
-            placeholder="Hub Name"
-            required={true}
-            info="Character Limit 24"
-            name="name"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.name}
-            id="name"
-          />
-
-          <Input
-            id="subdomain"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.subdomain}
-            minLength={3}
-            maxLength={63}
-            name="subdomain"
-            classProp="margin-bottom-10"
-            placeholder="Web Address (URL)"
-            label="Web Address (URL)"
-            info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
-            pattern="[a-zA-Z0-9-]+"
-            validator={handleNameValidator}
-            customErrorMessage={addressErrorMessage}
-            required={true}
-          />
-          {/* <div className={styles.form_contents}>
-            <Controller
+          <div className={styles.form_contents}>
+            <Input
+              id="name"
+              maxLength={24}
+              classProp="u-width-100"
+              label="Hub Name"
+              placeholder="Hub Name"
+              required={true}
+              info="Character Limit 24"
               name="name"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <Input
-                  maxLength={24}
-                  classProp="u-width-100"
-                  label="Hub Name"
-                  placeholder="Hub Name"
-                  required={true}
-                  info="Character Limit 24"
-                  {...field}
-                />
-              )}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.name}
             />
 
             <div className={styles.address_wrapper}>
-              <Controller
+              <Input
+                id="subdomain"
+                onChange={formik.handleChange}
+                onBlur={handleOnBlur}
+                onFocus={handleOnFocus}
+                value={formik.values.subdomain}
+                minLength={3}
+                maxLength={63}
                 name="subdomain"
-                control={control}
-                rules={{ required: true }}
-                render={({ field }) => (
-                  <>
-                    <Input
-                      onBlur={(isValid: boolean) => {
-                        handleOnBlur(isValid);
-                        field.onBlur();
-                      }}
-                      ref={field.ref}
-                      onFocus={handleOnFocus}
-                      minLength={3}
-                      maxLength={63}
-                      classProp="margin-bottom-10"
-                      placeholder="Web Address (URL)"
-                      label="Web Address (URL)"
-                      info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
-                      pattern="[a-zA-Z0-9-]+"
-                      validator={handleNameValidator}
-                      customErrorMessage={addressErrorMessage}
-                      required={true}
-                      name={field.name}
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-                  </>
-                )}
+                classProp="margin-bottom-10"
+                placeholder="Web Address (URL)"
+                label="Web Address (URL)"
+                info="Supports letters (a to z), digits (0 to 9), and hyphens (-)"
+                pattern="[a-zA-Z0-9-]+"
+                validator={handleNameValidator}
+                customErrorMessage={addressErrorMessage}
+                required={true}
               />
               <div className={styles.address_preview}>
                 .{HUB_ROOT_DOMAIN}
@@ -324,8 +236,7 @@ const HubFormCard = ({
                 Please enter another address, the {domainValidationError}.
               </div>
             ) : null}
-          </div> */}
-
+          </div>{' '}
           <div className={styles.actions_wrapper}>
             <Button
               label="cancel"
