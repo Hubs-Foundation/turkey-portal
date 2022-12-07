@@ -132,11 +132,10 @@ export function subscriptionPageRequireAuthentication(
   return async (context) => {
     const { req, query } = context;
 
-    // Local development only
-    // - start
+    // Local development only - start
     if (localFeature() && shouldNotRedirect(req, query))
       return await gssp(context);
-    // - end
+    // Local development only - start
 
     try {
       const account = await getAccount(req.headers as AxiosRequestHeaders);
@@ -171,6 +170,6 @@ function shouldNotRedirect(
   }
 ): boolean {
   return Boolean(
-    req.url?.includes(RoutesE.Subscribe) && query.redirect === 'false'
+    req.url?.includes(RoutesE.SUBSCRIBE) && query.redirect === 'false'
   );
 }

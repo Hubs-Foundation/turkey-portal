@@ -34,7 +34,7 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
         const hub: HubT = await getHub(`${hub_id}`);
         if (hub.status === StatusE.UPDATING) {
           router.push({
-            pathname: RoutesE.Dashboard,
+            pathname: RoutesE.DASHBOARD,
           });
           return;
         }
@@ -96,7 +96,7 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
           const resp = await updateHub(hub.hubId, updatedHub);
           if (resp?.status === 200) {
             router.push({
-              pathname: RoutesE.Dashboard,
+              pathname: RoutesE.DASHBOARD,
             });
           } else {
             launchToastError('Sorry, there was an error updating this Hub.');

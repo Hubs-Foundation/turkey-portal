@@ -7,22 +7,22 @@ import { AUTH_SERVER, DASH_ROOT_DOMAIN, MARKETING_PAGE_URL } from 'config';
 
 const redirectConfig = {
   auth: {
-    source: RoutesE.Dashboard,
+    source: RoutesE.DASHBOARD,
     destination: `https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}`,
     permanent: false,
   },
   marketing: {
-    source: RoutesE.Dashboard,
+    source: RoutesE.DASHBOARD,
     destination: MARKETING_PAGE_URL,
     permanent: false,
   },
   dashboard: {
-    destination: RoutesE.Dashboard,
+    destination: RoutesE.DASHBOARD,
     permanent: false,
   },
   subscription: {
-    source: RoutesE.Dashboard,
-    destination: RoutesE.Subscribe,
+    source: RoutesE.DASHBOARD,
+    destination: RoutesE.SUBSCRIBE,
     permanent: false,
   },
 };
