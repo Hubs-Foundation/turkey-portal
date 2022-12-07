@@ -123,9 +123,11 @@ defmodule Dash.RetClient do
     retry with: constant_backoff(get_wait_ms()) |> expiry(get_timeout_ms()) do
       case fetch_health_endpoint(hub) do
         {:ok, %{status_code: 200}} ->
+          IO.puts("is healthy")
           :ok
 
         {:ok, _} ->
+          IO.puts("not ready")
           # Ret server successfully responded, not ready yet
           :error
 
