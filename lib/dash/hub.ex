@@ -305,6 +305,7 @@ defmodule Dash.Hub do
     Task.Supervisor.async(Dash.TaskSupervisor, fn ->
       with {:ok, %{status_code: status_code}} when status_code < 400 <-
              Dash.OrchClient.update_subdomain(updated_hub),
+           :ok <- Process.sleep(2000),
            {:ok} <- RetClient.wait_until_healthy(updated_hub) do
         IO.puts("setting updated subdomain hub to ready now")
         set_hub_to_ready(updated_hub)
