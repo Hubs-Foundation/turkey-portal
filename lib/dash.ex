@@ -232,4 +232,7 @@ defmodule Dash do
   def has_account_for_fxa_uid?(fxa_uid) when is_binary(fxa_uid) do
     Repo.exists?(from a in Account, where: a.fxa_uid == ^fxa_uid)
   end
+
+  def subdomain_wait(),
+    do: Application.get_env(:dash, __MODULE__)[:subdomain_wait_time]
 end
