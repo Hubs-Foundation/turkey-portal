@@ -244,8 +244,6 @@ defmodule Dash.Hub do
         attrs
       end
 
-    IO.inspect(["attrs", attrs])
-
     with %Dash.Hub{status: :ready} = hub <- get_hub(hub_id, account),
          {:ok, updated_hub} <- form_changeset(hub, attrs) |> Dash.Repo.update() do
       if hub.subdomain != updated_hub.subdomain do
