@@ -239,10 +239,8 @@ defmodule Dash.Hub do
   def update_hub(hub_id, attrs, %Dash.Account{} = account) do
     attrs =
       if attrs["subdomain"] do
-        IO.puts("01 subdomain is on attrs")
         Map.put(attrs, "subdomain", attrs["subdomain"] |> String.downcase())
       else
-        IO.puts("01 subdomain is NOT in attrs")
         attrs
       end
 
@@ -250,21 +248,14 @@ defmodule Dash.Hub do
 
     with %Dash.Hub{status: :ready} = hub <- get_hub(hub_id, account),
          {:ok, updated_hub} <- form_changeset(hub, attrs) |> Dash.Repo.update() do
-      IO.inspect(["hub", hub])
-      IO.inspect(["updated_hub", updated_hub])
-
       if hub.subdomain != updated_hub.subdomain do
-        IO.puts("1 subdomains not equal")
-
         updated_hub =
           updated_hub |> Ecto.Changeset.change(status: :updating) |> Dash.Repo.update!()
 
-        IO.inspect(["updated_hub is now, start subdomain update", updated_hub])
         start_subdomain_update(hub, updated_hub)
 
         {:ok, updated_hub}
       else
-        IO.puts("Subdomains are equal so just return hub")
         {:ok, updated_hub}
       end
     else
@@ -305,7 +296,9 @@ defmodule Dash.Hub do
     Task.Supervisor.async(Dash.TaskSupervisor, fn ->
       with {:ok, %{status_code: status_code}} when status_code < 400 <-
              Dash.OrchClient.update_subdomain(updated_hub),
-           {:ok} <- RetClient.wait_until_healthy(updated_hub) do
+           :ok <- Process.sleep(Dash.subdomain_wait()),
+           {:ok} <-
+             RetClient.wait_until_healthy(updated_hub) do
         IO.puts("setting updated subdomain hub to ready now")
         set_hub_to_ready(updated_hub)
       else

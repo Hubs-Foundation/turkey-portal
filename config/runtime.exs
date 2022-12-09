@@ -96,7 +96,9 @@ case config_env() do
           Environment variable AUTH_PUBLIC_KEY is missing. Used in JWT authentication.
           """)
 
-    config :dash, Dash, plans: System.fetch_env!("PLANS")
+    config :dash, Dash,
+      plans: System.fetch_env!("PLANS"),
+      subdomain_wait_time: 15000
 
     # ## Using releases
     #
