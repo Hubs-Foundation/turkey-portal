@@ -71,7 +71,7 @@ defmodule Dash.RetClient do
   end
 
   @health_endpoint "/health"
-  def fetch_health_endpoint(%Dash.Hub{} = hub) do
+  defp fetch_health_endpoint(%Dash.Hub{} = hub) do
     get_http_client().get(
       ret_host_url(hub) <> @health_endpoint,
       [],

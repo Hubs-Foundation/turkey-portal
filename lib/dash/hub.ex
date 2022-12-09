@@ -291,15 +291,12 @@ defmodule Dash.Hub do
   defp start_subdomain_update(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do
     # This async task runs in the background, asynchronously, under the TaskSupervisor.
     # It needs to be able to handle success and failure scenarios in a self-contained manner.
-    IO.puts("2 start_subdomain_update()")
-
     Task.Supervisor.async(Dash.TaskSupervisor, fn ->
       with {:ok, %{status_code: status_code}} when status_code < 400 <-
              Dash.OrchClient.update_subdomain(updated_hub),
            :ok <- Process.sleep(Dash.subdomain_wait()),
            {:ok} <-
              RetClient.wait_until_healthy(updated_hub) do
-        IO.puts("setting updated subdomain hub to ready now")
         set_hub_to_ready(updated_hub)
       else
         err ->
