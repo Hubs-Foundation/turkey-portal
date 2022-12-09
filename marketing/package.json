@@ -9,13 +9,13 @@
     "lint": "next lint && prettier -c ."
   },
   "dependencies": {
-    "axios": "^1.1.3",
     "@mozilla/lilypad": "^1.1.5",
+    "axios": "^1.1.3",
+    "formik": "^2.2.9",
     "next": "12.2.4",
     "qs": "^6.11.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.38.0",
     "sass": "^1.54.1"
   },
   "devDependencies": {

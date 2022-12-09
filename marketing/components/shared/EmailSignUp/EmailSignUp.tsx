@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react';
 import styles from './EmailSignUp.module.scss';
-import { useForm, Controller } from 'react-hook-form';
-import { Checkbox, Input, RadioButton, Button } from '@mozilla/lilypad';
+import { Checkbox, RadioButton, Input, Button } from '@mozilla/lilypad';
 import Image from 'next/image';
 import Success from './Success/Success';
 import Error from './Error/Error';
@@ -12,10 +11,12 @@ import {
   BasketResponseT,
 } from 'services/basket.service';
 import { useDesktopDown } from 'hooks/useMediaQuery';
+import { useFormik } from 'formik';
+import validate from './Validate';
 // Assets
 import donutMailMan from '../../../public/donut_mail_man.jpg';
 
-type NewSubscription = {
+type NewSubscriptionT = {
   email: string;
   email_format: string;
 };
@@ -24,12 +25,6 @@ const EmailSignUp = () => {
   const [confirm, setConfirm] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [responseStatus, setResponseStatus] = useState<boolean>(false);
-  const { control, handleSubmit } = useForm<NewSubscription>({
-    defaultValues: {
-      email: '',
-      email_format: 'html',
-    },
-  });
   const isDesktopDown = useDesktopDown();
 
   /**
@@ -62,7 +57,7 @@ const EmailSignUp = () => {
   );
 
   const onSubmit = useCallback(
-    async (subscription: NewSubscription) => {
+    async (subscription: NewSubscriptionT) => {
       const { email, email_format } = subscription;
       const body: BasketBodyT = {
         email: email,
@@ -82,6 +77,18 @@ const EmailSignUp = () => {
     },
     [handleResponse, newsletterError]
   );
+
+  /**
+   * Init Formik
+   */
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      email_format: 'html',
+    },
+    validate,
+    onSubmit: onSubmit,
+  });
 
   /**
    * Checkbox Confirm
@@ -140,7 +147,7 @@ const EmailSignUp = () => {
             )}
 
             {/* FORM  */}
-            <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+            <form className={styles.form} onSubmit={formik.handleSubmit}>
               {submitted ? (
                 responseStatus ? (
                   <Success />
@@ -150,56 +157,44 @@ const EmailSignUp = () => {
               ) : (
                 <div className="flex-box">
                   {/* EMAIL  INPUT*/}
-                  <Controller
+
+                  <Input
+                    id="email"
                     name="email"
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => (
-                      <Input
-                        type="email"
-                        label="Email Address"
-                        placeholder="name@email.com"
-                        required={true}
-                        classProp="margin-bottom-16"
-                        {...field}
-                      />
-                    )}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.email}
+                    type="email"
+                    label="Email Address"
+                    placeholder="name@email.com"
+                    required={true}
+                    classProp="margin-bottom-16"
                   />
 
                   {/* EMAIL FORMAT RADIO SELECT  */}
-                  <Controller
-                    name="email_format"
-                    control={control}
-                    render={({ field: { onChange, value, ...props } }) => (
-                      <>
-                        <fieldset
-                          id="sb_radio"
-                          onChange={onChange}
-                          className="margin-bottom-16"
-                        >
-                          <legend className={styles.form_legend}>Format</legend>
-                          <div className="flex">
-                            <RadioButton
-                              groupValue={value}
-                              label="HTML"
-                              value="html"
-                              id="html_id"
-                              groupName="emailFormat"
-                              {...props}
-                            />
-                            <RadioButton
-                              groupValue={value}
-                              label="Text"
-                              value="text"
-                              id="text_id"
-                              groupName="emailFormat"
-                              {...props}
-                            />
-                          </div>
-                        </fieldset>
-                      </>
-                    )}
-                  />
+                  <fieldset
+                    id="email_format"
+                    onChange={formik.handleChange}
+                    className="margin-bottom-16"
+                  >
+                    <legend className={styles.form_legend}>Format</legend>
+                    <div className="flex">
+                      <RadioButton
+                        groupValue={formik.values.email_format}
+                        label="HTML"
+                        value="html"
+                        id="html_id"
+                        groupName="email_format"
+                      />
+                      <RadioButton
+                        groupValue={formik.values.email_format}
+                        label="Text"
+                        value="text"
+                        id="text_id"
+                        groupName="email_format"
+                      />
+                    </div>
+                  </fieldset>
 
                   {/* CONFIRMATION CHECKBOX  */}
                   <Checkbox
