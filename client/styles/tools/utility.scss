@@ -182,6 +182,16 @@ $fontSizes: 12, 14, 16, 18, 20;
   text-transform: capitalize;
 }
 
+.u-left-absolute {
+  position: absolute;
+  left: 0;
+}
+
+.u-right-absolute {
+  position: absolute;
+  right: 0;
+}
+
 .left-absolute {
   position: absolute;
   left: 0;
