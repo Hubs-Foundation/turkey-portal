@@ -50,7 +50,60 @@ const MainNav = ({
   /**
    * Dropdown Content
    */
-  const DropdownContent = <div>test</div>;
+  const DropdownContent = (
+    <div className={styles.dropdown_wrapper}>
+      <div className={styles.account_wrapper}>
+        <Avatar
+          classProp="mt-5"
+          src={account.profilePic}
+          size={40}
+          alt="profile picture"
+        />
+
+        <div className={styles.account_details}>
+          <div className={styles.account_label}>Signed in as</div>
+          <div className={styles.account_email}>{account.email}</div>
+        </div>
+      </div>
+
+      <hr className="dropdown-hr" />
+
+      {/* Account / Sign Out  */}
+      <div className={styles.links}>
+        <button
+          className="dropdown-link"
+          onClick={() => {
+            onManageAccountClick();
+          }}
+        >
+          <Icon
+            classProp="mr-10"
+            color="currentColor"
+            name="fx-account"
+            size={24}
+          />
+          Manage Your Firefox Account
+        </button>
+
+        <button
+          aria-label="sign out"
+          className="dropdown-link"
+          onClick={() => {
+            onLogOutClick();
+          }}
+        >
+          {/* TODO update icon asset  */}
+          <Icon
+            classProp="mr-10"
+            color="currentColor"
+            name="log-out"
+            size={24}
+          />
+          Sign Out
+        </button>
+      </div>
+    </div>
+  );
 
   /**
    * Main Nav JSX
