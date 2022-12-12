@@ -26,11 +26,15 @@ defmodule Dash.HubStatTest do
 
       # Has each hub storage stats in table
       assert Repo.exists?(
-               from(hs in HubStat, where: hs.hub_id == ^hub1.hub_id and hs.storage_mb > 0)
+               from hs in HubStat,
+                 where: hs.hub_id == ^hub1.hub_id,
+                 where: hs.storage_mb > 0
              )
 
       assert Repo.exists?(
-               from(hs in HubStat, where: hs.hub_id == ^hub2.hub_id and hs.storage_mb > 0)
+               from hs in HubStat,
+                 where: hs.hub_id == ^hub2.hub_id,
+                 where: hs.storage_mb > 0
              )
     end
 
@@ -44,7 +48,9 @@ defmodule Dash.HubStatTest do
       HubStat.job_record_hub_stats()
 
       refute Repo.exists?(
-               from(hs in HubStat, where: hs.hub_id == ^hub1.hub_id and hs.storage_mb > 0)
+               from hs in HubStat,
+                 where: hs.hub_id == ^hub1.hub_id,
+                 where: hs.storage_mb > 0
              )
     end
   end

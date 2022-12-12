@@ -61,7 +61,9 @@ config :dash, DashWeb.Plugs.Auth,
   auth_pub_key: auth_pub_key,
   cookie_secure: false
 
-config :dash, Dash, plans: "price_123,USD,10;price_234,EUR,15;price_345,RMB,20"
+config :dash, Dash,
+  plans: "price_123,USD,10;price_234,EUR,15;price_345,RMB,20",
+  subdomain_wait_time: 0
 
 config :dash, DashWeb.Plugs.BasicAuth,
   # Disable BasicAuth by default in local dev, since it's a bit annoying.
