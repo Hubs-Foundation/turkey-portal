@@ -117,7 +117,7 @@ const SubCard = ({
           icon="credit-card"
           title="Manage Subscription"
           description="View your active subscriptions and change your payment information. "
-          classProp="margin-bottom-24"
+          classProp="mb-24"
         />
 
         <CardButton

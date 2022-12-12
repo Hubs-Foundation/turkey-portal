@@ -43,7 +43,7 @@ const CardButton = ({
       </div>
 
       {/* Arrow Icon  */}
-      <div className={`u-no-mobile ${styles.icon_wrapper}`}>
+      <div className={`no-mobile ${styles.icon_wrapper}`}>
         <Icon classProp={styles.icon} size={34} name="arrow-right" />
       </div>
     </button>

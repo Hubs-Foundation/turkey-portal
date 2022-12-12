@@ -54,7 +54,7 @@ const MainNav = ({
     <div className={styles.dropdown_wrapper}>
       <div className={styles.account_wrapper}>
         <Avatar
-          classProp="margin-top-5"
+          classProp="mt-5"
           src={account.profilePic}
           size={40}
           alt="profile picture"
@@ -77,7 +77,7 @@ const MainNav = ({
           }}
         >
           <Icon
-            classProp="margin-right-10"
+            classProp="mr-10"
             color="currentColor"
             name="fx-account"
             size={24}
@@ -94,7 +94,7 @@ const MainNav = ({
         >
           {/* TODO update icon asset  */}
           <Icon
-            classProp="margin-right-10"
+            classProp="mr-10"
             color="currentColor"
             name="log-out"
             size={24}
@@ -117,7 +117,7 @@ const MainNav = ({
           {/* Main navigation links / logo */}
           <div className={styles.main_nav_contents}>
             {/* Mobile Menu */}
-            {/* <IconButton
+            {/* <Icon
               icon="menu"
               onClick={handleMobileMenuClick}
               size={30}
@@ -149,7 +149,7 @@ const MainNav = ({
                   <div className={styles.main_nav_account}>
                     {account.profilePic && (
                       <span className="flex-align-center">
-                        <button className="u-button-wrapper">
+                        <button className="button-wrapper">
                           <Avatar
                             src={account.profilePic}
                             size={50}

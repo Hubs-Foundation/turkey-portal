@@ -20,7 +20,7 @@ const Testimonial = ({ classProp = '' }: TestimonialPropsT) => {
       <div className={styles.container}>
         {/* HEADER  */}
         <div className={styles.header}>
-          <h2>Here&apos;s what people are saying:</h2>
+          <h2 className="heading-lg">Here&apos;s what people are saying:</h2>
         </div>
 
         {/* MAIN CONTENT  */}

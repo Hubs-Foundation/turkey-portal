@@ -45,8 +45,8 @@ const Hero = ({
         />
         <div className={styles.contents_wrapper}>
           <div className={styles.contents}>
-            {title && <h3 className={styles.title}>{title}</h3>}
-            {body && <p className={styles.body}>{body}</p>}
+            {title && <h3 className="heading-xxl mb-16">{title}</h3>}
+            {body && <p className="body-md mb-24">{body}</p>}
             {cta && (
               <Button
                 href={ctaLink}

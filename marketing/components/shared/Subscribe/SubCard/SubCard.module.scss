@@ -1,4 +1,4 @@
-@use 'styles/boilerplate.scss' as *;
+@use 'styles/core/boilerplate' as *;
 
 .wrapper {
   background-color: $color-background-overlay;
@@ -24,11 +24,6 @@
 
 .content {
   text-align: center;
-
-  h2 {
-    @include heading-lg;
-    margin: 0 0 24px;
-  }
 
   p {
     @include body-md;

@@ -75,7 +75,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
               <div className={styles.main_nav_actions}>
                 <Button
                   label="Go to your hubs dashboard"
-                  classProp="margin-right-10"
+                  classProp="mr-10"
                   category={ButtonCategoriesE.PRIMARY_OUTLINE}
                   href={`https://${DASH_ROOT_DOMAIN}/dashboard`}
                   text="Go to Dashboard"

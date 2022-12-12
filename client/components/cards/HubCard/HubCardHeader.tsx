@@ -35,7 +35,7 @@ const HubCardHeader = ({
             styles['card_status_' + status]
           }`}
         ></div>
-        <div className="margin-left-10 u-capitalize">{status}</div>
+        <div className="ml-10 capitalize">{status}</div>
       </div>
 
       {/* Edit Hubs Details  */}

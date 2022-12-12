@@ -1,4 +1,4 @@
-@use 'styles/boilerplate' as *;
+@use 'styles/core/boilerplate' as *;
 
 .wrapper {
   display: flex;
@@ -16,10 +16,6 @@
 
 .header {
   text-align: center;
-
-  h2 {
-    @include heading-lg;
-  }
 }
 
 .content {

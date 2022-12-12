@@ -15,7 +15,7 @@ const HubLink = ({ subdomain, classProp = '' }: HubLinkPropsT) => {
       <ExternalLink
         target="_blank"
         href={subdomainRootdomain}
-        classProp="margin-right-20"
+        classProp="mr-20"
       >
         {subdomainRootdomain}
       </ExternalLink>

@@ -5,24 +5,12 @@
 // ---------------------------------
 //   Quick Typograpjhy
 // ---------------------------------
-.font-12 {
-  @include font-size(12);
-}
+$fontSizes: 12, 14, 16, 18, 20;
 
-.font-14 {
-  @include font-size(14);
-}
-
-.font-16 {
-  @include font-size(16);
-}
-
-.font-18 {
-  @include font-size(18);
-}
-
-.capitalize {
-  text-transform: capitalize;
+@each $fontSize in $fontSizes {
+  .font-#{$fontSize} {
+    @include font-size($fontSize);
+  }
 }
 
 // Body Text
@@ -32,11 +20,6 @@
 
 .body-md-bold {
   @include body-md-bold();
-}
-
-// Link
-.primary-link {
-  @include primary-link();
 }
 
 // Heading
@@ -68,13 +51,22 @@
   @include heading-xxs();
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
+// ---------------------------------
+//   Quick Media-Q
+// ---------------------------------
+.no-mobile {
+  @include mobile-down {
+    display: none !important;
+  }
+}
+
 // ---------------------------------
 //   Colors
 // ---------------------------------
-.color-text-reverse {
-  color: $color-text-reverse;
-}
-
 .color-text-main {
   color: $color-text-main;
 }
@@ -150,6 +142,10 @@
   padding: 0;
 }
 
+.block {
+  display: block;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -205,6 +201,12 @@
   & * {
     box-sizing: content-box;
   }
+}
+
+.button-wrapper {
+  border: 0;
+  background: transparent;
+  padding: 0;
 }
 
 // ---------------------------------

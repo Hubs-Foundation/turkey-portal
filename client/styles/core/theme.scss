@@ -1,46 +1,5 @@
-@use './core/boilerplate.scss' as *;
-@use './core/utility.scss' as *;
-@use './core/flex.scss' as *;
-
-html,
-body {
-  @include primary-font();
-  padding: 0;
-  margin: 0;
-  font-size: 16px;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-fieldset {
-  padding: 0;
-  border: 0;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-  margin: 0px;
-}
-
-* {
-  box-sizing: border-box;
-}
-
 main[data-theme='light'],
 :root {
-  /**
-  BRAND COLORS
-  **/
-  --color-brand-1: #ff806f;
-
   /**
   PRIMARY INTERACTION
   **/
@@ -108,6 +67,7 @@ main[data-theme='light'],
   **/
   --color-border-1: #e6e6e6;
   --color-border-2: #cacaca;
+  --color-border-3: rgba(202, 202, 202, 0.2);
 
   /**
   NEUTRALS
@@ -131,6 +91,7 @@ main[data-theme='light'],
   --color-background-overlay: rgba(23, 10, 122, 0.4);
   --color-background-subtle-callout: #e8effd;
   --color-background-modal-overlay: rgba(0, 0, 0, 0.3);
+  --color-background-critical: #f9e1e5;
   --color-background-neutral-0: #ffffff;
 
   /**
@@ -143,11 +104,6 @@ main[data-theme='light'],
 
 // PLACE HOLDER FOR DARK VALUES
 main[data-theme='dark'] {
-  /**
-  BRAND COLORS
-  **/
-  --color-brand-1: #ff806f;
-
   /**
   PRIMARY INTERACTION
   **/
@@ -238,6 +194,8 @@ main[data-theme='dark'] {
   --color-background-overlay: rgba(23, 10, 122, 0.4);
   --color-background-subtle-callout: #e8effd;
   --color-background-modal-overlay: rgba(0, 0, 0, 0.3);
+  --color-background-critical: #f9e1e5;
+  --color-background-neutral-0: #ffffff;
 
   /**
   MENU
@@ -245,12 +203,4 @@ main[data-theme='dark'] {
   --color-interactions-menu: #000000;
   --color-interactions-menu-hover: #2f2f2f;
   --color-interactions-menu-inactive: #757575;
-}
-
-.page_wrapper {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  min-height: 100vh;
-  margin: 90px 0 0 0;
 }
