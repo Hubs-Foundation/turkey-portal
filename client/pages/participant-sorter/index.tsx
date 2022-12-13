@@ -4,7 +4,7 @@ import type { GetServerSidePropsContext } from 'next';
 import styles from './participant-sorter.module.scss';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
+import TimePicker from 'components/shared/TimePicker/TimePicker';
 type ParticipantSorterTPropsT = {};
 
 const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
@@ -36,6 +36,7 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
           endDate={endDate}
           selectsRange
         />
+        <TimePicker />
       </main>
     </div>
   );
