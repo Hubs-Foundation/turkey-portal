@@ -135,7 +135,7 @@ export function subscriptionPageRequireAuthentication(
     // Local development only - start
     if (localFeature() && shouldNotRedirect(req, query))
       return await gssp(context);
-    // Local development only - start
+    // Local development only - end
 
     try {
       const account = await getAccount(req.headers as AxiosRequestHeaders);
