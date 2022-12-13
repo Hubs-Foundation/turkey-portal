@@ -88,7 +88,7 @@ const HubFormCard = ({
    */
   const handleCancelClick = () => {
     router.push({
-      pathname: RoutesE.Dashboard,
+      pathname: RoutesE.DASHBOARD,
     });
   };
 
