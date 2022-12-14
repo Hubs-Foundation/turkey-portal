@@ -1,1 +1,10 @@
 @use '../../styles/core/boilerplate' as *;
+
+.card {
+  width: 763px;
+
+  &_section {
+    padding: 40px;
+    border-bottom: 2px solid $color-border-1;
+  }
+}
