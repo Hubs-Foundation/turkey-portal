@@ -1,0 +1,15 @@
+@use '../../../styles/core/boilerplate' as *;
+
+.wrapper {
+  background-color: $color-background-neutral-0;
+  padding: 12px;
+  border-radius: 12px;
+  position: relative;
+}
+
+.close_button {
+  position: absolute;
+  top: -2px;
+  right: 5px;
+  z-index: 1;
+}
