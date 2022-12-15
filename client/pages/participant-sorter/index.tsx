@@ -8,6 +8,11 @@ import GroupBuilder from 'components/participantSorter/GroupBuilder/GroupBuilder
 import { Button, Checkbox, Input, InputT, Icon } from '@mozilla/lilypad';
 //mike
 import ToolTip from '../../components/shared/ToolTip/ToolTip';
+const DESCRIPTIONS = {
+  end_date : "Participants joining after the event has ended will be routed to a post-event webpage.",
+  max_capacity: "",
+  refilling_threshold: ""
+}
 //mikend
 
 type ParticipantSorterTPropsT = {};
@@ -16,12 +21,36 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
 
+  type Group = {
+    name: string;
+  };
+  const groupsInit: Group[] = [{ name: 'Group A' }];
+  const [groups, setGroups] = useState<Group[]>(groupsInit);
+
   const onChange = (dates: any) => {
     console.log('datres', dates);
     const [start, end] = dates;
     console.log('start', start);
     setStartDate(start);
     setEndDate(end);
+  };
+
+  const onAddGroupClick = () => {
+    const letter = String.fromCharCode(groups.length + 65);
+
+    setGroups((state) => {
+      const updateGroups = [...state, { name: `Group ${letter}` }];
+      return updateGroups;
+    });
+  };
+
+  const onDeleteGroup = () => {
+    setGroups((state) => {
+      const updateGroups = [...state];
+      updateGroups.pop();
+      console.log(updateGroups);
+      return updateGroups;
+    });
   };
 
   return (
@@ -32,10 +61,11 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
       </Head>
 
       <main className="flex-justify-center mt-95-dt mt-40-mb">
-        <div className={`primary-card ${styles.card}`}>
+        <div className={`primary-card mb-45 ${styles.card}`}>
           <div className={styles.card_section}>
             <h1 className="heading-lg mb-44">Configure an Event</h1>
             <h2 className="heading-sm mb-12">Event Details</h2>
+
             <Input
               classProp="mb-24"
               placeholder="Event Name"
@@ -78,12 +108,19 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
               <Checkbox
                 classProp="content-box ml-13"
                 label="Allow eary entry"
+                checked={true}
                 onChange={() => {}}
               />
             </div>
 
             {/* END TIMES  */}
             <div className="flex">
+              {/* mike */}
+              <ToolTip 
+                description={DESCRIPTIONS["end_date"]}
+              />
+              {/* mikend */}
+
               <DatePicker
                 selected={startDate}
                 onChange={onChange}
@@ -98,12 +135,6 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
                   />
                 }
               />
-
-              {/* mike */}
-              <ToolTip 
-                name="end_date"
-              />
-              {/* mikend */}
 
               <Input
                 placeholder="time"
@@ -125,9 +156,20 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
               libero.
             </p>
 
-            <GroupBuilder />
+            {groups.map((group, i) => {
+              return (
+                <GroupBuilder
+                  key={i}
+                  canDelete={i + 1 === groups.length && i !== 0}
+                  classProp="mb-24"
+                  title={group.name}
+                  onDeleteGroup={onDeleteGroup}
+                />
+              );
+            })}
 
             <Button
+              onClick={onAddGroupClick}
               classProp="mt-24"
               label="add group"
               text="Add group"
@@ -141,7 +183,7 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
               name="event_url"
               label="Event URL"
               id="event_url"
-              value=""
+              value="https://kateshub.myhubs.net/events/Mozilla-SXSW-Exhibition"
             />
           </div>
           <div className="flex-justify-end p-40">

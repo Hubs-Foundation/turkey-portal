@@ -1,29 +1,25 @@
-import { MouseEventHandler, ReactNode, MouseEvent } from 'react';
-import ReactDOM from 'react-dom';
+import { useState } from 'react';
 import styles from './ToolTip.module.scss';
 import { Icon } from '@mozilla/lilypad';
 
-const DESCRIPTIONS = {
-    end_date : "end date description",
-    max_capacity: "",
-    refilling_threshold: ""
-}
-
 type ToolTipPropsT = {
-    name: string;
+    description: string;
   };
 
-const ToolTip = ({ name }: ToolTipPropsT) => {
-    const handleOnHover = () => {
-        
-    }
+const ToolTip = ({ description }: ToolTipPropsT) => {
+    const [show, setShow] = useState(false);
 
     return (
-        <div>
-            <div className={styles.messageCont}>
-                {DESCRIPTIONS[name]}
+        <div className={styles.tip_cont}>
+            <div 
+                onMouseEnter={() => setShow(true)}
+                onMouseLeave={() => setShow(false)}
+            >
+                <Icon name="info"/>
             </div>
-            <Icon name="info"/>
+            <div className={styles.tip_descript} style={show ? { visibility: "visible" } : {}}>
+                {description}
+            </div>
         </div>
     );
 };

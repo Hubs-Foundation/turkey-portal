@@ -5,4 +5,10 @@
   padding: 24px;
   width: 100%;
   background-color: $color-background-subtle-callout;
+  position: relative;
+}
+
+.close_button {
+  position: absolute;
+  right: 20px;
 }
