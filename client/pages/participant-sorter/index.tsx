@@ -5,7 +5,10 @@ import styles from './participant-sorter.module.scss';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import GroupBuilder from 'components/participantSorter/GroupBuilder/GroupBuilder';
-import { Button, Checkbox, Input, InputT } from '@mozilla/lilypad';
+import { Button, Checkbox, Input, InputT, Icon } from '@mozilla/lilypad';
+//mike
+import ToolTip from '../../components/shared/ToolTip/ToolTip';
+//mikend
 
 type ParticipantSorterTPropsT = {};
 
@@ -95,6 +98,12 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
                   />
                 }
               />
+
+              {/* mike */}
+              <ToolTip 
+                name="end_date"
+              />
+              {/* mikend */}
 
               <Input
                 placeholder="time"
