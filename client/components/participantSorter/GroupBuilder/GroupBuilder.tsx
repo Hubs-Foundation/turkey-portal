@@ -100,9 +100,9 @@ const GroupBuilder = ({
           ]}
         />
         {/* mike */}
-        {/* <ToolTip 
+        <ToolTip 
           description="refilling_threshold"
-        /> */}
+        />
         {/* mikend */}
       </div>
 

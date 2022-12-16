@@ -8,6 +8,9 @@ import {
 } from '@mozilla/lilypad';
 import { useContext, useMemo, useState } from 'react';
 import styles from './RoomBuilder.module.scss';
+//mike
+import ToolTip from '@Shared/ToolTip/ToolTip';
+//mikend
 
 type RoomBuilderPropsT = {
   title: string;
@@ -59,6 +62,11 @@ const RoomBuilder = ({
           label="Landing Room"
           checked={true}
         />
+        {/* mike */}
+        <ToolTip 
+          description="landing_room"
+        />
+        {/* mikend */}
       </div>
     </section>
   );
