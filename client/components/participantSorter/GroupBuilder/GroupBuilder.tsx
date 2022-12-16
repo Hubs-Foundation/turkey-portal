@@ -7,6 +7,13 @@ import styles from './GroupBuilder.module.scss';
 import ToolTip from '@Shared/ToolTip/ToolTip';
 //mikend
 
+const Tips = {
+  max_capacity:
+    'Participants will be added to this room group until max capacity is reached.',
+  refilling_threshold:
+    'After being filled to max capacity, this group will not accept any new participants until its user count falls below this threshold.',
+};
+
 type GroupBuilderPropsT = {
   title: string;
   canDelete?: boolean;
@@ -84,9 +91,7 @@ const GroupBuilder = ({
           ]}
         />
         {/* mike */}
-        <ToolTip 
-          description="max_capacity"
-        />
+        <ToolTip description={Tips.max_capacity} />
         {/* mikend */}
         <Select
           classProp={styles.select_md}
@@ -100,9 +105,7 @@ const GroupBuilder = ({
           ]}
         />
         {/* mike */}
-        <ToolTip 
-          description="refilling_threshold"
-        />
+        <ToolTip description={Tips.refilling_threshold} />
         {/* mikend */}
       </div>
 

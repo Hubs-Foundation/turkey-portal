@@ -11,6 +11,10 @@ import styles from './RoomBuilder.module.scss';
 //mike
 import ToolTip from '@Shared/ToolTip/ToolTip';
 //mikend
+const Tips = {
+  landing_room:
+    "Once sorted into a room group, participants will randomly populate any rooms specified as a 'Landing Room'. At least one room must be designated per group.",
+};
 
 type RoomBuilderPropsT = {
   title: string;
@@ -63,9 +67,7 @@ const RoomBuilder = ({
           checked={true}
         />
         {/* mike */}
-        <ToolTip 
-          description="landing_room"
-        />
+        <ToolTip description={Tips.landing_room} />
         {/* mikend */}
       </div>
     </section>
