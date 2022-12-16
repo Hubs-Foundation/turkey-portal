@@ -1,7 +1,11 @@
 import { Button, ButtonCategoriesE, Input } from '@mozilla/lilypad';
 import { useContext, useMemo, useState } from 'react';
 import RoomBuilder from '../RoomBuilder/RoomBuilder';
+import Select from '@Shared/Select/Select';
 import styles from './GroupBuilder.module.scss';
+//mike
+import ToolTip from '@Shared/ToolTip/ToolTip';
+//mikend
 
 type GroupBuilderPropsT = {
   title: string;
@@ -66,6 +70,42 @@ const GroupBuilder = ({
           />
         )}
       </div>
+
+      <div className="flex mb-24">
+        <Select
+          classProp={`${styles.select_md} mr-20-dt`}
+          label="Max Capacity"
+          name="max_capacity"
+          id="max_capacity"
+          value="test"
+          options={[
+            { title: '70', value: '70' },
+            { title: '80', value: '80' },
+          ]}
+        />
+        {/* mike */}
+        <ToolTip 
+          description="max_capacity"
+        />
+        {/* mikend */}
+        <Select
+          classProp={styles.select_md}
+          label="Refilling Threshold"
+          name="refilling_threshold"
+          id="refilling_threshold"
+          value="test"
+          options={[
+            { title: '20', value: '20' },
+            { title: '30', value: '30' },
+          ]}
+        />
+        {/* mike */}
+        {/* <ToolTip 
+          description="refilling_threshold"
+        /> */}
+        {/* mikend */}
+      </div>
+
       <div>
         <p className="mb-24">ROOMS</p>
 

@@ -5,14 +5,10 @@ import styles from './participant-sorter.module.scss';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import GroupBuilder from 'components/participantSorter/GroupBuilder/GroupBuilder';
-import { Button, Checkbox, Input, InputT, Icon } from '@mozilla/lilypad';
+import { Button, Checkbox, Input} from '@mozilla/lilypad';
+import Select from '@Shared/Select/Select';
 //mike
 import ToolTip from '../../components/shared/ToolTip/ToolTip';
-const DESCRIPTIONS = {
-  end_date : "Participants joining after the event has ended will be routed to a post-event webpage.",
-  max_capacity: "",
-  refilling_threshold: ""
-}
 //mikend
 
 type ParticipantSorterTPropsT = {};
@@ -104,22 +100,27 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
             </div>
 
             {/* EARLY ENTRY  */}
-            <div>
+            <div className="flex-align-start">
               <Checkbox
-                classProp="content-box ml-13"
-                label="Allow eary entry"
+                classProp="content-box ml-13 mr-12 flex-start"
                 checked={true}
                 onChange={() => {}}
+              />
+              <Select
+                classProp={styles.select_md}
+                label="Allow Early Entry"
+                name="early_entry"
+                id="early_entry"
+                value="test"
+                options={[
+                  { title: '30 Minuts', value: '30' },
+                  { title: '35 Minuts', value: '35' },
+                ]}
               />
             </div>
 
             {/* END TIMES  */}
             <div className="flex">
-              {/* mike */}
-              <ToolTip 
-                description={DESCRIPTIONS["end_date"]}
-              />
-              {/* mikend */}
 
               <DatePicker
                 selected={startDate}
@@ -135,6 +136,11 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
                   />
                 }
               />
+              {/* mike */}
+              <ToolTip 
+                description={"end_date"}
+              />
+              {/* mikend */}
 
               <Input
                 placeholder="time"
@@ -150,10 +156,7 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
           <div className={styles.card_section}>
             <h2 className="heading-sm mb-12">Room Groups</h2>
             <p className="body-md mb-24">
-              Condimentum aliquam scelerisque odio cras in nisi id viverra.
-              Lacinia ut sit enim donec at egestas faucibus pulvinar. Ut erat
-              nisi faucibus in. Risus ac mauris pharetra velit mi sed faucibus
-              libero.
+              Participants entering an event will be sorted into room groups, composed of one at least one room URL. Groups add up the user count of its rooms to determine total capacity before accepting new participants. Room groups allow event hosts to better distribute pariticpants across a large, multi-room event, lowering the likelihood that some rooms will be quite crowded while others are nearly empty. For more information on Room Groups, review this documentation.
             </p>
 
             {groups.map((group, i) => {
