@@ -6,6 +6,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import GroupBuilder from 'components/participantSorter/GroupBuilder/GroupBuilder';
 import { Button, Checkbox, Input } from '@mozilla/lilypad';
+import Select from '@Shared/Select/Select';
 
 type ParticipantSorterTPropsT = {};
 
@@ -96,12 +97,22 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
             </div>
 
             {/* EARLY ENTRY  */}
-            <div>
+            <div className="flex-align-start">
               <Checkbox
-                classProp="content-box ml-13"
-                label="Allow eary entry"
+                classProp="content-box ml-13 mr-12 flex-start"
                 checked={true}
                 onChange={() => {}}
+              />
+              <Select
+                classProp={styles.select_md}
+                label="Allow Early Entry"
+                name="early_entry"
+                id="early_entry"
+                value="test"
+                options={[
+                  { title: '30 Minuts', value: '30' },
+                  { title: '35 Minuts', value: '35' },
+                ]}
               />
             </div>
 
