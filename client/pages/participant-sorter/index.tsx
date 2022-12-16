@@ -114,7 +114,7 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
 
               <div className={styles.select_md}>
                 <Select
-                  classProp={`${styles.select_md}`}
+                  classProp={styles.select_md}
                   label="Allow Early Entry"
                   name="early_entry"
                   id="early_entry"
