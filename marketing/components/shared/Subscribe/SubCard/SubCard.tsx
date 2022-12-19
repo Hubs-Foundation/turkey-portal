@@ -25,7 +25,7 @@ const SubCard = ({
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
       <div className={styles.content}>
-        {title && <h2>{title}</h2>}
+        {title && <h2 className="heading-lg mb-24">{title}</h2>}
         {children && <>{children}</>}
         {cta && (
           <Button

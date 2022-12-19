@@ -54,7 +54,7 @@ defmodule Dash.CapabilityTest do
   describe "update_or_create_capability_for_changeset/1" do
     test "Creates account if capability is added" do
       fxa_uid = get_default_test_uid()
-      false = Repo.exists?(from(a in Dash.Account, where: a.fxa_uid == ^fxa_uid))
+      false = Repo.exists?(from a in Dash.Account, where: a.fxa_uid == ^fxa_uid)
 
       Dash.update_or_create_capability_for_changeset(%{
         fxa_uid: fxa_uid,
@@ -63,7 +63,7 @@ defmodule Dash.CapabilityTest do
         change_time: DateTime.utc_now()
       })
 
-      assert Repo.exists?(from(a in Dash.Account, where: a.fxa_uid == ^fxa_uid))
+      assert Repo.exists?(from a in Dash.Account, where: a.fxa_uid == ^fxa_uid)
       account = Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
       assert [_] = Dash.get_all_capabilities_for_account(account)

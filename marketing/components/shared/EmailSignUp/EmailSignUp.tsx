@@ -109,7 +109,7 @@ const EmailSignUp = () => {
           href="https://www.mozilla.org/en-US/privacy/websites/"
           rel="noopener noreferrer"
           target="_blank"
-          className="u-primary-link"
+          className="primary-link"
         >
           Privacy Notice
         </a>
@@ -129,8 +129,8 @@ const EmailSignUp = () => {
                 <div className={styles.bar}></div>
               </div>
             )}
-            <h2>Get immersed in Hubs!</h2>
-            <p>
+            <h2 className="heading-lg mb-16">Get immersed in Hubs!</h2>
+            <p className="body-md mb-32">
               Sign up here to get updates on what is new with Hubs and we will
               keep you up to date with the latest {!isDesktopDown && <br />}{' '}
               news, updates, and product offerings. We can&apos;t wait to show
@@ -198,7 +198,7 @@ const EmailSignUp = () => {
 
                   {/* CONFIRMATION CHECKBOX  */}
                   <Checkbox
-                    classProp="u-content-box margin-left-13"
+                    classProp="content-box ml-13"
                     onChange={onConfirm}
                     checked={confirm}
                     label={<Label />}
@@ -206,7 +206,7 @@ const EmailSignUp = () => {
 
                   {/* SUBMIT  */}
                   <Button
-                    classProp="margin-top-16"
+                    classProp="mt-16"
                     label="submit"
                     type="submit"
                     disabled={!confirm}

@@ -1,4 +1,4 @@
-@use 'styles/boilerplate.scss' as *;
+@use 'styles/core/boilerplate' as *;
 
 .wrapper {
   display: flex;
@@ -58,21 +58,6 @@
   @include desktop-down {
     padding: 20px;
     width: 100%;
-  }
-
-  h3 {
-    @include heading-xxl;
-    margin: 4px 0 18px;
-  }
-
-  h4 {
-    @include heading-sm;
-    margin-bottom: 0;
-  }
-
-  p,
-  div {
-    @include body-md;
   }
 
   &_wrapper {

@@ -22,12 +22,12 @@ const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   return (
     <div className={styles.info_wrapper}>
       <div className="flex-box">
-        <Icon name={icon} size={30} classProp="margin-right-20 margin-top-2 " />
+        <Icon name={icon} size={30} classProp="mr-20 mt-2 " />
       </div>
-      <div className="u-body-md">
+      <div className="body-md">
         <p>
           {' '}
-          <span className="u-body-md-bold">{label}</span> <br /> {description}
+          <span className="body-md-bold">{label}</span> <br /> {description}
         </p>
       </div>
     </div>
@@ -44,8 +44,8 @@ const Price = ({ region }: PricePropsT) => {
 
   return (
     <>
-      <h2>{currency.symbol}20</h2>
-      <p>{currency.abbrev}</p>
+      <h2 className="heading-lg mr-4">{currency.symbol}20</h2>
+      <p className="body-md">{currency.abbrev}</p>
     </>
   );
 };
@@ -120,9 +120,9 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
           })}
 
           {/* LOCATION CONFIRMATION  */}
-          <form className="u-content-box margin-top-16 margin-bottom-16">
+          <form className="content-box mt-16 mb-16">
             <Checkbox
-              classProp="u-content-box"
+              classProp="content-box"
               onChange={onToggleConfirmation}
               checked={locationConfirmed}
               label="I'm located in UK, Canada, USA, or Germany"

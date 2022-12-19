@@ -75,7 +75,7 @@ const HubFormCard = ({
    */
   const handleCancelClick = () => {
     router.push({
-      pathname: RoutesE.Dashboard,
+      pathname: RoutesE.DASHBOARD,
     });
   };
 
@@ -169,7 +169,7 @@ const HubFormCard = ({
             size={ButtonSizesE.LARGE}
             category={ButtonCategoriesE.PRIMARY_CLEAR}
             icon="arrow-left"
-            classProp="margin-right-5"
+            classProp="mr-5"
           />
           <h1 className={styles.title}>Hub Details</h1>
         </div>
@@ -240,7 +240,7 @@ const HubFormCard = ({
           <div className={styles.actions_wrapper}>
             <Button
               label="cancel"
-              classProp="margin-right-5"
+              classProp="mr-5"
               onClick={handleCancelClick}
               category={ButtonCategoriesE.PRIMARY_CLEAR}
               text="Cancel"

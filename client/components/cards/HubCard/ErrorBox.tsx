@@ -55,7 +55,7 @@ const ErrorBox = ({
             <Button
               label="try again now"
               text="Try again now"
-              classProp="margin-right-12"
+              classProp="mr-12"
               onClick={handleTryAgainClick}
             />
           )}

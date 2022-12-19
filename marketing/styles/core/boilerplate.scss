@@ -14,7 +14,7 @@
 */
 
 // tools
-@forward 'core/variables';
-@forward 'tools/functions';
-@forward 'tools/media-queries';
-@forward 'tools/mixins';
+@forward './variables';
+@forward '../tools/functions';
+@forward '../tools/media-queries';
+@forward '../tools/mixins';
