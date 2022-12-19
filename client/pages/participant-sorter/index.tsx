@@ -16,7 +16,7 @@ type ParticipantSorterTPropsT = {};
 const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
   const [isEarlyEntry, setIsEarlyEntry] = useState<boolean>(true);
   const Tips = {
-    end_date:
+    end_date_tip:
       'Participants joining after the event has ended will be routed to your post-event webpage.',
   };
   type Group = {
@@ -162,29 +162,30 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
 
               <div className="flex">
                 {/* END DATE   */}
-                <DatePicker
-                  onChange={(e) => {
-                    formik.setFieldValue(FormKeys.END_DATE, e);
-                  }}
-                  id="end_date"
-                  name="end_time"
-                  selected={formik.values.end_date}
-                  startDate={formik.values.end_date}
-                  customInput={
-                    <>
-                      <ToolTip
-                        description={Tips.end_date}
-                        classProp={styles.tip}
-                      />
+                <div className="relative">
+                  <ToolTip
+                    description={Tips.end_date_tip}
+                    classProp={styles.tip}
+                  />
+                  <DatePicker
+                    onChange={(e) => {
+                      formik.setFieldValue(FormKeys.END_DATE, e);
+                    }}
+                    id="end_date"
+                    name="end_date"
+                    selected={formik.values.end_date}
+                    startDate={formik.values.end_date}
+                    customInput={
                       <Input
+                        onChange={formik.handleChange}
                         placeholder="End Date"
                         name="end_date"
                         label="End Date"
                         value=""
                       />
-                    </>
-                  }
-                />
+                    }
+                  />
+                </div>
 
                 {/* END TIME  */}
                 <Input
