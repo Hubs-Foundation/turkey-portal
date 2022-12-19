@@ -32,7 +32,7 @@ const GroupBuilder = ({
     url: string;
     baseUrl: string;
   };
-  const MockBaseUrl = 'https://kateshub.myhubs.net/oTtoifq/';
+  const MockBaseUrl = 'hubs.mozilla.com/******/';
   const groupsInit: Room[] = [
     { title: 'Room 1', url: 'cool-site', baseUrl: MockBaseUrl },
   ];
@@ -79,34 +79,38 @@ const GroupBuilder = ({
       </div>
 
       <div className="flex mb-24">
-        <Select
-          classProp={`${styles.select_md} mr-20-dt`}
-          label="Max Capacity"
-          name="max_capacity"
-          id="max_capacity"
-          value="test"
-          options={[
-            { title: '70', value: '70' },
-            { title: '80', value: '80' },
-          ]}
-        />
-        {/* mike */}
-        <ToolTip description={Tips.max_capacity} />
-        {/* mikend */}
-        <Select
-          classProp={styles.select_md}
-          label="Refilling Threshold"
-          name="refilling_threshold"
-          id="refilling_threshold"
-          value="test"
-          options={[
-            { title: '20', value: '20' },
-            { title: '30', value: '30' },
-          ]}
-        />
-        {/* mike */}
-        <ToolTip description={Tips.refilling_threshold} />
-        {/* mikend */}
+        <div className="relative">
+          <ToolTip classProp={styles.tip_a} description={Tips.max_capacity} />
+          <Select
+            classProp={`${styles.select_md} mr-20-dt`}
+            label="Max Capacity"
+            name="max_capacity"
+            id="max_capacity"
+            value="test"
+            options={[
+              { title: '70', value: '70' },
+              { title: '80', value: '80' },
+            ]}
+          />
+        </div>
+
+        <div className="relative">
+          <ToolTip
+            classProp={styles.tip_b}
+            description={Tips.refilling_threshold}
+          />
+          <Select
+            classProp={styles.select_md}
+            label="Refilling Threshold"
+            name="refilling_threshold"
+            id="refilling_threshold"
+            value="test"
+            options={[
+              { title: '20', value: '20' },
+              { title: '30', value: '30' },
+            ]}
+          />
+        </div>
       </div>
 
       <div>

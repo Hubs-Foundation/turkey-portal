@@ -153,10 +153,11 @@ const Select = forwardRef(
           onChange={handleOnChange}
           onBlur={handleOnBlur}
           onFocus={handleOnFocus}
+          value={value}
         >
-          {options.map(({ value, title }, i) => {
+          {options.map(({ value: optionValue, title }, i) => {
             return (
-              <option key={i} value={value}>
+              <option key={i} value={optionValue}>
                 {title}
               </option>
             );

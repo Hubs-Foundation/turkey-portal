@@ -6,11 +6,8 @@ import {
   Checkbox,
   Input,
 } from '@mozilla/lilypad';
-import { useContext, useMemo, useState } from 'react';
 import styles from './RoomBuilder.module.scss';
-//mike
 import ToolTip from '@Shared/ToolTip/ToolTip';
-//mikend
 const Tips = {
   landing_room:
     "Once sorted into a room group, participants will randomly populate any rooms specified as a 'Landing Room'. At least one room must be designated per group.",
@@ -60,15 +57,15 @@ const RoomBuilder = ({
           icon="check-circle"
           iconColor={InputIconColorE.SUCCESS}
         />
-        <Checkbox
-          onChange={() => {}}
-          classProp="content-box"
-          label="Landing Room"
-          checked={true}
-        />
-        {/* mike */}
-        <ToolTip description={Tips.landing_room} />
-        {/* mikend */}
+        <div className="flex-align-center">
+          <Checkbox
+            onChange={() => {}}
+            classProp="content-box"
+            label="Landing Room"
+            checked={true}
+          />
+          <ToolTip classProp="mb-12 ml-5" description={Tips.landing_room} />
+        </div>
       </div>
     </section>
   );

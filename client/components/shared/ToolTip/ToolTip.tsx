@@ -4,9 +4,10 @@ import { Icon } from '@mozilla/lilypad';
 
 type ToolTipPropsT = {
   description: string;
+  classProp?: string;
 };
 
-const ToolTip = ({ description }: ToolTipPropsT) => {
+const ToolTip = ({ description, classProp = '' }: ToolTipPropsT) => {
   const [show, setShow] = useState<boolean>(false);
 
   /**
@@ -17,7 +18,7 @@ const ToolTip = ({ description }: ToolTipPropsT) => {
   };
 
   return (
-    <section className={styles.container}>
+    <section className={classProp}>
       <div onMouseEnter={toggleToolTip} onMouseLeave={toggleToolTip}>
         <Icon name="info" />
       </div>

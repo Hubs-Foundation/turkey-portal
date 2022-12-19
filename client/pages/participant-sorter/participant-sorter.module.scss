@@ -12,3 +12,10 @@
 .select_md {
   width: 200px;
 }
+
+.tip {
+  position: absolute;
+  left: 80px;
+  z-index: 1;
+  top: 2px;
+}
