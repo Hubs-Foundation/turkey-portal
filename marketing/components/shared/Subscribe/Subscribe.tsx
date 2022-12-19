@@ -46,7 +46,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
           <SubCard
             title="Business"
             cta="Contact us"
-            ctaUrl="mailto:hubs@mozilla.com?subject=Subscription inquiries"
+            ctaUrl="mailto:enterprise-hubs@mozilla.com?subject=Subscription inquiries"
           >
             <p>
               Need dedicated infrastructure, custom clients, or something else?
