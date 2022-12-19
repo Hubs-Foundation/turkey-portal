@@ -3,9 +3,9 @@ import { useContext, useMemo, useState } from 'react';
 import RoomBuilder from '../RoomBuilder/RoomBuilder';
 import Select from '@Shared/Select/Select';
 import styles from './GroupBuilder.module.scss';
-//mike
 import ToolTip from '@Shared/ToolTip/ToolTip';
-//mikend
+import { useFormik } from 'formik';
+import validate, { FormValues } from './validate';
 
 const Tips = {
   max_capacity:
@@ -34,10 +34,27 @@ const GroupBuilder = ({
   };
   const MockBaseUrl = 'hubs.mozilla.com/******/';
   const groupsInit: Room[] = [
-    { title: 'Room 1', url: 'cool-site', baseUrl: MockBaseUrl },
+    { title: 'Room 1', url: 'quack-room', baseUrl: MockBaseUrl },
   ];
   const [rooms, setRooms] = useState<Room[]>(groupsInit);
 
+  /**
+   * Init Formik
+   */
+  const formik = useFormik({
+    initialValues: {
+      max_capacity: 70,
+      refilling_threshold: 20,
+    },
+    validate,
+    onSubmit: (data: FormValues) => {
+      onSubmit && onSubmit(data);
+    },
+  });
+
+  const onSubmit = (data: FormValues) => {
+    console.log('data', data);
+  };
   const handleDeleteGroup = () => {
     typeof onDeleteGroup === 'function' && onDeleteGroup();
   };
@@ -86,7 +103,8 @@ const GroupBuilder = ({
             label="Max Capacity"
             name="max_capacity"
             id="max_capacity"
-            value="test"
+            onChange={formik.handleChange}
+            value={formik.values.max_capacity}
             options={[
               { title: '70', value: '70' },
               { title: '80', value: '80' },
@@ -104,7 +122,8 @@ const GroupBuilder = ({
             label="Refilling Threshold"
             name="refilling_threshold"
             id="refilling_threshold"
-            value="test"
+            onChange={formik.handleChange}
+            value={formik.values.refilling_threshold}
             options={[
               { title: '20', value: '20' },
               { title: '30', value: '30' },

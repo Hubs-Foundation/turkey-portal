@@ -1,12 +1,6 @@
 export interface FormValues {
-  event_name: string;
-  start_date: Date;
-  start_time: string;
-  allow_early_entry: boolean;
-  early_entry_minuts: number;
-  end_date: Date;
-  end_time: string;
-  event_url: string;
+  max_capacity: number;
+  refilling_threshold: number;
 }
 
 /**
@@ -14,16 +8,7 @@ export interface FormValues {
  * @param param0
  * @returns Error Object | {}
  */
-const validate = ({
-  event_name,
-  start_date,
-  start_time,
-  allow_early_entry,
-  early_entry_minuts,
-  end_date,
-  end_time,
-  event_url,
-}: FormValues) => {
+const validate = ({ max_capacity, refilling_threshold }: FormValues) => {
   // /**
   //  * Init
   //  */

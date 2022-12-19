@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
 import styles from './participant-sorter.module.scss';
@@ -14,8 +14,7 @@ import ToolTip from '../../components/shared/ToolTip/ToolTip';
 type ParticipantSorterTPropsT = {};
 
 const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(null);
+  const [isEarlyEntry, setIsEarlyEntry] = useState<boolean>(true);
   const Tips = {
     end_date:
       'Participants joining after the event has ended will be routed to your post-event webpage.',
@@ -25,6 +24,10 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
   };
   const groupsInit: Group[] = [{ name: 'Group A' }];
   const [groups, setGroups] = useState<Group[]>(groupsInit);
+  enum FormKeys {
+    START_DATE = 'start_date',
+    END_DATE = 'end_date',
+  }
 
   /**
    * Init Formik
@@ -35,13 +38,20 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
       start_date: new Date(),
       start_time: '16:00',
       allow_early_entry: true,
-      early_entry_minuts: 20,
+      early_entry_minuts: 30,
+      end_date: new Date(),
+      end_time: '16:00',
+      event_url: 'https://quackweek.myhubs.net/events/Mozilla-SXSW-Exhibition',
     },
     validate,
     onSubmit: (data: FormValues) => {
       onSubmit && onSubmit(data);
     },
   });
+
+  const onToggleEarlyEntry = useCallback((value: boolean) => {
+    setIsEarlyEntry(value);
+  }, []);
 
   const onSubmit = (data: FormValues) => {
     console.log('data', data);
@@ -60,7 +70,6 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
     setGroups((state) => {
       const updateGroups = [...state];
       updateGroups.pop();
-      console.log(updateGroups);
       return updateGroups;
     });
   };
@@ -79,6 +88,7 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
               <h1 className="heading-lg mb-44">Configure an Event</h1>
               <h2 className="heading-sm mb-16">Event Details</h2>
 
+              {/* EVENT NAME  */}
               <Input
                 classProp="mb-24"
                 placeholder="Event Name"
@@ -90,11 +100,11 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
                 value={formik.values.event_name}
               />
 
-              {/* START TIMES */}
               <div className="flex mb-24">
+                {/* START DATE */}
                 <DatePicker
                   onChange={(e) => {
-                    formik.setFieldValue('start_date', e);
+                    formik.setFieldValue(FormKeys.START_DATE, e);
                   }}
                   selected={formik.values.start_date}
                   startDate={formik.values.start_date}
@@ -111,6 +121,7 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
                   }
                 />
 
+                {/* START TIME  */}
                 <Input
                   placeholder="time"
                   name="start_time"
@@ -128,8 +139,8 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
               <div className="flex-align-start mb-12">
                 <Checkbox
                   classProp="content-box ml-13 mr-12 flex-start"
-                  checked={true}
-                  onChange={() => {}}
+                  checked={isEarlyEntry}
+                  onChange={onToggleEarlyEntry}
                 />
 
                 <div className={styles.select_md}>
@@ -138,23 +149,27 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
                     label="Allow Early Entry"
                     name="early_entry"
                     id="early_entry"
-                    value={30}
+                    onChange={formik.handleChange}
+                    value={formik.values.early_entry_minuts}
                     options={[
                       { title: '30 Minuts', value: '30' },
                       { title: '35 Minuts', value: '35' },
+                      { title: '40 Minuts', value: '40' },
                     ]}
                   />
                 </div>
               </div>
 
-              {/* END TIMES  */}
               <div className="flex">
+                {/* END DATE   */}
                 <DatePicker
-                  selected={startDate}
                   onChange={(e) => {
-                    formik.setFieldValue('end_date', e);
+                    formik.setFieldValue(FormKeys.END_DATE, e);
                   }}
-                  startDate={startDate}
+                  id="end_date"
+                  name="end_time"
+                  selected={formik.values.end_date}
+                  startDate={formik.values.end_date}
                   customInput={
                     <>
                       <ToolTip
@@ -165,35 +180,44 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
                         placeholder="End Date"
                         name="end_date"
                         label="End Date"
-                        id="end_date"
                         value=""
                       />
                     </>
                   }
                 />
 
+                {/* END TIME  */}
                 <Input
                   placeholder="time"
                   name="end_time"
                   label="End Time"
                   classProp="pl-14"
-                  id="end_time"
                   type="time"
-                  value=""
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.end_time}
                 />
               </div>
             </div>
             <div className={styles.card_section}>
               <h2 className="heading-sm mb-12">Room Groups</h2>
-              <p className="body-md mb-24">
+              <p className="body-md mb-5">
                 Participants entering an event will be sorted into room groups,
-                composed of one at least one room URL. Groups add up the user
-                count of its rooms to determine total capacity before accepting
-                new participants. Room groups allow event hosts to better
-                distribute pariticpants across a large, multi-room event,
-                lowering the likelihood that some rooms will be quite crowded
-                while others are nearly empty. For more information on Room
-                Groups, review this documentation.
+                composed of one at least one room URL.
+              </p>
+
+              <p className="body-md mb-5">
+                <b>Groups</b> add up the user count of its rooms to determine
+                total capacity before accepting new participants.
+              </p>
+              <p className="body-md mb-5">
+                <b>Room Groups</b> allow event hosts to better distribute
+                pariticpants across a large, multi-room event, lowering the
+                likelihood that some rooms will be quite crowded while others
+                are nearly empty.
+              </p>
+              <p className="body-md mb-44">
+                For more information on Room Groups, review this documentation.
               </p>
 
               {groups.map((group, i) => {
@@ -223,7 +247,9 @@ const ParticipantSorter = ({}: ParticipantSorterTPropsT) => {
                 name="event_url"
                 label="Event URL"
                 id="event_url"
-                value="https://quackweek.myhubs.net/events/Mozilla-SXSW-Exhibition"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.event_url}
               />
             </div>
             <div className="flex-justify-end p-40">

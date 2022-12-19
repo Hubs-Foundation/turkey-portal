@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from './ToolTip.module.scss';
 import { Icon } from '@mozilla/lilypad';
+import FadeIn from '@Util/FadeIn';
 
 type ToolTipPropsT = {
   description: string;
@@ -22,7 +23,9 @@ const ToolTip = ({ description, classProp = '' }: ToolTipPropsT) => {
       <div onMouseEnter={toggleToolTip} onMouseLeave={toggleToolTip}>
         <Icon name="info" />
       </div>
-      {show && <p className={styles.description}>{description}</p>}
+      <FadeIn isVisible={show}>
+        {show && <p className={styles.description}>{description}</p>}
+      </FadeIn>
     </section>
   );
 };
