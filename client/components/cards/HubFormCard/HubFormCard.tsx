@@ -236,7 +236,7 @@ const HubFormCard = ({
                 Please enter another address, the {domainValidationError}.
               </div>
             ) : null}
-          </div>{' '}
+          </div>
           <div className={styles.actions_wrapper}>
             <Button
               label="cancel"
