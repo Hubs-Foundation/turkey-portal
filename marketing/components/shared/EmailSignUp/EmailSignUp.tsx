@@ -12,7 +12,7 @@ import {
 } from 'services/basket.service';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import { useFormik } from 'formik';
-import validate from './Validate';
+import validate from './validate';
 // Assets
 import donutMailMan from '../../../public/donut_mail_man.jpg';
 

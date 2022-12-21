@@ -4,30 +4,26 @@ interface FormValidation {
 
 /**
  * Validate Form
- * @param param0
+ * @param FormValidation
  * @returns Error Object | {}
  */
 const validate = ({ email }: FormValidation) => {
-  /**
-   * Init
-   */
+  // Init
   const errors: FormValidation = {
     email: '',
   };
 
   const isValid = {};
 
-  /**
-   * Name Validation
-   */
-  !email && (errors.email = `Required Name,`);
+  // Email Validation
+  !email && (errors.email = `Required Email`);
   const validEmailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
   !validEmailPattern.test(email) &&
-    (errors.email = `${errors.email} Not a valid email`);
+    (errors.email = `${errors.email}${
+      errors.email.length && ','
+    } Not a valid email`);
 
-  /**
-   * No Errors, clean up
-   */
+  // No Errors, return empty error object
   if (errors.email === '') {
     return isValid;
   }

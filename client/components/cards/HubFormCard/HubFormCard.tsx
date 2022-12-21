@@ -13,7 +13,7 @@ import { validateHubSubdomain } from 'services/hub.service';
 import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
 import { RoutesE } from 'types/Routes';
 import { useFormik } from 'formik';
-import validate, { FormValues } from './Validate';
+import validate, { FormValues } from './validate';
 
 export type HubFormCardT = {
   name: string;
