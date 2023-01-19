@@ -1,4 +1,4 @@
-@use 'styles/boilerplate.scss' as *;
+@use 'styles/core/boilerplate' as *;
 
 .header {
   &_wrapper {
@@ -18,7 +18,7 @@
   }
 
   &_title {
-    @include h2();
+    @include heading-lg();
     color: $white;
     margin: 0;
   }

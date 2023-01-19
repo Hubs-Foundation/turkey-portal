@@ -8,7 +8,6 @@ import Config
 config :dash, Dash.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "localhost",
   database: "dash_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
@@ -23,6 +22,14 @@ config :dash, DashWeb.Endpoint,
 config :dash, Dash.AppConfig, host: "dashboard.cluster.turkey.local"
 
 config :dash, DashWeb.Plugs.BasicAuth, enabled: false
+
+config :dash, Dash,
+  plans: "plan_test_1,USD,10;plan_test_2,EUR,20",
+  subdomain_wait_time: 0
+
+config :dash, DashWeb.Plugs.Auth,
+  auth_server: "test.auth.server",
+  cookie_secure: false
 
 config :dash, Dash.ApprovedEmail, enabled: false
 
@@ -40,3 +47,5 @@ config :logger, level: :critical
 config :phoenix, :plug_init_mode, :runtime
 
 config :dash, Dash.HubStat, enable_hub_stats: true
+
+config :dash, DashWeb.Plugs.FxaEventsParser, fxa_jwk_string: "test-aC2KtiGDxtqvNmv"

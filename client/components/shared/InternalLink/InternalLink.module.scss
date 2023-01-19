@@ -1,8 +1,0 @@
-@use 'styles/boilerplate.scss' as *;
-
-.link {
-  display: flex;
-  align-items: center;
-  color: $link-blue;
-  @include font-size(14);
-}

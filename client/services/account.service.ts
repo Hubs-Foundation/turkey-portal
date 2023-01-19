@@ -1,9 +1,13 @@
 import axios, { AxiosRequestHeaders } from 'axios';
+import { PUBLIC_API_SERVER } from 'config';
+import { CookiesE } from 'types/Cookies';
+import { removeCookies } from 'cookies-next';
+
 const API_PATH = '/api/v1/account';
-import { API_SERVER } from 'config';
 
 /**
  * Get Account
+ * Must be called within a try catch
  * @returns Account:AccountT{}
  */
 export const getAccount = async (headers?: AxiosRequestHeaders) => {
@@ -11,29 +15,20 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
   const contextHeaders = { headers: { ...(headers as AxiosRequestHeaders) } };
   const config = headers ? contextHeaders : credentials;
 
-  try {
-    return axios.get(`${API_SERVER}${API_PATH}`, config).then((response) => {
-      return response.data;
-    });
-  } catch (error) {
-    // TODO: Make game plan for error handling
-    console.error('Error', error);
-  }
+  return axios
+    .get(`${PUBLIC_API_SERVER}${API_PATH}`, config)
+    .then((response) => response.data);
 };
 
 /**
  * Log User Out
- * @returns 
+ * Must be called in a try catch
+ * @returns
  */
 export const logOut = async () => {
-  try {
-    return axios
-      .get(`${API_SERVER}/logout`, { withCredentials: true })
-      .then((response) => {
-        return response.data;
-      });
-  } catch (error) {
-    // TODO: Make game plan for error handling
-    console.error('Error', error);
-  }
+  removeCookies(CookiesE.TurkeyAuthToken);
+
+  return axios
+    .get(`${PUBLIC_API_SERVER}/api/v1/logout`, { withCredentials: true })
+    .then((response) => response.data);
 };

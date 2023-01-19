@@ -1,11 +1,10 @@
-@use 'styles/boilerplate.scss' as *;
+@use 'styles/core/boilerplate' as *;
 
 .card {
   border-radius: 8px;
 
   &_wrapper {
     :global(.pulse) {
-      background-color: $grey;
       animation-name: pulse;
       animation-duration: 2s;
       animation-iteration-count: infinite;
@@ -34,17 +33,16 @@
   margin: 20px;
 }
 
-
 @keyframes pulse {
   0% {
-    background-color: $off-white;
+    background-color: rgba(23, 10, 122, 0.1);
   }
 
   50% {
-    background-color: $grey;
+    background-color: rgba(23, 10, 122, 0.5);
   }
 
   100% {
-    background-color: $off-white;
+    background-color: rgba(23, 10, 122, 0.1);
   }
 }

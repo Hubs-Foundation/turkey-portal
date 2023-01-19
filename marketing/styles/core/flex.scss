@@ -1,0 +1,45 @@
+// FLEX QUICKIES
+.flex {
+  display: flex;
+}
+.flex-align-start {
+  display: flex;
+  align-items: flex-start;
+}
+.flex-align-center {
+  display: flex;
+  align-items: center;
+}
+.flex-align-end {
+  display: flex;
+  align-items: flex-end;
+}
+.flex-justify-start {
+  display: flex;
+  justify-content: flex-start;
+}
+.flex-justify-center {
+  display: flex;
+  justify-content: center;
+}
+.flex-justify-end {
+  display: flex;
+  justify-content: flex-end;
+}
+.flex-justify-between {
+  display: flex;
+  justify-content: space-between;
+}
+.flex-justify-around {
+  display: flex;
+  justify-content: space-around;
+}
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.flex-box {
+  // This is a CSS class to signify the need for a wrapper container due to
+  // flex box layout, this is usually used to wrap an image being flex formatted
+  // and we want the flex side effect of warping the image.
+}

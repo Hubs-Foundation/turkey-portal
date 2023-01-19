@@ -1,12 +1,15 @@
 defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
   use DashWeb.ConnCase
   import DashWeb.TestHelpers
+  import Mox
   alias Dash.ApprovedEmail
 
   setup_all do
     setup_http_mocks()
     on_exit(fn -> exit_http_mocks() end)
   end
+
+  setup [:verify_on_exit!]
 
   describe "ApprovedEmailAuth Plug" do
     setup do
@@ -22,6 +25,7 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
 
       stub_ret_get()
       expect_orch_post()
+      subscribe_test_account(nil)
 
       conn =
         conn
@@ -38,13 +42,15 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
       conn = get(conn, "/api/v1/hubs")
 
       # Passes through ApprovedEmailAuth without responding with a 403
-      assert response(conn, 401) == Jason.encode!(%{error: "unauthorized"})
+      assert response(conn, 401) ==
+               Jason.encode!(DashWeb.Plugs.Auth.unauthorized_auth_redirect_struct())
     end
 
     # if email on the conn and it's authorized, should do nothing to the conn
     test "should respond with 200 if user is on ApprovedEmailList and authorized", %{conn: conn} do
       stub_ret_get()
       expect_orch_post()
+      subscribe_test_account(nil)
 
       email = get_test_email()
 

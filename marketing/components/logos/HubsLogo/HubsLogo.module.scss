@@ -1,0 +1,13 @@
+@use 'styles/core/boilerplate' as *;
+
+.logo_wrapper {
+  width: 140px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+
+  &:hover {
+    cursor: pointer;
+  }
+}

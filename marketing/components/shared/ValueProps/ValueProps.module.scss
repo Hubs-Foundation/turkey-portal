@@ -1,0 +1,74 @@
+@use 'styles/core/boilerplate' as *;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px 32px;
+  position: relative;
+}
+
+.container {
+  max-width: $container-max-width;
+}
+
+.tile {
+  &s {
+    display: grid;
+    grid-template-columns: 385px 385px 385px;
+    column-gap: 23px;
+
+    @include desktop-large-down {
+      grid-template-columns: 32% 32% 32%;
+    }
+
+    @include tablet-down {
+      grid-template-columns: 100%;
+      row-gap: 23px;
+    }
+  }
+
+  &_wrapper {
+    overflow: hidden;
+    &:last-child {
+      .border {
+        display: none;
+      }
+    }
+  }
+
+  &_container {
+    position: relative;
+  }
+
+  &_icon {
+    display: flex;
+    justify-content: center;
+  }
+
+  &_content {
+    padding: 24px;
+    text-align: center;
+
+    h3 {
+      @include heading-lg;
+      margin: 0 0 24px;
+    }
+
+    p {
+      @include body-md;
+      margin: 0;
+    }
+  }
+}
+
+.border {
+  display: none;
+  background: $gradient-cool;
+  padding: 2px;
+  border-radius: 20px;
+  margin: 0 32px;
+
+  @include tablet-down {
+    display: block;
+  }
+}

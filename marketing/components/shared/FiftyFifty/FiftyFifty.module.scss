@@ -1,0 +1,96 @@
+@use 'styles/core/boilerplate' as *;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+.container {
+  display: flex;
+  position: relative;
+  height: 570px;
+  max-height: 570px;
+  max-width: $container-max-width;
+  padding: 20px;
+  width: 100%;
+
+  @include desktop-down {
+    flex-direction: column;
+    max-height: initial;
+    height: initial;
+  }
+
+  &_left {
+    flex-direction: row;
+  }
+
+  &_right {
+    flex-direction: row-reverse;
+  }
+
+  &_right,
+  &_left {
+    @include desktop-down {
+      flex-direction: column;
+    }
+  }
+}
+
+.image {
+  &_wrapper {
+    @include desktop-down {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  &_container {
+    @include desktop-down {
+      width: 100%;
+    }
+  }
+}
+
+.contents {
+  width: 460px;
+  padding: 80px 0 0 20px;
+  position: relative;
+
+  @include desktop-down {
+    padding: 20px;
+    width: 100%;
+  }
+
+  &_wrapper {
+    @include desktop-down {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+}
+
+.bar {
+  width: 82px;
+  padding: 4px;
+  background: $color-brand-1;
+  border-radius: 100px;
+
+  &_wrapper {
+    @include desktop-down {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+}
+
+.accent_image {
+  position: absolute;
+  right: -40px;
+  top: -20px;
+
+  @include desktop-down {
+    top: -40px;
+    right: -10px;
+  }
+}

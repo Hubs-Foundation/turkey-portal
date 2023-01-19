@@ -29,7 +29,6 @@ config :dash, Dash.Hub, use_fake_hub_stats: true
 config :dash, Dash.Repo,
   username: "postgres",
   password: "postgres",
-  hostname: "localhost",
   database: "dash_dev",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -55,10 +54,16 @@ config :dash, DashWeb.Endpoint,
 
 config :dash, Dash.AppConfig,
   host: "dashboard.cluster.turkey.local",
-  auth_server: "auth.turkey.local",
+  auth_server: "auth.local",
   fxa_server: "fxa.turkey.local"
 
-config :dash, DashWeb.Plugs.Auth, auth_pub_key: auth_pub_key
+config :dash, DashWeb.Plugs.Auth,
+  auth_pub_key: auth_pub_key,
+  cookie_secure: false
+
+config :dash, Dash,
+  plans: "price_123,USD,10;price_234,EUR,15;price_345,RMB,20",
+  subdomain_wait_time: 0
 
 config :dash, DashWeb.Plugs.BasicAuth,
   # Disable BasicAuth by default in local dev, since it's a bit annoying.
@@ -81,8 +86,7 @@ config :dash, Dash.RetClient,
   timeout_ms: 300_000,
   wait_ms: 5000
 
-config :cors_plug,
-  origin: ["http://localhost:3000"]
+config :dash, DashWeb.Endpoint, cors_origins: ["http://localhost:3000"]
 
 # ## SSL Support
 #
@@ -136,3 +140,5 @@ config :dash, Dash.Scheduler,
     # Runs every minute:
     # {"* * * * *", {Dash.HubStat, :job_record_hub_stats, []}}
   ]
+
+config :dash, DashWeb.Plugs.FxaEventsParser, fxa_jwk_string: "dev-hdwEqn1cHs69TT3"

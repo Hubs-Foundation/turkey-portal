@@ -2,6 +2,7 @@ defmodule DashWeb.Api.V1.HubController do
   use DashWeb, :controller
 
   alias Dash.Hub
+  require Logger
 
   def action(conn, _) do
     args = [conn, conn.params, conn.assigns[:account]]
@@ -16,8 +17,14 @@ defmodule DashWeb.Api.V1.HubController do
 
   # All hubs for 1 account
   def index(conn, %{}, account) do
-    # Check that this account has at least one hub
-    case Hub.ensure_default_hub_is_ready(account, conn.assigns[:fxa_account_info].fxa_email) do
+    # Check that this account has at least one hub if subscribed
+    fxa_account_info = conn.assigns[:fxa_account_info]
+    fxa_email = fxa_account_info.fxa_email
+    has_subscription? = fxa_account_info.has_subscription?
+
+    Logger.error("HAS SUBSCRIPTION: #{has_subscription?}")
+
+    case Hub.ensure_default_hub_is_ready(account, fxa_email, has_subscription?) do
       {:ok} ->
         hubs = Hub.hubs_with_usage_stats_for_account(account)
         conn |> render("index.json", hubs: hubs)
@@ -29,22 +36,46 @@ defmodule DashWeb.Api.V1.HubController do
 
   # Create hub with defaults
   def create(conn, _, account) do
-    fxa_email = conn.assigns[:fxa_account_info].fxa_email
+    fxa_account_info = conn.assigns[:fxa_account_info]
+    fxa_email = fxa_account_info.fxa_email
+    has_subscription? = fxa_account_info.has_subscription?
 
-    case Hub.create_default_hub(account, fxa_email) do
-      {:ok, new_hub} -> conn |> render("create.json", hub: new_hub)
-      {:error, err} -> conn |> send_resp(400, Jason.encode!(%{error: err})) |> halt()
+    if has_subscription? do
+      case Hub.create_default_hub(account, fxa_email) do
+        {:ok, new_hub} ->
+          conn
+          |> render("create.json", hub: new_hub)
+
+        {:error, err} ->
+          conn
+          |> send_resp(400, Jason.encode!(%{error: err}))
+          |> halt()
+      end
+    else
+      conn
+      |> send_resp(
+        403,
+        Jason.encode!(%{
+          error: "forbidden",
+          message: "Can't create new hub, account is not subscribed"
+        })
+      )
+      |> halt()
     end
   end
 
   def update(conn, %{"id" => hub_id} = attrs, account) do
     # this verifies that the account has a hub with this id
     case Hub.update_hub(hub_id, json_camel_to_snake(attrs), account) do
-      {:ok} ->
-        conn |> send_resp(200, "")
+      {:ok, updated_hub} ->
+        conn
+        |> render("show.json", hub: updated_hub)
 
       {:error, err} ->
-        conn |> send_resp(400, Jason.encode!(%{error: err})) |> halt()
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(400, Jason.encode!(%{error: err}))
+        |> halt()
     end
   end
 
@@ -61,5 +92,19 @@ defmodule DashWeb.Api.V1.HubController do
     deleted_hub = Hub.delete_hub(hub_id, account)
 
     conn |> render("delete.json", deleted_hub: deleted_hub)
+  end
+
+  def validate_subdomain(
+        conn,
+        %{"excludedHubId" => excluded_hub_id, "subdomain" => subdomain},
+        _account
+      ) do
+    case Hub.validate_subdomain(excluded_hub_id, subdomain) do
+      {:ok} ->
+        conn |> send_resp(200, Jason.encode!(%{success: true}))
+
+      {:error, err} ->
+        conn |> send_resp(200, Jason.encode!(%{success: false, error: err}))
+    end
   end
 end

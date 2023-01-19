@@ -21,8 +21,9 @@ defmodule Mix.Tasks.Dash.ListHubs do
 
   def run([fxa_uid]) do
     account = Dash.Account |> Dash.Repo.get_by(fxa_uid: fxa_uid)
+    query = from h in Dash.Hub, where: h.account_id == ^account.account_id
 
-    from(h in Dash.Hub, where: h.account_id == ^account.account_id)
+    query
     |> Dash.Repo.all()
     |> IO.inspect()
   end
@@ -82,7 +83,11 @@ end
 
 defmodule Mix.Tasks.Dash.GenerateLocalToken do
   @shortdoc "Generates a JWT token for use in local development. Takes an optional json with claims."
-  @moduledoc "mix dash.generate_local_token [claims_json]"
+  @moduledoc """
+  mix dash.generate_local_token
+  mix dash.generate_local_token [claims_json]
+  mix dash.generate_local_token "{\"fxa_subscriptions\" : null, \"fxa_cancel_at_period_end\" : false, \"fxa_current_period_end\" : 0, \"fxa_plan_id\" : \"\"}"
+  """
   use Mix.Task
 
   def run(args) when length(args) == 0 do
@@ -116,14 +121,26 @@ defmodule Mix.Tasks.Dash.GenerateLocalToken do
 
     token_expiry_timestamp = NaiveDateTime.diff(~N[3000-01-01 00:00:00], ~N[1970-01-01 00:00:00])
 
+    in_approx_three_months =
+      DateTime.utc_now()
+      |> DateTime.add(3 * 30 * 24 * 60 * 60)
+      |> DateTime.to_unix()
+
     claims =
       Map.merge(
         %{
           "exp" => token_expiry_timestamp,
           "sub" => "local-user-uid",
           "fxa_email" => "local-user@turkey.local",
-          "fxa_pic" => "/images/local-user.svg",
-          "fxa_displayName" => "Local User"
+          "fxa_pic" => "http://localhost:4000/images/local-user.svg",
+          "fxa_displayName" => "Local User",
+          "iat" => 1_664_659_003,
+          "fxa_subscriptions" => [
+            "managed-hubs"
+          ],
+          "fxa_current_period_end" => in_approx_three_months,
+          "fxa_cancel_at_period_end" => false,
+          "fxa_plan_id" => "price_123"
         },
         claims_json
       )

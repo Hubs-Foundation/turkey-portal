@@ -2,6 +2,9 @@ name: lint-and-test
 
 on: [push, workflow_dispatch]
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 jobs:
   lint-and-test-frontend:
     runs-on: ubuntu-latest
@@ -12,19 +15,34 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16.x
-          cache: 'npm'
-          cache-dependency-path: assets/package-lock.json
 
-      - run: npm ci
+      - name: mvp2 - install
+        run: npm ci
         working-directory: assets
-      - run: npm run lint
+      - name: mvp2 - lint
+        run: npm run lint
         working-directory: assets
-      - run: npm run test
+      - name: mvp2 - test
+        run: npm run test
         working-directory: assets
+
+      - name: client - install
+        run: npm config set -- "//npm.pkg.github.com/:_authToken" "$GITHUB_TOKEN" && npm ci --legacy-peer-deps
+        working-directory: client
+      - name: client - lint
+        run: npm run lint
+        working-directory: client
+
+      - name: marketing - install
+        run: npm config set -- "//npm.pkg.github.com/:_authToken" "$GITHUB_TOKEN" && npm ci --legacy-peer-deps
+        working-directory: marketing
+      - name: marketing - lint
+        run: npm run lint
+        working-directory: marketing
 
   lint-and-test-backend:
-    runs-on: ubuntu-latest
-    
+    runs-on: ubuntu-20.04
+
     services:
       postgres:
         image: postgres:14
@@ -37,7 +55,7 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-    
+
     steps:
       - uses: actions/checkout@v3
 
@@ -45,7 +63,7 @@ jobs:
         with:
           otp-version: 24
           elixir-version: 1.13
-          
+
       - uses: actions/cache@v3.0.2
         with:
           path: |

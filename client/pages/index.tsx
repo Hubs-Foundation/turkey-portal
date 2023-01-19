@@ -1,61 +1,63 @@
-import type { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import { useEffect } from 'react'
-import Head from "next/head"
-import { setAccount, logOut } from '../store/accountSlice'
-import { useDispatch } from 'react-redux'
-import axios from 'axios'
-import { HubT, AccountT } from 'types/General'
-import { API_SERVER } from 'config'
+import type { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { useEffect } from 'react';
+import Head from 'next/head';
+import { setAccount, logOut } from '../store/accountSlice';
+import { useDispatch } from 'react-redux';
+import axios, { AxiosRequestHeaders } from 'axios';
+import { HubT, AccountT } from 'types/General';
+import { PUBLIC_API_SERVER } from 'config';
 
-const fetchData = async (context: GetServerSidePropsContext, resource: string) => {
-  const { cookie, accept, host, connection } = context.req.headers
+const fetchData = async (
+  context: GetServerSidePropsContext,
+  resource: string
+) => {
+  const { cookie, accept, host, connection } = context.req.headers;
+  const contextHeaders = {
+    cookie: cookie ? cookie : '',
+    accept: accept ? accept : 'application/json',
+  } as AxiosRequestHeaders;
+  if (host) contextHeaders.host = host;
+  if (connection) contextHeaders.connection = connection;
 
-  return await axios.get(`${API_SERVER}/api/v1/${resource}`, {
-    headers: {
-      Accept: 'application/json',
-      cookie: cookie ? cookie : '',
-      accept: accept ? accept : '',
-      host: host ? host : '',
-      connection: connection ? connection : ''
-    }
-  })
-    .then((response) => response.data)
-}
-
+  return await axios
+    .get(`${PUBLIC_API_SERVER}/api/v1/${resource}`, {
+      headers: contextHeaders,
+    })
+    .then((response) => response.data);
+};
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const hubs = await fetchData(context, 'hubs')
-  const account = await fetchData(context, 'account')
+  const hubs = await fetchData(context, 'hubs');
+  const account = await fetchData(context, 'account');
 
   return {
-    props: { hubs, account }
-  }
-}
+    props: { hubs, account },
+  };
+};
 
 type HomeProps = {
-  hubs: Array<HubT>,
-  account: AccountT
-}
+  hubs: Array<HubT>;
+  account: AccountT;
+};
 
 const Home = ({ hubs, account }: HomeProps) => {
-
   const dispatch = useDispatch();
 
   /**
    * TODO : detele debugging consoles when finished
    */
   useEffect(() => {
-    console.log('hubs', hubs)
-    console.log('account', account)
-  }, [hubs, account])
+    console.log('hubs', hubs);
+    console.log('account', account);
+  }, [hubs, account]);
 
   const handleClick = () => {
-    dispatch(setAccount(account))
-  }
+    dispatch(setAccount(account));
+  };
 
   const handleLogoutClick = () => {
-    dispatch(logOut())
-  }
+    dispatch(logOut());
+  };
 
   return (
     <div>
@@ -84,6 +86,6 @@ const Home = ({ hubs, account }: HomeProps) => {
       </main>
     </div>
   );
-}
+};
 
-export default Home
+export default Home;

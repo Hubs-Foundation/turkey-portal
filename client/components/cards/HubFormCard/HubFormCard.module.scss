@@ -1,0 +1,101 @@
+@use '../../../styles/core/boilerplate' as *;
+
+.card {
+  &_wrapper {
+    width: 692px;
+    box-shadow: 0px 0px 8px rgba(97, 97, 97, 0.35);
+    border-radius: 20px;
+    background-color: $color-neutral-0;
+
+    @include desktop-large-down {
+      width: 100%;
+    }
+
+    @include mobile-down {
+      border-radius: 0;
+    }
+  }
+
+  &_header {
+    display: flex;
+    align-items: center;
+    padding: 32px;
+  }
+}
+
+.title {
+  @include secondary-font(700);
+  @include font-size(28);
+  line-height: 36px;
+}
+
+.form_contents {
+  padding: 0 32px;
+  position: relative;
+  min-height: 268px;
+}
+
+.address {
+  &_wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin: 24px 0;
+
+    input {
+      text-transform: lowercase;
+    }
+
+    @include mobile-down {
+      flex-direction: column;
+    }
+  }
+
+  &_preview {
+    @include font-size(14);
+    margin: 44px 0 0 14px;
+    display: flex;
+
+    @include mobile-down {
+      margin: 0;
+    }
+  }
+}
+
+.actions {
+  &_wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 32px;
+    padding: 32px;
+    border-top: 2px solid $color-border-1;
+  }
+}
+
+.icon {
+  &_wrapper {
+    height: 40px;
+    width: 40px;
+  }
+}
+
+.check_icon {
+  stroke: $color-semantic-success;
+  margin-left: 4px;
+}
+
+.error_icon {
+  stroke: $color-semantic-critical;
+  margin-left: 4px;
+}
+
+.error_message {
+  @include font-size(16);
+  @include primary-font(500);
+  color: $color-semantic-critical;
+  margin-top: 6px;
+  line-height: 24px;
+  position: absolute;
+  bottom: -10px;
+}

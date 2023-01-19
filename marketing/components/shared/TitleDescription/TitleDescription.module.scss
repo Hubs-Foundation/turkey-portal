@@ -1,0 +1,36 @@
+@use 'styles/core/boilerplate' as *;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px 32px;
+  position: relative;
+
+  @include tablet-down {
+    padding: 40px 32px 20px;
+  }
+}
+
+.container {
+  max-width: $container-max-width;
+}
+
+.header {
+  color: $color-text-main;
+  text-align: center;
+
+  h2 {
+    @include heading-lg;
+    margin: 0 0 16px;
+  }
+
+  p {
+    @include body-md;
+    margin-bottom: 64px;
+    padding: 0;
+
+    @include tablet-down {
+      margin: 0 0 12px;
+    }
+  }
+}

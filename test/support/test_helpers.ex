@@ -1,14 +1,30 @@
 defmodule DashWeb.TestHelpers do
   import Phoenix.ConnTest
   require Logger
+  require Integer
 
+  @default_test_uid "fake-uid"
   @test_email "email@fake.com"
   @default_token_claims %{
-    "sub" => "fake-uid",
+    "sub" => @default_test_uid,
     "fxa_email" => @test_email,
     "fxa_pic" => "https://fake.com/pic.jpg",
-    "fxa_displayName" => "Faker McFakerson"
+    "fxa_displayName" => "Faker McFakerson",
+    "fxa_subscriptions" => ["managed-hubs"],
+    "iat" => 1_633_040_007,
+    "fxa_current_period_end" => 0,
+    "fxa_cancel_at_period_end" => false,
+    "fxa_plan_id" => "plan_test_1"
   }
+
+  defp default_token_claims do
+    next_month_approx =
+      DateTime.utc_now()
+      |> DateTime.add(30 * 24 * 60 * 60)
+      |> DateTime.to_unix()
+
+    Map.put(@default_token_claims, "fxa_current_period_end", next_month_approx)
+  end
 
   @default_token_opts [
     claims: %{},
@@ -19,6 +35,21 @@ defmodule DashWeb.TestHelpers do
     @test_email
   end
 
+  def get_default_test_uid() do
+    @default_test_uid
+  end
+
+  def put_keys_for_jwk() do
+    private_key = JOSE.JWK.generate_key({:rsa, 512})
+
+    {_meta, public_key_str} =
+      private_key
+      |> JOSE.JWK.to_public()
+      |> JOSE.JWK.to_pem()
+
+    Application.put_env(:dash, DashWeb.Plugs.Auth, %{auth_pub_key: public_key_str})
+  end
+
   def put_test_token(conn, opts \\ []) do
     opts = Keyword.merge(@default_token_opts, opts)
 
@@ -27,7 +58,7 @@ defmodule DashWeb.TestHelpers do
     {_meta, public_key_str} = private_key |> JOSE.JWK.to_public() |> JOSE.JWK.to_pem()
     Application.put_env(:dash, DashWeb.Plugs.Auth, %{auth_pub_key: public_key_str})
 
-    claims = Map.merge(@default_token_claims, opts[:claims])
+    claims = Map.merge(default_token_claims(), opts[:claims])
     token_expiry_timestamp = NaiveDateTime.diff(opts[:token_expiry], ~N[1970-01-01 00:00:00])
     jwt = JOSE.JWT.from(Map.merge(%{"exp" => token_expiry_timestamp}, claims))
     {_meta, signed_jwt} = JOSE.JWT.sign(private_key, %{"alg" => "RS256"}, jwt)
@@ -38,8 +69,12 @@ defmodule DashWeb.TestHelpers do
     conn |> put_req_cookie("_turkeyauthtoken", jwt_str)
   end
 
-  def create_test_account_and_hub(opts \\ []) do
-    account = Dash.Account.find_or_create_account_for_fxa_uid("fake-uid")
+  def get_test_account() do
+    Dash.Account.account_for_fxa_uid(@default_test_uid)
+  end
+
+  def create_test_account_and_hub(opts \\ [subdomain: nil, fxa_uid: nil, subscribe?: true]) do
+    account = Dash.Account.find_or_create_account_for_fxa_uid(opts[:fxa_uid] || @default_test_uid)
 
     hub =
       %Dash.Hub{}
@@ -54,7 +89,21 @@ defmodule DashWeb.TestHelpers do
       |> Ecto.Changeset.put_assoc(:account, account)
       |> Dash.Repo.insert!()
 
+    if opts[:subscribe?],
+      do: subscribe_test_account(opts[:fxa_uid] || @default_test_uid)
+
     %{account: account, hub: hub}
+  end
+
+  def subscribe_test_account(fxa_uid) do
+    fxa_uid = fxa_uid || @default_test_uid
+
+    Dash.update_or_create_capability_for_changeset(%{
+      fxa_uid: fxa_uid,
+      capability: DashWeb.Plugs.Auth.capability_string(),
+      change_time: DateTime.truncate(DateTime.utc_now(), :second),
+      is_active: true
+    })
   end
 
   def merge_module_config(app, key, configs) do
@@ -85,7 +134,7 @@ defmodule DashWeb.TestHelpers do
           {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{count: 3})}}
 
         url =~ ~r/storage$/ ->
-          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{storage_mb: 10})}}
+          {:ok, %HTTPoison.Response{status_code: 200, body: Poison.encode!(%{storage_mb: 10.5})}}
 
         url =~ ~r/health$/ ->
           {:ok, %HTTPoison.Response{status_code: 200}}
@@ -99,9 +148,74 @@ defmodule DashWeb.TestHelpers do
   end
 
   def expect_orch_post() do
-    Dash.HttpMock
-    |> Mox.expect(:post, fn _url, _body, _headers, _opts ->
+    Mox.expect(Dash.HttpMock, :post, fn _url, _body, _headers, _opts ->
       {:ok, %HTTPoison.Response{status_code: 200}}
     end)
+  end
+
+  def expect_orch_delete() do
+    Mox.expect(Dash.HttpMock, :request, fn _, _body, _headers, _opts, _ ->
+      {:ok, %HTTPoison.Response{status_code: 202}}
+    end)
+  end
+
+  def expect_ret_patch_update_email() do
+    Mox.expect(Dash.HttpMock, :patch, fn _url, _body, _headers, _opts ->
+      {:ok, %HTTPoison.Response{status_code: 200}}
+    end)
+  end
+
+  # Capability Helpers
+  def create_capabilities(account, count) do
+    for i <- count..1 do
+      Dash.create_capability!(account, %{
+        capability: "foo#{i}",
+        is_active: Integer.is_even(i),
+        change_time: DateTime.utc_now()
+      })
+    end
+  end
+
+  def get_subscription_changed_event(opts \\ []) do
+    default_opts = [event_only: true, capabilities: nil, is_active: true, change_time: nil]
+
+    opts = Keyword.merge(default_opts, opts)
+
+    %{now: now} = now_earlier_later_unix_millisecond()
+    change_time = opts[:change_time] || now
+
+    capabilities = opts[:capabilities] || [DashWeb.Plugs.Auth.capability_string()]
+
+    event = %{
+      "capabilities" => capabilities,
+      "isActive" => opts[:is_active],
+      "changeTime" => change_time
+    }
+
+    if opts[:event_only] do
+      event
+    else
+      %{
+        "https://schemas.accounts.firefox.com/event/subscription-state-change" => event
+      }
+    end
+  end
+
+  def now_earlier_later_unix_millisecond() do
+    %{now: now, earlier: earlier, later: later} = now_earlier_later_dt_s()
+
+    %{
+      now: DateTime.to_unix(now, :millisecond),
+      earlier: DateTime.to_unix(earlier, :millisecond),
+      later: DateTime.to_unix(later, :millisecond)
+    }
+  end
+
+  def now_earlier_later_dt_s() do
+    now = DateTime.utc_now() |> DateTime.truncate(:second)
+    later = DateTime.add(now, 5000) |> DateTime.truncate(:second)
+    earlier = DateTime.add(now, -5000) |> DateTime.truncate(:second)
+
+    %{now: now, earlier: earlier, later: later}
   end
 end

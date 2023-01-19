@@ -1,4 +1,30 @@
-@use '../../styles/boilerplate.scss' as *;
+@use '../../styles/core/boilerplate' as *;
+
+.main {
+  margin-top: 95px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  @include desktop-large-down {
+    margin-top: 35px;
+    flex-direction: column;
+    padding: 0 24px;
+  }
+
+  @include mobile-down {
+    margin-top: 0;
+    padding: 0;
+  }
+}
+
+.card_wrapper {
+  margin-right: 20px;
+
+  @include desktop-large-down {
+    margin: 0 0 24px;
+  }
+}
 
 .settings {
   &_grid_wrapper {
@@ -32,42 +58,8 @@
   }
 }
 
-.address {
-  &_wrapper {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  &_preview {
-    @include font-size(14);
-    margin-top: 34px;
-  }
-}
-
-.summary {
-  &_wrapper {
-    background-color: $white;
-    border-radius: 8px;
-    border: 1px solid $grey;
-    padding: 30px;
-
-    @include tablet-down() {
-      order: -1;
-    }
-  }
-
-  &_title {
-    @include h3();
-    margin: 0 0 10px 0;
-  }
-
-  &_attributes {
-    padding: 0;
-    margin: 0;
-
-    li {
-      list-style: none;
-      margin-bottom: 10px;
-    }
+.subcard {
+  @include desktop-large-down {
+    margin-bottom: 24px;
   }
 }

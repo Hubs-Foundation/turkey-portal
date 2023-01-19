@@ -3,8 +3,26 @@
  * Note: feel free to break-out into other files if you feel the need
  */
 
-export type TierT = 'free' | 'premium';
-export type StatusT = 'creating' | 'updating' | 'ready';
+export type TierT = 'mvp' | 'free' | 'early_access' | 'premium';
+export type FormattedTierT = 'Mvp' | 'Free' | 'Early Access' | 'Premium';
+
+export type FormattedTierMapT = {
+  [key: string]: FormattedTierT;
+};
+
+export enum StatusE {
+  CREATING = 'creating',
+  UPDATING = 'updating',
+  READY = 'ready',
+  ERROR = 'error',
+}
+
+export enum LastErrorE {
+  SUBDOMAIN_ERROR = 'subdomainError',
+  SUBDOMAIN_REVERTED = 'subdomainReverted',
+  CREATING_ERROR = 'creatingError',
+  ERROR = 'error',
+}
 
 export type HubT = {
   ccuLimit: number;
@@ -12,28 +30,45 @@ export type HubT = {
   currentStorageMb: number | null;
   hubId: string;
   name: string;
-  status: StatusT;
+  status: StatusE;
+  lastError: LastErrorE | '';
   storageLimitMb: number;
   subdomain: string;
   tier: TierT;
 };
 
+// TODO Do we still need this?
 export type UpdateHubT = {
   name: string;
   ccuLimit: number;
   storageLimitMb: number;
   tier: TierT;
   subdomain: string;
-  status: StatusT;
+  status: StatusE;
+  lastError: LastErrorE | '';
 };
 
 export type AccountT = {
   displayName: string;
   email: string;
   profilePic: string;
-  isInitialized?: boolean;
   isLoggedIn?: boolean;
+  hasHubs?: boolean;
+  hasSubscription: boolean;
+  hasCreatingHubs: boolean;
+  isInitialized: boolean;
 };
+
+export enum BadgeCategoriesE {
+  PRIMARY = 'primary',
+  SECONDARY = 'secondary',
+}
+
+export enum StorageStateE {
+  DEFAULT = 'default',
+  WARNING = 'warning',
+  CRITICAL = 'critical',
+}
 
 export type IconT =
   | 'activity'

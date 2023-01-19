@@ -3,17 +3,17 @@ defmodule Dash.Hub do
   import Ecto.Query
   import Ecto.Changeset
   require Logger
-  alias Dash.{Repo, RetClient}
+  alias Dash.{SubdomainDenial, Repo, RetClient}
 
   @primary_key {:hub_id, :id, autogenerate: true}
 
   schema "hubs" do
     field :ccu_limit, :integer
     field :name, :string
-    field :status, Ecto.Enum, values: [:creating, :updating, :ready, :subdomain_error]
+    field :status, Ecto.Enum, values: [:creating, :updating, :ready, :subdomain_error, :error]
     field :storage_limit_mb, :integer
     field :subdomain, :string
-    field :tier, Ecto.Enum, values: [:free, :mvp]
+    field :tier, Ecto.Enum, values: [:free, :mvp, :early_access]
     belongs_to :account, Dash.Account, references: :account_id
 
     timestamps()
@@ -44,16 +44,29 @@ defmodule Dash.Hub do
     hub
     |> cast(attrs, [:name, :subdomain])
     |> validate_length(:name, min: 1, max: 24)
-    |> validate_length(:subdomain, min: 1, max: 63)
-    |> validate_format(:subdomain, ~r/^[a-z0-9]/i)
-    |> validate_format(:subdomain, ~r/^[a-z0-9-]+$/i)
-    |> validate_format(:subdomain, ~r/[a-z0-9]$/i)
+    |> validate_required(:subdomain)
+    |> validate_length(:subdomain, min: 3, max: 63)
+    |> validate_format(:subdomain, ~r/^[a-z0-9]/)
+    |> validate_format(:subdomain, ~r/^[a-z0-9-]+$/)
+    |> validate_format(:subdomain, ~r/[a-z0-9]$/)
+    |> validate_change(
+      :subdomain,
+      &deny_reserved_and_naughty_subdomain/2
+    )
     |> unique_constraint(:subdomain)
   end
 
-  defp hubs_for_account(%Dash.Account{} = account) do
-    from(h in Dash.Hub, where: h.account_id == ^account.account_id)
-    |> Repo.all()
+  defp deny_reserved_and_naughty_subdomain(:subdomain, subdomain) do
+    if SubdomainDenial.is_denied_subdomain(subdomain) do
+      [subdomain: "denied"]
+    else
+      []
+    end
+  end
+
+  @spec hubs_for_account(%Dash.Account{}) :: [%Dash.Hub{}]
+  def hubs_for_account(%Dash.Account{} = account) do
+    Repo.all(from h in Dash.Hub, where: h.account_id == ^account.account_id)
   end
 
   def hubs_with_usage_stats_for_account(%Dash.Account{} = account) do
@@ -63,21 +76,24 @@ defmodule Dash.Hub do
 
   # Returns a boolean of whether the account has a hub
   def has_hubs(%Dash.Account{} = account) do
-    Repo.exists?(from(h in Dash.Hub, where: h.account_id == ^account.account_id))
+    Repo.exists?(from h in Dash.Hub, where: h.account_id == ^account.account_id)
   end
 
   # TODO EA remove
   def has_creating_hubs(%Dash.Account{} = account) do
     has_hubs(account) &&
       Repo.exists?(
-        from(h in Dash.Hub, where: h.account_id == ^account.account_id and h.status == :creating)
+        from h in Dash.Hub,
+          where: h.account_id == ^account.account_id,
+          where: h.status == :creating
       )
   end
 
   # Checks if account has at least one hub, if not, creates hub
   # Will wait for hub to be ready before
-  def ensure_default_hub_is_ready(%Dash.Account{} = account, email) do
-    if !has_hubs(account), do: create_default_hub(account, email)
+  def ensure_default_hub_is_ready(%Dash.Account{} = account, email, has_subscription?) do
+    # Need subscription in order to create hub
+    if has_subscription? and not has_hubs(account), do: create_default_hub(account, email)
 
     # TODO EA make own hub controller endpoint for waiting_until_ready_state
     if has_creating_hubs(account) do
@@ -86,7 +102,7 @@ defmodule Dash.Hub do
       # TODO EA For MVP2 we expect 1 hub
       hub = Enum.at(hubs, 0)
 
-      case Dash.RetClient.wait_until_healthy(hub) do
+      case RetClient.wait_until_healthy(hub) do
         {:ok} ->
           set_hub_to_ready(hub)
           {:ok}
@@ -101,7 +117,7 @@ defmodule Dash.Hub do
 
   @hub_defaults %{
     name: "Untitled Hub",
-    tier: :mvp,
+    tier: :early_access,
     ccu_limit: 25,
     storage_limit_mb: 2000
   }
@@ -144,20 +160,75 @@ defmodule Dash.Hub do
     Dash.Hub |> Repo.get_by(hub_id: hub_id, account_id: account.account_id)
   end
 
-  def get_all_ready_hub_ids() do
-    from(h in Dash.Hub, where: h.status == :ready, select: h.hub_id)
-    |> Repo.all()
+  def get_hub(_hub_id, nil) do
+    Logger.error("Can't get_hub() account is nil")
+    nil
   end
 
-  def delete_hub(hub_id, %Dash.Account{} = account) do
-    hub_to_delete = get_hub(hub_id, account)
+  def get_all_ready_hub_ids() do
+    Repo.all(
+      from h in Dash.Hub,
+        where: h.status == :ready,
+        select: h.hub_id
+    )
+  end
 
-    case hub_to_delete do
-      %Dash.Hub{} ->
-        Dash.Repo.delete!(hub_to_delete)
+  @spec delete_hub(String.t(), String.t()) :: %Dash.Hub{} | :error
+  def delete_hub(hub_id, fxa_uid) when is_binary(fxa_uid) do
+    account = Dash.Account.account_for_fxa_uid(fxa_uid)
+
+    case get_hub(hub_id, account) do
+      %Dash.Hub{} = hub_to_delete ->
+        delete_hub(hub_to_delete)
 
       nil ->
-        nil
+        Logger.error("delete_hub/2 error: No account for fxa_uid OR no hub for hub_id")
+        :error
+    end
+  end
+
+  def delete_hub(%Dash.Hub{} = hub) do
+    with :ok <- delete_hub_instance(hub) do
+      delete_hub_record(hub)
+    else
+      _ ->
+        Logger.error("Issue deleting hub")
+        :error
+    end
+  end
+
+  @spec delete_hub_instance(%Dash.Hub{}) :: :ok | :error
+  defp delete_hub_instance(%Dash.Hub{} = hub) do
+    case Dash.OrchClient.delete_hub(hub) do
+      {:ok, %{status_code: 202}} ->
+        :ok
+
+      {:ok, %{status_code: status_code} = resp} ->
+        Logger.warn(
+          "Deleting hub Orch request returned status code #{status_code} and response #{inspect(resp)}"
+        )
+
+        :error
+
+      {:error, %HTTPoison.Error{} = httpoison_error} ->
+        Logger.error("Failed to delete hub #{inspect(httpoison_error)}")
+        :error
+
+      {:ok, _} ->
+        Logger.error("Failed to delete Hub, unknown error occurred")
+        :error
+    end
+  end
+
+  @spec delete_hub_record(%Dash.Hub{}) :: :ok | :error
+  defp delete_hub_record(%Dash.Hub{} = hub) do
+    case Repo.delete(hub) do
+      {:ok, _} ->
+        :ok
+
+      {:error, changeset} ->
+        Logger.error("Failed to delete hub #{inspect(changeset)}")
+        :error
     end
   end
 
@@ -166,13 +237,24 @@ defmodule Dash.Hub do
   end
 
   def update_hub(hub_id, attrs, %Dash.Account{} = account) do
-    with %Dash.Hub{} = hub <- get_hub(hub_id, account),
+    attrs =
+      if attrs["subdomain"] do
+        Map.put(attrs, "subdomain", attrs["subdomain"] |> String.downcase())
+      else
+        attrs
+      end
+
+    with %Dash.Hub{status: :ready} = hub <- get_hub(hub_id, account),
          {:ok, updated_hub} <- form_changeset(hub, attrs) |> Dash.Repo.update() do
       if hub.subdomain != updated_hub.subdomain do
-        update_subdomain(hub, updated_hub)
-        {:ok}
+        updated_hub =
+          updated_hub |> Ecto.Changeset.change(status: :updating) |> Dash.Repo.update!()
+
+        start_subdomain_update(hub, updated_hub)
+
+        {:ok, updated_hub}
       else
-        {:ok}
+        {:ok, updated_hub}
       end
     else
       err ->
@@ -181,15 +263,38 @@ defmodule Dash.Hub do
     end
   end
 
-  defp update_subdomain(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do
+  def validate_subdomain(excluded_hub_id, subdomain) do
+    downcased_subdomain = subdomain |> String.downcase()
+
+    cond do
+      SubdomainDenial.is_denied_subdomain(downcased_subdomain) ->
+        {:error, :subdomain_denied}
+
+      subdomain_exists(excluded_hub_id, downcased_subdomain) ->
+        {:error, :subdomain_taken}
+
+      true ->
+        {:ok}
+    end
+  end
+
+  defp subdomain_exists(excluded_hub_id, subdomain) do
+    Repo.exists?(
+      from h in Dash.Hub,
+        where: h.hub_id != ^excluded_hub_id,
+        where: h.subdomain == ^subdomain
+    )
+  end
+
+  defp start_subdomain_update(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do
     # This async task runs in the background, asynchronously, under the TaskSupervisor.
     # It needs to be able to handle success and failure scenarios in a self-contained manner.
     Task.Supervisor.async(Dash.TaskSupervisor, fn ->
-      updated_hub = updated_hub |> Ecto.Changeset.change(status: :updating) |> Dash.Repo.update!()
-
       with {:ok, %{status_code: status_code}} when status_code < 400 <-
              Dash.OrchClient.update_subdomain(updated_hub),
-           {:ok} <- Dash.RetClient.wait_until_healthy(updated_hub) do
+           :ok <- Process.sleep(Dash.subdomain_wait()),
+           {:ok} <-
+             RetClient.wait_until_healthy(updated_hub) do
         set_hub_to_ready(updated_hub)
       else
         err ->

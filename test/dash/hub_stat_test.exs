@@ -25,15 +25,17 @@ defmodule Dash.HubStatTest do
 
       # Has each hub storage stats in table
       assert Repo.exists?(
-               from(hs in HubStat,
-                 where: hs.hub_id == ^hub1.hub_id and hs.storage_mb > 0 and hs.max_ccu > 0
-               )
+               from hs in HubStat,
+                 where: hs.hub_id == ^hub1.hub_id,
+                 where: hs.storage_mb > 0,
+                 where: hs.max_ccu > 0
              )
 
       assert Repo.exists?(
-               from(hs in HubStat,
-                 where: hs.hub_id == ^hub2.hub_id and hs.storage_mb > 0 and hs.max_ccu > 0
-               )
+               from hs in HubStat,
+                 where: hs.hub_id == ^hub2.hub_id,
+                 where: hs.storage_mb > 0,
+                 where: hs.max_ccu > 0
              )
     end
 
@@ -46,9 +48,10 @@ defmodule Dash.HubStatTest do
       HubStat.job_record_hub_stats()
 
       assert Repo.exists?(
-               from(hs in HubStat,
-                 where: hs.hub_id == ^hub1.hub_id and is_nil(hs.storage_mb) and hs.max_ccu > 0
-               )
+               from hs in HubStat,
+                 where: hs.hub_id == ^hub1.hub_id,
+                 where: hs.storage_mb > 0,
+                 where: hs.max_ccu > 0
              )
     end
 

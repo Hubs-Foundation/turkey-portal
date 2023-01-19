@@ -1,0 +1,124 @@
+@use 'styles/core/boilerplate' as *;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.container {
+  padding: 20px;
+
+  @include desktop-down {
+    padding: 0;
+  }
+}
+
+.header {
+  text-align: center;
+}
+
+.content {
+  position: absolute;
+  top: 30%;
+  display: flex;
+
+  @include desktop-down {
+    top: 25%;
+    flex-direction: column;
+    position: initial;
+    padding: 0 24px;
+  }
+
+  &_wrapper {
+    width: 100%;
+    max-width: $container-max-width;
+    position: relative;
+
+    @include desktop-down {
+      padding: 0 0 100px;
+    }
+  }
+}
+
+.avatar {
+  padding: 10px;
+  box-shadow: 0px 3px 19px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  background-color: $color-background-neutral-0;
+  margin: 60px 40px 40px 0;
+  max-height: 244px;
+
+  @include desktop-down {
+    margin: 0 0 24px;
+    position: relative;
+    border-radius: 100px;
+  }
+
+  &_wrapper {
+    @include desktop-down {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
+.quotes {
+  position: absolute;
+  top: 90px;
+  left: 0;
+  padding: 0 110px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  @include desktop-down {
+    display: none;
+  }
+}
+
+.message {
+  @include primary-font(700);
+  @include font-size(21);
+  line-height: 150%;
+  margin: 0 0 16px 0;
+
+  &_wrapper {
+    box-shadow: 0px 3px 19px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    background-color: $color-background-neutral-0;
+    max-width: 835px;
+    position: relative;
+
+    @include desktop-down {
+      display: flex;
+    }
+  }
+
+  &_container {
+    padding: 90px 168px;
+    position: relative;
+
+    @include desktop-down {
+      text-align: center;
+      padding: 20px;
+    }
+  }
+
+  &_carrot {
+    position: absolute;
+    top: 80px;
+    left: -90px;
+
+    @include desktop-down {
+      display: none;
+    }
+  }
+
+  &_name {
+    @include primary-font(500);
+    @include font-size(19.3);
+    line-height: 150%;
+    margin: 0px;
+  }
+}

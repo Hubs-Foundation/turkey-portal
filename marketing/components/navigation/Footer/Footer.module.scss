@@ -1,0 +1,161 @@
+@use 'styles/core/boilerplate' as *;
+
+.wrapper {
+  background-color: $color-neutral-0-reverse;
+  padding: 48px;
+  display: flex;
+  justify-content: center;
+
+  @include desktop-down {
+    padding: 64px 38px;
+  }
+}
+
+.container {
+  width: 100%;
+  max-width: $container-max-width;
+
+  @include desktop-down {
+    max-width: 284px;
+  }
+}
+
+.logo {
+  margin-bottom: 10px;
+  @include desktop-down {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 44px;
+
+  @include desktop-down {
+    flex-direction: column;
+  }
+
+  h4 {
+    @include heading-sm;
+    color: $color-text-reverse;
+    margin: 0 0 10px;
+
+    @include desktop-down {
+      line-height: 24px;
+      margin: 0;
+      @include font-size(16);
+    }
+  }
+
+  &_content {
+    text-align: center;
+    margin-left: 24px;
+    padding-top: 4px;
+
+    @include desktop-down {
+      margin: 0;
+    }
+  }
+}
+
+.link {
+  @include body-md();
+  color: $color-text-reverse;
+  margin-bottom: 12px;
+
+  @include desktop-down {
+    margin-bottom: 18px;
+  }
+
+  &_block {
+    display: flex;
+    flex-direction: column;
+
+    a:hover {
+      opacity: 0.8;
+    }
+
+    @include desktop-down {
+      text-align: center;
+      width: 100%;
+      margin-bottom: 52px;
+    }
+
+    &s {
+      margin-bottom: 52px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      @include desktop-down {
+        flex-direction: column;
+        margin-bottom: 0;
+      }
+    }
+
+    h4 {
+      @include heading-sm;
+      margin: 4px 0 14px;
+      color: $color-text-reverse;
+    }
+  }
+}
+
+.legacy_link {
+  @include body-md;
+  color: #2f80ed;
+  text-decoration-line: underline;
+
+  @include desktop-down {
+    @include font-size(12);
+  }
+}
+
+.border {
+  background: $gradient-cool;
+  padding: 2px;
+  border-radius: 20px;
+}
+
+.submenu {
+  &_wrapper {
+    padding-top: 72px;
+    display: flex;
+    justify-content: space-between;
+
+    a:hover {
+      opacity: 0.8;
+    }
+
+    @include desktop-down {
+      padding-top: 24px;
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+
+  &_link {
+    @include primary-font(500);
+    @include font-size(16);
+    color: $color-text-reverse;
+    line-height: 24px;
+    text-decoration-line: underline;
+    margin-right: 50px;
+
+    @include desktop-down {
+      margin: 8px;
+    }
+
+    &s {
+      @include desktop-down {
+        margin-bottom: 44px;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+}

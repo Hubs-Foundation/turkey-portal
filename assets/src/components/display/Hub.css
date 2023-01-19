@@ -88,6 +88,17 @@
   background: #381;
 }
 
+.hub-building, .hub-updating {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-top: 2.5em;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  font-size: 10pt;
+  background: #e7e7e7;
+}
+
 @media (max-width: 800px) {
   .hub {
     grid-template: repeat(4, 1fr) / 1fr 1fr;

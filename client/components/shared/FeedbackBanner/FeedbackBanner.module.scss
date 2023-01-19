@@ -1,0 +1,49 @@
+@use 'styles/core/boilerplate' as *;
+
+.wrapper {
+  background-color: $color-interactions-menu;
+  color: $color-text-reverse;
+  padding: 34px;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  max-width: 1197px;
+  width: 100%;
+
+  h3 {
+    @include secondary-font(700);
+    @include font-size(28);
+    line-height: 36px;
+    margin: 0 0 8px;
+  }
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  @include tablet-down {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  p {
+    @include primary-font(500);
+    @include font-size(16);
+    line-height: 24px;
+    margin: 8px 0;
+    max-width: 790px;
+    // padding-bottom: 24px;
+
+    @include tablet-down {
+    }
+  }
+}
+
+.button {
+  margin: 8px 0;
+}

@@ -1,37 +1,37 @@
-@use 'styles/boilerplate.scss' as *;
+@use 'styles/core/boilerplate' as *;
 
 .card {
   &_wrapper {
-    width: 100%;
-    max-width: 1440px;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: $drop-shadow;
-    border-left: 20px solid $accent-grey;
+    width: 692px;
+    padding: 30px 32px;
+    box-shadow: 0px 0px 8px rgba(97, 97, 97, 0.35);
+    border-radius: 20px;
+    background-color: $color-neutral-0;
+    margin-bottom: 32px;
+
+    @include desktop-large-down {
+      width: 100%;
+    }
+
+    @include mobile-down {
+      border-radius: 0;
+    }
   }
 
-  &_stat {
-    @include font-size(14);
-    display: flex;
-    align-items: center;
-    color:$grey;
+  &_hr {
+    border: 1px solid $color-border-1;
+    margin: 30px 0;
   }
 
   &_name {
-    @include font-size(16);
-    font-weight: 700;
-    line-height: 18px;
-    color: $black;
-    margin-left: 10px;
+    @include secondary-font(700);
+    @include font-size(36);
+    line-height: 46px;
+    color: $color-text-main;
+    margin-bottom: 12px;
   }
+}
 
-  &_domain {
-    display: flex;
-    justify-content: center;
-  }
-
-  &_actions_wrapper {
-    display: flex;
-    align-items: center;
-  }
+.creating {
+  color: $color-text-disabled;
 }
