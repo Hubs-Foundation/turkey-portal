@@ -1,10 +1,12 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styles from './MainNav.module.scss';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import { useRouter } from 'next/router';
 import { DASH_ROOT_DOMAIN } from 'config';
+import { getNavigationLinksEntry } from '../../../services/contentful.service';
+import { LinkT } from 'types';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -14,6 +16,16 @@ type MainNavPropsT = {
 const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
   const isDesktopDown = useDesktopDown();
   const router = useRouter();
+  const [navLinks, setNavLinks] = useState<LinkT[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const links = await getNavigationLinksEntry('4FsGf6XPSDTPppGDlyFYm9');
+      setNavLinks(links);
+    };
+
+    fetchData();
+  }, []);
 
   /**
    * Handle Menu Click
@@ -43,17 +55,17 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
             {/* Links  */}
             {!isDesktopDown && (
               <div className={styles.main_nav_links}>
-                <a href="/labs" className={styles.main_nav_link}>
-                  Creator Labs
-                </a>
-
-                <a href="/cloud" className={styles.main_nav_link}>
-                  Hubs Cloud
-                </a>
-
-                <a href="/demo" className={styles.main_nav_link}>
-                  Try our demo
-                </a>
+                {Boolean(navLinks) &&
+                  navLinks.map(({ fields }, i) => (
+                    <a
+                      key={i}
+                      href={fields.href}
+                      aria-label={fields.label}
+                      className={styles.main_nav_link}
+                    >
+                      {fields.text}
+                    </a>
+                  ))}
               </div>
             )}
           </div>

@@ -5,12 +5,12 @@ import styles from './Hero.module.scss';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
 
 type HeroPropsT = {
-  background: StaticImageData;
+  background: StaticImageData | string;
   title?: string;
   body?: string;
-  cta?: string;
+  ctaTitle?: string;
   ctaClick?: Function;
-  ctaLink?: string;
+  ctaHref?: string;
   heroAlt?: string;
   classProp?: string;
 };
@@ -19,9 +19,9 @@ const Hero = ({
   background,
   title,
   body,
-  cta,
+  ctaTitle,
   ctaClick,
-  ctaLink = '#',
+  ctaHref = '#',
   heroAlt = 'hero image',
   classProp = '',
 }: HeroPropsT) => {
@@ -29,8 +29,8 @@ const Hero = ({
 
   const onCtaClick = useCallback(() => {
     ctaClick && ctaClick();
-    ctaLink && router.push(ctaLink);
-  }, [ctaClick, ctaLink, router]);
+    ctaHref && router.push(ctaHref);
+  }, [ctaClick, ctaHref, router]);
 
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
@@ -41,17 +41,16 @@ const Hero = ({
           layout="fill"
           objectFit="cover"
           objectPosition="center"
-          placeholder="blur"
         />
         <div className={styles.contents_wrapper}>
           <div className={styles.contents}>
             {title && <h3 className="heading-xxl mb-16">{title}</h3>}
             {body && <p className="body-md mb-24">{body}</p>}
-            {cta && (
+            {ctaTitle && (
               <Button
-                href={ctaLink}
-                label={cta}
-                text={cta}
+                href={ctaHref}
+                label={ctaTitle}
+                text={ctaTitle}
                 onClick={onCtaClick}
                 category={ButtonCategoriesE.PRIMARY_SOLID}
               />

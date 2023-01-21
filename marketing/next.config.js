@@ -46,6 +46,9 @@ if (process.env.ENV === 'prod' || process.env.ENV === undefined) {
 
 const nextConfig = {
   reactStrictMode: true,
+  images: {
+    domains: ['images.ctfassets.net'],
+  },
   swcMinify: true,
   publicRuntimeConfig: {
     DASH_ROOT_DOMAIN: DASH_ROOT_DOMAIN,

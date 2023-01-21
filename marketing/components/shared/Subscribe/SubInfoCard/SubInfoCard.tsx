@@ -3,9 +3,13 @@ import { Button, Icon, IconT, Checkbox } from '@mozilla/lilypad';
 import SubscriptionInfoCopy from './SubscriptionInfoCopy';
 import styles from './SubInfoCard.module.scss';
 import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
-import { CountriesE, RegionsT } from 'types/Countries';
+import { RegionsT } from 'types';
 import { getCurrencyMeta } from 'util/utilities';
 import { getRegion } from 'services/region.service';
+
+export enum CountriesE {
+  GERMANY = 'DE',
+}
 
 type SubInfoCardPropsT = {
   classProp?: string;
@@ -26,7 +30,6 @@ const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
       </div>
       <div className="body-md">
         <p>
-          {' '}
           <span className="body-md-bold">{label}</span> <br /> {description}
         </p>
       </div>

@@ -11,8 +11,7 @@ import ValueProps, {
 } from '@Shared/ValueProps/ValueProps';
 import Testimonial from '@Shared/Testimonial/Testimonial';
 import { useMobileDown } from 'hooks/useMediaQuery';
-import type { GetServerSidePropsContext } from 'next';
-import { getRegion } from 'services/region.service';
+import { HeroT } from 'types';
 // Hero Assets
 import HubsMobileHero from '../public/hubs_hero_mobile.jpg';
 import HubsHero from '../public/hubs_hero.jpg';
@@ -30,12 +29,16 @@ import heart from '../public/heart.png';
 import spatialAudio from '../public/spatial_audio.jpg';
 import import3dModel from '../public/import_3d_models.jpg';
 import customizable from '../public/customizable.jpg';
+// Services
+import { getHeroEntry } from 'services/contentful.service';
 
 type HomePropsT = {
-  region: string | null;
+  heroData: HeroT;
+  heroDesktop: string;
+  heroMobile: string;
 };
 
-const Home = ({ region }: HomePropsT) => {
+const Home = ({ heroData, heroDesktop, heroMobile }: HomePropsT) => {
   const isMobile = useMobileDown();
 
   /**
@@ -110,10 +113,12 @@ const Home = ({ region }: HomePropsT) => {
           background={isMobile ? HubsMobileHero : HubsHero}
           title="A whole new world, from the comfort of your home"
           body="take control of your online communities with a fully open source virtual world platform that you can make your own."
-          cta="Get Started"
-          ctaLink="/#subscribe"
+          ctaTitle="Get Started"
+          ctaHref="/#subscribe"
           heroAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
         />
+
+        <Hero background={isMobile ? heroMobile : heroDesktop} {...heroData} />
 
         <TitleDescription
           title="A better way to connect online"
@@ -193,3 +198,15 @@ const Home = ({ region }: HomePropsT) => {
 };
 
 export default Home;
+
+export async function getStaticProps() {
+  const HeroResponse = await getHeroEntry('5Ye30v1zUE0V98AxdchWJK');
+  const heroData = HeroResponse.fields;
+  return {
+    props: {
+      heroData: heroData,
+      heroMobile: `https:${heroData.mobileImage.fields.file.url}`,
+      heroDesktop: `https:${heroData.desktopImage.fields.file.url}`,
+    },
+  };
+}
