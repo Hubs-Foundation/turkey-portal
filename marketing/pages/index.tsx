@@ -30,7 +30,7 @@ import spatialAudio from '../public/spatial_audio.jpg';
 import import3dModel from '../public/import_3d_models.jpg';
 import customizable from '../public/customizable.jpg';
 // Services
-import { getHeroEntry } from 'services/contentful.service';
+import { getHeroEntry, getHomePageData } from 'services/contentful.service';
 
 type HomePropsT = {
   heroData: HeroT;
@@ -38,7 +38,7 @@ type HomePropsT = {
   heroMobile: string;
 };
 
-const Home = ({ heroData, heroDesktop, heroMobile }: HomePropsT) => {
+const Home = ({ heroData }: HomePropsT) => {
   const isMobile = useMobileDown();
 
   /**
@@ -118,7 +118,12 @@ const Home = ({ heroData, heroDesktop, heroMobile }: HomePropsT) => {
           heroAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
         />
 
-        <Hero background={isMobile ? heroMobile : heroDesktop} {...heroData} />
+        <Hero
+          background={
+            isMobile ? heroData.mobileImage.url : heroData.desktopImage.url
+          }
+          {...heroData}
+        />
 
         <TitleDescription
           title="A better way to connect online"
@@ -201,12 +206,10 @@ export default Home;
 
 export async function getStaticProps() {
   const HeroResponse = await getHeroEntry('5Ye30v1zUE0V98AxdchWJK');
-  const heroData = HeroResponse.fields;
+  const HomePageData = await getHomePageData();
   return {
     props: {
-      heroData: heroData,
-      heroMobile: `https:${heroData.mobileImage.fields.file.url}`,
-      heroDesktop: `https:${heroData.desktopImage.fields.file.url}`,
+      heroData: HomePageData ? HomePageData.hero : null,
     },
   };
 }

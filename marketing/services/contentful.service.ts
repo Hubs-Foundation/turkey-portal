@@ -1,9 +1,13 @@
 import { createClient } from 'contentful';
-import { NavigationT, LinkT, HeroT } from 'types';
+import { NavigationT, LinkT, HeroT, HomePageQueryParamT } from 'types';
+import { createNavigationQuery, createHomePageQuery } from './queries';
+const SPACE = process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID;
+const ACCESS_TOKEN = process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN;
+const BASE_URL = 'https://graphql.contentful.com/content/v1/spaces/';
 
 const client = createClient({
   space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID as string,
-  accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_KEY as string,
+  accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN as string,
 });
 
 /**
@@ -19,10 +23,46 @@ export const getHeroEntry = async (id: string) => {
 /**
  * Get Navigation Content
  * @param id
- * @returns
+ * @returns LinkT[]
  */
 export const getNavigationLinksEntry = async (id: string) => {
-  const data = await client.getEntry<NavigationT>(id);
-  const links = data.fields.links as LinkT[];
-  return links;
+  try {
+    const response = await fetch(`${BASE_URL}${SPACE}`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
+      body: JSON.stringify(createNavigationQuery(id)),
+    });
+
+    const { data } = await response.json();
+    return data.navigation.linksCollection.items as LinkT[];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getHomePageData = async () => {
+  console.log('getting home!');
+
+  try {
+    const config: HomePageQueryParamT = {
+      navigation: '4FsGf6XPSDTPppGDlyFYm9',
+      hero: '5Ye30v1zUE0V98AxdchWJK',
+    };
+    const response = await fetch(`${BASE_URL}${SPACE}`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
+      body: JSON.stringify(createHomePageQuery(config)),
+    });
+
+    const { data } = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
 };

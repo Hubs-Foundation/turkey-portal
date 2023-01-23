@@ -20,8 +20,9 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const links = await getNavigationLinksEntry('4FsGf6XPSDTPppGDlyFYm9');
-      setNavLinks(links);
+      const navigationId = '4FsGf6XPSDTPppGDlyFYm9';
+      const links = await getNavigationLinksEntry(navigationId);
+      links && setNavLinks(links);
     };
 
     fetchData();
@@ -56,14 +57,14 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
             {!isDesktopDown && (
               <div className={styles.main_nav_links}>
                 {Boolean(navLinks) &&
-                  navLinks.map(({ fields }, i) => (
+                  navLinks.map((link, i) => (
                     <a
                       key={i}
-                      href={fields.href}
-                      aria-label={fields.label}
+                      href={link.href}
+                      aria-label={link.label}
                       className={styles.main_nav_link}
                     >
-                      {fields.text}
+                      {link.text}
                     </a>
                   ))}
               </div>

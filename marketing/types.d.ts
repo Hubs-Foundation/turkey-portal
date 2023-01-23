@@ -1,5 +1,10 @@
 import { StaticImageData } from 'next/image';
 
+export type HomePageQueryParamT = {
+  navigation: string;
+  hero: string;
+};
+
 /**
  * MEDIA IMAGES
  */
@@ -14,7 +19,8 @@ export type ImageFieldT = {
 };
 
 export type ImageT = {
-  fields: ImageFieldT;
+  url: string;
+  description: string;
 };
 
 /**
@@ -33,15 +39,10 @@ export type HeroT = {
 /**
  * MEDIA LINKS
  */
-
-export type LinkFieldT = {
+export type LinkT = {
   href: string;
   label: string;
   text: string;
-};
-
-export type LinkT = {
-  fields: LinkFieldT;
 };
 
 export type NavigationT = {
