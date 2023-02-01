@@ -1,6 +1,11 @@
 import { createClient } from 'contentful';
 import { NavigationT, LinkT, HeroT, HomePageQueryParamT } from 'types';
-import { createNavigationQuery, createHomePageQuery } from './queries';
+import {
+  createNavigationQuery,
+  createHomePageQuery,
+  createSectionsQuery,
+  createCustomPageQuery,
+} from './queries';
 const SPACE = process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID;
 const ACCESS_TOKEN = process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN;
 const BASE_URL = 'https://graphql.contentful.com/content/v1/spaces/';
@@ -58,6 +63,42 @@ export const getHomePageData = async () => {
         authorization: `Bearer ${ACCESS_TOKEN}`,
       },
       body: JSON.stringify(createHomePageQuery(config)),
+    });
+
+    const { data } = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getSectionsData = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}${SPACE}`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
+      body: JSON.stringify(createSectionsQuery('zRuFwXY8rHsbxP911xus3')),
+    });
+
+    const { data } = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCustomPageData = async (slug: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}${SPACE}`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
+      body: JSON.stringify(createCustomPageQuery(slug)),
     });
 
     const { data } = await response.json();

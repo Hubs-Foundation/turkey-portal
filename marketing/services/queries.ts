@@ -74,3 +74,121 @@ export const createHomePageQuery = (config: HomePageQueryParamT) => {
 `,
   };
 };
+
+export const createCustomPageQuery = (slug: string) => {
+  return {
+    query: `{
+      customPageCollection(limit:1,where:{slug:"${slug}"}){
+        items {
+          ... on CustomPage {
+            title
+            sectionsCollection {
+              items {
+                ... on Hero {
+                  __typename
+                  heroAlt
+                    ctaHref
+                    title
+                    mobileImage {
+                      url
+                      description
+                    }
+                    desktopImage{
+                      url
+                      description
+                    }
+                    body
+                }
+                ... on TitleDescription {
+                __typename
+                  title
+                  description
+                }
+                ...on Fiftyfifty {
+                  __typename
+                  title
+                  subtitle
+                  accentImage{
+                      url
+                      description
+                    }
+                  accentImageAlt
+                  layout
+                  imageAlt
+                  
+                  imageMobile{
+                      url
+                      description
+                    }
+                  image{
+                      url
+                      description
+                    }
+                  }
+                }
+              }
+            }
+          }  
+        }
+    }
+  `,
+  };
+};
+
+export const createSectionsQuery = (id: string) => {
+  return {
+    query: `{customPage(id: "${id}") {
+    sectionsCollection {
+      items {
+        ... on Hero {
+          __typename
+           heroAlt
+            ctaHref
+            title
+            mobileImage {
+              url
+              description
+            }
+            desktopImage{
+              url
+              description
+            }
+            body
+        }
+      ... on TitleDescription {
+       __typename
+        title
+        description
+      }
+        ...on Fiftyfifty {
+          __typename
+          title
+          subtitle
+          accentImage{
+              url
+              description
+            }
+          accentImageAlt
+          layout
+          imageAlt
+          
+          imageMobile{
+              url
+              description
+            }
+          image{
+              url
+              description
+            }
+         
+        }
+        
+      }
+    }
+    sys {
+      id
+    }
+    # add the fields you want to query
+  }}`,
+  };
+};

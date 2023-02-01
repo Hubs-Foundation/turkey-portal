@@ -7,22 +7,18 @@ import { useDesktopDown } from 'hooks/useMediaQuery';
   FiftyFifty component can be image left / content right or vice versa
   use layout to alter image content placement.
 **/
-export enum FiftyFiftyLayoutE {
-  LEFT = 'left',
-  RIGHT = 'right',
-}
 
 type FiftyFiftyPropsT = {
-  image: StaticImageData;
-  imageMobile: StaticImageData;
+  image: StaticImageData | string;
+  imageMobile: StaticImageData | string;
   imageAlt: string;
-  accentImage?: StaticImageData;
+  accentImage?: StaticImageData | string | null;
   accentImageAlt?: string;
   title?: string;
   subTitle?: string;
   body?: string;
   children?: ReactNode;
-  layout?: FiftyFiftyLayoutE;
+  layout?: 'left' | 'right';
   classProp?: string;
 };
 
@@ -36,7 +32,7 @@ const FiftyFifty = ({
   subTitle,
   body,
   children,
-  layout = FiftyFiftyLayoutE.LEFT,
+  layout = 'left',
   classProp = '',
 }: FiftyFiftyPropsT) => {
   const isDesktopDown = useDesktopDown();
@@ -56,7 +52,6 @@ const FiftyFifty = ({
               objectPosition={isDesktopDown ? undefined : 'center'}
               width={isDesktopDown ? 800 : undefined}
               height={isDesktopDown ? 700 : undefined}
-              placeholder="blur"
             />
           </div>
         </div>

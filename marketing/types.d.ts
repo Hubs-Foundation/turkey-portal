@@ -34,6 +34,29 @@ export type HeroT = {
   body: string;
   ctaTitle: string;
   ctaHref: string;
+  __typename: string;
+};
+
+export type FiftyfiftyT = {
+  image: ImageT;
+  imageMobile: ImageT;
+  accentImage: ImageT;
+  imageAlt: string;
+  accentImageAlt: string;
+  title: string;
+  subtitle: string;
+  layout: 'left' | 'right';
+  __typename: string;
+};
+
+export type TitleDescriptionT = {
+  title: string;
+  description: string;
+  __typename: string;
+};
+
+export type CustomSectionsT = {
+  items: TitleDescriptionT[] | FiftyfiftyT[] | HeroT[];
 };
 
 /**

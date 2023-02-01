@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import Head from 'next/head';
 import Hero from '@Shared/Hero/Hero';
-import FiftyFifty, { FiftyFiftyLayoutE } from '@Shared/FiftyFifty/FiftyFifty';
+import FiftyFifty from '@Shared/FiftyFifty/FiftyFifty';
 import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
 import TitleDescription from '@Shared/TitleDescription/TitleDescription';
 import Subscribe from '@Shared/Subscribe/Subscribe';
@@ -151,7 +151,7 @@ const Home = ({ heroData }: HomePropsT) => {
           image={makeOwnFiftyFifty}
           imageAlt="Avatars having a conversation in a dining hall"
           title="Make it your own"
-          layout={FiftyFiftyLayoutE.RIGHT}
+          layout="right"
           body="Create a unique Hub by choosing environments and avatars that represent your community. Decorate using our world-building tool Spoke. 3D artists can build their own world from scratch using Blender."
         />
 
@@ -177,7 +177,7 @@ const Home = ({ heroData }: HomePropsT) => {
           accentImage={heart}
           subTitle="Hubs is..."
           title="joyful, secure, yours"
-          layout={FiftyFiftyLayoutE.RIGHT}
+          layout="right"
         >
           <p>
             We believe everyone should be able to create the (virtual) reality
