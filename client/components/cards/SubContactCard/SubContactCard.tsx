@@ -1,4 +1,4 @@
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
+import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import styles from './SubContactCard.module.scss';
 
 type SubContactCardPropsT = {

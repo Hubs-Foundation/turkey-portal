@@ -8,7 +8,7 @@ import {
   ButtonSizesE,
   Icon,
   Input,
-} from '@mozilla/lilypad';
+} from '@mozilla/lilypad-ui';
 import { validateHubSubdomain } from 'services/hub.service';
 import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
 import { RoutesE } from 'types/Routes';

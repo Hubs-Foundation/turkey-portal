@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import styles from './EmailSignUp.module.scss';
-import { Checkbox, RadioButton, Input, Button } from '@mozilla/lilypad';
+import { Checkbox, RadioButton, Input, Button } from '@mozilla/lilypad-ui';
 import Image from 'next/image';
 import Success from './Success/Success';
 import Error from './Error/Error';

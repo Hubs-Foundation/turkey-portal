@@ -1,4 +1,4 @@
-import { CopyButton } from '@mozilla/lilypad';
+import { CopyButton } from '@mozilla/lilypad-ui';
 import ExternalLink from '@Shared/ExternalLink/ExternalLink';
 import { HUB_ROOT_DOMAIN } from 'config';
 

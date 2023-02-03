@@ -1,4 +1,4 @@
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
+import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import styles from './SubCard.module.scss';
 import { ReactNode } from 'react';
 

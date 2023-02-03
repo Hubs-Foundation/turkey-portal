@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Image, { StaticImageData } from 'next/image';
 import styles from './Hero.module.scss';
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
+import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 
 type HeroPropsT = {
   background: StaticImageData | string;

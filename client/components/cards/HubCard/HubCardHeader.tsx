@@ -1,4 +1,4 @@
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
+import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { StatusE } from 'types/General';

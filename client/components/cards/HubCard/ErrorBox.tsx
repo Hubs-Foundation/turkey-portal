@@ -1,5 +1,5 @@
 import styles from './ErrorBox.module.scss';
-import { Button, ButtonCategoriesE, Icon } from '@mozilla/lilypad';
+import { Button, ButtonCategoriesE, Icon } from '@mozilla/lilypad-ui';
 
 type ErrorBoxPropsT = {
   onTryAgainClick?: Function;

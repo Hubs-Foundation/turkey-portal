@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import styles from './ValueProps.module.scss';
-import { Icon, IconT } from '@mozilla/lilypad';
+import { Icon, IconT } from '@mozilla/lilypad-ui';
 
 type ValuePropsPropsT = {
   values: TilePropsT[];

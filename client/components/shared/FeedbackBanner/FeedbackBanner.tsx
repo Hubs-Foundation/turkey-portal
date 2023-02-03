@@ -1,5 +1,5 @@
 import styles from './FeedbackBanner.module.scss';
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
+import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 
 type FeedbackBannerPropsT = {
   email: string;
