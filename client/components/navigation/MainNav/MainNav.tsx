@@ -18,7 +18,7 @@ import {
   Icon,
   Dropdown,
   dropdownT,
-} from '@mozilla/lilypad';
+} from '@mozilla/lilypad-ui';
 
 type MainNavPropsT = {
   classProp?: string;

@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { HubT, LastErrorE, StatusE } from 'types/General';
 import styles from './dashboard.module.scss';
 import HubCard from '@Cards/HubCard/HubCard';
@@ -14,6 +14,15 @@ import { selectAccount } from 'store/accountSlice';
 import { initAccountData as refreshAccountData } from 'store/storeInit';
 import { useSelector } from 'react-redux';
 import { AxiosRequestHeaders } from 'axios';
+import {
+  Button,
+  Notification,
+  NotificationInterfaceT,
+  NotificationTypesE,
+  NotificationLocationE,
+  NewNotificationT,
+  CategoryE,
+} from '@mozilla/lilypad-ui';
 
 type DashboardPropsT = { subscription: SubscriptionT };
 
@@ -54,6 +63,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
   const [hubs, setHubs] = useState<HubT[]>([]);
   const [hasUpdatingHub, setHasUpdatingHub] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const noteRef = useRef<NotificationInterfaceT>();
 
   /**
    * Hubs call failed:
@@ -128,8 +138,23 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
     }, 2000);
   }, []);
 
+  const onNoteClick = () => {
+    const success: NewNotificationT = {
+      title: 'Hey!',
+      description: 'i love cats',
+      duration: 10000,
+      type: NotificationTypesE.ERROR,
+      location: NotificationLocationE.TOP_RIGHT,
+      pauseOnHover: true,
+      autoClose: true,
+      category: CategoryE.TOAST,
+    };
+    noteRef.current?.dispatchNotification(success);
+  };
+
   return (
     <div className="page_wrapper">
+      <div></div>
       <Head>
         <title>Dashboard</title>
         <meta name="description" content="general profile page" />
@@ -138,6 +163,14 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
       <section className={styles.hubs_wrapper}>
         {/* Hub Cards  */}
         <div className={styles.cards_wrapper}>
+          <div>
+            <Button
+              onClick={onNoteClick}
+              label="note"
+              text="click me"
+              classProp="mb-20"
+            />
+          </div>
           {/* Hub Creating */}
           {/* TODO (Tech Debt): Right now (EA) we are only dealing with one hub, so, if there are zero 
           hubs and account has "creating hubs" flag as true, we know to show the creating hub
@@ -183,6 +216,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
             />
           )}
         </div>
+        <Notification ref={noteRef} />
       </section>
 
       <footer>

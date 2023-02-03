@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Button } from '@mozilla/lilypad';
+import { Button } from '@mozilla/lilypad-ui';
 import React from 'react';
 import styles from './MobileSideNav.module.scss';
 

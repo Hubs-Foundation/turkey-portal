@@ -1,4 +1,4 @@
-import { IconT } from '@mozilla/lilypad';
+import { IconT } from '@mozilla/lilypad-ui';
 
 export type SubscriptionInfoCopyT = {
   label: string;
