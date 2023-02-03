@@ -130,7 +130,6 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
 
   return (
     <div className="page_wrapper">
-      <div></div>
       <Head>
         <title>Dashboard</title>
         <meta name="description" content="general profile page" />

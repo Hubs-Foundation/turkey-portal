@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const serverHostname = process.env.SERVER_HOSTNAME || '127.0.0.1';
 const nextConfig = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   images: {
     domains: [`${serverHostname}:4000`], // TODO Add other servers
   },
