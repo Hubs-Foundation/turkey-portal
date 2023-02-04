@@ -38,10 +38,10 @@ export type HeroT = {
 };
 
 export type FiftyfiftyT = {
-  image: ImageT;
-  imageMobile: ImageT;
-  accentImage: ImageT;
+  desktopImage: ImageT;
+  mobileImage: ImageT;
   imageAlt: string;
+  accentImage: ImageT;
   accentImageAlt: string;
   title: string;
   subtitle: string;

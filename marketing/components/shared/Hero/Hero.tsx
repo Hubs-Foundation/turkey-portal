@@ -3,29 +3,34 @@ import { useRouter } from 'next/router';
 import Image, { StaticImageData } from 'next/image';
 import styles from './Hero.module.scss';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { useMobileDown } from 'hooks/useMediaQuery';
+import { ImageT } from 'types';
 
 type HeroPropsT = {
-  background: StaticImageData | string;
+  desktopImage: ImageT;
+  mobileImage: ImageT;
   title?: string;
   body?: string;
   ctaTitle?: string;
   ctaClick?: Function;
   ctaHref?: string;
-  heroAlt?: string;
+  imageAlt?: string;
   classProp?: string;
 };
 
 const Hero = ({
-  background,
+  desktopImage,
+  mobileImage,
   title,
   body,
   ctaTitle,
   ctaClick,
   ctaHref = '#',
-  heroAlt = 'hero image',
+  imageAlt = 'hero image',
   classProp = '',
 }: HeroPropsT) => {
   const router = useRouter();
+  const isMobile = useMobileDown();
 
   const onCtaClick = useCallback(() => {
     ctaClick && ctaClick();
@@ -36,8 +41,8 @@ const Hero = ({
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.container}>
         <Image
-          src={background}
-          alt={heroAlt}
+          src={isMobile ? mobileImage.url : desktopImage.url}
+          alt={imageAlt}
           layout="fill"
           objectFit="cover"
           objectPosition="center"

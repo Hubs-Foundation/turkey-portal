@@ -25,20 +25,24 @@ import hubsFiftyFiftyMobile from '../public/fiftyfifty_hubs_mobile.png';
 import avatarsFiftyfifty from '../public/fiftyfifty_avatars.png';
 import avatarsFiftyfiftyMobile from '../public/fiftyfifty_avatars_mobile.png';
 import heart from '../public/heart.png';
+import Custom from '@Shared/Custom/Custom';
 // Tiles Assets
 import spatialAudio from '../public/spatial_audio.jpg';
 import import3dModel from '../public/import_3d_models.jpg';
 import customizable from '../public/customizable.jpg';
+import { CustomSectionsT } from 'types';
+
 // Services
-import { getHeroEntry, getHomePageData } from 'services/contentful.service';
+import { getSectionsData, getHomePageData } from 'services/contentful.service';
 
 type HomePropsT = {
   heroData: HeroT;
   heroDesktop: string;
   heroMobile: string;
+  sectionsData: CustomSectionsT;
 };
 
-const Home = ({ heroData }: HomePropsT) => {
+const Home = ({ heroData, sectionsData }: HomePropsT) => {
   const isMobile = useMobileDown();
 
   /**
@@ -109,30 +113,32 @@ const Home = ({ heroData }: HomePropsT) => {
       </Head>
 
       <main>
-        <Hero
-          background={isMobile ? HubsMobileHero : HubsHero}
+        {/* <Hero
+        desktopImage={HubsHero}
+        mobileImage={HubsMobileHero}
           title="A whole new world, from the comfort of your home"
           body="take control of your online communities with a fully open source virtual world platform that you can make your own."
           ctaTitle="Get Started"
           ctaHref="/#subscribe"
           heroAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
-        />
+        /> */}
 
-        <Hero
-          background={
-            isMobile ? heroData.mobileImage.url : heroData.desktopImage.url
-          }
-          {...heroData}
-        />
+        <div>
+          {sectionsData.items.map((section, i) => {
+            return <Custom key={i} data={section} />;
+          })}
+        </div>
+
+        {/* <Hero {...heroData} /> */}
 
         <TitleDescription
           title="A better way to connect online"
           description="No more videos in a grid of squares. Gather with your community online as avatars in a virtual space and communicate more naturally — no headset required."
         />
 
-        <FiftyFifty
-          imageMobile={engagingFiftyFiftyMobile}
-          image={engagingFiftyfifty}
+        {/* <FiftyFifty
+          mobileImage={engagingFiftyFiftyMobile}
+          desktopImage={engagingFiftyfifty}
           imageAlt="Hubs landscaps with trees and sun and indoore example"
           title="The many ways to use Hubs"
         >
@@ -144,25 +150,25 @@ const Home = ({ heroData }: HomePropsT) => {
             <li>Host a social hour for your team</li>
             <li>Have a meeting on a planet in outer space</li>
           </ul>
-        </FiftyFifty>
+        </FiftyFifty> */}
 
-        <FiftyFifty
-          imageMobile={makeOwnFiftyFiftyMobile}
-          image={makeOwnFiftyFifty}
+        {/* <FiftyFifty
+          mobileImage={makeOwnFiftyFiftyMobile}
+          desktopImage={makeOwnFiftyFifty}
           imageAlt="Avatars having a conversation in a dining hall"
           title="Make it your own"
           layout="right"
           body="Create a unique Hub by choosing environments and avatars that represent your community. Decorate using our world-building tool Spoke. 3D artists can build their own world from scratch using Blender."
-        />
+        /> */}
 
-        <FiftyFifty
-          imageMobile={avatarsFiftyfiftyMobile}
-          image={avatarsFiftyfifty}
+        {/* <FiftyFifty
+          mobileImage={avatarsFiftyfiftyMobile}
+          desktopImage={avatarsFiftyfifty}
           imageAlt="Diverse display of avatars and fun graphics"
           title="Expressive avatars"
           body="Change your hair, your outfit, your vibe. Choose from a rich array
           of diverse avatars to show off how you’re feeling, or create your own range of different styles that let your personality shine through."
-        />
+        /> */}
 
         <TileSpotlight
           tiles={tiles}
@@ -170,9 +176,9 @@ const Home = ({ heroData }: HomePropsT) => {
           body="Your Hub is the portal to your online community. Create spaces for friends, family, co-workers, or communities — the choice is yours. With a subscription to Hubs, you choose who can access your space and take advantage of all that Hubs has to offer."
         />
 
-        <FiftyFifty
-          imageMobile={hubsFiftyFiftyMobile}
-          image={hubsFiftyfifty}
+        {/* <FiftyFifty
+          mobileImage={hubsFiftyFiftyMobile}
+          desktopImage={hubsFiftyfifty}
           imageAlt="Avatars meeting and in open air auditorium"
           accentImage={heart}
           subTitle="Hubs is..."
@@ -187,7 +193,7 @@ const Home = ({ heroData }: HomePropsT) => {
             Hubs is the only virtual world platform that puts you in full
             control — by Mozilla, the company that created Firefox.
           </p>
-        </FiftyFifty>
+        </FiftyFifty> */}
 
         <ValueProps values={values} />
 
@@ -205,11 +211,15 @@ const Home = ({ heroData }: HomePropsT) => {
 export default Home;
 
 export async function getStaticProps() {
-  const HeroResponse = await getHeroEntry('5Ye30v1zUE0V98AxdchWJK');
-  const HomePageData = await getHomePageData();
+  const HomePageData = await getSectionsData(
+    'homePage',
+    'iUw7LHBaBcgGaKydU2qKJ'
+  );
+  console.log('HomePageData', HomePageData.homePage.sectionsCollection);
   return {
     props: {
-      heroData: HomePageData ? HomePageData.hero : null,
+      // heroData: HomePageData ? HomePageData.hero : null,
+      sectionsData: HomePageData.homePage.sectionsCollection,
     },
   };
 }

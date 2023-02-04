@@ -72,7 +72,7 @@ export const getHomePageData = async () => {
   }
 };
 
-export const getSectionsData = async () => {
+export const getSectionsData = async (name: string, id: string) => {
   try {
     const response = await fetch(`${BASE_URL}${SPACE}`, {
       method: 'POST',
@@ -80,7 +80,8 @@ export const getSectionsData = async () => {
         'content-type': 'application/json',
         authorization: `Bearer ${ACCESS_TOKEN}`,
       },
-      body: JSON.stringify(createSectionsQuery('zRuFwXY8rHsbxP911xus3')),
+
+      body: JSON.stringify(createSectionsQuery(name, id)),
     });
 
     const { data } = await response.json();

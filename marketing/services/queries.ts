@@ -23,7 +23,7 @@ export const createHeroQuery = (id: string) => {
   return {
     query: `{
       hero(id:"${id}"){
-        heroAlt
+        imageAlt
         ctaHref
         title
         mobileImage {
@@ -66,7 +66,7 @@ export const createHomePageQuery = (config: HomePageQueryParamT) => {
         }
         title
         body
-        heroAlt
+        imageAlt
         ctaTitle
         ctaHref
       }
@@ -116,11 +116,11 @@ export const createCustomPageQuery = (slug: string) => {
                   layout
                   imageAlt
                   
-                  imageMobile{
+                  mobileImage{
                       url
                       description
                     }
-                  image{
+                  desktopImage{
                       url
                       description
                     }
@@ -135,14 +135,14 @@ export const createCustomPageQuery = (slug: string) => {
   };
 };
 
-export const createSectionsQuery = (id: string) => {
+export const createSectionsQuery = (name: string, id: string) => {
   return {
-    query: `{customPage(id: "${id}") {
+    query: `{${name}(id: "${id}") {
     sectionsCollection {
       items {
         ... on Hero {
           __typename
-           heroAlt
+           imageAlt
             ctaHref
             title
             mobileImage {
@@ -171,18 +171,15 @@ export const createSectionsQuery = (id: string) => {
           accentImageAlt
           layout
           imageAlt
-          
-          imageMobile{
+          mobileImage{
               url
               description
             }
-          image{
+          desktopImage{
               url
               description
             }
-         
-        }
-        
+        } 
       }
     }
     sys {

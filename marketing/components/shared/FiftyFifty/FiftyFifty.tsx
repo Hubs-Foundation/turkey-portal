@@ -1,7 +1,8 @@
 import { ReactNode } from 'react';
 import styles from './FiftyFifty.module.scss';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import { useDesktopDown } from 'hooks/useMediaQuery';
+import { ImageT } from 'types';
 
 /**
   FiftyFifty component can be image left / content right or vice versa
@@ -9,10 +10,10 @@ import { useDesktopDown } from 'hooks/useMediaQuery';
 **/
 
 type FiftyFiftyPropsT = {
-  image: StaticImageData | string;
-  imageMobile: StaticImageData | string;
+  desktopImage: ImageT;
+  mobileImage: ImageT;
   imageAlt: string;
-  accentImage?: StaticImageData | string | null;
+  accentImage?: ImageT | null;
   accentImageAlt?: string;
   title?: string;
   subTitle?: string;
@@ -23,8 +24,8 @@ type FiftyFiftyPropsT = {
 };
 
 const FiftyFifty = ({
-  image,
-  imageMobile,
+  desktopImage,
+  mobileImage,
   imageAlt,
   accentImage,
   accentImageAlt = 'Accent Image',
@@ -45,7 +46,7 @@ const FiftyFifty = ({
           <div className={styles.image_container}>
             <Image
               className={styles.image}
-              src={isDesktopDown ? imageMobile : image}
+              src={isDesktopDown ? mobileImage.url : desktopImage.url}
               alt={imageAlt}
               layout={isDesktopDown ? 'responsive' : 'fill'}
               objectFit={isDesktopDown ? undefined : 'cover'}
@@ -67,7 +68,7 @@ const FiftyFifty = ({
                   width={isDesktopDown ? 95 : 164}
                   height={isDesktopDown ? 92 : 159}
                   layout="fixed"
-                  src={accentImage}
+                  src={accentImage.url}
                   alt={accentImageAlt}
                 />
               </div>

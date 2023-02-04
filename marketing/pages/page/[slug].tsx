@@ -2,9 +2,6 @@ import { CustomSectionsT } from 'types';
 import Custom from '@Shared/Custom/Custom';
 import { getCustomPageData } from 'services/contentful.service';
 
-// Services
-import { getSectionsData } from 'services/contentful.service';
-
 type CustomPagePropsT = {
   sectionsData: CustomSectionsT;
 };
