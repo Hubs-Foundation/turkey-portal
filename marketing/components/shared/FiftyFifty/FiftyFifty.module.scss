@@ -35,6 +35,15 @@
   }
 }
 
+.body_copy {
+  @include body-md;
+  ul,
+  ol {
+    padding-left: 15px;
+    text-align: left;
+  }
+}
+
 .image {
   &_wrapper {
     @include desktop-down {

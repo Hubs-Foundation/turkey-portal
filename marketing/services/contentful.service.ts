@@ -66,6 +66,7 @@ export const getHomePageData = async () => {
     });
 
     const { data } = await response.json();
+
     return data;
   } catch (error) {
     console.log(error);
@@ -84,7 +85,13 @@ export const getSectionsData = async (name: string, id: string) => {
       body: JSON.stringify(createSectionsQuery(name, id)),
     });
 
+    if (response.statusText === 'Bad Request') {
+      console.error('Bad Request:', response);
+      return {};
+    }
     const { data } = await response.json();
+    console.log('response');
+
     return data;
   } catch (error) {
     console.log(error);

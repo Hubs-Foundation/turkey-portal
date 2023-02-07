@@ -155,13 +155,22 @@ export const createSectionsQuery = (name: string, id: string) => {
             }
             body
         }
-      ... on TitleDescription {
-       __typename
-        title
-        description
-      }
+        ... on TitleDescription {
+        __typename
+          title
+          description
+        }
+        ... on SectionEmailSignUp {
+          __typename
+        }
+        ... on Subscribe {
+          __typename
+        }
         ...on Fiftyfifty {
           __typename
+          richText {
+           json
+          }
           title
           subtitle
           accentImage{
@@ -182,10 +191,6 @@ export const createSectionsQuery = (name: string, id: string) => {
         } 
       }
     }
-    sys {
-      id
-    }
-    # add the fields you want to query
   }}`,
   };
 };

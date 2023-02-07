@@ -1,4 +1,5 @@
 import { StaticImageData } from 'next/image';
+import { Document } from '@contentful/rich-text-types';
 
 export type HomePageQueryParamT = {
   navigation: string;
@@ -29,24 +30,27 @@ export type ImageT = {
 export type HeroT = {
   desktopImage: ImageT;
   mobileImage: ImageT;
-  heroAlt: string;
-  title: string;
-  body: string;
-  ctaTitle: string;
-  ctaHref: string;
-  __typename: string;
+  imageAlt: string;
+  title?: string;
+  body?: string;
+  ctaTitle?: string;
+  ctaHref?: string;
+  __typename?: string;
 };
 
 export type FiftyfiftyT = {
   desktopImage: ImageT;
   mobileImage: ImageT;
   imageAlt: string;
-  accentImage: ImageT;
-  accentImageAlt: string;
-  title: string;
-  subtitle: string;
-  layout: 'left' | 'right';
-  __typename: string;
+  accentImage?: ImageT | null;
+  accentImageAlt?: string;
+  title?: string;
+  subtitle?: string;
+  richText?: {
+    json: Document;
+  };
+  layout?: 'left' | 'right';
+  __typename?: string;
 };
 
 export type TitleDescriptionT = {

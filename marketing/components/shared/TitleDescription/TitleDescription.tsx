@@ -1,16 +1,15 @@
 import styles from './TitleDescription.module.scss';
+import { TitleDescriptionT } from 'types';
 
-type TitleDescriptionPropsT = {
-  title?: string;
-  description?: string;
+interface TitleDescriptionPropsI extends TitleDescriptionT {
   classProp?: string;
-};
+}
 
 const TitleDescription = ({
   title,
   description,
   classProp = '',
-}: TitleDescriptionPropsT) => {
+}: TitleDescriptionPropsI) => {
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.container}>

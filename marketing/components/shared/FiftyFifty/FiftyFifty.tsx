@@ -2,26 +2,19 @@ import { ReactNode } from 'react';
 import styles from './FiftyFifty.module.scss';
 import Image from 'next/image';
 import { useDesktopDown } from 'hooks/useMediaQuery';
-import { ImageT } from 'types';
+import { FiftyfiftyT } from 'types';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { Document } from '@contentful/rich-text-types';
 
 /**
   FiftyFifty component can be image left / content right or vice versa
   use layout to alter image content placement.
 **/
 
-type FiftyFiftyPropsT = {
-  desktopImage: ImageT;
-  mobileImage: ImageT;
-  imageAlt: string;
-  accentImage?: ImageT | null;
-  accentImageAlt?: string;
-  title?: string;
-  subTitle?: string;
-  body?: string;
+interface FiftyFiftyPropsI extends FiftyfiftyT {
   children?: ReactNode;
-  layout?: 'left' | 'right';
   classProp?: string;
-};
+}
 
 const FiftyFifty = ({
   desktopImage,
@@ -30,14 +23,13 @@ const FiftyFifty = ({
   accentImage,
   accentImageAlt = 'Accent Image',
   title,
-  subTitle,
-  body,
+  subtitle,
+  richText,
   children,
   layout = 'left',
   classProp = '',
-}: FiftyFiftyPropsT) => {
+}: FiftyFiftyPropsI) => {
   const isDesktopDown = useDesktopDown();
-
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={`${styles.container} ${styles['container_' + layout]}`}>
@@ -73,16 +65,20 @@ const FiftyFifty = ({
                 />
               </div>
             )}
-            {subTitle ? (
-              <h4 className="heading-sm">{subTitle}</h4>
+            {subtitle ? (
+              <h4 className="heading-sm">{subtitle}</h4>
             ) : (
               <div className={styles.bar_wrapper}>
                 <div className={styles.bar} />
               </div>
             )}
             {title && <h3 className="heading-xxl mt-4 mb-18">{title}</h3>}
-            {body && <p className="body-md">{body}</p>}
-            {children && <div className="body-md">{children}</div>}
+            {richText && (
+              <div className={styles.body_copy}>
+                {documentToReactComponents(richText.json)}
+              </div>
+            )}
+            {children && <div className={styles.body_copy}>{children}</div>}
           </div>
         </div>
       </div>

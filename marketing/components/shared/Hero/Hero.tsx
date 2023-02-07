@@ -1,22 +1,14 @@
 import { useCallback } from 'react';
 import { useRouter } from 'next/router';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import styles from './Hero.module.scss';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import { useMobileDown } from 'hooks/useMediaQuery';
-import { ImageT } from 'types';
+import { HeroT } from 'types';
 
-type HeroPropsT = {
-  desktopImage: ImageT;
-  mobileImage: ImageT;
-  title?: string;
-  body?: string;
-  ctaTitle?: string;
-  ctaClick?: Function;
-  ctaHref?: string;
-  imageAlt?: string;
+interface HeroPropsI extends HeroT {
   classProp?: string;
-};
+}
 
 const Hero = ({
   desktopImage,
@@ -24,18 +16,16 @@ const Hero = ({
   title,
   body,
   ctaTitle,
-  ctaClick,
   ctaHref = '#',
   imageAlt = 'hero image',
   classProp = '',
-}: HeroPropsT) => {
+}: HeroPropsI) => {
   const router = useRouter();
   const isMobile = useMobileDown();
 
   const onCtaClick = useCallback(() => {
-    ctaClick && ctaClick();
     ctaHref && router.push(ctaHref);
-  }, [ctaClick, ctaHref, router]);
+  }, [ctaHref, router]);
 
   return (
     <section className={`${classProp} ${styles.wrapper}`}>

@@ -1,50 +1,27 @@
 import { useMemo } from 'react';
 import Head from 'next/head';
-import Hero from '@Shared/Hero/Hero';
-import FiftyFifty from '@Shared/FiftyFifty/FiftyFifty';
 import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
-import TitleDescription from '@Shared/TitleDescription/TitleDescription';
 import Subscribe from '@Shared/Subscribe/Subscribe';
 import EmailSignUp from '@Shared/EmailSignUp/EmailSignUp';
 import ValueProps, {
   TilePropsT as ValuePropsT,
 } from '@Shared/ValueProps/ValueProps';
 import Testimonial from '@Shared/Testimonial/Testimonial';
-import { useMobileDown } from 'hooks/useMediaQuery';
 import { HeroT } from 'types';
-// Hero Assets
-import HubsMobileHero from '../public/hubs_hero_mobile.jpg';
-import HubsHero from '../public/hubs_hero.jpg';
-// Fifty Fifty Assets
-import makeOwnFiftyFifty from '../public/fiftyfifty_make_own.png';
-import makeOwnFiftyFiftyMobile from '../public/fiftyfifty_make_own_mobile.png';
-import engagingFiftyfifty from '../public/fiftyfifty_engaging.png';
-import engagingFiftyFiftyMobile from '../public/fiftyfifty_engaging_mobile.png';
-import hubsFiftyfifty from '../public/fiftyfifty_hubs.png';
-import hubsFiftyFiftyMobile from '../public/fiftyfifty_hubs_mobile.png';
-import avatarsFiftyfifty from '../public/fiftyfifty_avatars.png';
-import avatarsFiftyfiftyMobile from '../public/fiftyfifty_avatars_mobile.png';
-import heart from '../public/heart.png';
 import Custom from '@Shared/Custom/Custom';
 // Tiles Assets
 import spatialAudio from '../public/spatial_audio.jpg';
 import import3dModel from '../public/import_3d_models.jpg';
 import customizable from '../public/customizable.jpg';
 import { CustomSectionsT } from 'types';
-
 // Services
-import { getSectionsData, getHomePageData } from 'services/contentful.service';
+import { getSectionsData } from 'services/contentful.service';
 
 type HomePropsT = {
-  heroData: HeroT;
-  heroDesktop: string;
-  heroMobile: string;
   sectionsData: CustomSectionsT;
 };
 
-const Home = ({ heroData, sectionsData }: HomePropsT) => {
-  const isMobile = useMobileDown();
-
+const Home = ({ sectionsData }: HomePropsT) => {
   /**
    * Tile Data
    * TODO - this will eventually come from a CMS
@@ -120,21 +97,23 @@ const Home = ({ heroData, sectionsData }: HomePropsT) => {
           body="take control of your online communities with a fully open source virtual world platform that you can make your own."
           ctaTitle="Get Started"
           ctaHref="/#subscribe"
-          heroAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
+          imageAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
         /> */}
 
-        <div>
-          {sectionsData.items.map((section, i) => {
-            return <Custom key={i} data={section} />;
-          })}
-        </div>
+        {sectionsData.items && (
+          <div>
+            {sectionsData.items.map((section, i) => {
+              return <Custom key={i} data={section} />;
+            })}
+          </div>
+        )}
 
         {/* <Hero {...heroData} /> */}
 
-        <TitleDescription
+        {/* <TitleDescription
           title="A better way to connect online"
           description="No more videos in a grid of squares. Gather with your community online as avatars in a virtual space and communicate more naturally — no headset required."
-        />
+        /> */}
 
         {/* <FiftyFifty
           mobileImage={engagingFiftyFiftyMobile}
@@ -143,7 +122,7 @@ const Home = ({ heroData, sectionsData }: HomePropsT) => {
           title="The many ways to use Hubs"
         >
           <ul className="pl-15 text-left">
-            <li>Host a virtual event</li>
+             <li>Host a virtual event</li>
             <li>Create a museum or digital gallery</li>
             <li>Build a space for your favorite hobbies</li>
             <li>Open a classroom to connect with your students</li>
@@ -193,7 +172,7 @@ const Home = ({ heroData, sectionsData }: HomePropsT) => {
             Hubs is the only virtual world platform that puts you in full
             control — by Mozilla, the company that created Firefox.
           </p>
-        </FiftyFifty> */}
+      </FiftyFifty> */}
 
         <ValueProps values={values} />
 
@@ -202,7 +181,7 @@ const Home = ({ heroData, sectionsData }: HomePropsT) => {
         </div>
 
         <Testimonial />
-        <EmailSignUp />
+        {/* <EmailSignUp /> */}
       </main>
     </div>
   );
@@ -218,7 +197,6 @@ export async function getStaticProps() {
   console.log('HomePageData', HomePageData.homePage.sectionsCollection);
   return {
     props: {
-      // heroData: HomePageData ? HomePageData.hero : null,
       sectionsData: HomePageData.homePage.sectionsCollection,
     },
   };
