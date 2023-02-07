@@ -1,6 +1,6 @@
 import React, { MouseEventHandler, useEffect, useState } from 'react';
 import styles from './CardButton.module.scss';
-import { Icon, IconT } from '@mozilla/lilypad';
+import { Icon, IconT } from '@mozilla/lilypad-ui';
 
 export type CardButtonPropsT = {
   id?: string;

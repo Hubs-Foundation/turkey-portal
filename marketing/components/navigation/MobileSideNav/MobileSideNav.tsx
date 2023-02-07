@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Button, ButtonCategoriesE, ButtonSizesE } from '@mozilla/lilypad';
+import { Button, ButtonCategoriesE, ButtonSizesE } from '@mozilla/lilypad-ui';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { useRouter } from 'next/router';
 import styles from './MobileSideNav.module.scss';

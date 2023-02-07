@@ -1,6 +1,6 @@
 import styles from './SubscriptionModal.module.scss';
 import { useCallback } from 'react';
-import { Icon, Button, ButtonCategoriesE } from '@mozilla/lilypad';
+import { Icon, Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import { FXA_SERVER } from 'config';
 
 type SubscriptionModalT = {

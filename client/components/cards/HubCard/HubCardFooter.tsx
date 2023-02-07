@@ -1,4 +1,9 @@
-import { Badge, ProgressBar, BadgeCategoriesE, Icon } from '@mozilla/lilypad';
+import {
+  Badge,
+  ProgressBar,
+  BadgeCategoriesE,
+  Icon,
+} from '@mozilla/lilypad-ui';
 import { StorageStateE, HubT, FormattedTierMapT } from 'types/General';
 import { useState, useEffect, useCallback } from 'react';
 import styles from './HubCardFooter.module.scss';
