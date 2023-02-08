@@ -33,6 +33,7 @@ const Custom = ({ data }: CustomPropT) => {
       case SectionsNames.SECTION_EMAIL_SIGNUP:
         return <EmailSignUp />;
       case SectionsNames.SUBSCRIBE:
+        // TODO add CMS content
         return (
           <div id="subscribe">
             <Subscribe />
