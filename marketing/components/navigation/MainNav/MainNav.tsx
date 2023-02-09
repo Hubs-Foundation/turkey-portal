@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import styles from './MainNav.module.scss';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
@@ -16,13 +16,22 @@ type MainNavPropsT = {
 const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
   const isDesktopDown = useDesktopDown();
   const router = useRouter();
-  const [navLinks, setNavLinks] = useState<LinkT[]>([]);
+
+  /**
+   * TODO: there is commented out code in this file to prepare for the CMS - main
+   * nav comoponent is in a wrapper compnent that gets it's data via client side.
+   * we need to update to nextjs13 and have serverside components and also
+   * the new layout architecture to do this appropriatly. Leaving code in here
+   * since it will be mostly the same when we update to nextjs 13 shortly.
+   */
+  // const [navLinks, setNavLinks] = useState<LinkT[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const navigationId = '4FsGf6XPSDTPppGDlyFYm9';
       const links = await getNavigationLinksEntry(navigationId);
-      links && setNavLinks(links);
+      // links && setNavLinks(links);
+      console.log('links', links);
     };
 
     fetchData();
@@ -56,7 +65,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
             {/* Links  */}
             {!isDesktopDown && (
               <div className={styles.main_nav_links}>
-                {Boolean(navLinks) &&
+                {/* {Boolean(navLinks) &&
                   navLinks.map((link, i) => (
                     <a
                       key={i}
@@ -66,7 +75,19 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
                     >
                       {link.text}
                     </a>
-                  ))}
+                  ))} */}
+
+                <a href="/labs" className={styles.main_nav_link}>
+                  Creator Labs
+                </a>
+
+                <a href="/cloud" className={styles.main_nav_link}>
+                  Hubs Cloud
+                </a>
+
+                <a href="/demo" className={styles.main_nav_link}>
+                  Try our demo
+                </a>
               </div>
             )}
           </div>
