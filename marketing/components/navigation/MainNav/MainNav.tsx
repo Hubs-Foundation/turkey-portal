@@ -4,7 +4,7 @@ import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import { useRouter } from 'next/router';
-import { DASH_ROOT_DOMAIN } from 'config';
+import { DASH_ROOT_DOMAIN, ENV } from 'config';
 import { getNavigationLinksEntry } from '../../../services/contentful.service';
 import { LinkT } from 'types';
 
@@ -90,7 +90,10 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
                 </a>
 
                 <a href="/demo" className={styles.main_nav_link}>
-                  {process.env.ENV}
+                  <ul>
+                    <li>env:{process.env.ENV}</li>
+                    <li>env:{ENV}</li>
+                  </ul>
                 </a>
               </div>
             )}
