@@ -88,6 +88,10 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
                 <a href="/demo" className={styles.main_nav_link}>
                   Try our demo
                 </a>
+
+                <a href="/demo" className={styles.main_nav_link}>
+                  {process.env.ENV}
+                </a>
               </div>
             )}
           </div>
