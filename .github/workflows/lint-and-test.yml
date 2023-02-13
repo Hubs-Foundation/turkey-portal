@@ -34,7 +34,7 @@ jobs:
         working-directory: client
 
       - name: marketing - install
-        run: npm config set -- "//npm.pkg.github.com/:_authToken" "$GITHUB_TOKEN" && npm ci --legacy-peer-deps
+        run: npm config set -- npm ci
         working-directory: marketing
       - name: marketing - lint
         run: npm run lint
