@@ -7,8 +7,8 @@ import { useRouter } from 'next/router';
 import { getEnvVariable, DASH_ROOT_DOMAIN } from 'config';
 
 // import { DASH_ROOT_DOMAIN } from 'config';
-import { getNavigationLinksEntry } from '../../../services/contentful.service';
-import { LinkT } from 'types';
+// import { getNavigationLinksEntry } from '../../../services/contentful.service';
+// import { LinkT } from 'types';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -28,16 +28,16 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
    */
   // const [navLinks, setNavLinks] = useState<LinkT[]>([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const navigationId = '4FsGf6XPSDTPppGDlyFYm9';
-      const links = await getNavigationLinksEntry(navigationId);
-      // links && setNavLinks(links);
-      console.log('links', links);
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const navigationId = '4FsGf6XPSDTPppGDlyFYm9';
+  //     const links = await getNavigationLinksEntry(navigationId);
+  //     // links && setNavLinks(links);
+  //     console.log('links', links);
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   /**
    * Handle Menu Click
