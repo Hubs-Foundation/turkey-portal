@@ -7,7 +7,7 @@ import {
   createCustomPageQuery,
 } from './queries';
 const ACCESS_TOKEN = process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN;
-const SPACE = process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID;
+const SPACE = 'p5qj0ed8ji31';
 const BASE_URL = 'https://graphql.contentful.com/content/v1/spaces/';
 const URL = `${BASE_URL}${SPACE}`;
 const PROTOCOL = {

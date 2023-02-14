@@ -7,12 +7,9 @@ import { getEnvVariable } from 'config';
 
 type HomePropsT = {
   sectionsData: CustomSectionsT;
-  dashdomaintest: string;
-  env: string;
-  nextEnv: string;
 };
 
-const Home = ({ sectionsData, dashdomaintest, env, nextEnv }: HomePropsT) => {
+const Home = ({ sectionsData }: HomePropsT) => {
   return (
     <div className="page_wrapper">
       <Head>
@@ -20,9 +17,6 @@ const Home = ({ sectionsData, dashdomaintest, env, nextEnv }: HomePropsT) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <h1>ENV:{dashdomaintest}</h1>
-        <h2>env:{env}</h2>
-        <h2>nextEnv:{nextEnv}</h2>
         {sectionsData.items ? (
           <div>
             {sectionsData.items.map((section, i) => {
@@ -49,8 +43,6 @@ export async function getStaticProps() {
   return {
     props: {
       sectionsData,
-      // dashdomaintest: getEnvVariable(process.env.ENV, 'DASH_ROOT_DOMAIN'),
-      nextEnv: process.env.NEXT_PUBLIC_ENV,
     },
   };
 }
