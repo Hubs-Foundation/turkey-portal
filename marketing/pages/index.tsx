@@ -50,7 +50,6 @@ export async function getStaticProps() {
     props: {
       sectionsData,
       dashdomaintest: getEnvVariable(process.env.ENV, 'DASH_ROOT_DOMAIN'),
-      env: process.env.ENV,
       nextEnv: process.env.NEXT_PUBLIC_ENV,
     },
   };
