@@ -19,10 +19,10 @@ const PROTOCOL = {
 };
 
 // Init Contentful Client
-const client = createClient({
-  space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID as string,
-  accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN as string,
-});
+// const client = createClient({
+//   space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID as string,
+//   accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN as string,
+// });
 
 /**
  * Handle Bad Request
@@ -42,10 +42,10 @@ const handleBadRequest = (statusText: string): boolean => {
  * @param id
  * @returns
  */
-export const getHeroEntry = async (id: string): Promise<Entry<HeroT>> => {
-  const data = await client.getEntry<HeroT>(id);
-  return data;
-};
+// export const getHeroEntry = async (id: string): Promise<Entry<HeroT>> => {
+//   const data = await client.getEntry<HeroT>(id);
+//   return data;
+// };
 
 /**
  * Get Navigation Content
