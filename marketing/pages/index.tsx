@@ -44,12 +44,12 @@ export async function getStaticProps() {
     'homePage',
     'iUw7LHBaBcgGaKydU2qKJ'
   );
-  console.log('process.env.ENV', process.env.ENV);
+  // console.log('process.env.ENV', process.env.ENV);
 
   return {
     props: {
       sectionsData,
-      dashdomaintest: getEnvVariable(process.env.ENV, 'DASH_ROOT_DOMAIN'),
+      // dashdomaintest: getEnvVariable(process.env.ENV, 'DASH_ROOT_DOMAIN'),
       nextEnv: process.env.NEXT_PUBLIC_ENV,
     },
   };
