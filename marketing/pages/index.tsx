@@ -39,7 +39,7 @@ const Home = ({ sectionsData, dashdomaintest, env, nextEnv }: HomePropsT) => {
 
 export default Home;
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const sectionsData = await getSectionsData(
     'homePage',
     'iUw7LHBaBcgGaKydU2qKJ'
