@@ -4,7 +4,9 @@ import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import { useRouter } from 'next/router';
-import { DASH_ROOT_DOMAIN, ENV } from 'config';
+import { getEnvVariable, DASH_ROOT_DOMAIN } from 'config';
+
+// import { DASH_ROOT_DOMAIN } from 'config';
 import { getNavigationLinksEntry } from '../../../services/contentful.service';
 import { LinkT } from 'types';
 
@@ -88,15 +90,6 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
                 <a href="/demo" className={styles.main_nav_link}>
                   Try our demo
                 </a>
-
-                <a href="/demo" className={styles.main_nav_link}>
-                  <ul>
-                    <li>Test</li>
-
-                    <li>env:{process.env.ENV}</li>
-                    <li>env:{ENV}</li>
-                  </ul>
-                </a>
               </div>
             )}
           </div>
@@ -116,6 +109,16 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
 
             {!isDesktopDown && (
               <div className={styles.main_nav_actions}>
+                <Button
+                  label="Go to your hubs dashboard"
+                  classProp="mr-10"
+                  category={ButtonCategoriesE.PRIMARY_OUTLINE}
+                  href={`https://${getEnvVariable(
+                    process.env.ENV,
+                    'DASH_ROOT_DOMAIN'
+                  )}/dashboard`}
+                  text="Go to Dashboard"
+                />
                 <Button
                   label="Go to your hubs dashboard"
                   classProp="mr-10"

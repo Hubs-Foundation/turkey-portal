@@ -3,12 +3,14 @@ import Custom from '@Shared/Custom/Custom';
 import { CustomSectionsT } from 'types';
 // Services
 import { getSectionsData } from 'services/contentful.service';
+import { getEnvVariable } from 'config';
 
 type HomePropsT = {
   sectionsData: CustomSectionsT;
+  dashdomaintest: string;
 };
 
-const Home = ({ sectionsData }: HomePropsT) => {
+const Home = ({ sectionsData, dashdomaintest }: HomePropsT) => {
   return (
     <div className="page_wrapper">
       <Head>
@@ -16,6 +18,7 @@ const Home = ({ sectionsData }: HomePropsT) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        <h1>ENV:{dashdomaintest}</h1>
         {sectionsData.items ? (
           <div>
             {sectionsData.items.map((section, i) => {
@@ -37,11 +40,12 @@ export async function getStaticProps() {
     'homePage',
     'iUw7LHBaBcgGaKydU2qKJ'
   );
-  console.log('sectionsData', sectionsData);
+  console.log('process.env.ENV', process.env.ENV);
 
   return {
     props: {
       sectionsData,
+      dashdomaintest: getEnvVariable(process.env.ENV, 'DASH_ROOT_DOMAIN'),
     },
   };
 }

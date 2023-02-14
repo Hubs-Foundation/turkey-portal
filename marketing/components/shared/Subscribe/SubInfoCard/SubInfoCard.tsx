@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { Button, Icon, IconT, Checkbox } from '@mozilla/lilypad-ui';
 import SubscriptionInfoCopy from './SubscriptionInfoCopy';
 import styles from './SubInfoCard.module.scss';
-import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
+// import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
 import { RegionsT } from 'types';
 import { getCurrencyMeta } from 'util/utilities';
-import { getRegion } from 'services/region.service';
+// import { getRegion } from 'services/region.service';
 
 export enum CountriesE {
   GERMANY = 'DE',
@@ -56,18 +56,18 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
   const [region, setRegion] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchRegion = async () => {
-      try {
-        const data = await getRegion();
-        setRegion(data.region);
-      } catch (e) {
-        console.error(e);
-        setRegion(null);
-      }
-    };
-    fetchRegion();
-  }, []);
+  // useEffect(() => {
+  //   const fetchRegion = async () => {
+  //     try {
+  //       const data = await getRegion();
+  //       setRegion(data.region);
+  //     } catch (e) {
+  //       console.error(e);
+  //       setRegion(null);
+  //     }
+  //   };
+  //   fetchRegion();
+  // }, []);
 
   /**
    * Check If Euro Region or not
@@ -81,10 +81,10 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
    * Handle routing user to correct payment plan
    */
   const handleSubscribeClick = useCallback(() => {
-    // Default to US plan
-    const plan: string = isEuro() ? PLAN_ID_EA_DE : PLAN_ID_EA;
-    const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${plan}`;
-    window.open(url);
+    // // Default to US plan
+    // const plan: string = isEuro() ? PLAN_ID_EA_DE : PLAN_ID_EA;
+    // const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${plan}`;
+    // window.open(url);
   }, [isEuro]);
 
   const onToggleConfirmation = useCallback((value: boolean) => {
