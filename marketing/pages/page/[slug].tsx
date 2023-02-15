@@ -1,6 +1,9 @@
 import { CustomSectionsT } from 'types';
 import Custom from '@Shared/Custom/Custom';
-import { getCustomPageData } from 'services/contentful.service';
+import {
+  getCustomPageData,
+  getStaticPathEntries,
+} from 'services/contentful.service';
 
 type CustomPagePropsT = {
   sectionsData: CustomSectionsT;
@@ -48,11 +51,15 @@ export async function getStaticProps({ params }: GetStaticPropsT) {
 }
 
 export async function getStaticPaths() {
-  // TODO need to call contentful and grab all the page slugs
-  // that are possible for a custom page....
+  // Get Entries
+  const entries = await getStaticPathEntries('customPage');
+  // Create Paths Object
+  const paths = entries.items.map((item) => {
+    return { params: { slug: item.fields.slug } };
+  });
 
   return {
-    paths: [{ params: { slug: 'nicks-page' } }],
-    fallback: 'blocking', //indicates the type of fallback
+    paths: paths,
+    fallback: 'blocking',
   };
 }

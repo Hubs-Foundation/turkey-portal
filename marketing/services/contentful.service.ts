@@ -1,6 +1,6 @@
 import { createClient } from 'contentful';
-import { LinkT, HeroT, CustomSectionsT } from 'types';
-import { Entry } from 'contentful';
+import { LinkT, HeroT, CustomSectionsT, PathCollectionT } from 'types';
+import { Entry, EntryCollection } from 'contentful';
 import {
   createNavigationQuery,
   createSectionsQuery,
@@ -18,11 +18,16 @@ const PROTOCOL = {
   },
 };
 
-// Init Contentful Client
-// const client = createClient({
-//   space: process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID as string,
-//   accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN as string,
-// });
+/**
+ * Initi Contentful Client
+ * Note: The client is a nice abstraction to use for getting specific entries. To reduce
+ * the number of API calls to Contenful opt into using GraphQl queries by default,
+ * however if you only need a specific entery, the Contentful client is the way to go.
+ */
+const client = createClient({
+  space: SPACE,
+  accessToken: ACCESS_TOKEN ?? '',
+});
 
 /**
  * Handle Bad Request
@@ -46,6 +51,17 @@ const handleBadRequest = (statusText: string): boolean => {
 //   const data = await client.getEntry<HeroT>(id);
 //   return data;
 // };
+
+/**
+ * Get static path for dynamically generated URLS
+ * @param type
+ * @returns
+ */
+export const getStaticPathEntries = async (type: string) => {
+  return client.getEntries<PathCollectionT>({
+    content_type: type,
+  });
+};
 
 /**
  * Get Navigation Content

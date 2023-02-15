@@ -49,3 +49,7 @@ export type TitleDescriptionT = {
   description: string;
   __typename: string;
 };
+
+type PathCollectionT = {
+  slug: string;
+};
