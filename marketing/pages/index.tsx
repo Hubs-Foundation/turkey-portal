@@ -3,7 +3,6 @@ import Custom from '@Shared/Custom/Custom';
 import { CustomSectionsT } from 'types';
 // Services
 import { getSectionsData } from 'services/contentful.service';
-import { getEnvVariable } from 'config';
 
 type HomePropsT = {
   sectionsData: CustomSectionsT;
@@ -34,15 +33,22 @@ const Home = ({ sectionsData }: HomePropsT) => {
 export default Home;
 
 export async function getStaticProps() {
-  const sectionsData = await getSectionsData(
-    'homePage',
-    'iUw7LHBaBcgGaKydU2qKJ'
-  );
-  // console.log('process.env.ENV', process.env.ENV);
+  try {
+    const sectionsData = await getSectionsData(
+      'homePage',
+      'iUw7LHBaBcgGaKydU2qKJ'
+    );
 
-  return {
-    props: {
-      sectionsData,
-    },
-  };
+    return {
+      props: {
+        sectionsData,
+      },
+    };
+  } catch {
+    return {
+      props: {
+        sectionsData: {},
+      },
+    };
+  }
 }

@@ -34,10 +34,8 @@ Open http://localhost:3030 and you'll see the marketing page!
 
 Note: Files env.development and .env.production are where env varibles go for this project NOT Skooner.
 
-- HUB_ROOT_DOMAIN - Root url for cluster ( todo more info here )
 - DASH_ROOT_DOMAIN - Root url for dashboard "dashboard.dev.myhubs.net"
 - AUTH_SERVER - Server used for login links. e.g. "auth.myhubs.net"
-- FXA_SERVER - Firefox Accounts server used for account management links. e.g. "accounts.firefox.com"
 - FXA_PAYMENT_URL - subscription payment url
 - PRODUCT_ID - subscription payment ID
 - PLAN_ID_EA - subscription payment Early Access ID

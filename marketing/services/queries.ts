@@ -4,8 +4,7 @@
  * @returns
  */
 export const createNavigationQuery = (id: string) => {
-  return {
-    query: `{
+  return `{
     navigation(id: "${id}") {
       linksCollection {
         items {
@@ -18,8 +17,7 @@ export const createNavigationQuery = (id: string) => {
       }
     }
   }
-`,
-  };
+`;
 };
 
 /**
@@ -28,8 +26,7 @@ export const createNavigationQuery = (id: string) => {
  * @returns query
  */
 export const createCustomPageQuery = (slug: string) => {
-  return {
-    query: `{
+  return `{
       customPageCollection(limit:1,where:{slug:"${slug}"}){
         items {
           ... on CustomPage {
@@ -39,8 +36,7 @@ export const createCustomPageQuery = (slug: string) => {
         }  
       }
     }
-  `,
-  };
+  `;
 };
 
 /**
@@ -50,11 +46,7 @@ export const createCustomPageQuery = (slug: string) => {
  * @returns query
  */
 export const createSectionsQuery = (name: string, id: string) => {
-  return {
-    query: `{${name}(id: "${id}") {
-      ${sectionsCollection}
-    }}`,
-  };
+  return `query {${name}(id: "${id}") { ${sectionsCollection} }}`;
 };
 
 /**

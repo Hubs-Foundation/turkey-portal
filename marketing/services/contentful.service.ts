@@ -1,6 +1,7 @@
+import axios, { AxiosResponse } from 'axios';
 import { createClient } from 'contentful';
 import { LinkT, HeroT, CustomSectionsT, PathCollectionT } from 'types';
-import { Entry, EntryCollection } from 'contentful';
+import { Entry } from 'contentful';
 import {
   createNavigationQuery,
   createSectionsQuery,
@@ -10,8 +11,7 @@ const ACCESS_TOKEN = process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN;
 const SPACE = 'p5qj0ed8ji31';
 const BASE_URL = 'https://graphql.contentful.com/content/v1/spaces/';
 const URL = `${BASE_URL}${SPACE}`;
-const PROTOCOL = {
-  method: 'POST',
+const PROTOCOLS = {
   headers: {
     'content-type': 'application/json',
     authorization: `Bearer ${ACCESS_TOKEN}`,
@@ -21,8 +21,9 @@ const PROTOCOL = {
 /**
  * Initi Contentful Client
  * Note: The client is a nice abstraction to use for getting specific entries. To reduce
- * the number of API calls to Contenful opt into using GraphQl queries by default,
- * however if you only need a specific entery, the Contentful client is the way to go.
+ * the number of API calls to Contenful opt into using GraphQl queries and combined calls
+ * by default, however, if you only need a specific entery, the Contentful client is a
+ * nice way to go.
  */
 const client = createClient({
   space: SPACE,
@@ -47,10 +48,10 @@ const handleBadRequest = (statusText: string): boolean => {
  * @param id
  * @returns
  */
-// export const getHeroEntry = async (id: string): Promise<Entry<HeroT>> => {
-//   const data = await client.getEntry<HeroT>(id);
-//   return data;
-// };
+export const getHeroEntry = async (id: string): Promise<Entry<HeroT>> => {
+  const data = await client.getEntry<HeroT>(id);
+  return data;
+};
 
 /**
  * Get static path for dynamically generated URLS
@@ -69,24 +70,18 @@ export const getStaticPathEntries = async (type: string) => {
  * @returns LinkT[]
  */
 export const getNavigationLinksEntry = async (id: string): Promise<LinkT[]> => {
-  try {
-    const response = await fetch(URL, {
-      ...PROTOCOL,
-      body: JSON.stringify(createNavigationQuery(id)),
+  const response = await axios
+    .post(URL, { query: createNavigationQuery(id) }, { ...PROTOCOLS })
+    .then((response: AxiosResponse) => {
+      return response.data;
     });
 
-    // Query is wrong
-    if (handleBadRequest(response.statusText)) {
-      throw response.statusText;
-    }
-
-    const { data } = await response.json();
-    return data.navigation.linksCollection.items;
-  } catch (error) {
-    console.error(`There was a problem fetching content. ${error}`);
-    const links: LinkT[] = [];
-    return links;
+  // Query is wrong
+  if (handleBadRequest(response.statusText)) {
+    throw response.statusText;
   }
+
+  return response.data.navigation.linksCollection.items;
 };
 
 /**
@@ -99,24 +94,17 @@ export const getSectionsData = async (
   name: string,
   id: string
 ): Promise<CustomSectionsT> => {
-  try {
-    const response = await fetch(URL, {
-      ...PROTOCOL,
-      body: JSON.stringify(createSectionsQuery(name, id)),
+  const response = await axios
+    .post(URL, { query: createSectionsQuery(name, id) }, { ...PROTOCOLS })
+    .then((response: AxiosResponse) => {
+      return response.data;
     });
 
-    // Query is wrong
-    if (handleBadRequest(response.statusText)) {
-      throw response.statusText;
-    }
-
-    const { data } = await response.json();
-    return data[name].sectionsCollection;
-  } catch (error) {
-    console.error(`There was a problem fetching content. ${error}`);
-    const sectionsCollection: CustomSectionsT = { items: [] };
-    return sectionsCollection;
+  // Query is wrong
+  if (handleBadRequest(response.statusText)) {
+    throw response.statusText;
   }
+  return response.data[name].sectionsCollection;
 };
 
 /**
@@ -127,22 +115,16 @@ export const getSectionsData = async (
 export const getCustomPageData = async (
   slug: string
 ): Promise<CustomSectionsT> => {
-  try {
-    const response = await fetch(URL, {
-      ...PROTOCOL,
-      body: JSON.stringify(createCustomPageQuery(slug)),
+  const response = await axios
+    .post(URL, { query: createCustomPageQuery(slug) }, { ...PROTOCOLS })
+    .then((response: AxiosResponse) => {
+      return response.data;
     });
 
-    // Query is wrong
-    if (handleBadRequest(response.statusText)) {
-      throw response.statusText;
-    }
-
-    const { data } = await response.json();
-    return data.customPageCollection.items[0].sectionsCollection;
-  } catch (error) {
-    console.error(`There was a problem fetching content. ${error}`);
-    const sectionsCollection: CustomSectionsT = { items: [] };
-    return sectionsCollection;
+  // Query is wrong
+  if (handleBadRequest(response.statusText)) {
+    throw response.statusText;
   }
+
+  return response.data.customPageCollection.items[0].sectionsCollection;
 };

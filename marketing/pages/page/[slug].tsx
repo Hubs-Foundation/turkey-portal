@@ -19,9 +19,7 @@ const Home = ({ sectionsData }: CustomPagePropsT) => {
   return (
     <div className="page_wrapper">
       <main>
-        <h1>im the custom page: </h1>
-
-        {sectionsData.items.length ? (
+        {sectionsData.items ? (
           <div>
             {sectionsData.items.map((section, i) => {
               return <Custom key={i} data={section} />;
@@ -29,8 +27,7 @@ const Home = ({ sectionsData }: CustomPagePropsT) => {
           </div>
         ) : (
           <div>
-            You either have no sections or there was an issue loading contentful
-            data.
+            You either have no sections or there was an issue loading content
           </div>
         )}
       </main>
@@ -41,13 +38,21 @@ const Home = ({ sectionsData }: CustomPagePropsT) => {
 export default Home;
 
 export async function getStaticProps({ params }: GetStaticPropsT) {
-  const sectionsData = await getCustomPageData(params.slug);
+  try {
+    const sectionsData = await getCustomPageData(params.slug);
 
-  return {
-    props: {
-      sectionsData,
-    },
-  };
+    return {
+      props: {
+        sectionsData,
+      },
+    };
+  } catch {
+    return {
+      props: {
+        sectionsData: [],
+      },
+    };
+  }
 }
 
 export async function getStaticPaths() {

@@ -1,14 +1,10 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import styles from './MainNav.module.scss';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import { useRouter } from 'next/router';
-import { getEnvVariable, DASH_ROOT_DOMAIN } from 'config';
-
-// import { DASH_ROOT_DOMAIN } from 'config';
-// import { getNavigationLinksEntry } from '../../../services/contentful.service';
-// import { LinkT } from 'types';
+import getEnvVariable from 'config';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -18,26 +14,6 @@ type MainNavPropsT = {
 const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
   const isDesktopDown = useDesktopDown();
   const router = useRouter();
-
-  /**
-   * TODO: there is commented out code in this file to prepare for the CMS - main
-   * nav comoponent is in a wrapper compnent that gets it's data via client side.
-   * we need to update to nextjs13 and have serverside components and also
-   * the new layout architecture to do this appropriatly. Leaving code in here
-   * since it will be mostly the same when we update to nextjs 13 shortly.
-   */
-  // const [navLinks, setNavLinks] = useState<LinkT[]>([]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const navigationId = '4FsGf6XPSDTPppGDlyFYm9';
-  //     const links = await getNavigationLinksEntry(navigationId);
-  //     // links && setNavLinks(links);
-  //     console.log('links', links);
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   /**
    * Handle Menu Click
@@ -67,18 +43,6 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
             {/* Links  */}
             {!isDesktopDown && (
               <div className={styles.main_nav_links}>
-                {/* {Boolean(navLinks) &&
-                  navLinks.map((link, i) => (
-                    <a
-                      key={i}
-                      href={link.href}
-                      aria-label={link.label}
-                      className={styles.main_nav_link}
-                    >
-                      {link.text}
-                    </a>
-                  ))} */}
-
                 <a href="/labs" className={styles.main_nav_link}>
                   Creator Labs
                 </a>
@@ -114,16 +78,8 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
                   classProp="mr-10"
                   category={ButtonCategoriesE.PRIMARY_OUTLINE}
                   href={`https://${getEnvVariable(
-                    process.env.ENV,
                     'DASH_ROOT_DOMAIN'
                   )}/dashboard`}
-                  text="Go to Dashboard"
-                />
-                <Button
-                  label="Go to your hubs dashboard"
-                  classProp="mr-10"
-                  category={ButtonCategoriesE.PRIMARY_OUTLINE}
-                  href={`https://${DASH_ROOT_DOMAIN}/dashboard`}
                   text="Go to Dashboard"
                 />
                 <Button
