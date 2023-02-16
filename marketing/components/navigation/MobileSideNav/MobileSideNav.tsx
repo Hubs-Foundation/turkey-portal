@@ -77,10 +77,7 @@ const MobileSideNav = ({
             </li>
             <li>
               {/* TODO get demo url?  */}
-              <a
-                className={styles.nav_link}
-                href="/A9hGgiY/exemplary-sparkling-meetupink"
-              >
+              <a className={styles.nav_link} href="/Pvg5MMt/hubs-demo">
                 Explore Hubs
               </a>
             </li>

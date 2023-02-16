@@ -27,7 +27,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
             title="Explore Hubs"
             classProp={styles.card_one}
             cta="Try Mozilla's Hub"
-            ctaUrl="/A9hGgiY/exemplary-sparkling-meetup"
+            ctaUrl="/Pvg5MMt/hubs-demo"
           >
             <p>See the world in 3D and share it with your friends.</p>
             <p>Try out a variety of avatars.</p>

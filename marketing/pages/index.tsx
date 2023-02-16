@@ -113,7 +113,7 @@ const Home = ({ region }: HomePropsT) => {
           cta="See Pricing"
           ctaLink="/#subscribe"
           cta2="Explore Hubs"
-          cta2Link="/A9hGgiY/exemplary-sparkling-meetup"
+          cta2Link="/Pvg5MMt/hubs-demo"
           heroAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
         />
 
