@@ -51,8 +51,11 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
                   Hubs Cloud
                 </a>
 
-                <a href="/demo" className={styles.main_nav_link}>
-                  Try our demo
+                <a
+                  href="/A9hGgiY/exemplary-sparkling-meetupink"
+                  className={styles.main_nav_link}
+                >
+                  Explore Hubs
                 </a>
               </div>
             )}
@@ -81,10 +84,10 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
                   text="Go to Dashboard"
                 />
                 <Button
-                  label="Get started and subscribe to Hubs"
+                  label="See Pricing and subscribe to Hubs"
                   category={ButtonCategoriesE.PRIMARY_SOLID}
                   onClick={handleGetStartedClick}
-                  text="Get Started"
+                  text="See Pricing"
                 />
               </div>
             )}
