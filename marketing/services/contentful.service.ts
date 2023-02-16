@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { createClient } from 'contentful';
 import { LinkT, HeroT, CustomSectionsT, PathCollectionT } from 'types';
-import { Entry } from 'contentful';
+import { Entry, EntryCollection } from 'contentful';
 import {
   createNavigationQuery,
   createSectionsQuery,
@@ -48,21 +48,20 @@ const handleBadRequest = (statusText: string): boolean => {
  * @param id
  * @returns
  */
-export const getHeroEntry = async (id: string): Promise<Entry<HeroT>> => {
-  const data = await client.getEntry<HeroT>(id);
-  return data;
-};
+export const getHeroEntry = async (id: string): Promise<Entry<HeroT>> =>
+  await client.getEntry<HeroT>(id);
 
 /**
  * Get static path for dynamically generated URLS
  * @param type
- * @returns
+ * @returns PathCollectionT[]
  */
-export const getStaticPathEntries = async (type: string) => {
-  return client.getEntries<PathCollectionT>({
+export const getStaticPathEntries = async (
+  type: string
+): Promise<EntryCollection<PathCollectionT>> =>
+  client.getEntries<PathCollectionT>({
     content_type: type,
   });
-};
 
 /**
  * Get Navigation Content
@@ -70,18 +69,16 @@ export const getStaticPathEntries = async (type: string) => {
  * @returns LinkT[]
  */
 export const getNavigationLinksEntry = async (id: string): Promise<LinkT[]> => {
-  const response = await axios
+  const { data, statusText } = await axios
     .post(URL, { query: createNavigationQuery(id) }, { ...PROTOCOLS })
-    .then((response: AxiosResponse) => {
-      return response.data;
-    });
+    .then(({ data }: AxiosResponse) => data);
 
   // Query is wrong
-  if (handleBadRequest(response.statusText)) {
-    throw response.statusText;
+  if (handleBadRequest(statusText)) {
+    throw statusText;
   }
 
-  return response.data.navigation.linksCollection.items;
+  return data.navigation.linksCollection.items;
 };
 
 /**
@@ -94,17 +91,15 @@ export const getSectionsData = async (
   name: string,
   id: string
 ): Promise<CustomSectionsT> => {
-  const response = await axios
+  const { data, statusText } = await axios
     .post(URL, { query: createSectionsQuery(name, id) }, { ...PROTOCOLS })
-    .then((response: AxiosResponse) => {
-      return response.data;
-    });
+    .then(({ data }: AxiosResponse) => data);
 
   // Query is wrong
-  if (handleBadRequest(response.statusText)) {
-    throw response.statusText;
+  if (handleBadRequest(statusText)) {
+    throw statusText;
   }
-  return response.data[name].sectionsCollection;
+  return data[name].sectionsCollection;
 };
 
 /**
@@ -115,16 +110,14 @@ export const getSectionsData = async (
 export const getCustomPageData = async (
   slug: string
 ): Promise<CustomSectionsT> => {
-  const response = await axios
+  const { data, statusText } = await axios
     .post(URL, { query: createCustomPageQuery(slug) }, { ...PROTOCOLS })
-    .then((response: AxiosResponse) => {
-      return response.data;
-    });
+    .then(({ data }: AxiosResponse) => data);
 
   // Query is wrong
-  if (handleBadRequest(response.statusText)) {
-    throw response.statusText;
+  if (handleBadRequest(statusText)) {
+    throw statusText;
   }
 
-  return response.data.customPageCollection.items[0].sectionsCollection;
+  return data.customPageCollection.items[0].sectionsCollection;
 };

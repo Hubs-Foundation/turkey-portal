@@ -1,7 +1,11 @@
 import { StaticImageData } from 'next/image';
 import { Document } from '@contentful/rich-text-types';
 
+/**
+ * CONTENFUL MEDIA TYPES
+ */
 export type CustomSectionsT = {
+  //Expoand the item type as we add more custom sections
   items: TitleDescriptionT[] | FiftyfiftyT[] | HeroT[];
 };
 
@@ -37,19 +41,22 @@ export type LinkT = {
   text: string;
 };
 
-export type ImageT = {
-  url: string;
-  description: string;
-};
-
-export type RegionsT = 'DE' | 'US';
-
 export type TitleDescriptionT = {
   title: string;
   description: string;
   __typename: string;
 };
 
-type PathCollectionT = {
+export type PathCollectionT = {
   slug: string;
 };
+
+export type ImageT = {
+  url: string;
+  description: string;
+};
+
+/**
+ * UTILITY TYPES
+ */
+export type RegionsT = 'DE' | 'US';

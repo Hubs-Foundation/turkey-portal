@@ -1,6 +1,6 @@
 import { RegionsT } from 'types';
 
-export const RegionCurrency = {
+const RegionCurrency = {
   DE: {
     abbrev: 'EUR',
     symbol: '€',
