@@ -9,13 +9,46 @@ on:
   
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  registryName: mozillareality
 
 jobs:
-  turkeyGitops:
-    uses: mozilla/hubs-ops/.github/workflows/turkeyGitops.yml@master
-    with:
-      registry: mozillareality
-      codePath: marketing
-      dockerfile: Dockerfile
-    secrets:
-      DOCKER_HUB_PWD: ${{ secrets.DOCKER_HUB_PWD }}
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: docker build + push          
+        run: |
+          cd ./marketing
+          tag=$registryName/turkeymarketing:${{ github.run_number }}
+          echo "[info] tag: $tag"
+          sudo docker build . -t $tag --build-arg CONTENTFUL_TOKEN=${{ secrets.CONTENTFUL_TOKEN_DEV }}
+          echo ${{ secrets.DOCKER_HUB_PWD }} | sudo docker login --username $registryName --password-stdin             
+          sudo docker push $tag
+  tag_dev:
+    if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+      - name: docker build + push          
+        run: |
+          cd ./marketing
+          fromTag=$registryName/turkeymarketing:${{ github.run_number }}
+          toTag=$registryName/turkeymarketing:dev-${{ github.run_number }}
+          echo ${{ secrets.DOCKER_HUB_PWD }} | sudo docker login --username $registryName --password-stdin             
+          sudo docker pull $fromTag && sudo docker tag $fromTag $toTag && sudo docker push $toTag                  
+          sudo docker push $tag
+  tag_stable:
+    if: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/hotfix/') }}
+    runs-on: ubuntu-latest
+    needs: tag_dev
+    environment: prod
+    steps:
+      - uses: actions/checkout@v2
+      - name: docker build + push          
+        run: |
+          cd ./marketing
+          fromTag=$registryName/turkeymarketing:${{ github.run_number }}
+          toTag=$registryName/turkeymarketing:stable-${{ github.run_number }}
+          echo ${{ secrets.DOCKER_HUB_PWD }} | sudo docker login --username $registryName --password-stdin             
+          sudo docker pull $fromTag && sudo docker tag $fromTag $toTag && sudo docker push $toTag   
