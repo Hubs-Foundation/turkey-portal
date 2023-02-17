@@ -24,19 +24,14 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
         <div className={styles.cards}>
           {/* TRY IT OUT  */}
           <SubCard
-            title="Try it out"
+            title="Explore Hubs"
             classProp={styles.card_one}
             cta="Try Mozilla's Hub"
-            ctaUrl="/demo"
+            ctaUrl="/Pvg5MMt/hubs-demo"
           >
-            <p>
-              Create a personal, private room, hosted on Mozilla&apos;s Hub.
-            </p>
-            <p>Customize personal avatar</p>
-            <p>
-              Enjoy features like spatial audio and sharing media with your
-              guests
-            </p>
+            <p>See the world in 3D and share it with your friends.</p>
+            <p>Try out a variety of avatars.</p>
+            <p>Tour incredible community Hubs.</p>
           </SubCard>
 
           {/* SUBSCRIBE  */}

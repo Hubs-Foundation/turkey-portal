@@ -24,7 +24,7 @@ const MobileSideNav = ({
   }, [MobileMenuClick]);
 
   /**
-   * Handle Get Started Click
+   * Handle See Pricing Click
    */
   const handleGetStartedClick = useCallback(() => {
     // TODO bubble up scroll to...
@@ -77,8 +77,8 @@ const MobileSideNav = ({
             </li>
             <li>
               {/* TODO get demo url?  */}
-              <a className={styles.nav_link} href="/demo">
-                Try our demo
+              <a className={styles.nav_link} href="/Pvg5MMt/hubs-demo">
+                Explore Hubs
               </a>
             </li>
           </ul>
@@ -87,9 +87,9 @@ const MobileSideNav = ({
           <div className="p-24">
             <div className="mb-10 flex">
               <Button
-                label="Get started and subscribe to Hubs"
+                label="See Pricing and subscribe to Hubs"
                 classProp="flex-grow-1 "
-                text="Get Started"
+                text="See Pricing"
                 onClick={handleGetStartedClick}
               />
             </div>

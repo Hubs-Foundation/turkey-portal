@@ -11,6 +11,9 @@ type HeroPropsT = {
   cta?: string;
   ctaClick?: Function;
   ctaLink?: string;
+  cta2?: string;
+  cta2Click?: Function;
+  cta2Link?: string;
   heroAlt?: string;
   classProp?: string;
 };
@@ -22,6 +25,9 @@ const Hero = ({
   cta,
   ctaClick,
   ctaLink = '#',
+  cta2,
+  cta2Click,
+  cta2Link = '#',
   heroAlt = 'hero image',
   classProp = '',
 }: HeroPropsT) => {
@@ -31,6 +37,11 @@ const Hero = ({
     ctaClick && ctaClick();
     ctaLink && router.push(ctaLink);
   }, [ctaClick, ctaLink, router]);
+
+  const onCta2Click = useCallback(() => {
+    cta2Click && cta2Click();
+    cta2Link && router.push(cta2Link);
+  }, [cta2Click, cta2Link, router]);
 
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
@@ -54,6 +65,17 @@ const Hero = ({
                 text={cta}
                 onClick={onCtaClick}
                 category={ButtonCategoriesE.PRIMARY_SOLID}
+              />
+            )}
+
+            {cta2 && (
+              <Button
+                href={cta2Link}
+                label={cta2}
+                text={cta2}
+                onClick={onCta2Click}
+                classProp="ml-10"
+                category={ButtonCategoriesE.PRIMARY_OUTLINE}
               />
             )}
           </div>

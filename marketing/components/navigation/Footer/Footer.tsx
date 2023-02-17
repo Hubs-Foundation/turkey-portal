@@ -35,7 +35,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
             <h4>Looking for your old rooms?</h4>
             {/* TODO - GET THIS LINK!!  */}
             <a className={styles.legacy_link} href="/demo">
-              visit legacy/former hubs.mozilla.com site
+              visit the legacy hubs.mozilla.com site
             </a>
           </div>
         </div>
