@@ -51,7 +51,11 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
                   Hubs Cloud
                 </a>
 
-                <a href="/Pvg5MMt/hubs-demo" className={styles.main_nav_link}>
+                <a
+                  href="/Pvg5MMt/hubs-demo"
+                  target="_blank"
+                  className={styles.main_nav_link}
+                >
                   Explore Hubs
                 </a>
               </div>

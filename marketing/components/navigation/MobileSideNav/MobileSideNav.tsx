@@ -77,7 +77,11 @@ const MobileSideNav = ({
             </li>
             <li>
               {/* TODO get demo url?  */}
-              <a className={styles.nav_link} href="/Pvg5MMt/hubs-demo">
+              <a
+                className={styles.nav_link}
+                href="/Pvg5MMt/hubs-demo"
+                target="_blank"
+              >
                 Explore Hubs
               </a>
             </li>

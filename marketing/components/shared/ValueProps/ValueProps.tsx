@@ -1,33 +1,35 @@
-import { useMemo } from 'react';
+import { ReactNode } from 'react';
 import styles from './ValueProps.module.scss';
 import { Icon, IconT } from '@mozilla/lilypad-ui';
 
 type ValuePropsPropsT = {
-  values: TilePropsT[];
   classProp?: string;
 };
 
 export type TilePropsT = {
-  icon: IconT;
-  title: string;
-  description: string;
-  hasBorder?: boolean;
+  icon?: IconT;
+  title?: string;
+  description?: string;
+  children?: ReactNode;
 };
 
 /**
  * Value Tile
  */
-const Tile = ({ icon, title, description }: TilePropsT) => {
+const Tile = ({ icon, title, description, children }: TilePropsT) => {
   return (
     <section className={styles.tile_wrapper}>
       <div className={styles.tile_container}>
-        <div className={styles.tile_icon}>
-          <Icon name={icon} size={64} />
-        </div>
+        {icon && (
+          <div className={styles.tile_icon}>
+            <Icon name={icon} size={64} />
+          </div>
+        )}
 
         <div className={styles.tile_content}>
           <h3>{title}</h3>
           <p>{description}</p>
+          {children && <div className="body-md">{children}</div>}
         </div>
         <div className={styles.border} />
       </div>
@@ -35,21 +37,37 @@ const Tile = ({ icon, title, description }: TilePropsT) => {
   );
 };
 
-const ValueProps = ({ values, classProp = '' }: ValuePropsPropsT) => {
+const ValueProps = ({ classProp = '' }: ValuePropsPropsT) => {
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.container}>
         <div className={styles.tiles}>
-          {values.map(({ icon, title, description }, i) => {
-            return (
-              <Tile
-                key={i}
-                icon={icon}
-                title={title}
-                description={description}
-              />
-            );
-          })}
+          <Tile
+            icon="shield"
+            title="Private by design"
+            description="You control access to your Hubs, so worlds are only discoverable to people you share the link with."
+          />
+
+          <Tile
+            icon="cross-device"
+            title="Works across devices"
+            description="Guests can join from any device with a modern browser — no downloads required."
+          />
+
+          <Tile icon="code" title="Open Source">
+            <p>
+              Hubs is built in the open — you can check out the source code{' '}
+              <a
+                target="_blank"
+                rel="noreferrer"
+                href="https://github.com/mozilla/hubs"
+                className="primary-link"
+              >
+                here
+              </a>
+              .
+            </p>
+          </Tile>
         </div>
       </div>
     </section>

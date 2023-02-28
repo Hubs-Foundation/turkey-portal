@@ -70,34 +70,6 @@ const Home = ({ region }: HomePropsT) => {
     return data;
   }, []);
 
-  /**
-   * Value Props Data
-   * TODO - this will eventually come from a CMS
-   */
-  const values = useMemo(() => {
-    const data: ValuePropsT[] = [
-      {
-        icon: 'shield',
-        title: 'Private by design',
-        description:
-          'You control access to your Hubs, so worlds are only discoverable to people you share the link with. ',
-      },
-      {
-        icon: 'cross-device',
-        title: 'Works across devices',
-        description:
-          'Guests can join from any device with a modern browser — no downloads required.',
-      },
-      {
-        icon: 'code',
-        title: 'Open Source  ',
-        description:
-          'Hubs is built in the open — you can check out the source code here.',
-      },
-    ];
-    return data;
-  }, []);
-
   return (
     <div className="page_wrapper">
       <Head>
@@ -119,7 +91,7 @@ const Home = ({ region }: HomePropsT) => {
 
         <TitleDescription
           title="A better way to connect online"
-          description="No more videos in a grid of squares. Gather with your community online as avatars in a virtual space and communicate more naturally — no headset required."
+          description="No more videos in a grid of squares. Gather with your community online as avatars in a virtual space and communicate more naturally — no VR Headset required."
         />
 
         <FiftyFifty
@@ -181,13 +153,13 @@ const Home = ({ region }: HomePropsT) => {
           </p>
         </FiftyFifty>
 
-        <ValueProps values={values} />
+        <ValueProps />
 
         <div id="subscribe">
           <Subscribe />
         </div>
 
-        {/* <Testimonial /> */}
+        <Testimonial />
         <EmailSignUp />
       </main>
     </div>
