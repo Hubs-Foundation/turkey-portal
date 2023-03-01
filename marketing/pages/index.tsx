@@ -12,7 +12,7 @@ import ValueProps, {
 import Testimonial from '@Shared/Testimonial/Testimonial';
 import { useMobileDown } from 'hooks/useMediaQuery';
 import type { GetServerSidePropsContext } from 'next';
-import { getRegion } from 'services/region.service';
+import favicon from '../public/favicon.ico';
 // Hero Assets
 import HubsMobileHero from '../public/hubs_hero_mobile.jpg';
 import HubsHero from '../public/hubs_hero.jpg';
@@ -74,7 +74,7 @@ const Home = ({ region }: HomePropsT) => {
     <div className="page_wrapper">
       <Head>
         <title>Hubs - Private, virtual 3D worlds in your browser</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href={favicon.src} />
       </Head>
 
       <main>
