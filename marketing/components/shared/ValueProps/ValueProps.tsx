@@ -7,8 +7,8 @@ type ValuePropsPropsT = {
 };
 
 export type TilePropsT = {
-  icon?: IconT;
-  title?: string;
+  icon: IconT;
+  title: string;
   description?: string;
   children?: ReactNode;
 };
@@ -28,7 +28,7 @@ const Tile = ({ icon, title, description, children }: TilePropsT) => {
 
         <div className={styles.tile_content}>
           <h3>{title}</h3>
-          <p>{description}</p>
+          {description && <p>{description}</p>}
           {children && <div className="body-md">{children}</div>}
         </div>
         <div className={styles.border} />
