@@ -43,9 +43,9 @@ const Testimonial = ({ classProp = '' }: TestimonialPropsT) => {
               <div className={styles.avatar}>
                 <Image
                   src={noemieHailuAvatar}
-                  height={isDesktopDown ? 165 : 230}
-                  width={isDesktopDown ? 165 : 230}
-                  alt="Jacob Ervin Avatar"
+                  height={isDesktopDown ? 165 : 220}
+                  width={isDesktopDown ? 165 : 220}
+                  alt="Noemie Hailu Avatar"
                   layout="fixed"
                 />
               </div>
