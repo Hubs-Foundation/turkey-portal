@@ -24,3 +24,20 @@ export const getSubscription = async (headers?: AxiosRequestHeaders) => {
       return response.data as SubscriptionT;
     });
 };
+
+/**
+ * POST subscribe to Starter plan
+ */
+export const postStarterSubscription = async (
+  headers?: AxiosRequestHeaders
+) => {
+  const credentials = { withCredentials: true };
+  const contextHeaders = { headers: { ...(headers as AxiosRequestHeaders) } };
+  const config = headers ? contextHeaders : credentials;
+
+  return axios
+    .post(`${PUBLIC_API_SERVER}${API_PATH}/subscribe-starter-plan`, config)
+    .then((response: AxiosResponse) => {
+      return response.data;
+    });
+};

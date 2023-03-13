@@ -55,6 +55,10 @@ defmodule DashWeb.Router do
 
     resources "/account", Api.V1.AccountController, [:index]
     resources "/subscription", Api.V1.SubscriptionController, only: [:show], singleton: true
+
+    post "/subscription/subscribe-starter-plan",
+         Api.V1.SubscriptionController,
+         :subscribe_starter_plan
   end
 
   scope "/api/v1", DashWeb do
