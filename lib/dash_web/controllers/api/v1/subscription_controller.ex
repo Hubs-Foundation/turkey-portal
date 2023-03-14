@@ -17,8 +17,4 @@ defmodule DashWeb.Api.V1.SubscriptionController do
       isCancelled: fxa_cancel_at_period_end
     })
   end
-
-  def subscribe_starter_plan(conn, _) do
-    send_resp(conn, 200, "")
-  end
 end

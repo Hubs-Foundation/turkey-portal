@@ -2,8 +2,8 @@ import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
 import { subscriptionPageRequireAuthentication } from 'services/routeGuard.service';
 import styles from '../subscribe/subscribe.module.scss';
-import { postStarterSubscription } from 'services/subscription.service';
 import { Button } from '@mozilla/lilypad-ui';
+import { postStarterPlan } from 'services/plans.service';
 
 const ConfirmStarterPlan = () => {
   const onConfirmStartStarterPlan = async (
@@ -12,7 +12,7 @@ const ConfirmStarterPlan = () => {
     e.preventDefault();
 
     try {
-      await postStarterSubscription();
+      await postStarterPlan();
       // TODO redirect to dashboard after post finishes
     } catch (err) {
       // TODO make error toast
