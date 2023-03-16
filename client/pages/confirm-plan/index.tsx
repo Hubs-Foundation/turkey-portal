@@ -5,7 +5,7 @@ import styles from '../subscribe/subscribe.module.scss';
 import { Button } from '@mozilla/lilypad-ui';
 import { postStarterPlan } from 'services/plans.service';
 
-const ConfirmStarterPlan = () => {
+const ConfirmPlan = () => {
   const onConfirmStartStarterPlan = async (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
@@ -42,7 +42,7 @@ const ConfirmStarterPlan = () => {
   );
 };
 
-export default ConfirmStarterPlan;
+export default ConfirmPlan;
 
 export const getServerSideProps = subscriptionPageRequireAuthentication(
   async (context: GetServerSidePropsContext) => {

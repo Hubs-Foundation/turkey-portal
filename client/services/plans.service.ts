@@ -11,7 +11,7 @@ export const postStarterPlan = async (headers?: AxiosRequestHeaders) => {
   const config = headers ? contextHeaders : credentials;
 
   return axios
-    .post(`${PUBLIC_API_SERVER}${API_PATH}`, { plans: 'starter' }, config)
+    .post(`${PUBLIC_API_SERVER}${API_PATH}`, { plan: 'starter' }, config)
     .then((response: AxiosResponse) => {
       return response.data;
     });
