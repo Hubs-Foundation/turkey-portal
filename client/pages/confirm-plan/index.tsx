@@ -13,9 +13,9 @@ const ConfirmPlan = () => {
 
     try {
       await postStarterPlan();
-      // TODO redirect to dashboard after post finishes
+      // TODO free plan redirect to dashboard after post finishes
     } catch (err) {
-      // TODO make error toast
+      // TODO free plan make error toast
       console.error(
         'Failed to subscribe user to free plan. Please try again later.'
       );
