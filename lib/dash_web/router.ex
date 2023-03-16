@@ -54,6 +54,7 @@ defmodule DashWeb.Router do
     pipe_through [:basic_auth, :jwt_authenticated]
 
     resources "/account", Api.V1.AccountController, [:index]
+    resources "/plans", Api.V1.PlanController, only: [:create]
     resources "/subscription", Api.V1.SubscriptionController, only: [:show], singleton: true
   end
 
