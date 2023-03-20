@@ -160,7 +160,9 @@ const Home = ({ region }: HomePropsT) => {
         </div>
 
         <Testimonial />
-        <EmailSignUp />
+        <div id="email-signup">
+          <EmailSignUp />
+        </div>
       </main>
     </div>
   );
