@@ -13,7 +13,6 @@ const Home = ({ sectionsData }: HomePropsT) => {
     <div className="page_wrapper">
       <Head>
         <title>Hubs - Private, virtual 3D worlds in your browser</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
         {sectionsData.items ? (
@@ -38,6 +37,8 @@ export async function getStaticProps() {
       'homePage',
       'iUw7LHBaBcgGaKydU2qKJ'
     );
+
+    console.log('sectionsData', sectionsData);
 
     return {
       props: {

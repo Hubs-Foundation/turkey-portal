@@ -73,7 +73,10 @@ sectionsCollection {
     ... on Hero {
       __typename
       imageAlt
+      ctaTitle
       ctaHref
+      cta2Title
+      cta2Href
       title
       mobileImage {
         url

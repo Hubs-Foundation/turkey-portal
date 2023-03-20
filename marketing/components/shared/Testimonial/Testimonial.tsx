@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import styles from './Testimonial.module.scss';
 import { useDesktopDown } from 'hooks/useMediaQuery';
-import jacobErvinAvatar from '../../../public/jacob_ervinAvatar.png';
+import noemieHailuAvatar from '../../../public/noemie_hailu_avatar.png';
 import testimonialBackground from '../../../public/testimonial_background.jpg';
 import testimonialBackgroundMobile from '../../../public/testimonial_background_mobile.jpg';
 import messageCarrot from '../../../public/message_carrot.svg';
@@ -42,10 +42,10 @@ const Testimonial = ({ classProp = '' }: TestimonialPropsT) => {
             <div className={styles.avatar_wrapper}>
               <div className={styles.avatar}>
                 <Image
-                  src={jacobErvinAvatar}
-                  height={isDesktopDown ? 165 : 230}
-                  width={isDesktopDown ? 165 : 230}
-                  alt="Jacob Ervin Avatar"
+                  src={noemieHailuAvatar}
+                  height={isDesktopDown ? 165 : 220}
+                  width={isDesktopDown ? 165 : 220}
+                  alt="Noemie Hailu Avatar"
                   layout="fixed"
                 />
               </div>
@@ -69,12 +69,12 @@ const Testimonial = ({ classProp = '' }: TestimonialPropsT) => {
                   <Image src={quoteRight} alt="quote right" />
                 </div>
                 <p className={styles.message}>
-                  The virtual world ecosystem is much healthier and more
-                  accessible with Hubs powering so many creators and
-                  entrepreneurs.
+                  With Mozilla Hubs, we’ve been able to provide innovative
+                  solutions to users around the world and foster greater
+                  openness on the web
                 </p>
                 <p className={styles.message_name}>
-                  - Jacob Ervin - CEO/Co-Founder of Active Replica
+                  – Noémie Hailu, Program Manager - Africa Innovation Mradi
                 </p>
               </div>
             </div>

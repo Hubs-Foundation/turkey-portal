@@ -67,33 +67,18 @@ const Custom = ({ data }: CustomPropT) => {
     return data;
   }, []);
 
-  /**
-   * Value Props Data
-   * TODO - this will eventually come from a CMS
-   */
-  const values = useMemo(() => {
-    const data: ValuePropsT[] = [
-      {
-        icon: 'shield',
-        title: 'Private by design',
-        description:
-          'You control access to your Hubs, so worlds are only discoverable to people you share the link with. ',
-      },
-      {
-        icon: 'cross-device',
-        title: 'Works across devices',
-        description:
-          'Guests can join from any device with a modern browser — no downloads required.',
-      },
-      {
-        icon: 'code',
-        title: 'Open Source  ',
-        description:
-          'Hubs is built in the open — you can check out the source code here.',
-      },
-    ];
-    return data;
-  }, []);
+
+
+  // <Hero
+  //         background={isMobile ? HubsMobileHero : HubsHero}
+  //         title="A whole new world, from the comfort of your home"
+  //         body="Take control of your online communities with a fully open source virtual world platform that you can make your own."
+  //         cta="See Pricing"
+  //         ctaLink="/#subscribe"
+  //         cta2="Explore Hubs"
+  //         cta2Link="/Pvg5MMt/hubs-demo"
+  //         heroAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
+  //       />
 
   const render = (type: SectionsNamesE): JSX.Element => {
     switch (type) {
@@ -104,7 +89,12 @@ const Custom = ({ data }: CustomPropT) => {
       case SectionsNamesE.TITLE_DESCRIPTION:
         return <TitleDescription {...TitleDescriptionData} />;
       case SectionsNamesE.EMAIL_SIGNUP:
-        return <EmailSignUp />;
+        return (
+          <div id="email-signup">
+            <EmailSignUp />
+          </div>
+        
+        );
       case SectionsNamesE.SUBSCRIBE:
         return (
           <div id="subscribe">
@@ -120,7 +110,7 @@ const Custom = ({ data }: CustomPropT) => {
           />
         );
       case SectionsNamesE.VALUE_PROPS:
-        return <ValueProps values={values} />;
+        return <ValueProps/>;
       case SectionsNamesE.TESTIMONIAL:
         return <Testimonial />;
       default:

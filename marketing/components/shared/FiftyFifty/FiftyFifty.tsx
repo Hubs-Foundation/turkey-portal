@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import { FiftyfiftyT } from 'types';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
-import { Document } from '@contentful/rich-text-types';
 
 /**
   FiftyFifty component can be image left / content right or vice versa

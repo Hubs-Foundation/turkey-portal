@@ -32,6 +32,8 @@ export type HeroT = {
   body?: string;
   ctaTitle?: string;
   ctaHref?: string;
+  cta2Title?: string;
+  cta2Href?: string;
   __typename?: string;
 };
 

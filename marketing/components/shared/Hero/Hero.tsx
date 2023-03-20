@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
 import styles from './Hero.module.scss';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
@@ -16,16 +14,13 @@ const Hero = ({
   title,
   body,
   ctaTitle,
-  ctaHref = '#',
+  ctaHref,
+  cta2Title,
+  cta2Href,
   imageAlt = 'hero image',
   classProp = '',
 }: HeroPropsI) => {
-  const router = useRouter();
   const isMobile = useMobileDown();
-
-  const onCtaClick = useCallback(() => {
-    ctaHref && router.push(ctaHref);
-  }, [ctaHref, router]);
 
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
@@ -41,13 +36,25 @@ const Hero = ({
           <div className={styles.contents}>
             {title && <h3 className="heading-xxl mb-16">{title}</h3>}
             {body && <p className="body-md mb-24">{body}</p>}
+
+            {/* CALL TO ACTION LEFT  */}
             {ctaTitle && (
               <Button
                 href={ctaHref}
                 label={ctaTitle}
                 text={ctaTitle}
-                onClick={onCtaClick}
                 category={ButtonCategoriesE.PRIMARY_SOLID}
+              />
+            )}
+
+            {/* CALL TO ACTION RIGHT  */}
+            {cta2Title && (
+              <Button
+                href={cta2Href}
+                label={cta2Title}
+                text={cta2Title}
+                classProp="ml-10"
+                category={ButtonCategoriesE.PRIMARY_OUTLINE}
               />
             )}
           </div>
