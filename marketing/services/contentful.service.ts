@@ -19,7 +19,7 @@ const PROTOCOLS = {
 };
 
 /**
- * Initi Contentful Client
+ * Init Contentful Client
  * Note: The client is a nice abstraction to use for getting specific entries. To reduce
  * the number of API calls to Contenful opt into using GraphQl queries and combined calls
  * by default, however, if you only need a specific entery, the Contentful client is a
