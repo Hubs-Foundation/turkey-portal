@@ -37,9 +37,6 @@ export async function getStaticProps() {
       'homePage',
       'iUw7LHBaBcgGaKydU2qKJ'
     );
-
-    console.log('sectionsData', sectionsData);
-
     return {
       props: {
         sectionsData,
