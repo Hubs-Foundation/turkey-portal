@@ -24,6 +24,24 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
   );
 
   /**
+   * Submit Update Hub
+   * @param updatedHub
+   * @param callback
+   */
+  const submit = async (updatedHub: UpdateHubT, callback: Function) => {
+    try {
+      const resp = await updateHub(hub.hubId, updatedHub);
+      if (resp?.status === 200) {
+        callback();
+      } else {
+        handleError();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  /**
    * Updating Hub has failed - try again
    */
   const onTryReupdate = () => {
@@ -36,9 +54,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
       subdomain: storeContext.lastSubmittedSubdomain.subdomain,
     };
 
-    updateHub(hub.hubId, updatedHub).then(() => {
-      refreshHubData && refreshHubData();
-    });
+    submit(updatedHub, () => refreshHubData && refreshHubData());
   };
 
   /**
@@ -50,10 +66,11 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
       ...hub,
       lastError: '',
     };
+    submit(updatedHub, () => setShowRevertError(false));
+  };
 
-    updateHub(hub.hubId, updatedHub).then(() => {
-      setShowRevertError(false);
-    });
+  const handleError = () => {
+    console.error('Sorry, there was an error updating this Hub.');
   };
 
   /**
@@ -98,7 +115,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
           {/* Did Revert Error  */}
           {showRevertError && (
             <ErrorBox
-              classProp="margin-bottom-12"
+              classProp="mb-12"
               message={Message.updateSubdomainErrorMessage}
               onTryAgainClick={onTryReupdate}
               canTryAgain={canTryAgain()}
@@ -120,6 +137,14 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
           */}
           {lastError === LastErrorE.CREATING_ERROR && (
             <ErrorBox message={Message.createFailMessage} />
+          )}
+
+          {/* Default Error 
+            This error takes place if the communication with the server fails (http server error) 
+            and we need a "catch all" error status to show the user.
+          */}
+          {lastError === LastErrorE.ERROR && (
+            <ErrorBox message={Message.errorMessage} />
           )}
 
           {/* Loading Subdomain Updates  */}

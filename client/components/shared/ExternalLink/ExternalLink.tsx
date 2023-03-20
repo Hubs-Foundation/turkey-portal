@@ -1,7 +1,7 @@
 import { ReactNode, HTMLAttributeAnchorTarget } from 'react';
 import styles from './ExternalLink.module.scss';
 import { IconT } from 'types/General';
-import Icon from '@Shared/Icon/Icon';
+import { Icon } from '@mozilla/lilypad-ui';
 
 type ExternalLinkProps = {
   href: string;

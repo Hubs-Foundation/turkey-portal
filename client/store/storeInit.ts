@@ -6,7 +6,7 @@ import { getAccount } from 'services/account.service';
 /**
  * Init Account Store Data
  */
-const initAccountData = async () => {
+export const initAccountData = async () => {
   try {
     const { displayName, email, profilePic, hasSubscription, hasCreatingHubs } =
       await getAccount();

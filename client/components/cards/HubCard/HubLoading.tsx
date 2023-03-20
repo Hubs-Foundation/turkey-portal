@@ -9,7 +9,7 @@ const HubLoading = ({ loadingMessage, classProp = '' }: HubLoadingPropsT) => {
   return (
     <div className={`flex-align-center ${classProp}`}>
       <Loader />
-      <span className="u-font-14 margin-left-10">{loadingMessage}</span>
+      <span className="font-14 ml-10">{loadingMessage}</span>
     </div>
   );
 };

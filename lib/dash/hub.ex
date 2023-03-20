@@ -10,10 +10,10 @@ defmodule Dash.Hub do
   schema "hubs" do
     field :ccu_limit, :integer
     field :name, :string
-    field :status, Ecto.Enum, values: [:creating, :updating, :ready, :subdomain_error]
+    field :status, Ecto.Enum, values: [:creating, :updating, :ready, :subdomain_error, :error]
     field :storage_limit_mb, :integer
     field :subdomain, :string
-    field :tier, Ecto.Enum, values: [:free, :mvp]
+    field :tier, Ecto.Enum, values: [:free, :mvp, :early_access]
     belongs_to :account, Dash.Account, references: :account_id
 
     timestamps()
@@ -66,8 +66,7 @@ defmodule Dash.Hub do
 
   @spec hubs_for_account(%Dash.Account{}) :: [%Dash.Hub{}]
   def hubs_for_account(%Dash.Account{} = account) do
-    from(h in Dash.Hub, where: h.account_id == ^account.account_id)
-    |> Repo.all()
+    Repo.all(from h in Dash.Hub, where: h.account_id == ^account.account_id)
   end
 
   def hubs_with_usage_stats_for_account(%Dash.Account{} = account) do
@@ -77,14 +76,16 @@ defmodule Dash.Hub do
 
   # Returns a boolean of whether the account has a hub
   def has_hubs(%Dash.Account{} = account) do
-    Repo.exists?(from(h in Dash.Hub, where: h.account_id == ^account.account_id))
+    Repo.exists?(from h in Dash.Hub, where: h.account_id == ^account.account_id)
   end
 
   # TODO EA remove
   def has_creating_hubs(%Dash.Account{} = account) do
     has_hubs(account) &&
       Repo.exists?(
-        from(h in Dash.Hub, where: h.account_id == ^account.account_id and h.status == :creating)
+        from h in Dash.Hub,
+          where: h.account_id == ^account.account_id,
+          where: h.status == :creating
       )
   end
 
@@ -116,7 +117,7 @@ defmodule Dash.Hub do
 
   @hub_defaults %{
     name: "Untitled Hub",
-    tier: :mvp,
+    tier: :early_access,
     ccu_limit: 25,
     storage_limit_mb: 2000
   }
@@ -165,8 +166,11 @@ defmodule Dash.Hub do
   end
 
   def get_all_ready_hub_ids() do
-    from(h in Dash.Hub, where: h.status == :ready, select: h.hub_id)
-    |> Repo.all()
+    Repo.all(
+      from h in Dash.Hub,
+        where: h.status == :ready,
+        select: h.hub_id
+    )
   end
 
   @spec delete_hub(String.t(), String.t()) :: %Dash.Hub{} | :error
@@ -189,6 +193,7 @@ defmodule Dash.Hub do
     else
       _ ->
         Logger.error("Issue deleting hub")
+        :error
     end
   end
 
@@ -275,9 +280,9 @@ defmodule Dash.Hub do
 
   defp subdomain_exists(excluded_hub_id, subdomain) do
     Repo.exists?(
-      from(h in Dash.Hub,
-        where: h.hub_id != ^excluded_hub_id and h.subdomain == ^subdomain
-      )
+      from h in Dash.Hub,
+        where: h.hub_id != ^excluded_hub_id,
+        where: h.subdomain == ^subdomain
     )
   end
 
@@ -287,8 +292,9 @@ defmodule Dash.Hub do
     Task.Supervisor.async(Dash.TaskSupervisor, fn ->
       with {:ok, %{status_code: status_code}} when status_code < 400 <-
              Dash.OrchClient.update_subdomain(updated_hub),
-           {:ok} <- RetClient.wait_until_healthy(updated_hub),
-           {:ok} <- RetClient.rewrite_assets(previous_hub, updated_hub) do
+           :ok <- Process.sleep(Dash.subdomain_wait()),
+           {:ok} <-
+             RetClient.wait_until_healthy(updated_hub) do
         set_hub_to_ready(updated_hub)
       else
         err ->

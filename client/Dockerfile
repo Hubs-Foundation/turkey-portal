@@ -7,6 +7,7 @@ ENV GITHUB_TOKEN=$GITHUB_TOKEN
 RUN npm config set -- "//npm.pkg.github.com/:_authToken" "$GITHUB_TOKEN" && npm install --legacy-peer-deps  && npm run build
 # ---- app stage ----
 FROM node:18-alpine
+run apk add curl
 WORKDIR "/app"
 RUN chown nobody /app
 COPY --from=builder --chown=nobody:root /client ./

@@ -1,9 +1,11 @@
 import Image from 'next/image';
-import SubContactCard from './SubContactCard/SubContactCard';
+import SubCard from './SubCard/SubCard';
 import SubInfoCard from './SubInfoCard/SubInfoCard';
 import styles from './Subscribe.module.scss';
 
-type SubscribePropsT = { classProp?: string };
+type SubscribePropsT = {
+  classProp?: string;
+};
 
 const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
   return (
@@ -20,8 +22,31 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
 
       <div className={styles.container}>
         <div className={styles.cards}>
+          {/* TRY IT OUT  */}
+          <SubCard
+            title="Explore Hubs"
+            classProp={styles.card_one}
+            cta="Try Mozilla's Hub"
+            ctaUrl="/Pvg5MMt/hubs-demo"
+          >
+            <p>See the world in 3D and share it with your friends.</p>
+            <p>Try out a variety of avatars.</p>
+            <p>Tour incredible community Hubs.</p>
+          </SubCard>
+
+          {/* SUBSCRIBE  */}
           <SubInfoCard />
-          <SubContactCard />
+
+          {/* BUSINESS TIER  */}
+          <SubCard
+            title="Business"
+            cta="Contact us"
+            ctaUrl="mailto:enterprise-hubs@mozilla.com?subject=Subscription inquiries"
+          >
+            <p>
+              Need dedicated infrastructure, custom clients, or something else?
+            </p>
+          </SubCard>
         </div>
       </div>
 

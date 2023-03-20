@@ -1,4 +1,4 @@
-@use 'styles/boilerplate.scss' as *;
+@use 'styles/core/boilerplate' as *;
 
 .card {
   &_header {
@@ -32,7 +32,8 @@
       border: $color-status-offline 2px solid;
     }
 
-    &_subdomainError {
+    &_subdomainError,
+    &_error {
       background-color: $color-semantic-critical;
     }
   }

@@ -1,4 +1,4 @@
-@use './boilerplate.scss' as *;
+@use './core/boilerplate.scss' as *;
 @use './core/utility.scss' as *;
 @use './core/flex.scss' as *;
 
@@ -13,6 +13,21 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+fieldset {
+  padding: 0;
+  border: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0px;
 }
 
 * {

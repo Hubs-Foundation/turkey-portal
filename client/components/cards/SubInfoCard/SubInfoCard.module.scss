@@ -1,4 +1,4 @@
-@use 'styles/boilerplate.scss' as *;
+@use 'styles/core/boilerplate' as *;
 
 .wrapper {
   background-color: $color-background-neutral-0;
@@ -27,7 +27,7 @@
 }
 
 .title {
-  @include h2;
+  @include heading-lg;
   text-align: center;
   margin: 0 0 16px;
 }
@@ -38,7 +38,7 @@
   margin: 0;
 
   h2 {
-    @include h2;
+    @include heading-lg;
     margin: 0 4px 0 0;
   }
 

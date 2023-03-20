@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { HubT, UpdateHubT, StatusE } from 'types/General';
 import { RoutesE } from 'types/Routes';
 import { getHub, updateHub } from 'services/hub.service';
-import { requireAuthenticationAndHubsOrSubscription } from 'services/routeGuard.service';
+import { requireAuthenticationAndSubscription } from 'services/routeGuard.service';
 import Head from 'next/head';
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
 import { ToastContainer, toast } from 'react-toastify';
@@ -13,46 +13,40 @@ import 'react-toastify/dist/ReactToastify.css';
 import styles from './[hub_id].module.scss';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
 import SubCard from '@Cards/SubCard/SubCard';
+import { AxiosRequestHeaders } from 'axios';
 
-type HubDetailsViewPropsT = {};
+type HubDetailsViewPropsT = {
+  subscription: SubscriptionT;
+};
 
-const HubDetailsView = ({}: HubDetailsViewPropsT) => {
-  // TODO : Get real sub data
-  const subscriptionInit: SubscriptionT = {
-    nextPayment: '',
-    endOfCycle: '',
-  };
+const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
   const router = useRouter();
   const [hub, setHub] = useState<HubT | null>(null);
   const [loading, setLoading] = useState(true);
   const { hub_id } = router.query;
-  const [subscription, setSubscription] =
-    useState<SubscriptionT>(subscriptionInit);
 
   /**
    * Get Hub By ID
    */
   useEffect(() => {
-    getHub(`${hub_id}`).then((hub: HubT) => {
-      if (hub.status === StatusE.UPDATING) {
-        router.push({
-          pathname: RoutesE.Dashboard,
-        });
-        return;
+    const getData = async () => {
+      try {
+        const hub: HubT = await getHub(`${hub_id}`);
+        if (hub.status === StatusE.UPDATING) {
+          router.push({
+            pathname: RoutesE.DASHBOARD,
+          });
+          return;
+        }
+        setLoading(false);
+        setHub(hub);
+      } catch (error) {
+        console.error(error);
       }
-      setLoading(false);
-      setHub(hub);
-    });
-  }, [hub_id, router]);
+    };
 
-  /**
-   * Get Hub Subscription
-   */
-  useEffect(() => {
-    getSubscription().then((subscription) => {
-      setSubscription(subscription);
-    });
-  }, []);
+    getData();
+  }, [hub_id, router]);
 
   /**
    * Toast Error
@@ -97,17 +91,24 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
         name: name,
       };
 
-      updateHub(hub.hubId, updatedHub).then((resp) => {
-        if (resp?.status === 200) {
-          router.push({
-            pathname: RoutesE.Dashboard,
-          });
-        } else {
-          launchToastError('Sorry, there was an error updating this Hub.');
-        }
+      const submit = async () => {
+        try {
+          const resp = await updateHub(hub.hubId, updatedHub);
+          if (resp?.status === 200) {
+            router.push({
+              pathname: RoutesE.DASHBOARD,
+            });
+          } else {
+            launchToastError('Sorry, there was an error updating this Hub.');
+          }
 
-        setLoading(false);
-      });
+          setLoading(false);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      submit();
     },
     [hub, router]
   );
@@ -137,7 +138,7 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
           </div>
 
           {/* SUBSCRIPTION WIDGET  */}
-          {hub && (
+          {subscription && (
             <SubCard
               subdomain={hub.subdomain}
               classProp={styles.subcard}
@@ -159,11 +160,22 @@ const HubDetailsView = ({}: HubDetailsViewPropsT) => {
   );
 };
 
-export default HubDetailsView;
-
-export const getServerSideProps = requireAuthenticationAndHubsOrSubscription(
-  (context: GetServerSidePropsContext) => {
+export const getServerSideProps = requireAuthenticationAndSubscription(
+  async (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
-    return { props: {} };
+    try {
+      const subscription = await getSubscription(
+        context.req.headers as AxiosRequestHeaders
+      );
+      return {
+        props: {
+          subscription,
+        },
+      };
+    } catch (error) {
+      console.error(error);
+    }
   }
 );
+
+export default HubDetailsView;

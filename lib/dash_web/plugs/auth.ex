@@ -20,16 +20,20 @@ defmodule DashWeb.Plugs.Auth do
   use DashWeb, :controller
 
   import Plug.Conn
-  require Logger
 
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
-  @subscription_string "managed-hubs"
+  @capabilities_string "managed-hubs"
 
   def init(default), do: default
 
   def call(conn, _options) do
-    results = conn |> get_auth_cookie() |> process_and_verify_jwt()
+    results =
+      conn
+      |> get_auth_cookie()
+      |> process_and_verify_jwt()
+      |> validate_fxa_uid()
+      |> validate_fxa_subscription_period_end()
 
     conn |> process_jwt(results)
   end
@@ -38,7 +42,27 @@ defmodule DashWeb.Plugs.Auth do
     conn.req_cookies[@cookie_name]
   end
 
-  # Authorized
+  defp validate_fxa_uid(%{is_valid: false, claims: _claims} = results), do: results
+
+  defp validate_fxa_uid(%{is_valid: true, claims: %{"sub" => sub} = claims}) do
+    %{is_valid: not Dash.was_deleted?(sub), claims: claims}
+  end
+
+  defp validate_fxa_subscription_period_end(%{is_valid: false, claims: _claims} = results),
+    do: results
+
+  defp validate_fxa_subscription_period_end(%{
+         is_valid: true,
+         claims: %{"fxa_current_period_end" => fxa_current_period_end} = claims
+       }) do
+    now = DateTime.to_unix(DateTime.utc_now())
+
+    %{
+      is_valid: not (fxa_current_period_end != 0 and fxa_current_period_end < now),
+      claims: claims
+    }
+  end
+
   defp process_jwt(conn, %{is_valid: true, claims: claims}) do
     %{
       "fxa_email" => fxa_email,
@@ -46,44 +70,55 @@ defmodule DashWeb.Plugs.Auth do
       "fxa_pic" => fxa_pic,
       "fxa_displayName" => fxa_display_name,
       "iat" => issued_at,
-      "fxa_subscriptions" => fxa_subscriptions_nil_or_list
+      "fxa_subscriptions" => maybe_fxa_subscriptions,
+      "fxa_cancel_at_period_end" => fxa_cancel_at_period_end,
+      "fxa_current_period_end" => fxa_current_period_end,
+      "fxa_plan_id" => fxa_plan_id
     } = claims
 
-    # Ensure fxa_subscriptions is type [] and not nil
-    fxa_subscriptions =
-      if is_nil(fxa_subscriptions_nil_or_list), do: [], else: fxa_subscriptions_nil_or_list
+    fxa_subscriptions = maybe_fxa_subscriptions || []
 
-    account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+    users_first_sign_in? = not Dash.has_account_for_fxa_uid?(fxa_uid)
 
-    # If token issued before an Authorization change in the account, invalidate token and login again
-    if !is_nil(account.auth_updated_at) and
-         DateTime.compare(iat_to_utc_datetime(issued_at), account.auth_updated_at) == :lt do
-      # Issued before auth_updated_at
-      process_jwt(conn, %{is_valid: false, claims: claims}, :redirect_auth_server)
-    else
-      conn
-      |> assign(:account, account)
-      |> assign(:fxa_account_info, %Dash.FxaAccountInfo{
-        fxa_pic: fxa_pic,
-        fxa_display_name: fxa_display_name,
-        fxa_email: fxa_email,
-        has_subscription?: @subscription_string in fxa_subscriptions
-      })
+    account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid, fxa_email)
+
+    if users_first_sign_in? do
+      Dash.handle_first_sign_in_initialize_subscriptions(
+        account,
+        fxa_subscriptions,
+        unix_to_datetime(issued_at)
+      )
+    end
+
+    active_capabilities = Dash.get_all_active_capabilities_for_account(account)
+
+    cond do
+      not is_nil(account.auth_updated_at) and
+          DateTime.compare(unix_to_datetime(issued_at), account.auth_updated_at) == :lt ->
+        # If token issued before an Authorization change in the account, invalidate token and login again
+        process_jwt(conn, %{is_valid: false, claims: claims})
+
+      true ->
+        # Successfully authenticated
+
+        conn
+        |> assign(:account, account)
+        |> assign(:fxa_account_info, %Dash.FxaAccountInfo{
+          fxa_pic: fxa_pic,
+          fxa_display_name: fxa_display_name,
+          fxa_email: fxa_email,
+          has_subscription?: @capabilities_string in active_capabilities
+        })
+        |> assign(:fxa_subscription, %Dash.FxaSubscription{
+          fxa_cancel_at_period_end: fxa_cancel_at_period_end,
+          fxa_current_period_end: fxa_current_period_end,
+          fxa_plan_id: fxa_plan_id
+        })
     end
   end
 
   # Not authorized or empty jwt
   defp process_jwt(conn, %{is_valid: false, claims: _claims}) do
-    conn
-    |> clear_cookie()
-    |> send_resp(
-      401,
-      Jason.encode!(get_unauthorized_struct())
-    )
-    |> halt()
-  end
-
-  defp process_jwt(conn, %{is_valid: false, claims: _claims}, :redirect_auth_server) do
     conn
     |> clear_cookie()
     |> send_resp(
@@ -121,34 +156,44 @@ defmodule DashWeb.Plugs.Auth do
 
   def get_cookie_name(), do: @cookie_name
 
-  def get_unauthorized_struct, do: %{error: "unauthorized"}
-
   def unauthorized_auth_redirect_struct, do: %{error: "unauthorized", redirect: "auth"}
 
-  def get_subscription_string() do
-    @subscription_string
-  end
-
-  def iat_to_utc_datetime(timestamp_s) do
-    DateTime.from_unix!(timestamp_s, :second)
+  def unix_to_datetime(unix_time) do
+    DateTime.from_unix!(unix_time, :second)
   end
 
   def clear_cookie(conn) do
     cookie_secure = Application.get_env(:dash, __MODULE__)[:cookie_secure]
-
-    Logger.warn("cookie_secure is #{cookie_secure}")
-    Logger.warn("cookie domain is #{DashWeb.LogoutController.cluster_domain(conn)}")
-    Logger.warn("cookie domain is #{DashWeb.LogoutController.cluster_domain(conn)}")
+    cookie_domain = DashWeb.LogoutController.cluster_domain(conn)
 
     put_resp_cookie(
       conn,
       @cookie_name,
       "",
       path: "/",
-      domain: DashWeb.LogoutController.cluster_domain(conn),
+      domain: cookie_domain,
+      http_only: true,
+      secure: cookie_secure,
+      max_age: 0
+    )
+
+    if cookie_domain =~ "dev.myhubs.net", do: clear_dev_cookie(conn), else: conn
+  end
+
+  def clear_dev_cookie(conn) do
+    cookie_secure = Application.get_env(:dash, __MODULE__)[:cookie_secure]
+
+    put_resp_cookie(
+      conn,
+      @cookie_name,
+      "",
+      path: "/",
+      domain: ".dev.myhubs.net",
       http_only: true,
       secure: cookie_secure,
       max_age: 0
     )
   end
+
+  def capability_string, do: @capabilities_string
 end

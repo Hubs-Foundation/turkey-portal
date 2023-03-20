@@ -1,19 +1,21 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
 import { useEffect, useState, useCallback } from 'react';
-import { HubT, StatusE } from 'types/General';
+import { HubT, LastErrorE, StatusE } from 'types/General';
 import styles from './dashboard.module.scss';
 import HubCard from '@Cards/HubCard/HubCard';
 import SubCard from '@Cards/SubCard/SubCard';
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
-import { requireAuthenticationAndHubsOrSubscription } from 'services/routeGuard.service';
+import { requireAuthenticationAndSubscription } from 'services/routeGuard.service';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
 import { getHubs } from 'services/hub.service';
 import FeedbackBanner from '@Shared/FeedbackBanner/FeedbackBanner';
 import { selectAccount } from 'store/accountSlice';
+import { initAccountData as refreshAccountData } from 'store/storeInit';
 import { useSelector } from 'react-redux';
+import { AxiosRequestHeaders } from 'axios';
 
-type DashboardPropsT = {};
+type DashboardPropsT = { subscription: SubscriptionT };
 
 const creatingHub: HubT = {
   ccuLimit: 0,
@@ -28,80 +30,102 @@ const creatingHub: HubT = {
   tier: 'premium',
 };
 
-const Dashboard = ({}: DashboardPropsT) => {
+/**
+ * This is a default "catch all" Error Hub
+ * state. Usually the user will see this if the
+ * http request fails completely when calling hubs
+ * api.
+ */
+const ErroringHub: HubT = {
+  ccuLimit: 0,
+  currentCcu: 0,
+  currentStorageMb: 0,
+  hubId: '',
+  name: 'Erred Hub',
+  status: StatusE.ERROR,
+  lastError: LastErrorE.ERROR,
+  storageLimitMb: 0,
+  subdomain: '',
+  tier: 'premium',
+};
+
+const Dashboard = ({ subscription }: DashboardPropsT) => {
   const account = useSelector(selectAccount);
-  const hubsInit: HubT[] = [];
-  const subPrice = 5;
-  const subscriptionInit: SubscriptionT = {
-    nextPayment: '',
-    endOfCycle: '',
-  };
-  const [hubs, setHubs] = useState(hubsInit);
-  const [hasUpdatingCreatingHub, setHasUpdatingCreatingHub] =
-    useState<boolean>(false);
+  const [hubs, setHubs] = useState<HubT[]>([]);
+  const [hasUpdatingHub, setHasUpdatingHub] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [subscriptionTotal, setSubscriptionTotal] = useState<number>(subPrice);
-  const [subscription, setSubscription] =
-    useState<SubscriptionT>(subscriptionInit);
+
+  /**
+   * Hubs call failed:
+   * Manually set Error state Hub in UI
+   */
+  const setDefaultErrorStateHub = () => {
+    setHubs([ErroringHub]);
+    setIsLoading(false);
+  };
 
   /**
    * Get Hubs again and apply data, also check
    * data for updates and fails.
    */
-  const applyHubs = useCallback(() => {
-    getHubs().then((hubs) => {
-      setHubs(hubs);
-      setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
-    });
+  const refreshHubData = useCallback(() => {
+    const getData = async () => {
+      try {
+        const hubs: HubT[] = await getHubs();
+        setHubs(hubs);
+        setHasUpdatingHub(checkIfUpdating(hubs));
+      } catch (error) {
+        setDefaultErrorStateHub();
+        console.error(error);
+      }
+    };
+    getData();
   }, []);
 
   /**
-   * Check if hub is being created or is updating
+   * Check if hub is being updated
    * @param hubs HubT
    * @returns boolean
    */
-  const checkIfCreatingUpdating = (hubs: HubT[]): boolean => {
-    return hubs.some(
-      ({ status }) => status === 'creating' || status === 'updating'
-    );
+  const checkIfUpdating = (hubs: HubT[]): boolean => {
+    return hubs.some(({ status }) => status === 'updating');
   };
 
   useEffect(() => {
     let updateIntervalId: NodeJS.Timeout;
-    if (hasUpdatingCreatingHub) {
-      updateIntervalId = setInterval(applyHubs, 1000);
+    const pollingInterval = 10_000;
+
+    if (hasUpdatingHub) {
+      updateIntervalId = setInterval(refreshHubData, pollingInterval);
     }
     return () => {
       clearInterval(updateIntervalId);
     };
-  }, [hasUpdatingCreatingHub, applyHubs]);
-
-  const refreshHubData = useCallback(() => {
-    getHubs().then((hubs) => {
-      setHubs(hubs);
-      setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
-    });
-  }, []);
+  }, [hasUpdatingHub, refreshHubData]);
 
   /**
    * Get All Hubs
    */
   useEffect(() => {
     const getData = async () => {
-      const [hubs, subscription] = await Promise.all([
-        getHubs(),
-        getSubscription(),
-      ]);
-
-      setHubs(hubs);
-      setSubscriptionTotal(hubs.length * subPrice);
-      setHasUpdatingCreatingHub(checkIfCreatingUpdating(hubs));
-      setSubscription(subscription);
-      setIsLoading(false);
+      try {
+        const hubs = await getHubs();
+        setHubs(hubs);
+        setHasUpdatingHub(checkIfUpdating(hubs));
+        setIsLoading(false);
+      } catch (error) {
+        setDefaultErrorStateHub();
+        console.error(error);
+      }
     };
 
-    // TODO: Error state
-    getData().catch(console.error);
+    getData();
+    // TODO : Tech Debt - first account call is not showing that the hub is being created on attribute "hasCreatingHubs".
+    // this is because the getHubs call above kicks off the creation if there are no hubs.. this is a bandaid to just call
+    // the account data again and see if the "hasCreatingHubs" is true.
+    setTimeout(() => {
+      refreshAccountData();
+    }, 2000);
   }, []);
 
   return (
@@ -150,7 +174,6 @@ const Dashboard = ({}: DashboardPropsT) => {
             <SubCard
               subdomain={hubs[0].subdomain}
               subscription={subscription}
-              price={subscriptionTotal}
             />
           ) : (
             <SkeletonCard
@@ -171,9 +194,20 @@ const Dashboard = ({}: DashboardPropsT) => {
 
 export default Dashboard;
 
-export const getServerSideProps = requireAuthenticationAndHubsOrSubscription(
-  (context: GetServerSidePropsContext) => {
+export const getServerSideProps = requireAuthenticationAndSubscription(
+  async (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
-    return { props: {} };
+    try {
+      const subscription = await getSubscription(
+        context.req.headers as AxiosRequestHeaders
+      );
+      return {
+        props: {
+          subscription,
+        },
+      };
+    } catch (error) {
+      console.error(error);
+    }
   }
 );

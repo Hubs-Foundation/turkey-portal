@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import IconButton from '@Shared/IconButton/IconButton';
+import { Button } from '@mozilla/lilypad-ui';
 import React from 'react';
 import styles from './MobileSideNav.module.scss';
 
@@ -26,11 +26,11 @@ const MobileSideNav = ({
       }`}
     >
       <div className={styles.nav_container}>
-        <IconButton
+        <Button
+          label="open menu"
           classProp={styles.menu_button}
           icon="arrow-left"
           onClick={handleMobileMenuClick}
-          size={30}
         />
 
         {/* TODO: work with design and product to get the actual navigation design

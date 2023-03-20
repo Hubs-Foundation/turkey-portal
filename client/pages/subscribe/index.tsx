@@ -4,10 +4,13 @@ import { subscriptionPageRequireAuthentication } from 'services/routeGuard.servi
 import SubContactCard from '@Cards/SubContactCard/SubContactCard';
 import SubInfoCard from '@Cards/SubInfoCard/SubInfoCard';
 import styles from './subscribe.module.scss';
+import { getRegion } from 'services/region.service';
 
-type SubscribePropsT = {};
+type SubscribePropsT = {
+  region: string | null;
+};
 
-const Subscribe = ({}: SubscribePropsT) => {
+const Subscribe = ({ region }: SubscribePropsT) => {
   return (
     <div className="page_wrapper">
       <Head>
@@ -42,8 +45,10 @@ const Subscribe = ({}: SubscribePropsT) => {
 export default Subscribe;
 
 export const getServerSideProps = subscriptionPageRequireAuthentication(
-  (context: GetServerSidePropsContext) => {
+  async (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
-    return { props: {} };
+    return {
+      props: {},
+    };
   }
 );

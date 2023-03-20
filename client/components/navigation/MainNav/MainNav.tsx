@@ -1,12 +1,15 @@
-import { useRef, useCallback, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useRef, useCallback } from 'react';
 import styles from './MainNav.module.scss';
 import { logOut } from 'services/account.service';
 import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
 import BlobIcon from '@Logos/BlobIcon/BlobIcon';
-import { RoutesE } from 'types/Routes';
-import { AUTH_SERVER, FXA_SERVER, DASH_ROOT_DOMAIN } from 'config';
+import {
+  AUTH_SERVER,
+  FXA_SERVER,
+  DASH_ROOT_DOMAIN,
+  MARKETING_PAGE_URL,
+} from 'config';
 
 import {
   Button,
@@ -15,7 +18,7 @@ import {
   Icon,
   Dropdown,
   dropdownT,
-} from '@mozilla/lilypad';
+} from '@mozilla/lilypad-ui';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -28,11 +31,6 @@ const MainNav = ({
 }: MainNavPropsT) => {
   const account = useSelector(selectAccount);
   const dropdownRef = useRef<dropdownT>(null);
-  const router = useRouter();
-
-  useEffect(() => {
-    console.log('showLoggedOutUi', showLoggedOutUi);
-  }, [showLoggedOutUi]);
 
   const onLogOutClick = useCallback(async () => {
     dropdownRef.current?.closeDropdown();
@@ -42,10 +40,8 @@ const MainNav = ({
       console.error('Error: issue logging out');
     }
 
-    router.push({
-      pathname: RoutesE.Login,
-    });
-  }, [router]);
+    window.location.href = MARKETING_PAGE_URL;
+  }, []);
 
   const onManageAccountClick = useCallback(() => {
     window.open(`https://${FXA_SERVER}/settings`);
@@ -58,11 +54,12 @@ const MainNav = ({
     <div className={styles.dropdown_wrapper}>
       <div className={styles.account_wrapper}>
         <Avatar
-          classProp="margin-top-5"
+          classProp="mt-5"
           src={account.profilePic}
           size={40}
           alt="profile picture"
         />
+
         <div className={styles.account_details}>
           <div className={styles.account_label}>Signed in as</div>
           <div className={styles.account_email}>{account.email}</div>
@@ -80,7 +77,7 @@ const MainNav = ({
           }}
         >
           <Icon
-            classProp="margin-right-10"
+            classProp="mr-10"
             color="currentColor"
             name="fx-account"
             size={24}
@@ -97,7 +94,7 @@ const MainNav = ({
         >
           {/* TODO update icon asset  */}
           <Icon
-            classProp="margin-right-10"
+            classProp="mr-10"
             color="currentColor"
             name="log-out"
             size={24}
@@ -120,7 +117,7 @@ const MainNav = ({
           {/* Main navigation links / logo */}
           <div className={styles.main_nav_contents}>
             {/* Mobile Menu */}
-            {/* <IconButton
+            {/* <Icon
               icon="menu"
               onClick={handleMobileMenuClick}
               size={30}
@@ -138,6 +135,7 @@ const MainNav = ({
           {!showLoggedOutUi && (
             <div className="flex-align-center">
               <Button
+                label="edit dashboard"
                 classProp={styles.exit_button}
                 category={ButtonCategoriesE.SECONDARY_OUTLINE}
                 text="Exit Dashboard"
@@ -151,11 +149,13 @@ const MainNav = ({
                   <div className={styles.main_nav_account}>
                     {account.profilePic && (
                       <span className="flex-align-center">
-                        <Avatar
-                          src={account.profilePic}
-                          size={50}
-                          alt="profile picture"
-                        />
+                        <button className="button-wrapper">
+                          <Avatar
+                            src={account.profilePic}
+                            size={50}
+                            alt="profile picture"
+                          />
+                        </button>
                       </span>
                     )}
                   </div>
@@ -168,6 +168,7 @@ const MainNav = ({
           {/* Login Action  */}
           {showLoggedOutUi && (
             <Button
+              label="sign in"
               category={ButtonCategoriesE.SECONDARY_OUTLINE}
               text="Sign In"
               href={`https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}`}

@@ -34,8 +34,8 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
           <div className={styles.header_content}>
             <h4>Looking for your old rooms?</h4>
             {/* TODO - GET THIS LINK!!  */}
-            <a className={styles.legacy_link} href="#">
-              visit legacy/former hubs.mozilla.com site
+            <a className={styles.legacy_link} href="/demo">
+              visit the legacy hubs.mozilla.com site
             </a>
           </div>
         </div>
@@ -107,7 +107,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
               href="https://hubs.mozilla.com/docs/welcome.html"
               className={styles.link}
             >
-              Checkout Out Our Guides
+              Check Out Our Guides
             </a>
             <a
               target="_blank"
@@ -142,10 +142,10 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
 
           {/* SOCIAL */}
           <div className={styles.link_block}>
-            <div className="u-body-md u-color-text-reverse">
+            <div className="body-md color-text-reverse">
               Follow @MozillaHubs
             </div>
-            <div className="flex-justify-between margin-top-20">
+            <div className="flex-justify-between mt-20">
               <a onClick={handleDiscordClick} href="#">
                 <Image
                   width={isDesktopDown ? 36 : ''}

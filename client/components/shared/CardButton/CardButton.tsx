@@ -1,6 +1,6 @@
 import React, { MouseEventHandler, useEffect, useState } from 'react';
 import styles from './CardButton.module.scss';
-import { Icon, IconT } from '@mozilla/lilypad';
+import { Icon, IconT } from '@mozilla/lilypad-ui';
 
 export type CardButtonPropsT = {
   id?: string;
@@ -43,7 +43,7 @@ const CardButton = ({
       </div>
 
       {/* Arrow Icon  */}
-      <div className={`u-no-mobile ${styles.icon_wrapper}`}>
+      <div className={`no-mobile ${styles.icon_wrapper}`}>
         <Icon classProp={styles.icon} size={34} name="arrow-right" />
       </div>
     </button>

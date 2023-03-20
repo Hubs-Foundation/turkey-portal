@@ -1,4 +1,4 @@
-@use 'styles/boilerplate.scss' as *;
+@use 'styles/core/boilerplate' as *;
 
 .wrapper {
   background-color: $color-background-overlay;
@@ -40,9 +40,20 @@
       width: auto;
     }
 
+    // Monthly Payment Price
     &:first-child {
       @include mobile-down {
         margin-bottom: 24px;
+      }
+    }
+
+    // Next Payment Date
+    &:nth-child(2) {
+      display: flex;
+      justify-content: flex-end;
+
+      @include mobile-down {
+        justify-content: flex-start;
       }
     }
   }

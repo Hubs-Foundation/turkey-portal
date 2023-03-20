@@ -1,4 +1,4 @@
-import { IconT } from '@mozilla/lilypad';
+import { IconT } from '@mozilla/lilypad-ui';
 
 export type SubscriptionInfoCopyT = {
   label: string;
@@ -18,7 +18,7 @@ const SubscriptionInfoCopy: SubscriptionInfoCopyT[] = [
     icon: 'capacity',
   },
   {
-    label: '5GB Asset storage',
+    label: '2GB Asset storage',
     description: 'For avatars and scenes',
     icon: 'space',
   },

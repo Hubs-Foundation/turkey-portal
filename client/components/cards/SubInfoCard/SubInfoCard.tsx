@@ -1,8 +1,11 @@
-import { useRouter } from 'next/router';
-import { Button, Icon, IconT } from '@mozilla/lilypad';
+import { useCallback, useEffect, useState } from 'react';
+import { Button, Icon, IconT, Checkbox } from '@mozilla/lilypad-ui';
 import SubscriptionInfoCopy from './SubscriptionInfoCopy';
 import styles from './SubInfoCard.module.scss';
-import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA } from 'config';
+import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
+import { CountriesE, RegionsT } from 'types/Countries';
+import { getCurrencyMeta } from 'util/utilities';
+import { getRegion, RegionT, RegionObjT } from 'services/region.service';
 
 type SubInfoCardPropsT = {
   classProp?: string;
@@ -14,27 +17,77 @@ type InfoBlockPropsT = {
   description: string;
 };
 
+// INFO BLOCK COMPONENT
 const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   return (
     <div className={styles.info_wrapper}>
-      <Icon name={icon} size={20} classProp="margin-right-20 margin-top-2" />
-      <div className="u-body-md">
+      <div className="flex-box">
+        <Icon name={icon} size={30} classProp="mr-20" />
+      </div>
+      <div className="body-md">
         <p>
           {' '}
-          <span className="u-body-md-bold">{label}</span> <br /> {description}
+          <span className="body-md-bold">{label}</span> <br /> {description}
         </p>
       </div>
     </div>
   );
 };
 
-const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
-  const router = useRouter();
+// PRICE DISPLAY COMPONENT
+type PricePropsT = {
+  region: RegionsT;
+};
 
-  const handleSubscribeClick = () => {
-    const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_EA}`;
-    router.push(url);
-  };
+const Price = ({ region }: PricePropsT) => {
+  const currency = getCurrencyMeta(region);
+
+  return (
+    <>
+      <h2>{currency.symbol}20</h2>
+      <p>{currency.abbrev}</p>
+    </>
+  );
+};
+
+const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
+  const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
+  const [region, setRegion] = useState<RegionT>(null);
+
+  useEffect(() => {
+    const fetchRegion = async () => {
+      try {
+        const data: RegionObjT = await getRegion();
+        setRegion(data.region);
+      } catch (e) {
+        console.error(e);
+        setRegion(null);
+      }
+    };
+    fetchRegion();
+  }, []);
+
+  /**
+   * Check If Euro Region or not
+   * @return Boolean
+   */
+  const isEuro = useCallback((): boolean => {
+    return Boolean(region && region.toUpperCase() === CountriesE.GERMANY);
+  }, [region]);
+
+  /**
+   * Handle routing user to correct payment plan
+   */
+  const handleSubscribeClick = useCallback(() => {
+    // Default to US plan
+    const plan: string = isEuro() ? PLAN_ID_EA_DE : PLAN_ID_EA;
+    const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${plan}`;
+    window.open(url);
+  }, [isEuro]);
+
+  const onToggleLocationConfirmation = useCallback((value: boolean) => {
+    setLocationConfirmed(value);
+  }, []);
 
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
@@ -46,11 +99,9 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
         <div className={styles.price_wrapper}>
           <div className={styles.price_container}>
             <div className={styles.price}>
-              {/* TODO pull price and currency from subplat here  */}
-              <h2>$20</h2>
-              <p>USD</p>
+              <Price region={region as RegionsT} />
             </div>
-            <p className={styles.price_cadence}>per month</p>
+            <p className={styles.price_cadence}>per month + tax</p>
           </div>
         </div>
       </div>
@@ -69,9 +120,24 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
         })}
       </div>
 
+      {/* LOCATION CONFIRMATION  */}
+      <form className="content-box mt-16 mb-16">
+        <Checkbox
+          classProp="content-box"
+          onChange={onToggleLocationConfirmation}
+          checked={locationConfirmed}
+          label="I'm located in UK, Canada, USA, or Germany"
+        />
+      </form>
+
       {/* FOOTER  */}
       <div className={styles.footer}>
-        <Button text="Subscribe" onClick={handleSubscribeClick} />
+        <Button
+          label="Subscribe to hubs"
+          text="Subscribe"
+          onClick={handleSubscribeClick}
+          disabled={!locationConfirmed}
+        />
       </div>
     </div>
   );

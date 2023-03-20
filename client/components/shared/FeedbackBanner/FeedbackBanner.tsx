@@ -1,5 +1,5 @@
 import styles from './FeedbackBanner.module.scss';
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad';
+import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 
 type FeedbackBannerPropsT = {
   email: string;
@@ -27,6 +27,7 @@ const FeedbackBanner = ({
         <div className={styles.content}>
           <p>{Message}</p>
           <Button
+            label="give feedback"
             onClick={feedbackClick}
             classProp={styles.button}
             category={ButtonCategoriesE.SECONDARY_SOLID}

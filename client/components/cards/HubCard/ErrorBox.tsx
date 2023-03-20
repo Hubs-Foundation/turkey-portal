@@ -1,5 +1,5 @@
 import styles from './ErrorBox.module.scss';
-import { Button, ButtonCategoriesE, Icon } from '@mozilla/lilypad';
+import { Button, ButtonCategoriesE, Icon } from '@mozilla/lilypad-ui';
 
 type ErrorBoxPropsT = {
   onTryAgainClick?: Function;
@@ -38,6 +38,7 @@ const ErrorBox = ({
     <div className={`${styles.error_wrapper} ${classProp}`}>
       {onClose && (
         <Button
+          label="close"
           icon="x"
           classProp={styles.close}
           onClick={handleOnClose}
@@ -52,13 +53,15 @@ const ErrorBox = ({
         <div className={styles.error_actions}>
           {canTryAgain && (
             <Button
+              label="try again now"
               text="Try again now"
-              classProp="margin-right-12"
+              classProp="mr-12"
               onClick={handleTryAgainClick}
             />
           )}
 
           <Button
+            label="contact us"
             text="Contact Us"
             category={ButtonCategoriesE.PRIMARY_OUTLINE}
             onClick={handleContactClick}

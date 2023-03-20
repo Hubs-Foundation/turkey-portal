@@ -42,30 +42,30 @@ defmodule DashWeb.Router do
   # end
 
   scope "/api/v1", DashWeb do
+    resources "/region", Api.V1.RegionController, only: [:show], singleton: true
+  end
+
+  scope "/api/v1", DashWeb do
     pipe_through :basic_auth
-    resources("/logout", LogoutController, [:index])
+    resources "/logout", LogoutController, [:index]
   end
 
   scope "/api/v1", DashWeb do
     pipe_through [:basic_auth, :jwt_authenticated]
 
-    resources("/account", Api.V1.AccountController, [:index])
+    resources "/account", Api.V1.AccountController, [:index]
+    resources "/subscription", Api.V1.SubscriptionController, only: [:show], singleton: true
   end
 
   scope "/api/v1", DashWeb do
     pipe_through [:basic_auth, :jwt_authenticated, :approved_email_auth]
 
-    resources(
-      "/hubs",
-      Api.V1.HubController,
-      Dash.FeatureFlags.actions_for_flags(
-        always: [:index, :show, :update],
-        flags: [
-          create_hubs: :create,
-          delete_hubs: :delete
-        ]
-      )
-    )
+    resources "/hubs",
+              Api.V1.HubController,
+              Dash.FeatureFlags.actions_for_flags(
+                always: [:index, :show, :update],
+                flags: [create_hubs: :create, delete_hubs: :delete]
+              )
 
     post "/hubs/validate_subdomain", Api.V1.HubController, :validate_subdomain
   end
@@ -73,7 +73,7 @@ defmodule DashWeb.Router do
   scope "/api/v1", DashWeb do
     pipe_through :fxa_events_parser
     # TODO decode JWT tokens from FxA with a new plug
-    resources("/events/fxa", Api.V1.FxaEventsController, [:create])
+    resources "/events/fxa", Api.V1.FxaEventsController, [:create]
   end
 
   # Enables LiveDashboard only for development

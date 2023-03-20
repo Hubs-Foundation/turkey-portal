@@ -1,6 +1,6 @@
 import styles from './SubscriptionModal.module.scss';
 import { useCallback } from 'react';
-import { Icon, Button, ButtonCategoriesE } from '@mozilla/lilypad';
+import { Icon, Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import { FXA_SERVER } from 'config';
 
 type SubscriptionModalT = {
@@ -36,18 +36,18 @@ const SubscriptionModal = ({
       {/* HEADER  */}
       <div className={styles.header}>
         {/* TODO update icon asset  */}
-        <Icon name="info" size={24} classProp="margin-right-10" />
+        <Icon name="info" size={24} classProp="mr-10" />
         <h2 className={styles.title}>Cancel Subscription</h2>
       </div>
 
       {/* MODAL CONTENTS  */}
       <div className={styles.content}>
-        <p className="u-body-md">
+        <p className="body-md">
           This will stop the auto renew of <b>{subdomain}</b> on {cancelDate}.
           As a result, <b>the following will occur after {cancelDate}:</b>
         </p>
 
-        <ul className="u-body-md">
+        <ul className="body-md">
           <li>The Hub will be deleted.</li>
           <li>
             All assets (avatars, scenes, 3D models) installed on the hub will be
@@ -59,7 +59,7 @@ const SubscriptionModal = ({
           </li>
         </ul>
 
-        <p className="u-body-md">
+        <p className="body-md">
           If you are happy to proceed, please continue to your Firefox Accounts
           page where you can finish cancelling your subscription.
         </p>
@@ -69,15 +69,17 @@ const SubscriptionModal = ({
       <div className={styles.footer_wrapper}>
         <div className={styles.footer_container}>
           <Button
+            label="cancel"
             category={ButtonCategoriesE.PRIMARY_CLEAR}
             text="Nevermind"
-            classProp="margin-right-10-desktop"
+            classProp="mr-10-dt"
             onClick={handleCloseClick}
           />
           <Button
+            label="continue to firefox account"
             onClick={onManageAccountClick}
             category={ButtonCategoriesE.PRIMARY_SOLID}
-            classProp="margin-bottom-24-mobile"
+            classProp="mb-24-mb"
             text="Continue to Firefox Account"
             target="_blank"
           />

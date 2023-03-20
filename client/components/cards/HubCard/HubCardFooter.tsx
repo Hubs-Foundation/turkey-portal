@@ -1,11 +1,23 @@
-import { Badge, ProgressBar, BadgeCategoriesE, Icon } from '@mozilla/lilypad';
-import { StorageStateE, HubT } from 'types/General';
+import {
+  Badge,
+  ProgressBar,
+  BadgeCategoriesE,
+  Icon,
+} from '@mozilla/lilypad-ui';
+import { StorageStateE, HubT, FormattedTierMapT } from 'types/General';
 import { useState, useEffect, useCallback } from 'react';
 import styles from './HubCardFooter.module.scss';
 
 type HubCardFooterPropsT = {
   hub: HubT;
   classProp?: string;
+};
+
+const FormattedTierMap: FormattedTierMapT = {
+  ['early_access']: 'Early Access',
+  mvp: 'Mvp',
+  free: 'Free',
+  premium: 'Premium',
 };
 
 const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
@@ -54,10 +66,10 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
     <div className={`${styles.footer} ${classProp}`}>
       {/* Tier Information  */}
       <div className={styles.footer_block}>
-        <div className="u-text-center">
+        <div className="text-center">
           <Badge
-            name={tier}
-            classProp="margin-bottom-12 u-block"
+            classProp="mb-12 block"
+            name={FormattedTierMap[tier]}
             category={BadgeCategoriesE.PRIMARY}
           />
           <div>Hub Tier</div>
@@ -66,11 +78,9 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
 
       {/* Storage Information  */}
       <div className={styles.footer_block}>
-        <div className="u-text-center">
-          <div
-            className={`margin-bottom-12 ${styles['status_' + storageState]}`}
-          >
-            <span className="u-color-text-main">{round(currentStorageMb)}</span>
+        <div className="text-center">
+          <div className={`mb-12 ${styles['status_' + storageState]}`}>
+            <span className="color-text-main">{round(currentStorageMb)}</span>
             <span>/{storageLimitMb} MB</span>
           </div>
           <div className="flex-justify-center">

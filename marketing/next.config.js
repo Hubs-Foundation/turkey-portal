@@ -1,21 +1,47 @@
 /** @type {import('next').NextConfig} */
 
-if (process.env.ENV == 'prod') {
-  FXA_SERVER = 'TBD111';
-  AUTH_SERVER = 'TBD222';
-  HUB_ROOT_DOMAIN = 'TBD333';
-  DASH_ROOT_DOMAIN = 'TBD444';
-  FXA_PAYMENT_URL = 'TBD555';
-  PRODUCT_ID = 'TBD666';
-  PLAN_ID_EA = 'TBD777';
-} else {
-  FXA_SERVER = 'accounts.firefox.com';
-  AUTH_SERVER = 'auth.myhubs.net';
-  HUB_ROOT_DOMAIN = 'dev.myhubs.net';
+const serverHostname = process.env.SERVER_HOSTNAME || '127.0.0.1';
+
+/**
+ * LOCAL ENVIRONMENT
+ */
+if (process.env.ENV === 'local') {
+  DASH_ROOT_DOMAIN = 'localhost:3000';
+  FXA_PAYMENT_URL = 'https://price.local';
+  FXA_SERVER = 'fxa.local';
+  HUB_ROOT_DOMAIN = 'hub.local';
+  PLAN_ID_EA = 'price_id123';
+  PRODUCT_ID = 'prod_KPReWHqwGqZBzc';
+  PLAN_ID_EA_DE = 'price_germany_id123';
+  PUBLIC_API_SERVER = `http://${serverHostname}:4000`;
+}
+
+/**
+ * DEVELOPMENT ENVIRONMENT
+ */
+if (process.env.ENV === 'dev') {
   DASH_ROOT_DOMAIN = 'dashboard.dev.myhubs.net';
   FXA_PAYMENT_URL = 'https://payments-stage.fxa.nonprod.cloudops.mozgcp.net';
-  PRODUCT_ID = 'prod_KPReWHqwGqZBzc';
+  FXA_SERVER = 'accounts.stage.mozaws.net';
+  HUB_ROOT_DOMAIN = 'dev.myhubs.net';
   PLAN_ID_EA = 'price_1Jkcl3Kb9q6OnNsLFbECmMtd';
+  PRODUCT_ID = 'prod_KPReWHqwGqZBzc';
+  PLAN_ID_EA_DE = 'price_1LqkLwKb9q6OnNsLlWHZfPOu';
+  PUBLIC_API_SERVER = 'https://dashboard.dev.myhubs.net';
+}
+
+/**
+ * PRODUCTION ENVIRONMENT
+ */
+if (process.env.ENV === 'prod' || process.env.ENV === undefined) {
+  DASH_ROOT_DOMAIN = 'dashboard.hubs.mozilla.com';
+  FXA_PAYMENT_URL = 'https://subscriptions.firefox.com';
+  FXA_SERVER = 'accounts.firefox.com';
+  HUB_ROOT_DOMAIN = 'hubs.mozilla.com';
+  PLAN_ID_EA = 'price_1M4SjzJNcmPzuWtRyXTlz0Jn';
+  PRODUCT_ID = 'prod_Mo4tS8uH9y3Mj5';
+  PLAN_ID_EA_DE = 'price_1M9EJVJNcmPzuWtRbMGiQVgD';
+  PUBLIC_API_SERVER = 'https://dashboard.hubs.mozilla.com';
 }
 
 const nextConfig = {
@@ -25,13 +51,17 @@ const nextConfig = {
   },
   swcMinify: true,
   publicRuntimeConfig: {
-    AUTH_SERVER: AUTH_SERVER,
+    DASH_ROOT_DOMAIN: DASH_ROOT_DOMAIN,
+    FXA_PAYMENT_URL: FXA_PAYMENT_URL,
     FXA_SERVER: FXA_SERVER,
     HUB_ROOT_DOMAIN: HUB_ROOT_DOMAIN,
-    FXA_PAYMENT_URL: FXA_PAYMENT_URL,
-    DASH_ROOT_DOMAIN: DASH_ROOT_DOMAIN,
-    PRODUCT_ID: PRODUCT_ID,
     PLAN_ID_EA: PLAN_ID_EA,
+    PLAN_ID_EA_DE: PLAN_ID_EA_DE,
+    PRODUCT_ID: PRODUCT_ID,
+    PUBLIC_API_SERVER: PUBLIC_API_SERVER,
+  },
+  env: {
+    ENV: process.env.ENV,
   },
 };
 

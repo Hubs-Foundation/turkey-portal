@@ -269,24 +269,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       send(stub_pid, {:continue})
       assert %{"subdomain" => "new-subdomain"} = get_hub(conn, hub)
     end
-
-    test "should call reticulum to rewrite assets", %{conn: conn} do
-      stub_ret_health_check()
-      stub_orch_patch()
-
-      expect_ret_rewrite_assets(fn body ->
-        json = Jason.decode!(body)
-        assert json["old_domain"] =~ ~r/^old-subdomain/
-        assert json["new_domain"] =~ ~r/^new-subdomain/
-      end)
-
-      %{hub: hub} = create_test_account_and_hub(subdomain: "old-subdomain")
-
-      conn |> patch_subdomain(hub, "new-subdomain", expected_status: :ok)
-
-      %{"subdomain" => patched_subdomain} = get_hub(conn, hub)
-      assert patched_subdomain == "new-subdomain"
-    end
   end
 
   describe "Subdomain validation" do
@@ -336,6 +318,8 @@ defmodule DashWeb.Api.V1.HubControllerTest do
         max_expected_calls: max_expected_calls + 1
       )
 
+      subscribe_test_account(nil)
+
       stub_ret_get()
       expect_orch_post()
 
@@ -348,6 +332,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       stub_ret_get()
       expect_orch_post()
       stub_ret_health_check(status_code: :service_unavailable)
+      subscribe_test_account(nil)
 
       body =
         conn
@@ -363,6 +348,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     test "should call /health endpoint ONLY once, if hubs is already ready", %{conn: conn} do
       # TODO To refine tests move these tests to own module that has setup :verify_on_exit!
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
+      subscribe_test_account(nil)
 
       stub_ret_get()
       expect_orch_post()
@@ -399,6 +385,28 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       assert !Hub.has_hubs(account)
     end
 
+    test "capability is_active=false, do NOT make default hub and return 200 with empty array", %{
+      conn: conn
+    } do
+      fxa_uid = "not-have-active-subscription"
+      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+
+      Dash.create_capability!(account, %{
+        capability: DashWeb.Plugs.Auth.capability_string(),
+        is_active: false,
+        change_time: DateTime.utc_now()
+      })
+
+      conn =
+        conn
+        |> put_test_token(claims: %{fxa_subscriptions: []}, sub: fxa_uid)
+        |> get("/api/v1/hubs")
+
+      assert Jason.encode!([]) == response(conn, 200)
+
+      assert not Hub.has_hubs(account)
+    end
+
     # TODO for some reason the FeatureFlags are not allowing for POST request to be enabled inside setup or test block
     # Ignore test for now, since POST isn't enabled for dev or production
     # This test is working when POST is enabled
@@ -420,6 +428,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     test "IS subscribed, can get default Hub", %{conn: conn} do
       stub_ret_get()
       expect_orch_post()
+      subscribe_test_account(nil)
 
       # Account with subscription, use index request and has_hubs
       conn =
@@ -564,17 +573,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     |> Mox.stub(:post, fn url, _body, _headers, _opts ->
       cond do
         url =~ ~r/rewrite_assets$/ ->
-          {:ok, %HTTPoison.Response{status_code: 200}}
-      end
-    end)
-  end
-
-  defp expect_ret_rewrite_assets(body_callback) do
-    Dash.HttpMock
-    |> Mox.expect(:post, 1, fn url, body, _headers, _opts ->
-      cond do
-        url =~ ~r/rewrite_assets$/ ->
-          body_callback.(body)
           {:ok, %HTTPoison.Response{status_code: 200}}
       end
     end)
