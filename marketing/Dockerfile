@@ -4,7 +4,7 @@ arg GITHUB_TOKEN
 workdir client
 COPY . .
 ENV GITHUB_TOKEN=$GITHUB_TOKEN 
-RUN npm install && ENV=dev NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN=XX8nOrGro4rRR_uBid68fcNQcmbkPTNtGazpVCCkY6pQ npm run build
+RUN npm install && ENV=dev NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN=X8nOrGro4rRR_uBid68fcNQcmbkPTNtGazpVCCkY6pQ npm run build
 # ---- app stage ----
 FROM node:18-alpine
 WORKDIR "/app"
