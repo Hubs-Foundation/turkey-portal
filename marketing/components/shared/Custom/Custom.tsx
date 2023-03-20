@@ -67,19 +67,6 @@ const Custom = ({ data }: CustomPropT) => {
     return data;
   }, []);
 
-
-
-  // <Hero
-  //         background={isMobile ? HubsMobileHero : HubsHero}
-  //         title="A whole new world, from the comfort of your home"
-  //         body="Take control of your online communities with a fully open source virtual world platform that you can make your own."
-  //         cta="See Pricing"
-  //         ctaLink="/#subscribe"
-  //         cta2="Explore Hubs"
-  //         cta2Link="/Pvg5MMt/hubs-demo"
-  //         heroAlt="A diverse group of friendly avatars, on a colorful island, waving their hands."
-  //       />
-
   const render = (type: SectionsNamesE): JSX.Element => {
     switch (type) {
       case SectionsNamesE.HERO:
@@ -93,7 +80,6 @@ const Custom = ({ data }: CustomPropT) => {
           <div id="email-signup">
             <EmailSignUp />
           </div>
-        
         );
       case SectionsNamesE.SUBSCRIBE:
         return (
@@ -110,7 +96,7 @@ const Custom = ({ data }: CustomPropT) => {
           />
         );
       case SectionsNamesE.VALUE_PROPS:
-        return <ValueProps/>;
+        return <ValueProps />;
       case SectionsNamesE.TESTIMONIAL:
         return <Testimonial />;
       default:
