@@ -64,6 +64,12 @@
   }
 }
 
+.content_wrapper {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
 .info {
   &_wrapper {
     display: flex;
@@ -80,14 +86,12 @@
   button {
     flex-grow: 1;
   }
-}
 
-.footer_starter {
-  align-items: flex-end;
-  height: 100%;
-}
-
-.wrapper_starter {
-  display: flex;
-  flex-direction: column;
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    height: 100%;
+    justify-content: end;
+  }
 }

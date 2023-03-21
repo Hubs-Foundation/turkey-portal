@@ -74,33 +74,36 @@ export const PlanInfoCard = ({
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
       <div className={styles.banner_gradient} />
+      <div className={`${styles.content_wrapper}`}>
+        {/* HEADER  */}
+        <div>
+          <h2 className={styles.title}>{title}</h2>
+          <div className={styles.price_wrapper}>{price}</div>
+        </div>
 
-      {/* HEADER  */}
-      <div>
-        <h2 className={styles.title}>{title}</h2>
-        <div className={styles.price_wrapper}>{price}</div>
-      </div>
+        {/* CONTENT  */}
+        <div className={styles.content}>
+          {infoCopyList.map(({ label, description, icon }, i) => {
+            return (
+              <InfoBlock
+                key={i}
+                icon={icon}
+                label={label}
+                description={description}
+              />
+            );
+          })}
+        </div>
 
-      {/* CONTENT  */}
-      <div className={styles.content}>
-        {infoCopyList.map(({ label, description, icon }, i) => {
-          return (
-            <InfoBlock
-              key={i}
-              icon={icon}
-              label={label}
-              description={description}
-            />
-          );
-        })}
-      </div>
+        {/* LOCATION CONFIRMATION  */}
+        {form}
 
-      {/* LOCATION CONFIRMATION  */}
-      {form}
-
-      {/* FOOTER  */}
-      <div className={`${styles.footer} ${footerClassProp}`}>
-        {confirmButton}
+        {/* FOOTER  */}
+        <div className={styles.footer_wrapper}>
+          <div className={`${styles.footer} ${footerClassProp}`}>
+            {confirmButton}
+          </div>
+        </div>
       </div>
     </div>
   );
