@@ -81,3 +81,13 @@
     flex-grow: 1;
   }
 }
+
+.footer_starter {
+  align-items: flex-end;
+  height: 100%;
+}
+
+.wrapper_starter {
+  display: flex;
+  flex-direction: column;
+}
