@@ -47,7 +47,7 @@ export const Price = ({ region, price, priceCadence }: PricePropsT) => {
           <h2>{price}</h2>
         )}
       </div>
-      {priceCadence && <p className={styles.price_cadence}>per month + tax</p>}
+      {priceCadence && <p className={styles.price_cadence}>{priceCadence}</p>}
     </div>
   );
 };

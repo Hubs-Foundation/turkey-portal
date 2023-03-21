@@ -6,6 +6,8 @@ import { CountriesE, RegionsT } from 'types/Countries';
 import { getRegion, RegionT, RegionObjT } from 'services/region.service';
 import { Price, PlanInfoCard } from './PlanInfoCard';
 
+const TAX_REGIONS: RegionT[] = ['US'];
+
 export const StandardInfoCard = () => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
   const [region, setRegion] = useState<RegionT>(null);
@@ -45,6 +47,8 @@ export const StandardInfoCard = () => {
     setLocationConfirmed(value);
   }, []);
 
+  const hasTax = TAX_REGIONS.includes(region);
+
   return (
     <PlanInfoCard
       title="Standard"
@@ -52,7 +56,7 @@ export const StandardInfoCard = () => {
         <Price
           price="20"
           region={region as RegionsT}
-          priceCadence={`per month${isEuro() ? '' : ' + tax'}`}
+          priceCadence={`per month${hasTax ? ' + tax' : ''}`}
         />
       }
       infoCopyList={StandardPlanInfoCopy}
