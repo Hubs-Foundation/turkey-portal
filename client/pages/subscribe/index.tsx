@@ -3,8 +3,8 @@ import type { GetServerSidePropsContext } from 'next';
 import { subscriptionPageRequireAuthentication } from 'services/routeGuard.service';
 import SubContactCard from '@Cards/SubContactCard/SubContactCard';
 import styles from './subscribe.module.scss';
-import { StandardInfoCard } from '@Cards/PlanInfoCard/StandardPlanCard';
-import { StarterInfoCard } from '@Cards/PlanInfoCard/StarterPlanCard';
+import { StandardPlanCard } from '@Cards/PlanCard/StandardPlanCard';
+import { StarterInfoCard } from '@Cards/PlanCard/StarterPlanCard';
 
 type SubscribePropsT = {
   region: string | null;
@@ -22,7 +22,7 @@ const Subscribe = ({ region }: SubscribePropsT) => {
         <div className={styles.wrapper}>
           <div className={styles.cards}>
             <StarterInfoCard />
-            <StandardInfoCard />
+            <StandardPlanCard />
             <SubContactCard
               email="hubs@mozilla.com"
               subject="Subscription inquiries"

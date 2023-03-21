@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Icon } from '@mozilla/lilypad-ui';
 import { PlanInfoCopyT } from './PlanInfoCopy';
-import styles from './PlanInfoCard.module.scss';
+import styles from './BasePlanCard.module.scss';
 import { RegionsT } from 'types/Countries';
 import { getCurrencyMeta } from 'util/utilities';
 
@@ -52,7 +52,7 @@ export const Price = ({ region, price, priceCadence }: PricePropsT) => {
   );
 };
 
-type PlanInfoCardPropsT = {
+type BasePlanCardPropsT = {
   classProp?: string;
   title: string;
   price: ReactNode;
@@ -62,7 +62,7 @@ type PlanInfoCardPropsT = {
   footerClassProp?: string;
 };
 
-export const PlanInfoCard = ({
+export const BasePlanCard = ({
   classProp = '',
   title,
   price,
@@ -70,7 +70,7 @@ export const PlanInfoCard = ({
   form,
   confirmButton,
   footerClassProp = '',
-}: PlanInfoCardPropsT) => {
+}: BasePlanCardPropsT) => {
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
       <div className={styles.banner_gradient} />

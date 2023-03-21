@@ -1,13 +1,12 @@
 import { Button } from '@mozilla/lilypad-ui';
 import { StarterPlanInfoCopy } from './PlanInfoCopy';
-import { Price, PlanInfoCard } from './PlanInfoCard';
-import styles from './PlanInfoCard.module.scss';
+import { Price, BasePlanCard } from './BasePlanCard';
 
 const noop = () => {};
 
 export const StarterInfoCard = () => {
   return (
-    <PlanInfoCard
+    <BasePlanCard
       title="Starter"
       price={<Price region={null} price="Free" />}
       infoCopyList={StarterPlanInfoCopy}
