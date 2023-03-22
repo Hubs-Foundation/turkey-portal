@@ -1,7 +1,7 @@
 defmodule DashWeb.Api.V1.AccountController do
   use DashWeb, :controller
 
-  def index(conn, _) do
+  def show(conn, _) do
     # has_hubs allows the frontend to distinguish between the first login,
     # where we need to build the users's first hub, and subsequent logins,
     # where the user's hub is available, but is yet to be loaded in the frontend.
@@ -14,7 +14,7 @@ defmodule DashWeb.Api.V1.AccountController do
 
     conn
     |> render(
-      "index.json",
+      "show.json",
       fxa_account_info: fxa_account_info,
       has_hubs: has_hubs,
       has_creating_hubs: has_creating_hubs,

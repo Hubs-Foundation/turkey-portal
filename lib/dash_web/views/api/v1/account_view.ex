@@ -1,9 +1,9 @@
 defmodule DashWeb.Api.V1.AccountView do
   use DashWeb, :view
 
-  def render("index.json", nil), do: nil
+  def render("show.json", nil), do: nil
 
-  def render("index.json", %{
+  def render("show.json", %{
         fxa_account_info: %Dash.FxaAccountInfo{} = fxa_account_info,
         has_hubs: has_hubs,
         has_creating_hubs: has_creating_hubs,
