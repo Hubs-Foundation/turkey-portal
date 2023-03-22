@@ -12,5 +12,6 @@ const nextConfig = {
 };
 
 console.log('nextConfig: ', nextConfig);
+console.log('token', process.env.CONTENTFUL_TOKEN);
 
 module.exports = nextConfig;
