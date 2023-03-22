@@ -1,4 +1,4 @@
-name: turkeymarketing-dev
+name: turkeymarketing
 on:
   push:
     branches: 
