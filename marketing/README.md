@@ -39,3 +39,5 @@ Note: Files env.development and .env.production are where env varibles go for th
 - FXA_PAYMENT_URL - subscription payment url
 - PRODUCT_ID - subscription payment ID
 - PLAN_ID_EA - subscription payment Early Access ID
+- ENV - "local" if you are locally developing
+- CONTENTFUL_TOKEN - secret api token from contentful
