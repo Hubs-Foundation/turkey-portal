@@ -1,0 +1,27 @@
+name: turkeymarketing
+on:
+  push:
+    branches: 
+    paths:
+    - 'marketing/**'
+    - '.github/workflows/turkeymarketing.yml'
+  workflow_dispatch:
+  repository_dispatch:
+    types: [contentful.deploy]
+  
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  turkeyGitops:
+    uses: mozilla/hubs-ops/.github/workflows/turkeyGitops.yml@docker_args
+    with:
+      registry: mozillareality
+      codePath: marketing
+      dockerfile: Dockerfile
+      docker_args-env: dev
+    secrets:
+      DOCKER_HUB_PWD: ${{ secrets.DOCKER_HUB_PWD }}
+      docker_args-contentful_token: ${{ secrets.CONTENTFUL_TOKEN_DEV }}
+      
+      

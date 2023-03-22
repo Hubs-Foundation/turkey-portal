@@ -1,0 +1,20 @@
+name: turkeymarketing
+on:
+  workflow_dispatch:
+  
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  turkeyGitops:
+    uses: mozilla/hubs-ops/.github/workflows/turkeyGitops.yml@docker_args
+    with:
+      registry: mozillareality
+      codePath: marketing
+      dockerfile: Dockerfile
+      docker_args-env: prod
+    secrets:
+      DOCKER_HUB_PWD: ${{ secrets.DOCKER_HUB_PWD }}
+      docker_args-contentful_token: ${{ secrets.CONTENTFUL_TOKEN_PROD }}
+      
+      
