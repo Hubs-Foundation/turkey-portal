@@ -7,14 +7,15 @@ import {
   createSectionsQuery,
   createCustomPageQuery,
 } from './queries';
-const ACCESS_TOKEN = process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN;
+
+const CONTENTFUL_TOKEN = process.env.CONTENTFUL_TOKEN;
 const SPACE = 'p5qj0ed8ji31';
 const BASE_URL = 'https://graphql.contentful.com/content/v1/spaces/';
 const URL = `${BASE_URL}${SPACE}`;
 const PROTOCOLS = {
   headers: {
     'content-type': 'application/json',
-    authorization: `Bearer ${ACCESS_TOKEN}`,
+    authorization: `Bearer ${CONTENTFUL_TOKEN}`,
   },
 };
 
@@ -27,7 +28,7 @@ const PROTOCOLS = {
  */
 const client = createClient({
   space: SPACE,
-  accessToken: ACCESS_TOKEN ?? '',
+  accessToken: CONTENTFUL_TOKEN ?? '',
 });
 
 /**

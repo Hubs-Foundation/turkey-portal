@@ -7,6 +7,8 @@ type EnvVariableKeys = {
   PUBLIC_API_SERVER: string;
 };
 
+type EnvVariable = keyof EnvVariableKeys;
+
 /**
  * LOCAL ENVIRONMENT
  */
@@ -50,7 +52,7 @@ const prodVars: EnvVariableKeys = {
  * @param key
  * @returns string
  */
-const getEnvVariable = (key: keyof EnvVariableKeys): string => {
+const getEnvVariable = (key: EnvVariable): string => {
   if (process.env.ENV === 'local') {
     return localVars[key];
   }
