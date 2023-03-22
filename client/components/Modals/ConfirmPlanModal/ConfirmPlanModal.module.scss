@@ -1,0 +1,15 @@
+@use 'styles/core/boilerplate' as *;
+
+.wrapper {
+  border-radius: 10px;
+  background-color: white;
+  overflow: hidden;
+}
+
+.button {
+  min-width: 300px;
+}
+
+.gradient {
+  background: $gradient-warm;
+}

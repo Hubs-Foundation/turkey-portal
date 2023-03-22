@@ -6,32 +6,10 @@ import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
 import { CountriesE, RegionsT } from 'types/Countries';
 import { getCurrencyMeta } from 'util/utilities';
 import { getRegion, RegionT, RegionObjT } from 'services/region.service';
+import { InfoBlock } from '@Shared/InfoBlock/InfoBlock';
 
 type SubInfoCardPropsT = {
   classProp?: string;
-};
-
-type InfoBlockPropsT = {
-  icon: IconT;
-  label: string;
-  description: string;
-};
-
-// INFO BLOCK COMPONENT
-const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
-  return (
-    <div className={styles.info_wrapper}>
-      <div className="flex-box">
-        <Icon name={icon} size={30} classProp="mr-20" />
-      </div>
-      <div className="body-md">
-        <p>
-          {' '}
-          <span className="body-md-bold">{label}</span> <br /> {description}
-        </p>
-      </div>
-    </div>
-  );
 };
 
 // PRICE DISPLAY COMPONENT
