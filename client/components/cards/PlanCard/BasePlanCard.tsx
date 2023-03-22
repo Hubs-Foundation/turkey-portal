@@ -74,7 +74,7 @@ export const BasePlanCard = ({
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
       <div className={styles.banner_gradient} />
-      <div className={`${styles.content_wrapper}`}>
+      <div className="flex-box">
         {/* HEADER  */}
         <div>
           <h2 className={styles.title}>{title}</h2>
@@ -97,12 +97,12 @@ export const BasePlanCard = ({
 
         {/* LOCATION CONFIRMATION  */}
         {form}
+      </div>
 
-        {/* FOOTER  */}
-        <div className={styles.footer_wrapper}>
-          <div className={`${styles.footer} ${footerClassProp}`}>
-            {confirmButton}
-          </div>
+      {/* FOOTER  */}
+      <div className={styles.footer_wrapper}>
+        <div className={`${styles.footer} ${footerClassProp}`}>
+          {confirmButton}
         </div>
       </div>
     </div>
