@@ -8,8 +8,8 @@ COPY . .
 RUN echo "ENV: $ENV, CONTENTFUL_TOKEN-last4: ${CONTENTFUL_TOKEN: -3}"
 RUN npm config set -- "//npm.pkg.github.com/:_authToken" "$GITHUB_TOKEN" && npm install 
 run len=${#CONTENTFUL_TOKEN} && echo $len && echo ${CONTENTFUL_TOKEN::$len}
-run let len_1=$len-1 && echo ${CONTENTFUL_TOKEN::$len_1}
-RUN CONTENTFUL_TOKEN=$(echo $CONTENTFUL_TOKEN | sed 's/|/|/g') npm run build
+run let len_1=$len-1 && echo ${CONTENTFUL_TOKEN::$len_1}${CONTENTFUL_TOKEN: -1} > contentfultoken && cat contentfultoken
+RUN CONTENTFUL_TOKEN=$(cat contentfultoken) npm run build
 # ---- app stage ----
 FROM node:18-alpine
 WORKDIR "/app"
