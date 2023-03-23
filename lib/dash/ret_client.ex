@@ -167,8 +167,6 @@ defmodule Dash.RetClient do
 
   @change_email_for_login "change_email_for_login"
   def update_hub_admin_email(%Dash.Hub{hub_id: hub_id}, old_email, new_email) do
-    Logger.error("EMAIL CHANGE TODO UPDATE old: #{old_email}, new: #{new_email}")
-
     response =
       get_http_client().patch(
         ret_host_url(hub_id) <> @ret_internal_scope <> @change_email_for_login,
