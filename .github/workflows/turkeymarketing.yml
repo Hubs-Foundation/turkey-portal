@@ -22,6 +22,6 @@ jobs:
       docker_args-env: dev
     secrets:
       DOCKER_HUB_PWD: ${{ secrets.DOCKER_HUB_PWD }}
-      docker_args-contentful_token: ${{ secrets.CONTENTFUL_TOKEN_DEV }}
+      docker_args-contentful_token_b64: ${{ secrets.CONTENTFUL_TOKEN_B64_DEV }}
       
       
