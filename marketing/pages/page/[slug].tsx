@@ -15,7 +15,7 @@ type GetStaticPropsT = {
   };
 };
 
-const Home = ({ sectionsData }: CustomPagePropsT) => {
+const CustomPage = ({ sectionsData }: CustomPagePropsT) => {
   return (
     <div className="page_wrapper">
       <main>
@@ -35,7 +35,7 @@ const Home = ({ sectionsData }: CustomPagePropsT) => {
   );
 };
 
-export default Home;
+export default CustomPage;
 
 export async function getStaticProps({ params }: GetStaticPropsT) {
   try {

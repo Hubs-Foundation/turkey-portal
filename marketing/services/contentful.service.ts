@@ -8,15 +8,15 @@ import {
   createCustomPageQuery,
 } from './queries';
 
-const NEXT_PUBLIC_CONTENTFUL_TOKEN = process.env.NEXT_PUBLIC_CONTENTFUL_TOKEN;
-console.log('CONTENTFUL_TOKEN', NEXT_PUBLIC_CONTENTFUL_TOKEN);
+const CONTENTFUL_TOKEN = process.env.CONTENTFUL_TOKEN;
+console.log('CONTENTFUL_TOKEN', CONTENTFUL_TOKEN);
 const SPACE = 'p5qj0ed8ji31';
 const BASE_URL = 'https://graphql.contentful.com/content/v1/spaces/';
 const URL = `${BASE_URL}${SPACE}`;
 const PROTOCOLS = {
   headers: {
     'content-type': 'application/json',
-    authorization: `Bearer ${process.env.NEXT_PUBLIC_CONTENTFUL_TOKEN}`,
+    authorization: `Bearer 2Ou5lQVJKiR_0_UZn4i_Ro2TRH5hN82UnP93Vn5HGt8`,
   },
 };
 
@@ -29,7 +29,7 @@ const PROTOCOLS = {
  */
 const client = createClient({
   space: SPACE,
-  accessToken: NEXT_PUBLIC_CONTENTFUL_TOKEN ?? '',
+  accessToken: CONTENTFUL_TOKEN ?? '',
 });
 
 /**
