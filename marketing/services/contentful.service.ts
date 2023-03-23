@@ -16,7 +16,7 @@ const URL = `${BASE_URL}${SPACE}`;
 const PROTOCOLS = {
   headers: {
     'content-type': 'application/json',
-    authorization: `Bearer 2Ou5lQVJKiR_0_UZn4i_Ro2TRH5hN82UnP93Vn5HGt8`,
+    authorization: `Bearer ${process.env.CONTENTFUL_TOKEN}`,
   },
 };
 
@@ -29,7 +29,7 @@ const PROTOCOLS = {
  */
 const client = createClient({
   space: SPACE,
-  accessToken: '2Ou5lQVJKiR_0_UZn4i_Ro2TRH5hN82UnP93Vn5HGt8',
+  accessToken: `${process.env.CONTENTFUL_TOKEN}` ?? '',
 });
 
 /**
