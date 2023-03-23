@@ -6,7 +6,10 @@ on:
       - "README.md"
       - "client/**"
       - "marketing/**"
+      - '.github/workflows/lint-and-test.yml'
       - '.github/workflows/turkeydashboardclient.yml'
+      - '.github/workflows/turkeymarketing.yml'
+      - '.github/workflows/turkeymarketing-prod.yml'
   workflow_dispatch:
 
 jobs:
