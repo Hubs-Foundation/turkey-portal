@@ -5,9 +5,9 @@ arg ENV
 arg CONTENTFUL_TOKEN
 workdir client
 COPY . .
-RUN echo "ENV: $ENV, CONTENTFUL_TOKEN-last4: ${CONTENTFUL_TOKEN: -4}"
+RUN echo "ENV: $ENV, CONTENTFUL_TOKEN-last4: ${CONTENTFUL_TOKEN: -3}"
 RUN npm config set -- "//npm.pkg.github.com/:_authToken" "$GITHUB_TOKEN" && npm install 
-env contentfultoken="${CONTENTFUL_TOKEN: :5}${CONTENTFUL_TOKEN: -4}"
+env contentfultoken="${CONTENTFUL_TOKEN: -${#CONTENTFUL_TOKEN}}"
 run echo "contentfultoken=$contentfultoken"
 RUN CONTENTFUL_TOKEN=$contentfultoken npm run build
 # ---- app stage ----
