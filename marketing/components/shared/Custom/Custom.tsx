@@ -6,9 +6,7 @@ import TitleDescription from '@Shared/TitleDescription/TitleDescription';
 import EmailSignUp from '@Shared/EmailSignUp/EmailSignUp';
 import Subscribe from '@Shared/Subscribe/Subscribe';
 import Testimonial from '@Shared/Testimonial/Testimonial';
-import ValueProps, {
-  TilePropsT as ValuePropsT,
-} from '@Shared/ValueProps/ValueProps';
+import ValueProps from '@Shared/ValueProps/ValueProps';
 import TileSpotlight, { TilePropsT } from '@Shared/TileSpotlight/TileSpotlight';
 // Tiles Assets
 import spatialAudio from 'public/spatial_audio.jpg';
