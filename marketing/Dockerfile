@@ -7,8 +7,7 @@ workdir client
 COPY . .
 RUN echo "ENV: $ENV, CONTENTFUL_TOKEN-last4: ${CONTENTFUL_TOKEN: -3}"
 RUN npm config set -- "//npm.pkg.github.com/:_authToken" "$GITHUB_TOKEN" && npm install 
-run echo $CONTENTFUL_TOKEN > contentful-token && cat contentful-token
-RUN CONTENTFUL_TOKEN=$(cat contentful-token) npm run build
+RUN CONTENTFUL_TOKEN=$(echo $CONTENTFUL_TOKEN | sed 's/|/|/g') npm run build
 # ---- app stage ----
 FROM node:18-alpine
 WORKDIR "/app"
