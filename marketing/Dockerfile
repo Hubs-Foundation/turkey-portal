@@ -8,7 +8,8 @@ COPY . .
 ENV GITHUB_TOKEN=$GITHUB_TOKEN
 ENV CONTENTFUL_TOKEN=$CONTENTFUL_TOKEN
 RUN echo "ENV: $ENV, CONTENTFUL_TOKEN-last4: ${CONTENTFUL_TOKEN: -4}"
-RUN npm config set -- "//npm.pkg.github.com/:_authToken" "$GITHUB_TOKEN" && npm install && CONTENTFUL_TOKEN=${CONTENTFUL_TOKEN} npm run build
+RUN npm config set -- "//npm.pkg.github.com/:_authToken" "$GITHUB_TOKEN" && npm install 
+RUN cmd="CONTENTFUL_TOKEN=${CONTENTFUL_TOKEN} npm run build" && echo $cmd && $cmd
 # ---- app stage ----
 FROM node:18-alpine
 WORKDIR "/app"
