@@ -28,6 +28,7 @@ const PROTOCOLS = {
  * nice way to go.
  */
 const client = createClient({
+  environment: 'development',
   space: SPACE,
   accessToken: `${process.env.CONTENTFUL_TOKEN}` ?? '',
 });
