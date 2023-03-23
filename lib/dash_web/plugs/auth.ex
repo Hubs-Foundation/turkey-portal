@@ -19,11 +19,11 @@ defmodule DashWeb.Plugs.Auth do
   """
   use DashWeb, :controller
 
+  import Dash.Utils, only: [capability_string: 0]
   import Plug.Conn
 
   @cookie_name "_turkeyauthtoken"
   @algo "RS256"
-  @capabilities_string "managed-hubs"
 
   def init(default), do: default
 
@@ -107,7 +107,7 @@ defmodule DashWeb.Plugs.Auth do
           fxa_pic: fxa_pic,
           fxa_display_name: fxa_display_name,
           fxa_email: fxa_email,
-          has_subscription?: @capabilities_string in active_capabilities
+          has_subscription?: capability_string() in active_capabilities
         })
         |> assign(:fxa_subscription, %Dash.FxaSubscription{
           fxa_cancel_at_period_end: fxa_cancel_at_period_end,
@@ -194,6 +194,4 @@ defmodule DashWeb.Plugs.Auth do
       max_age: 0
     )
   end
-
-  def capability_string, do: @capabilities_string
 end

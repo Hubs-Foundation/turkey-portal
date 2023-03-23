@@ -2,6 +2,7 @@ defmodule Dash.FxaEvents do
   @moduledoc """
    Handles events sent from FxA via webhook
   """
+  import Dash.Utils, only: [capability_string: 0]
   require Logger
 
   @type event_data :: %{String.t() => String.t() | [String.t(), ...]}
@@ -86,7 +87,7 @@ defmodule Dash.FxaEvents do
         change_time: change_time_dt
       })
 
-      if not is_active and capability == DashWeb.Plugs.Auth.capability_string() do
+      if not is_active and capability === capability_string() do
         account = Dash.Account.account_for_fxa_uid(fxa_uid)
         Dash.delete_all_hubs_for_account(account)
       end

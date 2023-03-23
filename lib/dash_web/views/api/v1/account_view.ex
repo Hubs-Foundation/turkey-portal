@@ -1,23 +1,35 @@
 defmodule DashWeb.Api.V1.AccountView do
   use DashWeb, :view
 
-  def render("show.json", nil), do: nil
-
   def render("show.json", %{
+        active_plan?: active_plan?,
+        active_subscription?: active_subscription?,
+        creating_hubs?: creating_hubs?,
+        forbidden?: forbidden?,
         fxa_account_info: %Dash.FxaAccountInfo{} = fxa_account_info,
-        has_hubs: has_hubs,
-        has_creating_hubs: has_creating_hubs,
-        is_forbidden: is_forbidden,
-        has_subscription?: has_subscription?
+        hubs?: hubs?
       }) do
-    %{
-      displayName: fxa_account_info.fxa_display_name,
-      profilePic: fxa_account_info.fxa_pic,
-      email: fxa_account_info.fxa_email,
-      hasHubs: has_hubs,
-      hasCreatingHubs: has_creating_hubs,
-      isForbidden: is_forbidden,
-      hasSubscription: has_subscription?
-    }
+    if Application.fetch_env!(:dash, :starter_plan_enabled?) do
+      %{
+        displayName: fxa_account_info.fxa_display_name,
+        email: fxa_account_info.fxa_email,
+        hasCreatingHubs: creating_hubs?,
+        hasHubs: hubs?,
+        hasPlan: active_plan?,
+        hasSubscription: active_subscription?,
+        isForbidden: forbidden?,
+        profilePic: fxa_account_info.fxa_pic
+      }
+    else
+      %{
+        displayName: fxa_account_info.fxa_display_name,
+        email: fxa_account_info.fxa_email,
+        hasCreatingHubs: creating_hubs?,
+        hasHubs: hubs?,
+        hasSubscription: active_subscription?,
+        isForbidden: forbidden?,
+        profilePic: fxa_account_info.fxa_pic
+      }
+    end
   end
 end
