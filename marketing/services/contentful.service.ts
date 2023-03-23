@@ -9,13 +9,14 @@ import {
 } from './queries';
 
 const CONTENTFUL_TOKEN = process.env.CONTENTFUL_TOKEN;
+console.log('CONTENTFUL_TOKEN', CONTENTFUL_TOKEN);
 const SPACE = 'p5qj0ed8ji31';
 const BASE_URL = 'https://graphql.contentful.com/content/v1/spaces/';
 const URL = `${BASE_URL}${SPACE}`;
 const PROTOCOLS = {
   headers: {
     'content-type': 'application/json',
-    authorization: `Bearer ${CONTENTFUL_TOKEN}`,
+    authorization: `Bearer ${process.env.CONTENTFUL_TOKEN}`,
   },
 };
 
