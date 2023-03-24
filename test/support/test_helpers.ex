@@ -1,4 +1,4 @@
-defmodule DashWeb.TestHelpers do
+defmodule Dash.TestHelpers do
   import Phoenix.ConnTest
   require Logger
   require Integer
