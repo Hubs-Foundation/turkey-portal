@@ -8,11 +8,12 @@ import {
   createCustomPageQuery,
 } from './queries';
 
-const CONTENTFUL_TOKEN = process.env.CONTENTFUL_TOKEN;
-console.log('CONTENTFUL_TOKEN', CONTENTFUL_TOKEN);
+const CONTENTFUL_ENV = process.env.ENV === 'prod' ? 'master' : 'development';
 const SPACE = 'p5qj0ed8ji31';
-const BASE_URL = 'https://graphql.contentful.com/content/v1/spaces/';
-const URL = `${BASE_URL}${SPACE}`;
+const BASE_URL = 'https://graphql.contentful.com/content/v1';
+const SPACE_PATH = `/spaces/${SPACE}`;
+const ENV_PATH = `/environments/${CONTENTFUL_ENV}`;
+const URL = `${BASE_URL}${SPACE_PATH}${ENV_PATH}`;
 const PROTOCOLS = {
   headers: {
     'content-type': 'application/json',
@@ -28,7 +29,7 @@ const PROTOCOLS = {
  * nice way to go.
  */
 const client = createClient({
-  environment: process.env.ENV === 'prod' ? 'master' : 'development',
+  environment: CONTENTFUL_ENV,
   space: SPACE,
   accessToken: `${process.env.CONTENTFUL_TOKEN}` ?? '',
 });
