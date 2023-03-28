@@ -29,7 +29,7 @@ const SkeletonCard = ({
         return (
           <div
             key={i}
-            className={`${styles.card} ${pulse ? 'pulse' : 'static'} ${
+            className={`${styles.card} ${pulse ? 'pulse' : styles.static} ${
               category === 'square' ? styles.square : styles.row
             }`}
           ></div>
