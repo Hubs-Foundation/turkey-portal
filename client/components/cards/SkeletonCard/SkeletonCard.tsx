@@ -5,6 +5,7 @@ type SkeletonCardPropsT = {
   category: 'square' | 'row';
   qty: number;
   classProp?: string;
+  pulse?: boolean;
 };
 
 /**
@@ -16,6 +17,7 @@ const SkeletonCard = ({
   category,
   qty = 1,
   classProp = '',
+  pulse = true,
 }: SkeletonCardPropsT) => {
   return (
     <div
@@ -27,7 +29,7 @@ const SkeletonCard = ({
         return (
           <div
             key={i}
-            className={`${styles.card} pulse ${
+            className={`${styles.card} ${pulse ? 'pulse' : 'static'} ${
               category === 'square' ? styles.square : styles.row
             }`}
           ></div>

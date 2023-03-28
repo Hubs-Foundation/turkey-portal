@@ -14,12 +14,15 @@ const createInfoBlock = (
 
 const ConfirmPlanModel = () => {
   return (
-    <div className="p-20" style={{ backgroundColor: 'grey' }}>
-      <div className={`${styles.wrapper} mb-10 p-20`}>
-        <h2>Let&apos;s make your first hub!</h2>
+    <div className={`${styles.modal_container}`}>
+      <div
+        className={`${styles.container} ${styles.continue_wrapper} flex mb-10 p-20`}
+      >
+        <h2>Let&apos;s build your hub!</h2>
         <p>
-          Continue with starter plan to begin managing and exploring your
-          virtual worlds
+          Continue with a Starter Plan and begin exploration the many features
+          of your hub. Visit your hub’s home page and create your first virtual
+          room.
         </p>
         <Button
           classProp={styles.button}
@@ -28,16 +31,16 @@ const ConfirmPlanModel = () => {
         />
       </div>
 
-      <div className={`${styles.wrapper} mb-10`}>
-        <div className={`${styles.gradient} py-15 px-10`}>
+      <div className={`${styles.container} mb-10`}>
+        <div className={`${styles.gradient_banner} flex py-15 px-10`}>
           <p>Looking to take your online communities to the next level?</p>
           <Button
-            classProp=""
+            classProp={`${styles.gradient_banner_button}`}
             text="Upgrade to Standard"
             label="Upgrade to Standard"
           />
         </div>
-        <div className="">
+        <div className={`${styles.info_wrapper} flex`}>
           <div>{SubscriptionInfoCopy.slice(0, 2).map(createInfoBlock)}</div>
           <div>{SubscriptionInfoCopy.slice(2, 4).map(createInfoBlock)}</div>
         </div>

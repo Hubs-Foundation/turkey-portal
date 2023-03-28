@@ -1,15 +1,55 @@
 @use 'styles/core/boilerplate' as *;
 
-.wrapper {
+.modal_container {
+  max-width: 675px;
+}
+
+.container {
   border-radius: 10px;
   background-color: white;
   overflow: hidden;
+  line-height: 24px;
 }
 
-.button {
-  min-width: 300px;
+.continue_wrapper {
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 250px;
+
+  h2 {
+    font-family: $secondary-font;
+  }
+
+  button {
+    min-width: 300px;
+    max-width: 350px;
+    align-self: center;
+  }
 }
 
-.gradient {
+.gradient_banner {
   background: $gradient-warm;
+  align-items: center;
+  @include tablet-down {
+    display: block;
+  }
+
+  button {
+    margin-left: 20px;
+    color: $color-interaction-primary;
+    background-color: white;
+    border-color: white;
+    @include tablet-down {
+      margin-left: 0px;
+      margin-top: 10px;
+    }
+  }
+}
+
+.info_wrapper {
+  padding: 20px;
+  @include tablet-down {
+    flex-wrap: wrap;
+    padding: 10px;
+  }
 }
