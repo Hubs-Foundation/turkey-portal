@@ -2,6 +2,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   use DashWeb.ConnCase
 
   import Dash.TestHelpers
+  import Dash.Utils, only: [capability_string: 0]
   require Logger
 
   # @password_change_struct %{
@@ -143,6 +144,27 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   end
 
   describe "Subscription changed event" do
+    test "with an unknown capability", %{conn: conn} do
+      unknown = "unknown-capability"
+
+      for capabilities <- [[], [capability_string(), unknown], [unknown]] do
+        token =
+          [
+            fxa_uid: "dummy-uid",
+            event: get_subscription_changed_event(capabilities: capabilities, event_only: false)
+          ]
+          |> get_generic_fxa_event_struct()
+          |> Jason.encode!()
+
+        assert_raise RuntimeError, fn ->
+          conn
+          |> put_resp_content_type("application/json")
+          |> put_req_header("authorization", "Bearer #{token}")
+          |> post("/api/v1/events/fxa")
+        end
+      end
+    end
+
     test "Should update iat and add capability to account for true", %{conn: conn} do
       fxa_uid = get_default_test_uid()
 
