@@ -25,6 +25,7 @@ defmodule Dash.SubdomainDenial do
     "relay",
     "mdn",
     "demo",
+    "hello",
     "official"
   ]
 
