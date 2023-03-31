@@ -1,7 +1,8 @@
 defmodule DashWeb.Api.V1.HubControllerTest do
   use DashWeb.ConnCase
   use Retry
-  import DashWeb.TestHelpers
+
+  import Dash.TestHelpers
   import Mox
   import Plug.Conn.Status, only: [code: 1]
   require Logger

@@ -1,7 +1,7 @@
 defmodule DashWeb.Api.V1.SubscriptionControllerTest do
   use DashWeb.ConnCase
 
-  import DashWeb.TestHelpers
+  import Dash.TestHelpers
 
   describe "show/2" do
     test "should return values in cookie for subscription current period end and cancel at period end",
@@ -79,7 +79,7 @@ defmodule DashWeb.Api.V1.SubscriptionControllerTest do
       conn: conn
     } do
       previous_value = Application.get_env(:dash, Dash)[:plans]
-      Application.put_env(:dash, Dash, plans: "not-formatted-correctly")
+      merge_module_config(:dash, Dash, plans: "not-formatted-correctly")
 
       in_two_days = in_two_days()
 
@@ -98,7 +98,7 @@ defmodule DashWeb.Api.V1.SubscriptionControllerTest do
                  isCancelled: false
                })
 
-      Application.put_env(:dash, Dash, plans: previous_value)
+      merge_module_config(:dash, Dash, plans: previous_value)
     end
 
     test "should return default values if user is not subscribed", %{conn: conn} do
