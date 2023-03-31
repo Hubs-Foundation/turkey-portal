@@ -17,6 +17,7 @@
 
 .contents {
   max-width: 675px;
+  margin: 10px;
   padding-top: 20px;
   @include tablet-down {
     padding: 10px;
@@ -71,11 +72,10 @@
     flex-wrap: wrap;
     padding: 10px;
   }
-
-  &:first-child {
+  .first {
     margin-right: 20px;
-    @include tablet-down {
-      margin-right: 100px;
+    @include mobile-down {
+      margin-right: 0px;
     }
   }
 }

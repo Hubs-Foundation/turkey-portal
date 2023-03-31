@@ -1,4 +1,4 @@
-import { Button } from '@mozilla/lilypad-ui';
+import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import { InfoBlock, InfoBlockPropsT } from '@Shared/InfoBlock/InfoBlock';
 import SubscriptionInfoCopy from '@Cards/SubInfoCard/SubscriptionInfoCopy';
 import styles from './ConfirmPlanModal.module.scss';
@@ -35,13 +35,16 @@ const ConfirmPlanModel = () => {
             <div className={`${styles.gradient_banner} flex py-15 px-10`}>
               <p>Looking to take your online communities to the next level?</p>
               <Button
-                classProp={`${styles.gradient_banner_button}`}
+                // classProp={`${styles.gradient_banner_button}`}
+                category={ButtonCategoriesE.SECONDARY_SOLID}
                 text="Upgrade to Standard"
                 label="Upgrade to Standard"
               />
             </div>
             <div className={`${styles.info_wrapper} flex`}>
-              <div>{SubscriptionInfoCopy.slice(0, 2).map(createInfoBlock)}</div>
+              <div className={`${styles.first}`}>
+                {SubscriptionInfoCopy.slice(0, 2).map(createInfoBlock)}
+              </div>
               <div>{SubscriptionInfoCopy.slice(2, 4).map(createInfoBlock)}</div>
             </div>
           </div>
