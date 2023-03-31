@@ -16,7 +16,7 @@ const ConfirmPlanModel = () => {
       <div className={`${styles.modal_container}`}>
         <div className={styles.contents}>
           <div
-            className={`${styles.container} ${styles.continue_wrapper} flex mb-10 p-20`}
+            className={`${styles.container} ${styles.continue_wrapper} flex mb-10`}
           >
             <h2>Let&apos;s build your hub!</h2>
             <p>

@@ -19,9 +19,6 @@
   max-width: 675px;
   margin: 10px;
   padding-top: 20px;
-  @include tablet-down {
-    padding: 10px;
-  }
 }
 
 .container {
@@ -35,13 +32,18 @@
   flex-direction: column;
   justify-content: space-between;
   min-height: 250px;
+  padding: 20px;
+
+  @include mobile-down {
+    min-height: 260px;
+  }
 
   h2 {
     font-family: $secondary-font;
   }
 
   button {
-    min-width: 300px;
+    min-width: 240px;
     max-width: 350px;
     align-self: center;
   }
