@@ -1,7 +1,7 @@
 name: turkeymarketing-prod
 on:
   workflow_dispatch:
-  
+
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -15,6 +15,4 @@ jobs:
       docker_args-env: prod
     secrets:
       DOCKER_HUB_PWD: ${{ secrets.DOCKER_HUB_PWD }}
-      docker_args-contentful_token: ${{ secrets.CONTENTFUL_TOKEN_B64_PROD }}
-      
-      
+      docker_args-contentful_token_b64: ${{ secrets.CONTENTFUL_TOKEN_B64_PROD }}
