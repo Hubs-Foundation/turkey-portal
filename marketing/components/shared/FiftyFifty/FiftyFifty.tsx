@@ -1,46 +1,34 @@
 import { ReactNode } from 'react';
 import styles from './FiftyFifty.module.scss';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import { useDesktopDown } from 'hooks/useMediaQuery';
+import { FiftyfiftyT } from 'types';
+import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 
 /**
   FiftyFifty component can be image left / content right or vice versa
   use layout to alter image content placement.
 **/
-export enum FiftyFiftyLayoutE {
-  LEFT = 'left',
-  RIGHT = 'right',
+
+interface FiftyFiftyPropsI extends FiftyfiftyT {
+  children?: ReactNode;
+  classProp?: string;
 }
 
-type FiftyFiftyPropsT = {
-  image: StaticImageData;
-  imageMobile: StaticImageData;
-  imageAlt: string;
-  accentImage?: StaticImageData;
-  accentImageAlt?: string;
-  title?: string;
-  subTitle?: string;
-  body?: string;
-  children?: ReactNode;
-  layout?: FiftyFiftyLayoutE;
-  classProp?: string;
-};
-
 const FiftyFifty = ({
-  image,
-  imageMobile,
+  desktopImage,
+  mobileImage,
   imageAlt,
   accentImage,
   accentImageAlt = 'Accent Image',
   title,
-  subTitle,
-  body,
+  subtitle,
+  richText,
   children,
-  layout = FiftyFiftyLayoutE.LEFT,
+  layout = 'left',
   classProp = '',
-}: FiftyFiftyPropsT) => {
+}: FiftyFiftyPropsI) => {
   const isDesktopDown = useDesktopDown();
-
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={`${styles.container} ${styles['container_' + layout]}`}>
@@ -49,14 +37,13 @@ const FiftyFifty = ({
           <div className={styles.image_container}>
             <Image
               className={styles.image}
-              src={isDesktopDown ? imageMobile : image}
+              src={isDesktopDown ? mobileImage.url : desktopImage.url}
               alt={imageAlt}
               layout={isDesktopDown ? 'responsive' : 'fill'}
               objectFit={isDesktopDown ? undefined : 'cover'}
               objectPosition={isDesktopDown ? undefined : 'center'}
               width={isDesktopDown ? 800 : undefined}
               height={isDesktopDown ? 700 : undefined}
-              placeholder="blur"
             />
           </div>
         </div>
@@ -72,21 +59,25 @@ const FiftyFifty = ({
                   width={isDesktopDown ? 95 : 164}
                   height={isDesktopDown ? 92 : 159}
                   layout="fixed"
-                  src={accentImage}
+                  src={accentImage.url}
                   alt={accentImageAlt}
                 />
               </div>
             )}
-            {subTitle ? (
-              <h4 className="heading-sm">{subTitle}</h4>
+            {subtitle ? (
+              <h4 className="heading-sm">{subtitle}</h4>
             ) : (
               <div className={styles.bar_wrapper}>
                 <div className={styles.bar} />
               </div>
             )}
             {title && <h3 className="heading-xxl mt-4 mb-18">{title}</h3>}
-            {body && <p className="body-md">{body}</p>}
-            {children && <div className="body-md">{children}</div>}
+            {richText && (
+              <div className={styles.body_copy}>
+                {documentToReactComponents(richText.json)}
+              </div>
+            )}
+            {children && <div className={styles.body_copy}>{children}</div>}
           </div>
         </div>
       </div>

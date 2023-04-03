@@ -3,7 +3,7 @@ import { Button, ButtonCategoriesE, ButtonSizesE } from '@mozilla/lilypad-ui';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { useRouter } from 'next/router';
 import styles from './MobileSideNav.module.scss';
-import { DASH_ROOT_DOMAIN } from 'config';
+import getEnvVariable from 'config';
 
 type MobileSideNavPropsT = {
   isOpen: boolean;
@@ -103,7 +103,7 @@ const MobileSideNav = ({
                 label="Go to your hubs dashboard"
                 classProp="flex-grow-1 "
                 category={ButtonCategoriesE.PRIMARY_OUTLINE}
-                href={`https://${DASH_ROOT_DOMAIN}`}
+                href={`https://${getEnvVariable('DASH_ROOT_DOMAIN')}/dashboard`}
                 text="Go to my Dashboard"
               />
             </div>

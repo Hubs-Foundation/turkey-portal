@@ -1,79 +1,58 @@
-import { useCallback } from 'react';
-import { useRouter } from 'next/router';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import styles from './Hero.module.scss';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { useMobileDown } from 'hooks/useMediaQuery';
+import { HeroT } from 'types';
 
-type HeroPropsT = {
-  background: StaticImageData;
-  title?: string;
-  body?: string;
-  cta?: string;
-  ctaClick?: Function;
-  ctaLink?: string;
-  cta2?: string;
-  cta2Click?: Function;
-  cta2Link?: string;
-  heroAlt?: string;
+interface HeroPropsI extends HeroT {
   classProp?: string;
-};
+}
 
 const Hero = ({
-  background,
+  desktopImage,
+  mobileImage,
   title,
   body,
-  cta,
-  ctaClick,
-  ctaLink = '#',
-  cta2,
-  cta2Click,
-  cta2Link = '#',
-  heroAlt = 'hero image',
+  ctaTitle,
+  ctaHref,
+  cta2Title,
+  cta2Href,
+  imageAlt = 'hero image',
   classProp = '',
-}: HeroPropsT) => {
-  const router = useRouter();
-
-  const onCtaClick = useCallback(() => {
-    ctaClick && ctaClick();
-    ctaLink && router.push(ctaLink);
-  }, [ctaClick, ctaLink, router]);
-
-  const onCta2Click = useCallback(() => {
-    cta2Click && cta2Click();
-    cta2Link && router.push(cta2Link);
-  }, [cta2Click, cta2Link, router]);
+}: HeroPropsI) => {
+  const isMobile = useMobileDown();
 
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.container}>
         <Image
-          src={background}
-          alt={heroAlt}
+          src={isMobile ? mobileImage.url : desktopImage.url}
+          alt={imageAlt}
           layout="fill"
           objectFit="cover"
           objectPosition="center"
-          placeholder="blur"
         />
         <div className={styles.contents_wrapper}>
           <div className={styles.contents}>
             {title && <h3 className="heading-xxl mb-16">{title}</h3>}
             {body && <p className="body-md mb-24">{body}</p>}
-            {cta && (
+
+            {/* CALL TO ACTION LEFT  */}
+            {ctaTitle && (
               <Button
-                href={ctaLink}
-                label={cta}
-                text={cta}
-                onClick={onCtaClick}
+                href={ctaHref}
+                label={ctaTitle}
+                text={ctaTitle}
                 category={ButtonCategoriesE.PRIMARY_SOLID}
               />
             )}
 
-            {cta2 && (
+            {/* CALL TO ACTION RIGHT  */}
+            {cta2Title && (
               <Button
-                href={cta2Link}
-                label={cta2}
-                text={cta2}
-                onClick={onCta2Click}
+                href={cta2Href}
+                label={cta2Title}
+                text={cta2Title}
                 classProp="ml-10"
                 category={ButtonCategoriesE.PRIMARY_OUTLINE}
               />

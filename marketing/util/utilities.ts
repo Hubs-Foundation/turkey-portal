@@ -1,4 +1,15 @@
-import { RegionCurrency, RegionsT } from 'types/Countries';
+import { RegionsT } from 'types';
+
+const RegionCurrency = {
+  DE: {
+    abbrev: 'EUR',
+    symbol: '€',
+  },
+  US: {
+    abbrev: 'USD',
+    symbol: '$',
+  },
+};
 
 /**
  * Get meta data about a region

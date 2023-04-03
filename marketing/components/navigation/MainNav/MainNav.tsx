@@ -4,7 +4,7 @@ import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import { useRouter } from 'next/router';
-import { DASH_ROOT_DOMAIN } from 'config';
+import getEnvVariable from 'config';
 
 type MainNavPropsT = {
   classProp?: string;
@@ -81,7 +81,9 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
                   label="Go to your hubs dashboard"
                   classProp="mr-10"
                   category={ButtonCategoriesE.PRIMARY_OUTLINE}
-                  href={`https://${DASH_ROOT_DOMAIN}/dashboard`}
+                  href={`https://${getEnvVariable(
+                    'DASH_ROOT_DOMAIN'
+                  )}/dashboard`}
                   text="Go to Dashboard"
                 />
                 <Button
