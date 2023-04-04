@@ -17,15 +17,8 @@ export const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
       </div>
 
       <div className="body-md">
-        <p>
-          {' '}
-          <span className="body-md-bold">{label}</span>{' '}
-          {description && (
-            <>
-              <br /> {description}
-            </>
-          )}
-        </p>
+        <span className="body-md-bold">{label}</span>
+        {description && <p>{description}</p>}
       </div>
     </div>
   );
