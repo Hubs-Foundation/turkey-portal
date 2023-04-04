@@ -1,4 +1,4 @@
-import { ENV } from 'config';
+import { ENV, ENABLE_STARTER_PLAN } from 'config';
 
 export const localFeature = (): boolean => {
   return ENV === 'local';
@@ -14,4 +14,8 @@ export const stagingFeature = (): boolean => {
 
 export const prodFeature = (): boolean => {
   return ENV === 'prod';
+};
+
+export const enabledStarterPlan = (): boolean => {
+  return ENABLE_STARTER_PLAN === 'true';
 };

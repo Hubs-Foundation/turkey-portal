@@ -5,6 +5,7 @@ import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
 import { CountriesE, RegionsT } from 'types/Countries';
 import { getRegion, RegionObjT } from 'services/region.service';
 import { Price, BasePlanCard } from './BasePlanCard';
+import { enabledStarterPlan } from 'util/featureFlag';
 
 const TAX_REGIONS: RegionsT[] = ['US'];
 
@@ -51,7 +52,7 @@ export const StandardPlanCard = () => {
 
   return (
     <BasePlanCard
-      title="Standard"
+      title={enabledStarterPlan() ? 'Standard' : 'Early Access Hub'}
       price={
         <Price
           price="20"

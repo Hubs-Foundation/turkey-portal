@@ -5,15 +5,13 @@ import SubContactCard from '@Cards/SubContactCard/SubContactCard';
 import styles from './subscribe.module.scss';
 import { StandardPlanCard } from '@Cards/PlanCard/StandardPlanCard';
 import { StarterPlanCard } from '@Cards/PlanCard/StarterPlanCard';
-import { ENABLE_STARTER_PLAN } from 'config';
+import { enabledStarterPlan } from 'util/featureFlag';
 
 type SubscribePropsT = {
   region: string | null;
 };
 
 const Subscribe = ({ region }: SubscribePropsT) => {
-  const showStarterPlan = ENABLE_STARTER_PLAN === 'true';
-
   return (
     <div className="page_wrapper">
       <Head>
@@ -23,7 +21,7 @@ const Subscribe = ({ region }: SubscribePropsT) => {
 
       <main>
         <div className={styles.wrapper}>
-          {!showStarterPlan && (
+          {!enabledStarterPlan() && (
             <div className={styles.header}>
               <h1>Your account has no active hubs</h1>
               {/* TODO pull pricing from subplat - $20 */}
@@ -35,7 +33,7 @@ const Subscribe = ({ region }: SubscribePropsT) => {
           )}
 
           <div className={styles.cards}>
-            {showStarterPlan && <StarterPlanCard />}
+            {enabledStarterPlan() && <StarterPlanCard />}
             <StandardPlanCard />
             <SubContactCard
               email="hubs@mozilla.com"
