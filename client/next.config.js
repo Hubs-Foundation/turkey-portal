@@ -13,6 +13,8 @@ const nextConfig = {
     AUTH_SERVER: process.env.AUTH_SERVER,
     DASH_ROOT_DOMAIN: process.env.DASH_ROOT_DOMAIN,
     DUMMY: process.env.dummy,
+    ENABLE_STARTER_PLAN: process.env.ENABLE_STARTER_PLAN,
+    ENV: process.env.ENV,
     FXA_PAYMENT_URL: process.env.FXA_PAYMENT_URL,
     FXA_SERVER: process.env.FXA_SERVER,
     HUB_ROOT_DOMAIN: process.env.HUB_ROOT_DOMAIN,
@@ -21,8 +23,6 @@ const nextConfig = {
     PLAN_ID_EA_DE: process.env.PLAN_ID_EA_DE,
     PRODUCT_ID: process.env.PRODUCT_ID,
     PUBLIC_API_SERVER: process.env.PUBLIC_API_SERVER,
-    ENV: process.env.ENV,
-    ENABLE_STARTER_PLAN: process.env.ENABLE_STARTER_PLAN,
   },
   async redirects() {
     return [
