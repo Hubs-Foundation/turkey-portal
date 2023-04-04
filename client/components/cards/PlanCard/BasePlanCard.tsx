@@ -14,7 +14,6 @@ const InfoBlock = ({ icon, label, description }: PlanInfoCopyT) => {
       </div>
       <div className="body-md">
         <p>
-          {' '}
           <span className="body-md-bold">{label}</span> <br /> {description}
         </p>
       </div>
@@ -74,7 +73,7 @@ export const BasePlanCard = ({
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
       <div className={styles.banner_gradient} />
-      <div className={`${styles.content_wrapper}`}>
+      <div>
         {/* HEADER  */}
         <div>
           <h2 className={styles.title}>{title}</h2>
@@ -97,12 +96,12 @@ export const BasePlanCard = ({
 
         {/* LOCATION CONFIRMATION  */}
         {form}
+      </div>
 
-        {/* FOOTER  */}
-        <div className={styles.footer_wrapper}>
-          <div className={`${styles.footer} ${footerClassProp}`}>
-            {confirmButton}
-          </div>
+      {/* FOOTER  */}
+      <div className={styles.footer_wrapper}>
+        <div className={`${styles.footer} ${footerClassProp}`}>
+          {confirmButton}
         </div>
       </div>
     </div>

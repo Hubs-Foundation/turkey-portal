@@ -10,6 +10,9 @@
   overflow: hidden;
   position: relative;
   margin: 0px 17px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   @include mobile-down {
     width: 100%;
@@ -64,12 +67,6 @@
   }
 }
 
-.content_wrapper {
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-}
-
 .info {
   &_wrapper {
     display: flex;
@@ -89,7 +86,6 @@
 
   &_wrapper {
     display: flex;
-    height: 100%;
     flex-direction: column;
     justify-content: flex-end;
   }

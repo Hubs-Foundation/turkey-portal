@@ -3,14 +3,14 @@ import { Button, Checkbox } from '@mozilla/lilypad-ui';
 import { StandardPlanInfoCopy } from './PlanInfoCopy';
 import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
 import { CountriesE, RegionsT } from 'types/Countries';
-import { getRegion, RegionT, RegionObjT } from 'services/region.service';
+import { getRegion, RegionObjT } from 'services/region.service';
 import { Price, BasePlanCard } from './BasePlanCard';
 
-const TAX_REGIONS: RegionT[] = ['US'];
+const TAX_REGIONS: RegionsT[] = ['US'];
 
 export const StandardPlanCard = () => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
-  const [region, setRegion] = useState<RegionT>(null);
+  const [region, setRegion] = useState<RegionsT>(null);
 
   useEffect(() => {
     const fetchRegion = async () => {
