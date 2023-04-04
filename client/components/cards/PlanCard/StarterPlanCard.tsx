@@ -5,7 +5,7 @@ import { Price, BasePlanCard } from './BasePlanCard';
 // TODO change noop to a button click
 const noop = () => {};
 
-export const StarterInfoCard = () => {
+export const StarterPlanCard = () => {
   return (
     <BasePlanCard
       title="Starter"

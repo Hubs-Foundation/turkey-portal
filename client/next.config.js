@@ -22,6 +22,7 @@ const nextConfig = {
     PRODUCT_ID: process.env.PRODUCT_ID,
     PUBLIC_API_SERVER: process.env.PUBLIC_API_SERVER,
     ENV: process.env.ENV,
+    ENABLE_STARTER_PLAN: process.env.ENABLE_STARTER_PLAN,
   },
   async redirects() {
     return [

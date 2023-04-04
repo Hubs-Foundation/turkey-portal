@@ -4,13 +4,16 @@ import { subscriptionPageRequireAuthentication } from 'services/routeGuard.servi
 import SubContactCard from '@Cards/SubContactCard/SubContactCard';
 import styles from './subscribe.module.scss';
 import { StandardPlanCard } from '@Cards/PlanCard/StandardPlanCard';
-import { StarterInfoCard } from '@Cards/PlanCard/StarterPlanCard';
+import { StarterPlanCard } from '@Cards/PlanCard/StarterPlanCard';
+import { ENABLE_STARTER_PLAN } from 'config';
 
 type SubscribePropsT = {
   region: string | null;
 };
 
 const Subscribe = ({ region }: SubscribePropsT) => {
+  const showStarterPlan = ENABLE_STARTER_PLAN === 'true';
+
   return (
     <div className="page_wrapper">
       <Head>
@@ -20,8 +23,19 @@ const Subscribe = ({ region }: SubscribePropsT) => {
 
       <main>
         <div className={styles.wrapper}>
+          {!showStarterPlan && (
+            <div className={styles.header}>
+              <h1>Your account has no active hubs</h1>
+              {/* TODO pull pricing from subplat - $20 */}
+              <p>
+                You can begin a new subscription with an Early Access Hub for
+                $20 a month
+              </p>
+            </div>
+          )}
+
           <div className={styles.cards}>
-            <StarterInfoCard />
+            {showStarterPlan && <StarterPlanCard />}
             <StandardPlanCard />
             <SubContactCard
               email="hubs@mozilla.com"

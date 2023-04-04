@@ -14,6 +14,7 @@ export const {
   PLAN_ID_EA_DE,
   PRODUCT_ID,
   ENV,
+  ENABLE_STARTER_PLAN,
 } = publicRuntimeConfig;
 
 export const DUMMY = publicRuntimeConfig.dummy;
