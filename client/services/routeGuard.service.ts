@@ -126,9 +126,7 @@ export function requireAuthenticationAndSubscription(
  * @param gssp
  * @returns GetServerSideProps
  */
-export function subscriptionPageRequireAuthentication(
-  gssp: Function
-): GetServerSideProps {
+export function pageRequireAuthentication(gssp: Function): GetServerSideProps {
   return async (context) => {
     const { req, query } = context;
 
