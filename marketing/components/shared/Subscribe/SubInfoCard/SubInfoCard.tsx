@@ -2,10 +2,14 @@ import { useCallback, useEffect, useState } from 'react';
 import { Button, Icon, IconT, Checkbox } from '@mozilla/lilypad-ui';
 import SubscriptionInfoCopy from './SubscriptionInfoCopy';
 import styles from './SubInfoCard.module.scss';
-import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
-import { CountriesE, RegionsT } from 'types/Countries';
+import getEnvVariable from 'config';
+import { RegionsT } from 'types';
 import { getCurrencyMeta } from 'util/utilities';
 import { getRegion } from 'services/region.service';
+
+export enum CountriesE {
+  GERMANY = 'DE',
+}
 
 type SubInfoCardPropsT = {
   classProp?: string;
@@ -26,7 +30,6 @@ const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
       </div>
       <div className="body-md">
         <p>
-          {' '}
           <span className="body-md-bold">{label}</span> <br /> {description}
         </p>
       </div>
@@ -79,8 +82,12 @@ const SubInfoCard = ({ classProp = '' }: SubInfoCardPropsT) => {
    */
   const handleSubscribeClick = useCallback(() => {
     // Default to US plan
-    const plan: string = isEuro() ? PLAN_ID_EA_DE : PLAN_ID_EA;
-    const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${plan}`;
+    const plan: string = isEuro()
+      ? getEnvVariable('PLAN_ID_EA_DE')
+      : getEnvVariable('PLAN_ID_EA');
+    const url = `${getEnvVariable('FXA_PAYMENT_URL')}/checkout/${getEnvVariable(
+      'PRODUCT_ID'
+    )}?plan=${plan}`;
     window.open(url);
   }, [isEuro]);
 

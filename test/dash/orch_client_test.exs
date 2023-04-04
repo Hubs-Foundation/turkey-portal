@@ -1,6 +1,7 @@
 defmodule Dash.OrchClientTest do
   use ExUnit.Case
-  import DashWeb.TestHelpers
+
+  import Dash.TestHelpers
   import Mox, only: [verify_on_exit!: 1]
 
   setup_all context do

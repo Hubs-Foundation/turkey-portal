@@ -1,8 +1,8 @@
 defmodule Dash.CapabilityTest do
   use Dash.DataCase
 
+  import Dash.TestHelpers
   import Ecto.Query
-  import DashWeb.TestHelpers
   alias Dash.{Repo, Account}
   require Logger
 
