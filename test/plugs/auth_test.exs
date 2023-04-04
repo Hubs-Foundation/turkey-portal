@@ -2,7 +2,7 @@ defmodule DashWeb.Plugs.AuthTest do
   use DashWeb.ConnCase
   use DashWeb, :controller
 
-  import DashWeb.TestHelpers
+  import Dash.TestHelpers
   import Mox
 
   setup_all do

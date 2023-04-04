@@ -1,7 +1,8 @@
 defmodule Dash.AccountTest do
   use ExUnit.Case
   use Dash.DataCase
-  import DashWeb.TestHelpers
+
+  import Dash.TestHelpers
 
   setup_all do
     setup_http_mocks()

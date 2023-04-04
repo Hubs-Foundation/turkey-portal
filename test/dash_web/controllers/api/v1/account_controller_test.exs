@@ -1,6 +1,7 @@
 defmodule DashWeb.Api.V1.AccountControllerTest do
   use DashWeb.ConnCase
-  import DashWeb.TestHelpers
+
+  import Dash.TestHelpers
 
   describe "Account API" do
     test "should error for unauthorized users", %{conn: conn} do

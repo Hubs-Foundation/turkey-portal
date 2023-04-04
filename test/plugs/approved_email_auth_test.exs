@@ -1,6 +1,7 @@
 defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
   use DashWeb.ConnCase
-  import DashWeb.TestHelpers
+
+  import Dash.TestHelpers
   import Mox
   alias Dash.ApprovedEmail
 
@@ -14,14 +15,14 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
   describe "ApprovedEmailAuth Plug" do
     setup do
       clear_auth_config()
-      Application.put_env(:dash, Dash.ApprovedEmail, enabled: true)
-      on_exit(fn -> Application.put_env(:dash, Dash.ApprovedEmail, enabled: false) end)
+      merge_module_config(:dash, Dash.ApprovedEmail, enabled: true)
+      on_exit(fn -> merge_module_config(:dash, Dash.ApprovedEmail, enabled: false) end)
     end
 
     @valid_expiration token_expiry: ~N[3000-01-01 00:00:00]
 
     test "ApprovedEmails should not be enabled when disabled", %{conn: conn} do
-      Application.put_env(:dash, Dash.ApprovedEmail, enabled: false)
+      merge_module_config(:dash, Dash.ApprovedEmail, enabled: false)
 
       stub_ret_get()
       expect_orch_post()

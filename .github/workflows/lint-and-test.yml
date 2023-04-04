@@ -27,14 +27,14 @@ jobs:
         working-directory: assets
 
       - name: client - install
-        run: npm config set -- "//npm.pkg.github.com/:_authToken" "$GITHUB_TOKEN" && npm ci --legacy-peer-deps
+        run: npm ci
         working-directory: client
       - name: client - lint
         run: npm run lint
         working-directory: client
 
       - name: marketing - install
-        run: npm config set -- "//npm.pkg.github.com/:_authToken" "$GITHUB_TOKEN" && npm ci --legacy-peer-deps
+        run: npm ci
         working-directory: marketing
       - name: marketing - lint
         run: npm run lint

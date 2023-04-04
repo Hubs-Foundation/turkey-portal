@@ -1,7 +1,7 @@
 defmodule Dash.Test do
   use Dash.DataCase
 
-  import DashWeb.TestHelpers
+  import Dash.TestHelpers
   require Logger
 
   setup_all do

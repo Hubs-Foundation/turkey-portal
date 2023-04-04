@@ -1,6 +1,7 @@
 defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   use DashWeb.ConnCase
-  import DashWeb.TestHelpers
+
+  import Dash.TestHelpers
   require Logger
 
   # @password_change_struct %{

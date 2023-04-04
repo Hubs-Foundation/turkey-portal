@@ -1,7 +1,8 @@
 defmodule Dash.HubStatTest do
   use Dash.DataCase
+
+  import Dash.TestHelpers
   import Ecto.Query
-  import DashWeb.TestHelpers
   import Mox
   require Logger
   alias Dash.{Repo, HubStat}
