@@ -6,6 +6,8 @@ const isServerSide = typeof window === 'undefined';
 export const {
   AUTH_SERVER,
   DASH_ROOT_DOMAIN,
+  ENABLE_STARTER_PLAN,
+  ENV,
   FXA_PAYMENT_URL,
   FXA_SERVER,
   HUB_ROOT_DOMAIN,
@@ -13,7 +15,6 @@ export const {
   PLAN_ID_EA,
   PLAN_ID_EA_DE,
   PRODUCT_ID,
-  ENV,
 } = publicRuntimeConfig;
 
 export const DUMMY = publicRuntimeConfig.dummy;
