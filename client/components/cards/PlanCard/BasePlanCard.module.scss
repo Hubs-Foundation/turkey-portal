@@ -10,6 +10,9 @@
   overflow: hidden;
   position: relative;
   margin: 0px 17px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   @include mobile-down {
     width: 100%;
@@ -69,5 +72,11 @@
 
   button {
     flex-grow: 1;
+  }
+
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
 }
