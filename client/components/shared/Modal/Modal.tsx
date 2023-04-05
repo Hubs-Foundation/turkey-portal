@@ -12,14 +12,16 @@ import styles from './Modal.module.scss';
 type ModalPropsT = {
   children: ReactNode;
   onClose: MouseEventHandler<HTMLDivElement>;
-  hasFormatting?: Boolean;
+  // "hasContainer" gives you the flexibility to put all the children in a pre-formatted modal card, This will be a majority of the time.
+  // If you want a custome modal display, set this to false and add whatever you want to the "children"
+  hasContainer?: Boolean;
   classProp?: string;
 };
 
 const Modal = ({
   children,
   onClose,
-  hasFormatting = true,
+  hasContainer = true,
   classProp = '',
 }: ModalPropsT) => {
   const ref = useRef<Element | null>(null);
@@ -52,7 +54,7 @@ const Modal = ({
           <div id="backdropContainer" className={styles.backdrop_container}>
             <div
               className={`${classProp} ${
-                hasFormatting && styles.modal_container
+                hasContainer && styles.modal_container
               }`}
             >
               {children}

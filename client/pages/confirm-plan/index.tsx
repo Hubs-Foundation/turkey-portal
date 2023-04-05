@@ -10,7 +10,7 @@ const ConfirmPlan = () => {
         <SkeletonCard qty={3} category="row" pulse={false} />
       </div>
 
-      <Modal onClose={() => {}} hasFormatting={false}>
+      <Modal onClose={() => {}} hasContainer={false}>
         <ConfirmPlanModel />
       </Modal>
     </div>
