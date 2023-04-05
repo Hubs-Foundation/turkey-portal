@@ -1,37 +1,27 @@
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import styles from './TileSpotlight.module.scss';
 import bubbleTop from '../../../public/bubble-top.png';
 import bubbleBottom from '../../../public/bubble-bottom.png';
+import { SpotlightTile, TileSpotlightT } from 'types';
 
-type TileSpotlightPropsT = {
-  title?: string;
-  body?: string;
-  tiles: TilePropsT[];
+interface TileSpotlightPropsI extends TileSpotlightT {
   classProp?: string;
-};
-
-export type TilePropsT = {
-  image: StaticImageData;
-  imageAlt?: string;
-  title: string;
-  description: string;
-};
+}
 
 /**
  * Spotlight Tile
  */
-const Tile = ({ image, imageAlt, title, description }: TilePropsT) => {
+const Tile = ({ image, imageAlt, title, description }: SpotlightTile) => {
   return (
     <section className={styles.tile_wrapper}>
       <div className={styles.tile_container}>
         <div className={styles.tile_image}>
           <Image
-            src={image}
+            src={image.url}
             alt={imageAlt}
             layout="fill"
             objectFit="cover"
             objectPosition="center"
-            placeholder="blur"
           />
         </div>
 
@@ -48,9 +38,9 @@ const Tile = ({ image, imageAlt, title, description }: TilePropsT) => {
 const TileSpotlight = ({
   title,
   body,
-  tiles,
+  tilesCollection,
   classProp = '',
-}: TileSpotlightPropsT) => {
+}: TileSpotlightPropsI) => {
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.bubble_top}>
@@ -72,17 +62,21 @@ const TileSpotlight = ({
 
         {/* CARDS  */}
         <div className={styles.tiles}>
-          {tiles.map(({ image, imageAlt, title, description }, i) => {
-            return (
-              <Tile
-                key={i}
-                image={image}
-                imageAlt={imageAlt}
-                title={title}
-                description={description}
-              />
-            );
-          })}
+          {tilesCollection.items.map(
+            ({ image, imageAlt, title, description, ctaTitle, ctaHref }, i) => {
+              return (
+                <Tile
+                  key={i}
+                  image={image}
+                  imageAlt={imageAlt}
+                  title={title}
+                  description={description}
+                  ctaTitle={ctaTitle}
+                  ctaHref={ctaHref}
+                />
+              );
+            }
+          )}
         </div>
       </div>
       <div className={styles.bubble_bottom}>

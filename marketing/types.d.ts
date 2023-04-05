@@ -6,7 +6,7 @@ import { Document } from '@contentful/rich-text-types';
  */
 export type CustomSectionsT = {
   //Expoand the item type as we add more custom sections
-  items: TitleDescriptionT[] | FiftyfiftyT[] | HeroT[];
+  items: TitleDescriptionT[] | FiftyfiftyT[] | HeroT[] | TileSpotlightT[];
 };
 
 export type FiftyfiftyT = {
@@ -21,6 +21,26 @@ export type FiftyfiftyT = {
     json: Document;
   };
   layout?: 'left' | 'right';
+  __typename?: string;
+};
+
+export type SpotlightTile = {
+  image: ImageT;
+  imageAlt: string;
+  title: string;
+  description: string;
+  ctaTitle?: string;
+  ctaHref?: string;
+};
+
+export type TileSpotlightT = {
+  title: string;
+  body: string;
+  background: 'gradient-rainbow' | 'gradient-warm' | 'gradient-cool' | 'none';
+  adornment: 'snow' | 'swoosh' | 'none';
+  tilesCollection: {
+    items: SpotlightTile[];
+  };
   __typename?: string;
 };
 
