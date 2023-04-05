@@ -3,6 +3,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   use Retry
 
   import Dash.TestHelpers
+  import Dash.Utils, only: [capability_string: 0]
   import Mox
   import Plug.Conn.Status, only: [code: 1]
   require Logger
@@ -393,7 +394,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
       Dash.create_capability!(account, %{
-        capability: DashWeb.Plugs.Auth.capability_string(),
+        capability: capability_string(),
         is_active: false,
         change_time: DateTime.utc_now()
       })

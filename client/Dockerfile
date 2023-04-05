@@ -1,12 +1,18 @@
+# syntax=docker/dockerfile:1
+ARG NODE_VERSION=18
+
+FROM node:$NODE_VERSION-alpine AS base
+# ---- dev stage ----
+FROM base AS dev
 # ---- build stage ----
-FROM node:18-alpine as builder
+FROM base AS builder
 arg GITHUB_TOKEN
 workdir client
 COPY . .
 ENV GITHUB_TOKEN=$GITHUB_TOKEN
 RUN npm install && npm run build
 # ---- app stage ----
-FROM node:18-alpine
+FROM base
 run apk add curl
 WORKDIR "/app"
 RUN chown nobody /app

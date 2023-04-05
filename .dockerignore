@@ -3,6 +3,7 @@
 !config/config.exs
 !config/prod.exs
 !config/runtime.exs
+!container/trapped-mix
 !lib/
 !mix.exs
 !mix.lock

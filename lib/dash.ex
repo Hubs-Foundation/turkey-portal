@@ -2,9 +2,33 @@ defmodule Dash do
   @moduledoc """
   Boundary of Dash context
   """
+  alias Dash.{Account, Capability, PlanStateMachine, Repo}
+  import Dash.Utils, only: [capability_string: 0]
   import Ecto.Query
   require Logger
-  alias Dash.{Account, Capability, Repo}
+
+  @doc """
+  Returns `true` if a plan is active for the given `account`.
+  """
+  @spec active_plan?(Account.t()) :: boolean
+  def active_plan?(%Account{} = account) do
+    case PlanStateMachine.handle_event(:active?, account) do
+      {:ok, active_plan?} ->
+        active_plan?
+
+      {:error, :account_not_found} ->
+        false
+    end
+  end
+
+  @doc """
+  Creates a starter plan for the given `account_id`.
+
+  Returns `:ok` if successful.  Otherwise, `{:error, reason}` is returned.
+  """
+  @spec start_plan(Account.t()) :: :ok | {:error, :account_not_found | :already_started}
+  def start_plan(%Account{} = account),
+    do: PlanStateMachine.handle_event(:start, account)
 
   def update_or_create_capability_for_changeset(
         %{
@@ -215,14 +239,12 @@ defmodule Dash do
   end
 
   def handle_first_sign_in_initialize_subscriptions(%Account{} = account, fxa_subscriptions, dt) do
-    capability_string = DashWeb.Plugs.Auth.capability_string()
-
-    if capability_string in fxa_subscriptions and not Dash.has_capability?(account) do
+    if capability_string() in fxa_subscriptions and not Dash.has_capability?(account) do
       # Handle special case where FxA does not send a subscription changed fxa event
       # if a user signs up for an FxA account on the same page of signing up for the subscription
       # we need to create a record of that capability in our database
       Dash.create_capability!(account, %{
-        capability: capability_string,
+        capability: capability_string(),
         change_time: dt,
         is_active: true
       })

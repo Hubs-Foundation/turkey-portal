@@ -3,21 +3,14 @@
 # ---- dev stage ----
 ARG ALPINE_LINUX_VERSION=3.16.2
 ARG ELIXIR_VERSION=1.13.4
-ARG NODE_VERSION=16.18.0
-ARG OTP_VERSION=25.1.1
+ARG ERLANG_VERSION=25.1.1
 
-FROM node:$NODE_VERSION-alpine AS node
-
-FROM hexpm/elixir:$ELIXIR_VERSION-erlang-$OTP_VERSION-alpine-$ALPINE_LINUX_VERSION AS dev
-COPY --from=node /usr/lib /usr/lib
-COPY --from=node /usr/local/share /usr/local/share
-COPY --from=node /usr/local/lib /usr/local/lib
-COPY --from=node /usr/local/include /usr/local/include
-COPY --from=node /usr/local/bin /usr/local/bin
+FROM hexpm/elixir:$ELIXIR_VERSION-erlang-$ERLANG_VERSION-alpine-$ALPINE_LINUX_VERSION AS dev
 RUN mix do local.hex --force, local.rebar --force
-RUN apk add --no-cache\
-    # required by hex:phoenix_live_reload\
+RUN apk add --no-cache \
+    # required by hex:phoenix_live_reload \
     inotify-tools
+COPY container/trapped-mix /usr/local/bin/trapped-mix
 
 # ---- build stage ----
 FROM elixir:1.13 as builder
