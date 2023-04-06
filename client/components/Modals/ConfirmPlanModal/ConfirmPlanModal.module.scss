@@ -55,17 +55,6 @@
   @include tablet-down {
     display: block;
   }
-
-  button {
-    margin-left: 20px;
-    color: $color-interaction-primary;
-    background-color: white;
-    border-color: white;
-    @include tablet-down {
-      margin-left: 0px;
-      margin-top: 10px;
-    }
-  }
 }
 
 .info_wrapper {
