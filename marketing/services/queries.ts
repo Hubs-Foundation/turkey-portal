@@ -67,6 +67,7 @@ sectionsCollection {
       body
       background
       adornment
+      textColor
 
       tilesCollection {
         items {
@@ -119,6 +120,8 @@ sectionsCollection {
       __typename
       title
       subtitle
+      ctaTitle
+      ctaHref
       richText {
         json
        }

@@ -17,6 +17,8 @@ export type FiftyfiftyT = {
   accentImageAlt?: string;
   title?: string;
   subtitle?: string;
+  ctaTitle?: string;
+  ctaHref?: string;
   richText?: {
     json: Document;
   };
@@ -38,6 +40,7 @@ export type TileSpotlightT = {
   body: string;
   background: 'gradient-rainbow' | 'gradient-warm' | 'gradient-cool' | 'none';
   adornment: 'snow' | 'swoosh' | 'none';
+  textColor: 'color-text-main' | 'color-text-reverse';
   tilesCollection: {
     items: SpotlightTile[];
   };

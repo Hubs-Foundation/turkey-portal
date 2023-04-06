@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Custom from '@Shared/Custom/Custom';
-import { CustomSectionsT, TileSpotlightT } from 'types';
+import { CustomSectionsT } from 'types';
 // Services
 import { getSectionsData } from 'services/contentful.service';
 
@@ -37,11 +37,6 @@ export async function getStaticProps() {
       'homePage',
       'iUw7LHBaBcgGaKydU2qKJ'
     );
-
-    console.log('res', sectionsData.items[1]);
-    const spot = sectionsData.items[1] as TileSpotlightT;
-
-    console.log('sectionsData', spot.tilesCollection);
     return {
       props: {
         sectionsData,

@@ -1,12 +1,13 @@
 import styles from './Swoosh.module.scss';
 
 type SwooshPropsT = {
+  location?: 'top' | 'bottom';
   classProp?: string;
 };
 
-const Swoosh = ({ classProp = '' }: SwooshPropsT) => {
+const Swoosh = ({ location = 'top', classProp = '' }: SwooshPropsT) => {
   return (
-    <div className={`${styles.swoosh} ${classProp}`}>
+    <div className={`${styles.swoosh} ${styles[location]} ${classProp}`}>
       <svg viewBox="0 70 500 60" preserveAspectRatio="none">
         <rect x="0" y="0" width="500" height="500" fill="transparent" />
         <path
