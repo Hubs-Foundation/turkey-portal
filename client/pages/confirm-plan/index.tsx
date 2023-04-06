@@ -1,10 +1,10 @@
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
-import Modal from '@Shared/Modal/Modal';
 import ConfirmPlanModel from 'components/Modals/ConfirmPlanModal/ConfirmPlanModel';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 import { pageRequireAuthentication } from 'services/routeGuard.service';
 import styles from '../dashboard/dashboard.module.scss';
-import { ENABLE_STARTER_PLAN } from 'config';
+import { enabledStarterPlan } from 'util/featureFlag';
+import { redirectToDashboard } from 'util/redirects';
 
 const ConfirmPlan = () => {
   return (
@@ -13,25 +13,19 @@ const ConfirmPlan = () => {
         <SkeletonCard qty={3} category="row" pulse={false} />
       </div>
 
-      <Modal onClose={() => {}} hasContainer={false}>
-        <ConfirmPlanModel />
-      </Modal>
+      <ConfirmPlanModel />
     </div>
   );
 };
 
 export default ConfirmPlan;
 
-const starterPlanEnabledCheck = async (cb: Function) => {
-  if (ENABLE_STARTER_PLAN === 'true') return cb();
-  else return { notFound: true };
-};
-
-export const getServerSideProps = starterPlanEnabledCheck(
-  pageRequireAuthentication(async (context: GetServerSidePropsContext) => {
+export const getServerSideProps = pageRequireAuthentication(
+  async (context: GetServerSidePropsContext) => {
+    if (!enabledStarterPlan()) return redirectToDashboard();
     // Your normal `getServerSideProps` code here
     return {
       props: {},
     };
-  })
+  }
 );

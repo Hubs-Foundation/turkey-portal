@@ -52,6 +52,7 @@
 .gradient_banner {
   background: $gradient-warm;
   align-items: center;
+  justify-content: space-between;
   @include tablet-down {
     display: block;
   }

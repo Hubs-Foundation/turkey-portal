@@ -12,7 +12,7 @@ export type InfoBlockPropsT = {
 export const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   return (
     <div className={styles.info_wrapper}>
-      <div className="flex-box">
+      <div>
         <Icon name={icon} size={30} classProp="mr-20 mt-2 " />
       </div>
 
