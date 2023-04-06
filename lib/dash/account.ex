@@ -5,8 +5,10 @@ defmodule Dash.Account do
   require Logger
   alias Dash.Repo
 
-  @primary_key {:account_id, :id, autogenerate: true}
+  @type id :: pos_integer
+  @type t :: %__MODULE__{account_id: id}
 
+  @primary_key {:account_id, :id, autogenerate: true}
   schema "accounts" do
     field :fxa_uid, :string
     field :auth_updated_at, :utc_datetime

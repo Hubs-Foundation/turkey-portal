@@ -1,7 +1,10 @@
 defmodule Dash.Test do
   use Dash.DataCase
 
+  alias Dash.{Account, HttpMock, Hub}
+
   import Dash.TestHelpers
+  import Dash.Utils, only: [capability_string: 0]
   require Logger
 
   setup_all do
@@ -9,9 +12,10 @@ defmodule Dash.Test do
     on_exit(fn -> exit_http_mocks() end)
   end
 
-  @old_email "old@old.old"
-  @new_email "new@new.new"
   describe "change_email/2" do
+    @old_email "old@old.old"
+    @new_email "new@new.new"
+
     test "should return :ok, account is null" do
       assert :ok === Dash.change_email(nil, @new_email)
     end
@@ -150,13 +154,11 @@ defmodule Dash.Test do
       %{now: now} = now_earlier_later_dt_s()
       fxa_uid = "fxa_uid_test"
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      capability = DashWeb.Plugs.Auth.capability_string()
-
       false = Dash.has_capability?(account)
 
       Dash.handle_first_sign_in_initialize_subscriptions(
         account,
-        [capability],
+        [capability_string()],
         now
       )
 
@@ -164,13 +166,104 @@ defmodule Dash.Test do
 
       active_capabilities = Dash.get_all_active_capabilities_for_account(account)
       assert [_] = active_capabilities
-      assert capability in active_capabilities
+      assert capability_string() in active_capabilities
     end
   end
 
+  describe "active_plan?/1" do
+    test "when the account cannot be found" do
+      assert false === Dash.active_plan?(%Account{account_id: 1})
+    end
+
+    test "when the account has no plan" do
+      account = create_account()
+
+      assert false === Dash.active_plan?(account)
+    end
+
+    test "when the account has an active starter plan" do
+      stub_http_post_200()
+      account = create_account()
+      :ok = Dash.start_plan(account)
+
+      assert true === Dash.active_plan?(account)
+    end
+
+    test "when the account has an active subscription plan" do
+      account = create_account()
+
+      Dash.create_capability!(account, %{
+        capability: capability_string(),
+        change_time: DateTime.utc_now(),
+        is_active: true
+      })
+
+      assert true === Dash.active_plan?(account)
+    end
+
+    @tag :skip
+    test "when the account has a stopped plan"
+  end
+
+  describe "start_plan/1" do
+    test "creates the plan" do
+      stub_http_post_200()
+      account = create_account()
+
+      assert :ok === Dash.start_plan(account)
+      assert Dash.active_plan?(account)
+    end
+
+    test "creates the hub" do
+      account = create_account()
+
+      Mox.expect(HttpMock, :post, fn _url, json, _headers, _opts ->
+        payload = Jason.decode!(json)
+        assert "free" === payload["tier"]
+        assert account.email === payload["useremail"]
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert :ok === Dash.start_plan(account)
+      assert [hub] = Hub.hubs_for_account(account)
+      assert :free === hub.tier
+      assert account.account_id === hub.account_id
+    end
+
+    test "when the account cannot be found" do
+      assert {:error, :account_not_found} === Dash.start_plan(%Account{account_id: 1})
+    end
+
+    test "when the account has an active starter plan" do
+      stub_http_post_200()
+      account = create_account()
+      :ok = Dash.start_plan(account)
+
+      assert {:error, :already_started} === Dash.start_plan(account)
+    end
+
+    test "when the account has an active subscription plan" do
+      account = create_account()
+
+      Dash.create_capability!(account, %{
+        capability: capability_string(),
+        change_time: DateTime.utc_now(),
+        is_active: true
+      })
+
+      assert {:error, :already_started} === Dash.start_plan(account)
+    end
+
+    @tag :skip
+    test "when the account has a stopped plan"
+  end
+
+  @spec create_account :: Account.t()
+  defp create_account,
+    do: Account.find_or_create_account_for_fxa_uid("dummy UID")
+
   defp stub_failed_ret_patch_update_email() do
-    Dash.HttpMock
-    |> Mox.stub(:patch, fn url, _body, _headers, _opts ->
+    Mox.stub(HttpMock, :patch, fn url, _body, _headers, _opts ->
       cond do
         url =~ ~r/change_email_for_login$/ ->
           {:ok, %HTTPoison.Response{status_code: 500}}

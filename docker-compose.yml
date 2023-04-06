@@ -2,7 +2,7 @@ version: "3.9"
 services:
   client:
     build:
-      context: .
+      context: ./client
       target: dev
     command: npm run dev
     environment:
@@ -17,15 +17,15 @@ services:
   db:
     environment:
       POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
     healthcheck:
       test: ["CMD", "pg_isready"]
     image: "postgres:14-alpine"
+    user: postgres
     volumes:
       - pgdata:/var/lib/postgresql/data
   marketing:
     build:
-      context: .
+      context: ./marketing
       target: dev
     command: npm run dev
     environment:

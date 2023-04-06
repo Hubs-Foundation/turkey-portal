@@ -1,8 +1,18 @@
 #!/bin/bash
 basedir=$(dirname "$0")/..
-mutagen-compose -f "$basedir/docker-compose.yml" run --rm server sh -c 'mix do deps.get, deps.compile, ecto.create' &&
-mutagen-compose -f "$basedir/docker-compose.yml" run --rm client sh -c 'npm ci'
-mutagen-compose -f "$basedir/docker-compose.yml" run --rm marketing sh -c 'npm ci'
+composefile=$basedir/docker-compose.yml
+prefix='\n\033[1;37m'
+suffix='\033[0m\n'
+
+echo -e ${prefix}Initializing Server$suffix &&
+docker-compose -f "$composefile" build server &&
+mutagen-compose -f "$composefile" run --rm server sh -c 'trapped-mix do deps.get, deps.compile, ecto.create' &&
+echo -e ${prefix}Initializing Client$suffix &&
+docker-compose -f "$composefile" build client &&
+mutagen-compose -f "$composefile" run --rm client npm install --no-save &&
+echo -e ${prefix}Initializing Marketing$suffix &&
+docker-compose -f "$composefile" build marketing &&
+mutagen-compose -f "$composefile" run --rm marketing npm install --no-save
 
 code=$?
 mutagen-compose down
