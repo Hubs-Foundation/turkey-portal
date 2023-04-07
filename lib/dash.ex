@@ -22,13 +22,26 @@ defmodule Dash do
   end
 
   @doc """
-  Creates a starter plan for the given `account_id`.
+  Creates a starter plan for the given `account`.
 
   Returns `:ok` if successful.  Otherwise, `{:error, reason}` is returned.
   """
   @spec start_plan(Account.t()) :: :ok | {:error, :account_not_found | :already_started}
   def start_plan(%Account{} = account),
     do: PlanStateMachine.handle_event(:start, account)
+
+  @doc """
+  Subscribes the given `account` to a standard plan.
+
+  This converts an existing plan to a standard plan or creates one if none
+  exists.
+
+  Returns `:ok` if successful.  Otherwise, `{:error, reason}` is returned.
+  """
+  @spec subscribe_to_standard_plan(Account.t(), NaiveDateTime.t()) ::
+          :ok | {:error, :account_not_found | :already_started}
+  def subscribe_to_standard_plan(%Account{} = account, %NaiveDateTime{} = subscribed_at),
+    do: PlanStateMachine.handle_event({:subscribe_standard, subscribed_at}, account)
 
   def update_or_create_capability_for_changeset(
         %{

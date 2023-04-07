@@ -206,17 +206,18 @@ defmodule Dash.Test do
   end
 
   describe "start_plan/1" do
-    test "creates the plan" do
+    setup do
+      %{account: create_account()}
+    end
+
+    test "creates the plan", %{account: account} do
       stub_http_post_200()
-      account = create_account()
 
       assert :ok === Dash.start_plan(account)
       assert Dash.active_plan?(account)
     end
 
-    test "creates the hub" do
-      account = create_account()
-
+    test "creates the hub", %{account: account} do
       Mox.expect(HttpMock, :post, fn _url, json, _headers, _opts ->
         payload = Jason.decode!(json)
         assert "free" === payload["tier"]
@@ -226,25 +227,23 @@ defmodule Dash.Test do
 
       assert :ok === Dash.start_plan(account)
       assert [hub] = Hub.hubs_for_account(account)
+      assert 10 === hub.ccu_limit
+      assert 500 === hub.storage_limit_mb
       assert :free === hub.tier
       assert account.account_id === hub.account_id
     end
 
-    test "when the account cannot be found" do
-      assert {:error, :account_not_found} === Dash.start_plan(%Account{account_id: 1})
-    end
+    @tag :skip
+    test "when the account has a stopped plan"
 
-    test "when the account has an active starter plan" do
+    test "when the account has an active starter plan", %{account: account} do
       stub_http_post_200()
-      account = create_account()
       :ok = Dash.start_plan(account)
 
       assert {:error, :already_started} === Dash.start_plan(account)
     end
 
-    test "when the account has an active subscription plan" do
-      account = create_account()
-
+    test "when the account has an active subscription plan", %{account: account} do
       Dash.create_capability!(account, %{
         capability: capability_string(),
         change_time: DateTime.utc_now(),
@@ -254,8 +253,74 @@ defmodule Dash.Test do
       assert {:error, :already_started} === Dash.start_plan(account)
     end
 
+    test "when the account cannot be found" do
+      assert {:error, :account_not_found} === Dash.start_plan(%Account{account_id: 1})
+    end
+  end
+
+  describe "subscribe_to_standard_plan/2" do
+    setup do
+      %{account: create_account(), subscribed_at: ~N[1970-01-01 00:00:00.877000]}
+    end
+
+    test "when the account has no plan", %{
+      account: account,
+      subscribed_at: subscribed_at
+    } do
+      Mox.expect(HttpMock, :post, fn _url, json, _headers, _opts ->
+        payload = Jason.decode!(json)
+        assert "early_access" === payload["tier"]
+        assert account.email === payload["useremail"]
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert :ok === Dash.subscribe_to_standard_plan(account, subscribed_at)
+      assert Dash.active_plan?(account)
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 25 === hub.ccu_limit
+      assert 2_000 === hub.storage_limit_mb
+      assert :early_access === hub.tier
+      assert account.account_id === hub.account_id
+    end
+
     @tag :skip
     test "when the account has a stopped plan"
+
+    @tag :skip
+    test "with subscribed_at earlier than the last state transition when the account has a stopped plan"
+
+    @tag :skip
+    test "when the account has an active starter plan"
+
+    test "when the account has an active subscription plan", %{
+      account: account,
+      subscribed_at: subscribed_at
+    } do
+      stub_http_post_200()
+      :ok = Dash.subscribe_to_standard_plan(account, subscribed_at)
+
+      assert {:error, :already_started} ===
+               Dash.subscribe_to_standard_plan(account, subscribed_at)
+    end
+
+    test "when the account has an active subscription plan (DEPRECATED capability)", %{
+      account: account,
+      subscribed_at: subscribed_at
+    } do
+      Dash.create_capability!(account, %{
+        capability: capability_string(),
+        change_time: DateTime.utc_now(),
+        is_active: true
+      })
+
+      assert {:error, :already_started} ===
+               Dash.subscribe_to_standard_plan(account, subscribed_at)
+    end
+
+    test "when the account cannot be found", %{subscribed_at: subscribed_at} do
+      assert {:error, :account_not_found} ===
+               Dash.subscribe_to_standard_plan(%Account{account_id: 1}, subscribed_at)
+    end
   end
 
   @spec create_account :: Account.t()

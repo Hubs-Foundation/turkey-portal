@@ -6,11 +6,9 @@ defmodule Dash.PlanStateMachine.Plan do
   """
   use Ecto.Schema
 
-  alias Dash.Account
-
   @primary_key {:plan_id, :id, autogenerate: true}
   schema "plans" do
-    belongs_to :account, Account, references: :account_id
+    field :account_id, :id
 
     timestamps()
   end

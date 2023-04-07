@@ -65,7 +65,7 @@ defmodule Dash.PlanStateMachine do
   end
 
   @impl Mimzy
-  def handle_event(nil, :active?, _account_id, _data),
+  def handle_event(nil, :active?, %Account{}, _data),
     do: {:ok, false}
 
   def handle_event(nil, :start, %Account{} = account, _data) do
@@ -81,10 +81,10 @@ defmodule Dash.PlanStateMachine do
     hub =
       Repo.insert!(%Hub{
         account_id: account.account_id,
-        ccu_limit: 25,
+        ccu_limit: 10,
         name: "Untitled Hub",
         status: :creating,
-        storage_limit_mb: 2000,
+        storage_limit_mb: 500,
         subdomain: rand_string(10),
         tier: :free
       })
@@ -93,15 +93,52 @@ defmodule Dash.PlanStateMachine do
     :ok
   end
 
-  def handle_event(:starter, :active?, _account_id, _data),
+  def handle_event(
+        nil,
+        {:subscribe_standard, %NaiveDateTime{} = subscribed_at},
+        %Account{} = account,
+        _data
+      ) do
+    %{plan_id: plan_id} = Repo.insert!(%__MODULE__.Plan{account_id: account.account_id})
+
+    Repo.insert!(%__MODULE__.PlanTransition{
+      event: "subscribe_standard",
+      new_state: :standard,
+      transitioned_at: subscribed_at,
+      plan_id: plan_id
+    })
+
+    hub =
+      Repo.insert!(%Hub{
+        account_id: account.account_id,
+        ccu_limit: 25,
+        name: "Untitled Hub",
+        status: :creating,
+        storage_limit_mb: 2000,
+        subdomain: rand_string(10),
+        tier: :early_access
+      })
+
+    {:ok, %{status_code: 200}} = Dash.OrchClient.create_hub(account.email, hub)
+    :ok
+  end
+
+  def handle_event(:starter, :active?, %Account{}, _data),
     do: {:ok, true}
 
-  def handle_event(:starter, :start, _account_id, _data),
+  def handle_event(:starter, :start, %Account{}, _data),
     do: {:error, :already_started}
 
-  def handle_event(:standard, :active?, _account_id, _data),
+  # TODO: Implement upgrade
+  def handle_event(:starter, {:subscribe_standard, _subscribed_at}, %Account{}, _data),
+    do: {:error, :already_started}
+
+  def handle_event(:standard, :active?, %Account{}, _data),
     do: {:ok, true}
 
-  def handle_event(:standard, :start, _account_id, _data),
+  def handle_event(:standard, :start, %Account{}, _data),
+    do: {:error, :already_started}
+
+  def handle_event(:standard, {:subscribe_standard, _subscribed_at}, %Account{}, _data),
     do: {:error, :already_started}
 end
