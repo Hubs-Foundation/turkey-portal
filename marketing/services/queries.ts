@@ -84,8 +84,6 @@ sectionsCollection {
           }
         }
       }
-
-
     }
     ... on ValueProps {
       __typename

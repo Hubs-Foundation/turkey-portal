@@ -42,7 +42,8 @@ export async function getStaticProps() {
         sectionsData,
       },
     };
-  } catch {
+  } catch (error) {
+    console.error(error);
     return {
       props: {
         sectionsData: {},
