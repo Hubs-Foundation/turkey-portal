@@ -50,11 +50,16 @@
 
 .expansion_panel {
   width: 486px;
+
+  @include desktop-large-down {
+    width: 100%;
+  }
 }
 
 .link_widgets {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   column-gap: 10px;
   row-gap: 10px;
 }

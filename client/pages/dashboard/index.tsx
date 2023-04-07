@@ -16,6 +16,10 @@ import { selectAccount } from 'store/accountSlice';
 import { initAccountData as refreshAccountData } from 'store/storeInit';
 import { useSelector } from 'react-redux';
 import { AxiosRequestHeaders } from 'axios';
+import mozillaLogo from 'public/mozilla_logo.png';
+import github from 'public/github.png';
+import duck from 'public/duck.png';
+import discord from 'public/discord.png';
 
 type DashboardPropsT = { subscription: SubscriptionT };
 
@@ -184,24 +188,28 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
               >
                 <div className={styles.link_widgets}>
                   <LinkWidget
+                    image={mozillaLogo}
                     link="/test"
                     title="Mozilla Support"
                     body="Subscriptions and Firefox Accounts"
                   />
                   <LinkWidget
+                    image={duck}
                     link="/test"
-                    title="Mozilla Support"
-                    body="Subscriptions and Firefox Accounts"
+                    title="Hubs Docs"
+                    body="General Hubs support and guidance"
                   />
                   <LinkWidget
+                    image={github}
                     link="/test"
-                    title="Mozilla Support"
-                    body="Subscriptions and Firefox Accounts"
+                    title="GitHub Discussions"
+                    body="Developer support channel"
                   />
                   <LinkWidget
+                    image={discord}
                     link="/test"
-                    title="Mozilla Support"
-                    body="Subscriptions and Firefox Accounts"
+                    title="Hubs Community"
+                    body="Community!"
                   />
                 </div>
               </ExpansionPanel>

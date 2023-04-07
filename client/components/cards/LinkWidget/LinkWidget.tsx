@@ -3,7 +3,7 @@ import styles from './LinkWidget.module.scss';
 import { Icon } from '@mozilla/lilypad-ui';
 
 export type LinkWidgetPropsT = {
-  image?: StaticImageData;
+  image: StaticImageData;
   link: string;
   title: string;
   body: string;
@@ -18,17 +18,14 @@ const LinkWidget = ({
   classProp = '',
 }: LinkWidgetPropsT) => {
   return (
-    <a href={link}>
+    <a href={link} className="flex">
       <section className={`${styles.wrapper} ${classProp}`}>
         <div className={styles.header}>
-          {/* <Image
-        src={image}
-            alt={title}
-          /> */}
-          <Icon name="external-link" />
+          <Image src={image} alt={title} height={40} width={40} />
+          <Icon name="external-link" color="currentColor" />
         </div>
 
-        <h3>{title}</h3>
+        <h3 className="body-md-bold mb-8">{title}</h3>
         <p>{body}</p>
       </section>
     </a>
