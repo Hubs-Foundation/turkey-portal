@@ -1,6 +1,7 @@
 defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   use DashWeb.ConnCase
 
+  alias DashWeb.FxaEvents
   import Dash.TestHelpers
   import Dash.Utils, only: [capability_string: 0]
   require Logger
@@ -45,7 +46,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       # time set for auth_changed_at
       account_after = get_test_account()
 
-      assert account_after.auth_updated_at === Dash.FxaEvents.unix_to_utc_datetime(timestamp_ms)
+      assert account_after.auth_updated_at === FxaEvents.unix_to_utc_datetime(timestamp_ms)
     end
 
     # Account is not created if the account never existed and we receive a password change event

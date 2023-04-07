@@ -1,7 +1,8 @@
-defmodule Dash.FxaEventsTest do
+defmodule DashWeb.FxaEventsTest do
   use ExUnit.Case
   use Dash.DataCase
 
+  alias DashWeb.FxaEvents
   import Dash.TestHelpers
 
   setup_all do
@@ -21,7 +22,7 @@ defmodule Dash.FxaEventsTest do
       [_] = Dash.get_all_capabilities_for_account(account)
 
       event = get_subscription_changed_event(is_active: false)
-      Dash.FxaEvents.handle_subscription_changed_event(fxa_uid, event)
+      FxaEvents.handle_subscription_changed_event(fxa_uid, event)
 
       assert [] === Dash.Hub.hubs_for_account(account)
 
@@ -33,10 +34,10 @@ defmodule Dash.FxaEventsTest do
       %{now: now, later: later} = now_earlier_later_unix_millisecond()
 
       event_now = get_subscription_changed_event(change_time: now)
-      Dash.FxaEvents.handle_subscription_changed_event(fxa_uid, event_now)
+      FxaEvents.handle_subscription_changed_event(fxa_uid, event_now)
 
       event_later = get_subscription_changed_event(change_time: later)
-      Dash.FxaEvents.handle_subscription_changed_event(fxa_uid, event_later)
+      FxaEvents.handle_subscription_changed_event(fxa_uid, event_later)
 
       account = Dash.Account.account_for_fxa_uid(fxa_uid)
 
@@ -56,7 +57,7 @@ defmodule Dash.FxaEventsTest do
       nil = Dash.Account.account_for_fxa_uid(fxa_uid)
 
       event = get_subscription_changed_event()
-      Dash.FxaEvents.handle_subscription_changed_event(fxa_uid, event)
+      FxaEvents.handle_subscription_changed_event(fxa_uid, event)
 
       assert %Dash.Account{} = Dash.Account.account_for_fxa_uid(fxa_uid)
     end
@@ -68,7 +69,7 @@ defmodule Dash.FxaEventsTest do
       %{now: now} = now_earlier_later_unix_millisecond()
 
       event = get_subscription_changed_event(change_time: now)
-      Dash.FxaEvents.handle_subscription_changed_event(fxa_uid, event)
+      FxaEvents.handle_subscription_changed_event(fxa_uid, event)
 
       %Dash.Account{auth_updated_at: auth_updated_at} = Dash.Account.account_for_fxa_uid(fxa_uid)
 

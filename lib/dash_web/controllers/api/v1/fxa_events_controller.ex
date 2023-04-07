@@ -4,6 +4,7 @@ defmodule DashWeb.Api.V1.FxaEventsController do
   """
   use DashWeb, :controller
 
+  alias DashWeb.FxaEvents
   require Logger
 
   @password_change "/password-change"
@@ -21,16 +22,16 @@ defmodule DashWeb.Api.V1.FxaEventsController do
     result =
       cond do
         event =~ @password_change ->
-          Dash.FxaEvents.handle_password_change(fxa_uid, event_data)
+          FxaEvents.handle_password_change(fxa_uid, event_data)
 
         event =~ @delete_user ->
-          Dash.FxaEvents.handle_account_deletion_event(fxa_uid)
+          FxaEvents.handle_account_deletion_event(fxa_uid)
 
         event =~ @profile_change ->
-          Dash.FxaEvents.handle_profile_change(fxa_uid, event_data)
+          FxaEvents.handle_profile_change(fxa_uid, event_data)
 
         event =~ @subscription_changed ->
-          Dash.FxaEvents.handle_subscription_changed_event(fxa_uid, event_data)
+          FxaEvents.handle_subscription_changed_event(fxa_uid, event_data)
 
         true ->
           Logger.warn(

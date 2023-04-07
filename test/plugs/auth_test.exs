@@ -2,6 +2,7 @@ defmodule DashWeb.Plugs.AuthTest do
   use DashWeb.ConnCase
   use DashWeb, :controller
 
+  alias DashWeb.FxaEvents
   import Dash.TestHelpers
   import Mox
 
@@ -203,7 +204,7 @@ defmodule DashWeb.Plugs.AuthTest do
 
       true = Dash.has_account_for_fxa_uid?(fxa_uid)
 
-      Dash.FxaEvents.handle_account_deletion_event(fxa_uid)
+      FxaEvents.handle_account_deletion_event(fxa_uid)
 
       conn =
         conn

@@ -1,4 +1,4 @@
-defmodule Dash.FxaEvents do
+defmodule DashWeb.FxaEvents do
   @moduledoc """
    Handles events sent from FxA via webhook
   """
@@ -35,7 +35,7 @@ defmodule Dash.FxaEvents do
 
       {:error, _changeset} ->
         Logger.error(
-          "Error in Dash.FxaEvents handle_password_change(), likely issue updating account in db."
+          "Error in #{__MODULE__} handle_password_change(), likely issue updating account in db."
         )
 
         :ok
