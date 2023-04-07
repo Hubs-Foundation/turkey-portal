@@ -86,7 +86,7 @@ const TileSpotlight = ({
             <p>{body}</p>
           </div>
 
-          {/* CARDS  */}
+          {/* TILES */}
           <div className={styles.tiles}>
             {tilesCollection.items.map(
               (
