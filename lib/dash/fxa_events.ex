@@ -16,7 +16,7 @@ defmodule Dash.FxaEvents do
     "jti": "e19ed6c5-4816-4171-aa43-56ffe80dbda1",
     "events": {
       "https://schemas.accounts.firefox.com/event/password-change": {
-          "changeTime": "1565721242227"
+          "changeTime": 1565721242227
       }
     }
   }
@@ -97,11 +97,6 @@ defmodule Dash.FxaEvents do
 
     Dash.Account.set_auth_updated_at(fxa_uid, change_time_dt)
     :ok
-  end
-
-  def unix_to_utc_datetime(fxa_timestamp_str) when is_binary(fxa_timestamp_str) do
-    {timestamp, _} = Integer.parse(fxa_timestamp_str)
-    unix_to_utc_datetime(timestamp)
   end
 
   def unix_to_utc_datetime(fxa_timestamp) when is_integer(fxa_timestamp) do

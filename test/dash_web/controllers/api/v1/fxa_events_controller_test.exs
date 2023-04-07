@@ -45,8 +45,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       # time set for auth_changed_at
       account_after = get_test_account()
 
-      assert account_after.auth_updated_at ==
-               Dash.FxaEvents.unix_to_utc_datetime(Integer.to_string(timestamp_ms))
+      assert account_after.auth_updated_at === Dash.FxaEvents.unix_to_utc_datetime(timestamp_ms)
     end
 
     # Account is not created if the account never existed and we receive a password change event
