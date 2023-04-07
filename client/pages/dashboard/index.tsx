@@ -5,6 +5,8 @@ import { HubT, LastErrorE, StatusE } from 'types/General';
 import styles from './dashboard.module.scss';
 import HubCard from '@Cards/HubCard/HubCard';
 import SubCard from '@Cards/SubCard/SubCard';
+import ExpansionPanel from '@Shared/ExpansionPanel/ExpansionPanel';
+import LinkWidget from '@Cards/LinkWidget/LinkWidget';
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
 import { requireAuthenticationAndSubscription } from 'services/routeGuard.service';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
@@ -171,10 +173,39 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
         {/* SUBSCRIPTION WIDGET  */}
         <div className={styles.subcard}>
           {!isLoading ? (
-            <SubCard
-              subdomain={hubs[0].subdomain}
-              subscription={subscription}
-            />
+            // <SubCard
+            //   subdomain={hubs[0].subdomain}
+            //   subscription={subscription}
+            // />
+            <div>
+              <ExpansionPanel
+                title="Support"
+                classProp={styles.expansion_panel}
+              >
+                <div className={styles.link_widgets}>
+                  <LinkWidget
+                    link="/test"
+                    title="Mozilla Support"
+                    body="Subscriptions and Firefox Accounts"
+                  />
+                  <LinkWidget
+                    link="/test"
+                    title="Mozilla Support"
+                    body="Subscriptions and Firefox Accounts"
+                  />
+                  <LinkWidget
+                    link="/test"
+                    title="Mozilla Support"
+                    body="Subscriptions and Firefox Accounts"
+                  />
+                  <LinkWidget
+                    link="/test"
+                    title="Mozilla Support"
+                    body="Subscriptions and Firefox Accounts"
+                  />
+                </div>
+              </ExpansionPanel>
+            </div>
           ) : (
             <SkeletonCard
               qty={1}

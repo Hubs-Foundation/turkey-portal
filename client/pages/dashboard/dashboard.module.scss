@@ -47,3 +47,14 @@
     margin-bottom: 0;
   }
 }
+
+.expansion_panel {
+  width: 486px;
+}
+
+.link_widgets {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 10px;
+  row-gap: 10px;
+}
