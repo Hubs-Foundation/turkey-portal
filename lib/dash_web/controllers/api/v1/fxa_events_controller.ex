@@ -10,20 +10,11 @@ defmodule DashWeb.Api.V1.FxaEventsController do
   @delete_user "/delete-user"
   @profile_change "/profile-change"
   @subscription_changed "/subscription-state-change"
+
   def create(conn, _) do
-    fxa_event = conn.assigns[:fxa_event]
-
-    %{
-      "sub" => fxa_uid,
-      "events" => events
-    } = fxa_event
-
-    # Only one event each time
-    {event, event_data} =
-      events
-      |> Map.to_list()
-      |> List.first()
-
+    fxa_event = conn.assigns.fxa_event
+    %{"events" => events, "sub" => fxa_uid} = fxa_event
+    [{event, event_data}] = Map.to_list(events)
     Logger.warn("Testing event_data #{event} and FULL fxa_event is: #{inspect(fxa_event)}")
     Logger.warn("Passing in event_data #{inspect(event_data)}")
 
