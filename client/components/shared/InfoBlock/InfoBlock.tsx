@@ -13,10 +13,14 @@ export const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   return (
     <div className={styles.info_wrapper}>
       <div>
-        <Icon name={icon} size={30} classProp="mr-20 mt-2 " />
+        <Icon
+          name={icon}
+          size={30}
+          classProp={`mr-20 ${description ? 'mt-2' : styles.icon}`}
+        />
       </div>
 
-      <div className="body-md">
+      <div className={`body-md ${description ? '' : 'mb-16'}`}>
         <span className="body-md-bold">{label}</span>
         {description && <p>{description}</p>}
       </div>

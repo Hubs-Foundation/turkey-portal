@@ -11,13 +11,18 @@
     background: $color-background-modal-overlay;
     display: flex;
     justify-content: center;
+    overflow-y: auto;
   }
 
   &_container {
-    margin-top: 250px;
+    margin-top: 5vh;
+
+    @include tablet-down {
+      margin: 20px;
+    }
 
     @include mobile-down {
-      margin: 24px;
+      margin: 10px;
     }
   }
 }

@@ -5,12 +5,20 @@ import { pageRequireAuthentication } from 'services/routeGuard.service';
 import styles from '../dashboard/dashboard.module.scss';
 import { enabledStarterPlan } from 'util/featureFlag';
 import { redirectToDashboard } from 'util/redirects';
+import { useEffect } from 'react';
 
 const ConfirmPlan = () => {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'initial';
+    };
+  }, []);
   return (
     <div className="page_wrapper">
       <div className={styles.cards_wrapper}>
-        <SkeletonCard qty={3} category="row" pulse={false} />
+        <SkeletonCard qty={2} category="square" pulse={false} />
+        <SkeletonCard qty={1} category="row" pulse={false} />
       </div>
 
       <ConfirmPlanModel />
