@@ -65,3 +65,46 @@
     height: 100%;
   }
 }
+
+.starter_enabled {
+  &_cards {
+    z-index: 10;
+    margin-top: -50px;
+    display: flex;
+    justify-content: center;
+    @include desktop-large-down {
+      flex-wrap: wrap;
+    }
+  }
+  &_swoosh {
+    position: relative;
+    height: 200px;
+    width: 100%;
+    transform: rotate(180deg);
+    @include tablet-down {
+      height: 50px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &_swoosh_bottom {
+    background-color: transparent;
+    position: relative;
+    height: 200px;
+    width: 100%;
+    margin-top: -260px;
+
+    @include tablet-down {
+      height: 50px;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}

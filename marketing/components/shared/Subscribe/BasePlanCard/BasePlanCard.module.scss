@@ -10,6 +10,7 @@
   overflow: hidden;
   position: relative;
   margin: 0px 17px 24px;
+  z-index: 1;
 
   @include desktop-large-down {
     width: 100%;
@@ -27,11 +28,19 @@
 
 .banner_gradient {
   padding: 6px;
-  background: $gradient-warm;
   position: absolute;
   width: 100%;
   top: 0;
   left: 0;
+}
+
+.highlight {
+  &_warm {
+    background: $gradient-warm;
+  }
+  &_silver {
+    background: $color-subtle-callout;
+  }
 }
 
 .title {
@@ -82,7 +91,7 @@
 
 .footer {
   display: flex;
-  justify-content: center;
+  // justify-content: center;
 
   button {
     flex-grow: 1;
@@ -91,5 +100,11 @@
       flex-grow: 0;
       width: 335px;
     }
+  }
+
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
   }
 }
