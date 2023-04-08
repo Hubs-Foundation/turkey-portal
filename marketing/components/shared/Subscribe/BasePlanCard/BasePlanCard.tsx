@@ -38,7 +38,7 @@ export const Price = ({ region, price, priceCadence }: PricePropsT) => {
   const currency = region ? getCurrencyMeta(region) : null;
 
   return (
-    <div className={styles.price_container}>
+    <div className={`${styles.price_container}`}>
       <div className={styles.price}>
         {currency ? (
           <>
@@ -83,12 +83,10 @@ export const BasePlanCard = ({
       <div
         className={`${styles.banner_gradient} ${styles['highlight_' + color]}`}
       />
-      <div>
-        {/* HEADER  */}
-        <div>
-          <h2 className={styles.title}>{title}</h2>
-          <div className={styles.price_wrapper}>{price}</div>
-        </div>
+      {/* HEADER  */}
+      <h2 className={styles.title}>{title}</h2>
+      <div className={styles.container}>
+        <div className={styles.price_wrapper}>{price}</div>
 
         {/* CONTENT  */}
         <div className={styles.content}>
@@ -102,15 +100,15 @@ export const BasePlanCard = ({
               />
             );
           })}
-        </div>
 
-        {/* LOCATION CONFIRMATION  */}
-        {form}
+          {/* LOCATION CONFIRMATION  */}
+          {form}
+        </div>
       </div>
 
       {/* FOOTER  */}
-      <div className={styles.footer_wrapper}>
-        <div className={`${styles.footer} ${footerClassProp}`}>
+      <div className={`${styles.footer_wrapper} ${footerClassProp}`}>
+        <div className={`${styles.footer} flex-justify-center`}>
           {confirmButton}
         </div>
       </div>

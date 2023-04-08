@@ -2,6 +2,7 @@ import { Button } from '@mozilla/lilypad-ui';
 import { starterPlanInfoCopy } from '../BasePlanCard/planInfoCopy';
 import { Price, BasePlanCard } from '../BasePlanCard/BasePlanCard';
 import getEnvVariable from 'config';
+import styles from '../BasePlanCard/BasePlanCard.module.scss';
 
 export const StarterPlanCard = () => {
   const handleStarterPlanClick = () => {
@@ -15,6 +16,7 @@ export const StarterPlanCard = () => {
       color="silver"
       price={<Price region={null} price="Free" />}
       infoCopyList={starterPlanInfoCopy}
+      footerClassProp={styles.starter_footer}
       confirmButton={
         <Button
           label="Create free hub"

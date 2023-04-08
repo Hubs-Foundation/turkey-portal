@@ -3,7 +3,7 @@ import { StandardPlanCard } from './StandardPlanCard/StandardPlanCard';
 import { StarterPlanCard } from './StarterPlanCard/StarterPlanCard';
 import styles from './Subscribe.module.scss';
 import { enabledStarterPlan } from 'util/utilities';
-import { Button } from '@mozilla/lilypad-ui';
+import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 
 type SubscribePropsT = {
   classProp?: string;
@@ -74,62 +74,62 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
 const StarterPlanContent = () => {
   return (
     <>
-      <div className={styles.starter_enabled_swoosh}>
-        <svg
-          viewBox="0 0 1659 211"
-          fill="transparent"
-          preserveAspectRatio="none"
-        >
-          <rect x="0" y="0" width="500" height="500" fill="transparent" />
-          <path
-            d="M725 107C290.6 107.8 38 36 -34 0V210.5H1713.5C1584.5 152 1268 106 725 107Z"
-            fill="#FFF"
-          />
-        </svg>
-      </div>
+      <SwooshTop />
       <div className={styles.starter_enabled_cards}>
         <StarterPlanCard />
         <StandardPlanCard />
       </div>
-
-      <div className={styles.starter_enabled_swoosh_bottom}>
-        <svg
-          viewBox="0 0 1659 211"
-          fill="transparent"
-          preserveAspectRatio="none"
-        >
-          <rect x="0" y="0" width="500" height="500" fill="transparent" />
-          <path
-            d="M725 107C290.6 107.8 38 36 -34 0V210.5H1713.5C1584.5 152 1268 106 725 107Z"
-            fill="#170696"
-          />
-        </svg>
-      </div>
-      <div
-        className="flex-justify-center"
-        style={{
-          background: '#170696',
-        }}
-      >
-        <div
-          style={{
-            background: '#170696',
-            display: 'flex',
-            padding: '300px',
-            marginTop: '-2px',
-          }}
-        >
+      <SwooshBottom />
+      <div className={`${styles.pro_container} flex-justify-center`}>
+        <div className={styles.pro_container_wrapper}>
           <div>
-            <h2>Pro</h2>
-            <p>
+            <h2 className="mb-20">Pro</h2>
+            <p className="heading-xxs">
               Short paragraph style text to describe what this demo hub is all
               about
             </p>
           </div>
-          <Button label="Contact Hubs Team" text="Contact Hubs Team" />
+          <div className={styles.contact_wrapper}>
+            <Button
+              label="Contact Hubs Team"
+              text="Contact Hubs Team"
+              category={ButtonCategoriesE.SECONDARY_SOLID}
+            />
+          </div>
         </div>
       </div>
     </>
+  );
+};
+const SwooshTop = () => {
+  return (
+    <div
+      className={`${styles.starter_enabled_swoosh} ${styles.starter_enabled_swoosh_top}`}
+    >
+      <svg viewBox="0 0 1659 211" fill="transparent" preserveAspectRatio="none">
+        <rect x="0" y="0" width="500" height="500" fill="transparent" />
+        <path
+          d="M725 107C290.6 107.8 38 36 -34 0V210.5H1713.5C1584.5 152 1268 106 725 107Z"
+          fill="#FFF"
+        />
+      </svg>
+    </div>
+  );
+};
+
+const SwooshBottom = () => {
+  return (
+    <div
+      className={`${styles.starter_enabled_swoosh} ${styles.starter_enabled_swoosh_bottom}`}
+    >
+      <svg viewBox="0 0 1659 211" fill="transparent" preserveAspectRatio="none">
+        <rect x="0" y="0" width="500" height="500" fill="transparent" />
+        <path
+          d="M725 107C290.6 107.8 38 36 -34 0V210.5H1713.5C1584.5 152 1268 106 725 107Z"
+          fill="#170696"
+        />
+      </svg>
+    </div>
   );
 };
 
