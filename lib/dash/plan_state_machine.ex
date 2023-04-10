@@ -7,7 +7,7 @@ defmodule Dash.PlanStateMachine do
   """
   @behaviour Mimzy
 
-  alias Dash.{Account, Capability, Hub, Repo}
+  alias Dash.{Account, Capability, Hub, Plan, Repo}
   import Dash.Utils, only: [capability_string: 0, rand_string: 1]
   import Ecto.Query, only: [from: 2]
 
@@ -65,11 +65,11 @@ defmodule Dash.PlanStateMachine do
   end
 
   @impl Mimzy
-  def handle_event(nil, :active?, %Account{}, _data),
-    do: {:ok, false}
+  def handle_event(nil, :fetch_active_plan, %Account{}, _data),
+    do: {:error, :no_active_plan}
 
   def handle_event(nil, :start, %Account{} = account, _data) do
-    %{plan_id: plan_id} = Repo.insert!(%__MODULE__.Plan{account_id: account.account_id})
+    %{plan_id: plan_id} = Repo.insert!(%Plan{account_id: account.account_id})
 
     Repo.insert!(%__MODULE__.PlanTransition{
       event: "start",
@@ -99,7 +99,7 @@ defmodule Dash.PlanStateMachine do
         %Account{} = account,
         _data
       ) do
-    %{plan_id: plan_id} = Repo.insert!(%__MODULE__.Plan{account_id: account.account_id})
+    %{plan_id: plan_id} = Repo.insert!(%Plan{account_id: account.account_id})
 
     Repo.insert!(%__MODULE__.PlanTransition{
       event: "subscribe_standard",
@@ -123,8 +123,8 @@ defmodule Dash.PlanStateMachine do
     :ok
   end
 
-  def handle_event(:starter, :active?, %Account{}, _data),
-    do: {:ok, true}
+  def handle_event(:starter, :fetch_active_plan, %Account{account_id: account_id}, _data),
+    do: {:ok, %{Repo.get_by(Plan, account_id: account_id) | subscription?: false}}
 
   def handle_event(:starter, :start, %Account{}, _data),
     do: {:error, :already_started}
@@ -133,8 +133,18 @@ defmodule Dash.PlanStateMachine do
   def handle_event(:starter, {:subscribe_standard, _subscribed_at}, %Account{}, _data),
     do: {:error, :already_started}
 
-  def handle_event(:standard, :active?, %Account{}, _data),
-    do: {:ok, true}
+  def handle_event(:standard, :fetch_active_plan, %Account{account_id: account_id}, _data) do
+    active_plan =
+      case Repo.get_by(Plan, account_id: account_id) do
+        nil ->
+          Repo.get_by!(Capability, account_id: account_id)
+
+        plan ->
+          %{plan | subscription?: true}
+      end
+
+    {:ok, active_plan}
+  end
 
   def handle_event(:standard, :start, %Account{}, _data),
     do: {:error, :already_started}

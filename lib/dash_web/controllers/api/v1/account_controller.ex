@@ -8,9 +8,21 @@ defmodule DashWeb.Api.V1.AccountController do
     # has_creating_hubs allows the frontend to distinguish between whether to show building hub view
     %{account: account, fxa_account_info: fxa_account_info} = conn.assigns
 
+    {active_plan?, active_subscription?} =
+      case Dash.fetch_active_plan(account) do
+        {:ok, %Dash.Plan{subscription?: active_subscription?}} ->
+          {true, active_subscription?}
+
+        {:ok, %Dash.Capability{is_active: true}} ->
+          {true, true}
+
+        {:error, :no_active_plan} ->
+          {false, false}
+      end
+
     render(conn, "show.json",
-      active_plan?: Dash.active_plan?(account),
-      active_subscription?: fxa_account_info.has_subscription?,
+      active_plan?: active_plan?,
+      active_subscription?: active_subscription?,
       creating_hubs?: Dash.Hub.has_creating_hubs(account),
       forbidden?: Dash.ApprovedEmail.is_forbidden(fxa_account_info.fxa_email),
       fxa_account_info: fxa_account_info,

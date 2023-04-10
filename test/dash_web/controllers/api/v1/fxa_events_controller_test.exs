@@ -208,7 +208,9 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
              |> post("/api/v1/events/fxa")
              |> response(200)
 
-      assert Dash.active_plan?(account)
+      assert {:ok, plan} = Dash.fetch_active_plan(account)
+      assert %Dash.Plan{} = plan
+      assert plan.subscription?
       assert [_] = Dash.Hub.hubs_for_account(account)
     end
 

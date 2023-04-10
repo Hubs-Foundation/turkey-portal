@@ -7,7 +7,7 @@ defmodule Dash.PlanStateMachine.PlanTransition do
   """
   use Ecto.Schema
 
-  alias Dash.PlanStateMachine.Plan
+  alias Dash.Plan
 
   @primary_key {:plan_transition_id, :id, autogenerate: true}
   schema "plan_transitions" do

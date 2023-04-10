@@ -1,7 +1,7 @@
 defmodule Dash.Test do
   use Dash.DataCase
 
-  alias Dash.{Account, HttpMock, Hub}
+  alias Dash.{Account, Capability, HttpMock, Hub, Plan}
 
   import Dash.TestHelpers
   import Dash.Utils, only: [capability_string: 0]
@@ -170,35 +170,43 @@ defmodule Dash.Test do
     end
   end
 
-  describe "active_plan?/1" do
+  describe "fetch_active_plan/1" do
+    setup do
+      %{account: create_account()}
+    end
+
     test "when the account cannot be found" do
-      assert false === Dash.active_plan?(%Account{account_id: 1})
+      assert {:error, :account_not_found} === Dash.fetch_active_plan(%Account{account_id: 1})
     end
 
-    test "when the account has no plan" do
-      account = create_account()
-
-      assert false === Dash.active_plan?(account)
+    test "when the account has no plan", %{account: account} do
+      assert {:error, :no_active_plan} === Dash.fetch_active_plan(account)
     end
 
-    test "when the account has an active starter plan" do
+    test "when the account has an active starter plan", %{account: account} do
       stub_http_post_200()
-      account = create_account()
       :ok = Dash.start_plan(account)
 
-      assert true === Dash.active_plan?(account)
+      assert {:ok, %Plan{subscription?: false}} = Dash.fetch_active_plan(account)
     end
 
-    test "when the account has an active subscription plan" do
-      account = create_account()
+    test "when the account has an active subscription plan", %{account: account} do
+      stub_http_post_200()
+      :ok = Dash.subscribe_to_standard_plan(account, NaiveDateTime.utc_now())
 
+      assert {:ok, %Plan{subscription?: true}} = Dash.fetch_active_plan(account)
+    end
+
+    test "when the account has an active subscription plan (DEPRECATED capability)", %{
+      account: account
+    } do
       Dash.create_capability!(account, %{
         capability: capability_string(),
         change_time: DateTime.utc_now(),
         is_active: true
       })
 
-      assert true === Dash.active_plan?(account)
+      assert {:ok, %Capability{is_active: true}} = Dash.fetch_active_plan(account)
     end
 
     @tag :skip
@@ -214,7 +222,7 @@ defmodule Dash.Test do
       stub_http_post_200()
 
       assert :ok === Dash.start_plan(account)
-      assert Dash.active_plan?(account)
+      assert {:ok, %{subscription?: false}} = Dash.fetch_active_plan(account)
     end
 
     test "creates the hub", %{account: account} do
@@ -275,7 +283,7 @@ defmodule Dash.Test do
       end)
 
       assert :ok === Dash.subscribe_to_standard_plan(account, subscribed_at)
-      assert Dash.active_plan?(account)
+      assert {:ok, %{subscription?: true}} = Dash.fetch_active_plan(account)
       assert [hub] = Hub.hubs_for_account(account)
       assert 25 === hub.ccu_limit
       assert 2_000 === hub.storage_limit_mb

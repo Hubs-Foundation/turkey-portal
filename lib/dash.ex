@@ -2,24 +2,21 @@ defmodule Dash do
   @moduledoc """
   Boundary of Dash context
   """
-  alias Dash.{Account, Capability, PlanStateMachine, Repo}
+  alias Dash.{Account, Capability, Plan, PlanStateMachine, Repo}
   import Dash.Utils, only: [capability_string: 0]
   import Ecto.Query
   require Logger
 
   @doc """
-  Returns `true` if a plan is active for the given `account`.
-  """
-  @spec active_plan?(Account.t()) :: boolean
-  def active_plan?(%Account{} = account) do
-    case PlanStateMachine.handle_event(:active?, account) do
-      {:ok, active_plan?} ->
-        active_plan?
+  Finds the active plan for the given `account`.
 
-      {:error, :account_not_found} ->
-        false
-    end
-  end
+  Returns `{:ok, plan}` if found.  Otherwise, `{:error, reason}` is returned.
+  """
+  @spec fetch_active_plan(Account.t()) ::
+          {:ok, Plan.t() | %Capability{is_active: true}}
+          | {:error, :account_not_found | :no_active_plan}
+  def fetch_active_plan(%Account{} = account),
+    do: PlanStateMachine.handle_event(:fetch_active_plan, account)
 
   @doc """
   Creates a starter plan for the given `account`.
