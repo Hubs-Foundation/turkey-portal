@@ -1,8 +1,8 @@
 import Image, { StaticImageData } from 'next/image';
-import styles from './LinkWidget.module.scss';
+import styles from './SupportLink.module.scss';
 import { Icon } from '@mozilla/lilypad-ui';
 
-export type LinkWidgetPropsT = {
+export type SupportLinkPropsT = {
   image: StaticImageData;
   link: string;
   title: string;
@@ -10,13 +10,13 @@ export type LinkWidgetPropsT = {
   classProp?: string;
 };
 
-const LinkWidget = ({
+const SupportLink = ({
   image,
   link,
   title,
   body,
   classProp = '',
-}: LinkWidgetPropsT) => {
+}: SupportLinkPropsT) => {
   return (
     <a href={link} className="flex">
       <section className={`${styles.wrapper} ${classProp}`}>
@@ -32,4 +32,4 @@ const LinkWidget = ({
   );
 };
 
-export default LinkWidget;
+export default SupportLink;
