@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback } from 'react';
 import { HubT, LastErrorE, StatusE } from 'types/General';
 import styles from './dashboard.module.scss';
 import HubCard from '@Cards/HubCard/HubCard';
-import SubCard from '@Cards/SubCard/SubCard';
 import SidePanel from 'modules/dashboard/SidePanel';
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
 import { requireAuthenticationAndSubscription } from 'services/routeGuard.service';
@@ -15,7 +14,6 @@ import { selectAccount } from 'store/accountSlice';
 import { initAccountData as refreshAccountData } from 'store/storeInit';
 import { useSelector } from 'react-redux';
 import { AxiosRequestHeaders } from 'axios';
-import { Icon } from '@mozilla/lilypad-ui';
 
 type DashboardPropsT = { subscription: SubscriptionT };
 
@@ -173,17 +171,10 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
         {/* SUBSCRIPTION WIDGET  */}
         <div className={styles.subcard}>
           {!isLoading ? (
-            <>
-              <SubCard
-                subdomain={hubs[0].subdomain}
-                subscription={subscription}
-              />
-              {/* viewBox="2 2 21 21" */}
-              {/* <Icon name="space" />
-              <Icon name="settings" />
-              <Icon name="plus" /> */}
-              <SidePanel />
-            </>
+            <SidePanel
+              subdomain={hubs[0].subdomain}
+              subscription={subscription}
+            />
           ) : (
             <SkeletonCard
               qty={1}
