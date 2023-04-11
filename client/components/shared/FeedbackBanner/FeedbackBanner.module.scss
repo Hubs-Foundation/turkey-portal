@@ -3,9 +3,13 @@
 .wrapper {
   background-color: $color-interactions-menu;
   color: $color-text-reverse;
-  padding: 34px;
+  padding: 24px;
   display: flex;
   justify-content: center;
+
+  @include mobile-down {
+    padding: 16px;
+  }
 }
 
 .container {
@@ -16,8 +20,18 @@
     @include secondary-font(700);
     @include font-size(28);
     line-height: 36px;
-    margin: 0 0 8px;
+    margin: 0px;
+
+    @include mobile-down {
+      @include font-size(20);
+    }
   }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .content {
@@ -25,6 +39,7 @@
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-top: 8px;
 
   @include tablet-down {
     flex-direction: column;
@@ -37,10 +52,6 @@
     line-height: 24px;
     margin: 8px 0;
     max-width: 790px;
-    // padding-bottom: 24px;
-
-    @include tablet-down {
-    }
   }
 }
 

@@ -60,8 +60,9 @@ const SidePanel = ({
       </div>
 
       {/* PRICE  */}
-      {/* note : make sure this is wrapped with a flag for only paid customers.  */}
-      <SubCard subscription={subscription} classProp={styles.subcard} />
+      {subscription && (
+        <SubCard subscription={subscription} classProp={styles.subcard} />
+      )}
 
       {/* SUPPORT LINKS  */}
       <ExpansionPanel title="Support" classProp={styles.expansion_panel}>

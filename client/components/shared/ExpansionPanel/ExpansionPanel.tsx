@@ -45,7 +45,7 @@ const ExpansionPanel = ({
         <Icon
           classProp={styles.expand_button}
           name={isOpen ? 'chevron-up' : 'chevron-down'}
-          size={28}
+          size={22}
           color="currentColor"
         />
       </button>
