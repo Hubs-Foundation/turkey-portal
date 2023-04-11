@@ -16,7 +16,7 @@ defmodule Dash.FxaEvents do
     "jti": "e19ed6c5-4816-4171-aa43-56ffe80dbda1",
     "events": {
       "https://schemas.accounts.firefox.com/event/password-change": {
-          "changeTime": "1565721242227"
+          "changeTime": 1565721242227
       }
     }
   }
@@ -72,38 +72,31 @@ defmodule Dash.FxaEvents do
   def handle_profile_change(_fxa_uid, _event_data), do: :ok
 
   @spec handle_subscription_changed_event(String.t(), event_data) :: :ok | :error
-  def handle_subscription_changed_event(
-        fxa_uid,
-        %{"capabilities" => capabilities, "isActive" => is_active, "changeTime" => change_time} =
-          _event_data
-      ) do
+  def handle_subscription_changed_event(fxa_uid, %{
+        "capabilities" => capabilities,
+        "isActive" => is_active,
+        "changeTime" => change_time
+      }) do
     change_time_dt = unix_to_utc_datetime(change_time)
 
-    for capability <- capabilities do
+    if capabilities !== [capability_string()] do
+      raise "unknown capabilities for subscription changed event: #{capabilities}"
+    else
       Dash.update_or_create_capability_for_changeset(%{
         fxa_uid: fxa_uid,
-        capability: capability,
+        capability: capability_string(),
         is_active: is_active,
         change_time: change_time_dt
       })
 
-      if not is_active and capability === capability_string() do
+      if not is_active do
         account = Dash.Account.account_for_fxa_uid(fxa_uid)
         Dash.delete_all_hubs_for_account(account)
       end
     end
 
     Dash.Account.set_auth_updated_at(fxa_uid, change_time_dt)
-
     :ok
-  end
-
-  def unix_to_utc_datetime(fxa_timestamp_str) when is_binary(fxa_timestamp_str) do
-    {timestamp, _} = Integer.parse(fxa_timestamp_str)
-
-    timestamp
-    |> DateTime.from_unix!(:millisecond)
-    |> DateTime.truncate(:second)
   end
 
   def unix_to_utc_datetime(fxa_timestamp) when is_integer(fxa_timestamp) do
