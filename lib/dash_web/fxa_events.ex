@@ -1,4 +1,4 @@
-defmodule Dash.FxaEvents do
+defmodule DashWeb.FxaEvents do
   @moduledoc """
    Handles events sent from FxA via webhook
   """
@@ -35,7 +35,7 @@ defmodule Dash.FxaEvents do
 
       {:error, _changeset} ->
         Logger.error(
-          "Error in Dash.FxaEvents handle_password_change(), likely issue updating account in db."
+          "Error in #{__MODULE__} handle_password_change(), likely issue updating account in db."
         )
 
         :ok
@@ -75,33 +75,42 @@ defmodule Dash.FxaEvents do
   def handle_subscription_changed_event(fxa_uid, %{
         "capabilities" => capabilities,
         "isActive" => is_active,
-        "changeTime" => change_time
+        "changeTime" => milliseconds
       }) do
-    change_time_dt = unix_to_utc_datetime(change_time)
+    truncated_datetime = unix_to_utc_datetime(milliseconds)
 
     if capabilities !== [capability_string()] do
       raise "unknown capabilities for subscription changed event: #{capabilities}"
     else
+      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+
+      if is_active do
+        subscribed_at = DateTime.from_unix!(milliseconds * 1_000, :microsecond)
+
+        with {:error, reason} <- Dash.subscribe_to_standard_plan(account, subscribed_at) do
+          Logger.warning("could not subscribe to standard plan for reason: #{reason}")
+        end
+      else
+        Dash.delete_all_hubs_for_account(account)
+      end
+
       Dash.update_or_create_capability_for_changeset(%{
         fxa_uid: fxa_uid,
         capability: capability_string(),
         is_active: is_active,
-        change_time: change_time_dt
+        change_time: truncated_datetime
       })
-
-      if not is_active do
-        account = Dash.Account.account_for_fxa_uid(fxa_uid)
-        Dash.delete_all_hubs_for_account(account)
-      end
     end
 
-    Dash.Account.set_auth_updated_at(fxa_uid, change_time_dt)
+    Dash.Account.set_auth_updated_at(fxa_uid, truncated_datetime)
     :ok
   end
 
-  def unix_to_utc_datetime(fxa_timestamp) when is_integer(fxa_timestamp) do
-    fxa_timestamp
-    |> DateTime.from_unix!(:millisecond)
-    |> DateTime.truncate(:second)
-  end
+  ## Helpers
+
+  defp unix_to_utc_datetime(unix) when is_integer(unix),
+    do:
+      unix
+      |> DateTime.from_unix!(:millisecond)
+      |> DateTime.truncate(:second)
 end
