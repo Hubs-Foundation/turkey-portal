@@ -74,7 +74,7 @@ defmodule Dash.PlanStateMachine do
     Repo.insert!(%__MODULE__.PlanTransition{
       event: "start",
       new_state: :starter,
-      transitioned_at: NaiveDateTime.utc_now(),
+      transitioned_at: DateTime.utc_now(),
       plan_id: plan_id
     })
 
@@ -95,7 +95,7 @@ defmodule Dash.PlanStateMachine do
 
   def handle_event(
         nil,
-        {:subscribe_standard, %NaiveDateTime{} = subscribed_at},
+        {:subscribe_standard, %DateTime{} = subscribed_at},
         %Account{} = account,
         _data
       ) do

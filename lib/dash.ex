@@ -35,9 +35,9 @@ defmodule Dash do
 
   Returns `:ok` if successful.  Otherwise, `{:error, reason}` is returned.
   """
-  @spec subscribe_to_standard_plan(Account.t(), NaiveDateTime.t()) ::
+  @spec subscribe_to_standard_plan(Account.t(), DateTime.t()) ::
           :ok | {:error, :account_not_found | :already_started}
-  def subscribe_to_standard_plan(%Account{} = account, %NaiveDateTime{} = subscribed_at),
+  def subscribe_to_standard_plan(%Account{} = account, %DateTime{} = subscribed_at),
     do: PlanStateMachine.handle_event({:subscribe_standard, subscribed_at}, account)
 
   def update_or_create_capability_for_changeset(

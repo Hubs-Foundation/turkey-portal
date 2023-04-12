@@ -85,10 +85,7 @@ defmodule DashWeb.FxaEvents do
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
       if is_active do
-        subscribed_at =
-          (milliseconds * 1_000)
-          |> DateTime.from_unix!(:microsecond)
-          |> DateTime.to_naive()
+        subscribed_at = DateTime.from_unix!(milliseconds * 1_000, :microsecond)
 
         with {:error, reason} <- Dash.subscribe_to_standard_plan(account, subscribed_at) do
           Logger.warning("could not subscribe to standard plan for reason: #{reason}")

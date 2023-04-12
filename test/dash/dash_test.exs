@@ -192,7 +192,7 @@ defmodule Dash.Test do
 
     test "when the account has an active subscription plan", %{account: account} do
       stub_http_post_200()
-      :ok = Dash.subscribe_to_standard_plan(account, NaiveDateTime.utc_now())
+      :ok = Dash.subscribe_to_standard_plan(account, DateTime.utc_now())
 
       assert {:ok, %Plan{subscription?: true}} = Dash.fetch_active_plan(account)
     end
@@ -268,7 +268,7 @@ defmodule Dash.Test do
 
   describe "subscribe_to_standard_plan/2" do
     setup do
-      %{account: create_account(), subscribed_at: ~N[1970-01-01 00:00:00.877000]}
+      %{account: create_account(), subscribed_at: ~U[1970-01-01 00:00:00.877000Z]}
     end
 
     test "when the account has no plan", %{
