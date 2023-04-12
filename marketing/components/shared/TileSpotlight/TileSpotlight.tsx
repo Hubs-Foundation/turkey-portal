@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import styles from './TileSpotlight.module.scss';
-import bubbleTop from '../../../public/bubble-top.png';
-import bubbleBottom from '../../../public/bubble-bottom.png';
+import snowTop from '../../../public/snow-top.png';
+import snowBottom from '../../../public/snow-bottom.png';
 import { SpotlightTile, TileSpotlightT } from 'types';
 import Swoosh from '@Shared/Swoosh/Swoosh';
 import { Button } from '@mozilla/lilypad-ui';
@@ -67,10 +67,10 @@ const TileSpotlight = ({
 
       <div className={styles.wrapper}>
         {adornment === 'snow' && (
-          <div className={styles.bubble_top}>
+          <div className={styles.snow_top}>
             <Image
-              src={bubbleTop}
-              alt="bubble background"
+              src={snowTop}
+              alt="snow background"
               layout="fill"
               objectFit="cover"
               objectPosition="center"
@@ -88,31 +88,16 @@ const TileSpotlight = ({
 
           {/* TILES */}
           <div className={styles.tiles}>
-            {tilesCollection.items.map(
-              (
-                { image, imageAlt, title, description, ctaTitle, ctaHref },
-                i
-              ) => {
-                return (
-                  <Tile
-                    key={i}
-                    image={image}
-                    imageAlt={imageAlt}
-                    title={title}
-                    description={description}
-                    ctaTitle={ctaTitle}
-                    ctaHref={ctaHref}
-                  />
-                );
-              }
-            )}
+            {tilesCollection.items.map((props, i) => {
+              return <Tile key={i} {...props} />;
+            })}
           </div>
         </div>
         {adornment === 'snow' && (
-          <div className={styles.bubble_bottom}>
+          <div className={styles.snow_bottom}>
             <Image
-              src={bubbleBottom}
-              alt="bubble background"
+              src={snowBottom}
+              alt="snow background"
               layout="fill"
               objectFit="cover"
               objectPosition="center"
