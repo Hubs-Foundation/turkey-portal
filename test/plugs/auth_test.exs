@@ -4,14 +4,15 @@ defmodule DashWeb.Plugs.AuthTest do
 
   alias DashWeb.FxaEvents
   import Dash.TestHelpers
-  import Mox
 
   setup_all do
     setup_http_mocks()
     on_exit(fn -> exit_http_mocks() end)
   end
 
-  setup [:verify_on_exit!]
+  setup do
+    Mox.verify_on_exit!()
+  end
 
   describe "Auth Plug" do
     setup do

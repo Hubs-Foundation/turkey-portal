@@ -10,6 +10,10 @@ defmodule DashWeb.FxaEventsTest do
     on_exit(fn -> exit_http_mocks() end)
   end
 
+  setup do
+    Mox.verify_on_exit!()
+  end
+
   describe "handle_subscription_changed_event/2" do
     test "Should delete hub if subscription event is_active is false" do
       expect_orch_delete()

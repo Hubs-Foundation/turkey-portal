@@ -12,6 +12,10 @@ defmodule Dash.Test do
     on_exit(fn -> exit_http_mocks() end)
   end
 
+  setup do
+    Mox.verify_on_exit!()
+  end
+
   describe "change_email/2" do
     @old_email "old@old.old"
     @new_email "new@new.new"
@@ -32,7 +36,6 @@ defmodule Dash.Test do
     end
 
     test "should raise, account has no previously set email, has hubs" do
-      expect_ret_patch_update_email()
       expect_orch_post()
 
       fxa_uid = "no_email"

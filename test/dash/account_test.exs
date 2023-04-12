@@ -9,6 +9,10 @@ defmodule Dash.AccountTest do
     on_exit(fn -> exit_http_mocks() end)
   end
 
+  setup do
+    Mox.verify_on_exit!()
+  end
+
   describe "delete_account_and_hubs/1" do
     test "Should delete account and their hubs" do
       expect_orch_delete()

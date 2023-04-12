@@ -2,7 +2,6 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
   use DashWeb.ConnCase
 
   import Dash.TestHelpers
-  import Mox
   alias Dash.ApprovedEmail
 
   setup_all do
@@ -10,7 +9,9 @@ defmodule DashWeb.Plugs.ApprovedEmailAuthTest do
     on_exit(fn -> exit_http_mocks() end)
   end
 
-  setup [:verify_on_exit!]
+  setup do
+    Mox.verify_on_exit!()
+  end
 
   describe "ApprovedEmailAuth Plug" do
     setup do

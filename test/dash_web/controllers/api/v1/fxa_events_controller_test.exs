@@ -23,6 +23,10 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     on_exit(fn -> exit_http_mocks() end)
   end
 
+  setup do
+    Mox.verify_on_exit!()
+  end
+
   describe "FxA Events Controller Webhook: Password change events" do
     # Password change event handled correctly
     test "should return 200 and password change event handled correctly", %{conn: conn} do
