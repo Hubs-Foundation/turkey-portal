@@ -7,7 +7,12 @@ defmodule Dash.PlanStateMachine do
   """
   @behaviour Mimzy
 
-  alias Dash.{Account, Capability, Hub, Plan, Repo}
+  @starter_ccu_limit 10
+  @starter_storage_limit_mb 500
+  @standard_ccu_limit 25
+  @standard_storage_limit_mb 2_000
+
+  alias Dash.{Account, Capability, Hub, Plan, OrchClient, Repo}
   import Dash.Utils, only: [capability_string: 0, rand_string: 1]
   import Ecto.Query, only: [from: 2]
 
@@ -81,15 +86,15 @@ defmodule Dash.PlanStateMachine do
     hub =
       Repo.insert!(%Hub{
         account_id: account.account_id,
-        ccu_limit: 10,
+        ccu_limit: @starter_ccu_limit,
         name: "Untitled Hub",
         status: :creating,
-        storage_limit_mb: 500,
+        storage_limit_mb: @starter_storage_limit_mb,
         subdomain: rand_string(10),
         tier: :free
       })
 
-    {:ok, %{status_code: 200}} = Dash.OrchClient.create_hub(account.email, hub)
+    {:ok, %{status_code: 200}} = OrchClient.create_hub(account.email, hub)
     :ok
   end
 
@@ -100,42 +105,55 @@ defmodule Dash.PlanStateMachine do
         _data
       ) do
     %{plan_id: plan_id} = Repo.insert!(%Plan{account_id: account.account_id})
-
-    Repo.insert!(%__MODULE__.PlanTransition{
-      event: "subscribe_standard",
-      new_state: :standard,
-      transitioned_at: subscribed_at,
-      plan_id: plan_id
-    })
+    :ok = subscribe_standard(plan_id, subscribed_at)
 
     hub =
       Repo.insert!(%Hub{
         account_id: account.account_id,
-        ccu_limit: 25,
+        ccu_limit: @standard_ccu_limit,
         name: "Untitled Hub",
         status: :creating,
-        storage_limit_mb: 2000,
+        storage_limit_mb: @standard_storage_limit_mb,
         subdomain: rand_string(10),
         tier: :early_access
       })
 
-    {:ok, %{status_code: 200}} = Dash.OrchClient.create_hub(account.email, hub)
+    {:ok, %{status_code: 200}} = OrchClient.create_hub(account.email, hub)
     :ok
   end
 
   def handle_event(:starter, :fetch_active_plan, %Account{account_id: account_id}, _data),
-    do: {:ok, %{Repo.get_by(Plan, account_id: account_id) | subscription?: false}}
+    do: {:ok, %{get_plan(account_id) | subscription?: false}}
 
   def handle_event(:starter, :start, %Account{}, _data),
     do: {:error, :already_started}
 
-  # TODO: Implement upgrade
-  def handle_event(:starter, {:subscribe_standard, _subscribed_at}, %Account{}, _data),
-    do: {:error, :already_started}
+  def handle_event(
+        :starter,
+        {:subscribe_standard, subscribed_at},
+        %Account{account_id: account_id},
+        _data
+      ) do
+    %{plan_id: plan_id} = get_plan(account_id)
+    :ok = subscribe_standard(plan_id, subscribed_at)
+
+    hub =
+      Hub
+      |> Repo.get_by!(account_id: account_id)
+      |> Ecto.Changeset.change(
+        ccu_limit: @standard_ccu_limit,
+        storage_limit_mb: @standard_storage_limit_mb,
+        tier: :early_access
+      )
+      |> Repo.update!()
+
+    {:ok, %{status_code: 200}} = OrchClient.update_tier(hub)
+    :ok
+  end
 
   def handle_event(:standard, :fetch_active_plan, %Account{account_id: account_id}, _data) do
     active_plan =
-      case Repo.get_by(Plan, account_id: account_id) do
+      case get_plan(account_id) do
         nil ->
           Repo.get_by!(Capability, account_id: account_id)
 
@@ -151,4 +169,20 @@ defmodule Dash.PlanStateMachine do
 
   def handle_event(:standard, {:subscribe_standard, _subscribed_at}, %Account{}, _data),
     do: {:error, :already_started}
+
+  @spec get_plan(Account.id()) :: Plan.t() | nil
+  defp get_plan(account_id),
+    do: Repo.get_by(Plan, account_id: account_id)
+
+  @spec subscribe_standard(Plan.id(), DateTime.t()) :: :ok
+  defp subscribe_standard(plan_id, %DateTime{} = subscribed_at) when is_integer(plan_id) do
+    Repo.insert!(%__MODULE__.PlanTransition{
+      event: "subscribe_standard",
+      new_state: :standard,
+      transitioned_at: subscribed_at,
+      plan_id: plan_id
+    })
+
+    :ok
+  end
 end
