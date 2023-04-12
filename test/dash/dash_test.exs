@@ -7,11 +7,6 @@ defmodule Dash.Test do
   import Dash.Utils, only: [capability_string: 0]
   require Logger
 
-  setup_all do
-    setup_http_mocks()
-    on_exit(fn -> exit_http_mocks() end)
-  end
-
   setup do
     Mox.verify_on_exit!()
   end

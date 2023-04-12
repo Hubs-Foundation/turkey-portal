@@ -7,11 +7,6 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
   @unauthorized_redirect Jason.encode!(DashWeb.Plugs.Auth.unauthorized_auth_redirect_struct())
   @route "/api/v1/plans"
 
-  setup_all do
-    setup_http_mocks()
-    on_exit(fn -> exit_http_mocks() end)
-  end
-
   describe "POST /api/v1/plans?tier=starter" do
     setup do
       starter_plan_enabled? = Application.get_env(:dash, :starter_plan_enabled?)

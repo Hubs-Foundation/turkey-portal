@@ -1,13 +1,6 @@
 defmodule Dash.OrchClientTest do
   use ExUnit.Case
 
-  import Dash.TestHelpers
-
-  setup_all do
-    setup_http_mocks()
-    on_exit(fn -> exit_http_mocks() end)
-  end
-
   setup do
     Mox.verify_on_exit!()
   end

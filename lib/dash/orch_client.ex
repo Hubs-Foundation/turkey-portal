@@ -48,10 +48,11 @@ defmodule Dash.OrchClient do
     )
   end
 
-  defp get_http_client() do
-    # Make the http client module configurable so that we can mock it out in tests.
-    Application.get_env(:dash, Dash.Hub)[:http_client] || HTTPoison
-  end
+  defp get_http_client,
+    do:
+      :dash
+      |> Application.get_env(__MODULE__)
+      |> Keyword.get(:http_client, HTTPoison)
 
   defp get_orch_host() do
     Application.get_env(:dash, Dash.OrchClient)[:orch_host]
