@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import styles from './FeedbackBanner.module.scss';
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { Button, ButtonCategoriesE, Icon } from '@mozilla/lilypad-ui';
 import FadeIn from '@Util/FadeIn';
 
 type FeedbackBannerPropsT = {
@@ -39,20 +39,31 @@ const FeedbackBanner = ({
 
   const handleOnComplete = useCallback(() => {
     if (!isOpen) setIsVisible(false);
+
+    // Scroll banner into view after opening.
+    if (isOpen) {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        left: 0,
+        behavior: 'smooth',
+      });
+    }
   }, [isOpen]);
 
   return (
     <div className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.container}>
-        <div className={styles.header}>
-          <h3>Tell us what you think</h3>
-          <Button
-            icon={isOpen ? 'chevron-down' : 'chevron-up'}
-            label="toggle"
-            category={ButtonCategoriesE.SECONDARY_CLEAR}
-            onClick={onToggleClick}
+        <button
+          className={styles.header}
+          onClick={onToggleClick}
+          aria-label="toggle"
+        >
+          <h3 className="heading-xs">Tell us what you think</h3>
+          <Icon
+            name={isOpen ? 'chevron-down' : 'chevron-up'}
+            color="currentColor"
           />
-        </div>
+        </button>
 
         <FadeIn isVisible={isOpen} onComplete={handleOnComplete}>
           {isVisible && (

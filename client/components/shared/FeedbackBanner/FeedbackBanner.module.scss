@@ -2,44 +2,33 @@
 
 .wrapper {
   background-color: $color-interactions-menu;
-  color: $color-text-reverse;
-  padding: 24px;
   display: flex;
   justify-content: center;
-
-  @include mobile-down {
-    padding: 16px;
-  }
 }
 
 .container {
   max-width: 1197px;
   width: 100%;
-
-  h3 {
-    @include secondary-font(700);
-    @include font-size(28);
-    line-height: 36px;
-    margin: 0px;
-
-    @include mobile-down {
-      @include font-size(20);
-    }
-  }
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 24px;
+  color: $color-text-reverse;
+  background-color: transparent;
+  border: 0;
+  width: 100%;
 }
 
 .content {
+  padding: 0 24px 24px 24px;
+  color: $color-text-reverse;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-top: 8px;
 
   @include tablet-down {
     flex-direction: column;
