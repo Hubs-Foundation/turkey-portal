@@ -133,7 +133,7 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
             <a
               target="_blank"
               rel="noreferrer"
-              href="https://mozillamr.myspreadshop.com/"
+              href="https://mozilla-na.myspreadshop.com/"
               className={styles.link}
             >
               Hubs Merch

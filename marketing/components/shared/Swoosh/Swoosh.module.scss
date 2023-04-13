@@ -1,10 +1,23 @@
-.swoosh {
+@use 'styles/core/boilerplate' as *;
+
+.swoosh_top,
+.swoosh_bottom {
   position: relative;
   height: 100px;
   width: 100%;
+
+  @include tablet-down {
+    height: 50px;
+  }
 
   svg {
     width: 100%;
     height: 100%;
   }
+}
+
+.swoosh_bottom {
+  background-color: transparent;
+  transform: rotate(180deg);
+  position: relative;
 }

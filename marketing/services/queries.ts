@@ -63,6 +63,27 @@ sectionsCollection {
     }
     ... on TileSpotlight {
       __typename
+      title
+      body
+      background
+      adornment
+      textColor
+
+      tilesCollection {
+        items {
+          ... on SpotlightTile {
+            image {
+              url
+              description
+            }
+            imageAlt
+            title
+            description
+            ctaTitle
+            ctaHref
+          }
+        }
+      }
     }
     ... on ValueProps {
       __typename
@@ -97,6 +118,8 @@ sectionsCollection {
       __typename
       title
       subtitle
+      ctaTitle
+      ctaHref
       richText {
         json
        }
