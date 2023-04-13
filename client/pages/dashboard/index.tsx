@@ -168,8 +168,8 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
           )}
         </div>
 
-        {/* SUBSCRIPTION WIDGET  */}
-        <div className={styles.subcard}>
+        {/* SIDE PANNEL WIDGET  */}
+        <div className={styles.sidep_panel}>
           {!isLoading ? (
             <SidePanel
               subdomain={hubs[0].subdomain}
@@ -179,7 +179,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
             <SkeletonCard
               qty={1}
               category="square"
-              classProp={styles.subcard_skeleton}
+              classProp={styles.sidep_panel_skeleton}
             />
           )}
         </div>
