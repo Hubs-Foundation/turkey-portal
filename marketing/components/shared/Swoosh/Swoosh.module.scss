@@ -1,6 +1,7 @@
 @use 'styles/core/boilerplate' as *;
 
-.swoosh {
+.swoosh_top,
+.swoosh_bottom {
   position: relative;
   height: 100px;
   width: 100%;
@@ -15,7 +16,7 @@
   }
 }
 
-.bottom {
+.swoosh_bottom {
   background-color: transparent;
   transform: rotate(180deg);
   position: relative;
