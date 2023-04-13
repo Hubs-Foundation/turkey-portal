@@ -27,6 +27,14 @@ const HubCardHeader = ({
     });
   }, [hubId, router]);
 
+  const DropdownContent = (
+    <div className="dropdown_wrapper">
+      <button className="dropdown-link" onClick={handleSettingClick}>
+        Edit Details
+      </button>
+    </div>
+  );
+
   return (
     <div className={`${classProp} ${styles.card_header}`}>
       <div className={styles.card_status_wrapper}>
@@ -40,17 +48,17 @@ const HubCardHeader = ({
 
       {/* Edit Hubs Details  */}
       {status !== StatusE.CREATING && status !== StatusE.UPDATING && (
-        // <Button
-        //   label="edit details"
-        //   onClick={handleSettingClick}
-        //   text="Edit Details"
-        //   category={ButtonCategoriesE.PRIMARY_OUTLINE}
-        // />
-
         <Dropdown
           alignment="right"
-          cta={<Button icon="more-vertical" label="toggle" />}
-          content={<div>test</div>}
+          width={164}
+          cta={
+            <Button
+              icon="more-vertical"
+              label="toggle"
+              category={ButtonCategoriesE.PRIMARY_CLEAR}
+            />
+          }
+          content={DropdownContent}
         />
       )}
     </div>

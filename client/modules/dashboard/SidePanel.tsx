@@ -3,7 +3,7 @@ import SupportLink from '@Shared/SupportLink/SupportLink';
 import styles from './SidePanel.module.scss';
 import { SubscriptionT } from 'services/subscription.service';
 import SubCard from '@Cards/SubCard/SubCard';
-import { Icon } from '@mozilla/lilypad-ui';
+import { Icon, HubIcon } from '@mozilla/lilypad-ui';
 import TileButton from '@Shared/TileButton/TileButton';
 import mozillaLogo from 'public/mozilla_logo.png';
 import github from 'public/github.png';
@@ -40,7 +40,7 @@ const SidePanel = ({
           <TileButton
             color="--color-brand-2"
             icon={
-              <Icon
+              <HubIcon
                 name="space"
                 classProp={styles.space_icon}
                 color="currentColor"
