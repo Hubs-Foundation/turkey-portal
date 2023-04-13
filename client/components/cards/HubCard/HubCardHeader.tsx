@@ -1,4 +1,4 @@
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { Button, ButtonCategoriesE, Dropdown } from '@mozilla/lilypad-ui';
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { StatusE } from 'types/General';
@@ -40,11 +40,17 @@ const HubCardHeader = ({
 
       {/* Edit Hubs Details  */}
       {status !== StatusE.CREATING && status !== StatusE.UPDATING && (
-        <Button
-          label="edit details"
-          onClick={handleSettingClick}
-          text="Edit Details"
-          category={ButtonCategoriesE.PRIMARY_OUTLINE}
+        // <Button
+        //   label="edit details"
+        //   onClick={handleSettingClick}
+        //   text="Edit Details"
+        //   category={ButtonCategoriesE.PRIMARY_OUTLINE}
+        // />
+
+        <Dropdown
+          alignment="right"
+          cta={<Button icon="more-vertical" label="toggle" />}
+          content={<div>test</div>}
         />
       )}
     </div>

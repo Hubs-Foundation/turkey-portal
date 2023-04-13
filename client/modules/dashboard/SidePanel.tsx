@@ -46,17 +46,10 @@ const SidePanel = ({
                 color="currentColor"
               />
             }
-            link={`https://${subdomain}.${HUB_ROOT_DOMAIN}/admin`}
-            title="Space Editor"
+            link={`https://${subdomain}.${HUB_ROOT_DOMAIN}/spoke/projects`}
+            title="Scene Editor"
           />
         )}
-
-        <TileButton
-          color="--color-brand-1"
-          icon={<Icon name="plus" color="currentColor" />}
-          link={`https://${subdomain}.${HUB_ROOT_DOMAIN}/admin`}
-          title="Create Room"
-        />
       </div>
 
       {/* PRICE  */}

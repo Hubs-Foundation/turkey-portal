@@ -34,12 +34,12 @@
 .tile_buttons {
   margin-bottom: 16px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   column-gap: 10px;
   row-gap: 10px;
 
   @include mobile-down {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     padding: 0 24px;
   }
 }
