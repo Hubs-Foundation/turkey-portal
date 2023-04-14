@@ -58,7 +58,11 @@ const SidePanel = ({
       )}
 
       {/* SUPPORT LINKS  */}
-      <ExpansionPanel title="Support" classProp={styles.expansion_panel}>
+      <ExpansionPanel
+        title="Support"
+        expanded={true}
+        classProp={styles.expansion_panel}
+      >
         <div className={styles.support_links}>
           <SupportLink
             image={mozillaLogo}

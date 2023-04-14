@@ -6,16 +6,19 @@ import FadeIn from '@Util/FadeIn';
 export type ExpansionPanelPropsT = {
   title: string;
   children: ReactNode;
+  expanded?: boolean;
   classProp?: string;
 };
 
+// TODO set an init open value
 const ExpansionPanel = ({
   title,
   children,
+  expanded = false,
   classProp = '',
 }: ExpansionPanelPropsT) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(expanded);
+  const [isVisible, setIsVisible] = useState<boolean>(expanded);
 
   const onToggleClick = () => {
     isOpen ? handleClose() : handleOpen();
