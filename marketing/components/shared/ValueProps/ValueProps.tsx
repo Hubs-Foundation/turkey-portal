@@ -1,13 +1,13 @@
 import { ReactNode } from 'react';
 import styles from './ValueProps.module.scss';
-import { Icon, IconT } from '@mozilla/lilypad-ui';
+import { Icon, HubIcon } from '@mozilla/lilypad-ui';
 
 type ValuePropsPropsT = {
   classProp?: string;
 };
 
 export type TilePropsT = {
-  icon: IconT;
+  icon: ReactNode;
   title: string;
   description?: string;
   children?: ReactNode;
@@ -20,11 +20,7 @@ const Tile = ({ icon, title, description, children }: TilePropsT) => {
   return (
     <section className={styles.tile_wrapper}>
       <div className={styles.tile_container}>
-        {icon && (
-          <div className={styles.tile_icon}>
-            <Icon name={icon} size={64} />
-          </div>
-        )}
+        {icon && <div className={styles.tile_icon}>{icon}</div>}
 
         <div className={styles.tile_content}>
           <h3>{title}</h3>
@@ -43,18 +39,18 @@ const ValueProps = ({ classProp = '' }: ValuePropsPropsT) => {
       <div className={styles.container}>
         <div className={styles.tiles}>
           <Tile
-            icon="shield"
+            icon={<Icon name="shield" size={64} />}
             title="Private by design"
             description="You control access to your Hubs, so worlds are only discoverable to people you share the link with."
           />
 
           <Tile
-            icon="cross-device"
+            icon={<HubIcon name="cross-device" size={64} />}
             title="Works across devices"
             description="Guests can join from any device with a modern browser — no downloads required."
           />
 
-          <Tile icon="code" title="Open Source">
+          <Tile icon={<Icon name="code" size={64} />} title="Open Source">
             <p>
               Hubs is built in the open — you can check out the source code{' '}
               <a

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Button, Icon, IconT, Checkbox } from '@mozilla/lilypad-ui';
+import { Button, HubIcon, HubIconT, Checkbox } from '@mozilla/lilypad-ui';
 import SubscriptionInfoCopy from './SubscriptionInfoCopy';
 import styles from './SubInfoCard.module.scss';
 import getEnvVariable from 'config';
@@ -16,7 +16,7 @@ type SubInfoCardPropsT = {
 };
 
 type InfoBlockPropsT = {
-  icon: IconT;
+  icon: HubIconT;
   label: string;
   description: string;
 };
@@ -26,7 +26,7 @@ const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   return (
     <div className={styles.info_wrapper}>
       <div className="flex-box">
-        <Icon name={icon} size={30} classProp="mr-20 mt-2 " />
+        <HubIcon name={icon} size={30} classProp="mr-20 mt-2 " />
       </div>
       <div className="body-md">
         <p>

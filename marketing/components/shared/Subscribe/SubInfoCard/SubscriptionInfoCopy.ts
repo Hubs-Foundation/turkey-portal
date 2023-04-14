@@ -1,9 +1,9 @@
-import { IconT } from '@mozilla/lilypad-ui';
+import { HubIconT } from '@mozilla/lilypad-ui';
 
 export type SubscriptionInfoCopyT = {
   label: string;
   description: string;
-  icon: IconT;
+  icon: HubIconT;
 };
 
 const SubscriptionInfoCopy: SubscriptionInfoCopyT[] = [
