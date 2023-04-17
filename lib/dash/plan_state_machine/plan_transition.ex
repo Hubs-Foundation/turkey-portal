@@ -7,13 +7,13 @@ defmodule Dash.PlanStateMachine.PlanTransition do
   """
   use Ecto.Schema
 
-  alias Dash.PlanStateMachine.Plan
+  alias Dash.Plan
 
   @primary_key {:plan_transition_id, :id, autogenerate: true}
   schema "plan_transitions" do
     field :event, :string
     field :new_state, Ecto.Enum, values: [:stopped, :starter, :standard, :pro]
-    field :transitioned_at, :naive_datetime_usec
+    field :transitioned_at, :utc_datetime_usec
 
     belongs_to :plan, Plan, references: :plan_id
 

@@ -2,12 +2,14 @@ defmodule Dash.OrchClientTest do
   use ExUnit.Case
 
   import Dash.TestHelpers
-  import Mox, only: [verify_on_exit!: 1]
 
-  setup_all context do
+  setup_all do
     setup_http_mocks()
     on_exit(fn -> exit_http_mocks() end)
-    verify_on_exit!(context)
+  end
+
+  setup do
+    Mox.verify_on_exit!()
   end
 
   test "should patch subdomain with the correct API shape" do

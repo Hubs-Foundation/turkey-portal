@@ -9,7 +9,7 @@ defmodule Dash.Repo.Migrations.CreatePlanTransitions do
       add :plan_transition_id, :bigint, default: fragment("next_id()"), primary_key: true
       add :event, :string, null: false
       add :new_state, :plan_state, null: false
-      add :transitioned_at, :naive_datetime_usec, null: false
+      add :transitioned_at, :utc_datetime_usec, null: false
       add :plan_id, references("plans", column: :plan_id, on_delete: :delete_all), null: false
 
       timestamps()

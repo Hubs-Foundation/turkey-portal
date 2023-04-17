@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import { FiftyfiftyT } from 'types';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import { Button } from '@mozilla/lilypad-ui';
 
 /**
   FiftyFifty component can be image left / content right or vice versa
@@ -23,6 +24,8 @@ const FiftyFifty = ({
   accentImageAlt = 'Accent Image',
   title,
   subtitle,
+  ctaHref,
+  ctaTitle,
   richText,
   children,
   layout = 'left',
@@ -78,6 +81,14 @@ const FiftyFifty = ({
               </div>
             )}
             {children && <div className={styles.body_copy}>{children}</div>}
+            {ctaHref && ctaTitle && (
+              <Button
+                label={ctaTitle}
+                text={ctaTitle}
+                href={ctaHref}
+                classProp="mt-16"
+              />
+            )}
           </div>
         </div>
       </div>

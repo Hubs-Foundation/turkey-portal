@@ -4,42 +4,34 @@ defmodule DashWeb.Api.V1.FxaEventsController do
   """
   use DashWeb, :controller
 
+  alias DashWeb.FxaEvents
   require Logger
 
   @password_change "/password-change"
   @delete_user "/delete-user"
   @profile_change "/profile-change"
   @subscription_changed "/subscription-state-change"
+
   def create(conn, _) do
-    fxa_event = conn.assigns[:fxa_event]
-
-    %{
-      "sub" => fxa_uid,
-      "events" => events
-    } = fxa_event
-
-    # Only one event each time
-    {event, event_data} =
-      events
-      |> Map.to_list()
-      |> List.first()
-
+    fxa_event = conn.assigns.fxa_event
+    %{"events" => events, "sub" => fxa_uid} = fxa_event
+    [{event, event_data}] = Map.to_list(events)
     Logger.warn("Testing event_data #{event} and FULL fxa_event is: #{inspect(fxa_event)}")
     Logger.warn("Passing in event_data #{inspect(event_data)}")
 
     result =
       cond do
         event =~ @password_change ->
-          Dash.FxaEvents.handle_password_change(fxa_uid, event_data)
+          FxaEvents.handle_password_change(fxa_uid, event_data)
 
         event =~ @delete_user ->
-          Dash.FxaEvents.handle_account_deletion_event(fxa_uid)
+          FxaEvents.handle_account_deletion_event(fxa_uid)
 
         event =~ @profile_change ->
-          Dash.FxaEvents.handle_profile_change(fxa_uid, event_data)
+          FxaEvents.handle_profile_change(fxa_uid, event_data)
 
         event =~ @subscription_changed ->
-          Dash.FxaEvents.handle_subscription_changed_event(fxa_uid, event_data)
+          FxaEvents.handle_subscription_changed_event(fxa_uid, event_data)
 
         true ->
           Logger.warn(
