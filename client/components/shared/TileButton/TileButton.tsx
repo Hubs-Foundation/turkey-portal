@@ -30,7 +30,9 @@ const TileButton = ({
           <Icon name="external-link" color="currentColor" size={16} />
         </div>
 
-        <div className={styles.title}>{title}</div>
+        <header>
+          <p className={styles.title}>{title}</p>
+        </header>
       </section>
     </a>
   );

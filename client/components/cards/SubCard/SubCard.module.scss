@@ -6,7 +6,6 @@
   padding: 24px;
   width: 487px;
   border-radius: 20px;
-  display: flex;
   margin-bottom: 16px;
 
   @include desktop-large-down {
@@ -29,7 +28,7 @@
   }
 }
 
-.header {
+.content {
   &_block {
     width: 50%;
 

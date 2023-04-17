@@ -34,8 +34,8 @@ const SubCard = ({ subscription, classProp = '' }: SubCardPropsT) => {
     <div className={`${styles.wrapper} ${classProp}`}>
       <div className={styles.container}>
         {/* PAYMENT */}
-        <div className={styles.header_block}>
-          <div>
+        <div className={styles.content_block}>
+          <div className="flex-box">
             <span className={styles.price}>
               {/* TODO - tech debt localization
                   Use something like https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat 
@@ -49,14 +49,14 @@ const SubCard = ({ subscription, classProp = '' }: SubCardPropsT) => {
               {subscription.currency} (+tax)
             </span>
           </div>
-          <div className={styles.label}>Monthly Payment</div>
+          <p className={styles.label}>Monthly Payment</p>
         </div>
 
         {/* NEXT PAYMENT */}
-        <div className={styles.header_block}>
+        <div className={styles.content_block}>
           <div className="flex-box">
-            <div className={styles.month}>{subscriptionDate(false)}</div>
-            <div className={styles.label}>Next Payment</div>
+            <p className={styles.month}>{subscriptionDate(false)}</p>
+            <p className={styles.label}>Next Payment</p>
           </div>
         </div>
       </div>
