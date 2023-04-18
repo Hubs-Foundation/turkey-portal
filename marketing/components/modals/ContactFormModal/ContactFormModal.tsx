@@ -1,5 +1,5 @@
 import styles from './ContactFormModal.module.scss';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import {
   Icon,
   Button,
@@ -9,16 +9,99 @@ import {
   OptionT,
   TextArea,
 } from '@mozilla/lilypad-ui';
+import { CountryOptions } from 'types/Countries';
+import { useFormik } from 'formik';
+import validate from './validate';
 
 type ContactFormModalPropsT = {
   onClose: () => void;
   classProp?: string;
 };
 
+type NewContactT = {
+  name: string;
+  email: string;
+  organization_name: string;
+  country: string;
+  subject: string;
+  field_of_activity: string;
+  message: string;
+};
+
 const ContactFormModal = ({
   onClose,
   classProp = '',
 }: ContactFormModalPropsT) => {
+  const [confirm, setConfirm] = useState<boolean>(false);
+  const [submitted, setSubmitted] = useState<boolean>(false);
+  const [responseStatus, setResponseStatus] = useState<boolean>(false);
+
+  /**
+   * On Form Error
+   */
+  const onError = useCallback(() => {
+    setResponseStatus(false);
+    setSubmitted(true);
+  }, []);
+
+  /**
+   * On Form Success
+   */
+  const onSuccess = useCallback(() => {
+    setResponseStatus(true);
+    setSubmitted(true);
+  }, []);
+
+  /**
+   * On AJAX Resp
+   */
+  const handleResponse = useCallback(
+    (resp: any) => {
+      // todo fix any
+      const { status, statusText } = resp;
+      status !== 200 || statusText !== 'OK' ? onError() : onSuccess();
+    },
+    [onError, onSuccess]
+  );
+
+  const onSubmit = useCallback(
+    async (contact: NewContactT) => {
+      // todo submit contact here.
+      try {
+        // const resp = await subscribe(contact);
+        // handleResponse(resp);
+      } catch (error) {
+        console.error(error);
+        onError();
+      }
+    },
+    [handleResponse, onError]
+  );
+
+  /**
+   * Init Formik
+   */
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      organization_name: '',
+      country: '',
+      subject: 'Technical question',
+      field_of_activity: 'Business',
+      message: '',
+    },
+    validate,
+    onSubmit: onSubmit,
+  });
+
+  /**
+   * Checkbox Confirm
+   */
+  const onConfirm = useCallback(() => {
+    setConfirm((state) => !state);
+  }, []);
+
   /**
    * Close Modal
    */
@@ -76,8 +159,20 @@ const ContactFormModal = ({
         />
 
         <Select
+          id="country"
+          name="country"
+          onChange={() => {}}
+          onBlur={() => {}}
+          value={''}
+          label="Country"
+          classProp="mb-16"
+          required={true}
+          options={CountryOptions}
+        />
+
+        <Select
           id="subject"
-          name="organization name"
+          name="subject"
           onChange={() => {}}
           onBlur={() => {}}
           value={''}
@@ -88,6 +183,28 @@ const ContactFormModal = ({
             { value: 'Technical question', title: 'Technical question' },
             { value: 'Hubs availability', title: 'Hubs availability' },
             { value: 'Room capacity', title: 'Room capacity' },
+            { value: 'Annual billing', title: 'Annual billing' },
+            { value: 'Partnership', title: 'Partnership' },
+            { value: 'Server localization', title: 'Server localization' },
+            { value: 'Event support', title: 'Event support' },
+            { value: 'Other', title: 'Other (specify in message)' },
+          ]}
+        />
+
+        <Select
+          id="activity"
+          name="activity"
+          onChange={() => {}}
+          onBlur={() => {}}
+          value={''}
+          label="Field of Activity"
+          classProp="mb-16"
+          required={true}
+          options={[
+            { value: 'Business', title: 'Business' },
+            { value: 'Education', title: 'Education' },
+            { value: 'Research', title: 'Research' },
+            { value: 'Other', title: 'Other (specify in message)' },
           ]}
         />
 
