@@ -18,6 +18,7 @@ import {
   Icon,
   Dropdown,
   dropdownT,
+  HubIcon,
 } from '@mozilla/lilypad-ui';
 
 type MainNavPropsT = {
@@ -76,7 +77,7 @@ const MainNav = ({
             onManageAccountClick();
           }}
         >
-          <Icon
+          <HubIcon
             classProp="mr-10"
             color="currentColor"
             name="fx-account"

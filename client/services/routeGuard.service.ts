@@ -168,6 +168,8 @@ function shouldNotRedirect(
   }
 ): boolean {
   return Boolean(
-    req.url?.includes(RoutesE.SUBSCRIBE) && query.redirect === 'false'
+    (req.url?.includes(RoutesE.CONFIRM_PLAN) ||
+      req.url?.includes(RoutesE.SUBSCRIBE)) &&
+      query.redirect === 'false'
   );
 }
