@@ -32,7 +32,7 @@ const SidePanel = ({
         <TileButton
           color="--color-brand-4"
           icon={<Icon name="settings" color="currentColor" />}
-          link={`https://${FXA_SERVER}/settings`}
+          link={`https://${subdomain}.${HUB_ROOT_DOMAIN}/admin`}
           title="Admin Panel"
         />
 
@@ -66,25 +66,25 @@ const SidePanel = ({
         <div className={styles.support_links}>
           <SupportLink
             image={mozillaLogo}
-            link="/test"
+            link="https://support.mozilla.org/en-US/products/hubs"
             title="Mozilla Support"
             body="Subscriptions and Firefox Accounts"
           />
           <SupportLink
             image={duck}
-            link="/test"
+            link="https://hubs.mozilla.com/docs/welcome.html"
             title="Hubs Docs"
             body="General Hubs support and guidance"
           />
           <SupportLink
             image={github}
-            link="/test"
+            link="https://github.com/mozilla/hubs/discussions"
             title="GitHub Discussions"
             body="Developer support channel"
           />
           <SupportLink
             image={discord}
-            link="/test"
+            link="https://discord.com/invite/wHmY4nd"
             title="Hubs Community"
             body="Community!"
           />
