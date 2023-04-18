@@ -4,7 +4,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
   import Dash.TestHelpers
   import Dash.Utils, only: [capability_string: 0]
-  import Mox
   import Plug.Conn.Status, only: [code: 1]
   require Logger
   alias Dash.Hub
@@ -14,7 +13,9 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     on_exit(fn -> exit_http_mocks() end)
   end
 
-  setup [:verify_on_exit!]
+  setup do
+    Mox.verify_on_exit!()
+  end
 
   describe "Hub API" do
     test "should fetch and return usage stats for hubs", %{conn: conn} do

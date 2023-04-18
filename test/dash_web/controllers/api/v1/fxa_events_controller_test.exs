@@ -2,6 +2,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   use DashWeb.ConnCase
 
   import Dash.TestHelpers
+  import Dash.Utils, only: [capability_string: 0]
   require Logger
 
   # @password_change_struct %{
@@ -20,6 +21,10 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   setup_all do
     setup_http_mocks()
     on_exit(fn -> exit_http_mocks() end)
+  end
+
+  setup do
+    Mox.verify_on_exit!()
   end
 
   describe "FxA Events Controller Webhook: Password change events" do
@@ -44,8 +49,10 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       # time set for auth_changed_at
       account_after = get_test_account()
 
-      assert account_after.auth_updated_at ==
-               Dash.FxaEvents.unix_to_utc_datetime(Integer.to_string(timestamp_ms))
+      assert account_after.auth_updated_at ===
+               timestamp_ms
+               |> DateTime.from_unix!(:millisecond)
+               |> DateTime.truncate(:second)
     end
 
     # Account is not created if the account never existed and we receive a password change event
@@ -143,7 +150,29 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   end
 
   describe "Subscription changed event" do
+    test "with an unknown capability", %{conn: conn} do
+      unknown = "unknown-capability"
+
+      for capabilities <- [[], [capability_string(), unknown], [unknown]] do
+        token =
+          [
+            fxa_uid: "dummy-uid",
+            event: get_subscription_changed_event(capabilities: capabilities, event_only: false)
+          ]
+          |> get_generic_fxa_event_struct()
+          |> Jason.encode!()
+
+        assert_raise RuntimeError, fn ->
+          conn
+          |> put_resp_content_type("application/json")
+          |> put_req_header("authorization", "Bearer #{token}")
+          |> post("/api/v1/events/fxa")
+        end
+      end
+    end
+
     test "Should update iat and add capability to account for true", %{conn: conn} do
+      stub_http_post_200()
       fxa_uid = get_default_test_uid()
 
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
@@ -162,6 +191,31 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       assert response(conn, 200)
       account = Dash.Account.account_for_fxa_uid(fxa_uid)
       assert account.auth_updated_at
+    end
+
+    test "to standard plan", %{conn: conn} do
+      stub_http_post_200()
+      fxa_uid = "dummy-uid"
+      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+
+      token =
+        [
+          fxa_uid: fxa_uid,
+          event: get_subscription_changed_event(event_only: false, is_active: true)
+        ]
+        |> get_generic_fxa_event_struct()
+        |> Jason.encode!()
+
+      assert conn
+             |> put_resp_content_type("application/json")
+             |> put_req_header("authorization", "Bearer #{token}")
+             |> post("/api/v1/events/fxa")
+             |> response(200)
+
+      assert {:ok, plan} = Dash.fetch_active_plan(account)
+      assert %Dash.Plan{} = plan
+      assert plan.subscription?
+      assert [_] = Dash.Hub.hubs_for_account(account)
     end
 
     test "Should delete hubs on is_active false event", %{conn: conn} do
@@ -262,6 +316,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     end
 
     test "Account is created for subscription changed event", %{conn: conn} do
+      stub_http_post_200()
       fxa_uid = get_default_test_uid()
 
       false = Dash.has_account_for_fxa_uid?(fxa_uid)

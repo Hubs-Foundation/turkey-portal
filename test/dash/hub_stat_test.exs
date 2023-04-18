@@ -3,7 +3,6 @@ defmodule Dash.HubStatTest do
 
   import Dash.TestHelpers
   import Ecto.Query
-  import Mox
   require Logger
   alias Dash.{Repo, HubStat}
 
@@ -13,8 +12,6 @@ defmodule Dash.HubStatTest do
   end
 
   describe "Metrics Hub Stat" do
-    setup :verify_on_exit!
-
     test "Happy path: gets ready hubs storage stats into table" do
       # Set RetClient stub for /storage endpoint
       stub_ret_get()

@@ -2,15 +2,17 @@ defmodule DashWeb.Plugs.AuthTest do
   use DashWeb.ConnCase
   use DashWeb, :controller
 
+  alias DashWeb.FxaEvents
   import Dash.TestHelpers
-  import Mox
 
   setup_all do
     setup_http_mocks()
     on_exit(fn -> exit_http_mocks() end)
   end
 
-  setup [:verify_on_exit!]
+  setup do
+    Mox.verify_on_exit!()
+  end
 
   describe "Auth Plug" do
     setup do
@@ -203,7 +205,7 @@ defmodule DashWeb.Plugs.AuthTest do
 
       true = Dash.has_account_for_fxa_uid?(fxa_uid)
 
-      Dash.FxaEvents.handle_account_deletion_event(fxa_uid)
+      FxaEvents.handle_account_deletion_event(fxa_uid)
 
       conn =
         conn
