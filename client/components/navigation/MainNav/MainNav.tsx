@@ -52,7 +52,7 @@ const MainNav = ({
    * Dropdown Content
    */
   const DropdownContent = (
-    <div className={styles.dropdown_wrapper}>
+    <div className="dropdown_wrapper">
       <div className={styles.account_wrapper}>
         <Avatar
           classProp="mt-5"
@@ -72,7 +72,7 @@ const MainNav = ({
       {/* Account / Sign Out  */}
       <div className={styles.links}>
         <button
-          className="dropdown-link"
+          className="dropdown-link mb-24"
           onClick={() => {
             onManageAccountClick();
           }}

@@ -1,6 +1,13 @@
 main[data-theme='light'],
 :root {
   /**
+  BRAND
+  **/
+  --color-brand-1: #ff806f;
+  --color-brand-2: #6ae1d9;
+  --color-brand-4: #ffff98;
+
+  /**
   PRIMARY INTERACTION
   **/
   --color-interaction-primary: #1700c7;
@@ -104,6 +111,13 @@ main[data-theme='light'],
 
 // PLACE HOLDER FOR DARK VALUES
 main[data-theme='dark'] {
+  /**
+  BRAND
+  **/
+  --color-brand-1: #ff806f;
+  --color-brand-2: #6ae1d9;
+  --color-brand-4: #ffff98;
+
   /**
   PRIMARY INTERACTION
   **/

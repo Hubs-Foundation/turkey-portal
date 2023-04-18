@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { HubT, LastErrorE, StatusE } from 'types/General';
 import styles from './dashboard.module.scss';
 import HubCard from '@Cards/HubCard/HubCard';
-import SubCard from '@Cards/SubCard/SubCard';
+import SidePanel from 'modules/dashboard/SidePanel';
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
 import { requireAuthenticationAndSubscription } from 'services/routeGuard.service';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
@@ -168,10 +168,10 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
           )}
         </div>
 
-        {/* SUBSCRIPTION WIDGET  */}
-        <div className={styles.subcard}>
+        {/* SIDE PANNEL WIDGET  */}
+        <div className={styles.sidep_panel}>
           {!isLoading ? (
-            <SubCard
+            <SidePanel
               subdomain={hubs[0].subdomain}
               subscription={subscription}
             />
@@ -179,7 +179,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
             <SkeletonCard
               qty={1}
               category="square"
-              classProp={styles.subcard_skeleton}
+              classProp={styles.sidep_panel_skeleton}
             />
           )}
         </div>
