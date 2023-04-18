@@ -1,0 +1,57 @@
+@use 'styles/core/boilerplate' as *;
+
+.contents {
+  max-width: 700px;
+}
+
+.container {
+  border-radius: 10px;
+  background-color: $color-neutral-0;
+  overflow: hidden;
+  line-height: 24px;
+}
+
+.continue_wrapper {
+  padding: 20px;
+
+  @include mobile-down {
+    min-height: 260px;
+  }
+
+  h2 {
+    font-family: $secondary-font;
+  }
+
+  button {
+    min-width: 240px;
+    max-width: 350px;
+    align-self: center;
+  }
+}
+
+.gradient_banner {
+  background: $gradient-warm;
+  align-items: center;
+  justify-content: space-between;
+
+  @include tablet-down {
+    display: block;
+
+    p {
+      margin-bottom: 12px;
+    }
+  }
+}
+
+.info_wrapper {
+  padding: 20px;
+  @include tablet-down {
+    flex-wrap: wrap;
+  }
+  .first {
+    margin-right: 20px;
+    @include mobile-down {
+      margin-right: 30px;
+    }
+  }
+}
