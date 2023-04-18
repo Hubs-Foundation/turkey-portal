@@ -11,6 +11,8 @@
     margin-top: 35px;
     flex-direction: column;
     padding: 0 24px;
+    justify-content: initial;
+    flex-wrap: initial;
   }
 
   @include mobile-down {
@@ -29,7 +31,7 @@
   }
 }
 
-.subcard {
+.sidep_panel {
   &_skeleton {
     width: 487px;
     height: 100px;
