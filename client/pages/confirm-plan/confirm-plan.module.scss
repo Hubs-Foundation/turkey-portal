@@ -1,0 +1,22 @@
+@use '../../styles/core/boilerplate' as *;
+
+.wrapper {
+  margin: 0 auto;
+  width: 80%;
+  max-width: 1300px;
+  min-width: 800px;
+
+  @include desktop-large-down {
+    width: 100%;
+    min-width: initial;
+  }
+}
+
+.container {
+  margin-top: 5vh;
+}
+
+.card {
+  width: 50%;
+  margin-left: 50%;
+}
