@@ -13,8 +13,6 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <>
-        {/* styles.swoosh */}
-        <Swoosh location="top" />
         <div className={styles.container}>
           <div className={styles.cards}>
             {enabledStarterPlan() ? (
@@ -46,7 +44,6 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
             )}
           </div>
         </div>
-        {/* styles.swoosh_bottom */}
         <Swoosh location="bottom" />
       </>
     </section>

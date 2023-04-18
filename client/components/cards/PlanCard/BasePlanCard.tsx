@@ -13,9 +13,8 @@ const InfoBlock = ({ icon, label, description }: PlanInfoCopyT) => {
         <Icon name={icon} size={30} classProp="mr-20" />
       </div>
       <div className="body-md">
-        <p>
-          <span className="body-md-bold">{label}</span> <br /> {description}
-        </p>
+        <span className="body-md-bold">{label}</span>
+        <p>{description}</p>
       </div>
     </div>
   );

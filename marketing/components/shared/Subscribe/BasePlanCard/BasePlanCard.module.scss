@@ -10,7 +10,6 @@
   overflow: hidden;
   position: relative;
   margin: 0px 17px 24px;
-  z-index: 1;
 
   @include desktop-large-down {
     width: 100%;
@@ -39,7 +38,7 @@
     background: $gradient-warm;
   }
   &_silver {
-    background: $color-subtle-callout;
+    background: $color-background-subtle-callout;
   }
 }
 
@@ -93,6 +92,10 @@
   }
 }
 
+.starter_container {
+  align-self: flex-start;
+}
+
 .footer {
   width: 100%;
 
@@ -103,10 +106,5 @@
       flex-grow: 0;
       width: 335px;
     }
-  }
-
-  &_wrapper {
-    display: flex;
-    flex-direction: column;
   }
 }
