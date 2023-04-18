@@ -1,9 +1,9 @@
-import { IconT } from '@mozilla/lilypad-ui';
+import { HubIconT } from '@mozilla/lilypad-ui';
 
 export type PlanInfoCopyT = {
   label: string;
   description: string;
-  icon: IconT;
+  icon: HubIconT;
 };
 
 export const starterPlanInfoCopy: PlanInfoCopyT[] = [
