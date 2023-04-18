@@ -13,6 +13,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <>
+        <Swoosh location="top" />
         <div className={styles.container}>
           <div className={styles.cards}>
             {enabledStarterPlan() ? (
