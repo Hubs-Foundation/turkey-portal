@@ -17,5 +17,5 @@ export const prodFeature = (): boolean => {
 };
 
 export const enabledStarterPlan = (): boolean => {
-  return ENABLE_STARTER_PLAN === 'true';
+  return ENABLE_STARTER_PLAN === 'enabled';
 };
