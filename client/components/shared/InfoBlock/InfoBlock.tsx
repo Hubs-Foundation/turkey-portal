@@ -1,8 +1,8 @@
-import { Icon, IconT } from '@mozilla/lilypad-ui';
+import { HubIcon, HubIconT } from '@mozilla/lilypad-ui';
 import styles from './InfoBlock.module.scss';
 
 export type InfoBlockPropsT = {
-  icon: IconT;
+  icon: HubIconT;
   label: string;
   description?: string;
   centered?: boolean;
@@ -13,7 +13,7 @@ export const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   return (
     <div className={styles.info_wrapper}>
       <div>
-        <Icon
+        <HubIcon
           name={icon}
           size={30}
           classProp={`mr-20 ${description ? 'mt-2' : styles.icon}`}
