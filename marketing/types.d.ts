@@ -81,6 +81,16 @@ export type ImageT = {
   description: string;
 };
 
+export type NewContactT = {
+  name: string;
+  email: string;
+  organization: string;
+  country: string;
+  subject: string;
+  activity: string;
+  message: string;
+};
+
 /**
  * UTILITY TYPES
  */

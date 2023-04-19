@@ -13,24 +13,16 @@ import {
   NotificationLocationE,
   CategoryE,
 } from '@mozilla/lilypad-ui';
+import { NewContactT } from 'types';
 import { CountryOptions } from 'types/Countries';
 import { useFormik } from 'formik';
 import validate from './validate';
+import { sendEmail, EmailResponseT } from 'services/email.service';
 import { NotificationContext } from 'contexts/NotificationProvider';
 
 type ContactFormModalPropsT = {
   onClose: () => void;
   classProp?: string;
-};
-
-type NewContactT = {
-  name: string;
-  email: string;
-  organization: string;
-  country: string;
-  subject: string;
-  activity: string;
-  message: string;
 };
 
 const ContactFormModal = ({
@@ -49,13 +41,6 @@ const ContactFormModal = ({
   }, [onClose]);
 
   /**
-   * On Form Error
-   */
-  const onError = useCallback(() => {
-    setisError(true);
-  }, []);
-
-  /**
    * On Form Success
    */
   const onSuccess = useCallback(() => {
@@ -66,7 +51,7 @@ const ContactFormModal = ({
       type: NotificationTypesE.SUCCESS,
       location: NotificationLocationE.TOP_RIGHT,
       pauseOnHover: true,
-      autoClose: false,
+      autoClose: true,
       hasIcon: true,
       category: CategoryE.TOAST,
     } as NewNotificationT);
@@ -76,36 +61,35 @@ const ContactFormModal = ({
    * On AJAX Resp
    */
   const handleResponse = useCallback(
-    (resp: any) => {
-      // todo fix any
-      const { status, statusText } = resp;
-      status !== 200 || statusText !== 'OK' ? onError() : onSuccess();
+    ({ status }: EmailResponseT) => {
+      if (status === 200) {
+        onClose();
+        onSuccess();
+        return;
+      }
+      setisError(true);
     },
-    [onError, onSuccess]
+    [onClose, onSuccess]
   );
 
   const onSubmit = useCallback(
     async (contact: NewContactT) => {
       setisError(false);
-      console.log('contact', contact);
-      onClose();
-      onSuccess();
-      // todo submit contact here.
-      // try {
-      //   // const resp = await subscribe(contact);
-      //   // handleResponse(resp);
-      // } catch (error) {
-      //   console.error(error);
-      //   onError();
-      // }
+
+      try {
+        const resp = await sendEmail(contact);
+        handleResponse(resp);
+      } catch (error) {
+        setisError(true);
+      }
     },
-    [handleResponse, onError]
+    [handleResponse]
   );
 
   /**
    * Init Formik
    */
-  const formik = useFormik({
+  const formik = useFormik<NewContactT>({
     initialValues: {
       name: '',
       email: '',
