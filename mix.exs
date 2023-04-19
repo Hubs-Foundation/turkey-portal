@@ -36,6 +36,7 @@ defmodule Dash.MixProject do
       {:esbuild, "~> 0.3", runtime: Mix.env() == :dev},
       {:floki, ">= 0.30.0", only: :test},
       {:gettext, "~> 0.18"},
+      {:hackney, "~> 1.18"},
       {:httpoison, "~> 1.8"},
       {:jason, "~> 1.2"},
       {:jose, "~> 1.11.2"},
@@ -51,6 +52,7 @@ defmodule Dash.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:quantum, "~> 3.5.0"},
       {:retry, "~> 0.16"},
+      {:sentry, "~> 8.0"},
       {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"}

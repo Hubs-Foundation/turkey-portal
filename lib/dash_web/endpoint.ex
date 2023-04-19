@@ -1,4 +1,5 @@
 defmodule DashWeb.Endpoint do
+  use Sentry.PlugCapture
   use Phoenix.Endpoint, otp_app: :dash
 
   # The session will be stored in the cookie and signed,
@@ -55,5 +56,6 @@ defmodule DashWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
   plug CORSPlug, origin: &DashWeb.Endpoint.get_cors_origins/0
+  plug Sentry.PlugContext
   plug DashWeb.Router
 end
