@@ -2,7 +2,8 @@ version: "3.9"
 services:
   client:
     build:
-      context: ./client
+      context: .
+      dockerfile: client/Dockerfile
       target: dev
     command: npm run dev
     environment:
@@ -25,7 +26,8 @@ services:
       - pgdata:/var/lib/postgresql/data
   marketing:
     build:
-      context: ./marketing
+      context: .
+      dockerfile: marketing/Dockerfile
       target: dev
     command: npm run dev
     environment:
@@ -66,6 +68,7 @@ x-mutagen:
           - ".gitignore"
           - "Dockerfile"
           - "docker-compose.yml"
+          - "package-lock.sha512"
           - "/bin/"
         vcs: true
       mode: "two-way-resolved"
