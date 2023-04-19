@@ -4,6 +4,7 @@ ARG NODE_VERSION=18
 FROM node:$NODE_VERSION-alpine AS base
 # ---- dev stage ----
 FROM base AS dev
+COPY container/conditional-npm-ci /usr/local/bin/conditional-npm-ci
 # ---- build stage ----
 FROM base AS builder
 arg GITHUB_TOKEN
