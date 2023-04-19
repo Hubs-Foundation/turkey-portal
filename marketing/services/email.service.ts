@@ -7,6 +7,11 @@ export type EmailResponseT = {
   status: number;
 };
 
+/**
+ * Send Email via internal NextJs api
+ * @param contact
+ * @returns Promise<EmailResponseT>
+ */
 export const sendEmail = async (contact: NewContactT) => {
   return axios.post(EMAIL_PATH, contact).then((response: AxiosResponse) => {
     return response.data as EmailResponseT;

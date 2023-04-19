@@ -19,6 +19,7 @@ import { useFormik } from 'formik';
 import validate from './validate';
 import { sendEmail, EmailResponseT } from 'services/email.service';
 import { NotificationContext } from 'contexts/NotificationProvider';
+import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
 
 type ContactFormModalPropsT = {
   onClose: () => void;
@@ -29,7 +30,7 @@ const ContactFormModal = ({
   onClose,
   classProp = '',
 }: ContactFormModalPropsT) => {
-  // const [submitted, setSubmitted] = useState<boolean>(false);
+  const [submitting, setSubmitting] = useState<boolean>(false);
   const [isError, setisError] = useState<boolean>(false);
   const notificationContext = useContext(NotificationContext);
 
@@ -75,6 +76,7 @@ const ContactFormModal = ({
   const onSubmit = useCallback(
     async (contact: NewContactT) => {
       setisError(false);
+      setSubmitting(true);
 
       try {
         const resp = await sendEmail(contact);
@@ -132,122 +134,127 @@ const ContactFormModal = ({
           body="There was a problem submitting your information, please try again."
         />
       )}
-      <form className={styles.form} onSubmit={formik.handleSubmit}>
-        {/* MODAL CONTENTS  */}
-        <div className={styles.content}>
-          <Input
-            id="name"
-            name="name"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.name}
-            label="Name"
-            placeholder="name"
-            required={true}
-            classProp="mb-16"
-          />
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.email}
-            label="Email Address"
-            placeholder="name@email.com"
-            required={true}
-            classProp="mb-16"
-          />
 
-          <Input
-            id="organization"
-            name="organization"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.organization}
-            label="Organization Name"
-            placeholder="Enter the name of your organization"
-            classProp="mb-16"
-          />
+      {submitting && !isError && <SkeletonCard qty={7} category="row" />}
 
-          <Select
-            id="country"
-            name="country"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.country}
-            label="Country"
-            classProp="mb-16"
-            required={true}
-            options={CountryOptions}
-          />
-
-          <Select
-            id="subject"
-            name="subject"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.subject}
-            label="Subject"
-            classProp="mb-16"
-            required={true}
-            options={subjectOptions}
-          />
-
-          <Select
-            id="activity"
-            name="activity"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.activity}
-            label="Field of Activity"
-            classProp="mb-16"
-            required={true}
-            options={activityOptions}
-          />
-
-          <TextArea
-            id="message"
-            name="message"
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            value={formik.values.message}
-            required={true}
-            label="Message"
-            placeholder="Enter your message or comment here"
-            classProp="mb-16"
-          />
-
-          <a
-            href="https://www.mozilla.org/en-US/privacy/websites/"
-            rel="noopener noreferrer"
-            target="_blank"
-            className="primary-link"
-          >
-            Privacy Notice
-          </a>
-        </div>
-
-        {/* FOOTER ACTIONS  */}
-        <div className={styles.footer_wrapper}>
-          <div className={styles.footer_container}>
-            <Button
-              label="cancel"
-              category={ButtonCategoriesE.PRIMARY_CLEAR}
-              text="Nevermind"
-              classProp="mr-10-dt"
-              onClick={handleCloseClick}
+      {!submitting && (
+        <form className={styles.form} onSubmit={formik.handleSubmit}>
+          {/* MODAL CONTENTS  */}
+          <div className={styles.content}>
+            <Input
+              id="name"
+              name="name"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.name}
+              label="Name"
+              placeholder="name"
+              required={true}
+              classProp="mb-16"
             />
-            <Button
-              label="submit"
-              category={ButtonCategoriesE.PRIMARY_SOLID}
-              classProp="mb-24-mb"
-              text="Submit"
-              type="submit"
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+              label="Email Address"
+              placeholder="name@email.com"
+              required={true}
+              classProp="mb-16"
             />
+
+            <Input
+              id="organization"
+              name="organization"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.organization}
+              label="Organization Name"
+              placeholder="Enter the name of your organization"
+              classProp="mb-16"
+            />
+
+            <Select
+              id="country"
+              name="country"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.country}
+              label="Country"
+              classProp="mb-16"
+              required={true}
+              options={CountryOptions}
+            />
+
+            <Select
+              id="subject"
+              name="subject"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.subject}
+              label="Subject"
+              classProp="mb-16"
+              required={true}
+              options={subjectOptions}
+            />
+
+            <Select
+              id="activity"
+              name="activity"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.activity}
+              label="Field of Activity"
+              classProp="mb-16"
+              required={true}
+              options={activityOptions}
+            />
+
+            <TextArea
+              id="message"
+              name="message"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.message}
+              required={true}
+              label="Message"
+              placeholder="Enter your message or comment here"
+              classProp="mb-16"
+            />
+
+            <a
+              href="https://www.mozilla.org/en-US/privacy/websites/"
+              rel="noopener noreferrer"
+              target="_blank"
+              className="primary-link"
+            >
+              Privacy Notice
+            </a>
           </div>
-        </div>
-      </form>
+
+          {/* FOOTER ACTIONS  */}
+          <div className={styles.footer_wrapper}>
+            <div className={styles.footer_container}>
+              <Button
+                label="cancel"
+                category={ButtonCategoriesE.PRIMARY_CLEAR}
+                text="Nevermind"
+                classProp="mr-10-dt"
+                onClick={handleCloseClick}
+              />
+              <Button
+                label="submit"
+                category={ButtonCategoriesE.PRIMARY_SOLID}
+                classProp="mb-24-mb"
+                text="Submit"
+                type="submit"
+              />
+            </div>
+          </div>
+        </form>
+      )}
     </div>
   );
 };

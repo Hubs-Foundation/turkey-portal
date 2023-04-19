@@ -2,42 +2,63 @@ import nodemailer from 'nodemailer';
 import { NewContactT } from 'types';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
+/**
+ * About this APi
+ *
+ * This api is used to send emails from "hubs-sales@mozilla.com" to business
+ * email (TODO recieve email) as a proxy for the user. Business can then
+ * respond to the email the user provided in the form.
+ */
+
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  /**
+   * Only accept post req
+   */
   if (req.method !== 'POST') {
     res.status(405).send({ message: 'Only POST requests allowed' });
     return;
   }
 
-  const data: NewContactT = req.body;
+  const {
+    name,
+    email,
+    organization,
+    country,
+    subject,
+    activity,
+    message,
+  }: NewContactT = req.body;
+  const html = `<div> 
+  <h1>New Contact Inquiry</h1>
+  <ul>
+  <li>Name: ${name}</li>
+  <li>Email: ${email}</li>
+  <li>Organizaion: ${organization}</li>
+  <li>Country Code: ${country}</li>
+  <li>Subject: ${subject}</li>
+  <li>Activity: ${activity}</li>
+  <li>Message: ${message}</li>
+  </ul>
+  </div>`;
 
-  const message = {
+  const mail = {
     from: 'ngrato@gmail.com',
     to: 'ngrato@mozilla.com',
-    subject: `From ${data.email}`,
+    subject: `From ${email}`,
     text: 'Inquiry',
-    html: `<div> 
-    <ul>
-    <li>Name: ${data.name}</li>
-    <li>Email: ${data.email}</li>
-    <li>Organizaion: ${data.organization}</li>
-    <li>Country Code: ${data.country}</li>
-    <li>Subject: ${data.subject}</li>
-    <li>Activity: ${data.activity}</li>
-    <li>Message: ${data.message}</li>
-    </ul>
-    </div>`,
+    html: html,
   };
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: 'ngrato@gmail.com',
-      pass: 'upbxsqbfjjwucmhy',
+      pass: process.env.GMAIL_APP_PASSWORD,
     },
   });
 
   return new Promise<void>((resolve, reject) => {
-    transporter.sendMail(message, (err, info) => {
+    transporter.sendMail(mail, (err, info) => {
       if (err) {
         res.status(404).json({
           message: `Connection refused at ${err.message}`,
