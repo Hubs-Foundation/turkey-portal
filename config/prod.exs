@@ -79,9 +79,6 @@ config :sentry,
   # access to any information.
   dsn: "https://0688486cc05c4c2e977393eb607bb390@o1069899.ingest.sentry.io/4505037614678016",
   enable_source_code_context: true,
-  environment_name: :prod,
-  included_environments: [:prod],
-  root_source_code_path: File.cwd!(),
-  tags: %{
-    env: "production"
-  }
+  environment_name: System.get_env("ENVIRONMENT_NAME", "unnamed"),
+  included_environments: ["production", "staging"],
+  root_source_code_path: File.cwd!()
