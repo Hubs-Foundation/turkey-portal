@@ -7,6 +7,7 @@ defmodule Dash.Application do
 
   @impl true
   def start(_type, _args) do
+    Logger.add_backend(Sentry.LoggerBackend)
     {:ok, _} = EctoBootMigration.migrate(:dash)
 
     children = [
