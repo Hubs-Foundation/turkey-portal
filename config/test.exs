@@ -1,5 +1,7 @@
 import Config
 
+config :dash, Dash.OrchClient, http_client: Dash.HttpMock
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
@@ -11,6 +13,8 @@ config :dash, Dash.Repo,
   database: "dash_test#{System.get_env("MIX_TEST_PARTITION")}",
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10
+
+config :dash, Dash.RetClient, http_client: Dash.HttpMock
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
