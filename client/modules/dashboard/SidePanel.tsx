@@ -15,9 +15,10 @@ import { enabledStarterPlan } from 'util/featureFlag';
 
 export type SidePanelPropsT = {
   subdomain: string;
-  subscription: SubscriptionT | null;
+  subscription: SubscriptionT;
   classProp?: string;
   hasStarterPlan: boolean;
+  hasSubscription: boolean;
 };
 
 const SidePanel = ({
@@ -25,6 +26,7 @@ const SidePanel = ({
   subscription,
   classProp = '',
   hasStarterPlan,
+  hasSubscription,
 }: SidePanelPropsT) => {
   const isMobile = useMobileDown();
   const hasStarter = enabledStarterPlan() && hasStarterPlan;
@@ -38,12 +40,12 @@ const SidePanel = ({
       </div>
 
       {/* PRICE  */}
-      {subscription && (
+      {hasSubscription && (
         <SubCard subscription={subscription} classProp={styles.subcard} />
       )}
 
       {hasStarter && (
-        <div>
+        <div className={styles.upgrade_container}>
           <p>[MARKETING TEXT]</p>
           <Button
             category={ButtonCategoriesE.SECONDARY_SOLID}

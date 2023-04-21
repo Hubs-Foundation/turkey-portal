@@ -43,3 +43,13 @@
     padding: 0 24px;
   }
 }
+
+.upgrade_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: $gradient-warm;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+}

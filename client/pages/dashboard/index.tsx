@@ -14,6 +14,7 @@ import { selectAccount } from 'store/accountSlice';
 import { initAccountData as refreshAccountData } from 'store/storeInit';
 import { useSelector } from 'react-redux';
 import { AxiosRequestHeaders } from 'axios';
+import { enabledStarterPlan } from 'util/featureFlag';
 
 type DashboardPropsT = { subscription: SubscriptionT };
 
@@ -148,7 +149,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
           anymore in the senario of a multi-hub account. So, it would be better to handle this in the scope 
           of the hubs api in the future - NG */}
           {account.hasCreatingHubs && hubs.length === 0 ? (
-            <HubCard hub={creatingHub} />
+            <HubCard hub={creatingHub} hasStarterPlan={account.hasPlan} />
           ) : (
             ''
           )}
@@ -160,6 +161,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
                   key={hub.hubId}
                   hub={hub}
                   refreshHubData={refreshHubData}
+                  hasStarterPlan={account.hasPlan}
                 />
               );
             })
@@ -173,7 +175,8 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
           {!isLoading ? (
             <SidePanel
               subdomain={hubs[0].subdomain}
-              subscription={account.hasSubscription ? subscription : null}
+              subscription={subscription}
+              hasSubscription={account.hasSubscription}
               hasStarterPlan={account.hasPlan}
             />
           ) : (

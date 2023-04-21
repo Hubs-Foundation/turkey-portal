@@ -8,12 +8,14 @@ type HubCardHeaderPropsT = {
   hubId: string;
   status: StatusE;
   classProp?: string;
+  hasStarterPlan: boolean;
 };
 
 const HubCardHeader = ({
   hubId,
   status,
   classProp = '',
+  hasStarterPlan,
 }: HubCardHeaderPropsT) => {
   const router = useRouter();
 
@@ -47,20 +49,22 @@ const HubCardHeader = ({
       </div>
 
       {/* Edit Hubs Details  */}
-      {status !== StatusE.CREATING && status !== StatusE.UPDATING && (
-        <Dropdown
-          alignment="right"
-          width={164}
-          cta={
-            <Button
-              icon="more-vertical"
-              label="toggle"
-              category={ButtonCategoriesE.PRIMARY_CLEAR}
-            />
-          }
-          content={DropdownContent}
-        />
-      )}
+      {!hasStarterPlan &&
+        status !== StatusE.CREATING &&
+        status !== StatusE.UPDATING && (
+          <Dropdown
+            alignment="right"
+            width={164}
+            cta={
+              <Button
+                icon="more-vertical"
+                label="toggle"
+                category={ButtonCategoriesE.PRIMARY_CLEAR}
+              />
+            }
+            content={DropdownContent}
+          />
+        )}
     </div>
   );
 };
