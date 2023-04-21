@@ -6,11 +6,6 @@ defmodule Dash.HubStatTest do
   require Logger
   alias Dash.{Repo, HubStat}
 
-  setup_all do
-    setup_http_mocks()
-    on_exit(fn -> exit_http_mocks() end)
-  end
-
   describe "Metrics Hub Stat" do
     test "Happy path: gets ready hubs storage stats into table" do
       # Set RetClient stub for /storage endpoint

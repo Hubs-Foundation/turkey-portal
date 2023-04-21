@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
-import { subscriptionPageRequireAuthentication } from 'services/routeGuard.service';
+import { pageRequireAuthentication } from 'services/routeGuard.service';
 import SubContactCard from '@Cards/SubContactCard/SubContactCard';
 import styles from './subscribe.module.scss';
 import { StandardPlanCard } from '@Cards/PlanCard/StandardPlanCard';
@@ -48,7 +48,7 @@ const Subscribe = ({ region }: SubscribePropsT) => {
 
 export default Subscribe;
 
-export const getServerSideProps = subscriptionPageRequireAuthentication(
+export const getServerSideProps = pageRequireAuthentication(
   async (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
     return {

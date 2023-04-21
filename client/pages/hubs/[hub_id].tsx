@@ -12,7 +12,7 @@ import type { GetServerSidePropsContext } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './[hub_id].module.scss';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
-import SubCard from '@Cards/SubCard/SubCard';
+import SidePanel from 'modules/dashboard/SidePanel';
 import { AxiosRequestHeaders } from 'axios';
 
 type HubDetailsViewPropsT = {
@@ -137,14 +137,7 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
             />
           </div>
 
-          {/* SUBSCRIPTION WIDGET  */}
-          {subscription && (
-            <SubCard
-              subdomain={hub.subdomain}
-              classProp={styles.subcard}
-              subscription={subscription}
-            />
-          )}
+          <SidePanel subdomain={hub.subdomain} subscription={subscription} />
         </main>
       ) : (
         <div className="flex-justify-center">

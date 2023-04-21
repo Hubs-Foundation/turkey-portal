@@ -1,0 +1,29 @@
+@use 'styles/core/boilerplate' as *;
+
+.wrapper {
+  background-color: $color-background-overlay;
+  border-radius: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  color: $color-text-reverse;
+}
+
+.expand_button {
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.expand_content {
+  border-top: $color-border-3 solid 2px;
+  padding: 16px;
+}
