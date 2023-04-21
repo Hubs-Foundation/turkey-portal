@@ -12,8 +12,10 @@ export type EmailResponseT = {
  * @param contact
  * @returns Promise<EmailResponseT>
  */
-export const sendEmail = async (contact: NewContactT) => {
+export const sendEmail = async (
+  contact: NewContactT
+): Promise<EmailResponseT> => {
   return axios.post(EMAIL_PATH, contact).then((response: AxiosResponse) => {
-    return response.data as EmailResponseT;
+    return response.data;
   });
 };
