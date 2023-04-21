@@ -1,18 +1,85 @@
-import { PropsWithChildren, useEffect, useState, Children } from 'react';
-import PropTypes from 'prop-types';
+import {
+  PropsWithChildren,
+  useEffect,
+  useState,
+  useCallback,
+  Children,
+  ReactNode,
+} from 'react';
 
-const propTypes = {
-  classProp: PropTypes.string,
-  isVisible: PropTypes.bool.isRequired,
-  onComplete: PropTypes.func,
+/**
+ * FADE IN WRAPPER
+ */
+type FadeInWrapperPropsT = {
+  visible: boolean;
+  animation?: string;
+  onComplete?: () => void;
+  children: ReactNode;
 };
 
-type FadeInPropsT = PropTypes.InferProps<typeof propTypes>;
+const FadeInWrapper = ({
+  visible = true,
+  onComplete,
+  animation,
+  children,
+}: FadeInWrapperPropsT) => {
+  const [isOpen, setIsOpen] = useState<boolean>(visible);
+  const [isVisible, setIsVisible] = useState<boolean>(visible);
 
-export default function FadeIn(props: PropsWithChildren<FadeInPropsT>) {
+  useEffect(() => {
+    onToggleClick();
+  }, [visible]);
+
+  const onToggleClick = () => {
+    isOpen ? handleClose() : handleOpen();
+  };
+
+  const handleOpen = useCallback(() => {
+    setIsVisible((state) => !state);
+    setIsOpen((state) => !state);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setIsOpen((state) => !state);
+  }, []);
+
+  const handleOnComplete = useCallback(() => {
+    if (!isOpen) setIsVisible(false);
+    onComplete && onComplete();
+  }, [isOpen]);
+
+  return (
+    <FadeIn
+      isVisible={isOpen}
+      onComplete={handleOnComplete}
+      animation={animation}
+    >
+      {isVisible && <>{children}</>}
+    </FadeIn>
+  );
+};
+
+/**
+ * FADE IN COMPONENT
+ */
+
+type FadeInPropsT = {
+  isVisible: Boolean;
+  onComplete: () => void;
+  children: ReactNode;
+  animation?: string;
+  classProp?: string;
+};
+
+export const FadeIn = ({
+  isVisible,
+  onComplete,
+  children,
+  animation = 'translateY(20px)',
+  classProp,
+}: PropsWithChildren<FadeInPropsT>) => {
   const [maxIsVisible, setMaxIsVisible] = useState(0);
-  const { isVisible, classProp = '', onComplete } = props;
-  const arrayChildren = Children.toArray(props.children);
+  const arrayChildren = Children.toArray(children);
 
   useEffect(() => {
     // Get Number of children to fade in
@@ -45,7 +112,7 @@ export default function FadeIn(props: PropsWithChildren<FadeInPropsT>) {
           <div
             style={{
               transition: `opacity 500ms, transform 500ms`,
-              transform: maxIsVisible > i ? 'none' : 'translateY(20px)',
+              transform: maxIsVisible > i ? 'none' : animation,
               opacity: maxIsVisible > i ? 1 : 0,
             }}
           >
@@ -55,4 +122,6 @@ export default function FadeIn(props: PropsWithChildren<FadeInPropsT>) {
       })}
     </div>
   );
-}
+};
+
+export default FadeInWrapper;
