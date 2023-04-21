@@ -8,8 +8,14 @@ import { getAccount } from 'services/account.service';
  */
 export const initAccountData = async () => {
   try {
-    const { displayName, email, profilePic, hasSubscription, hasCreatingHubs } =
-      await getAccount();
+    const {
+      displayName,
+      email,
+      profilePic,
+      hasSubscription,
+      hasCreatingHubs,
+      hasPlan,
+    } = await getAccount();
     const account: AccountT = {
       displayName,
       email,
@@ -18,6 +24,7 @@ export const initAccountData = async () => {
       hasCreatingHubs,
       isLoggedIn: true,
       isInitialized: true,
+      hasPlan,
     };
     store.dispatch(setAccount(account));
   } catch (error) {

@@ -9,6 +9,7 @@ const initialState: AccountT = {
   email: '',
   hasSubscription: false,
   hasCreatingHubs: false,
+  hasPlan: false,
 };
 
 const accountSlice = createSlice({
@@ -25,6 +26,7 @@ const accountSlice = createSlice({
         email,
         hasSubscription,
         hasCreatingHubs,
+        hasPlan,
       } = action.payload;
       state.isLoggedIn = true;
       state.profilePic = profilePic;
@@ -32,6 +34,7 @@ const accountSlice = createSlice({
       state.email = email;
       state.hasSubscription = hasSubscription;
       state.hasCreatingHubs = hasCreatingHubs;
+      state.hasPlan = hasPlan;
     },
     logOut(state) {
       // Clear Account
@@ -41,6 +44,7 @@ const accountSlice = createSlice({
       state.email = '';
       state.hasSubscription = false;
       state.hasCreatingHubs = false;
+      state.hasPlan = false;
     },
   },
 });

@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useState } from 'react';
+import { createContext, ReactNode, useRef, useState } from 'react';
+import {
+  NewNotificationT,
+  Notification,
+  NotificationInterfaceT,
+} from '@mozilla/lilypad-ui';
+import styles from './StoreProvider.module.scss';
 
 export type SubdomainRetryT = {
   subdomain: string;
@@ -16,6 +22,7 @@ const initSubdomain: SubdomainRetryT = { subdomain: '', hubId: '' };
 export const StoreContext = createContext({
   lastSubmittedSubdomain: initSubdomain,
   handleSubdomainChange: (value: SubdomainRetryT) => {},
+  handleDispatchNotification: (value: NewNotificationT) => {},
 });
 
 const StoreProvider = ({ children }: StoreProviderProps) => {
@@ -23,14 +30,21 @@ const StoreProvider = ({ children }: StoreProviderProps) => {
   const handleSubdomainChange = (value: SubdomainRetryT): void => {
     setSubdomain(value);
   };
+  const notificationRef = useRef<NotificationInterfaceT>();
+
+  const handleDispatchNotification = (notifcation: NewNotificationT) => {
+    notificationRef.current?.dispatchNotification(notifcation);
+  };
 
   return (
     <StoreContext.Provider
       value={{
         lastSubmittedSubdomain: subdomain,
         handleSubdomainChange,
+        handleDispatchNotification,
       }}
     >
+      <Notification ref={notificationRef} classProp={styles.toast} />
       {children}
     </StoreContext.Provider>
   );

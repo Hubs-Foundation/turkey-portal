@@ -57,6 +57,7 @@ export type AccountT = {
   hasSubscription: boolean;
   hasCreatingHubs: boolean;
   isInitialized: boolean;
+  hasPlan: boolean;
 };
 
 export enum BadgeCategoriesE {

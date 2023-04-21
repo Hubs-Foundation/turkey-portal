@@ -2,6 +2,7 @@ import axios, { AxiosRequestHeaders } from 'axios';
 import { PUBLIC_API_SERVER } from 'config';
 import { CookiesE } from 'types/Cookies';
 import { removeCookies } from 'cookies-next';
+import { AccountT } from 'types/General';
 
 const API_PATH = '/api/v1/account';
 
@@ -10,7 +11,9 @@ const API_PATH = '/api/v1/account';
  * Must be called within a try catch
  * @returns Account:AccountT{}
  */
-export const getAccount = async (headers?: AxiosRequestHeaders) => {
+export const getAccount = async (
+  headers?: AxiosRequestHeaders
+): Promise<AccountT> => {
   const credentials = { withCredentials: true };
   const contextHeaders = { headers: { ...(headers as AxiosRequestHeaders) } };
   const config = headers ? contextHeaders : credentials;

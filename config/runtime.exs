@@ -15,7 +15,8 @@ end
 database_hostname = System.get_env("DB_HOSTNAME", "localhost")
 starter_plan_enabled? = System.get_env("ENABLE_STARTER_PLAN") === "true"
 
-config :dash, :starter_plan_enabled?, starter_plan_enabled?
+# config :dash, :starter_plan_enabled?, starter_plan_enabled?
+config :dash, :starter_plan_enabled?, true
 
 case config_env() do
   :dev ->

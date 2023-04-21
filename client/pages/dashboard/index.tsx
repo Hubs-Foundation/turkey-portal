@@ -168,12 +168,13 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
           )}
         </div>
 
-        {/* SIDE PANNEL WIDGET  */}
+        {/* SIDE PANEL WIDGET  */}
         <div className={styles.sidep_panel}>
           {!isLoading ? (
             <SidePanel
               subdomain={hubs[0].subdomain}
-              subscription={subscription}
+              subscription={account.hasSubscription ? subscription : null}
+              hasStarterPlan={account.hasPlan}
             />
           ) : (
             <SkeletonCard

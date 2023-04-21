@@ -4,10 +4,7 @@ import { StandardPlanInfoCopy } from '@Cards/PlanCard/PlanInfoCopy';
 import styles from './ConfirmPlanModal.module.scss';
 import Modal from '@Shared/Modal/Modal';
 
-const createInfoBlock = (
-  { label, description, icon }: InfoBlockPropsT,
-  i: number
-) => {
+const createInfoBlock = ({ label, icon }: InfoBlockPropsT, i: number) => {
   return <InfoBlock key={i} icon={icon} label={label} />;
 };
 
