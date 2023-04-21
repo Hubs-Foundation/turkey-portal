@@ -7,9 +7,14 @@ import {
   ReactNode,
 } from 'react';
 
-/**
- * FADE IN WRAPPER
- */
+type FadeInPropsT = {
+  isVisible: Boolean;
+  onComplete: () => void;
+  children: ReactNode;
+  animation?: string;
+  classProp?: string;
+};
+
 type FadeInWrapperPropsT = {
   visible: boolean;
   animation?: string;
@@ -25,24 +30,37 @@ const FadeInWrapper = ({
 }: FadeInWrapperPropsT) => {
   const [isOpen, setIsOpen] = useState<boolean>(visible);
   const [isVisible, setIsVisible] = useState<boolean>(visible);
+  const arrayChildren = Children.toArray(children);
 
   useEffect(() => {
     onToggleClick();
   }, [visible]);
 
+  /**
+   * Toggle open state
+   */
   const onToggleClick = () => {
     isOpen ? handleClose() : handleOpen();
   };
 
+  /**
+   * Handle Open
+   */
   const handleOpen = useCallback(() => {
     setIsVisible((state) => !state);
     setIsOpen((state) => !state);
   }, []);
 
+  /**
+   * Handle Close
+   */
   const handleClose = useCallback(() => {
     setIsOpen((state) => !state);
   }, []);
 
+  /**
+   * Animation has completed call back
+   */
   const handleOnComplete = useCallback(() => {
     if (!isOpen) setIsVisible(false);
     onComplete && onComplete();
@@ -54,21 +72,11 @@ const FadeInWrapper = ({
       onComplete={handleOnComplete}
       animation={animation}
     >
-      {isVisible && <>{children}</>}
+      {Children.map(arrayChildren, (child, i) => {
+        return isVisible && <>{child}</>;
+      })}
     </FadeIn>
   );
-};
-
-/**
- * FADE IN COMPONENT
- */
-
-type FadeInPropsT = {
-  isVisible: Boolean;
-  onComplete: () => void;
-  children: ReactNode;
-  animation?: string;
-  classProp?: string;
 };
 
 export const FadeIn = ({
@@ -81,6 +89,10 @@ export const FadeIn = ({
   const [maxIsVisible, setMaxIsVisible] = useState(0);
   const arrayChildren = Children.toArray(children);
 
+  /**
+   * Track fade in children and fade
+   * them in accordingly
+   */
   useEffect(() => {
     // Get Number of children to fade in
     let count = Children.count(arrayChildren);
