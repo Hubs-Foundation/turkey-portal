@@ -168,6 +168,144 @@ defmodule Dash.Test do
     end
   end
 
+  describe "expire_plan_subscription/2" do
+    setup do
+      %{account: create_account(), expired_at: DateTime.utc_now()}
+    end
+
+    test "when the account cannot be found", %{expired_at: expired_at} do
+      assert {:error, :account_not_found} ===
+               Dash.expire_plan_subscription(%Account{account_id: 1}, expired_at)
+    end
+
+    test "when the account has no plan", %{account: account, expired_at: expired_at} do
+      assert {:error, :no_subscription} === Dash.expire_plan_subscription(account, expired_at)
+    end
+
+    @tag :skip
+    test "when the account has a stopped plan"
+
+    test "when the account has an active starter plan", %{
+      account: account,
+      expired_at: expired_at
+    } do
+      stub_http_post_200()
+      :ok = Dash.start_plan(account)
+
+      assert {:error, :no_subscription} === Dash.expire_plan_subscription(account, expired_at)
+    end
+
+    test "when the account has an active subscription plan", %{
+      account: account,
+      expired_at: expired_at
+    } do
+      stub_http_post_200()
+      :ok = Dash.subscribe_to_standard_plan(account, DateTime.add(expired_at, -1, :second))
+      custom_subdomain = "dummy-subdomain"
+
+      %{hub_id: hub_id} =
+        Hub.hubs_for_account(account)
+        |> hd()
+        |> Ecto.Changeset.change(subdomain: custom_subdomain)
+        |> Repo.update!()
+
+      Mox.expect(HttpMock, :patch, fn url, json, _headers, opts ->
+        payload = Jason.decode!(json)
+        [hub] = Hub.hubs_for_account(account)
+        assert String.ends_with?(url, "hc_instance")
+        assert [hackney: [:insecure]] === opts
+        assert "10" === payload["ccu_limit"]
+        assert Integer.to_string(hub_id) === payload["hub_id"]
+        assert "0.48828125" === payload["storage_limit"]
+        assert hub.subdomain === payload["subdomain"]
+        assert "free" === payload["tier"]
+
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert :ok === Dash.expire_plan_subscription(account, expired_at)
+      assert {:ok, %{subscription?: false}} = Dash.fetch_active_plan(account)
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 10 === hub.ccu_limit
+      assert hub_id === hub.hub_id
+      assert 500 === hub.storage_limit_mb
+      assert custom_subdomain !== hub.subdomain
+      assert :free === hub.tier
+    end
+
+    test "when the account has an active subscription plan (DEPRECATED capability)", %{
+      account: account,
+      expired_at: expired_at
+    } do
+      stub_http_post_200()
+
+      Dash.create_capability!(account, %{
+        capability: capability_string(),
+        change_time: DateTime.add(expired_at, -1, :second),
+        is_active: true
+      })
+
+      custom_subdomain = "dummy-subdomain"
+
+      %{hub_id: hub_id} =
+        Repo.insert!(%Hub{
+          account_id: account.account_id,
+          ccu_limit: 25,
+          name: "Untitled Hub",
+          status: :creating,
+          storage_limit_mb: 2_000,
+          subdomain: custom_subdomain,
+          tier: :early_access
+        })
+        |> Ecto.Changeset.change(subdomain: custom_subdomain)
+        |> Repo.update!()
+
+      Mox.expect(HttpMock, :patch, fn url, json, _headers, opts ->
+        payload = Jason.decode!(json)
+        [hub] = Hub.hubs_for_account(account)
+        assert String.ends_with?(url, "hc_instance")
+        assert [hackney: [:insecure]] === opts
+        assert "10" === payload["ccu_limit"]
+        assert Integer.to_string(hub_id) === payload["hub_id"]
+        assert "0.48828125" === payload["storage_limit"]
+        assert hub.subdomain === payload["subdomain"]
+        assert "free" === payload["tier"]
+
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert :ok === Dash.expire_plan_subscription(account, expired_at)
+      assert {:ok, %{subscription?: false}} = Dash.fetch_active_plan(account)
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 10 === hub.ccu_limit
+      assert hub_id === hub.hub_id
+      assert 500 === hub.storage_limit_mb
+      assert custom_subdomain !== hub.subdomain
+      assert :free === hub.tier
+    end
+
+    test "with expired_at earlier than the last state transition, when the account has an active subscription plan",
+         %{account: account, expired_at: expired_at} do
+      stub_http_post_200()
+      :ok = Dash.subscribe_to_standard_plan(account, DateTime.add(expired_at, 1, :second))
+      custom_subdomain = "dummy-subdomain"
+
+      Hub.hubs_for_account(account)
+      |> hd()
+      |> Ecto.Changeset.change(subdomain: custom_subdomain)
+      |> Repo.update!()
+
+      Mox.expect(HttpMock, :patch, 0, fn _url, _json, _headers, _opts -> nil end)
+      assert {:error, :superseded} === Dash.expire_plan_subscription(account, expired_at)
+      assert {:ok, %{subscription?: true}} = Dash.fetch_active_plan(account)
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 10 !== hub.ccu_limit
+      assert 500 !== hub.storage_limit_mb
+      assert custom_subdomain === hub.subdomain
+      assert :free !== hub.tier
+    end
+  end
+
   describe "fetch_active_plan/1" do
     setup do
       %{account: create_account()}
@@ -268,7 +406,6 @@ defmodule Dash.Test do
       assert 10 === hub.ccu_limit
       assert 500 === hub.storage_limit_mb
       assert :free === hub.tier
-      assert account.account_id === hub.account_id
     end
 
     @tag :skip
@@ -335,7 +472,6 @@ defmodule Dash.Test do
       assert 25 === hub.ccu_limit
       assert 2_000 === hub.storage_limit_mb
       assert :early_access === hub.tier
-      assert account.account_id === hub.account_id
     end
 
     @tag :skip
@@ -370,11 +506,10 @@ defmodule Dash.Test do
       assert plan_id === plan.plan_id
       assert plan.subscription?
       assert [hub] = Hub.hubs_for_account(account)
-      assert hub_id === hub.hub_id
       assert 25 === hub.ccu_limit
+      assert hub_id === hub.hub_id
       assert 2_000 === hub.storage_limit_mb
       assert :early_access === hub.tier
-      assert account.account_id === hub.account_id
     end
   end
 

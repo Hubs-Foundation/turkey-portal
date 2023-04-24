@@ -5,6 +5,8 @@ defmodule Dash.Hub do
   require Logger
   alias Dash.{SubdomainDenial, Repo, RetClient}
 
+  @type t :: %__MODULE__{}
+
   @primary_key {:hub_id, :id, autogenerate: true}
 
   schema "hubs" do

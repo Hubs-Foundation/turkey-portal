@@ -145,6 +145,12 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   end
 
   describe "Subscription changed event" do
+    setup do
+      starter_plan_enabled? = Application.get_env(:dash, :starter_plan_enabled?)
+      Application.put_env(:dash, :starter_plan_enabled?, true)
+      on_exit(fn -> Application.put_env(:dash, :starter_plan_enabled?, starter_plan_enabled?) end)
+    end
+
     test "with an unknown capability", %{conn: conn} do
       unknown = "unknown-capability"
 
@@ -214,6 +220,43 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     end
 
     test "on expiration", %{conn: conn} do
+      stub_http_post_200()
+      fxa_uid = "dummy-uid"
+      the_past = ~U[1970-01-01 00:00:00.000000Z]
+      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+      :ok = Dash.subscribe_to_standard_plan(account, the_past)
+
+      token =
+        [
+          fxa_uid: fxa_uid,
+          event: get_subscription_changed_event(event_only: false, is_active: false)
+        ]
+        |> get_generic_fxa_event_struct()
+        |> Jason.encode!()
+
+      Mox.stub(Dash.HttpMock, :patch, fn _url, _json, _headers, _opts ->
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      Mox.stub(Dash.HttpMock, :delete, fn _url, _headers, _opts ->
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert conn
+             |> put_resp_content_type("application/json")
+             |> put_req_header("authorization", "Bearer #{token}")
+             |> put_req_header("content-type", "application/json")
+             |> post("/api/v1/events/fxa")
+             |> response(200)
+
+      assert {:ok, plan} = Dash.fetch_active_plan(account)
+      refute plan.subscription?
+      refute Dash.was_deleted?(fxa_uid)
+      assert [_] = Dash.Hub.hubs_for_account(account)
+    end
+
+    test "on expiration, when starter plan feature is disabled", %{conn: conn} do
+      Application.put_env(:dash, :starter_plan_enabled?, false)
       stub_http_post_200()
       fxa_uid = "dummy-uid"
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)

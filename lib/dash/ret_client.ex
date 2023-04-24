@@ -4,7 +4,7 @@ defmodule Dash.RetClient do
   """
   require Logger
   use Retry
-  alias Dash.{AppConfig}
+  alias Dash.AppConfig
 
   @ret_host_prefix "ret.hc-"
   @ret_host_postfix ".svc.cluster.local"
@@ -199,7 +199,7 @@ defmodule Dash.RetClient do
     Application.get_env(:dash, Dash.RetClient)[:dashboard_ret_access_key]
   end
 
-  def get_timeout_ms() do
+  defp get_timeout_ms do
     Application.get_env(:dash, Dash.RetClient)[:timeout_ms]
   end
 
