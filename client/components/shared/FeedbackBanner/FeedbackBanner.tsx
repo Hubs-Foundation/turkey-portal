@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import styles from './FeedbackBanner.module.scss';
 import { Button, ButtonCategoriesE, Icon } from '@mozilla/lilypad-ui';
-import FadeIn from '@Util/FadeIn';
+import FadeInWrapper from '@Util/FadeIn';
 
 type FeedbackBannerPropsT = {
   email: string;
@@ -15,7 +15,6 @@ const FeedbackBanner = ({
   classProp = '',
 }: FeedbackBannerPropsT) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isVisible, setIsVisible] = useState<boolean>(false);
   const Message = `We'd love to hear what you think of Hubs — what you've enjoyed and what 
   you think we're missing. We'll only use your feedback to improve the product. Your personal 
   information will never be shared.`;
@@ -25,21 +24,10 @@ const FeedbackBanner = ({
   };
 
   const onToggleClick = () => {
-    isOpen ? handleClose() : handleOpen();
+    setIsOpen((state) => !state);
   };
 
-  const handleOpen = useCallback(() => {
-    setIsVisible((state) => !state);
-    setIsOpen((state) => !state);
-  }, []);
-
-  const handleClose = useCallback(() => {
-    setIsOpen((state) => !state);
-  }, []);
-
   const handleOnComplete = useCallback(() => {
-    if (!isOpen) setIsVisible(false);
-
     // Scroll banner into view after opening.
     if (isOpen) {
       window.scrollTo({
@@ -65,20 +53,18 @@ const FeedbackBanner = ({
           />
         </button>
 
-        <FadeIn isVisible={isOpen} onComplete={handleOnComplete}>
-          {isVisible && (
-            <div className={styles.content}>
-              <p>{Message}</p>
-              <Button
-                label="give feedback"
-                onClick={feedbackClick}
-                classProp={styles.button}
-                category={ButtonCategoriesE.SECONDARY_OUTLINE}
-                text="Give Feedback"
-              />
-            </div>
-          )}
-        </FadeIn>
+        <FadeInWrapper visible={isOpen} onComplete={handleOnComplete}>
+          <div className={styles.content}>
+            <p>{Message}</p>
+            <Button
+              label="give feedback"
+              onClick={feedbackClick}
+              classProp={styles.button}
+              category={ButtonCategoriesE.SECONDARY_OUTLINE}
+              text="Give Feedback"
+            />
+          </div>
+        </FadeInWrapper>
       </div>
     </div>
   );
