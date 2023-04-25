@@ -227,6 +227,13 @@ defmodule Dash.Test do
       assert {:error, :already_started} === Dash.start_plan(account)
     end
 
+    test "when the account has an active subscription plan", %{account: account} do
+      stub_http_post_200()
+      :ok = Dash.subscribe_to_standard_plan(account, DateTime.utc_now())
+
+      assert {:error, :already_started} === Dash.start_plan(account)
+    end
+
     test "when the account has an active subscription plan (DEPRECATED capability)", %{
       account: account
     } do
