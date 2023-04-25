@@ -216,31 +216,9 @@ defmodule Dash.Test do
       %{account: create_account()}
     end
 
-    test "creates the plan", %{account: account} do
-      stub_http_post_200()
-
-      assert :ok === Dash.start_plan(account)
-      assert {:ok, %{subscription?: false}} = Dash.fetch_active_plan(account)
+    test "when the account cannot be found" do
+      assert {:error, :account_not_found} === Dash.start_plan(%Account{account_id: 1})
     end
-
-    test "creates the hub", %{account: account} do
-      Mox.expect(HttpMock, :post, fn _url, json, _headers, _opts ->
-        payload = Jason.decode!(json)
-        assert "free" === payload["tier"]
-        assert account.email === payload["useremail"]
-        {:ok, %HTTPoison.Response{status_code: 200}}
-      end)
-
-      assert :ok === Dash.start_plan(account)
-      assert [hub] = Hub.hubs_for_account(account)
-      assert 10 === hub.ccu_limit
-      assert 500 === hub.storage_limit_mb
-      assert :free === hub.tier
-      assert account.account_id === hub.account_id
-    end
-
-    @tag :skip
-    test "when the account has a stopped plan"
 
     test "when the account has an active starter plan", %{account: account} do
       stub_http_post_200()
@@ -249,7 +227,9 @@ defmodule Dash.Test do
       assert {:error, :already_started} === Dash.start_plan(account)
     end
 
-    test "when the account has an active subscription plan", %{account: account} do
+    test "when the account has an active subscription plan (DEPRECATED capability)", %{
+      account: account
+    } do
       Dash.create_capability!(account, %{
         capability: capability_string(),
         change_time: DateTime.utc_now(),
@@ -259,9 +239,25 @@ defmodule Dash.Test do
       assert {:error, :already_started} === Dash.start_plan(account)
     end
 
-    test "when the account cannot be found" do
-      assert {:error, :account_not_found} === Dash.start_plan(%Account{account_id: 1})
+    test "when the account has no plan", %{account: account} do
+      Mox.expect(HttpMock, :post, fn _url, json, _headers, _opts ->
+        payload = Jason.decode!(json)
+        assert "free" === payload["tier"]
+        assert account.email === payload["useremail"]
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert :ok === Dash.start_plan(account)
+      assert {:ok, %{subscription?: false}} = Dash.fetch_active_plan(account)
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 10 === hub.ccu_limit
+      assert 500 === hub.storage_limit_mb
+      assert :free === hub.tier
+      assert account.account_id === hub.account_id
     end
+
+    @tag :skip
+    test "when the account has a stopped plan"
   end
 
   describe "subscribe_to_standard_plan/2" do
@@ -269,59 +265,9 @@ defmodule Dash.Test do
       %{account: create_account(), subscribed_at: ~U[1970-01-01 00:00:00.877000Z]}
     end
 
-    test "when the account has no plan", %{
-      account: account,
-      subscribed_at: subscribed_at
-    } do
-      Mox.expect(HttpMock, :post, fn url, json, _headers, _opts ->
-        assert String.ends_with?(url, "hc_instance")
-        payload = Jason.decode!(json)
-        assert "early_access" === payload["tier"]
-        assert account.email === payload["useremail"]
-        {:ok, %HTTPoison.Response{status_code: 200}}
-      end)
-
-      assert :ok === Dash.subscribe_to_standard_plan(account, subscribed_at)
-      assert {:ok, %{subscription?: true}} = Dash.fetch_active_plan(account)
-      assert [hub] = Hub.hubs_for_account(account)
-      assert 25 === hub.ccu_limit
-      assert 2_000 === hub.storage_limit_mb
-      assert :early_access === hub.tier
-      assert account.account_id === hub.account_id
-    end
-
-    @tag :skip
-    test "when the account has a stopped plan"
-
-    @tag :skip
-    test "with subscribed_at earlier than the last state transition when the account has a stopped plan"
-
-    test "when the account has an active starter plan", %{account: account} do
-      stub_http_post_200()
-      :ok = Dash.start_plan(account)
-      after_start = DateTime.utc_now()
-      {:ok, %{plan_id: plan_id}} = Dash.fetch_active_plan(account)
-      [%{hub_id: hub_id}] = Hub.hubs_for_account(account)
-
-      Mox.expect(HttpMock, :patch, 1, fn url, json, _headers, opts ->
-        assert String.ends_with?(url, "hc_instance")
-        assert [hackney: [:insecure]] === opts
-        payload = Jason.decode!(json)
-        assert "early_access" === payload["tier"]
-        assert account.email === payload["useremail"]
-        {:ok, %HTTPoison.Response{status_code: 200}}
-      end)
-
-      assert :ok === Dash.subscribe_to_standard_plan(account, after_start)
-      {:ok, plan} = Dash.fetch_active_plan(account)
-      assert plan_id === plan.plan_id
-      assert plan.subscription?
-      assert [hub] = Hub.hubs_for_account(account)
-      assert hub_id === hub.hub_id
-      assert 25 === hub.ccu_limit
-      assert 2_000 === hub.storage_limit_mb
-      assert :early_access === hub.tier
-      assert account.account_id === hub.account_id
+    test "when the account cannot be found", %{subscribed_at: subscribed_at} do
+      assert {:error, :account_not_found} ===
+               Dash.subscribe_to_standard_plan(%Account{account_id: 1}, subscribed_at)
     end
 
     test "when the account has an active subscription plan", %{
@@ -349,9 +295,59 @@ defmodule Dash.Test do
                Dash.subscribe_to_standard_plan(account, subscribed_at)
     end
 
-    test "when the account cannot be found", %{subscribed_at: subscribed_at} do
-      assert {:error, :account_not_found} ===
-               Dash.subscribe_to_standard_plan(%Account{account_id: 1}, subscribed_at)
+    test "when the account has no plan", %{
+      account: account,
+      subscribed_at: subscribed_at
+    } do
+      Mox.expect(HttpMock, :post, fn url, json, _headers, _opts ->
+        assert String.ends_with?(url, "hc_instance")
+        payload = Jason.decode!(json)
+        assert "early_access" === payload["tier"]
+        assert account.email === payload["useremail"]
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert :ok === Dash.subscribe_to_standard_plan(account, subscribed_at)
+      assert {:ok, %{subscription?: true}} = Dash.fetch_active_plan(account)
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 25 === hub.ccu_limit
+      assert 2_000 === hub.storage_limit_mb
+      assert :early_access === hub.tier
+      assert account.account_id === hub.account_id
+    end
+
+    @tag :skip
+    test "when the account has a stopped plan"
+
+    @tag :skip
+    test "with subscribed_at earlier than the last state transition, when the account has a stopped plan"
+
+    test "when the account has an active starter plan", %{account: account} do
+      stub_http_post_200()
+      :ok = Dash.start_plan(account)
+      after_start = DateTime.utc_now()
+      {:ok, %{plan_id: plan_id}} = Dash.fetch_active_plan(account)
+      [%{hub_id: hub_id}] = Hub.hubs_for_account(account)
+
+      Mox.expect(HttpMock, :patch, 1, fn url, json, _headers, opts ->
+        assert String.ends_with?(url, "hc_instance")
+        assert [hackney: [:insecure]] === opts
+        payload = Jason.decode!(json)
+        assert "early_access" === payload["tier"]
+        assert account.email === payload["useremail"]
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert :ok === Dash.subscribe_to_standard_plan(account, after_start)
+      {:ok, plan} = Dash.fetch_active_plan(account)
+      assert plan_id === plan.plan_id
+      assert plan.subscription?
+      assert [hub] = Hub.hubs_for_account(account)
+      assert hub_id === hub.hub_id
+      assert 25 === hub.ccu_limit
+      assert 2_000 === hub.storage_limit_mb
+      assert :early_access === hub.tier
+      assert account.account_id === hub.account_id
     end
   end
 
