@@ -42,8 +42,8 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   </div>`;
 
   const mail = {
-    from: 'ngrato@gmail.com',
-    to: 'ngrato@mozilla.com',
+    from: 'agrego@mozilla.com',
+    to: 'enterprise-hubs@mozilla.com',
     subject: `From ${email}`,
     text: 'Inquiry',
     html: html,
@@ -52,7 +52,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'ngrato@gmail.com',
+      user: 'agrego@mozilla.com',
       pass: process.env.GMAIL_APP_PASSWORD,
     },
   });
