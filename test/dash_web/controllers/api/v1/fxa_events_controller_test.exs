@@ -219,20 +219,25 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
       :ok = Dash.subscribe_to_standard_plan(account, DateTime.utc_now())
 
-      event_struct = get_subscription_changed_event(event_only: false, is_active: false)
-      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
+      token =
+        [
+          fxa_uid: fxa_uid,
+          event: get_subscription_changed_event(event_only: false, is_active: false)
+        ]
+        |> get_generic_fxa_event_struct()
+        |> Jason.encode!()
 
       expect_orch_delete()
 
       assert conn
              |> put_resp_content_type("application/json")
-             |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> put_req_header("authorization", "Bearer #{token}")
              |> post("/api/v1/events/fxa")
              |> response(200)
 
-      assert {:error, :no_active_plan} = Dash.fetch_active_plan(account)
+      assert {:error, :no_active_plan} === Dash.fetch_active_plan(account)
       refute Dash.was_deleted?(fxa_uid)
-      assert [] = Dash.Hub.hubs_for_account(account)
+      assert [] === Dash.Hub.hubs_for_account(account)
     end
   end
 

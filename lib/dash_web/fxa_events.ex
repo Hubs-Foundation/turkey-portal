@@ -95,7 +95,7 @@ defmodule DashWeb.FxaEvents do
     else
       Dash.delete_all_hubs_for_account(account)
       # This is a temporary solution to prevent Standard plan features from
-      # remaining in effect after subscription expiration.  It will be replace
+      # remaining in effect after subscription expiration.  It can be replaced
       # when the “stop” FSM event is implemented.
       Dash.Repo.delete_all(from p in Dash.Plan, where: p.account_id == ^account.account_id)
     end
