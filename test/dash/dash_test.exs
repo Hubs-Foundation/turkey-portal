@@ -247,10 +247,18 @@ defmodule Dash.Test do
     end
 
     test "when the account has no plan", %{account: account} do
-      Mox.expect(HttpMock, :post, fn _url, json, _headers, _opts ->
+      Mox.expect(HttpMock, :post, fn url, json, _headers, opts ->
         payload = Jason.decode!(json)
+        [hub] = Hub.hubs_for_account(account)
+        assert String.ends_with?(url, "hc_instance")
+        assert [hackney: [:insecure]] === opts
+        assert "10" === payload["ccu_limit"]
+        assert Integer.to_string(hub.hub_id) === payload["hub_id"]
+        assert "0.48828125" === payload["storage_limit"]
+        assert hub.subdomain === payload["subdomain"]
         assert "free" === payload["tier"]
         assert account.email === payload["useremail"]
+
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
 
@@ -306,11 +314,18 @@ defmodule Dash.Test do
       account: account,
       subscribed_at: subscribed_at
     } do
-      Mox.expect(HttpMock, :post, fn url, json, _headers, _opts ->
-        assert String.ends_with?(url, "hc_instance")
+      Mox.expect(HttpMock, :post, fn url, json, _headers, opts ->
         payload = Jason.decode!(json)
+        [hub] = Hub.hubs_for_account(account)
+        assert String.ends_with?(url, "hc_instance")
+        assert [hackney: [:insecure]] === opts
+        assert "25" === payload["ccu_limit"]
+        assert Integer.to_string(hub.hub_id) === payload["hub_id"]
+        assert "1.953125" === payload["storage_limit"]
+        assert hub.subdomain === payload["subdomain"]
         assert "early_access" === payload["tier"]
         assert account.email === payload["useremail"]
+
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
 
@@ -337,11 +352,16 @@ defmodule Dash.Test do
       [%{hub_id: hub_id}] = Hub.hubs_for_account(account)
 
       Mox.expect(HttpMock, :patch, 1, fn url, json, _headers, opts ->
+        payload = Jason.decode!(json)
+        [hub] = Hub.hubs_for_account(account)
         assert String.ends_with?(url, "hc_instance")
         assert [hackney: [:insecure]] === opts
-        payload = Jason.decode!(json)
+        assert "25" === payload["ccu_limit"]
+        assert Integer.to_string(hub.hub_id) === payload["hub_id"]
+        assert "1.953125" === payload["storage_limit"]
+        assert hub.subdomain === payload["subdomain"]
         assert "early_access" === payload["tier"]
-        assert account.email === payload["useremail"]
+
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
 
