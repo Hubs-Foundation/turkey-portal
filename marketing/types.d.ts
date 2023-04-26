@@ -81,6 +81,35 @@ export type ImageT = {
   description: string;
 };
 
+export type HubStoreT = {
+  preferences?: {
+    preferredMic?: string;
+    avatarVoiceLevels?: {
+      undefined?: { gainMultiplier: number; muted: boolean };
+    };
+    globalVoiceVolume?: number;
+  };
+  activity?: {
+    hasChangedName?: boolean;
+    hasAcceptedProfile?: boolean;
+    lastEnteredAt?: string;
+    entryCount?: number;
+    hasFoundFreeze?: boolean;
+  };
+  settings?: {};
+  credentials?: {
+    email: string;
+    token: string;
+  };
+  profile?: { avatarId: string; displayName: string };
+  confirmedDiscordRooms?: string[];
+  confirmedBroadcastedRooms?: string[];
+  uploadPromotionTokens?: string[];
+  creatorAssignmentTokens: string[];
+  embedTokens: string[];
+  onLoadActions?: string[];
+};
+
 /**
  * UTILITY TYPES
  */
