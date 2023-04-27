@@ -15,7 +15,6 @@ import { getSubscription, SubscriptionT } from 'services/subscription.service';
 import SidePanel from 'modules/dashboard/SidePanel';
 import { AxiosRequestHeaders } from 'axios';
 import { enabledStarterPlan } from 'util/featureFlag';
-import { redirectToDashboard } from 'util/redirects';
 
 type HubDetailsViewPropsT = {
   subscription: SubscriptionT;
@@ -163,7 +162,7 @@ const HubDetailsView = ({ subscription, account }: HubDetailsViewPropsT) => {
 
 export const getServerSideProps = requireAuthenticationAndSubscription(
   async (context: GetServerSidePropsContext, account: AccountT) => {
-    // Starter plan doesn't have access to Hub name or subdomain change
+    // Starter plan doesn't have access to Hub name or subdomain change, so this page is not found
     if (enabledStarterPlan() && account.hasPlan) return { notFound: true };
     // Your normal `getServerSideProps` code here
     try {
