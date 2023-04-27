@@ -19,9 +19,10 @@ import { redirectToDashboard } from 'util/redirects';
 
 type HubDetailsViewPropsT = {
   subscription: SubscriptionT;
+  account: AccountT;
 };
 
-const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
+const HubDetailsView = ({ subscription, account }: HubDetailsViewPropsT) => {
   const router = useRouter();
   const [hub, setHub] = useState<HubT | null>(null);
   const [loading, setLoading] = useState(true);
@@ -139,7 +140,12 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
             />
           </div>
 
-          <SidePanel subdomain={hub.subdomain} subscription={subscription} />
+          <SidePanel
+            subdomain={hub.subdomain}
+            subscription={subscription}
+            hasStarterPlan={account.hasPlan}
+            hasSubscription={account.hasSubscription}
+          />
         </main>
       ) : (
         <div className="flex-justify-center">
@@ -167,6 +173,7 @@ export const getServerSideProps = requireAuthenticationAndSubscription(
       return {
         props: {
           subscription,
+          account,
         },
       };
     } catch (error) {
