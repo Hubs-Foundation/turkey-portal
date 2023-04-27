@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { HubStoreT, RoomT } from 'types';
 import { createRoom } from 'services/room.service';
+import Link from 'next/link';
 
 type GetStaticPropsT = {
   params: {
@@ -51,7 +52,7 @@ const Room = ({ room, error }: RoomPropsT) => {
 
     // Route user immediately to their new room
     window.location.href = url;
-  }, []);
+  }, [room, error]);
 
   return (
     <div className="page_wrapper">
@@ -62,9 +63,9 @@ const Room = ({ room, error }: RoomPropsT) => {
             There was an error creating your room, please return to the home
             page and try again
           </p>
-          <a href="/" className="primary-link">
+          <Link href="/" className="primary-link">
             Return to home page.
-          </a>
+          </Link>
         </div>
       ) : (
         <h1>Creating your room!</h1>
