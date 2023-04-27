@@ -4,9 +4,11 @@ import {
   BadgeCategoriesE,
   Icon,
 } from '@mozilla/lilypad-ui';
-import { StorageStateE, HubT, FormattedTierMapT } from 'types/General';
+import { StorageStateE, HubT, FormattedTierMapT, TierT } from 'types/General';
 import { useState, useEffect, useCallback } from 'react';
 import styles from './HubCardFooter.module.scss';
+import { enabledStarterPlan } from 'util/featureFlag';
+const EARLY_ACCESS = 'Early Access';
 
 type HubCardFooterPropsT = {
   hub: HubT;
@@ -14,9 +16,9 @@ type HubCardFooterPropsT = {
 };
 
 const FormattedTierMap: FormattedTierMapT = {
-  ['early_access']: 'Early Access',
+  ['early_access']: enabledStarterPlan() ? 'Standard' : EARLY_ACCESS,
   mvp: 'Mvp',
-  free: 'Free',
+  free: 'Starter',
   premium: 'Premium',
 };
 
@@ -66,14 +68,7 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
     <div className={`${styles.footer} ${classProp}`}>
       {/* Tier Information  */}
       <div className={styles.footer_block}>
-        <div className="text-center">
-          <Badge
-            classProp="mb-12 block"
-            name={FormattedTierMap[tier]}
-            category={BadgeCategoriesE.PRIMARY}
-          />
-          <div>Hub Tier</div>
-        </div>
+        <Tier tier={tier} />
       </div>
 
       {/* Storage Information  */}
@@ -102,6 +97,23 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
           <div>Content Storage Space</div>
         </div>
       </div>
+    </div>
+  );
+};
+
+type TierProps = {
+  tier: TierT;
+};
+
+const Tier = ({ tier }: TierProps) => {
+  return (
+    <div className="text-center">
+      <Badge
+        classProp="mb-12 block"
+        name={FormattedTierMap[tier]}
+        category={BadgeCategoriesE.PRIMARY}
+      />
+      <div>{enabledStarterPlan() ? 'Hub Plan' : 'Hub Tier'}</div>
     </div>
   );
 };

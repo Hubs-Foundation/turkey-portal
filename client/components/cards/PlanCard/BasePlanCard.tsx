@@ -43,6 +43,7 @@ type BasePlanCardPropsT = {
   form?: ReactNode;
   confirmButton: ReactNode;
   footerClassProp?: string;
+  color: 'silver' | 'warm';
 };
 
 export const BasePlanCard = ({
@@ -53,10 +54,13 @@ export const BasePlanCard = ({
   form,
   confirmButton,
   footerClassProp = '',
+  color,
 }: BasePlanCardPropsT) => {
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
-      <div className={styles.banner_gradient} />
+      <div
+        className={`${styles.banner_gradient} ${styles['highlight_' + color]}`}
+      />
       <div>
         {/* HEADER  */}
         <div>

@@ -3,13 +3,9 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-}
-
-.expansion_panel {
-  width: 486px;
-
-  @include desktop-large-down {
-    width: 100%;
+  @include mobile-down {
+    grid-template-columns: 1fr;
+    padding: 12px 12px;
   }
 }
 
@@ -52,4 +48,13 @@
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 24px;
+  @include mobile-down {
+    flex-wrap: wrap;
+  }
+  div:first-of-type {
+    margin-right: 20px;
+    @include mobile-down {
+      margin-bottom: 12px;
+    }
+  }
 }

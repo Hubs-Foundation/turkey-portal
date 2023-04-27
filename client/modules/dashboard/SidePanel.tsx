@@ -9,7 +9,12 @@ import mozillaLogo from 'public/mozilla_logo.png';
 import github from 'public/github.png';
 import duck from 'public/duck.png';
 import discord from 'public/discord.png';
-import { HUB_ROOT_DOMAIN, FXA_SERVER } from 'config';
+import {
+  HUB_ROOT_DOMAIN,
+  FXA_PAYMENT_URL,
+  PRODUCT_ID,
+  PLAN_ID_EA,
+} from 'config';
 import { useMobileDown } from 'hooks/useMediaQuery';
 import { enabledStarterPlan } from 'util/featureFlag';
 
@@ -46,13 +51,23 @@ const SidePanel = ({
 
       {hasStarter && (
         <div className={styles.upgrade_container}>
-          <p>[MARKETING TEXT]</p>
+          <div>
+            <p className="body-md">Ready to take your hub to the next level?</p>
+            <p className="body-md">
+              Upgrade for a custom subdomain, more storage, and increased user
+              capacity.
+            </p>
+          </div>
           <Button
             category={ButtonCategoriesE.SECONDARY_SOLID}
             text="Upgrade"
             label="Upgrade"
-            // TODO GET THE ONCLICK FUNCTIONALITY
-            onClick={() => {}}
+            onClick={() => {
+              // TODO add region functionality here - RKW
+              window.open(
+                `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_EA}`
+              );
+            }}
           />
         </div>
       )}
@@ -101,11 +116,7 @@ const AdminPanelLink = ({ hubUrl }: AdminPanelLinkT) => {
 
 const SupportLinksGrid = () => {
   return (
-    <ExpansionPanel
-      title="Support"
-      expanded={true}
-      classProp={styles.expansion_panel}
-    >
+    <ExpansionPanel title="Support" expanded={true}>
       <div className={styles.support_links}>
         <SupportLink
           image={mozillaLogo}

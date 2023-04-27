@@ -21,6 +21,10 @@ export const postStarterPlan = async () => {
     });
 };
 
+/**
+ * Must be encompassed in try/catch
+ * @returns {"status": "created"} | error
+ */
 export const getPlan = async () => {
   return axios
     .get(`${PUBLIC_API_SERVER}/api/v1/plans`, {
