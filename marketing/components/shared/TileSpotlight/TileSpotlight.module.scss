@@ -1,10 +1,23 @@
 @use 'styles/core/boilerplate' as *;
 
-.wrapper {
+.wrapper_swoosh,
+.wrapper_snow,
+.wrapper_none {
   display: flex;
   justify-content: center;
-  padding: 220px 32px;
   position: relative;
+}
+
+.wrapper {
+  &_swoosh {
+    padding: 90px 32px;
+  }
+  &_snow {
+    padding: 300px 32px;
+  }
+  &_none {
+    padding: 100px 32px;
+  }
 }
 
 .background {

@@ -7,7 +7,7 @@
 }
 
 .container {
-  padding: 20px;
+  padding: 100px 20px 0px;
 
   @include desktop-down {
     padding: 0;
