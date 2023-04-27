@@ -1,4 +1,5 @@
 # syntax=docker/dockerfile:1
+ARG SRC_DIR=/src
 
 # ---- dev stage ----
 ARG ALPINE_LINUX_VERSION=3.16.2
@@ -13,12 +14,14 @@ RUN apk add --no-cache \
 COPY container/trapped-mix /usr/local/bin/trapped-mix
 
 # ---- build stage ----
-FROM elixir:1.13 as builder
+FROM elixir:1.13 AS builder
+ARG SRC_DIR
 RUN apt-get update -y && apt-get install -y build-essential git \
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
 RUN mix local.rebar --force \
     && mix local.hex --force
 ENV MIX_ENV=prod
+WORKDIR $SRC_DIR
 COPY mix.exs mix.lock ./
 RUN mix deps.get --only $MIX_ENV
 RUN mkdir config
@@ -38,7 +41,8 @@ COPY config/runtime.exs config/
 RUN mix release
 
 # ---- app stage ----
-from debian:bullseye-slim
+FROM debian:bullseye-slim
+ARG SRC_DIR
 RUN apt-get update -y && apt-get install -y libstdc++6 openssl libncurses5 locales \
   && apt-get clean && rm -f /var/lib/apt/lists/*_*
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && locale-gen
@@ -47,6 +51,6 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 WORKDIR "/app"
 RUN chown nobody /app
-COPY --from=builder --chown=nobody:root /_build/prod/rel/dash ./
+COPY --from=builder --chown=nobody:root $SRC_DIR/_build/prod/rel/dash ./
 USER nobody
 CMD /app/bin/dash start

@@ -1,0 +1,16 @@
+@use 'styles/core/boilerplate' as *;
+
+.info {
+  &_wrapper {
+    display: flex;
+
+    p {
+      margin: 0 0 16px;
+    }
+  }
+}
+
+.icon {
+  margin-top: -3px;
+  margin-bottom: 3px;
+}

@@ -7,11 +7,6 @@ defmodule Dash.Test do
   import Dash.Utils, only: [capability_string: 0]
   require Logger
 
-  setup_all do
-    setup_http_mocks()
-    on_exit(fn -> exit_http_mocks() end)
-  end
-
   setup do
     Mox.verify_on_exit!()
   end
@@ -278,7 +273,8 @@ defmodule Dash.Test do
       account: account,
       subscribed_at: subscribed_at
     } do
-      Mox.expect(HttpMock, :post, fn _url, json, _headers, _opts ->
+      Mox.expect(HttpMock, :post, fn url, json, _headers, _opts ->
+        assert String.ends_with?(url, "hc_instance")
         payload = Jason.decode!(json)
         assert "early_access" === payload["tier"]
         assert account.email === payload["useremail"]
@@ -300,8 +296,33 @@ defmodule Dash.Test do
     @tag :skip
     test "with subscribed_at earlier than the last state transition when the account has a stopped plan"
 
-    @tag :skip
-    test "when the account has an active starter plan"
+    test "when the account has an active starter plan", %{account: account} do
+      stub_http_post_200()
+      :ok = Dash.start_plan(account)
+      after_start = DateTime.utc_now()
+      {:ok, %{plan_id: plan_id}} = Dash.fetch_active_plan(account)
+      [%{hub_id: hub_id}] = Hub.hubs_for_account(account)
+
+      Mox.expect(HttpMock, :patch, 1, fn url, json, _headers, opts ->
+        assert String.ends_with?(url, "hc_instance")
+        assert [hackney: [:insecure]] === opts
+        payload = Jason.decode!(json)
+        assert "early_access" === payload["tier"]
+        assert account.email === payload["useremail"]
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert :ok === Dash.subscribe_to_standard_plan(account, after_start)
+      {:ok, plan} = Dash.fetch_active_plan(account)
+      assert plan_id === plan.plan_id
+      assert plan.subscription?
+      assert [hub] = Hub.hubs_for_account(account)
+      assert hub_id === hub.hub_id
+      assert 25 === hub.ccu_limit
+      assert 2_000 === hub.storage_limit_mb
+      assert :early_access === hub.tier
+      assert account.account_id === hub.account_id
+    end
 
     test "when the account has an active subscription plan", %{
       account: account,

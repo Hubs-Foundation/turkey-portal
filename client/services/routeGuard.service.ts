@@ -126,9 +126,7 @@ export function requireAuthenticationAndSubscription(
  * @param gssp
  * @returns GetServerSideProps
  */
-export function subscriptionPageRequireAuthentication(
-  gssp: Function
-): GetServerSideProps {
+export function pageRequireAuthentication(gssp: Function): GetServerSideProps {
   return async (context) => {
     const { req, query } = context;
 
@@ -170,6 +168,8 @@ function shouldNotRedirect(
   }
 ): boolean {
   return Boolean(
-    req.url?.includes(RoutesE.SUBSCRIBE) && query.redirect === 'false'
+    (req.url?.includes(RoutesE.CONFIRM_PLAN) ||
+      req.url?.includes(RoutesE.SUBSCRIBE)) &&
+      query.redirect === 'false'
   );
 }

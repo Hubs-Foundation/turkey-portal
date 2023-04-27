@@ -6,7 +6,7 @@
   padding: 24px;
   width: 487px;
   border-radius: 20px;
-  display: flex;
+  margin-bottom: 16px;
 
   @include desktop-large-down {
     width: 100%;
@@ -20,19 +20,15 @@
 
 .container {
   display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.header {
-  display: flex;
   align-items: flex-end;
-  margin: 24px 0 32px;
+  flex-grow: 1;
 
   @include mobile-down {
     display: block;
   }
+}
 
+.content {
   &_block {
     width: 50%;
 

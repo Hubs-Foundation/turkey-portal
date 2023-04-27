@@ -24,6 +24,10 @@
   @include desktop-large-down {
     margin: 0 0 24px;
   }
+
+  @include mobile-down {
+    margin: 0;
+  }
 }
 
 .settings {

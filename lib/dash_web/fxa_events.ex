@@ -3,6 +3,7 @@ defmodule DashWeb.FxaEvents do
    Handles events sent from FxA via webhook
   """
   import Dash.Utils, only: [capability_string: 0]
+  import Ecto.Query, only: [from: 2]
   require Logger
 
   @type event_data :: %{String.t() => String.t() | [String.t(), ...]}
@@ -81,26 +82,30 @@ defmodule DashWeb.FxaEvents do
 
     if capabilities !== [capability_string()] do
       raise "unknown capabilities for subscription changed event: #{capabilities}"
-    else
-      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-
-      if is_active do
-        subscribed_at = DateTime.from_unix!(milliseconds * 1_000, :microsecond)
-
-        with {:error, reason} <- Dash.subscribe_to_standard_plan(account, subscribed_at) do
-          Logger.warning("could not subscribe to standard plan for reason: #{reason}")
-        end
-      else
-        Dash.delete_all_hubs_for_account(account)
-      end
-
-      Dash.update_or_create_capability_for_changeset(%{
-        fxa_uid: fxa_uid,
-        capability: capability_string(),
-        is_active: is_active,
-        change_time: truncated_datetime
-      })
     end
+
+    account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+
+    if is_active do
+      subscribed_at = DateTime.from_unix!(milliseconds * 1_000, :microsecond)
+
+      with {:error, reason} <- Dash.subscribe_to_standard_plan(account, subscribed_at) do
+        Logger.warning("could not subscribe to standard plan for reason: #{reason}")
+      end
+    else
+      Dash.delete_all_hubs_for_account(account)
+      # This is a temporary solution to prevent Standard plan features from
+      # remaining in effect after subscription expiration.  It can be replaced
+      # when the “stop” FSM event is implemented.
+      Dash.Repo.delete_all(from p in Dash.Plan, where: p.account_id == ^account.account_id)
+    end
+
+    Dash.update_or_create_capability_for_changeset(%{
+      fxa_uid: fxa_uid,
+      capability: capability_string(),
+      is_active: is_active,
+      change_time: truncated_datetime
+    })
 
     Dash.Account.set_auth_updated_at(fxa_uid, truncated_datetime)
     :ok

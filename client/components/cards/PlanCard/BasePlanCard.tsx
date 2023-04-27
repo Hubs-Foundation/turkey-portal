@@ -1,24 +1,9 @@
 import { ReactNode } from 'react';
-import { Icon } from '@mozilla/lilypad-ui';
 import { PlanInfoCopyT } from './PlanInfoCopy';
 import styles from './BasePlanCard.module.scss';
 import { RegionsT } from 'types/Countries';
 import { getCurrencyMeta } from 'util/utilities';
-
-// INFO BLOCK COMPONENT
-const InfoBlock = ({ icon, label, description }: PlanInfoCopyT) => {
-  return (
-    <div className={styles.info_wrapper}>
-      <div className="flex-box">
-        <Icon name={icon} size={30} classProp="mr-20" />
-      </div>
-      <div className="body-md">
-        <span className="body-md-bold">{label}</span>
-        <p>{description}</p>
-      </div>
-    </div>
-  );
-};
+import { InfoBlock } from '@Shared/InfoBlock/InfoBlock';
 
 // PRICE DISPLAY COMPONENT
 type PricePropsT = {
