@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import { HubStoreT, RoomT } from 'types';
 import { createRoom } from 'services/room.service';
 import Link from 'next/link';
+import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
 
 type GetStaticPropsT = {
   params: {
-    room_id: string;
+    scene_id: string;
   };
 };
 
@@ -68,7 +69,11 @@ const Room = ({ room, error }: RoomPropsT) => {
           </Link>
         </div>
       ) : (
-        <h1>Creating your room!</h1>
+        <div>
+          <SkeletonCard category="square" qty={4} />
+          <SkeletonCard category="square" qty={4} />
+          <SkeletonCard category="square" qty={4} />
+        </div>
       )}
     </div>
   );
@@ -78,7 +83,7 @@ export default Room;
 
 export async function getServerSideProps({ params }: GetStaticPropsT) {
   try {
-    const room = await createRoom(params.room_id);
+    const room = await createRoom(params.scene_id);
 
     return {
       props: {

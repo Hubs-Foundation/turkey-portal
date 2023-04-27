@@ -14,7 +14,7 @@ type EnvVariable = keyof EnvVariableKeys;
  * LOCAL ENVIRONMENT
  */
 const localVars: EnvVariableKeys = {
-  BASE_URL: 'https://hubs.mozilla.com/',
+  BASE_URL: 'hubs.local',
   DASH_ROOT_DOMAIN: 'localhost:3000',
   FXA_PAYMENT_URL: 'https://price.local',
   PLAN_ID_EA: 'price_id123',
