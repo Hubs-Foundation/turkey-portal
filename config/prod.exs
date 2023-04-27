@@ -72,13 +72,3 @@ config :dash, Dash.Scheduler,
     # Runs every midnight:
     {"@daily", {Dash.HubStat, :job_record_hub_stats, []}}
   ]
-
-config :sentry,
-  # Data Source Names (DSN) are safe to keep public because they only allow
-  # submission of new events and related event data; they do not allow read
-  # access to any information.
-  dsn: "https://0688486cc05c4c2e977393eb607bb390@o1069899.ingest.sentry.io/4505037614678016",
-  enable_source_code_context: true,
-  environment_name: System.get_env("ENVIRONMENT_NAME", "unnamed"),
-  included_environments: ["production", "staging"],
-  root_source_code_path: File.cwd!()
