@@ -1,4 +1,5 @@
 type EnvVariableKeys = {
+  BASE_URL: string;
   DASH_ROOT_DOMAIN: string;
   FXA_PAYMENT_URL: string;
   PLAN_ID_EA: string;
@@ -13,6 +14,7 @@ type EnvVariable = keyof EnvVariableKeys;
  * LOCAL ENVIRONMENT
  */
 const localVars: EnvVariableKeys = {
+  BASE_URL: 'https://hubs.mozilla.com/',
   DASH_ROOT_DOMAIN: 'localhost:3000',
   FXA_PAYMENT_URL: 'https://price.local',
   PLAN_ID_EA: 'price_id123',
@@ -25,6 +27,7 @@ const localVars: EnvVariableKeys = {
  * DEVELOPMENT ENVIRONMENT
  */
 const devVars: EnvVariableKeys = {
+  BASE_URL: 'https://hubs.mozilla.com/',
   DASH_ROOT_DOMAIN: 'dashboard.dev.myhubs.net',
   FXA_PAYMENT_URL: 'https://payments-stage.fxa.nonprod.cloudops.mozgcp.net',
   PLAN_ID_EA: 'price_1Jkcl3Kb9q6OnNsLFbECmMtd',
@@ -37,6 +40,7 @@ const devVars: EnvVariableKeys = {
  * PRODUCTION ENVIRONMENT
  */
 const prodVars: EnvVariableKeys = {
+  BASE_URL: 'https://hubs.mozilla.com/',
   DASH_ROOT_DOMAIN: 'dashboard.hubs.mozilla.com',
   FXA_PAYMENT_URL: 'https://subscriptions.firefox.com',
   PLAN_ID_EA: 'price_1M4SjzJNcmPzuWtRyXTlz0Jn',

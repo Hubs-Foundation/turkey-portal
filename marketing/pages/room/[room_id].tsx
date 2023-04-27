@@ -1,6 +1,6 @@
-import axios, { AxiosResponse } from 'axios';
 import { useEffect } from 'react';
-import { HubStoreT } from 'types';
+import { HubStoreT, RoomT } from 'types';
+import { createRoom } from 'services/room.service';
 
 type GetStaticPropsT = {
   params: {
@@ -8,34 +8,21 @@ type GetStaticPropsT = {
   };
 };
 
-type RoomT = {
-  creator_assignment_token: string;
-  embed_token: string;
-  hub_id: string;
-  status: string;
-  url: string;
-};
-
 type RoomPropsT = {
   room: RoomT;
+  error: string;
 };
 
-const Room = ({ room }: RoomPropsT) => {
+const Room = ({ room, error }: RoomPropsT) => {
   const HUBS_STORE = '___hubs_store';
-
-  /**
-   * Set Hub Store Local Storage
-   * @param data
-   */
-  const setLocalStorage = (data: HubStoreT) => {
-    localStorage.setItem(HUBS_STORE, JSON.stringify(data));
-  };
 
   /**
    * Get local store if there is one and set
    * the new room values.
    */
   useEffect(() => {
+    if (error) return;
+
     // Get Store Data
     const hubsStoreString = localStorage.getItem(HUBS_STORE);
     const {
@@ -43,8 +30,10 @@ const Room = ({ room }: RoomPropsT) => {
       embed_token: _embed,
       url,
     } = room;
+
     let store: HubStoreT;
 
+    // If no hubs store create new store object
     if (!hubsStoreString) {
       store = {
         creatorAssignmentTokens: [_creator],
@@ -54,16 +43,11 @@ const Room = ({ room }: RoomPropsT) => {
       store = JSON.parse(hubsStoreString) as HubStoreT;
       const { creatorAssignmentTokens: creator, embedTokens: embed } = store;
 
-      if (!creator.includes(_creator) && _creator !== null) {
-        creator.push(_creator);
-      }
-
-      if (!embed.includes(_embed) && _embed !== null) {
-        embed.push(_embed);
-      }
+      if (!creator.includes(_creator)) creator.push(_creator);
+      if (!embed.includes(_embed)) embed.push(_embed);
     }
 
-    setLocalStorage(store);
+    localStorage.setItem(HUBS_STORE, JSON.stringify(store));
 
     // Route user immediately to their new room
     window.location.href = url;
@@ -72,7 +56,19 @@ const Room = ({ room }: RoomPropsT) => {
   return (
     <div className="page_wrapper">
       {/* Note: user should never see the UI, this is here just incase...  */}
-      <h1>Creating your room!</h1>
+      {Boolean(error) ? (
+        <div className="p-40">
+          <p>
+            There was an error creating your room, please return to the home
+            page and try again
+          </p>
+          <a href="/" className="primary-link">
+            Return to home page.
+          </a>
+        </div>
+      ) : (
+        <h1>Creating your room!</h1>
+      )}
     </div>
   );
 };
@@ -80,18 +76,8 @@ const Room = ({ room }: RoomPropsT) => {
 export default Room;
 
 export async function getServerSideProps({ params }: GetStaticPropsT) {
-  const URL = 'https://hubs.mozilla.com/api/v1/hubs';
-
   try {
-    const getRoomLink = async (id: string) => {
-      const data = await axios
-        .post(URL, { hub: { name: 'auto-generated', scene_id: id } })
-        .then(({ data }: AxiosResponse) => data);
-
-      return data as RoomT;
-    };
-
-    const room = await getRoomLink(params.room_id);
+    const room = await createRoom(params.room_id);
 
     return {
       props: {
@@ -100,6 +86,7 @@ export async function getServerSideProps({ params }: GetStaticPropsT) {
       },
     };
   } catch (error) {
+    console.log(error);
     return {
       props: {
         room: '',

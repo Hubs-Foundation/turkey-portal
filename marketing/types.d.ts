@@ -110,6 +110,14 @@ export type HubStoreT = {
   onLoadActions?: string[];
 };
 
+type RoomT = {
+  creator_assignment_token: string;
+  embed_token: string;
+  hub_id: string;
+  status: string;
+  url: string;
+};
+
 /**
  * UTILITY TYPES
  */
