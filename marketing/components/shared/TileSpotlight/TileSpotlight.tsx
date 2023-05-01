@@ -62,10 +62,14 @@ const TileSpotlight = ({
   classProp = '',
 }: TileSpotlightPropsI) => {
   return (
-    <section className={`${classProp}${styles['background_' + background]}`}>
+    <section
+      className={`${classProp}${styles['background_' + background]} ${
+        adornment === 'none' && 'my-100'
+      }`}
+    >
       {adornment === 'swoosh' && <Swoosh />}
 
-      <div className={styles.wrapper}>
+      <div className={styles['wrapper_' + adornment]}>
         {adornment === 'snow' && (
           <div className={styles.snow_top}>
             <Image
