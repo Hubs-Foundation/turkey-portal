@@ -10,12 +10,12 @@ type GetStaticPropsT = {
   };
 };
 
-type RoomPropsT = {
+type GoToNewRoomPropsT = {
   room: RoomT;
   error: string;
 };
 
-const Room = ({ room, error }: RoomPropsT) => {
+const GoToNewRoom = ({ room, error }: GoToNewRoomPropsT) => {
   const HUBS_STORE = '___hubs_store';
 
   /**
@@ -32,7 +32,6 @@ const Room = ({ room, error }: RoomPropsT) => {
       embed_token: _embed,
       url,
     } = room;
-
     let store: HubStoreT;
 
     // If no hubs store create new store object
@@ -79,7 +78,7 @@ const Room = ({ room, error }: RoomPropsT) => {
   );
 };
 
-export default Room;
+export default GoToNewRoom;
 
 export async function getServerSideProps({ params }: GetStaticPropsT) {
   try {
