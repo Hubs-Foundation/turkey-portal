@@ -42,14 +42,14 @@ export const Price = ({ region, price, priceCadence }: PricePropsT) => {
       <div className={styles.price}>
         {currency ? (
           <>
-            <h2>
+            <h2 className="heading-lg">
               {currency.symbol}
               {price}
             </h2>
             <p>{currency.abbrev}</p>
           </>
         ) : (
-          <h2>{price}</h2>
+          <h2 className="heading-lg">{price}</h2>
         )}
       </div>
       {priceCadence && <p className={styles.price_cadence}>{priceCadence}</p>}
