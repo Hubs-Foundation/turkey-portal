@@ -18,12 +18,14 @@ defmodule Dash.OrchClient do
       storage_limit: (hub.storage_limit_mb / 1024) |> to_string()
     }
 
-    get_http_client().post(
-      orch_hub_endpoint(),
-      Jason.encode!(orch_hub_create_params),
-      [],
-      hackney: [:insecure]
-    )
+    # get_http_client().post(
+    #   orch_hub_endpoint(),
+    #   Jason.encode!(orch_hub_create_params),
+    #   [],
+    #   hackney: [:insecure]
+    # )
+    # DO NOT MERGE
+    {:ok, %{status_code: 200}}
   end
 
   def update_subdomain(%Dash.Hub{} = hub) do
