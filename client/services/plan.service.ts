@@ -1,14 +1,18 @@
 import axios from 'axios';
 import { PUBLIC_API_SERVER } from 'config';
 
+const PLANS_API_PATH = `${PUBLIC_API_SERVER}/api/v1/plans`;
+
+type PostReturnDataT = { status: 'created' } | { error: 'already started' };
+
 /**
  * Must be encompassed in try/catch
- * @returns {"status": "created"} | error
+ * @returns {"status": "created"} | throws an error
  */
-export const postStarterPlan = async () => {
+export const postStarterPlan = async (): Promise<PostReturnDataT> => {
   return axios
     .post(
-      `${PUBLIC_API_SERVER}/api/v1/plans`,
+      PLANS_API_PATH,
       {
         tier: 'starter',
       },
@@ -27,7 +31,7 @@ export const postStarterPlan = async () => {
  */
 export const getPlan = async () => {
   return axios
-    .get(`${PUBLIC_API_SERVER}/api/v1/plans`, {
+    .get(PLANS_API_PATH, {
       withCredentials: true,
     })
     .then((response) => {

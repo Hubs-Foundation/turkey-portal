@@ -8,7 +8,23 @@ import { StorageStateE, HubT, FormattedTierMapT, TierT } from 'types/General';
 import { useState, useEffect, useCallback } from 'react';
 import styles from './HubCardFooter.module.scss';
 import { enabledStarterPlan } from 'util/featureFlag';
-const EARLY_ACCESS = 'Early Access';
+
+type TierPropsT = {
+  tier: TierT;
+};
+
+const Tier = ({ tier }: TierPropsT) => {
+  return (
+    <div className="text-center">
+      <Badge
+        classProp="mb-12 block"
+        name={FormattedTierMap[tier]}
+        category={BadgeCategoriesE.PRIMARY}
+      />
+      <div>{enabledStarterPlan() ? 'Hub Plan' : 'Hub Tier'}</div>
+    </div>
+  );
+};
 
 type HubCardFooterPropsT = {
   hub: HubT;
@@ -16,7 +32,7 @@ type HubCardFooterPropsT = {
 };
 
 const FormattedTierMap: FormattedTierMapT = {
-  ['early_access']: enabledStarterPlan() ? 'Standard' : EARLY_ACCESS,
+  ['early_access']: enabledStarterPlan() ? 'Standard' : 'Early Access',
   mvp: 'Mvp',
   free: 'Starter',
   premium: 'Premium',
@@ -97,23 +113,6 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
           <div>Content Storage Space</div>
         </div>
       </div>
-    </div>
-  );
-};
-
-type TierProps = {
-  tier: TierT;
-};
-
-const Tier = ({ tier }: TierProps) => {
-  return (
-    <div className="text-center">
-      <Badge
-        classProp="mb-12 block"
-        name={FormattedTierMap[tier]}
-        category={BadgeCategoriesE.PRIMARY}
-      />
-      <div>{enabledStarterPlan() ? 'Hub Plan' : 'Hub Tier'}</div>
     </div>
   );
 };

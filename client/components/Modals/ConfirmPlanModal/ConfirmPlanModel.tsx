@@ -3,7 +3,7 @@ import { InfoBlock, InfoBlockPropsT } from '@Shared/InfoBlock/InfoBlock';
 import { StandardPlanInfoCopy } from '@Cards/PlanCard/PlanInfoCopy';
 import styles from './ConfirmPlanModal.module.scss';
 import Modal from '@Shared/Modal/Modal';
-import { BeginStarterPlanButton } from '@Shared/SharedButtons/BeginStarterPlanButton';
+import { BeginStarterPlanButton } from '@Shared/Buttons/BeginStarterPlanButton';
 
 const createInfoBlock = ({ label, icon }: InfoBlockPropsT, i: number) => {
   return <InfoBlock key={i} icon={icon} label={label} />;

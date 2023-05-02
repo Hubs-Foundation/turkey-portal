@@ -1,6 +1,6 @@
 import { StarterPlanInfoCopy } from './PlanInfoCopy';
 import { Price, BasePlanCard } from './BasePlanCard';
-import { BeginStarterPlanButton } from '@Shared/SharedButtons/BeginStarterPlanButton';
+import { BeginStarterPlanButton } from '@Shared/Buttons/BeginStarterPlanButton';
 
 export const StarterPlanCard = () => {
   return (

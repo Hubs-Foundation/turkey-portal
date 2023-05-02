@@ -18,71 +18,11 @@ import {
 import { useMobileDown } from 'hooks/useMediaQuery';
 import { enabledStarterPlan } from 'util/featureFlag';
 
-export type SidePanelPropsT = {
-  subdomain: string;
-  subscription: SubscriptionT;
-  classProp?: string;
-  hasStarterPlan: boolean;
-  hasSubscription: boolean;
-};
-
-const SidePanel = ({
-  subdomain,
-  subscription,
-  classProp = '',
-  hasStarterPlan,
-  hasSubscription,
-}: SidePanelPropsT) => {
-  const isMobile = useMobileDown();
-  const hasStarter = enabledStarterPlan() && hasStarterPlan;
-  const hubUrl = `https://${subdomain}.${HUB_ROOT_DOMAIN}`;
-
-  return (
-    <section className={`${classProp} ${styles.wrapper}`}>
-      <div className={styles.tile_buttons}>
-        <AdminPanelLink hubUrl={hubUrl} />
-        <SpokeLink showSpokeLink={!isMobile && !hasStarter} hubUrl={hubUrl} />
-      </div>
-
-      {/* PRICE  */}
-      {hasSubscription && (
-        <SubCard subscription={subscription} classProp={styles.subcard} />
-      )}
-
-      {hasStarter && (
-        <div className={styles.upgrade_container}>
-          <div>
-            <p className="body-md">Ready to take your hub to the next level?</p>
-            <p className="body-md">
-              Upgrade for a custom subdomain, more storage, and increased user
-              capacity.
-            </p>
-          </div>
-          <Button
-            category={ButtonCategoriesE.SECONDARY_SOLID}
-            text="Upgrade"
-            label="Upgrade"
-            onClick={() => {
-              // TODO add region functionality here - RKW
-              window.open(
-                `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_EA}`
-              );
-            }}
-          />
-        </div>
-      )}
-
-      <SupportLinksGrid />
-    </section>
-  );
-};
-
 type SpokeLinkT = {
   hubUrl: string;
-  showSpokeLink: boolean;
 };
-const SpokeLink = ({ hubUrl, showSpokeLink }: SpokeLinkT) => {
-  return showSpokeLink ? (
+const SpokeLink = ({ hubUrl }: SpokeLinkT) => {
+  return (
     <TileButton
       color="--color-brand-2"
       icon={
@@ -95,8 +35,6 @@ const SpokeLink = ({ hubUrl, showSpokeLink }: SpokeLinkT) => {
       link={`https://${hubUrl}/spoke/projects`}
       title="Scene Editor"
     />
-  ) : (
-    <></>
   );
 };
 
@@ -144,6 +82,68 @@ const SupportLinksGrid = () => {
         />
       </div>
     </ExpansionPanel>
+  );
+};
+
+const UpgradePlan = () => {
+  return (
+    <div className={styles.upgrade_container}>
+      <div>
+        <p className="body-md">Ready to take your hub to the next level?</p>
+        <p className="body-md">
+          Upgrade for a custom subdomain, more storage, and increased user
+          capacity.
+        </p>
+      </div>
+      <Button
+        category={ButtonCategoriesE.SECONDARY_SOLID}
+        text="Upgrade"
+        label="Upgrade"
+        onClick={() => {
+          // TODO add region functionality here - RKW
+          window.open(
+            `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_EA}`
+          );
+        }}
+      />
+    </div>
+  );
+};
+
+export type SidePanelPropsT = {
+  subdomain: string;
+  subscription: SubscriptionT;
+  classProp?: string;
+  hasStarterPlan: boolean;
+  hasSubscription: boolean;
+};
+
+const SidePanel = ({
+  subdomain,
+  subscription,
+  classProp = '',
+  hasStarterPlan,
+  hasSubscription,
+}: SidePanelPropsT) => {
+  const isMobile = useMobileDown();
+  const hasStarter = enabledStarterPlan() && hasStarterPlan;
+  const hubUrl = `https://${subdomain}.${HUB_ROOT_DOMAIN}`;
+
+  return (
+    <section className={`${classProp} ${styles.wrapper}`}>
+      <div className={styles.tile_buttons}>
+        <AdminPanelLink hubUrl={hubUrl} />
+        {!isMobile && <SpokeLink hubUrl={hubUrl} />}
+      </div>
+
+      {/* PRICE  */}
+      {hasSubscription && (
+        <SubCard subscription={subscription} classProp={styles.subcard} />
+      )}
+      {hasStarter && <UpgradePlan />}
+
+      <SupportLinksGrid />
+    </section>
   );
 };
 

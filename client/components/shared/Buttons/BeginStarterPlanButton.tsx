@@ -9,8 +9,9 @@ import { StoreContext } from 'contexts/StoreProvider';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useState } from 'react';
 import { postStarterPlan } from 'services/plan.service';
+import { RoutesE } from 'types/Routes';
 
-type BeginStarterPlanButtonProps = {
+type BeginStarterPlanButtonPropsT = {
   text: string;
   classProp?: string;
 };
@@ -18,7 +19,7 @@ type BeginStarterPlanButtonProps = {
 export const BeginStarterPlanButton = ({
   text,
   classProp,
-}: BeginStarterPlanButtonProps) => {
+}: BeginStarterPlanButtonPropsT) => {
   const { push } = useRouter();
   const storeContext = useContext(StoreContext);
   const [loading, setLoading] = useState(false);
@@ -42,7 +43,7 @@ export const BeginStarterPlanButton = ({
       setLoading(true);
       await postStarterPlan();
       setLoading(false);
-      push('/dashboard');
+      push(RoutesE.DASHBOARD);
     } catch (e) {
       setLoading(false);
       onError();
