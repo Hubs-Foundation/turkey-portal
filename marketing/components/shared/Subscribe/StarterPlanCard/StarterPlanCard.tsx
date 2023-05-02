@@ -16,8 +16,6 @@ export const StarterPlanCard = () => {
       color="silver"
       price={<Price region={null} price="Free" />}
       infoCopyList={starterPlanInfoCopy}
-      footerClassProp={styles.starter_footer}
-      classProp={styles.starter_container}
       confirmButton={
         <Button
           label="Create free hub"

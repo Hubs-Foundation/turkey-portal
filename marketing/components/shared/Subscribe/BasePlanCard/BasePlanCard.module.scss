@@ -10,6 +10,9 @@
   overflow: hidden;
   position: relative;
   margin: 0px 17px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   @include desktop-large-down {
     width: 100%;
@@ -85,19 +88,15 @@
   }
 }
 
-.starter_footer {
-  margin-top: 40px;
-  @include desktop-large-down {
-    margin-top: 0;
-  }
-}
-
-.starter_container {
-  align-self: flex-start;
-}
-
 .footer {
   width: 100%;
+
+  &_wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex-grow: 1;
+  }
 
   button {
     flex-grow: 1;

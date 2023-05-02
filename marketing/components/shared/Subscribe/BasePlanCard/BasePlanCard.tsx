@@ -107,8 +107,10 @@ export const BasePlanCard = ({
       </div>
 
       {/* FOOTER  */}
-      <div className={`${styles.footer_wrapper} ${footerClassProp}`}>
-        <div className={`${styles.footer} flex-justify-center`}>
+      <div className={`${styles.footer_wrapper}`}>
+        <div
+          className={`${styles.footer} ${footerClassProp} flex-justify-center`}
+        >
           {confirmButton}
         </div>
       </div>
