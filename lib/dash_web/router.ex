@@ -11,6 +11,7 @@ defmodule DashWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+    plug DashWeb.ContentTypeRestriction, ["application/json"]
   end
 
   pipeline :jwt_authenticated do
@@ -51,7 +52,7 @@ defmodule DashWeb.Router do
   end
 
   scope "/api/v1", DashWeb do
-    pipe_through [:basic_auth, :jwt_authenticated]
+    pipe_through [:api, :basic_auth, :jwt_authenticated]
 
     resources "/account", Api.V1.AccountController, only: [:show], singleton: true
     resources "/plans", Api.V1.PlanController, only: [:create]
@@ -59,7 +60,7 @@ defmodule DashWeb.Router do
   end
 
   scope "/api/v1", DashWeb do
-    pipe_through [:basic_auth, :jwt_authenticated, :approved_email_auth]
+    pipe_through [:api, :basic_auth, :jwt_authenticated, :approved_email_auth]
 
     resources "/hubs",
               Api.V1.HubController,
@@ -72,7 +73,7 @@ defmodule DashWeb.Router do
   end
 
   scope "/api/v1", DashWeb do
-    pipe_through :fxa_events_parser
+    pipe_through [:api, :fxa_events_parser]
     # TODO decode JWT tokens from FxA with a new plug
     resources "/events/fxa", Api.V1.FxaEventsController, [:create]
   end

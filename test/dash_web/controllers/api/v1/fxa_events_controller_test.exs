@@ -39,6 +39,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       conn
       |> put_resp_content_type("application/json")
       |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+      |> put_req_header("content-type", "application/json")
       |> post("/api/v1/events/fxa")
 
       # time set for auth_changed_at
@@ -66,6 +67,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       conn
       |> put_resp_content_type("application/json")
       |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+      |> put_req_header("content-type", "application/json")
       |> post("/api/v1/events/fxa")
 
       account_after = get_test_account()
@@ -97,6 +99,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       assert conn
              |> put_resp_content_type("application/json")
              |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> put_req_header("content-type", "application/json")
              |> post("/api/v1/events/fxa")
              |> response(200)
 
@@ -120,6 +123,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       assert conn
              |> put_resp_content_type("application/json")
              |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> put_req_header("content-type", "application/json")
              |> post("/api/v1/events/fxa")
              |> response(200)
     end
@@ -136,6 +140,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       assert conn
              |> put_resp_content_type("application/json")
              |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> put_req_header("content-type", "application/json")
              |> post("/api/v1/events/fxa")
              |> response(200)
 
@@ -161,6 +166,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
           conn
           |> put_resp_content_type("application/json")
           |> put_req_header("authorization", "Bearer #{token}")
+          |> put_req_header("content-type", "application/json")
           |> post("/api/v1/events/fxa")
         end
       end
@@ -181,6 +187,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
         conn
         |> put_resp_content_type("application/json")
         |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+        |> put_req_header("content-type", "application/json")
         |> post("/api/v1/events/fxa")
 
       assert response(conn, 200)
@@ -204,6 +211,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       assert conn
              |> put_resp_content_type("application/json")
              |> put_req_header("authorization", "Bearer #{token}")
+             |> put_req_header("content-type", "application/json")
              |> post("/api/v1/events/fxa")
              |> response(200)
 
@@ -232,6 +240,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       assert conn
              |> put_resp_content_type("application/json")
              |> put_req_header("authorization", "Bearer #{token}")
+             |> put_req_header("content-type", "application/json")
              |> post("/api/v1/events/fxa")
              |> response(200)
 
@@ -253,6 +262,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       assert conn
              |> put_resp_content_type("application/json")
              |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> put_req_header("content-type", "application/json")
              |> post("/api/v1/events/fxa")
              |> response(200)
 
@@ -271,6 +281,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       assert conn
              |> put_resp_content_type("application/json")
              |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> put_req_header("content-type", "application/json")
              |> post("/api/v1/events/fxa")
              |> response(200)
 
@@ -286,6 +297,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       assert conn
              |> put_resp_content_type("application/json")
              |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> put_req_header("content-type", "application/json")
              |> post("/api/v1/events/fxa")
              |> response(200)
 
@@ -304,6 +316,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       assert conn
              |> put_resp_content_type("application/json")
              |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> put_req_header("content-type", "application/json")
              |> post("/api/v1/events/fxa")
              |> response(200)
 
@@ -323,6 +336,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       assert conn
              |> put_resp_content_type("application/json")
              |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
+             |> put_req_header("content-type", "application/json")
              |> post("/api/v1/events/fxa")
              |> response(200)
 

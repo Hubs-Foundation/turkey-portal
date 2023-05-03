@@ -21,6 +21,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
       assert "Not Found" ===
                conn
                |> put_test_token(claims: %{"fxa_subscriptions" => []}, token_expiry: tomorrow())
+               |> put_req_header("content-type", "application/json")
                |> post(@route, tier: "starter")
                |> response(404)
     end
@@ -31,6 +32,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
       assert %{"status" => "created"} ===
                conn
                |> put_test_token(claims: %{"fxa_subscriptions" => []}, token_expiry: tomorrow())
+               |> put_req_header("content-type", "application/json")
                |> post(@route, tier: "starter")
                |> json_response(201)
     end
@@ -44,6 +46,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
                  claims: %{"fxa_subscriptions" => [capability_string()]},
                  token_expiry: tomorrow()
                )
+               |> put_req_header("content-type", "application/json")
                |> post(@route, tier: "starter")
                |> json_response(409)
     end
@@ -51,6 +54,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
     test "when the user is not authorized", %{conn: conn} do
       assert @unauthorized_redirect ===
                conn
+               |> put_req_header("content-type", "application/json")
                |> post(@route, tier: "starter")
                |> response(401)
     end
@@ -59,6 +63,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
       assert @unauthorized_redirect ===
                conn
                |> put_test_token(token_expiry: tomorrow(), unverified: true)
+               |> put_req_header("content-type", "application/json")
                |> post(@route, tier: "starter")
                |> response(401)
     end
@@ -67,6 +72,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
       assert @unauthorized_redirect ===
                conn
                |> put_test_token(token_expiry: ~N[1970-01-01 00:00:00])
+               |> put_req_header("content-type", "application/json")
                |> post(@route, tier: "starter")
                |> response(401)
     end
