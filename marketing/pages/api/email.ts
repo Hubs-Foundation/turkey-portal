@@ -1,12 +1,13 @@
-import nodemailer from 'nodemailer';
 import { NewContactT } from 'types';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { addContact } from 'services/google.service';
+import { sendEmail } from 'services/mailer.service';
 
 /**
  * About this APi
  *
- * This api is used to send emails from "hubs-sales@mozilla.com" to business
- * email (TODO recieve email) as a proxy for the user. Business can then
+ * This api is used to send emails from "hubs-sales@mozilla.com" to enterprise-hubs@mozilla.com
+ * as a proxy for the user. Business can then
  * respond to the email the user provided in the form.
  */
 
@@ -19,59 +20,30 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     return;
   }
 
-  const {
-    name,
-    email,
-    organization,
-    country,
-    subject,
-    activity,
-    message,
-  }: NewContactT = req.body;
-  const html = `<div> 
-  <h1>New Contact Inquiry</h1>
-  <ul>
-  <li>Name: ${name}</li>
-  <li>Email: ${email}</li>
-  <li>Organizaion: ${organization}</li>
-  <li>Country Code: ${country}</li>
-  <li>Subject: ${subject}</li>
-  <li>Activity: ${activity}</li>
-  <li>Message: ${message}</li>
-  </ul>
-  </div>`;
-
-  const mail = {
-    from: 'agrego@mozilla.com',
-    to: 'enterprise-hubs@mozilla.com',
-    subject: `From ${email}`,
-    text: 'Inquiry',
-    html: html,
-  };
-
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'agrego@mozilla.com',
-      pass: process.env.GMAIL_APP_PASSWORD,
-    },
-  });
+  const newContact: NewContactT = req.body;
 
   return new Promise<void>((resolve, reject) => {
-    transporter.sendMail(mail, (err, info) => {
-      if (err) {
-        res.status(404).json({
-          message: `Connection refused at ${err.message}`,
-          status: 404,
+    try {
+      const emailPromise = sendEmail(newContact);
+      const sheetsPromise = addContact(newContact);
+      return Promise.all([emailPromise, sheetsPromise]).then((values) => {
+        let isFailed = false;
+        values.forEach(({ status }) => {
+          if (status !== 200) isFailed = true;
         });
-        reject();
-      } else {
-        res.status(200).json({
-          message: `Message delivered to ${info.accepted}`,
-          status: 200,
-        });
+
+        isFailed
+          ? res.status(401).json({
+              status: 401,
+            })
+          : res.status(200).json({
+              status: 200,
+            });
+
         resolve();
-      }
-    });
+      });
+    } catch (error) {
+      reject(error);
+    }
   });
 }

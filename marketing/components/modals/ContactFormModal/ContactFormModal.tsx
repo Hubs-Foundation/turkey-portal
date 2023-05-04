@@ -46,9 +46,9 @@ const ContactFormModal = ({
    */
   const onSuccess = useCallback(() => {
     notificationContext.handleDispatchNotification({
-      title: 'Success',
-      description: 'Your message has been successfully sent',
-      duration: 10000,
+      title: 'Successfully Sent',
+      description: 'We will get back to you within the next two weeks.',
+      duration: 8000,
       type: NotificationTypesE.SUCCESS,
       location: NotificationLocationE.TOP_RIGHT,
       pauseOnHover: true,
