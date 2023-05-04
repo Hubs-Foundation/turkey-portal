@@ -11,16 +11,14 @@ const API_PATH = '/api/v1/account';
  * Must be called within a try catch
  * @returns Account:AccountT{}
  */
-export const getAccount = async (
-  headers?: AxiosRequestHeaders
-): Promise<AccountT> => {
+export const getAccount = async (headers?: AxiosRequestHeaders) => {
   const credentials = { withCredentials: true };
   const contextHeaders = { headers: { ...(headers as AxiosRequestHeaders) } };
   const config = headers ? contextHeaders : credentials;
 
   return axios
     .get(`${PUBLIC_API_SERVER}${API_PATH}`, config)
-    .then((response) => response.data);
+    .then((response) => response.data as AccountT);
 };
 
 /**

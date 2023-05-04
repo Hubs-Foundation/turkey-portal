@@ -3,21 +3,24 @@ import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { StatusE } from 'types/General';
 import styles from './HubCardHeader.module.scss';
+import { useSelector } from 'react-redux';
+import { selectAccount } from 'store/accountSlice';
+import { enabledStarterPlan } from 'util/featureFlag';
 
 type HubCardHeaderPropsT = {
   hubId: string;
   status: StatusE;
   classProp?: string;
-  hasStarterPlan: boolean;
 };
 
 const HubCardHeader = ({
   hubId,
   status,
   classProp = '',
-  hasStarterPlan,
 }: HubCardHeaderPropsT) => {
   const router = useRouter();
+  const account = useSelector(selectAccount);
+  const hasStarterPlan = enabledStarterPlan() && account.hasPlan;
 
   /**
    * Handle Setting Click

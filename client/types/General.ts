@@ -4,12 +4,7 @@
  */
 
 export type TierT = 'mvp' | 'free' | 'early_access' | 'premium';
-export type FormattedTierT =
-  | 'Mvp'
-  | 'Starter'
-  | 'Early Access'
-  | 'Premium'
-  | 'Standard';
+export type FormattedTierT = 'Mvp' | 'Starter' | 'Early Access' | 'Premium';
 
 export type FormattedTierMapT = {
   [key: string]: FormattedTierT;

@@ -32,7 +32,7 @@ type HubCardFooterPropsT = {
 };
 
 const FormattedTierMap: FormattedTierMapT = {
-  ['early_access']: enabledStarterPlan() ? 'Standard' : 'Early Access',
+  ['early_access']: 'Early Access',
   mvp: 'Mvp',
   free: 'Starter',
   premium: 'Premium',

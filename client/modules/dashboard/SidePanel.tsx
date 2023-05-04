@@ -18,40 +18,6 @@ import {
 import { useMobileDown } from 'hooks/useMediaQuery';
 import { enabledStarterPlan } from 'util/featureFlag';
 
-type SpokeLinkT = {
-  hubUrl: string;
-};
-const SpokeLink = ({ hubUrl }: SpokeLinkT) => {
-  return (
-    <TileButton
-      color="--color-brand-2"
-      icon={
-        <HubIcon
-          name="space"
-          classProp={styles.space_icon}
-          color="currentColor"
-        />
-      }
-      link={`https://${hubUrl}/spoke/projects`}
-      title="Scene Editor"
-    />
-  );
-};
-
-type AdminPanelLinkT = {
-  hubUrl: string;
-};
-const AdminPanelLink = ({ hubUrl }: AdminPanelLinkT) => {
-  return (
-    <TileButton
-      color="--color-brand-4"
-      icon={<Icon name="settings" color="currentColor" />}
-      link={`https://${hubUrl}/admin`}
-      title="Admin Panel"
-    />
-  );
-};
-
 const SupportLinksGrid = () => {
   return (
     <ExpansionPanel title="Support" expanded={true}>
@@ -132,8 +98,26 @@ const SidePanel = ({
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.tile_buttons}>
-        <AdminPanelLink hubUrl={hubUrl} />
-        {!isMobile && <SpokeLink hubUrl={hubUrl} />}
+        <TileButton
+          title="Admin Panel"
+          color="--color-brand-4"
+          icon={<Icon name="settings" color="currentColor" />}
+          link={`${hubUrl}/admin`}
+        />
+        {!isMobile && (
+          <TileButton
+            title="Scene Editor"
+            color="--color-brand-2"
+            icon={
+              <HubIcon
+                name="space"
+                classProp={styles.space_icon}
+                color="currentColor"
+              />
+            }
+            link={`${hubUrl}/spoke/projects`}
+          />
+        )}
       </div>
 
       {/* PRICE  */}

@@ -14,15 +14,9 @@ type HubCardPropsT = {
   hub: HubT;
   refreshHubData?: Function;
   classProp?: string;
-  hasStarterPlan: boolean;
 };
 
-const HubCard = ({
-  hub,
-  refreshHubData,
-  classProp = '',
-  hasStarterPlan,
-}: HubCardPropsT) => {
+const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
   const storeContext = useContext(StoreContext);
   const { name, hubId, status, subdomain, lastError } = hub;
   const [showRevertError, setShowRevertError] = useState<boolean>(
@@ -110,11 +104,7 @@ const HubCard = ({
     <div className={`${styles.card_wrapper} ${classProp}`}>
       <div className={styles.card_container}>
         {/* HEADER  */}
-        <HubCardHeader
-          status={status}
-          hubId={hubId}
-          hasStarterPlan={hasStarterPlan}
-        />
+        <HubCardHeader status={status} hubId={hubId} />
 
         {/* BODY  */}
         <div className={styles.card_body}>

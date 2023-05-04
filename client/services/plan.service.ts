@@ -9,7 +9,7 @@ type PostReturnDataT = { status: 'created' } | { error: 'already started' };
  * Must be encompassed in try/catch
  * @returns {"status": "created"} | throws an error
  */
-export const postStarterPlan = async (): Promise<PostReturnDataT> => {
+export const postStarterPlan = async () => {
   return axios
     .post(
       PLANS_API_PATH,
@@ -21,20 +21,6 @@ export const postStarterPlan = async (): Promise<PostReturnDataT> => {
       }
     )
     .then((response) => {
-      return response.data;
-    });
-};
-
-/**
- * Must be encompassed in try/catch
- * @returns {"status": "created"} | error
- */
-export const getPlan = async () => {
-  return axios
-    .get(PLANS_API_PATH, {
-      withCredentials: true,
-    })
-    .then((response) => {
-      return response.data;
+      return response.data as PostReturnDataT;
     });
 };
