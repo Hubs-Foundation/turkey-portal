@@ -17,6 +17,8 @@ import {
 } from 'config';
 import { useMobileDown } from 'hooks/useMediaQuery';
 import { enabledStarterPlan } from 'util/featureFlag';
+import { useSelector } from 'react-redux';
+import { selectAccount } from 'store/accountSlice';
 
 const SupportLinksGrid = () => {
   return (
@@ -80,19 +82,16 @@ export type SidePanelPropsT = {
   subdomain: string;
   subscription: SubscriptionT;
   classProp?: string;
-  hasStarterPlan: boolean;
-  hasSubscription: boolean;
 };
 
 const SidePanel = ({
   subdomain,
   subscription,
   classProp = '',
-  hasStarterPlan,
-  hasSubscription,
 }: SidePanelPropsT) => {
+  const account = useSelector(selectAccount);
   const isMobile = useMobileDown();
-  const hasStarter = enabledStarterPlan() && hasStarterPlan;
+  const hasStarter = enabledStarterPlan() && account.hasPlan;
   const hubUrl = `https://${subdomain}.${HUB_ROOT_DOMAIN}`;
 
   return (
@@ -121,7 +120,7 @@ const SidePanel = ({
       </div>
 
       {/* PRICE  */}
-      {hasSubscription && (
+      {account.hasSubscription && (
         <SubCard subscription={subscription} classProp={styles.subcard} />
       )}
       {hasStarter && <UpgradePlan />}

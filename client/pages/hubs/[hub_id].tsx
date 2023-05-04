@@ -15,13 +15,13 @@ import { getSubscription, SubscriptionT } from 'services/subscription.service';
 import SidePanel from 'modules/dashboard/SidePanel';
 import { AxiosRequestHeaders } from 'axios';
 import { enabledStarterPlan } from 'util/featureFlag';
+import { redirectToDashboard } from 'util/redirects';
 
 type HubDetailsViewPropsT = {
   subscription: SubscriptionT;
-  account: AccountT;
 };
 
-const HubDetailsView = ({ subscription, account }: HubDetailsViewPropsT) => {
+const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
   const router = useRouter();
   const [hub, setHub] = useState<HubT | null>(null);
   const [loading, setLoading] = useState(true);
@@ -139,12 +139,7 @@ const HubDetailsView = ({ subscription, account }: HubDetailsViewPropsT) => {
             />
           </div>
 
-          <SidePanel
-            subdomain={hub.subdomain}
-            subscription={subscription}
-            hasStarterPlan={account.hasPlan}
-            hasSubscription={account.hasSubscription}
-          />
+          <SidePanel subdomain={hub.subdomain} subscription={subscription} />
         </main>
       ) : (
         <div className="flex-justify-center">
@@ -163,7 +158,7 @@ const HubDetailsView = ({ subscription, account }: HubDetailsViewPropsT) => {
 export const getServerSideProps = requireAuthenticationAndSubscription(
   async (context: GetServerSidePropsContext, account: AccountT) => {
     // Starter plan doesn't have access to Hub name or subdomain change, so this page is not found
-    if (enabledStarterPlan() && account.hasPlan) return { notFound: true };
+    if (enabledStarterPlan() && account.hasPlan) return redirectToDashboard();
 
     // Your normal `getServerSideProps` code here
     try {
@@ -173,7 +168,6 @@ export const getServerSideProps = requireAuthenticationAndSubscription(
       return {
         props: {
           subscription,
-          account,
         },
       };
     } catch (error) {

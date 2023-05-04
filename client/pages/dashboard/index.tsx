@@ -174,8 +174,6 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
             <SidePanel
               subdomain={hubs[0].subdomain}
               subscription={subscription}
-              hasSubscription={account.hasSubscription}
-              hasStarterPlan={account.hasPlan}
             />
           ) : (
             <SkeletonCard
