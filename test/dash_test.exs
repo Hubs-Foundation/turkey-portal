@@ -1,4 +1,4 @@
-defmodule Dash.Test do
+defmodule DashTest do
   use Dash.DataCase
 
   alias Dash.{Account, Capability, HttpMock, Hub, Plan}
