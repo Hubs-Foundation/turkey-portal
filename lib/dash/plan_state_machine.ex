@@ -79,8 +79,8 @@ defmodule Dash.PlanStateMachine do
     Repo.insert!(%__MODULE__.PlanTransition{
       event: "start",
       new_state: :starter,
-      transitioned_at: DateTime.utc_now(),
-      plan_id: plan_id
+      plan_id: plan_id,
+      transitioned_at: DateTime.utc_now()
     })
 
     hub =
@@ -192,8 +192,8 @@ defmodule Dash.PlanStateMachine do
       Repo.insert!(%__MODULE__.PlanTransition{
         event: "expire_subscription",
         new_state: :starter,
-        transitioned_at: expired_at,
-        plan_id: plan_id
+        plan_id: plan_id,
+        transitioned_at: expired_at
       })
 
       hub =
@@ -221,8 +221,8 @@ defmodule Dash.PlanStateMachine do
     Repo.insert!(%__MODULE__.PlanTransition{
       event: "subscribe_standard",
       new_state: :standard,
-      transitioned_at: subscribed_at,
-      plan_id: plan_id
+      plan_id: plan_id,
+      transitioned_at: subscribed_at
     })
 
     :ok
