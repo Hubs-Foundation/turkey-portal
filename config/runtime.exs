@@ -13,7 +13,7 @@ if System.get_env("PHX_SERVER") && System.get_env("RELEASE_NAME") do
 end
 
 database_hostname = System.get_env("DB_HOSTNAME", "localhost")
-starter_plan_enabled? = System.get_env("ENABLE_STARTER_PLAN") === "true"
+starter_plan_enabled? = System.get_env("ENABLE_STARTER_PLAN") === "enabled"
 
 config :dash, :starter_plan_enabled?, starter_plan_enabled?
 
