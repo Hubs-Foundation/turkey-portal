@@ -73,7 +73,7 @@ defmodule DashWeb.Router do
   end
 
   scope "/api/v1", DashWeb do
-    pipe_through [:api, :fxa_events_parser]
+    pipe_through :fxa_events_parser
     # TODO decode JWT tokens from FxA with a new plug
     resources "/events/fxa", Api.V1.FxaEventsController, [:create]
   end
