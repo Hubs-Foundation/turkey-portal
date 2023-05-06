@@ -16,6 +16,7 @@ import { CookiesE } from 'types/Cookies';
 import { IncomingMessage } from 'http';
 import { setCookies } from 'cookies-next';
 import { localFeature } from '../util/featureFlag';
+import { AccountT } from 'types/General';
 
 type UnauthenticatedResponseT = {
   status: Number | undefined;
@@ -106,7 +107,7 @@ export function requireAuthenticationAndSubscription(
       const account = await getAccount(req.headers as AxiosRequestHeaders);
 
       // User is authenticated
-      if (account.hasSubscription) {
+      if (account.hasSubscription || account.hasPlan) {
         return await gssp(context, account);
       }
 
@@ -137,8 +138,10 @@ export function pageRequireAuthentication(gssp: Function): GetServerSideProps {
     // Local development only - end
 
     try {
-      const account = await getAccount(req.headers as AxiosRequestHeaders);
-      if (account.hasSubscription) {
+      const account: AccountT = await getAccount(
+        req.headers as AxiosRequestHeaders
+      );
+      if (account.hasSubscription || account.hasPlan) {
         return redirectToDashboard();
       }
 

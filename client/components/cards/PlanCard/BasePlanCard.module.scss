@@ -22,11 +22,19 @@
 
 .banner_gradient {
   padding: 6px;
-  background: $gradient-warm;
   position: absolute;
   width: 100%;
   top: 0;
   left: 0;
+}
+
+.highlight {
+  &_warm {
+    background: $gradient-warm;
+  }
+  &_silver {
+    background: $color-background-subtle-callout;
+  }
 }
 
 .title {

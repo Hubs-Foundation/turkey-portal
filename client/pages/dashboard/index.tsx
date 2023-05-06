@@ -168,7 +168,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
           )}
         </div>
 
-        {/* SIDE PANNEL WIDGET  */}
+        {/* SIDE PANEL WIDGET  */}
         <div className={styles.sidep_panel}>
           {!isLoading ? (
             <SidePanel

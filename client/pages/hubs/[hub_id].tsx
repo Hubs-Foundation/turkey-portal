@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import { HubT, UpdateHubT, StatusE } from 'types/General';
+import { HubT, UpdateHubT, StatusE, AccountT } from 'types/General';
 import { RoutesE } from 'types/Routes';
 import { getHub, updateHub } from 'services/hub.service';
 import { requireAuthenticationAndSubscription } from 'services/routeGuard.service';
@@ -14,6 +14,8 @@ import styles from './[hub_id].module.scss';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
 import SidePanel from 'modules/dashboard/SidePanel';
 import { AxiosRequestHeaders } from 'axios';
+import { enabledStarterPlan } from 'util/featureFlag';
+import { redirectToDashboard } from 'util/redirects';
 
 type HubDetailsViewPropsT = {
   subscription: SubscriptionT;
@@ -154,7 +156,10 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
 };
 
 export const getServerSideProps = requireAuthenticationAndSubscription(
-  async (context: GetServerSidePropsContext) => {
+  async (context: GetServerSidePropsContext, account: AccountT) => {
+    // Starter plan doesn't have access to Hub name or subdomain change, so this page is not found
+    if (enabledStarterPlan() && account.hasPlan) return redirectToDashboard();
+
     // Your normal `getServerSideProps` code here
     try {
       const subscription = await getSubscription(

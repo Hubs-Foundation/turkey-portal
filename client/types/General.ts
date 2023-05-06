@@ -4,7 +4,7 @@
  */
 
 export type TierT = 'mvp' | 'free' | 'early_access' | 'premium';
-export type FormattedTierT = 'Mvp' | 'Free' | 'Early Access' | 'Premium';
+export type FormattedTierT = 'Mvp' | 'Starter' | 'Early Access' | 'Premium';
 
 export type FormattedTierMapT = {
   [key: string]: FormattedTierT;
@@ -57,6 +57,7 @@ export type AccountT = {
   hasSubscription: boolean;
   hasCreatingHubs: boolean;
   isInitialized: boolean;
+  hasPlan: boolean;
 };
 
 export enum BadgeCategoriesE {

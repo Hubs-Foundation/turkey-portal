@@ -3,11 +3,9 @@ import { InfoBlock, InfoBlockPropsT } from '@Shared/InfoBlock/InfoBlock';
 import { StandardPlanInfoCopy } from '@Cards/PlanCard/PlanInfoCopy';
 import styles from './ConfirmPlanModal.module.scss';
 import Modal from '@Shared/Modal/Modal';
+import { BeginStarterPlanButton } from '@Shared/Buttons/BeginStarterPlanButton';
 
-const createInfoBlock = (
-  { label, description, icon }: InfoBlockPropsT,
-  i: number
-) => {
+const createInfoBlock = ({ label, icon }: InfoBlockPropsT, i: number) => {
   return <InfoBlock key={i} icon={icon} label={label} />;
 };
 
@@ -23,10 +21,9 @@ const ConfirmPlanModel = () => {
             virtual room.
           </p>
           <div className="flex-justify-center">
-            <Button
-              classProp={styles.button}
+            <BeginStarterPlanButton
               text="Continue with Starter"
-              label="Continue with Starter"
+              classProp={styles.button}
             />
           </div>
         </div>
