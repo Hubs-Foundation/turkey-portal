@@ -1,9 +1,31 @@
 import { ReactNode } from 'react';
-import { PlanInfoCopyT } from './PlanInfoCopy';
+import { HubIcon, HubIconT } from '@mozilla/lilypad-ui';
 import styles from './BasePlanCard.module.scss';
-import { RegionsT } from 'types/Countries';
+import { RegionsT } from 'types';
 import { getCurrencyMeta } from 'util/utilities';
-import { InfoBlock } from '@Shared/InfoBlock/InfoBlock';
+import { PlanInfoCopyT } from './planInfoCopy';
+
+type InfoBlockPropsT = {
+  icon: HubIconT;
+  label: string;
+  description: string;
+};
+
+// INFO BLOCK COMPONENT
+const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
+  return (
+    <div className={styles.info_wrapper}>
+      <div className="flex-box">
+        <HubIcon name={icon} size={30} classProp="mr-20 mt-2 " />
+      </div>
+      <div className="body-md">
+        <p>
+          <span className="body-md-bold">{label}</span> <br /> {description}
+        </p>
+      </div>
+    </div>
+  );
+};
 
 // PRICE DISPLAY COMPONENT
 type PricePropsT = {
@@ -16,7 +38,7 @@ export const Price = ({ region, price, priceCadence }: PricePropsT) => {
   const currency = region ? getCurrencyMeta(region) : null;
 
   return (
-    <div className={styles.price_container}>
+    <div className={`${styles.price_container}`}>
       <div className={styles.price}>
         {currency ? (
           <>
@@ -61,12 +83,10 @@ export const BasePlanCard = ({
       <div
         className={`${styles.banner_gradient} ${styles['highlight_' + color]}`}
       />
-      <div>
-        {/* HEADER  */}
-        <div>
-          <h2 className={styles.title}>{title}</h2>
-          <div className={styles.price_wrapper}>{price}</div>
-        </div>
+      {/* HEADER  */}
+      <h2 className={styles.title}>{title}</h2>
+      <div className={styles.container}>
+        <div className={styles.price_wrapper}>{price}</div>
 
         {/* CONTENT  */}
         <div className={styles.content}>
@@ -80,15 +100,17 @@ export const BasePlanCard = ({
               />
             );
           })}
-        </div>
 
-        {/* LOCATION CONFIRMATION  */}
-        {form}
+          {/* LOCATION CONFIRMATION  */}
+          {form}
+        </div>
       </div>
 
       {/* FOOTER  */}
-      <div className={styles.footer_wrapper}>
-        <div className={`${styles.footer} ${footerClassProp}`}>
+      <div className={`${styles.footer_wrapper}`}>
+        <div
+          className={`${styles.footer} ${footerClassProp} flex-justify-center`}
+        >
           {confirmButton}
         </div>
       </div>
