@@ -33,7 +33,7 @@ const devVars: EnvVariableKeys = {
   PRODUCT_ID: 'prod_KPReWHqwGqZBzc',
   PLAN_ID_EA_DE: 'price_1LqkLwKb9q6OnNsLlWHZfPOu',
   PUBLIC_API_SERVER: 'https://dashboard.dev.myhubs.net',
-  ENABLE_STARTER_PLAN: 'enabled',
+  ENABLE_STARTER_PLAN: '',
 };
 
 /**
