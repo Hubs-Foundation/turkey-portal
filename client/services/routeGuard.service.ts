@@ -44,6 +44,7 @@ function didSetTurkeyauthCookie(context: GetServerSidePropsContext): boolean {
     req,
     res,
     maxAge: 3600 * cookieTtlHours,
+    sameSite: 'lax',
   });
 
   // Note: the 'setCookie' above does not set cookie in time to be used in the

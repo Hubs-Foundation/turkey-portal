@@ -8,11 +8,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   require Logger
   alias Dash.Hub
 
-  setup_all do
-    setup_http_mocks()
-    on_exit(fn -> exit_http_mocks() end)
-  end
-
   setup do
     Mox.verify_on_exit!()
   end

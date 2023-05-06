@@ -170,11 +170,12 @@ defmodule DashWeb.Plugs.Auth do
       conn,
       @cookie_name,
       "",
-      path: "/",
       domain: cookie_domain,
       http_only: true,
-      secure: cookie_secure,
-      max_age: 0
+      max_age: 0,
+      path: "/",
+      same_site: "lax",
+      secure: cookie_secure
     )
 
     if cookie_domain =~ "dev.myhubs.net", do: clear_dev_cookie(conn), else: conn
@@ -187,11 +188,12 @@ defmodule DashWeb.Plugs.Auth do
       conn,
       @cookie_name,
       "",
-      path: "/",
       domain: ".dev.myhubs.net",
       http_only: true,
-      secure: cookie_secure,
-      max_age: 0
+      max_age: 0,
+      path: "/",
+      same_site: "lax",
+      secure: cookie_secure
     )
   end
 end

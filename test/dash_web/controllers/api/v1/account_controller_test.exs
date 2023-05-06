@@ -6,11 +6,6 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
 
   @route "/api/v1/account"
 
-  setup_all do
-    setup_http_mocks()
-    on_exit(fn -> exit_http_mocks() end)
-  end
-
   describe "GET /api/vi/account" do
     setup do
       starter_plan_enabled? = Application.get_env(:dash, :starter_plan_enabled?)

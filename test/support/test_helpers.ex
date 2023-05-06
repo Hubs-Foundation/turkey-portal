@@ -116,16 +116,6 @@ defmodule Dash.TestHelpers do
     Application.put_env(:dash, DashWeb.Plugs.Auth, %{})
   end
 
-  def setup_http_mocks() do
-    merge_module_config(:dash, Dash.Hub, http_client: Dash.HttpMock)
-    merge_module_config(:dash, Dash.OrchClient, http_client: Dash.HttpMock)
-  end
-
-  def exit_http_mocks() do
-    merge_module_config(:dash, Dash.Hub, http_client: nil)
-    merge_module_config(:dash, Dash.OrchClient, http_client: nil)
-  end
-
   # Required mocks for GET reticulum requests
   def stub_ret_get() do
     Dash.HttpMock
