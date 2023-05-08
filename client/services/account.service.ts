@@ -2,6 +2,7 @@ import axios, { AxiosRequestHeaders } from 'axios';
 import { PUBLIC_API_SERVER } from 'config';
 import { CookiesE } from 'types/Cookies';
 import { removeCookies } from 'cookies-next';
+import { AccountT } from 'types/General';
 
 const API_PATH = '/api/v1/account';
 
@@ -17,7 +18,7 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
 
   return axios
     .get(`${PUBLIC_API_SERVER}${API_PATH}`, config)
-    .then((response) => response.data);
+    .then((response) => response.data as AccountT);
 };
 
 /**

@@ -1,7 +1,7 @@
 import React, { ReactNode, useState, useCallback } from 'react';
 import styles from './ExpansionPanel.module.scss';
 import { Icon, ButtonCategoriesE } from '@mozilla/lilypad-ui';
-import FadeIn from '@Util/FadeIn';
+import FadeInWrapper from '@Util/FadeIn';
 
 export type ExpansionPanelPropsT = {
   title: string;
@@ -18,24 +18,10 @@ const ExpansionPanel = ({
   classProp = '',
 }: ExpansionPanelPropsT) => {
   const [isOpen, setIsOpen] = useState<boolean>(expanded);
-  const [isVisible, setIsVisible] = useState<boolean>(expanded);
 
   const onToggleClick = () => {
-    isOpen ? handleClose() : handleOpen();
+    setIsOpen((state) => !state);
   };
-
-  const handleOpen = useCallback(() => {
-    setIsVisible((state) => !state);
-    setIsOpen((state) => !state);
-  }, []);
-
-  const handleClose = useCallback(() => {
-    setIsOpen((state) => !state);
-  }, []);
-
-  const handleOnComplete = useCallback(() => {
-    if (!isOpen) setIsVisible(false);
-  }, [isOpen]);
 
   return (
     <section className={`${styles.wrapper} ${classProp}`}>
@@ -53,9 +39,9 @@ const ExpansionPanel = ({
         />
       </button>
 
-      <FadeIn isVisible={isOpen} onComplete={handleOnComplete}>
-        {isVisible && <div className={styles.expand_content}>{children}</div>}
-      </FadeIn>
+      <FadeInWrapper visible={isOpen}>
+        <div className={styles.expand_content}>{children}</div>
+      </FadeInWrapper>
     </section>
   );
 };

@@ -3,7 +3,7 @@
 .wrapper {
   display: flex;
   justify-content: center;
-  padding: 40px 32px;
+  padding: 100px 32px;
   position: relative;
 
   @include tablet-down {
@@ -26,7 +26,6 @@
 
   p {
     @include body-md;
-    margin-bottom: 64px;
     padding: 0;
 
     @include tablet-down {

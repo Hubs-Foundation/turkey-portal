@@ -1,19 +1,15 @@
-import { Button } from '@mozilla/lilypad-ui';
 import { StarterPlanInfoCopy } from './PlanInfoCopy';
 import { Price, BasePlanCard } from './BasePlanCard';
-
-// TODO change noop to a button click
-const noop = () => {};
+import { BeginStarterPlanButton } from '@Shared/Buttons/BeginStarterPlanButton';
 
 export const StarterPlanCard = () => {
   return (
     <BasePlanCard
       title="Starter"
+      color="silver"
       price={<Price region={null} price="Free" />}
       infoCopyList={StarterPlanInfoCopy}
-      confirmButton={
-        <Button label="Create free hub" text="Create free hub" onClick={noop} />
-      }
+      confirmButton={<BeginStarterPlanButton text="Create free hub" />}
     />
   );
 };

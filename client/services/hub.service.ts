@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
-const API_PATH = '/api/v1/hubs';
 import { PUBLIC_API_SERVER } from 'config';
 import { UpdateHubT } from 'types/General';
+const API_PATH = '/api/v1/hubs';
 
 /**
  * Get All Hubs

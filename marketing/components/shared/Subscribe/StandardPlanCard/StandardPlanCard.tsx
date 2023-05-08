@@ -1,22 +1,22 @@
+import getEnvVariable from 'config';
 import { useCallback, useEffect, useState } from 'react';
-import { Button, Checkbox } from '@mozilla/lilypad-ui';
-import { StandardPlanInfoCopy } from './PlanInfoCopy';
-import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
+import { getRegion } from 'services/region.service';
 import { CountriesE, RegionsT } from 'types/Countries';
-import { getRegion, RegionObjT } from 'services/region.service';
-import { Price, BasePlanCard } from './BasePlanCard';
-import { enabledStarterPlan } from 'util/featureFlag';
+import { BasePlanCard, Price } from '../BasePlanCard/BasePlanCard';
+import { enabledStarterPlan } from 'util/utilities';
+import { standardPlanInfoCopy } from '../BasePlanCard/planInfoCopy';
+import { Button, Checkbox } from '@mozilla/lilypad-ui';
 
 const TAX_REGIONS: RegionsT[] = ['US'];
 
 export const StandardPlanCard = () => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
-  const [region, setRegion] = useState<RegionsT>(null);
+  const [region, setRegion] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchRegion = async () => {
       try {
-        const data: RegionObjT = await getRegion();
+        const data = await getRegion();
         setRegion(data.region);
       } catch (e) {
         console.error(e);
@@ -39,16 +39,20 @@ export const StandardPlanCard = () => {
    */
   const handleSubscribeClick = useCallback(() => {
     // Default to US plan
-    const plan: string = isEuro() ? PLAN_ID_EA_DE : PLAN_ID_EA;
-    const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${plan}`;
+    const plan: string = isEuro()
+      ? getEnvVariable('PLAN_ID_EA_DE')
+      : getEnvVariable('PLAN_ID_EA');
+    const url = `${getEnvVariable('FXA_PAYMENT_URL')}/checkout/${getEnvVariable(
+      'PRODUCT_ID'
+    )}?plan=${plan}`;
     window.open(url);
   }, [isEuro]);
 
-  const onToggleLocationConfirmation = useCallback((value: boolean) => {
+  const onToggleConfirmation = useCallback((value: boolean) => {
     setLocationConfirmed(value);
   }, []);
 
-  const hasTax = TAX_REGIONS.includes(region);
+  const hasTax = TAX_REGIONS.includes(region as RegionsT);
 
   return (
     <BasePlanCard
@@ -56,17 +60,17 @@ export const StandardPlanCard = () => {
       color="warm"
       price={
         <Price
-          price="20"
           region={region as RegionsT}
+          price="20"
           priceCadence={`per month${hasTax ? ' + tax' : ''}`}
         />
       }
-      infoCopyList={StandardPlanInfoCopy}
+      infoCopyList={standardPlanInfoCopy}
       form={
         <form className="content-box mt-16 mb-16">
           <Checkbox
             classProp="content-box"
-            onChange={onToggleLocationConfirmation}
+            onChange={onToggleConfirmation}
             checked={locationConfirmed}
             label="I'm located in UK, Canada, USA, or Germany"
           />
@@ -75,7 +79,7 @@ export const StandardPlanCard = () => {
       confirmButton={
         <Button
           label="Subscribe to hubs"
-          text="Subscribe now"
+          text="Subscribe"
           onClick={handleSubscribeClick}
           disabled={!locationConfirmed}
         />

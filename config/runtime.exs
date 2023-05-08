@@ -13,7 +13,7 @@ if System.get_env("PHX_SERVER") && System.get_env("RELEASE_NAME") do
 end
 
 database_hostname = System.get_env("DB_HOSTNAME", "localhost")
-starter_plan_enabled? = System.get_env("ENABLE_STARTER_PLAN") === "true"
+starter_plan_enabled? = System.get_env("ENABLE_STARTER_PLAN") === "enabled"
 
 config :dash, :starter_plan_enabled?, starter_plan_enabled?
 
@@ -102,6 +102,16 @@ case config_env() do
     config :dash, Dash,
       plans: System.fetch_env!("PLANS"),
       subdomain_wait_time: 15000
+
+    config :sentry,
+      # Data Source Names (DSN) are safe to keep public because they only allow
+      # submission of new events and related event data; they do not allow read
+      # access to any information.
+      dsn: "https://0688486cc05c4c2e977393eb607bb390@o1069899.ingest.sentry.io/4505037614678016",
+      enable_source_code_context: true,
+      environment_name: System.get_env("ENVIRONMENT_NAME", "unnamed"),
+      included_environments: ["production", "staging"],
+      root_source_code_path: File.cwd!()
 
     # ## Using releases
     #
