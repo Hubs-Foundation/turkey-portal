@@ -26,18 +26,15 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
       const emailPromise = sendEmail(newContact);
       const sheetsPromise = addContact(newContact);
-      return Promise.all([emailPromise, sheetsPromise]).then((values) => {
-        let isFailed = false;
-        values.forEach(({ status }) => {
-          if (status !== 200) isFailed = true;
-        });
+      return Promise.all([emailPromise, sheetsPromise]).then((responses) => {
+        const isSuccess = responses.every(({ status }) => status === 200);
 
-        isFailed
-          ? res.status(401).json({
-              status: 401,
-            })
-          : res.status(200).json({
+        isSuccess
+          ? res.status(200).json({
               status: 200,
+            })
+          : res.status(401).json({
+              status: 401,
             });
 
         resolve();
