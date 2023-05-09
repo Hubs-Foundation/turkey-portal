@@ -78,26 +78,32 @@ defmodule DashWeb.FxaEvents do
         "isActive" => is_active,
         "changeTime" => milliseconds
       }) do
-    truncated_datetime = unix_to_utc_datetime(milliseconds)
-
     if capabilities !== [capability_string()] do
       raise "unknown capabilities for subscription changed event: #{capabilities}"
     end
 
+    datetime = DateTime.from_unix!(milliseconds * 1_000, :microsecond)
+    truncated_datetime = unix_to_utc_datetime(milliseconds)
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
     if is_active do
-      subscribed_at = DateTime.from_unix!(milliseconds * 1_000, :microsecond)
-
-      with {:error, reason} <- Dash.subscribe_to_standard_plan(account, subscribed_at) do
+      with {:error, reason} <- Dash.subscribe_to_standard_plan(account, datetime) do
         Logger.warning("could not subscribe to standard plan for reason: #{reason}")
       end
     else
-      Dash.delete_all_hubs_for_account(account)
-      # This is a temporary solution to prevent Standard plan features from
-      # remaining in effect after subscription expiration.  It can be replaced
-      # when the “stop” FSM event is implemented.
-      Dash.Repo.delete_all(from p in Dash.Plan, where: p.account_id == ^account.account_id)
+      # nested if-else instead of cond only because this feature flag is meant
+      # to be short-lived
+      if Application.fetch_env!(:dash, :starter_plan_enabled?) do
+        with {:error, reason} <- Dash.expire_plan_subscription(account, datetime) do
+          Logger.warning("could not expire plan subscription for reason: #{reason}")
+        end
+      else
+        Dash.delete_all_hubs_for_account(account)
+        # This is a temporary solution to prevent Standard plan features from
+        # remaining in effect after subscription expiration.  It can be replaced
+        # when the “stop” FSM event is implemented.
+        Dash.Repo.delete_all(from p in Dash.Plan, where: p.account_id == ^account.account_id)
+      end
     end
 
     Dash.update_or_create_capability_for_changeset(%{

@@ -79,8 +79,8 @@ defmodule Dash.PlanStateMachine do
     Repo.insert!(%__MODULE__.PlanTransition{
       event: "start",
       new_state: :starter,
-      transitioned_at: DateTime.utc_now(),
-      plan_id: plan_id
+      plan_id: plan_id,
+      transitioned_at: DateTime.utc_now()
     })
 
     hub =
@@ -122,6 +122,9 @@ defmodule Dash.PlanStateMachine do
     :ok
   end
 
+  def handle_event(nil, {:expire_subscription, %DateTime{}}, %Account{}, _data),
+    do: {:error, :no_subscription}
+
   def handle_event(:starter, :fetch_active_plan, %Account{account_id: account_id}, _data),
     do: {:ok, %{get_plan(account_id) | subscription?: false}}
 
@@ -137,7 +140,7 @@ defmodule Dash.PlanStateMachine do
     %{plan_id: plan_id} = get_plan(account_id)
     :ok = subscribe_standard(plan_id, subscribed_at)
 
-    hub =
+    {:ok, %{status_code: 200}} =
       Hub
       |> Repo.get_by!(account_id: account_id)
       |> Ecto.Changeset.change(
@@ -146,10 +149,13 @@ defmodule Dash.PlanStateMachine do
         tier: :early_access
       )
       |> Repo.update!()
+      |> OrchClient.update_tier()
 
-    {:ok, %{status_code: 200}} = OrchClient.update_tier(hub)
     :ok
   end
+
+  def handle_event(:starter, {:expire_subscription, %DateTime{}}, %Account{}, _data),
+    do: {:error, :no_subscription}
 
   def handle_event(:standard, :fetch_active_plan, %Account{account_id: account_id}, _data) do
     active_plan =
@@ -170,6 +176,42 @@ defmodule Dash.PlanStateMachine do
   def handle_event(:standard, {:subscribe_standard, _subscribed_at}, %Account{}, _data),
     do: {:error, :already_started}
 
+  def handle_event(
+        :standard,
+        {:expire_subscription, %DateTime{} = expired_at},
+        %Account{account_id: account_id},
+        _data
+      ) do
+    if DateTime.compare(expired_at, transitioned_at(account_id)) !== :gt do
+      {:error, :superseded}
+    else
+      %{plan_id: plan_id} =
+        with nil <- get_plan(account_id),
+             do: Repo.insert!(%Plan{account_id: account_id})
+
+      Repo.insert!(%__MODULE__.PlanTransition{
+        event: "expire_subscription",
+        new_state: :starter,
+        plan_id: plan_id,
+        transitioned_at: expired_at
+      })
+
+      hub =
+        Hub
+        |> Repo.get_by!(account_id: account_id)
+        |> Ecto.Changeset.change(
+          ccu_limit: @starter_ccu_limit,
+          storage_limit_mb: @starter_storage_limit_mb,
+          subdomain: rand_string(10),
+          tier: :free
+        )
+        |> Repo.update!()
+
+      {:ok, %{status_code: 200}} = OrchClient.update_tier(hub)
+      :ok
+    end
+  end
+
   @spec get_plan(Account.id()) :: Plan.t() | nil
   defp get_plan(account_id),
     do: Repo.get_by(Plan, account_id: account_id)
@@ -179,10 +221,31 @@ defmodule Dash.PlanStateMachine do
     Repo.insert!(%__MODULE__.PlanTransition{
       event: "subscribe_standard",
       new_state: :standard,
-      transitioned_at: subscribed_at,
-      plan_id: plan_id
+      plan_id: plan_id,
+      transitioned_at: subscribed_at
     })
 
     :ok
+  end
+
+  @spec transitioned_at(Account.id()) :: DateTime.t()
+  defp transitioned_at(account_id) when is_integer(account_id) do
+    with nil <-
+           Repo.one(
+             from t in __MODULE__.PlanTransition,
+               join: p in assoc(t, :plan),
+               select: t.transitioned_at,
+               where: p.account_id == ^account_id,
+               order_by: [desc: t.transitioned_at],
+               limit: 1
+           ) do
+      Repo.one!(
+        from c in Capability,
+          select: c.change_time,
+          where: c.account_id == ^account_id,
+          where: c.capability == ^capability_string(),
+          where: c.is_active
+      )
+    end
   end
 end

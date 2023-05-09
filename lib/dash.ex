@@ -8,6 +8,18 @@ defmodule Dash do
   require Logger
 
   @doc """
+  Expires the plan subscription of the given `account`.
+
+  This converts an existing plan to a starter plan.
+
+  Returns `:ok` if successful.  Otherwise, `{:error, reason}` is returned.
+  """
+  @spec expire_plan_subscription(Account.t(), DateTime.t()) ::
+          :ok | {:error, :account_not_found | :no_subscription | :superseded}
+  def expire_plan_subscription(%Account{} = account, %DateTime{} = expired_at),
+    do: PlanStateMachine.handle_event({:expire_subscription, expired_at}, account)
+
+  @doc """
   Finds the active plan for the given `account`.
 
   Returns `{:ok, plan}` if found.  Otherwise, `{:error, reason}` is returned.

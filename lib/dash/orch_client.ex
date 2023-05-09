@@ -44,9 +44,10 @@ defmodule Dash.OrchClient do
     get_http_client().patch(
       orch_hub_endpoint(),
       Jason.encode!(%{
-        hub_id: Integer.to_string(hub.hub_id),
         ccu_limit: Integer.to_string(hub.ccu_limit),
+        hub_id: Integer.to_string(hub.hub_id),
         storage_limit: Float.to_string(hub.storage_limit_mb / 1024),
+        subdomain: hub.subdomain,
         tier: hub.tier
       }),
       [],
