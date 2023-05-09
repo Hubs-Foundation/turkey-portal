@@ -6,9 +6,11 @@ import { sendEmail } from 'services/mailer.service';
 /**
  * About this APi
  *
- * This api is used to send emails from "hubs-sales@mozilla.com" to enterprise-hubs@mozilla.com
- * as a proxy for the user. Business can then
- * respond to the email the user provided in the form.
+ * This api is used to send emails from "hubs-sales@mozilla.com" to "enterprise-hubs@mozilla.com"
+ * as a proxy for the user. Business can then respond to the email the user provided in the form.
+ *
+ * This is also currently sending data to a google sheets. In the future we would like that google
+ * sheet to be integrated with Salesforce.
  */
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {

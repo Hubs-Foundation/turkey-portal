@@ -27,25 +27,9 @@ export const sendEmail = async ({
   </ul>
   </div>`;
 
-  // const mail = {
-  //   from: 'hubs-sales@mozilla.com',
-  //   to: 'enterprise-hubs@mozilla.com',
-  //   subject: `From ${email}`,
-  //   text: 'Inquiry',
-  //   html: htmlEmail,
-  // };
-
-  // const transporter = nodemailer.createTransport({
-  //   service: 'gmail',
-  //   auth: {
-  //     user: 'hubs-sales@mozilla.com',
-  //     pass: process.env.GMAIL_APP_PASSWORD,
-  //   },
-  // });
-
   const mail = {
-    from: 'ngrato@gmail.com',
-    to: 'ngrato@mozilla.com',
+    from: 'hubs-sales@mozilla.com',
+    to: 'enterprise-hubs@mozilla.com',
     subject: `From ${email}`,
     text: 'Inquiry',
     html: htmlEmail,
@@ -54,7 +38,7 @@ export const sendEmail = async ({
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'ngrato@gmail.com',
+      user: 'hubs-sales@mozilla.com',
       pass: process.env.GMAIL_APP_PASSWORD,
     },
   });
