@@ -6,6 +6,7 @@
   padding: 24px;
   width: 487px;
   border-radius: 20px;
+  margin-bottom: 24px;
 
   @include desktop-large-down {
     width: 100%;
@@ -13,6 +14,7 @@
   }
 
   @include mobile-down {
+    margin-bottom: 0px;
     border-radius: 0;
   }
 }
