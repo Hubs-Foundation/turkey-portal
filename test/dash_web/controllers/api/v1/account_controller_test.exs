@@ -60,7 +60,7 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
 
       assert :error ===
                conn
-               |> put_test_token(claims: %{"fxa_subscriptions" => []}, token_expiry: tomorrow())
+               |> put_test_token(claims: %{"fxa_subscriptions" => []})
                |> get(@route)
                |> json_response(200)
                |> Map.fetch("hasPlan")
@@ -69,7 +69,7 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
     test "when there is no plan", %{conn: conn} do
       assert payload =
                conn
-               |> put_test_token(claims: %{"fxa_subscriptions" => []}, token_expiry: tomorrow())
+               |> put_test_token(claims: %{"fxa_subscriptions" => []})
                |> get(@route)
                |> json_response(200)
 
@@ -85,12 +85,12 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
 
       :ok =
         get_default_test_uid()
-        |> Dash.Account.find_or_create_account_for_fxa_uid(get_test_email())
+        |> Dash.Account.find_or_create_account_for_fxa_uid()
         |> Dash.start_plan()
 
       assert payload =
                conn
-               |> put_test_token(token_expiry: tomorrow())
+               |> put_test_token(claims: %{"fxa_subscriptions" => []})
                |> get(@route)
                |> json_response(200)
 
@@ -103,10 +103,7 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
 
       assert payload =
                conn
-               |> put_test_token(
-                 claims: %{"fxa_subscriptions" => [capability_string()]},
-                 token_expiry: tomorrow()
-               )
+               |> put_test_token(claims: %{"fxa_subscriptions" => [capability_string()]})
                |> get(@route)
                |> json_response(200)
 
@@ -114,8 +111,4 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
       assert "standard" === payload["planName"]
     end
   end
-
-  @spec tomorrow :: NaiveDateTime.t()
-  defp tomorrow,
-    do: NaiveDateTime.add(NaiveDateTime.utc_now(), 60 * 60 * 24)
 end
