@@ -9,7 +9,7 @@ import { Button, Checkbox } from '@mozilla/lilypad-ui';
 
 const TAX_REGIONS: RegionsT[] = ['US'];
 
-export const StandardPlanCard = () => {
+const StandardPlanCard = () => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
   const [region, setRegion] = useState<string | null>(null);
 
@@ -87,3 +87,5 @@ export const StandardPlanCard = () => {
     />
   );
 };
+
+export default StandardPlanCard;

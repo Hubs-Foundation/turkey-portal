@@ -27,6 +27,7 @@ const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
     // Hard coding light for deving
     // <main data-theme={themeContext.theme}>
     <main data-theme="light">
+      <div id="modal_portal" />
       <MainNav MobileMenuClick={toggleMobileNav} />
       {isDesktopDown && (
         <MobileSideNav

@@ -1,0 +1,11 @@
+@use 'styles/core/boilerplate' as *;
+
+.info {
+  &_wrapper {
+    display: flex;
+
+    p {
+      margin: 0 0 16px;
+    }
+  }
+}

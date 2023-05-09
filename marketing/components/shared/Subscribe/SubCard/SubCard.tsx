@@ -7,6 +7,7 @@ type SubCardPropsT = {
   children?: ReactNode;
   cta?: string;
   ctaUrl?: string;
+  onCtaClick?: () => void;
   classProp?: string;
 };
 
@@ -15,11 +16,11 @@ const SubCard = ({
   children,
   cta,
   ctaUrl,
+  onCtaClick,
   classProp = '',
 }: SubCardPropsT) => {
-  const onCtaClick = () => {
-    if (!ctaUrl) return;
-    window.open(ctaUrl);
+  const handleCtaClick = () => {
+    onCtaClick && onCtaClick();
   };
 
   return (
@@ -29,9 +30,10 @@ const SubCard = ({
         {children && <>{children}</>}
         {cta && (
           <Button
-            onClick={onCtaClick}
+            onClick={handleCtaClick}
             label={cta}
             text={cta}
+            href={ctaUrl}
             category={ButtonCategoriesE.SECONDARY_SOLID}
           />
         )}

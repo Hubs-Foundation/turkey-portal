@@ -2,9 +2,8 @@ import { Button } from '@mozilla/lilypad-ui';
 import { starterPlanInfoCopy } from '../BasePlanCard/planInfoCopy';
 import { Price, BasePlanCard } from '../BasePlanCard/BasePlanCard';
 import getEnvVariable from 'config';
-import styles from '../BasePlanCard/BasePlanCard.module.scss';
 
-export const StarterPlanCard = () => {
+const StarterPlanCard = () => {
   const handleStarterPlanClick = () => {
     const url = getEnvVariable('PUBLIC_API_SERVER') + '/confirm-plan';
     window.open(url);
@@ -26,3 +25,5 @@ export const StarterPlanCard = () => {
     />
   );
 };
+
+export default StarterPlanCard;
