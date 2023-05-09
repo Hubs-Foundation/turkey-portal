@@ -1,6 +1,7 @@
 import SubCard from './SubCard/SubCard';
-import { StandardPlanCard } from './StandardPlanCard/StandardPlanCard';
-import { StarterPlanCard } from './StarterPlanCard/StarterPlanCard';
+import StandardPlanCard from './StandardPlanCard/StandardPlanCard';
+import StarterPlanCard from './StarterPlanCard/StarterPlanCard';
+import BusinessPlanCard from './BusinessPlanCard/BusinessPlanCard';
 import styles from './Subscribe.module.scss';
 import { enabledStarterPlan } from 'util/utilities';
 import Swoosh from '@Shared/Swoosh/Swoosh';
@@ -20,7 +21,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
               <>
                 <StarterPlanCard />
                 <StandardPlanCard />
-                <BusinessTierCard />
+                <BusinessPlanCard />
               </>
             ) : (
               <>
@@ -40,7 +41,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                 <StandardPlanCard />
 
                 {/* BUSINESS TIER  */}
-                <BusinessTierCard />
+                <BusinessPlanCard />
               </>
             )}
           </div>
@@ -50,15 +51,5 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
     </section>
   );
 };
-
-const BusinessTierCard = () => (
-  <SubCard
-    title="Business"
-    cta="Contact us"
-    ctaUrl="mailto:enterprise-hubs@mozilla.com?subject=Subscription inquiries"
-  >
-    <p>Need dedicated infrastructure, custom clients, or something else?</p>
-  </SubCard>
-);
 
 export default Subscribe;

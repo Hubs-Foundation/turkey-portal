@@ -1,33 +1,12 @@
 import { ReactNode } from 'react';
-import { HubIcon, HubIconT } from '@mozilla/lilypad-ui';
 import styles from './BasePlanCard.module.scss';
 import { RegionsT } from 'types';
 import { getCurrencyMeta } from 'util/utilities';
 import { PlanInfoCopyT } from './planInfoCopy';
-
-type InfoBlockPropsT = {
-  icon: HubIconT;
-  label: string;
-  description: string;
-};
-
-// INFO BLOCK COMPONENT
-const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
-  return (
-    <div className={styles.info_wrapper}>
-      <div className="flex-box">
-        <HubIcon name={icon} size={30} classProp="mr-20 mt-2 " />
-      </div>
-      <div className="body-md">
-        <p>
-          <span className="body-md-bold">{label}</span> <br /> {description}
-        </p>
-      </div>
-    </div>
-  );
-};
+import InfoBlock from '../InfoBlock/InfoBlock';
 
 // PRICE DISPLAY COMPONENT
+// USED FOR BasePlanCard "PRICE" PROP
 type PricePropsT = {
   region: RegionsT | null;
   price: string;
