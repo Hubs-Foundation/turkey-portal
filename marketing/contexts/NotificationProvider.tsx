@@ -4,7 +4,6 @@ import {
   Notification,
   NotificationInterfaceT,
 } from '@mozilla/lilypad-ui';
-import styles from './NotificationProvider.module.scss';
 
 type NotificationProviderProps = {
   children?: ReactNode;
@@ -27,7 +26,7 @@ const NotificationProvider = ({ children }: NotificationProviderProps) => {
         handleDispatchNotification,
       }}
     >
-      <Notification ref={notificationRef} classProp={styles.toast} />
+      <Notification ref={notificationRef} />
       {children}
     </NotificationContext.Provider>
   );
