@@ -20,7 +20,7 @@ const validate = ({ email }: FormValidation) => {
   const validEmailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
   !validEmailPattern.test(email) &&
     (errors.email = `${errors.email}${
-      Boolean(errors.email.length) ? ',' : ''
+      !!errors.email.length ? ',' : ''
     } Not a valid email`);
 
   // No Errors, return empty error object
