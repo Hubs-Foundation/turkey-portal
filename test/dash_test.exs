@@ -323,14 +323,14 @@ defmodule DashTest do
       stub_http_post_200()
       :ok = Dash.start_plan(account)
 
-      assert {:ok, %Plan{subscription?: false}} = Dash.fetch_active_plan(account)
+      assert {:ok, %Plan{name: "starter", subscription?: false}} = Dash.fetch_active_plan(account)
     end
 
-    test "when the account has an active subscription plan", %{account: account} do
+    test "when the account has an active standard plan", %{account: account} do
       stub_http_post_200()
       :ok = Dash.subscribe_to_standard_plan(account, DateTime.utc_now())
 
-      assert {:ok, %Plan{subscription?: true}} = Dash.fetch_active_plan(account)
+      assert {:ok, %Plan{name: "standard", subscription?: true}} = Dash.fetch_active_plan(account)
     end
 
     test "when the account has an active subscription plan (DEPRECATED capability)", %{

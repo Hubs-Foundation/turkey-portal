@@ -60,40 +60,55 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
 
       assert :error ===
                conn
-               |> put_test_token(claims: %{"fxa_subscriptions" => []}, token_expiry: tomorrow())
+               |> put_test_token(claims: %{"fxa_subscriptions" => []})
                |> get(@route)
                |> json_response(200)
                |> Map.fetch("hasPlan")
     end
 
     test "when there is no plan", %{conn: conn} do
-      assert {:ok, false} ===
+      assert payload =
                conn
-               |> put_test_token(claims: %{"fxa_subscriptions" => []}, token_expiry: tomorrow())
+               |> put_test_token(claims: %{"fxa_subscriptions" => []})
                |> get(@route)
                |> json_response(200)
-               |> Map.fetch("hasPlan")
-    end
 
-    test "when the account has an active plan", %{conn: conn} do
-      stub_http_post_200()
-
-      assert {:ok, true} ===
-               conn
-               |> put_test_token(
-                 claims: %{"fxa_subscriptions" => [capability_string()]},
-                 token_expiry: tomorrow()
-               )
-               |> get(@route)
-               |> json_response(200)
-               |> Map.fetch("hasPlan")
+      assert false === payload["hasPlan"]
+      assert nil === payload["planName"]
     end
 
     @tag :skip
     test "when the account has a stopped plan"
-  end
 
-  @spec tomorrow :: NaiveDateTime.t()
-  defp tomorrow,
-    do: NaiveDateTime.add(NaiveDateTime.utc_now(), 60 * 60 * 24)
+    test "when the account has an active starter plan", %{conn: conn} do
+      stub_http_post_200()
+
+      :ok =
+        get_default_test_uid()
+        |> Dash.Account.find_or_create_account_for_fxa_uid()
+        |> Dash.start_plan()
+
+      assert payload =
+               conn
+               |> put_test_token(claims: %{"fxa_subscriptions" => []})
+               |> get(@route)
+               |> json_response(200)
+
+      assert true === payload["hasPlan"]
+      assert "starter" === payload["planName"]
+    end
+
+    test "when the account has an active standard plan", %{conn: conn} do
+      stub_http_post_200()
+
+      assert payload =
+               conn
+               |> put_test_token(claims: %{"fxa_subscriptions" => [capability_string()]})
+               |> get(@route)
+               |> json_response(200)
+
+      assert true === payload["hasPlan"]
+      assert "standard" === payload["planName"]
+    end
+  end
 end

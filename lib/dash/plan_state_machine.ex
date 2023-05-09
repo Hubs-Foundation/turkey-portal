@@ -126,7 +126,7 @@ defmodule Dash.PlanStateMachine do
     do: {:error, :no_subscription}
 
   def handle_event(:starter, :fetch_active_plan, %Account{account_id: account_id}, _data),
-    do: {:ok, %{get_plan(account_id) | subscription?: false}}
+    do: {:ok, %{get_plan(account_id) | name: "starter", subscription?: false}}
 
   def handle_event(:starter, :start, %Account{}, _data),
     do: {:error, :already_started}
@@ -164,7 +164,7 @@ defmodule Dash.PlanStateMachine do
           Repo.get_by!(Capability, account_id: account_id)
 
         plan ->
-          %{plan | subscription?: true}
+          %{plan | name: "standard", subscription?: true}
       end
 
     {:ok, active_plan}
