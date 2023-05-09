@@ -13,6 +13,7 @@ defmodule Dash.Plan do
           account_id: Account.id(),
           inserted_at: NaiveDateTime.t(),
           plan_id: id,
+          name: String.t(),
           subscription?: boolean,
           updated_at: NaiveDateTime.t()
         }
@@ -20,6 +21,7 @@ defmodule Dash.Plan do
   @primary_key {:plan_id, :id, autogenerate: true}
   schema "plans" do
     field :account_id, :id
+    field :name, :string, virtual: true
     field :subscription?, :boolean, default: false, virtual: true
 
     timestamps()

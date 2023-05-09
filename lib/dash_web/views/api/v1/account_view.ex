@@ -7,7 +7,8 @@ defmodule DashWeb.Api.V1.AccountView do
         creating_hubs?: creating_hubs?,
         forbidden?: forbidden?,
         fxa_account_info: %Dash.FxaAccountInfo{} = fxa_account_info,
-        hubs?: hubs?
+        hubs?: hubs?,
+        plan_name: plan_name
       }) do
     if Application.fetch_env!(:dash, :starter_plan_enabled?) do
       %{
@@ -18,6 +19,7 @@ defmodule DashWeb.Api.V1.AccountView do
         hasPlan: active_plan?,
         hasSubscription: active_subscription?,
         isForbidden: forbidden?,
+        planName: plan_name,
         profilePic: fxa_account_info.fxa_pic
       }
     else
