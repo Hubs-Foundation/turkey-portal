@@ -1,4 +1,4 @@
-import {
+import React, {
   PropsWithChildren,
   useEffect,
   useState,
@@ -7,56 +7,36 @@ import {
   ReactNode,
 } from 'react';
 
+/**
+ * FADE IN
+ */
 type FadeInPropsT = {
-  isVisible: Boolean;
-  onComplete: () => void;
-  children: ReactNode;
-  animation?: string;
-  classProp?: string;
-};
-
-type FadeInWrapperPropsT = {
   visible: boolean;
   animation?: string;
   onComplete?: () => void;
   children: ReactNode;
+  classProp?: string;
 };
 
-const FadeInWrapper = ({
+const FadeIn = ({
   visible = true,
   onComplete,
   animation,
   children,
-}: FadeInWrapperPropsT) => {
+  classProp = '',
+}: FadeInPropsT) => {
   const [isOpen, setIsOpen] = useState<boolean>(visible);
   const [isVisible, setIsVisible] = useState<boolean>(visible);
   const arrayChildren = Children.toArray(children);
 
+  /**
+   * Watch visible prop and updates state
+   */
   useEffect(() => {
-    onToggleClick();
+    // only update setIsVisible on show
+    visible && setIsVisible(visible);
+    setIsOpen(visible);
   }, [visible]);
-
-  /**
-   * Toggle open state
-   */
-  const onToggleClick = () => {
-    isOpen ? handleClose() : handleOpen();
-  };
-
-  /**
-   * Handle Open
-   */
-  const handleOpen = useCallback(() => {
-    setIsVisible((state) => !state);
-    setIsOpen((state) => !state);
-  }, []);
-
-  /**
-   * Handle Close
-   */
-  const handleClose = useCallback(() => {
-    setIsOpen((state) => !state);
-  }, []);
 
   /**
    * Animation has completed call back
@@ -67,25 +47,38 @@ const FadeInWrapper = ({
   }, [isOpen]);
 
   return (
-    <FadeIn
+    <FadeContents
       isVisible={isOpen}
       onComplete={handleOnComplete}
       animation={animation}
+      classProp={classProp}
     >
       {Children.map(arrayChildren, (child, i) => {
         return isVisible && <>{child}</>;
       })}
-    </FadeIn>
+    </FadeContents>
   );
 };
 
-export const FadeIn = ({
+/**
+ * FADE IN CONTENTS
+ */
+
+type FadeContentsPropsT = {
+  isVisible: boolean;
+  animation?: string;
+  onComplete: () => void;
+  children: ReactNode;
+  classProp?: string;
+};
+
+const FadeContents = ({
   isVisible,
   onComplete,
   children,
   animation = 'translateY(20px)',
-  classProp,
-}: PropsWithChildren<FadeInPropsT>) => {
+  classProp = '',
+}: PropsWithChildren<FadeContentsPropsT>) => {
   const [maxIsVisible, setMaxIsVisible] = useState(0);
   const arrayChildren = Children.toArray(children);
 
@@ -136,4 +129,4 @@ export const FadeIn = ({
   );
 };
 
-export default FadeInWrapper;
+export default FadeIn;

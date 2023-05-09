@@ -1,7 +1,7 @@
 import React, { ReactNode, useState, useCallback } from 'react';
 import styles from './ExpansionPanel.module.scss';
 import { Icon, ButtonCategoriesE } from '@mozilla/lilypad-ui';
-import FadeInWrapper from '@Util/FadeIn';
+import FadeIn from '@Util/FadeIn';
 
 export type ExpansionPanelPropsT = {
   title: string;
@@ -39,9 +39,9 @@ const ExpansionPanel = ({
         />
       </button>
 
-      <FadeInWrapper visible={isOpen}>
+      <FadeIn visible={isOpen}>
         <div className={styles.expand_content}>{children}</div>
-      </FadeInWrapper>
+      </FadeIn>
     </section>
   );
 };
