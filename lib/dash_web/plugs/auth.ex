@@ -154,41 +154,31 @@ defmodule DashWeb.Plugs.Auth do
     end
   end
 
+  @spec cluster_domain(Plug.Conn.t()) :: String.t()
+  def cluster_domain(%Plug.Conn{host: host}) do
+    if host =~ "dev.myhubs.net" do
+      ".dev.myhubs.net"
+    else
+      host
+    end
+  end
+
   def get_cookie_name(), do: @cookie_name
 
   def unauthorized_auth_redirect_struct, do: %{error: "unauthorized", redirect: "auth"}
 
-  def unix_to_datetime(unix_time) do
+  defp unix_to_datetime(unix_time) do
     DateTime.from_unix!(unix_time, :second)
   end
 
-  def clear_cookie(conn) do
-    cookie_secure = Application.get_env(:dash, __MODULE__)[:cookie_secure]
-    cookie_domain = DashWeb.LogoutController.cluster_domain(conn)
-
-    put_resp_cookie(
-      conn,
-      @cookie_name,
-      "",
-      domain: cookie_domain,
-      http_only: true,
-      max_age: 0,
-      path: "/",
-      same_site: "lax",
-      secure: cookie_secure
-    )
-
-    if cookie_domain =~ "dev.myhubs.net", do: clear_dev_cookie(conn), else: conn
-  end
-
-  def clear_dev_cookie(conn) do
+  defp clear_cookie(conn) do
     cookie_secure = Application.get_env(:dash, __MODULE__)[:cookie_secure]
 
     put_resp_cookie(
       conn,
       @cookie_name,
       "",
-      domain: ".dev.myhubs.net",
+      domain: cluster_domain(conn),
       http_only: true,
       max_age: 0,
       path: "/",
