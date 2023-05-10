@@ -13,6 +13,7 @@ const UpgradePlan = () => {
         </p>
       </div>
       <div className="mt-12-mb">
+        {/* TODO add region functionality here - RKW */}
         <Button
           category={ButtonCategoriesE.SECONDARY_SOLID}
           text="Upgrade"
