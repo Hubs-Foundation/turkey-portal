@@ -91,7 +91,7 @@ const SidePanel = ({
 }: SidePanelPropsT) => {
   const account = useSelector(selectAccount);
   const isMobile = useMobileDown();
-  const hasStarter = enabledStarterPlan() && account.hasPlan;
+  const hasStarter = enabledStarterPlan() && account.planName === 'starter';
   const hubUrl = `https://${subdomain}.${HUB_ROOT_DOMAIN}`;
 
   return (
