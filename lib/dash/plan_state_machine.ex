@@ -91,7 +91,7 @@ defmodule Dash.PlanStateMachine do
         status: :creating,
         storage_limit_mb: @starter_storage_limit_mb,
         subdomain: rand_string(10),
-        tier: :free
+        tier: :p0
       })
 
     {:ok, %{status_code: 200}} = OrchClient.create_hub(account.email, hub)
@@ -115,7 +115,7 @@ defmodule Dash.PlanStateMachine do
         status: :creating,
         storage_limit_mb: @standard_storage_limit_mb,
         subdomain: rand_string(10),
-        tier: :early_access
+        tier: :p1
       })
 
     {:ok, %{status_code: 200}} = OrchClient.create_hub(account.email, hub)
@@ -146,7 +146,7 @@ defmodule Dash.PlanStateMachine do
       |> Ecto.Changeset.change(
         ccu_limit: @standard_ccu_limit,
         storage_limit_mb: @standard_storage_limit_mb,
-        tier: :early_access
+        tier: :p1
       )
       |> Repo.update!()
       |> OrchClient.update_tier()
@@ -203,7 +203,7 @@ defmodule Dash.PlanStateMachine do
           ccu_limit: @starter_ccu_limit,
           storage_limit_mb: @starter_storage_limit_mb,
           subdomain: rand_string(10),
-          tier: :free
+          tier: :p0
         )
         |> Repo.update!()
 

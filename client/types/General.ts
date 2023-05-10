@@ -3,7 +3,7 @@
  * Note: feel free to break-out into other files if you feel the need
  */
 
-export type TierT = 'mvp' | 'free' | 'early_access' | 'premium';
+export type TierT = 'mvp' | 'free' | 'early_access' | 'premium' | 'p0' | 'p1';
 export type FormattedTierT = 'Mvp' | 'Starter' | 'Early Access' | 'Premium';
 
 export type FormattedTierMapT = {
