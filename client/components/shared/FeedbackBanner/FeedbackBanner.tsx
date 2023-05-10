@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import styles from './FeedbackBanner.module.scss';
 import { Button, ButtonCategoriesE, Icon } from '@mozilla/lilypad-ui';
-import FadeInWrapper from '@Util/FadeIn';
+import FadeIn from '@Util/FadeIn';
 
 type FeedbackBannerPropsT = {
   email: string;
@@ -53,7 +53,7 @@ const FeedbackBanner = ({
           />
         </button>
 
-        <FadeInWrapper visible={isOpen} onComplete={handleOnComplete}>
+        <FadeIn visible={isOpen} onComplete={handleOnComplete}>
           <div className={styles.content}>
             <p>{Message}</p>
             <Button
@@ -64,7 +64,7 @@ const FeedbackBanner = ({
               text="Give Feedback"
             />
           </div>
-        </FadeInWrapper>
+        </FadeIn>
       </div>
     </div>
   );
