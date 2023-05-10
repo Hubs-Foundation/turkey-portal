@@ -79,7 +79,7 @@ defmodule DashWeb.FxaEvents do
         "changeTime" => milliseconds
       }) do
     if capabilities !== [capability_string()] do
-      raise "unknown capabilities for subscription changed event: #{capabilities}"
+      raise "unknown capabilities for subscription changed event: #{Enum.join(capabilities, ", ")}"
     end
 
     datetime = DateTime.from_unix!(milliseconds * 1_000, :microsecond)
