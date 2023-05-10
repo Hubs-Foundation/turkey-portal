@@ -1,9 +1,6 @@
 @use 'styles/core/boilerplate' as *;
 
 .wrapper {
-  background-color: $color-neutral-0;
-  padding: 12px;
-  border-radius: 12px;
   flex-grow: 1;
 
   p {

@@ -3,7 +3,7 @@ import { PlanInfoCopyT } from './PlanInfoCopy';
 import styles from './BasePlanCard.module.scss';
 import { RegionsT } from 'types/Countries';
 import { getCurrencyMeta } from 'util/utilities';
-import { InfoBlock } from '@Shared/InfoBlock/InfoBlock';
+import InfoBlock from '@Shared/InfoBlock/InfoBlock';
 
 // PRICE DISPLAY COMPONENT
 type PricePropsT = {

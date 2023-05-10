@@ -8,8 +8,7 @@ export type InfoBlockPropsT = {
   centered?: boolean;
 };
 
-// INFO BLOCK COMPONENT
-export const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
+const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   return (
     <div className={styles.info_wrapper}>
       <div>
@@ -27,3 +26,5 @@ export const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
     </div>
   );
 };
+
+export default InfoBlock;

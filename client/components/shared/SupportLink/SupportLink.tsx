@@ -1,6 +1,7 @@
 import Image, { StaticImageData } from 'next/image';
 import styles from './SupportLink.module.scss';
 import { Icon } from '@mozilla/lilypad-ui';
+import Card from '@Shared/Card/Card';
 
 export type SupportLinkPropsT = {
   image: StaticImageData;
@@ -19,7 +20,7 @@ const SupportLink = ({
 }: SupportLinkPropsT) => {
   return (
     <a href={link} className="flex">
-      <section className={`${styles.wrapper} ${classProp}`}>
+      <Card classProp={`${styles.wrapper} ${classProp}`}>
         <div className={styles.header}>
           <Image src={image} alt={title} height={40} width={40} />
           <Icon name="external-link" color="currentColor" />
@@ -27,7 +28,7 @@ const SupportLink = ({
 
         <h3 className="body-md-bold mb-8">{title}</h3>
         <p>{body}</p>
-      </section>
+      </Card>
     </a>
   );
 };

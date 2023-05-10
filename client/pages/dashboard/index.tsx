@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { HubT, LastErrorE, StatusE } from 'types/General';
 import styles from './dashboard.module.scss';
 import HubCard from '@Cards/HubCard/HubCard';
-import SidePanel from 'modules/dashboard/SidePanel';
+import SidePanel from 'modules/side-panel';
 import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
 import { requireAuthenticationAndSubscription } from 'services/routeGuard.service';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
