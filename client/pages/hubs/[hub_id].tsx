@@ -158,7 +158,8 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
 export const getServerSideProps = requireAuthenticationAndSubscription(
   async (context: GetServerSidePropsContext, account: AccountT) => {
     // Starter plan doesn't have access to Hub name or subdomain change, so this page is not found
-    if (enabledStarterPlan() && account.hasPlan) return redirectToDashboard();
+    if (enabledStarterPlan() && account.planName === 'starter')
+      return redirectToDashboard();
 
     // Your normal `getServerSideProps` code here
     try {

@@ -15,6 +15,7 @@ export const initAccountData = async () => {
       hasSubscription,
       hasCreatingHubs,
       hasPlan,
+      planName = null,
     } = await getAccount();
     const account: AccountT = {
       displayName,
@@ -25,6 +26,7 @@ export const initAccountData = async () => {
       isLoggedIn: true,
       isInitialized: true,
       hasPlan,
+      planName,
     };
     store.dispatch(setAccount(account));
   } catch (error) {

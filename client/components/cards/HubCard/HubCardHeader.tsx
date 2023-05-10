@@ -20,7 +20,7 @@ const HubCardHeader = ({
 }: HubCardHeaderPropsT) => {
   const router = useRouter();
   const account = useSelector(selectAccount);
-  const hasStarterPlan = enabledStarterPlan() && account.hasPlan;
+  const hasStarterPlan = enabledStarterPlan() && account.planName === 'starter';
 
   /**
    * Handle Setting Click
