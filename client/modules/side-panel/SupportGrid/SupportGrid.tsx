@@ -18,6 +18,7 @@ const SupportGrid = () => {
           <SupportLink
             title="Email Us"
             image={mailCircle}
+            // Firefox does not honor "_bank" on "mailtos"
             onClick={() => {
               window.open('mailto:hubs-feedback@mozilla.com');
             }}
