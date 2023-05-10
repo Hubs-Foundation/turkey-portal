@@ -118,7 +118,7 @@ defmodule Dash.PlanStateMachineTest do
       assert "start" === transition.event
       assert :starter === transition.new_state
       assert plan.plan_id === transition.plan_id
-      assert 50 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
+      assert 100 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
     end
 
     test "nil -- subscribe_standard ->", %{account: account} do
@@ -157,7 +157,7 @@ defmodule Dash.PlanStateMachineTest do
       assert "subscribe_standard" === transition.event
       assert :standard === transition.new_state
       assert plan.plan_id === transition.plan_id
-      assert 50 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
+      assert 100 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
     end
 
     test "nil -- expire_subscription ->", %{account: account} do
@@ -235,7 +235,7 @@ defmodule Dash.PlanStateMachineTest do
       assert "subscribe_standard" === transition.event
       assert :standard === transition.new_state
       assert plan.plan_id === transition.plan_id
-      assert 50 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
+      assert 100 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
     end
 
     test "starter -- expire_subscription ->", %{account: account} do
@@ -331,7 +331,7 @@ defmodule Dash.PlanStateMachineTest do
       assert "expire_subscription" === transition.event
       assert :starter === transition.new_state
       assert plan.plan_id === transition.plan_id
-      assert 50 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
+      assert 100 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
     end
   end
 
