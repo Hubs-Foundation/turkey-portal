@@ -58,7 +58,10 @@ export type AccountT = {
   hasCreatingHubs: boolean;
   isInitialized: boolean;
   hasPlan: boolean;
+  planName: PlansT;
 };
+
+type PlansT = 'starter' | 'standard' | null;
 
 export enum BadgeCategoriesE {
   PRIMARY = 'primary',
