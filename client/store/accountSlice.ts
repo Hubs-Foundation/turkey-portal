@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { AccountT } from 'types/General';
 import { RootStateT } from './store';
+
 const initialState: AccountT = {
   isInitialized: false,
   isLoggedIn: false,
@@ -10,6 +11,7 @@ const initialState: AccountT = {
   hasSubscription: false,
   hasCreatingHubs: false,
   hasPlan: false,
+  planName: null,
 };
 
 const accountSlice = createSlice({
@@ -27,6 +29,7 @@ const accountSlice = createSlice({
         hasSubscription,
         hasCreatingHubs,
         hasPlan,
+        planName,
       } = action.payload;
       state.isLoggedIn = true;
       state.profilePic = profilePic;
@@ -35,6 +38,7 @@ const accountSlice = createSlice({
       state.hasSubscription = hasSubscription;
       state.hasCreatingHubs = hasCreatingHubs;
       state.hasPlan = hasPlan;
+      state.planName = planName;
     },
     logOut(state) {
       // Clear Account
@@ -45,6 +49,7 @@ const accountSlice = createSlice({
       state.hasSubscription = false;
       state.hasCreatingHubs = false;
       state.hasPlan = false;
+      state.planName = null;
     },
   },
 });
