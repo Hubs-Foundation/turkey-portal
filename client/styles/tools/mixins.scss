@@ -136,6 +136,21 @@
 }
 
 /*-------------------------------
+  PARAGRPH STYLES
+-------------------------------*/
+@mixin paragraph {
+  @include font-size(16);
+  @include primary-font(500);
+  line-height: 150%;
+}
+
+@mixin paragraph-sm {
+  @include font-size(14);
+  @include primary-font(500);
+  line-height: 150%;
+}
+
+/*-------------------------------
   UTILITY MIXINS
 -------------------------------*/
 @mixin size($size) {
@@ -149,4 +164,16 @@
   -o-transition: $attr $time $type;
   -ms-transition: $attr $time $type;
   transition: $attr $time $type;
+}
+
+/*-------------------------------
+  BUTTONS
+-------------------------------*/
+@mixin clear-button-styles($display: 'inline-block') {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  display: $display;
+  margin: 0;
+  padding: 0;
 }

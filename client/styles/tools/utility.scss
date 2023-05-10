@@ -22,6 +22,15 @@ $fontSizes: 12, 14, 16, 18, 20;
   @include body-md-bold();
 }
 
+// Paraphraph Text
+.paragraph {
+  @include paragraph();
+}
+
+.paragraph-sm {
+  @include paragraph-sm();
+}
+
 // Heading
 .heading-xxl {
   @include heading-xxl();
@@ -131,15 +140,6 @@ $fontSizes: 12, 14, 16, 18, 20;
   position: absolute !important;
   width: 1px !important;
   white-space: nowrap !important;
-}
-
-.clear-button {
-  cursor: pointer;
-  border: none;
-  background-color: transparent;
-  display: inline-block;
-  margin: 0;
-  padding: 0;
 }
 
 .block {

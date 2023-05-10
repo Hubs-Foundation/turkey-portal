@@ -4,9 +4,6 @@
   flex-grow: 1;
 
   p {
-    @include font-size(14);
-    @include secondary-font(700);
-    line-height: 150%;
     color: $color-text-subtle;
   }
 }
@@ -16,4 +13,9 @@
   justify-content: space-between;
   color: $color-text-subtle;
   margin-bottom: 8px;
+}
+
+.button {
+  @include clear-button-styles(flex);
+  text-align: left;
 }
