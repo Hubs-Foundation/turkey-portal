@@ -98,7 +98,7 @@ defmodule Dash.PlanStateMachineTest do
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
         assert "0.48828125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
-        assert "free" === payload["tier"]
+        assert "p0" === payload["tier"]
         assert account.email === payload["useremail"]
 
         {:ok, %HTTPoison.Response{status_code: 200}}
@@ -109,7 +109,7 @@ defmodule Dash.PlanStateMachineTest do
       assert [hub] = Hub.hubs_for_account(account)
       assert 10 === hub.ccu_limit
       assert 500 === hub.storage_limit_mb
-      assert :free === hub.tier
+      assert :p0 === hub.tier
 
       assert [plan] = Repo.all(Plan)
       assert account.account_id === plan.account_id
@@ -131,7 +131,7 @@ defmodule Dash.PlanStateMachineTest do
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
         assert "1.953125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
-        assert "early_access" === payload["tier"]
+        assert "p1" === payload["tier"]
         assert account.email === payload["useremail"]
 
         {:ok, %HTTPoison.Response{status_code: 200}}
@@ -148,7 +148,7 @@ defmodule Dash.PlanStateMachineTest do
       assert [hub] = Hub.hubs_for_account(account)
       assert 25 === hub.ccu_limit
       assert 2_000 === hub.storage_limit_mb
-      assert :early_access === hub.tier
+      assert :p1 === hub.tier
 
       assert [plan] = Repo.all(Plan)
       assert account.account_id === plan.account_id
@@ -209,7 +209,7 @@ defmodule Dash.PlanStateMachineTest do
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
         assert "1.953125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
-        assert "early_access" === payload["tier"]
+        assert "p1" === payload["tier"]
 
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
@@ -226,7 +226,7 @@ defmodule Dash.PlanStateMachineTest do
       assert 25 === hub.ccu_limit
       assert hub_id === hub.hub_id
       assert 2_000 === hub.storage_limit_mb
-      assert :early_access === hub.tier
+      assert :p1 === hub.tier
 
       assert [plan] = Repo.all(Plan)
       assert account.account_id === plan.account_id
@@ -304,7 +304,7 @@ defmodule Dash.PlanStateMachineTest do
         assert Integer.to_string(hub_id) === payload["hub_id"]
         assert "0.48828125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
-        assert "free" === payload["tier"]
+        assert "p0" === payload["tier"]
 
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
@@ -322,7 +322,7 @@ defmodule Dash.PlanStateMachineTest do
       assert hub_id === hub.hub_id
       assert 500 === hub.storage_limit_mb
       assert custom_subdomain !== hub.subdomain
-      assert :free === hub.tier
+      assert :p0 === hub.tier
 
       assert [plan] = Repo.all(Plan)
       assert account.account_id === plan.account_id

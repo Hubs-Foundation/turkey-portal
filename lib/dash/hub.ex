@@ -15,7 +15,7 @@ defmodule Dash.Hub do
     field :status, Ecto.Enum, values: [:creating, :updating, :ready, :subdomain_error, :error]
     field :storage_limit_mb, :integer
     field :subdomain, :string
-    field :tier, Ecto.Enum, values: [:free, :mvp, :early_access]
+    field :tier, Ecto.Enum, values: [:free, :mvp, :early_access, :p0, :p1]
     belongs_to :account, Dash.Account, references: :account_id
 
     timestamps()
@@ -119,7 +119,7 @@ defmodule Dash.Hub do
 
   @hub_defaults %{
     name: "Untitled Hub",
-    tier: :early_access,
+    tier: :p1,
     ccu_limit: 25,
     storage_limit_mb: 2000
   }

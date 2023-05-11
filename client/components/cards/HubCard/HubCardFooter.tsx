@@ -36,6 +36,8 @@ const FormattedTierMap: FormattedTierMapT = {
   mvp: 'Mvp',
   free: 'Starter',
   premium: 'Premium',
+  p0: 'Starter',
+  p1: 'Early Access',
 };
 
 const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {

@@ -218,7 +218,7 @@ defmodule DashTest do
         assert Integer.to_string(hub_id) === payload["hub_id"]
         assert "0.48828125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
-        assert "free" === payload["tier"]
+        assert "p0" === payload["tier"]
 
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
@@ -230,7 +230,7 @@ defmodule DashTest do
       assert hub_id === hub.hub_id
       assert 500 === hub.storage_limit_mb
       assert custom_subdomain !== hub.subdomain
-      assert :free === hub.tier
+      assert :p0 === hub.tier
     end
 
     test "when the account has an active subscription plan (DEPRECATED capability)", %{
@@ -255,7 +255,7 @@ defmodule DashTest do
           status: :creating,
           storage_limit_mb: 2_000,
           subdomain: custom_subdomain,
-          tier: :early_access
+          tier: :p1
         })
         |> Ecto.Changeset.change(subdomain: custom_subdomain)
         |> Repo.update!()
@@ -269,7 +269,7 @@ defmodule DashTest do
         assert Integer.to_string(hub_id) === payload["hub_id"]
         assert "0.48828125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
-        assert "free" === payload["tier"]
+        assert "p0" === payload["tier"]
 
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
@@ -281,7 +281,7 @@ defmodule DashTest do
       assert hub_id === hub.hub_id
       assert 500 === hub.storage_limit_mb
       assert custom_subdomain !== hub.subdomain
-      assert :free === hub.tier
+      assert :p0 === hub.tier
     end
 
     test "with expired_at earlier than the last state transition, when the account has an active subscription plan",
@@ -302,7 +302,7 @@ defmodule DashTest do
       assert 10 !== hub.ccu_limit
       assert 500 !== hub.storage_limit_mb
       assert custom_subdomain === hub.subdomain
-      assert :free !== hub.tier
+      assert :p0 !== hub.tier
     end
   end
 
@@ -394,7 +394,7 @@ defmodule DashTest do
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
         assert "0.48828125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
-        assert "free" === payload["tier"]
+        assert "p0" === payload["tier"]
         assert account.email === payload["useremail"]
 
         {:ok, %HTTPoison.Response{status_code: 200}}
@@ -405,7 +405,7 @@ defmodule DashTest do
       assert [hub] = Hub.hubs_for_account(account)
       assert 10 === hub.ccu_limit
       assert 500 === hub.storage_limit_mb
-      assert :free === hub.tier
+      assert :p0 === hub.tier
     end
 
     @tag :skip
@@ -460,7 +460,7 @@ defmodule DashTest do
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
         assert "1.953125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
-        assert "early_access" === payload["tier"]
+        assert "p1" === payload["tier"]
         assert account.email === payload["useremail"]
 
         {:ok, %HTTPoison.Response{status_code: 200}}
@@ -471,7 +471,7 @@ defmodule DashTest do
       assert [hub] = Hub.hubs_for_account(account)
       assert 25 === hub.ccu_limit
       assert 2_000 === hub.storage_limit_mb
-      assert :early_access === hub.tier
+      assert :p1 === hub.tier
     end
 
     @tag :skip
@@ -496,7 +496,7 @@ defmodule DashTest do
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
         assert "1.953125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
-        assert "early_access" === payload["tier"]
+        assert "p1" === payload["tier"]
 
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
@@ -509,7 +509,7 @@ defmodule DashTest do
       assert 25 === hub.ccu_limit
       assert hub_id === hub.hub_id
       assert 2_000 === hub.storage_limit_mb
-      assert :early_access === hub.tier
+      assert :p1 === hub.tier
     end
   end
 
