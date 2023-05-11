@@ -12,7 +12,7 @@ import type { GetServerSidePropsContext } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './[hub_id].module.scss';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
-import SidePanel from 'modules/dashboard/SidePanel';
+import SidePanel from 'modules/side-panel';
 import { AxiosRequestHeaders } from 'axios';
 import { enabledStarterPlan } from 'util/featureFlag';
 import { redirectToDashboard } from 'util/redirects';

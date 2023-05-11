@@ -1,5 +1,5 @@
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
-import { InfoBlock, InfoBlockPropsT } from '@Shared/InfoBlock/InfoBlock';
+import InfoBlock, { InfoBlockPropsT } from '@Shared/InfoBlock/InfoBlock';
 import { StandardPlanInfoCopy } from '@Cards/PlanCard/PlanInfoCopy';
 import styles from './ConfirmPlanModal.module.scss';
 import Modal from '@Shared/Modal/Modal';
