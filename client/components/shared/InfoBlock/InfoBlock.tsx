@@ -5,7 +5,6 @@ export type InfoBlockPropsT = {
   icon: HubIconT;
   label: string;
   description?: string;
-  centered?: boolean;
 };
 
 const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
