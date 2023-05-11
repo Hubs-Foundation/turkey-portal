@@ -25,6 +25,7 @@ This codebase can be run locally using either containers or bare metal.
 - Start containers with `bin/up`
 - Stop containers `bin/down`
 - Observe running containers with `bin/observe`[^1]
+- Update service dependencies with `bin/init`
 - Remove all orchestration artifacts with `bin/clean`
 
 [^1]: Requires `tmux` and `watch` program files in the user’s path
