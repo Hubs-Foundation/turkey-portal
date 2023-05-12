@@ -2,6 +2,5 @@
 checksum='package-lock.sha512'
 
 if ! sha512sum -cs $checksum; then
-  npm ci
-  sha512sum package-lock.json > $checksum
+  npm ci && sha512sum package-lock.json > $checksum
 fi
