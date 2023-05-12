@@ -5,7 +5,7 @@ import styles from './confirm-plan.module.scss';
 import { enabledStarterPlan } from 'util/featureFlag';
 import { redirectToDashboard } from 'util/redirects';
 import { useEffect } from 'react';
-// import ConfirmPlanModal from '@Modals/ConfirmPlanModal/ConfirmPlanModal';
+import ConfirmPlanModal from '../../components/modals/ConfirmPlanModal/ConfirmPlanModal';
 
 const ConfirmPlan = () => {
   useEffect(() => {
@@ -28,7 +28,7 @@ const ConfirmPlan = () => {
         </div>
       </div>
 
-      {/* <ConfirmPlanModal /> */}
+      <ConfirmPlanModal />
     </div>
   );
 };
