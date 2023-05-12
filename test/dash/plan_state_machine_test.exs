@@ -207,6 +207,7 @@ defmodule Dash.PlanStateMachineTest do
         assert [hackney: [:insecure]] === opts
         assert "25" === payload["ccu_limit"]
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
+        assert false === payload["reset_branding"]
         assert "1.953125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p1" === payload["tier"]
@@ -302,6 +303,7 @@ defmodule Dash.PlanStateMachineTest do
         assert [hackney: [:insecure]] === opts
         assert "10" === payload["ccu_limit"]
         assert Integer.to_string(hub_id) === payload["hub_id"]
+        assert true === payload["reset_branding"]
         assert "0.48828125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p0" === payload["tier"]

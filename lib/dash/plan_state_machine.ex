@@ -207,7 +207,7 @@ defmodule Dash.PlanStateMachine do
         )
         |> Repo.update!()
 
-      {:ok, %{status_code: 200}} = OrchClient.update_tier(hub)
+      {:ok, %{status_code: 200}} = OrchClient.update_tier(hub, reset_branding?: true)
       :ok
     end
   end

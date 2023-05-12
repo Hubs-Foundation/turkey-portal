@@ -40,12 +40,15 @@ defmodule Dash.OrchClient do
     )
   end
 
-  def update_tier(%Hub{} = hub) do
+  def update_tier(%Hub{} = hub, opts \\ []) when is_list(opts) do
+    reset_branding? = Keyword.get(opts, :reset_branding?, false)
+
     get_http_client().patch(
       orch_hub_endpoint(),
       Jason.encode!(%{
         ccu_limit: Integer.to_string(hub.ccu_limit),
         hub_id: Integer.to_string(hub.hub_id),
+        reset_branding: reset_branding?,
         storage_limit: Float.to_string(hub.storage_limit_mb / 1024),
         subdomain: hub.subdomain,
         tier: hub.tier
