@@ -1,11 +1,11 @@
-import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
-import ConfirmPlanModel from 'components/Modals/ConfirmPlanModal/ConfirmPlanModel';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
+import { GetServerSidePropsContext } from 'next';
 import { pageRequireAuthentication } from 'services/routeGuard.service';
 import styles from './confirm-plan.module.scss';
 import { enabledStarterPlan } from 'util/featureFlag';
 import { redirectToDashboard } from 'util/redirects';
 import { useEffect } from 'react';
+import ConfirmPlanModal from '@Modals/ConfirmPlanModal/ConfirmPlanModal';
 
 const ConfirmPlan = () => {
   useEffect(() => {
@@ -28,7 +28,7 @@ const ConfirmPlan = () => {
         </div>
       </div>
 
-      <ConfirmPlanModel />
+      <ConfirmPlanModal />
     </div>
   );
 };

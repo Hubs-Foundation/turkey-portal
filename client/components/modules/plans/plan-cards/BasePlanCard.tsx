@@ -1,11 +1,12 @@
 import { ReactNode } from 'react';
-import { PlanInfoCopyT } from './PlanInfoCopy';
+import { PlanInfoCopyT } from '../PlanInfoCopy';
 import styles from './BasePlanCard.module.scss';
 import { RegionsT } from 'types/Countries';
 import { getCurrencyMeta } from 'util/utilities';
 import InfoBlock from '@Shared/InfoBlock/InfoBlock';
 
 // PRICE DISPLAY COMPONENT
+// USED FOR BasePlanCard "PRICE" PROP
 type PricePropsT = {
   region: RegionsT | null;
   price: string;
@@ -46,7 +47,7 @@ type BasePlanCardPropsT = {
   color: 'silver' | 'warm';
 };
 
-export const BasePlanCard = ({
+const BasePlanCard = ({
   classProp = '',
   title,
   price,
@@ -95,3 +96,5 @@ export const BasePlanCard = ({
     </div>
   );
 };
+
+export default BasePlanCard;

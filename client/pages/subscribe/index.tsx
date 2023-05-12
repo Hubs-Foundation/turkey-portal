@@ -1,17 +1,12 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
 import { pageRequireAuthentication } from 'services/routeGuard.service';
-import SubContactCard from '@Cards/SubContactCard/SubContactCard';
+import ContactCard from '@Modules/plans/ContactCard/ContactCard';
 import styles from './subscribe.module.scss';
-import { StandardPlanCard } from '@Cards/PlanCard/StandardPlanCard';
-import { StarterPlanCard } from '@Cards/PlanCard/StarterPlanCard';
+import { StandardPlanCard, StarterPlanCard } from '@Modules/plans/plan-cards';
 import { enabledStarterPlan } from 'util/featureFlag';
 
-type SubscribePropsT = {
-  region: string | null;
-};
-
-const Subscribe = ({ region }: SubscribePropsT) => {
+const Subscribe = () => {
   return (
     <div className="page_wrapper">
       <Head>
@@ -35,7 +30,7 @@ const Subscribe = ({ region }: SubscribePropsT) => {
           <div className={styles.cards}>
             {enabledStarterPlan() && <StarterPlanCard />}
             <StandardPlanCard />
-            <SubContactCard
+            <ContactCard
               email="hubs@mozilla.com"
               subject="Subscription inquiries"
             />

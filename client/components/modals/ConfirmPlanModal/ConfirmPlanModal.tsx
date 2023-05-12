@@ -1,15 +1,15 @@
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import InfoBlock, { InfoBlockPropsT } from '@Shared/InfoBlock/InfoBlock';
-import { StandardPlanInfoCopy } from '@Cards/PlanCard/PlanInfoCopy';
+import { StandardPlanInfoCopy } from '@Modules/plans/PlanInfoCopy';
 import styles from './ConfirmPlanModal.module.scss';
 import Modal from '@Shared/Modal/Modal';
-import { BeginStarterPlanButton } from '@Shared/Buttons/BeginStarterPlanButton';
+import BeginStarterPlanButton from '@Modules/plans/BeginStarterPlanButton/BeginStarterPlanButton';
 
 const createInfoBlock = ({ label, icon }: InfoBlockPropsT, i: number) => {
   return <InfoBlock key={i} icon={icon} label={label} />;
 };
 
-const ConfirmPlanModel = () => {
+const ConfirmPlanModal = () => {
   return (
     <Modal onClose={() => {}} hasContainer={false}>
       <div className={styles.contents}>
@@ -51,4 +51,4 @@ const ConfirmPlanModel = () => {
   );
 };
 
-export default ConfirmPlanModel;
+export default ConfirmPlanModal;

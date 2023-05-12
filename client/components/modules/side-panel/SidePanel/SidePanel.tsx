@@ -1,6 +1,6 @@
 import styles from './SidePanel.module.scss';
 import { SubscriptionT } from 'services/subscription.service';
-import SubCard from '@Cards/SubCard/SubCard';
+import NextPayment from '../NextPayment/NextPayment';
 import { Icon, HubIcon } from '@mozilla/lilypad-ui';
 import TileButton from '@Shared/TileButton/TileButton';
 import UpgradePlan from '../UpgradePlan/UpgradePlan';
@@ -54,7 +54,7 @@ const SidePanel = ({
 
       {/* PRICE  */}
       {account.hasSubscription && (
-        <SubCard subscription={subscription} classProp={styles.subcard} />
+        <NextPayment subscription={subscription} classProp={styles.subcard} />
       )}
       {hasStarter && <UpgradePlan />}
 

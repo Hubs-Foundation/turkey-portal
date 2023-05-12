@@ -16,7 +16,7 @@ type BeginStarterPlanButtonPropsT = {
   classProp?: string;
 };
 
-export const BeginStarterPlanButton = ({
+const BeginStarterPlanButton = ({
   text,
   classProp,
 }: BeginStarterPlanButtonPropsT) => {
@@ -60,3 +60,5 @@ export const BeginStarterPlanButton = ({
     />
   );
 };
+
+export default BeginStarterPlanButton;

@@ -1,17 +1,13 @@
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
-import styles from './SubContactCard.module.scss';
+import styles from './ContactCard.module.scss';
 
-type SubContactCardPropsT = {
+type ContactCardPropsT = {
   email: string;
   subject: string;
   classProp?: string;
 };
 
-const SubContactCard = ({
-  email,
-  subject,
-  classProp = '',
-}: SubContactCardPropsT) => {
+const ContactCard = ({ email, subject, classProp = '' }: ContactCardPropsT) => {
   const handleContactClick = () => {
     window.open(`mailto:${email}?subject=${encodeURI(subject)}`);
   };
@@ -32,4 +28,4 @@ const SubContactCard = ({
   );
 };
 
-export default SubContactCard;
+export default ContactCard;

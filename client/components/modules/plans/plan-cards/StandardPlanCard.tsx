@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Button, Checkbox } from '@mozilla/lilypad-ui';
-import { StandardPlanInfoCopy } from './PlanInfoCopy';
+import { StandardPlanInfoCopy } from '../PlanInfoCopy';
 import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
 import { CountriesE, RegionsT } from 'types/Countries';
 import { getRegion, RegionObjT } from 'services/region.service';
-import { Price, BasePlanCard } from './BasePlanCard';
+import BasePlanCard, { Price } from './BasePlanCard';
 import { enabledStarterPlan } from 'util/featureFlag';
 
 const TAX_REGIONS: RegionsT[] = ['US'];
 
-export const StandardPlanCard = () => {
+const StandardPlanCard = () => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
   const [region, setRegion] = useState<RegionsT>(null);
 
@@ -83,3 +83,5 @@ export const StandardPlanCard = () => {
     />
   );
 };
+
+export default StandardPlanCard;

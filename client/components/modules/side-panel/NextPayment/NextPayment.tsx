@@ -1,16 +1,16 @@
 import { useCallback } from 'react';
-import styles from './SubCard.module.scss';
+import styles from './NextPayment.module.scss';
 import { SubscriptionT } from 'services/subscription.service';
 import { convertCurrency } from 'util/utilities';
 
-type SubCardPropsT = {
+type NextPaymentPropsT = {
   subscription: SubscriptionT;
   currency?: string;
   price?: number;
   classProp?: string;
 };
 
-const SubCard = ({ subscription, classProp = '' }: SubCardPropsT) => {
+const NextPayment = ({ subscription, classProp = '' }: NextPaymentPropsT) => {
   /**
    * Get Formatted Date
    */
@@ -64,4 +64,4 @@ const SubCard = ({ subscription, classProp = '' }: SubCardPropsT) => {
   );
 };
 
-export default SubCard;
+export default NextPayment;
