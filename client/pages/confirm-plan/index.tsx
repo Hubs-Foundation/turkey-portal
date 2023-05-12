@@ -1,5 +1,5 @@
 import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
-import ConfirmPlanModel from '@Modals/ConfirmPlanModal/ConfirmPlanModal';
+import ConfirmPlanModal from '@Modals/ConfirmPlanModal/ConfirmPlanModal';
 import { GetServerSidePropsContext } from 'next';
 import { pageRequireAuthentication } from 'services/routeGuard.service';
 import styles from './confirm-plan.module.scss';
@@ -28,7 +28,7 @@ const ConfirmPlan = () => {
         </div>
       </div>
 
-      <ConfirmPlanModel />
+      <ConfirmPlanModal />
     </div>
   );
 };

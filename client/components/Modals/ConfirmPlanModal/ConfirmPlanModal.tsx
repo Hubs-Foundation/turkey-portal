@@ -9,7 +9,7 @@ const createInfoBlock = ({ label, icon }: InfoBlockPropsT, i: number) => {
   return <InfoBlock key={i} icon={icon} label={label} />;
 };
 
-const ConfirmPlanModel = () => {
+const ConfirmPlanModal = () => {
   return (
     <Modal onClose={() => {}} hasContainer={false}>
       <div className={styles.contents}>
@@ -51,4 +51,4 @@ const ConfirmPlanModel = () => {
   );
 };
 
-export default ConfirmPlanModel;
+export default ConfirmPlanModal;
