@@ -39,3 +39,6 @@ yarn-error.log*
 
 # secrets
 .npmrc
+
+# Don't check anything in from the sandbox route.
+/pages/sandbox/
