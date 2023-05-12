@@ -6,7 +6,6 @@
       "@Modules/*": ["components/modules/*"],
       "@Forms/*": ["components/forms/*"],
       "@Logos/*": ["components/logos/*"],
-      "@Cards/*": ["components/cards/*"],
       "@Navigation/*": ["components/navigation/*"],
       "@Util/*": ["components/util/*"]
     },
