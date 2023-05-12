@@ -5,14 +5,16 @@ import { RoutesE } from 'types/Routes';
 import { getHub, updateHub } from 'services/hub.service';
 import { requireAuthenticationAndSubscription } from 'services/routeGuard.service';
 import Head from 'next/head';
-import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
+import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
 import { ToastContainer, toast } from 'react-toastify';
-import HubFormCard, { HubFormCardT } from '@Cards/HubFormCard/HubFormCard';
+import HubFormCard, {
+  HubFormCardT,
+} from '@Modules/hubs/HubFormCard/HubFormCard';
 import type { GetServerSidePropsContext } from 'next';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './[hub_id].module.scss';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
-import SidePanel from 'modules/side-panel';
+import SidePanel from '@Modules/side-panel';
 import { AxiosRequestHeaders } from 'axios';
 import { enabledStarterPlan } from 'util/featureFlag';
 import { redirectToDashboard } from 'util/redirects';

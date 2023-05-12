@@ -1,6 +1,6 @@
-import SkeletonCard from '@Cards/SkeletonCard/SkeletonCard';
-import ConfirmPlanModel from 'components/Modals/ConfirmPlanModal/ConfirmPlanModel';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
+import ConfirmPlanModel from 'components/modals/ConfirmPlanModal/ConfirmPlanModel';
+import { GetServerSidePropsContext } from 'next';
 import { pageRequireAuthentication } from 'services/routeGuard.service';
 import styles from './confirm-plan.module.scss';
 import { enabledStarterPlan } from 'util/featureFlag';

@@ -44,7 +44,7 @@ const FadeIn = ({
   const handleOnComplete = useCallback(() => {
     if (!isOpen) setIsVisible(false);
     onComplete && onComplete();
-  }, [isOpen]);
+  }, [isOpen, onComplete]);
 
   return (
     <FadeContents
