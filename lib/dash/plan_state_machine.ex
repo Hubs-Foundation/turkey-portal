@@ -11,6 +11,8 @@ defmodule Dash.PlanStateMachine do
   @starter_storage_limit_mb 500
   @standard_ccu_limit 25
   @standard_storage_limit_mb 2_000
+  @starter_hub_name "My Starter Hub"
+  @untitled_hub_name "Untitled Hub"
 
   alias Dash.{Account, Capability, Hub, Plan, OrchClient, Repo}
   import Dash.Utils, only: [capability_string: 0, rand_string: 1]
@@ -87,7 +89,7 @@ defmodule Dash.PlanStateMachine do
       Repo.insert!(%Hub{
         account_id: account.account_id,
         ccu_limit: @starter_ccu_limit,
-        name: "Untitled Hub",
+        name: @starter_hub_name,
         status: :creating,
         storage_limit_mb: @starter_storage_limit_mb,
         subdomain: rand_string(10),
@@ -111,7 +113,7 @@ defmodule Dash.PlanStateMachine do
       Repo.insert!(%Hub{
         account_id: account.account_id,
         ccu_limit: @standard_ccu_limit,
-        name: "Untitled Hub",
+        name: @untitled_hub_name,
         status: :creating,
         storage_limit_mb: @standard_storage_limit_mb,
         subdomain: rand_string(10),
@@ -196,18 +198,18 @@ defmodule Dash.PlanStateMachine do
         transitioned_at: expired_at
       })
 
-      hub =
-        Hub
-        |> Repo.get_by!(account_id: account_id)
-        |> Ecto.Changeset.change(
+        hub = %Hub{name: name} = Repo.get_by!(Hub, account_id: account_id)
+
+        new_hub = Ecto.Changeset.change(hub,
           ccu_limit: @starter_ccu_limit,
           storage_limit_mb: @starter_storage_limit_mb,
           subdomain: rand_string(10),
-          tier: :p0
+          tier: :p0,
+          name: (if (name === @untitled_hub_name), do: @starter_hub_name, else: name)
         )
         |> Repo.update!()
 
-      {:ok, %{status_code: 200}} = OrchClient.update_tier(hub)
+      {:ok, %{status_code: 200}} = OrchClient.update_tier(new_hub)
       :ok
     end
   end
