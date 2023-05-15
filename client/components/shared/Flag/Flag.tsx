@@ -10,20 +10,20 @@ const Flag = ({ width = 32, country, classProp = '' }: IconPropsT) => {
       {country === 'DE' && (
         <g>
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M0 16H32V24H0V16Z"
             fill="#FFD018"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M0 8H32V16H0V8Z"
             fill="#E31D1C"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M0 0H32V8H0V0Z"
             fill="#272727"
           />
