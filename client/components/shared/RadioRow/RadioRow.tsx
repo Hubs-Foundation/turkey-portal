@@ -12,37 +12,40 @@ type RadioRowOptionT = {
 type RadioRowPropsT = {
   option: RadioRowOptionT;
   currentValue: string;
-  additional?: ReactNode;
+  contentRight?: ReactNode;
   icon?: ReactNode;
   classProp?: string;
 };
+
 const RadioRow = ({
   option,
   currentValue,
-  additional,
+  contentRight,
   icon,
   classProp,
 }: RadioRowPropsT) => {
+  const { label, value, groupName, id } = option;
+
   return (
-    <label htmlFor={option.id}>
+    <label htmlFor={id}>
       <div
         className={`${styles.wrapper} ${
-          option.value === currentValue && styles.active
+          value === currentValue && styles.active
         } ${classProp}`}
       >
         <div className="flex-align-center">
           <RadioButton
             groupValue={currentValue}
-            key={option.id}
-            value={option.value}
-            id={option.id}
-            groupName={option.groupName}
+            key={id}
+            value={value}
+            id={id}
+            groupName={groupName}
             icon={icon}
           />
-          <div className="body-md-semi-bold ml-6">{option.label}</div>
+          <span className="body-md-semi-bold ml-6">{label}</span>
         </div>
 
-        <div className={styles.additoinal}>{additional}</div>
+        <div>{contentRight}</div>
       </div>
     </label>
   );
