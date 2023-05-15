@@ -41,4 +41,4 @@ yarn-error.log*
 .npmrc
 
 # Don't check anything in from the sandbox route.
-/pages/sandbox/
+/pages/sandbox/*
