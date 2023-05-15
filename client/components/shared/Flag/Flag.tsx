@@ -1,10 +1,10 @@
-type IconPropsT = {
+type FlagPropsT = {
   country: 'DE' | 'US';
   width?: number;
   classProp?: string;
 };
 
-const Flag = ({ width = 32, country, classProp = '' }: IconPropsT) => {
+const Flag = ({ width = 32, country, classProp = '' }: FlagPropsT) => {
   return (
     <svg className={classProp} width={width} fill="none" viewBox="0 0 32 24">
       {country === 'DE' && (
