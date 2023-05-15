@@ -12,7 +12,6 @@ const BookMeeting = () => (
       </div>
       <div className="mt-12-mb">
         <Button
-          classProp={styles.cta}
           text="Book Now"
           label="book meeting with team"
           target="_blank"
