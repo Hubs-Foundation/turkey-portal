@@ -1,6 +1,6 @@
 import Config
 
-config :dash, Dash.OrchClient, http_client: Dash.HttpMock
+config :dash, Dash.OrchClient, http_client: Dash.HttpMock, orch_host: "orch.test"
 
 # Configure your database
 #

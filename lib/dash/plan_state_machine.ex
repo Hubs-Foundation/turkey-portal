@@ -94,7 +94,9 @@ defmodule Dash.PlanStateMachine do
         tier: :p0
       })
 
-    {:ok, %{status_code: 200}} = OrchClient.create_hub(account.email, hub)
+    {:ok, %{status_code: 200}} =
+      OrchClient.create_hub(account.email, hub, disable_branding?: true)
+
     :ok
   end
 
@@ -149,7 +151,7 @@ defmodule Dash.PlanStateMachine do
         tier: :p1
       )
       |> Repo.update!()
-      |> OrchClient.update_tier()
+      |> OrchClient.update_hub()
 
     :ok
   end
@@ -207,7 +209,9 @@ defmodule Dash.PlanStateMachine do
         )
         |> Repo.update!()
 
-      {:ok, %{status_code: 200}} = OrchClient.update_tier(hub)
+      {:ok, %{status_code: 200}} =
+        OrchClient.update_hub(hub, disable_branding?: true, reset_branding?: true)
+
       :ok
     end
   end
