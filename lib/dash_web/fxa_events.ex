@@ -110,7 +110,7 @@ defmodule DashWeb.FxaEvents do
         # This is a temporary solution to prevent Standard plan features from
         # remaining in effect after subscription expiration.  It can be replaced
         # when the “stop” FSM event is implemented.
-        Dash.Repo.delete_all(from(p in Dash.Plan, where: p.account_id == ^account.account_id))
+        Dash.Repo.delete_all(from p in Dash.Plan, where: p.account_id == ^account.account_id)
       end
     end
 
