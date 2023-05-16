@@ -72,6 +72,7 @@ defmodule DashWeb.FxaEvents do
   # Not an email changed event, other profile data changed, no action
   def handle_profile_change(_fxa_uid, _event_data), do: :ok
 
+  # TODO remove when the "fpn-browser" error is done
   def handle_subscription_changed_event(_fxa_uid, %{
         "capabilities" => ["fpn-browser"],
         "isActive" => _is_active,
@@ -109,7 +110,7 @@ defmodule DashWeb.FxaEvents do
         # This is a temporary solution to prevent Standard plan features from
         # remaining in effect after subscription expiration.  It can be replaced
         # when the “stop” FSM event is implemented.
-        Dash.Repo.delete_all(from(p in Dash.Plan, where: p.account_id == ^account.account_id))
+        Dash.Repo.delete_all(from p in Dash.Plan, where: p.account_id == ^account.account_id)
       end
     end
 
