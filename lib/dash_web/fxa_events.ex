@@ -72,7 +72,7 @@ defmodule DashWeb.FxaEvents do
   # Not an email changed event, other profile data changed, no action
   def handle_profile_change(_fxa_uid, _event_data), do: :ok
 
-  # TODO: Remove this clause after Subplat errors end 5/16/2023
+  # TODO: Remove this clause after Subplat errors end (written 5/16/2023)
   def handle_subscription_changed_event(_fxa_uid, %{
         "capabilities" => ["fpn-browser"],
         "isActive" => _is_active,
