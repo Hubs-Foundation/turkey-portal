@@ -12,7 +12,6 @@ import {
 } from '@mozilla/lilypad-ui';
 import styles from './ConnectDomainForm.module.scss';
 import FadeIn from '@Util/FadeIn';
-import ConfirmDisconnect from '@Modals/ConfirmDisconnect/ConfirmDisconnect';
 import ConfirmModal from '@Shared/ConfirmModal/ConfirmModal';
 
 type ConnectDomainFormPropsT = {
