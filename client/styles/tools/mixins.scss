@@ -10,7 +10,7 @@
   font-size: rem($size);
 }
 
-@mixin primary-font($weight: 600) {
+@mixin primary-font($weight: 500) {
   font-family: $primary-font, $backup-font;
   font-weight: $weight;
 }
