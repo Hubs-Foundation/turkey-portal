@@ -13,7 +13,7 @@ type ConfirmModalPropsT = {
   onCancel: () => void;
 };
 
-const ConfirmDisconnect = ({
+const ConfirmModal = ({
   title,
   message,
   icon = 'alert-triangle',
@@ -60,4 +60,4 @@ const ConfirmDisconnect = ({
   );
 };
 
-export default ConfirmDisconnect;
+export default ConfirmModal;
