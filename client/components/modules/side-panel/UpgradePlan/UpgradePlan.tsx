@@ -21,7 +21,7 @@ const UpgradePlan = () => {
     fetchRegion();
   }, []);
 
-  const url = getRegionPricePageUrl('EA', region);
+  const url = getRegionPricePageUrl(region);
 
   return (
     <div className={styles.upgrade_container}>

@@ -12,8 +12,8 @@ export const {
   FXA_SERVER,
   HUB_ROOT_DOMAIN,
   MARKETING_PAGE_URL,
-  // Do not need to add PLAN_ID_EA / PLAN_ID_EA_DE or other region plans
-  // Plan env name MUST follow PLAN_ID_[subscriptionCode]_[region]
+  PLAN_ID_EA,
+  PLAN_ID_EA_DE,
   PRODUCT_ID,
 } = publicRuntimeConfig;
 

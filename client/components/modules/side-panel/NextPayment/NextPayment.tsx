@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import styles from './NextPayment.module.scss';
 import { SubscriptionT } from 'services/subscription.service';
-import { convertCurrency } from 'util/regionUtils';
+import { convertCurrency } from 'util/utilities';
 
 type NextPaymentPropsT = {
   subscription: SubscriptionT;

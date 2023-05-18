@@ -29,7 +29,7 @@ const StandardPlanCard = () => {
    * Handle routing user to correct payment plan
    */
   const handleSubscribeClick = useCallback(() => {
-    const url = getRegionPricePageUrl('EA', region);
+    const url = getRegionPricePageUrl(region);
     window.open(url);
   }, [region]);
 

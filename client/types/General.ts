@@ -2,8 +2,6 @@
  * General Types
  * Note: feel free to break-out into other files if you feel the need
  */
-
-export type SubscriptionCodeT = 'EA'; // TODO | 'P1' | 'B1';
 export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
 export type FormattedTierT = 'Mvp' | 'Starter' | 'Early Access' | 'Premium';
 
