@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Button, Checkbox } from '@mozilla/lilypad-ui';
 import { StandardPlanInfoCopy } from '../PlanInfoCopy';
-import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA, PLAN_ID_EA_DE } from 'config';
-import { CountriesE, RegionsT } from 'types/Countries';
+import { RegionsT } from 'types/Countries';
 import { getRegion, RegionObjT } from 'services/region.service';
 import BasePlanCard, { Price } from './BasePlanCard';
-import { enabledStarterPlan } from 'util/featureFlag';
+import { getRegionPricePageUrl } from 'util/utilities';
 
 const TAX_REGIONS: RegionsT[] = ['US'];
 
@@ -27,22 +26,12 @@ const StandardPlanCard = () => {
   }, []);
 
   /**
-   * Check If Euro Region or not
-   * @return Boolean
-   */
-  const isEuro = useCallback((): boolean => {
-    return Boolean(region && region.toUpperCase() === CountriesE.GERMANY);
-  }, [region]);
-
-  /**
    * Handle routing user to correct payment plan
    */
   const handleSubscribeClick = useCallback(() => {
-    // Default to US plan
-    const plan: string = isEuro() ? PLAN_ID_EA_DE : PLAN_ID_EA;
-    const url = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${plan}`;
+    const url = getRegionPricePageUrl(region);
     window.open(url);
-  }, [isEuro]);
+  }, [region]);
 
   const onToggleLocationConfirmation = useCallback((value: boolean) => {
     setLocationConfirmed(value);
@@ -52,7 +41,7 @@ const StandardPlanCard = () => {
 
   return (
     <BasePlanCard
-      title={enabledStarterPlan() ? 'Standard' : 'Early Access Hub'}
+      title={'Early Access Hub'}
       color="warm"
       price={
         <Price
