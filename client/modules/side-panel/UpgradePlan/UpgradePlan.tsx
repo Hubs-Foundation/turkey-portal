@@ -1,8 +1,28 @@
 import styles from './UpgradePlan.module.scss';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
-import { FXA_PAYMENT_URL, PRODUCT_ID, PLAN_ID_EA } from 'config';
+import { useEffect, useState } from 'react';
+import { RegionObjT, getRegion } from 'services/region.service';
+import { RegionsT } from 'types/Countries';
+import { getRegionPricePageUrl } from 'util/utilities';
 
 const UpgradePlan = () => {
+  const [region, setRegion] = useState<RegionsT>(null);
+
+  useEffect(() => {
+    const fetchRegion = async () => {
+      try {
+        const data: RegionObjT = await getRegion();
+        setRegion(data.region);
+      } catch (e) {
+        console.error(e);
+        setRegion(null);
+      }
+    };
+    fetchRegion();
+  }, []);
+
+  const url = getRegionPricePageUrl('EA', region);
+
   return (
     <div className={styles.upgrade_container}>
       <div className="mr-20-dt mr-12-mb">
@@ -13,12 +33,11 @@ const UpgradePlan = () => {
         </p>
       </div>
       <div className="mt-12-mb">
-        {/* TODO add region functionality here - RKW */}
         <Button
           category={ButtonCategoriesE.SECONDARY_SOLID}
           text="Upgrade"
           label="Upgrade"
-          href={`${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_EA}`}
+          href={url}
         />
       </div>
     </div>

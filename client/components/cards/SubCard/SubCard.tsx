@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import styles from './SubCard.module.scss';
 import { SubscriptionT } from 'services/subscription.service';
-import { convertCurrency } from 'util/utilities';
+import { convertCurrency } from 'util/regionUtils';
 
 type SubCardPropsT = {
   subscription: SubscriptionT;
