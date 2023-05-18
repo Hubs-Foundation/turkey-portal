@@ -3,7 +3,7 @@ import styles from './MainNav.module.scss';
 import { logOut } from 'services/account.service';
 import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
-import BlobIcon from '@Logos/BlobIcon/BlobIcon';
+import BlobIcon from '@Shared/logos/BlobIcon/BlobIcon';
 import {
   AUTH_SERVER,
   FXA_SERVER,

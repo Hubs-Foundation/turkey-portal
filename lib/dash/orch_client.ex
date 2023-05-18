@@ -6,13 +6,12 @@ defmodule Dash.OrchClient do
 
   alias Dash.Hub
 
-  defp orch_hub_endpoint() do
-    "https://#{get_orch_host()}/hc_instance"
-  end
+  def create_hub(fxa_email, %Hub{} = hub, opts \\ []) when is_list(opts) do
+    disable_branding? = Keyword.get(opts, :disable_branding?, false)
 
-  def create_hub(fxa_email, %Hub{} = hub) do
     orch_hub_create_params = %{
       useremail: fxa_email,
+      disable_branding: disable_branding?,
       hub_id: hub.hub_id |> to_string(),
       subdomain: hub.subdomain,
       tier: hub.tier,
@@ -20,7 +19,7 @@ defmodule Dash.OrchClient do
       storage_limit: (hub.storage_limit_mb / 1024) |> to_string()
     }
 
-    get_http_client().post(
+    http_client().post(
       orch_hub_endpoint(),
       Jason.encode!(orch_hub_create_params),
       [],
@@ -28,8 +27,38 @@ defmodule Dash.OrchClient do
     )
   end
 
+  def delete_hub(%Hub{} = hub) do
+    http_client().request(
+      :delete,
+      orch_hub_endpoint(),
+      Jason.encode!(%{hub_id: hub.hub_id |> to_string}),
+      [],
+      hackney: [:insecure]
+    )
+  end
+
+  def update_hub(%Hub{} = hub, opts \\ []) when is_list(opts) do
+    disable_branding? = Keyword.get(opts, :disable_branding?, false)
+    reset_branding? = Keyword.get(opts, :reset_branding?, false)
+
+    http_client().patch(
+      orch_hub_endpoint(),
+      Jason.encode!(%{
+        ccu_limit: Integer.to_string(hub.ccu_limit),
+        disable_branding: disable_branding?,
+        hub_id: Integer.to_string(hub.hub_id),
+        reset_branding: reset_branding?,
+        storage_limit: Float.to_string(hub.storage_limit_mb / 1024),
+        subdomain: hub.subdomain,
+        tier: hub.tier
+      }),
+      [],
+      hackney: [:insecure]
+    )
+  end
+
   def update_subdomain(%Hub{} = hub) do
-    get_http_client().patch(
+    http_client().patch(
       orch_hub_endpoint(),
       Jason.encode!(%{
         hub_id: hub.hub_id |> to_string,
@@ -40,38 +69,23 @@ defmodule Dash.OrchClient do
     )
   end
 
-  def update_tier(%Hub{} = hub) do
-    get_http_client().patch(
-      orch_hub_endpoint(),
-      Jason.encode!(%{
-        ccu_limit: Integer.to_string(hub.ccu_limit),
-        hub_id: Integer.to_string(hub.hub_id),
-        storage_limit: Float.to_string(hub.storage_limit_mb / 1024),
-        subdomain: hub.subdomain,
-        tier: hub.tier
-      }),
-      [],
-      hackney: [:insecure]
-    )
-  end
+  ## Helpers
 
-  def delete_hub(%Hub{} = hub) do
-    get_http_client().request(
-      :delete,
-      orch_hub_endpoint(),
-      Jason.encode!(%{hub_id: hub.hub_id |> to_string}),
-      [],
-      hackney: [:insecure]
-    )
-  end
-
-  defp get_http_client,
+  @spec http_client :: module
+  defp http_client,
     do:
       :dash
       |> Application.get_env(__MODULE__)
       |> Keyword.get(:http_client, HTTPoison)
 
-  defp get_orch_host() do
-    Application.get_env(:dash, Dash.OrchClient)[:orch_host]
-  end
+  @spec orch_host :: String.t()
+  defp orch_host,
+    do:
+      :dash
+      |> Application.get_env(__MODULE__)
+      |> Keyword.fetch!(:orch_host)
+
+  @spec orch_hub_endpoint :: String.t()
+  defp orch_hub_endpoint,
+    do: "https://#{orch_host()}/hc_instance"
 end

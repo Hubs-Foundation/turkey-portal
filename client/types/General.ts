@@ -4,7 +4,7 @@
  */
 
 export type SubscriptionCodeT = 'EA'; // TODO | 'P1' | 'B1';
-export type TierT = 'mvp' | 'free' | 'early_access' | 'premium' | 'p0' | 'p1';
+export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
 export type FormattedTierT = 'Mvp' | 'Starter' | 'Early Access' | 'Premium';
 
 export type FormattedTierMapT = {

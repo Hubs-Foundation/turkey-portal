@@ -3,9 +3,10 @@
     "baseUrl": ".",
     "paths": {
       "@Shared/*": ["components/shared/*"],
+      "@Modules/*": ["components/modules/*"],
+      "@Modals/*": ["components/modals/*"],
       "@Forms/*": ["components/forms/*"],
       "@Logos/*": ["components/logos/*"],
-      "@Cards/*": ["components/cards/*"],
       "@Navigation/*": ["components/navigation/*"],
       "@Util/*": ["components/util/*"]
     },
