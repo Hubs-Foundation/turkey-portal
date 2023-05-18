@@ -2,6 +2,7 @@
  * General Types
  * Note: feel free to break-out into other files if you feel the need
  */
+
 export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
 export type FormattedTierT = 'Mvp' | 'Starter' | 'Early Access' | 'Premium';
 
@@ -47,8 +48,6 @@ export type UpdateHubT = {
   lastError: LastErrorE | '';
 };
 
-type PlansT = 'starter' | 'standard' | null;
-
 export type AccountT = {
   displayName: string;
   email: string;
@@ -61,6 +60,8 @@ export type AccountT = {
   hasPlan: boolean;
   planName: PlansT;
 };
+
+type PlansT = 'starter' | 'standard' | null;
 
 export enum BadgeCategoriesE {
   PRIMARY = 'primary',

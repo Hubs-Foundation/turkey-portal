@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Button, Checkbox } from '@mozilla/lilypad-ui';
+import { StandardPlanInfoCopy } from '../PlanInfoCopy';
 import { RegionsT } from 'types/Countries';
 import { getRegion, RegionObjT } from 'services/region.service';
 import BasePlanCard, { Price } from './BasePlanCard';
 import { getRegionPricePageUrl } from 'util/utilities';
-import { StandardPlanInfoCopy } from '../PlanInfoCopy';
 
 const TAX_REGIONS: RegionsT[] = ['US'];
 
