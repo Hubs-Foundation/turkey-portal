@@ -23,6 +23,7 @@ const nextConfig = {
     PLAN_ID_EA_DE: process.env.PLAN_ID_EA_DE,
     PRODUCT_ID: process.env.PRODUCT_ID,
     PUBLIC_API_SERVER: process.env.PUBLIC_API_SERVER,
+    SUBPLAT_SUBSCRIPTIONS_LINK: process.env.SUBPLAT_SUBSCRIPTIONS_LINK,
   },
   async redirects() {
     return [

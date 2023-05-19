@@ -68,6 +68,14 @@ $fontSizes: 12, 14, 16, 18, 20;
   text-transform: capitalize;
 }
 
+.primary-link {
+  @include primary-link();
+}
+
+.secondary-link {
+  @include secondary-link();
+}
+
 // ---------------------------------
 //   Quick Media-Q
 // ---------------------------------
