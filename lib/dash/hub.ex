@@ -3,7 +3,7 @@ defmodule Dash.Hub do
   import Ecto.Query
   import Ecto.Changeset
   require Logger
-  alias Dash.{SubdomainDenial, Repo, RetClient}
+  alias Dash.{Account, Repo, RetClient, SubdomainDenial}
 
   @type t :: %__MODULE__{}
 
@@ -83,12 +83,11 @@ defmodule Dash.Hub do
 
   # TODO EA remove
   def has_creating_hubs(%Dash.Account{} = account) do
-    has_hubs(account) &&
-      Repo.exists?(
-        from h in Dash.Hub,
-          where: h.account_id == ^account.account_id,
-          where: h.status == :creating
-      )
+    Repo.exists?(
+      from h in Dash.Hub,
+        where: h.account_id == ^account.account_id,
+        where: h.status == :creating
+    )
   end
 
   # Checks if account has at least one hub, if not, creates hub
@@ -98,11 +97,8 @@ defmodule Dash.Hub do
     if has_subscription? and not has_hubs(account), do: create_default_hub(account, email)
 
     # TODO EA make own hub controller endpoint for waiting_until_ready_state
-    if has_creating_hubs(account) do
-      hubs = hubs_for_account(account)
-
-      # TODO EA For MVP2 we expect 1 hub
-      hub = Enum.at(hubs, 0)
+    if has_creating_hubs(account) or updating_hub?(account) do
+      [hub] = hubs_for_account(account)
 
       case RetClient.wait_until_healthy(hub) do
         {:ok} ->
@@ -116,6 +112,15 @@ defmodule Dash.Hub do
       {:ok}
     end
   end
+
+  @spec updating_hub?(Account.t()) :: boolean
+  defp updating_hub?(%Account{account_id: account_id}),
+    do:
+      Repo.exists?(
+        from h in Dash.Hub,
+          where: h.account_id == ^account_id,
+          where: h.status == :updating
+      )
 
   @hub_defaults %{
     name: "Untitled Hub",
