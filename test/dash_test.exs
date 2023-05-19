@@ -230,6 +230,7 @@ defmodule DashTest do
       assert [hub] = Hub.hubs_for_account(account)
       assert 10 === hub.ccu_limit
       assert hub_id === hub.hub_id
+      assert :updating === hub.status
       assert 500 === hub.storage_limit_mb
       assert custom_subdomain !== hub.subdomain
       assert :p0 === hub.tier
@@ -283,6 +284,7 @@ defmodule DashTest do
       assert [hub] = Hub.hubs_for_account(account)
       assert 10 === hub.ccu_limit
       assert hub_id === hub.hub_id
+      assert :updating === hub.status
       assert 500 === hub.storage_limit_mb
       assert custom_subdomain !== hub.subdomain
       assert :p0 === hub.tier
@@ -304,6 +306,7 @@ defmodule DashTest do
       assert {:ok, %{subscription?: true}} = Dash.fetch_active_plan(account)
       assert [hub] = Hub.hubs_for_account(account)
       assert 10 !== hub.ccu_limit
+      assert :updating !== hub.status
       assert 500 !== hub.storage_limit_mb
       assert custom_subdomain === hub.subdomain
       assert :p0 !== hub.tier
@@ -409,6 +412,7 @@ defmodule DashTest do
       assert {:ok, %{subscription?: false}} = Dash.fetch_active_plan(account)
       assert [hub] = Hub.hubs_for_account(account)
       assert 10 === hub.ccu_limit
+      assert :creating === hub.status
       assert 500 === hub.storage_limit_mb
       assert :p0 === hub.tier
     end
@@ -476,6 +480,7 @@ defmodule DashTest do
       assert {:ok, %{subscription?: true}} = Dash.fetch_active_plan(account)
       assert [hub] = Hub.hubs_for_account(account)
       assert 25 === hub.ccu_limit
+      assert :creating === hub.status
       assert 2_000 === hub.storage_limit_mb
       assert :p1 === hub.tier
     end
@@ -516,6 +521,7 @@ defmodule DashTest do
       assert [hub] = Hub.hubs_for_account(account)
       assert 25 === hub.ccu_limit
       assert hub_id === hub.hub_id
+      assert :updating === hub.status
       assert 2_000 === hub.storage_limit_mb
       assert :p1 === hub.tier
     end
