@@ -3,6 +3,7 @@ import styles from './NextPayment.module.scss';
 import { SubscriptionT } from 'services/subscription.service';
 import { convertCurrency } from 'util/utilities';
 import { SUBPLAT_SUBSCRIPTIONS_LINK } from 'config';
+import { enabledStarterPlan } from 'util/featureFlag';
 
 type NextPaymentPropsT = {
   subscription: SubscriptionT;
@@ -71,7 +72,7 @@ const NextPayment = ({ subscription, classProp = '' }: NextPaymentPropsT) => {
       <div className={styles.container}>
         {/* PAYMENT */}
         <div className={styles.content_block}>
-          {isCancelled ? (
+          {isCancelled && enabledStarterPlan() ? (
             <CanceledBlock />
           ) : (
             <PaymentBlock subscription={subscription} />
