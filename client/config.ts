@@ -15,6 +15,7 @@ export const {
   PLAN_ID_EA,
   PLAN_ID_EA_DE,
   PRODUCT_ID,
+  SUBPLAT_SUBSCRIPTIONS_LINK,
 } = publicRuntimeConfig;
 
 export const DUMMY = publicRuntimeConfig.dummy;
