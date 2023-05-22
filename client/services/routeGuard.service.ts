@@ -17,6 +17,7 @@ import { IncomingMessage } from 'http';
 import { setCookies } from 'cookies-next';
 import { localFeature } from '../util/featureFlag';
 import { AccountT } from 'types/General';
+import { DASH_ROOT_DOMAIN } from 'config';
 
 type UnauthenticatedResponseT = {
   status: Number | undefined;
@@ -65,7 +66,7 @@ function handleUnauthenticatedRedirects(axiosError: AxiosError) {
 
   // If Redirect specified send them to auth
   if (status === 401 && data?.redirect === 'auth') {
-    return redirectToAuthServer(RoutesE.CONFIRM_PLAN);
+    return redirectToAuthServer(`${DASH_ROOT_DOMAIN}${RoutesE.CONFIRM_PLAN}`);
   }
 
   // Unexpected error
