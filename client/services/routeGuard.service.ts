@@ -65,7 +65,7 @@ function handleUnauthenticatedRedirects(axiosError: AxiosError) {
 
   // If Redirect specified send them to auth
   if (status === 401 && data?.redirect === 'auth') {
-    return redirectToAuthServer();
+    return redirectToAuthServer(RoutesE.CONFIRM_PLAN);
   }
 
   // Unexpected error
@@ -141,6 +141,7 @@ export function pageRequireAuthentication(gssp: Function): GetServerSideProps {
       const account: AccountT = await getAccount(
         req.headers as AxiosRequestHeaders
       );
+
       if (account.hasSubscription || account.hasPlan) {
         return redirectToDashboard();
       }
