@@ -1,18 +1,38 @@
 import { RoutesE } from 'types/Routes';
 import { AUTH_SERVER, DASH_ROOT_DOMAIN, MARKETING_PAGE_URL } from 'config';
 
+/**************************
+ *  RE-DIRECT UTILITIES
+ **************************/
+
+const redirectConfig = {
+  auth: {
+    source: RoutesE.DASHBOARD,
+    destination: `https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}`,
+    permanent: false,
+  },
+  marketing: {
+    source: RoutesE.DASHBOARD,
+    destination: MARKETING_PAGE_URL,
+    permanent: false,
+  },
+  dashboard: {
+    destination: RoutesE.DASHBOARD,
+    permanent: false,
+  },
+  subscription: {
+    source: RoutesE.DASHBOARD,
+    destination: RoutesE.SUBSCRIBE,
+    permanent: false,
+  },
+};
+
 /**
  * To Auth
  * @returns redirect
  */
-export const redirectToAuthServer = (callbackRoute = DASH_ROOT_DOMAIN) => {
-  return {
-    redirect: {
-      source: RoutesE.DASHBOARD,
-      destination: `https://${AUTH_SERVER}/login?idp=fxa&client=https://${callbackRoute}`,
-      permanent: false,
-    },
-  };
+export const redirectToAuthServer = () => {
+  return { redirect: redirectConfig.auth };
 };
 
 /**
@@ -20,13 +40,7 @@ export const redirectToAuthServer = (callbackRoute = DASH_ROOT_DOMAIN) => {
  * @returns redirect
  */
 export const redirectToMarketingPage = () => {
-  return {
-    redirect: {
-      source: RoutesE.DASHBOARD,
-      destination: MARKETING_PAGE_URL,
-      permanent: false,
-    },
-  };
+  return { redirect: redirectConfig.marketing };
 };
 
 /**
@@ -34,12 +48,7 @@ export const redirectToMarketingPage = () => {
  * @returns redirect
  */
 export const redirectToDashboard = () => {
-  return {
-    redirect: {
-      destination: RoutesE.DASHBOARD,
-      permanent: false,
-    },
-  };
+  return { redirect: redirectConfig.dashboard };
 };
 
 /**
@@ -47,11 +56,5 @@ export const redirectToDashboard = () => {
  * @returns redirect
  */
 export const redirectToSubscribe = () => {
-  return {
-    redirect: {
-      source: RoutesE.DASHBOARD,
-      destination: RoutesE.SUBSCRIBE,
-      permanent: false,
-    },
-  };
+  return { redirect: redirectConfig.subscription };
 };
