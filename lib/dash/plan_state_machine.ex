@@ -148,6 +148,7 @@ defmodule Dash.PlanStateMachine do
       |> Ecto.Changeset.change(
         ccu_limit: @standard_ccu_limit,
         storage_limit_mb: @standard_storage_limit_mb,
+        status: :updating,
         tier: :p1
       )
       |> Repo.update!()
@@ -203,6 +204,7 @@ defmodule Dash.PlanStateMachine do
         |> Repo.get_by!(account_id: account_id)
         |> Ecto.Changeset.change(
           ccu_limit: @starter_ccu_limit,
+          status: :updating,
           storage_limit_mb: @starter_storage_limit_mb,
           subdomain: rand_string(10),
           tier: :p0
