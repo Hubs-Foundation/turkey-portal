@@ -12,7 +12,7 @@ defmodule Dash.PlanStateMachine do
   @standard_ccu_limit 25
   @standard_storage_limit_mb 2_000
 
-  alias Dash.{Account, Capability, Hub, Plan, OrchClient, Repo}
+  alias Dash.{Account, Capability, Hub, Plan, OrchClient, Repo, RetClient}
   import Dash.Utils, only: [capability_string: 0, rand_string: 1]
   import Ecto.Query, only: [from: 2]
 
@@ -142,7 +142,7 @@ defmodule Dash.PlanStateMachine do
     %{plan_id: plan_id} = get_plan(account_id)
     :ok = subscribe_standard(plan_id, subscribed_at)
 
-    {:ok, %{status_code: 200}} =
+    hub =
       Hub
       |> Repo.get_by!(account_id: account_id)
       |> Ecto.Changeset.change(
@@ -152,7 +152,12 @@ defmodule Dash.PlanStateMachine do
         tier: :p1
       )
       |> Repo.update!()
-      |> OrchClient.update_hub()
+
+    {:ok, %{status_code: 200}} = OrchClient.update_hub(hub)
+
+    with {:ok} <- RetClient.wait_until_healthy(hub) do
+      Hub.set_hub_to_ready(hub)
+    end
 
     :ok
   end
@@ -213,6 +218,10 @@ defmodule Dash.PlanStateMachine do
 
       {:ok, %{status_code: 200}} =
         OrchClient.update_hub(hub, disable_branding?: true, reset_branding?: true)
+
+      with {:ok} <- RetClient.wait_until_healthy(hub) do
+        Hub.set_hub_to_ready(hub)
+      end
 
       :ok
     end

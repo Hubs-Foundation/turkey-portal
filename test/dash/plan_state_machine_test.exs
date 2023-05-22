@@ -220,6 +220,14 @@ defmodule Dash.PlanStateMachineTest do
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
 
+      Mox.expect(HttpMock, :get, fn url, _headers, opts ->
+        assert String.starts_with?(url, "https://ret")
+        assert String.ends_with?(url, "/health")
+        assert [hackney: [:insecure]] === opts
+
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
       assert :ok ===
                PlanStateMachine.handle_event(
                  :starter,
@@ -231,7 +239,7 @@ defmodule Dash.PlanStateMachineTest do
       assert [hub] = Hub.hubs_for_account(account)
       assert 25 === hub.ccu_limit
       assert hub_id === hub.hub_id
-      assert :updating === hub.status
+      assert :ready === hub.status
       assert 2_000 === hub.storage_limit_mb
       assert :p1 === hub.tier
 
@@ -318,6 +326,14 @@ defmodule Dash.PlanStateMachineTest do
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
 
+      Mox.expect(HttpMock, :get, fn url, _headers, opts ->
+        assert String.starts_with?(url, "https://ret")
+        assert String.ends_with?(url, "/health")
+        assert [hackney: [:insecure]] === opts
+
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
       assert :ok ===
                PlanStateMachine.handle_event(
                  :standard,
@@ -329,7 +345,7 @@ defmodule Dash.PlanStateMachineTest do
       assert [hub] = Hub.hubs_for_account(account)
       assert 10 === hub.ccu_limit
       assert hub_id === hub.hub_id
-      assert :updating === hub.status
+      assert :ready === hub.status
       assert 500 === hub.storage_limit_mb
       assert custom_subdomain !== hub.subdomain
       assert :p0 === hub.tier

@@ -242,6 +242,14 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
 
+      Mox.expect(Dash.HttpMock, :get, fn url, _headers, opts ->
+        assert String.starts_with?(url, "https://ret")
+        assert String.ends_with?(url, "/health")
+        assert [hackney: [:insecure]] === opts
+
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
       assert conn
              |> put_resp_content_type("application/json")
              |> put_req_header("authorization", "Bearer #{token}")

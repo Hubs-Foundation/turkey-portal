@@ -3,7 +3,7 @@ defmodule Dash.Hub do
   import Ecto.Query
   import Ecto.Changeset
   require Logger
-  alias Dash.{Account, Repo, RetClient, SubdomainDenial}
+  alias Dash.{Repo, RetClient, SubdomainDenial}
 
   @type t :: %__MODULE__{}
 
@@ -97,7 +97,7 @@ defmodule Dash.Hub do
     if has_subscription? and not has_hubs(account), do: create_default_hub(account, email)
 
     # TODO EA make own hub controller endpoint for waiting_until_ready_state
-    if has_creating_hubs(account) or updating_hub?(account) do
+    if has_creating_hubs(account) do
       [hub] = hubs_for_account(account)
 
       case RetClient.wait_until_healthy(hub) do
@@ -112,15 +112,6 @@ defmodule Dash.Hub do
       {:ok}
     end
   end
-
-  @spec updating_hub?(Account.t()) :: boolean
-  defp updating_hub?(%Account{account_id: account_id}),
-    do:
-      Repo.exists?(
-        from h in Dash.Hub,
-          where: h.account_id == ^account_id,
-          where: h.status == :updating
-      )
 
   @hub_defaults %{
     name: "Untitled Hub",
