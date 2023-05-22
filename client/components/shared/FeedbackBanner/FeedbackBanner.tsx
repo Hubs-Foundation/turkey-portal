@@ -13,12 +13,6 @@ const FeedbackBanner = ({ classProp = '' }: FeedbackBannerPropsT) => {
   you think we're missing. We'll only use your feedback to improve the product. Your personal 
   information will never be shared.`;
 
-  const feedbackClick = () => {
-    window.open(
-      `https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/hubs`
-    );
-  };
-
   const onToggleClick = () => {
     setIsOpen((state) => !state);
   };
@@ -54,9 +48,10 @@ const FeedbackBanner = ({ classProp = '' }: FeedbackBannerPropsT) => {
             <p>{Message}</p>
             <Button
               label="give feedback"
-              onClick={feedbackClick}
+              href="https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/hubs"
               classProp={styles.button}
               category={ButtonCategoriesE.SECONDARY_OUTLINE}
+              target="_blank"
               text="Give Feedback"
             />
           </div>
