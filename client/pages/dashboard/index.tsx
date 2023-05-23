@@ -186,7 +186,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
       </section>
 
       <footer>
-        <FeedbackBanner email="hubs-feedback@mozilla.com" subject="Feedback" />
+        <FeedbackBanner />
       </footer>
     </div>
   );

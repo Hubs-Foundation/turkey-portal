@@ -4,24 +4,14 @@ import { Button, ButtonCategoriesE, Icon } from '@mozilla/lilypad-ui';
 import FadeIn from '@Util/FadeIn';
 
 type FeedbackBannerPropsT = {
-  email: string;
-  subject: string;
   classProp?: string;
 };
 
-const FeedbackBanner = ({
-  email,
-  subject,
-  classProp = '',
-}: FeedbackBannerPropsT) => {
+const FeedbackBanner = ({ classProp = '' }: FeedbackBannerPropsT) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const Message = `We'd love to hear what you think of Hubs — what you've enjoyed and what 
   you think we're missing. We'll only use your feedback to improve the product. Your personal 
   information will never be shared.`;
-
-  const feedbackClick = () => {
-    window.location.href = `mailto:${email}?subject=${subject}`;
-  };
 
   const onToggleClick = () => {
     setIsOpen((state) => !state);
@@ -58,9 +48,10 @@ const FeedbackBanner = ({
             <p>{Message}</p>
             <Button
               label="give feedback"
-              onClick={feedbackClick}
+              href="https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/hubs"
               classProp={styles.button}
               category={ButtonCategoriesE.SECONDARY_OUTLINE}
+              target="_blank"
               text="Give Feedback"
             />
           </div>

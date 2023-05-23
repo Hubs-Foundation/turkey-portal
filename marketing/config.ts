@@ -46,7 +46,7 @@ const prodVars: EnvVariableKeys = {
   PRODUCT_ID: 'prod_Mo4tS8uH9y3Mj5',
   PLAN_ID_EA_DE: 'price_1M9EJVJNcmPzuWtRbMGiQVgD',
   PUBLIC_API_SERVER: 'https://dashboard.hubs.mozilla.com',
-  ENABLE_STARTER_PLAN: '',
+  ENABLE_STARTER_PLAN: 'enabled',
 };
 
 /**
