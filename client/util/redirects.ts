@@ -1,38 +1,22 @@
 import { RoutesE } from 'types/Routes';
-import { AUTH_SERVER, DASH_ROOT_DOMAIN, MARKETING_PAGE_URL } from 'config';
-
-/**************************
- *  RE-DIRECT UTILITIES
- **************************/
-
-const redirectConfig = {
-  auth: {
-    source: RoutesE.DASHBOARD,
-    destination: `https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}`,
-    permanent: false,
-  },
-  marketing: {
-    source: RoutesE.DASHBOARD,
-    destination: MARKETING_PAGE_URL,
-    permanent: false,
-  },
-  dashboard: {
-    destination: RoutesE.DASHBOARD,
-    permanent: false,
-  },
-  subscription: {
-    source: RoutesE.DASHBOARD,
-    destination: RoutesE.SUBSCRIBE,
-    permanent: false,
-  },
-};
+import { AUTH_SERVER, MARKETING_PAGE_URL } from 'config';
+import { DASH_ROOT_DOMAIN } from 'config';
 
 /**
  * To Auth
+ * @param RoutesE
  * @returns redirect
  */
-export const redirectToAuthServer = () => {
-  return { redirect: redirectConfig.auth };
+export const redirectToAuthServer = (callbackRoute: RoutesE | null) => {
+  return {
+    redirect: {
+      source: RoutesE.DASHBOARD,
+      /** WARNING : auth server does not just take any ol url as a callback, 
+      it needs to be added to "trustedClients" in turkey ops to work. */
+      destination: `https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}${callbackRoute}`,
+      permanent: false,
+    },
+  };
 };
 
 /**
@@ -40,7 +24,13 @@ export const redirectToAuthServer = () => {
  * @returns redirect
  */
 export const redirectToMarketingPage = () => {
-  return { redirect: redirectConfig.marketing };
+  return {
+    redirect: {
+      source: RoutesE.DASHBOARD,
+      destination: MARKETING_PAGE_URL,
+      permanent: false,
+    },
+  };
 };
 
 /**
@@ -48,7 +38,12 @@ export const redirectToMarketingPage = () => {
  * @returns redirect
  */
 export const redirectToDashboard = () => {
-  return { redirect: redirectConfig.dashboard };
+  return {
+    redirect: {
+      destination: RoutesE.DASHBOARD,
+      permanent: false,
+    },
+  };
 };
 
 /**
@@ -56,5 +51,11 @@ export const redirectToDashboard = () => {
  * @returns redirect
  */
 export const redirectToSubscribe = () => {
-  return { redirect: redirectConfig.subscription };
+  return {
+    redirect: {
+      source: RoutesE.DASHBOARD,
+      destination: RoutesE.SUBSCRIBE,
+      permanent: false,
+    },
+  };
 };

@@ -60,12 +60,15 @@ function didSetTurkeyauthCookie(context: GetServerSidePropsContext): boolean {
  * @param axiosError
  * @returns
  */
-function handleUnauthenticatedRedirects(axiosError: AxiosError) {
+function handleUnauthenticatedRedirects(
+  axiosError: AxiosError,
+  callbackRoute: RoutesE | null = null
+) {
   const { status, data } = axiosError.response as UnauthenticatedResponseT;
 
   // If Redirect specified send them to auth
   if (status === 401 && data?.redirect === 'auth') {
-    return redirectToAuthServer();
+    return redirectToAuthServer(callbackRoute);
   }
 
   // Unexpected error
@@ -141,13 +144,17 @@ export function pageRequireAuthentication(gssp: Function): GetServerSideProps {
       const account: AccountT = await getAccount(
         req.headers as AxiosRequestHeaders
       );
+
       if (account.hasSubscription || account.hasPlan) {
         return redirectToDashboard();
       }
 
       return await gssp(context, account);
     } catch (error) {
-      return handleUnauthenticatedRedirects(error as AxiosError);
+      return handleUnauthenticatedRedirects(
+        error as AxiosError,
+        req.url as RoutesE
+      );
     }
   };
 }
