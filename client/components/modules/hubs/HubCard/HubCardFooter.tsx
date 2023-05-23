@@ -58,7 +58,7 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
    * @returns num | string
    */
   const round = (num: number | null): number | string => {
-    if (num == null) return 'Error';
+    if (num == null) return 'Configuring';
 
     // TODO - In the future, I guess we'd use i18n routing and useRouter to get the current
     // locale, but for now default to "en-US".

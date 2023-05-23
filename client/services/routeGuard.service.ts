@@ -17,7 +17,6 @@ import { IncomingMessage } from 'http';
 import { setCookies } from 'cookies-next';
 import { localFeature } from '../util/featureFlag';
 import { AccountT } from 'types/General';
-import { DASH_ROOT_DOMAIN } from 'config';
 
 type UnauthenticatedResponseT = {
   status: Number | undefined;
@@ -69,7 +68,7 @@ function handleUnauthenticatedRedirects(
 
   // If Redirect specified send them to auth
   if (status === 401 && data?.redirect === 'auth') {
-    return redirectToAuthServer(`${DASH_ROOT_DOMAIN}${callbackRoute}`);
+    return redirectToAuthServer(callbackRoute);
   }
 
   // Unexpected error
