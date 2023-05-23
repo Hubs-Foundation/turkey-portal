@@ -107,7 +107,7 @@ export function confirmPlanRG(gssp: Function): GetServerSideProps | Redirect {
       );
 
       // If user has plan go to dashboard
-      if (account.planName === PlansE.p0) {
+      if (account.hasPlan) {
         return redirectToDashboard();
       }
 
