@@ -170,8 +170,11 @@ defmodule Dash.RetClient do
     response =
       get_http_client().patch(
         ret_host_url(hub_id) <> @ret_internal_scope <> @change_email_for_login,
-        %{old_email: old_email, new_email: new_email},
-        [{"x-ret-dashboard-access-key", get_ret_access_key()}],
+        Jason.encode!(%{old_email: old_email, new_email: new_email}),
+        [
+          {"x-ret-dashboard-access-key", get_ret_access_key()},
+          {"content-type", "application/json"}
+        ],
         hackney: [:insecure]
       )
 
