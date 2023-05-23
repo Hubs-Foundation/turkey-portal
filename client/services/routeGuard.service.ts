@@ -17,6 +17,7 @@ import { IncomingMessage } from 'http';
 import { setCookies } from 'cookies-next';
 import { localFeature } from '../util/featureFlag';
 import { AccountT } from 'types/General';
+import { DASH_ROOT_DOMAIN } from 'config';
 
 type UnauthenticatedResponseT = {
   status: Number | undefined;
@@ -60,12 +61,15 @@ function didSetTurkeyauthCookie(context: GetServerSidePropsContext): boolean {
  * @param axiosError
  * @returns
  */
-function handleUnauthenticatedRedirects(axiosError: AxiosError) {
+function handleUnauthenticatedRedirects(
+  axiosError: AxiosError,
+  callbackRoute: RoutesE | null = null
+) {
   const { status, data } = axiosError.response as UnauthenticatedResponseT;
 
   // If Redirect specified send them to auth
   if (status === 401 && data?.redirect === 'auth') {
-    return redirectToAuthServer();
+    return redirectToAuthServer(`${DASH_ROOT_DOMAIN}${callbackRoute}`);
   }
 
   // Unexpected error
@@ -141,13 +145,17 @@ export function pageRequireAuthentication(gssp: Function): GetServerSideProps {
       const account: AccountT = await getAccount(
         req.headers as AxiosRequestHeaders
       );
+
       if (account.hasSubscription || account.hasPlan) {
         return redirectToDashboard();
       }
 
       return await gssp(context, account);
     } catch (error) {
-      return handleUnauthenticatedRedirects(error as AxiosError);
+      return handleUnauthenticatedRedirects(
+        error as AxiosError,
+        req.url as RoutesE
+      );
     }
   };
 }
