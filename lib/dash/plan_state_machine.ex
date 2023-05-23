@@ -136,13 +136,13 @@ defmodule Dash.PlanStateMachine do
   def handle_event(
         :starter,
         {:subscribe_standard, subscribed_at},
-        %Account{account_id: account_id},
+        %Account{account_id: account_id, email: email},
         _data
       ) do
     %{plan_id: plan_id} = get_plan(account_id)
     :ok = subscribe_standard(plan_id, subscribed_at)
 
-    {:ok, %{status_code: 200}} =
+    hub =
       Hub
       |> Repo.get_by!(account_id: account_id)
       |> Ecto.Changeset.change(
@@ -152,7 +152,8 @@ defmodule Dash.PlanStateMachine do
         tier: :p1
       )
       |> Repo.update!()
-      |> OrchClient.update_hub()
+
+    {:ok, %{status_code: 200}} = OrchClient.update_hub(email, hub)
 
     :ok
   end
@@ -182,7 +183,7 @@ defmodule Dash.PlanStateMachine do
   def handle_event(
         :standard,
         {:expire_subscription, %DateTime{} = expired_at},
-        %Account{account_id: account_id},
+        %Account{account_id: account_id, email: email},
         _data
       ) do
     if DateTime.compare(expired_at, transitioned_at(account_id)) !== :gt do
@@ -212,7 +213,7 @@ defmodule Dash.PlanStateMachine do
         |> Repo.update!()
 
       {:ok, %{status_code: 200}} =
-        OrchClient.update_hub(hub, disable_branding?: true, reset_branding?: true)
+        OrchClient.update_hub(email, hub, disable_branding?: true, reset_branding?: true)
 
       :ok
     end
