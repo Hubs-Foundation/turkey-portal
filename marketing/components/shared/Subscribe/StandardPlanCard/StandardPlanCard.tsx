@@ -56,7 +56,7 @@ const StandardPlanCard = () => {
 
   return (
     <BasePlanCard
-      title={enabledStarterPlan() ? 'Standard' : 'Early Access Hub'}
+      title="Early Access Hub"
       color="warm"
       price={
         <Price
