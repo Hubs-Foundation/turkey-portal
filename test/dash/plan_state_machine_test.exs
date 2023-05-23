@@ -5,7 +5,8 @@ defmodule Dash.PlanStateMachineTest do
   import Dash.Utils, only: [capability_string: 0]
 
   setup do
-    %{account: Repo.insert!(%Account{})}
+    Mox.verify_on_exit!()
+    %{account: Repo.insert!(%Account{email: "dummy@test.com"})}
   end
 
   describe "handle_event/2" do
@@ -216,6 +217,7 @@ defmodule Dash.PlanStateMachineTest do
         assert "1.953125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p1" === payload["tier"]
+        assert account.email === payload["useremail"]
 
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
@@ -314,6 +316,7 @@ defmodule Dash.PlanStateMachineTest do
         assert "0.48828125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p0" === payload["tier"]
+        assert account.email === payload["useremail"]
 
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)

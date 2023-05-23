@@ -37,7 +37,8 @@ defmodule Dash.OrchClient do
     )
   end
 
-  def update_hub(%Hub{} = hub, opts \\ []) when is_list(opts) do
+  def update_hub(fxa_email, %Hub{} = hub, opts \\ [])
+      when is_binary(fxa_email) and is_list(opts) do
     disable_branding? = Keyword.get(opts, :disable_branding?, false)
     reset_branding? = Keyword.get(opts, :reset_branding?, false)
 
@@ -50,7 +51,8 @@ defmodule Dash.OrchClient do
         reset_branding: reset_branding?,
         storage_limit: Float.to_string(hub.storage_limit_mb / 1024),
         subdomain: hub.subdomain,
-        tier: hub.tier
+        tier: hub.tier,
+        useremail: fxa_email
       }),
       [],
       hackney: [:insecure]

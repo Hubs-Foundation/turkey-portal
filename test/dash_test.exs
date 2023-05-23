@@ -221,6 +221,7 @@ defmodule DashTest do
         assert "0.48828125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p0" === payload["tier"]
+        assert account.email === payload["useremail"]
 
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
@@ -275,6 +276,7 @@ defmodule DashTest do
         assert "0.48828125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p0" === payload["tier"]
+        assert account.email === payload["useremail"]
 
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
@@ -510,6 +512,7 @@ defmodule DashTest do
         assert "1.953125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p1" === payload["tier"]
+        assert account.email === payload["useremail"]
 
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
@@ -529,7 +532,7 @@ defmodule DashTest do
 
   @spec create_account :: Account.t()
   defp create_account,
-    do: Account.find_or_create_account_for_fxa_uid("dummy UID")
+    do: Account.find_or_create_account_for_fxa_uid("dummy UID", "dummy@test.com")
 
   defp stub_failed_ret_patch_update_email() do
     Mox.stub(HttpMock, :patch, fn url, _body, _headers, _opts ->
