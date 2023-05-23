@@ -7,7 +7,7 @@ import { DASH_ROOT_DOMAIN } from 'config';
  * @param RoutesE
  * @returns redirect
  */
-export const redirectToAuthServer = (callbackRoute: RoutesE | null) => {
+export const redirectToAuthServer = (callbackRoute: RoutesE | null = null) => {
   return {
     redirect: {
       source: RoutesE.DASHBOARD,
