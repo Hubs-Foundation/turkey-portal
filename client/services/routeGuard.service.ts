@@ -17,7 +17,7 @@ import { CookiesE } from 'types/Cookies';
 import { IncomingMessage } from 'http';
 import { setCookies } from 'cookies-next';
 import { localFeature } from '../util/featureFlag';
-import { AccountT, PlansE } from 'types/General';
+import { AccountT } from 'types/General';
 
 type UnauthenticatedResponseT = {
   status: Number | undefined;
