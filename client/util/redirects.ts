@@ -61,3 +61,17 @@ export const redirectToSubscribe = () => {
     },
   };
 };
+
+/**
+ * To Subscription
+ * @returns redirect
+ */
+export const redirectToConfirmPlan = () => {
+  return {
+    redirect: {
+      source: RoutesE.DASHBOARD,
+      destination: RoutesE.CONFIRM_PLAN,
+      permanent: false,
+    },
+  };
+};

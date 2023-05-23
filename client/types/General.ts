@@ -63,6 +63,11 @@ export type AccountT = {
 
 type PlansT = 'starter' | 'standard' | null;
 
+export enum PlansE {
+  p0 = 'starter',
+  p1 = 'standard',
+}
+
 export enum BadgeCategoriesE {
   PRIMARY = 'primary',
   SECONDARY = 'secondary',

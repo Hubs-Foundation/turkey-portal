@@ -1,9 +1,7 @@
 import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
 import { GetServerSidePropsContext } from 'next';
-import { pageRequireAuthentication } from 'services/routeGuard.service';
+import { confirmPlanRG } from 'services/routeGuard.service';
 import styles from './confirm-plan.module.scss';
-import { enabledStarterPlan } from 'util/featureFlag';
-import { redirectToDashboard } from 'util/redirects';
 import { useEffect } from 'react';
 import ConfirmPlanModal from '@Modals/ConfirmPlanModal/ConfirmPlanModal';
 
@@ -35,9 +33,8 @@ const ConfirmPlan = () => {
 
 export default ConfirmPlan;
 
-export const getServerSideProps = pageRequireAuthentication(
+export const getServerSideProps = confirmPlanRG(
   async (context: GetServerSidePropsContext) => {
-    if (!enabledStarterPlan()) return redirectToDashboard();
     // Your normal `getServerSideProps` code here
     return {
       props: {},
