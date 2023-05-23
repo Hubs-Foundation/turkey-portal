@@ -13,7 +13,9 @@ export const redirectToAuthServer = (callbackRoute: RoutesE | null) => {
       source: RoutesE.DASHBOARD,
       /** WARNING : auth server does not just take any ol url as a callback, 
       it needs to be added to "trustedClients" in turkey ops to work. */
-      destination: `https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}${callbackRoute}`,
+      destination: `https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}${
+        callbackRoute === null ? '' : callbackRoute
+      }`,
       permanent: false,
     },
   };
