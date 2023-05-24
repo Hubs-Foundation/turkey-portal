@@ -97,7 +97,6 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
       const submit = async () => {
         try {
           const resp = await updateHub(hub.hubId, updatedHub);
-          console.log('resp', resp);
           if (resp?.status === 200) {
             router.push({
               pathname: RoutesE.DASHBOARD,
