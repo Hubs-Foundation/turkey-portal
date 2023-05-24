@@ -31,7 +31,7 @@ const ErrorBox = ({
    * Contact Click
    */
   const handleContactClick = () => {
-    console.log('doing contact stuff');
+    window.open('mailto:hubs-feedback@mozilla.com');
   };
 
   return (

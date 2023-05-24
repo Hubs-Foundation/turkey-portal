@@ -7,7 +7,7 @@ import { DASH_ROOT_DOMAIN } from 'config';
  * @param RoutesE
  * @returns redirect
  */
-export const redirectToAuthServer = (callbackRoute: RoutesE | null) => {
+export const redirectToAuthServer = (callbackRoute: RoutesE | null = null) => {
   return {
     redirect: {
       source: RoutesE.DASHBOARD,
@@ -57,6 +57,20 @@ export const redirectToSubscribe = () => {
     redirect: {
       source: RoutesE.DASHBOARD,
       destination: RoutesE.SUBSCRIBE,
+      permanent: false,
+    },
+  };
+};
+
+/**
+ * To Subscription
+ * @returns redirect
+ */
+export const redirectToConfirmPlan = () => {
+  return {
+    redirect: {
+      source: RoutesE.DASHBOARD,
+      destination: RoutesE.CONFIRM_PLAN,
       permanent: false,
     },
   };

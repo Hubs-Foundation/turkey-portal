@@ -10,6 +10,7 @@ import {
   redirectToMarketingPage,
   redirectToDashboard,
   redirectToSubscribe,
+  redirectToConfirmPlan,
 } from '../util/redirects';
 import { RoutesE } from '../types/Routes';
 import { CookiesE } from 'types/Cookies';
@@ -87,6 +88,40 @@ function handleUnauthenticatedRedirects(
  **************************/
 
 /**
+ * Confirm Plan Route Guard
+ * @param gssp
+ * @returns
+ */
+export function confirmPlanRG(gssp: Function): GetServerSideProps | Redirect {
+  return async (context: GetServerSidePropsContext) => {
+    const { req } = context;
+
+    if (didSetTurkeyauthCookie(context)) {
+      return redirectToConfirmPlan();
+    }
+
+    // If no errors user is authenticated
+    try {
+      const account: AccountT = await getAccount(
+        req.headers as AxiosRequestHeaders
+      );
+
+      // If user has plan go to dashboard
+      if (account.hasPlan) {
+        return redirectToDashboard();
+      }
+
+      return await gssp(context, account);
+    } catch (error) {
+      return handleUnauthenticatedRedirects(
+        error as AxiosError,
+        req.url as RoutesE
+      );
+    }
+  };
+}
+
+/**
  * Dashboard Route Guard
  * @param gssp
  * @returns
@@ -107,7 +142,9 @@ export function requireAuthenticationAndSubscription(
 
     // If no errors user is authenticated
     try {
-      const account = await getAccount(req.headers as AxiosRequestHeaders);
+      const account: AccountT = await getAccount(
+        req.headers as AxiosRequestHeaders
+      );
 
       // User is authenticated
       if (account.hasSubscription || account.hasPlan) {
