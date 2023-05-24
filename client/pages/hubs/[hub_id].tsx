@@ -74,7 +74,7 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
    * Handle Form Submit
    */
   const handleFormSubmit = useCallback(
-    ({ name, subdomain }: HubFormCardT) => {
+    ({ subdomain }: HubFormCardT) => {
       /**
        * TODO:
        * Circle back with UX on how we can have a error state here and not
@@ -92,12 +92,12 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
       const updatedHub: UpdateHubT = {
         ...hub,
         subdomain: subdomain,
-        name: name,
       };
 
       const submit = async () => {
         try {
           const resp = await updateHub(hub.hubId, updatedHub);
+          console.log('resp', resp);
           if (resp?.status === 200) {
             router.push({
               pathname: RoutesE.DASHBOARD,

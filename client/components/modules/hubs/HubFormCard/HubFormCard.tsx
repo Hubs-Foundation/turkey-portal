@@ -52,7 +52,6 @@ const HubFormCard = ({
    */
   const formik = useFormik({
     initialValues: {
-      name: hub.name,
       subdomain: hub.subdomain,
     },
     validate,
@@ -176,20 +175,6 @@ const HubFormCard = ({
 
         <form onSubmit={formik.handleSubmit}>
           <div className={styles.form_contents}>
-            <Input
-              id="name"
-              maxLength={24}
-              classProp="u-width-100"
-              label="Hub Name"
-              placeholder="Hub Name"
-              required={true}
-              info="Character Limit 24"
-              name="name"
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.name}
-            />
-
             <div className={styles.address_wrapper}>
               <Input
                 id="subdomain"

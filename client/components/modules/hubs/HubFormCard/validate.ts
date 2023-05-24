@@ -1,5 +1,4 @@
 export interface FormValues {
-  name: string;
   subdomain: string;
 }
 
@@ -8,16 +7,12 @@ export interface FormValues {
  * @param FormValues
  * @returns Error Object | {}
  */
-const validate = ({ name, subdomain }: FormValues) => {
+const validate = ({ subdomain }: FormValues) => {
   // Init
   const errors: FormValues = {
-    name: '',
     subdomain: '',
   };
   const isValid = {};
-
-  // Name Validation
-  !name && (errors.name = `Required Name`);
 
   // Subdomain Validation
   !subdomain && (errors.subdomain = `Required Subdomain`);
@@ -36,7 +31,7 @@ const validate = ({ name, subdomain }: FormValues) => {
     } Cannot start or end with a hyphen (-)`);
 
   // No Errors, return empty error object
-  if (errors.name === '' && errors.subdomain === '') {
+  if (errors.subdomain === '') {
     return isValid;
   }
 
