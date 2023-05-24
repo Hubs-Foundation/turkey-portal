@@ -18,6 +18,7 @@ import { IncomingMessage } from 'http';
 import { setCookies } from 'cookies-next';
 import { localFeature } from '../util/featureFlag';
 import { AccountT } from 'types/General';
+import { PlansE } from 'types/General';
 
 type UnauthenticatedResponseT = {
   status: Number | undefined;
@@ -111,7 +112,47 @@ export function confirmPlanRG(gssp: Function): GetServerSideProps | Redirect {
         return redirectToDashboard();
       }
 
-      return await gssp(context, account);
+      return await gssp(context);
+    } catch (error) {
+      return handleUnauthenticatedRedirects(
+        error as AxiosError,
+        req.url as RoutesE
+      );
+    }
+  };
+}
+
+/**
+ * [hub_id] Route Guard
+ * @param gssp
+ * @returns
+ */
+export function hubIdRG(gssp: Function): GetServerSideProps | Redirect {
+  return async (context: GetServerSidePropsContext) => {
+    const { req } = context;
+
+    if (didSetTurkeyauthCookie(context)) {
+      return redirectToDashboard();
+    }
+
+    // If no errors user is authenticated
+    try {
+      const account: AccountT = await getAccount(
+        req.headers as AxiosRequestHeaders
+      );
+
+      // p0 plan doesn't have access to Hub name or subdomain change
+      if (account.planName === PlansE.p0) {
+        return redirectToDashboard();
+      }
+
+      // User is authenticated
+      if (account.hasSubscription) {
+        return await gssp(context);
+      }
+
+      // Authenticated but no subscription
+      return redirectToSubscribe();
     } catch (error) {
       return handleUnauthenticatedRedirects(
         error as AxiosError,
@@ -148,7 +189,7 @@ export function requireAuthenticationAndSubscription(
 
       // User is authenticated
       if (account.hasSubscription || account.hasPlan) {
-        return await gssp(context, account);
+        return await gssp(context);
       }
 
       // Authenticated but no subscription
@@ -186,7 +227,7 @@ export function pageRequireAuthentication(gssp: Function): GetServerSideProps {
         return redirectToDashboard();
       }
 
-      return await gssp(context, account);
+      return await gssp(context);
     } catch (error) {
       return handleUnauthenticatedRedirects(
         error as AxiosError,

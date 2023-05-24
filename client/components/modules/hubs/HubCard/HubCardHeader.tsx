@@ -3,9 +3,7 @@ import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { StatusE } from 'types/General';
 import styles from './HubCardHeader.module.scss';
-import { useSelector } from 'react-redux';
-import { selectAccount } from 'store/accountSlice';
-import { enabledStarterPlan } from 'util/featureFlag';
+import { useIsP0 } from 'hooks/usePlans';
 
 type HubCardHeaderPropsT = {
   hubId: string;
@@ -19,8 +17,7 @@ const HubCardHeader = ({
   classProp = '',
 }: HubCardHeaderPropsT) => {
   const router = useRouter();
-  const account = useSelector(selectAccount);
-  const hasStarterPlan = enabledStarterPlan() && account.planName === 'starter';
+  const isP0 = useIsP0();
 
   /**
    * Handle Setting Click
@@ -52,22 +49,20 @@ const HubCardHeader = ({
       </div>
 
       {/* Edit Hubs Details  */}
-      {!hasStarterPlan &&
-        status !== StatusE.CREATING &&
-        status !== StatusE.UPDATING && (
-          <Dropdown
-            alignment="right"
-            width={164}
-            cta={
-              <Button
-                icon="more-vertical"
-                label="toggle"
-                category={ButtonCategoriesE.PRIMARY_CLEAR}
-              />
-            }
-            content={DropdownContent}
-          />
-        )}
+      {!isP0 && status !== StatusE.CREATING && status !== StatusE.UPDATING && (
+        <Dropdown
+          alignment="right"
+          width={164}
+          cta={
+            <Button
+              icon="more-vertical"
+              label="toggle"
+              category={ButtonCategoriesE.PRIMARY_CLEAR}
+            />
+          }
+          content={DropdownContent}
+        />
+      )}
     </div>
   );
 };
