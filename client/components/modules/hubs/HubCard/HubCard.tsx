@@ -18,7 +18,7 @@ type HubCardPropsT = {
 
 const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
   const storeContext = useContext(StoreContext);
-  const { name, hubId, status, subdomain, lastError } = hub;
+  const { hubId, status, subdomain, lastError } = hub;
   const [showRevertError, setShowRevertError] = useState<boolean>(
     lastError === LastErrorE.SUBDOMAIN_REVERTED
   );
@@ -110,7 +110,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
         <div className={styles.card_body}>
           {/* TODO - figure out if a name is applied to a hub off the bat before we put "untitled hub" 
           here statically, might be able to just pull w/e through  */}
-          <div className={`${styles.card_name} ${styles[status]}`}>{name}</div>
+          <div className={`${styles.card_name} ${styles[status]}`}>Hub</div>
 
           {/* Did Revert Error  */}
           {showRevertError && (
