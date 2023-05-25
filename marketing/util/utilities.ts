@@ -1,4 +1,4 @@
-import { RegionsT } from 'types';
+import { RegionCodeT } from 'types/Countries';
 import getEnvVariable from 'config';
 
 const RegionCurrency = {
@@ -17,7 +17,7 @@ const RegionCurrency = {
  * @param region
  * @returns RegionCurrency[country code]
  */
-export const getCurrencyMeta = (region: RegionsT) => {
+export const getCurrencyMeta = (region: RegionCodeT) => {
   return region && RegionCurrency[region]
     ? RegionCurrency[region]
     : RegionCurrency.US;

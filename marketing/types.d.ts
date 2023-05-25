@@ -90,8 +90,3 @@ export type NewContactT = {
   activity: string;
   message: string;
 };
-
-/**
- * UTILITY TYPES
- */
-export type RegionsT = 'DE' | 'US';

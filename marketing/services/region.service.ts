@@ -1,10 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
 const API_PATH = '/api/v1/region';
 import getEnvVariable from 'config';
-import { RegionsT } from 'types/Countries';
+import { RegionCodeT } from 'types/Countries';
 
 export type RegionObjT = {
-  region: RegionsT;
+  region: RegionCodeT;
 };
 
 /**

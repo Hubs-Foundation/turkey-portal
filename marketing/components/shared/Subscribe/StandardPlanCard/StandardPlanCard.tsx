@@ -1,16 +1,16 @@
 import getEnvVariable from 'config';
 import { useCallback, useEffect, useState } from 'react';
 import { getRegion } from 'services/region.service';
-import { CountriesE, RegionsT } from 'types/Countries';
+import { CountriesE, RegionCodeT } from 'types/Countries';
 import { BasePlanCard, Price } from '../BasePlanCard/BasePlanCard';
 import { standardPlanInfoCopy } from '../BasePlanCard/planInfoCopy';
 import { Button, Checkbox } from '@mozilla/lilypad-ui';
 
-const TAX_REGIONS: RegionsT[] = ['US'];
+const TAX_REGIONS: RegionCodeT[] = ['US'];
 
 const StandardPlanCard = () => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
-  const [region, setRegion] = useState<string | null>(null);
+  const [region, setRegion] = useState<RegionCodeT>(null);
 
   useEffect(() => {
     const fetchRegion = async () => {
@@ -51,7 +51,7 @@ const StandardPlanCard = () => {
     setLocationConfirmed(value);
   }, []);
 
-  const hasTax = TAX_REGIONS.includes(region as RegionsT);
+  const hasTax = TAX_REGIONS.includes(region);
 
   return (
     <BasePlanCard
@@ -59,7 +59,7 @@ const StandardPlanCard = () => {
       color="warm"
       price={
         <Price
-          region={region as RegionsT}
+          region={region}
           price="20"
           priceCadence={`per month${hasTax ? ' + tax' : ''}`}
         />
