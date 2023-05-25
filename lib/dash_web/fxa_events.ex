@@ -62,11 +62,7 @@ defmodule DashWeb.FxaEvents do
   @spec handle_profile_change(String.t(), event_data) :: :ok
   def handle_profile_change(fxa_uid, %{"email" => new_email}) do
     account = Dash.Account.account_for_fxa_uid(fxa_uid)
-
-    with :error <- Dash.change_email(account, new_email) do
-      Logger.error("FxA profile event error: Could not update the accounts email with new email")
-      :ok
-    end
+    :ok = Dash.change_email(account, new_email)
   end
 
   # Not an email changed event, other profile data changed, no action
