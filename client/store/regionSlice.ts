@@ -13,7 +13,7 @@ const regionSlice = createSlice({
     setRegion(state, action) {
       if (!action.payload) return;
 
-      // Initialize Account Values
+      // Initialize Region Values
       const { code } = action.payload;
       state.code = code;
     },
