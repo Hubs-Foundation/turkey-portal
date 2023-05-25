@@ -129,16 +129,20 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should error on duplicate subdomains", %{conn: conn} do
-      stub_ret_rewrite_assets()
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       expect_orch_patch()
+      %{hub: hub1} = create_test_account_and_hub(fxa_uid: "dummy-uid1")
+      %{hub: hub2} = create_test_account_and_hub(fxa_uid: "dummy-uid2")
 
-      %{hub: hub_one} = create_test_account_and_hub()
-      %{hub: hub_two} = create_test_account_and_hub()
+      patch_hub(conn, hub1, %{subdomain: "new-subdomain"},
+        expected_status: :ok,
+        token_opts: [claims: %{"sub" => "dummy-uid1"}]
+      )
 
-      conn |> patch_subdomain(hub_one, "new-subdomain", expected_status: :ok)
-
-      conn |> patch_subdomain(hub_two, "new-subdomain", expected_status: :bad_request)
+      assert patch_hub(conn, hub2, %{subdomain: "new-subdomain"},
+               expected_status: :bad_request,
+               token_opts: [claims: %{"sub" => "dummy-uid2"}]
+             )
     end
 
     test "should allow valid subdomains", %{conn: conn} do
@@ -238,15 +242,23 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     } do
       stub_orch_patch_with_pausing(self(), response: :error, status_code: :service_unavailable)
 
-      %{hub: hub} = create_test_account_and_hub(subdomain: "test-subdomain")
+      %{hub: hub} =
+        create_test_account_and_hub(fxa_uid: "dummy-uid1", subdomain: "test-subdomain")
 
-      conn |> patch_subdomain(hub, "new-subdomain", expected_status: :ok)
+      patch_hub(conn, hub, %{subdomain: "new-subdomain"},
+        expected_status: :ok,
+        token_opts: [claims: %{"sub" => "dummy-uid1"}]
+      )
+
       stub_pid = wait_for_orch_patch()
 
-      create_test_account_and_hub(subdomain: "test-subdomain")
+      create_test_account_and_hub(fxa_uid: "dummy-uid2", subdomain: "test-subdomain")
 
       send(stub_pid, {:continue})
-      retry_and_assert_hub_status(conn, hub, "subdomain_error")
+
+      retry_and_assert_hub_status(conn, hub, "subdomain_error",
+        token_opts: [claims: %{"sub" => "dummy-uid1"}]
+      )
     end
 
     test "should not allow updates while hub is already updating", %{conn: conn} do
@@ -272,8 +284,10 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   describe "Subdomain validation" do
     test "returns an error for duplicate subdomains", %{conn: conn} do
       stub_ret_rewrite_assets()
-      create_test_account_and_hub(subdomain: "test-subdomain-one")
-      %{hub: current_hub} = create_test_account_and_hub(subdomain: "test-subdomain-two")
+      create_test_account_and_hub(fxa_uid: "dummy-uid1", subdomain: "test-subdomain-one")
+
+      %{hub: current_hub} =
+        create_test_account_and_hub(fxa_uid: "dummy-uid2", subdomain: "test-subdomain-two")
 
       %{"success" => false, "error" => "subdomain_taken"} =
         conn |> post_validate_subdomain(current_hub.hub_id, "test-subdomain-one")
@@ -461,8 +475,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       expect_orch_patch()
 
-      create_test_account_and_hub()
-
       %{hub: hub} = create_test_account_and_hub()
       assert hub.subdomain =~ "test-subdomain"
 
@@ -476,9 +488,9 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
   # Mocks and Setup Helpers
 
-  defp retry_and_assert_hub_status(conn, hub, expected_status) do
+  defp retry_and_assert_hub_status(conn, hub, expected_status, opts) do
     retry with: constant_backoff(10) |> expiry(2000) do
-      %{"status" => status} = get_hub(conn, hub)
+      %{"status" => status} = get_hub(conn, hub, opts)
 
       case status do
         ^expected_status -> {:ok, status}

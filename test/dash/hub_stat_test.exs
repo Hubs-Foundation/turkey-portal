@@ -12,8 +12,8 @@ defmodule Dash.HubStatTest do
       stub_ret_get()
 
       # Set ready hubs in table
-      %{hub: hub1} = create_test_account_and_hub()
-      %{hub: hub2} = create_test_account_and_hub()
+      %{hub: hub1} = create_test_account_and_hub(fxa_uid: "dummy-uid1")
+      %{hub: hub2} = create_test_account_and_hub(fxa_uid: "dummy-uid2")
 
       HubStat.job_record_hub_stats()
 
