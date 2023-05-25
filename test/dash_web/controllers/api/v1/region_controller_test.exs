@@ -9,14 +9,14 @@ defmodule DashWeb.Api.V1.RegionControllerTest do
         |> get("/api/v1/region")
 
       assert response(conn, 200) ==
-               Jason.encode!(%{region: "DE"})
+               Jason.encode!(%{code: "DE"})
     end
 
     test "should return nil if region is not present", %{conn: conn} do
       conn = get(conn, "/api/v1/region")
 
       assert response(conn, 200) ==
-               Jason.encode!(%{region: nil})
+               Jason.encode!(%{code: nil})
     end
   end
 end
