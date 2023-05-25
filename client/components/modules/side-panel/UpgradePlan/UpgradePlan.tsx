@@ -1,27 +1,11 @@
 import styles from './UpgradePlan.module.scss';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
-import { useEffect, useState } from 'react';
-import { RegionObjT, getRegion } from 'services/region.service';
-import { RegionsT } from 'types/Countries';
 import { getRegionPricePageUrl } from 'util/utilities';
+import { useSelector } from 'react-redux';
+import { selectRegion } from 'store/regionSlice';
 
 const UpgradePlan = () => {
-  const [region, setRegion] = useState<RegionsT>(null);
-
-  useEffect(() => {
-    const fetchRegion = async () => {
-      try {
-        const data: RegionObjT = await getRegion();
-        setRegion(data.region);
-      } catch (e) {
-        console.error(e);
-        setRegion(null);
-      }
-    };
-    fetchRegion();
-  }, []);
-
-  const url = getRegionPricePageUrl(region);
+  const { code } = useSelector(selectRegion);
 
   return (
     <div className={styles.upgrade_container}>
@@ -37,7 +21,7 @@ const UpgradePlan = () => {
           category={ButtonCategoriesE.SECONDARY_SOLID}
           text="Upgrade"
           label="Upgrade"
-          href={url}
+          href={getRegionPricePageUrl(code)}
         />
       </div>
     </div>

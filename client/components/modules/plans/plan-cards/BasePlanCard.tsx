@@ -1,14 +1,14 @@
 import { ReactNode } from 'react';
 import { PlanInfoCopyT } from '../PlanInfoCopy';
 import styles from './BasePlanCard.module.scss';
-import { RegionsT } from 'types/Countries';
+import { RegionCodeT } from 'types/Countries';
 import { getCurrencyMeta } from 'util/utilities';
 import InfoBlock from '@Shared/InfoBlock/InfoBlock';
 
 // PRICE DISPLAY COMPONENT
 // USED FOR BasePlanCard "PRICE" PROP
 type PricePropsT = {
-  region: RegionsT | null;
+  region: RegionCodeT;
   price: string;
   priceCadence?: string;
 };

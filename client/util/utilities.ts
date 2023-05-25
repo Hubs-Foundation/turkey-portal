@@ -1,5 +1,5 @@
 import { FXA_PAYMENT_URL, PLAN_ID_EA, PLAN_ID_EA_DE, PRODUCT_ID } from 'config';
-import { RegionCurrency, RegionsT } from 'types/Countries';
+import { RegionCurrency, RegionCodeT } from 'types/Countries';
 
 /**
  * Convert abbrev to symbol
@@ -24,7 +24,7 @@ export const convertCurrency = (currency: string | null) => {
  * @param region
  * @returns RegionCurrency[country code]
  */
-export const getCurrencyMeta = (region: RegionsT) => {
+export const getCurrencyMeta = (region: RegionCodeT) => {
   return region && RegionCurrency[region]
     ? RegionCurrency[region]
     : RegionCurrency.US;
@@ -32,13 +32,25 @@ export const getCurrencyMeta = (region: RegionsT) => {
 
 /**
  * Get the pricing page URL for a region, return default (US) pricing page if region not found
- * @param region any region
+ * @param code RegionCodeT
  * @returns URL to pricing page
  */
-export const getRegionPricePageUrl = (region: RegionsT) => {
-  const regionUpperCase = region?.toUpperCase();
+export const getRegionPricePageUrl = (code: RegionCodeT) => {
+  let planId;
 
-  const planId = regionUpperCase === 'DE' ? PLAN_ID_EA_DE : PLAN_ID_EA;
+  switch (code) {
+    case 'US':
+      planId = PLAN_ID_EA;
+      break;
+
+    case 'DE':
+      planId = PLAN_ID_EA_DE;
+      break;
+
+    default:
+      planId = PLAN_ID_EA;
+      break;
+  }
 
   return `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${planId}`;
 };

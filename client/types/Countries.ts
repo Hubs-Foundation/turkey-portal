@@ -2,7 +2,11 @@ export enum CountriesE {
   GERMANY = 'DE',
 }
 
-export type RegionsT = 'DE' | 'US' | null;
+export type RegionCodeT = 'DE' | 'US' | null;
+
+export type RegionT = {
+  code: RegionCodeT;
+};
 
 export const RegionCurrency = {
   DE: {
