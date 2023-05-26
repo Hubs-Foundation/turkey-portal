@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { createClient } from 'contentful';
-import { LinkT, HeroT, CustomSectionsT, PathCollectionT } from 'types';
+import { NavigationT, HeroT, CustomSectionsT, PathCollectionT } from 'types';
 import { Entry, EntryCollection } from 'contentful';
 import {
   createNavigationQuery,
@@ -70,9 +70,11 @@ export const getStaticPathEntries = async (
 /**
  * Get Navigation Content
  * @param id
- * @returns LinkT[]
+ * @returns NavigationT[]
  */
-export const getNavigationLinksEntry = async (id: string): Promise<LinkT[]> => {
+export const getNavigationLinksEntry = async (
+  id: string
+): Promise<NavigationT> => {
   const { data, statusText } = await axios
     .post(URL, { query: createNavigationQuery(id) }, { ...PROTOCOLS })
     .then(({ data }: AxiosResponse) => data);
@@ -82,7 +84,13 @@ export const getNavigationLinksEntry = async (id: string): Promise<LinkT[]> => {
     throw statusText;
   }
 
-  return data.navigation.linksCollection.items;
+  const { linksCollection, bannerText, bannerIcon } = data.navigation;
+
+  return {
+    bannerText,
+    bannerIcon,
+    links: linksCollection.items,
+  };
 };
 
 /**

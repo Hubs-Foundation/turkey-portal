@@ -1,37 +1,52 @@
 import { useCallback } from 'react';
 import styles from './MainNav.module.scss';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { Button, ButtonCategoriesE, Icon } from '@mozilla/lilypad-ui';
 import { useDesktopDown } from 'hooks/useMediaQuery';
-import { useRouter } from 'next/router';
 import getEnvVariable from 'config';
+import { NavigationT } from 'types';
 
 type MainNavPropsT = {
+  navData?: NavigationT;
+  mobileMenuClick: () => void;
   classProp?: string;
-  MobileMenuClick: Function;
 };
 
-const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
+const MainNav = ({
+  navData,
+  mobileMenuClick,
+  classProp = '',
+}: MainNavPropsT) => {
   const isDesktopDown = useDesktopDown();
-  const router = useRouter();
 
   /**
    * Handle Menu Click
    */
   const handleMobileMenuClick = useCallback(() => {
-    MobileMenuClick && MobileMenuClick();
-  }, [MobileMenuClick]);
-
-  const handleGetStartedClick = useCallback(() => {
-    router.push('/#subscribe');
-  }, [router]);
+    mobileMenuClick && mobileMenuClick();
+  }, [mobileMenuClick]);
 
   /**
    * Main Nav JSX
    */
   return (
     <nav className={`${styles.main_nav} ${classProp}`}>
-      <div className={styles.banner_gradient} />
+      <div className={styles.banner_gradient}>
+        {navData?.bannerText && (
+          <div className={styles.marquee_container}>
+            <div className={styles.marquee}>
+              <section className={styles.banner_text}>
+                <p className="body-sm-bold flex-align-center">
+                  <div>
+                    <Icon name={navData.bannerIcon} classProp="mr-10 mt-3" />
+                  </div>
+                  {navData?.bannerText}
+                </p>
+              </section>
+            </div>
+          </div>
+        )}
+      </div>
 
       <div className={styles.main_nav_wrapper}>
         <div className={styles.main_nav_container}>
@@ -89,7 +104,7 @@ const MainNav = ({ classProp = '', MobileMenuClick }: MainNavPropsT) => {
                 <Button
                   label="See Pricing and subscribe to Hubs"
                   category={ButtonCategoriesE.PRIMARY_SOLID}
-                  onClick={handleGetStartedClick}
+                  href="/#subscribe"
                   text="See Pricing"
                 />
               </div>
