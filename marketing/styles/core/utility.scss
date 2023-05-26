@@ -34,6 +34,10 @@
   @include body-md-bold();
 }
 
+.body-sm-bold {
+  @include body-sm-bold();
+}
+
 // Link
 .primary-link {
   @include primary-link();

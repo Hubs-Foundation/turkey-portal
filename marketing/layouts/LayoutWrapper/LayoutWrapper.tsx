@@ -1,40 +1,28 @@
-import { useCallback, ReactNode, useContext, useState } from 'react';
-import { useDesktopDown } from 'hooks/useMediaQuery';
+import { ReactNode, useContext } from 'react';
 import { ThemeContext } from 'contexts/ThemeProvider';
-import MainNav from '@Navigation/MainNav/MainNav';
+import Nav from '@Navigation/Nav/Nav';
 import Footer from '@Navigation/Footer/Footer';
-import MobileSideNav from '@Navigation/MobileSideNav/MobileSideNav';
+import { NavigationT } from 'types';
 
-type LayoutWrapperProps = {
+type LayoutWrapperPropsT = {
+  navData?: NavigationT;
   children: ReactNode;
 };
 
 /**
-Note: This component is used to abstract the layout logic from _app.tsx to keep that
-file clean. This is a good place to managage global contexts, for example we are
+Note: This component is used to abstract the layout logic to keep files clean. 
+This is a good place to managage global contexts, for example we are
 watching the color theme below, Another example might be a mobile nav toggle.
 **/
-const LayoutWrapper = ({ children }: LayoutWrapperProps) => {
+const LayoutWrapper = ({ navData, children }: LayoutWrapperPropsT) => {
   const themeContext = useContext(ThemeContext);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-  const isDesktopDown = useDesktopDown();
-
-  const toggleMobileNav = useCallback(() => {
-    setIsMobileMenuOpen((state) => !state);
-  }, []);
 
   return (
-    // Hard coding light for deving
+    // Hard coding light while dark theme is being designed
     // <main data-theme={themeContext.theme}>
     <main data-theme="light">
       <div id="modal_portal" />
-      <MainNav MobileMenuClick={toggleMobileNav} />
-      {isDesktopDown && (
-        <MobileSideNav
-          MobileMenuClick={toggleMobileNav}
-          isOpen={isMobileMenuOpen}
-        />
-      )}
+      <Nav navData={navData} />
       {children}
       <Footer />
     </main>

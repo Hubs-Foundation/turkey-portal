@@ -15,6 +15,8 @@ export const createNavigationQuery = (id: string) => {
           }
         }
       }
+      bannerText 
+      bannerIcon
     }
   }
 `;

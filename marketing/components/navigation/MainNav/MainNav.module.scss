@@ -67,6 +67,29 @@
 }
 
 .banner_gradient {
-  padding: 4px;
+  padding: 4px 12px;
   background: $gradient-warm;
+  display: flex;
+  justify-content: center;
+}
+
+.banner_text {
+  padding: 4px;
+  display: flex;
+  justify-content: center;
+  @include mobile-down {
+    white-space: nowrap;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    justify-content: flex-start;
+
+    &::-webkit-scrollbar {
+      display: none;
+      width: 0 !important;
+    }
+  }
+
+  p {
+    text-align: center;
+  }
 }
