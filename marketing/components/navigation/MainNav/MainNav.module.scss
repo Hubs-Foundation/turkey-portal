@@ -66,30 +66,69 @@
   }
 }
 
-.banner_gradient {
-  padding: 4px 12px;
-  background: $gradient-warm;
-  display: flex;
-  justify-content: center;
+/***********************
+  ANNOUNCEMENT BANNER
+***********************/
+
+.banner {
+  &_gradient {
+    padding: 4px 12px;
+    background: $gradient-warm;
+  }
+
+  &_text {
+    padding: 4px;
+    display: flex;
+    justify-content: center;
+    @include mobile-down {
+      white-space: nowrap;
+      overflow-y: scroll;
+      scrollbar-width: none;
+      justify-content: flex-start;
+
+      &::-webkit-scrollbar {
+        display: none;
+        width: 0 !important;
+      }
+    }
+
+    p {
+      text-align: center;
+    }
+  }
 }
 
-.banner_text {
-  padding: 4px;
-  display: flex;
-  justify-content: center;
-  @include mobile-down {
-    white-space: nowrap;
-    overflow-y: scroll;
-    scrollbar-width: none;
-    justify-content: flex-start;
-
-    &::-webkit-scrollbar {
-      display: none;
-      width: 0 !important;
+.marquee {
+  &_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @include mobile-down {
+      padding: 20px;
     }
   }
 
-  p {
-    text-align: center;
+  & section {
+    @include mobile-down {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 20s linear infinite;
+    }
+  }
+
+  @include mobile-down {
+    white-space: nowrap;
+    overflow: hidden;
+    position: absolute;
+    width: 100vw;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100%, 0);
   }
 }
