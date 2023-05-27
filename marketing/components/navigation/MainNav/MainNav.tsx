@@ -36,12 +36,14 @@ const MainNav = ({
           <div className={styles.marquee_container}>
             <div className={styles.marquee}>
               <section className={styles.banner_text}>
-                <p className="body-sm-bold flex-align-center">
+                <div className="flex-align-center">
                   <div>
                     <Icon name={navData.bannerIcon} classProp="mr-10 mt-3" />
                   </div>
-                  {navData?.bannerText}
-                </p>
+                  <p className="body-sm-bold flex-align-center">
+                    {navData?.bannerText}
+                  </p>
+                </div>
               </section>
             </div>
           </div>
