@@ -3,7 +3,6 @@ defmodule DashWeb.FxaEvents do
    Handles events sent from FxA via webhook
   """
   import Dash.Utils, only: [capability_string: 0]
-  import Ecto.Query, only: [from: 2]
   require Logger
 
   @type event_data :: %{String.t() => String.t() | [String.t(), ...]}
