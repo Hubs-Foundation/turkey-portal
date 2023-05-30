@@ -8,13 +8,13 @@ import InfoBlock from '../InfoBlock/InfoBlock';
 // PRICE DISPLAY COMPONENT
 // USED FOR BasePlanCard "PRICE" PROP
 type PricePropsT = {
-  region: RegionCodeT;
+  regionCode: RegionCodeT;
   price: string;
   priceCadence?: string;
 };
 
-export const Price = ({ region, price, priceCadence }: PricePropsT) => {
-  const currency = region ? getCurrencyMeta(region) : null;
+export const Price = ({ regionCode, price, priceCadence }: PricePropsT) => {
+  const currency = regionCode ? getCurrencyMeta(regionCode) : null;
 
   return (
     <div className={`${styles.price_container}`}>

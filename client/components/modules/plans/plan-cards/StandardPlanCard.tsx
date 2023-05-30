@@ -10,21 +10,21 @@ import { selectRegion } from 'store/regionSlice';
 const TAX_REGIONS: RegionCodeT[] = ['US'];
 const StandardPlanCard = () => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
-  const { code } = useSelector(selectRegion);
+  const { regionCode } = useSelector(selectRegion);
 
   /**
    * Handle routing user to correct payment plan
    */
   const handleSubscribeClick = useCallback(() => {
-    const url = getRegionPricePageUrl(code);
+    const url = getRegionPricePageUrl(regionCode);
     window.open(url);
-  }, [code]);
+  }, [regionCode]);
 
   const onToggleLocationConfirmation = useCallback((value: boolean) => {
     setLocationConfirmed(value);
   }, []);
 
-  const hasTax = TAX_REGIONS.includes(code);
+  const hasTax = TAX_REGIONS.includes(regionCode);
 
   return (
     <BasePlanCard
@@ -33,7 +33,7 @@ const StandardPlanCard = () => {
       price={
         <Price
           price="20"
-          region={code}
+          region={regionCode}
           priceCadence={`per month${hasTax ? ' + tax' : ''}`}
         />
       }

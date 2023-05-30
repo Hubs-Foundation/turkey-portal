@@ -14,12 +14,12 @@ const RegionCurrency = {
 
 /**
  * Get meta data about a region
- * @param region
+ * @param regionCode
  * @returns RegionCurrency[country code]
  */
-export const getCurrencyMeta = (region: RegionCodeT) => {
-  return region && RegionCurrency[region]
-    ? RegionCurrency[region]
+export const getCurrencyMeta = (regionCode: RegionCodeT) => {
+  return regionCode && RegionCurrency[regionCode]
+    ? RegionCurrency[regionCode]
     : RegionCurrency.US;
 };
 

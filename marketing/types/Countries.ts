@@ -4,6 +4,10 @@ export enum CountriesE {
 
 export type RegionCodeT = 'DE' | 'US' | null;
 
+export type RegionT = {
+  regionCode: RegionCodeT;
+};
+
 export const RegionCurrency = {
   DE: {
     abbrev: 'EUR',

@@ -3,7 +3,7 @@ import { RootStateT } from './store';
 import { RegionT } from 'types/Countries';
 
 const initialState: RegionT = {
-  code: 'US',
+  regionCode: 'US',
 };
 
 const regionSlice = createSlice({
@@ -14,8 +14,8 @@ const regionSlice = createSlice({
       if (!action.payload) return;
 
       // Initialize Region Values
-      const { code } = action.payload;
-      state.code = code;
+      const { regionCode } = action.payload;
+      state.regionCode = regionCode;
     },
   },
 });

@@ -10,16 +10,17 @@ const TAX_REGIONS: RegionCodeT[] = ['US'];
 
 const StandardPlanCard = () => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
-  const [region, setRegion] = useState<RegionCodeT>(null);
+  // TODO : set up the store and add region to it.
+  const [regionCode, setRegionCode] = useState<RegionCodeT>(null);
 
   useEffect(() => {
     const fetchRegion = async () => {
       try {
         const data = await getRegion();
-        setRegion(data.region);
+        setRegionCode(data.regionCode);
       } catch (e) {
         console.error(e);
-        setRegion(null);
+        setRegionCode(null);
       }
     };
     fetchRegion();
@@ -30,8 +31,8 @@ const StandardPlanCard = () => {
    * @return Boolean
    */
   const isEuro = useCallback((): boolean => {
-    return Boolean(region && region.toUpperCase() === CountriesE.GERMANY);
-  }, [region]);
+    return Boolean(regionCode === CountriesE.GERMANY);
+  }, [regionCode]);
 
   /**
    * Handle routing user to correct payment plan
@@ -51,7 +52,7 @@ const StandardPlanCard = () => {
     setLocationConfirmed(value);
   }, []);
 
-  const hasTax = TAX_REGIONS.includes(region);
+  const hasTax = TAX_REGIONS.includes(regionCode);
 
   return (
     <BasePlanCard
@@ -59,7 +60,7 @@ const StandardPlanCard = () => {
       color="warm"
       price={
         <Price
-          region={region}
+          regionCode={regionCode}
           price="20"
           priceCadence={`per month${hasTax ? ' + tax' : ''}`}
         />

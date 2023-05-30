@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { selectRegion } from 'store/regionSlice';
 
 const UpgradePlan = () => {
-  const { code } = useSelector(selectRegion);
+  const { regionCode } = useSelector(selectRegion);
 
   return (
     <div className={styles.upgrade_container}>
@@ -21,7 +21,7 @@ const UpgradePlan = () => {
           category={ButtonCategoriesE.SECONDARY_SOLID}
           text="Upgrade"
           label="Upgrade"
-          href={getRegionPricePageUrl(code)}
+          href={getRegionPricePageUrl(regionCode)}
         />
       </div>
     </div>

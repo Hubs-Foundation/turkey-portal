@@ -4,17 +4,17 @@ defmodule DashWeb.Api.V1.RegionController do
   @region_header "x-client-region"
 
   def show(conn, _) do
-    code =
+    region_code =
       case get_req_header(conn, @region_header) do
-        [code] ->
-          code
+        [region_code] ->
+          region_code
 
         [] ->
           nil
       end
 
     conn
-    |> send_resp(200, Jason.encode!(%{code: code}))
+    |> send_resp(200, Jason.encode!(%{regionCode: region_code}))
   end
 
   def region_header, do: @region_header

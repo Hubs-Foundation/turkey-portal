@@ -35,10 +35,10 @@ export const getCurrencyMeta = (region: RegionCodeT) => {
  * @param code RegionCodeT
  * @returns URL to pricing page
  */
-export const getRegionPricePageUrl = (code: RegionCodeT) => {
+export const getRegionPricePageUrl = (regionCode: RegionCodeT) => {
   let planId;
 
-  switch (code) {
+  switch (regionCode) {
     case 'US':
       planId = PLAN_ID_EA;
       break;
