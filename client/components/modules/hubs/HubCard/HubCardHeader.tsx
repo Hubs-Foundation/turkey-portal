@@ -37,6 +37,9 @@ const HubCardHeader = ({
     </div>
   );
 
+  const dropdownVisible =
+    !isP0 && status !== StatusE.CREATING && status !== StatusE.UPDATING;
+
   return (
     <div className={`${classProp} ${styles.card_header}`}>
       <div className={styles.card_status_wrapper}>
@@ -49,7 +52,7 @@ const HubCardHeader = ({
       </div>
 
       {/* Edit Hubs Details  */}
-      {!isP0 && status !== StatusE.CREATING && status !== StatusE.UPDATING && (
+      {dropdownVisible && (
         <Dropdown
           alignment="right"
           width={164}

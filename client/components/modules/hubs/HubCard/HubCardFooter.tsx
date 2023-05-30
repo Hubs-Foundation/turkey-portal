@@ -20,7 +20,7 @@ const Tier = ({ tier }: TierPropsT) => {
         name={FormattedTierMap[tier]}
         category={BadgeCategoriesE.PRIMARY}
       />
-      <div>Hub Plan</div>
+      <p>Hub Plan</p>
     </div>
   );
 };
