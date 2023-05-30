@@ -3,7 +3,7 @@ defmodule Dash.Hub do
   import Ecto.Query
   import Ecto.Changeset
   require Logger
-  alias Dash.{Repo, RetClient, SubdomainDenial}
+  alias Dash.{Account, Repo, RetClient, SubdomainDenial}
 
   @type t :: %__MODULE__{}
 
@@ -95,34 +95,32 @@ defmodule Dash.Hub do
   def ensure_default_hub_is_ready(%Dash.Account{} = account, email, has_subscription?) do
     # Need subscription in order to create hub
     if has_subscription? and not has_hubs(account), do: create_default_hub(account, email)
-    hub = Repo.one(from h in Dash.Hub, where: h.account_id == ^account.account_id)
 
-    case hub && hub.status do
-      # TODO EA make own hub controller endpoint for waiting_until_ready_state
-      :creating ->
-        update_hub_status(hub)
+    # TODO EA make own hub controller endpoint for waiting_until_ready_state
+    if has_creating_hubs(account) or updating_hub?(account) do
+      [hub] = hubs_for_account(account)
 
-      :updating ->
-        Task.Supervisor.async(TaskSupervisor, fn -> update_hub_status(hub) end)
-        :ok
+      case RetClient.wait_until_healthy(hub) do
+        {:ok} ->
+          set_hub_to_ready(hub)
+          {:ok}
 
-      _ ->
-        :ok
+        {:error, err} ->
+          {:error, err}
+      end
+    else
+      {:ok}
     end
   end
 
-  @spec update_hub_status(Hub.t()) :: :ok | {:error, String.t()}
-  defp update_hub_status(hub) do
-    case RetClient.wait_until_healthy(hub) do
-      {:ok} ->
-        set_hub_to_ready(hub)
-        :ok
-
-      {:error, error} ->
-        Logger.error("Failed to update hub. Hub ID: #{hub.hub_id}. Error: #{inspect(error)}")
-        {:error, error}
-    end
-  end
+  @spec updating_hub?(Account.t()) :: boolean
+  defp updating_hub?(%Account{account_id: account_id}),
+    do:
+      Repo.exists?(
+        from h in Dash.Hub,
+          where: h.account_id == ^account_id,
+          where: h.status == :updating
+      )
 
   @hub_defaults %{
     name: "Untitled Hub",

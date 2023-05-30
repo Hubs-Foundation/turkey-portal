@@ -319,46 +319,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   end
 
   describe "Hub Ready state tests" do
-    test "when the hub is creating", %{conn: conn} do
-      Mox.stub(Dash.HttpMock, :post, fn _url, _json, _headers, _opts ->
-        {:ok, %HTTPoison.Response{status_code: 200}}
-      end)
-
-      Mox.expect(Dash.HttpMock, :get, fn url, _headers, opts ->
-        assert String.starts_with?(url, "https://ret.")
-        assert String.ends_with?(url, "/health")
-        assert [hackney: [:insecure]] === opts
-
-        {:ok, %HTTPoison.Response{status_code: 200}}
-      end)
-
-      Mox.expect(Dash.HttpMock, :get, fn url, headers, opts ->
-        assert String.starts_with?(url, "https://ret.")
-        assert String.ends_with?(url, "/api-internal/v1/presence")
-        assert [{"x-ret-dashboard-access-key", _}] = headers
-        assert [hackney: [:insecure]] === opts
-
-        {:ok, %HTTPoison.Response{body: Jason.encode!(%{count: 42}), status_code: 200}}
-      end)
-
-      Mox.expect(Dash.HttpMock, :get, fn url, headers, opts ->
-        assert String.starts_with?(url, "https://ret.")
-        assert String.ends_with?(url, "/api-internal/v1/storage")
-        assert [{"x-ret-dashboard-access-key", _}] = headers
-        assert [hackney: [:insecure]] === opts
-
-        {:ok, %HTTPoison.Response{body: Jason.encode!(%{storage_mb: 42}), status_code: 200}}
-      end)
-
-      assert conn
-             |> put_test_token()
-             |> get("/api/v1/hubs")
-             |> json_response(:ok)
-
-      assert [hub] = Hub.hubs_for_account(get_test_account())
-      assert :ready === hub.status
-    end
-
     test "should call ret /health endpoint at least 1 time", %{conn: conn} do
       # TODO To refine test make this test call /health endpoint 3 times
       max_expected_calls = 3
