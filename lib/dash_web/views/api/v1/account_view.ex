@@ -10,28 +10,16 @@ defmodule DashWeb.Api.V1.AccountView do
         hubs?: hubs?,
         plan_name: plan_name
       }) do
-    if Application.fetch_env!(:dash, :starter_plan_enabled?) do
-      %{
-        displayName: fxa_account_info.fxa_display_name,
-        email: fxa_account_info.fxa_email,
-        hasCreatingHubs: creating_hubs?,
-        hasHubs: hubs?,
-        hasPlan: active_plan?,
-        hasSubscription: active_subscription?,
-        isForbidden: forbidden?,
-        planName: plan_name,
-        profilePic: fxa_account_info.fxa_pic
-      }
-    else
-      %{
-        displayName: fxa_account_info.fxa_display_name,
-        email: fxa_account_info.fxa_email,
-        hasCreatingHubs: creating_hubs?,
-        hasHubs: hubs?,
-        hasSubscription: active_subscription?,
-        isForbidden: forbidden?,
-        profilePic: fxa_account_info.fxa_pic
-      }
-    end
+    %{
+      displayName: fxa_account_info.fxa_display_name,
+      email: fxa_account_info.fxa_email,
+      hasCreatingHubs: creating_hubs?,
+      hasHubs: hubs?,
+      hasPlan: active_plan?,
+      hasSubscription: active_subscription?,
+      isForbidden: forbidden?,
+      planName: plan_name,
+      profilePic: fxa_account_info.fxa_pic
+    }
   end
 end

@@ -8,24 +8,6 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
   @route "/api/v1/plans"
 
   describe "POST /api/v1/plans?tier=starter" do
-    setup do
-      starter_plan_enabled? = Application.get_env(:dash, :starter_plan_enabled?)
-      Application.put_env(:dash, :starter_plan_enabled?, true)
-      on_exit(fn -> Application.put_env(:dash, :starter_plan_enabled?, starter_plan_enabled?) end)
-    end
-
-    test "when starter plan feature is disabled", %{conn: conn} do
-      Application.put_env(:dash, :starter_plan_enabled?, false)
-      stub_http_post_200()
-
-      assert "Not Found" ===
-               conn
-               |> put_test_token(claims: %{"fxa_subscriptions" => []}, token_expiry: tomorrow())
-               |> put_req_header("content-type", "application/json")
-               |> post(@route, tier: "starter")
-               |> response(404)
-    end
-
     test "returns a 201", %{conn: conn} do
       stub_http_post_200()
 

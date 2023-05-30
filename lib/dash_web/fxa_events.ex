@@ -99,18 +99,8 @@ defmodule DashWeb.FxaEvents do
         Logger.warning("could not subscribe to standard plan for reason: #{reason}")
       end
     else
-      # nested if-else instead of cond only because this feature flag is meant
-      # to be short-lived
-      if Application.fetch_env!(:dash, :starter_plan_enabled?) do
-        with {:error, reason} <- Dash.expire_plan_subscription(account, datetime) do
-          Logger.warning("could not expire plan subscription for reason: #{reason}")
-        end
-      else
-        Dash.delete_all_hubs_for_account(account)
-        # This is a temporary solution to prevent Standard plan features from
-        # remaining in effect after subscription expiration.  It can be replaced
-        # when the “stop” FSM event is implemented.
-        Dash.Repo.delete_all(from p in Dash.Plan, where: p.account_id == ^account.account_id)
+      with {:error, reason} <- Dash.expire_plan_subscription(account, datetime) do
+        Logger.warning("could not expire plan subscription for reason: #{reason}")
       end
     end
 
