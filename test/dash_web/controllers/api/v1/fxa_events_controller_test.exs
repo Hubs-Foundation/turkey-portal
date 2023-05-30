@@ -238,6 +238,10 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
 
+      Mox.stub(Dash.HttpMock, :delete, fn _url, _headers, _opts ->
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
       assert conn
              |> put_resp_content_type("application/json")
              |> put_req_header("authorization", "Bearer #{token}")

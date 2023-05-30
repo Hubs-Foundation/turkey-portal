@@ -154,6 +154,7 @@ defmodule Dash.PlanStateMachine do
       |> Repo.update!()
 
     {:ok, %{status_code: 200}} = OrchClient.update_hub(email, hub)
+
     :ok
   end
 
