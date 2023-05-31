@@ -1,33 +1,48 @@
 import { FXA_PAYMENT_URL, PLAN_ID_EA, PLAN_ID_EA_DE, PRODUCT_ID } from 'config';
-import { RegionCurrency, RegionCodeT } from 'types/Countries';
+import {
+  RegionCurrency,
+  RegionCodeT,
+  CurrencyAbbrev,
+  AcceptedRegionCodeT,
+  ACCEPTED_REGION_CODES,
+} from 'types/Countries';
 
 /**
- * Convert abbrev to symbol
+ * Convert abbrev to symbol from subscription
  * @param currency
  * @returns
  */
-export const convertCurrency = (currency: string | null) => {
+export const convertCurrency = (currency: CurrencyAbbrev) => {
   const { US, DE } = RegionCurrency;
-  if (!currency) return;
-  switch (currency.toUpperCase()) {
-    case DE.abbrev:
-      return DE.symbol;
-    case US.abbrev:
-      return US.symbol;
+
+  switch (currency) {
+    case 'EUR':
+      return '€';
+    case 'USD':
+      return '$';
     default:
-      return US.symbol;
+      return '$';
   }
 };
 
 /**
  * Get meta data about a region
  * @param region
- * @returns RegionCurrency[country code]
+ * @returns RegionCurrency
  */
-export const getCurrencyMeta = (region: RegionCodeT) => {
-  return region && RegionCurrency[region]
-    ? RegionCurrency[region]
-    : RegionCurrency.US;
+export const getCurrencyMeta = (region: string) => {
+  if (!ACCEPTED_REGION_CODES.includes(region)) {
+    return RegionCurrency.US;
+  }
+
+  switch (region as AcceptedRegionCodeT) {
+    case 'DE':
+      return RegionCurrency.DE;
+    case 'US':
+      return RegionCurrency.US;
+    default:
+      return RegionCurrency.US;
+  }
 };
 
 /**

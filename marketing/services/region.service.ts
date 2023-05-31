@@ -13,7 +13,6 @@ export const getRegion = async () => {
       withCredentials: true,
     })
     .then((response: AxiosResponse) => {
-      if (!response.data.code === null) response.data.code = 'US';
       return response.data as RegionT;
     });
 };

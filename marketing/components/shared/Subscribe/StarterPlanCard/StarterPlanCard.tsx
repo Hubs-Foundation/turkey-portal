@@ -13,7 +13,7 @@ const StarterPlanCard = () => {
     <BasePlanCard
       title="Starter"
       color="silver"
-      price={<Price region={null} price="Free" />}
+      price={<Price regionCode={null} price="Free" />}
       infoCopyList={starterPlanInfoCopy}
       confirmButton={
         <Button

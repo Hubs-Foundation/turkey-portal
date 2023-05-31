@@ -11,7 +11,6 @@ export const getRegion = async () => {
   return axios
     .get(`${PUBLIC_API_SERVER}${API_PATH}`, { withCredentials: true })
     .then((response: AxiosResponse) => {
-      if (response.data.regionCode === null) response.data.regionCode = 'US';
       return response.data as RegionT;
     });
 };

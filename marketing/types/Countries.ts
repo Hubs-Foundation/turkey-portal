@@ -2,8 +2,9 @@ export enum CountriesE {
   GERMANY = 'DE',
 }
 
-export type RegionCodeT = 'DE' | 'US' | null;
-
+export type AcceptedRegionCodeT = 'DE' | 'US';
+export const ACCEPTED_REGION_CODES = ['DE', 'US'];
+export type RegionCodeT = AcceptedRegionCodeT | string | null;
 export type RegionT = {
   regionCode: RegionCodeT;
 };

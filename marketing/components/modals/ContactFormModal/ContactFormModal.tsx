@@ -56,7 +56,7 @@ const ContactFormModal = ({
       hasIcon: true,
       category: CategoryE.TOAST,
     } as NewNotificationT);
-  }, []);
+  }, [notificationContext]);
 
   /**
    * On AJAX Resp

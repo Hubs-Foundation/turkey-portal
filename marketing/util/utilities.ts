@@ -1,5 +1,5 @@
-import { RegionCodeT } from 'types/Countries';
 import getEnvVariable from 'config';
+import { ACCEPTED_REGION_CODES, AcceptedRegionCodeT } from 'types/Countries';
 
 const RegionCurrency = {
   DE: {
@@ -14,13 +14,22 @@ const RegionCurrency = {
 
 /**
  * Get meta data about a region
- * @param regionCode
- * @returns RegionCurrency[country code]
+ * @param region
+ * @returns RegionCurrency
  */
-export const getCurrencyMeta = (regionCode: RegionCodeT) => {
-  return regionCode && RegionCurrency[regionCode]
-    ? RegionCurrency[regionCode]
-    : RegionCurrency.US;
+export const getCurrencyMeta = (region: string) => {
+  if (!ACCEPTED_REGION_CODES.includes(region)) {
+    return RegionCurrency.US;
+  }
+
+  switch (region as AcceptedRegionCodeT) {
+    case 'DE':
+      return RegionCurrency.DE;
+    case 'US':
+      return RegionCurrency.US;
+    default:
+      return RegionCurrency.US;
+  }
 };
 
 export const enabledStarterPlan = (): boolean => {
