@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { getRegion } from 'services/region.service';
 import { CountriesE, RegionsT } from 'types/Countries';
 import { BasePlanCard, Price } from '../BasePlanCard/BasePlanCard';
-import { enabledStarterPlan } from 'util/utilities';
 import { standardPlanInfoCopy } from '../BasePlanCard/planInfoCopy';
 import { Button, Checkbox } from '@mozilla/lilypad-ui';
 

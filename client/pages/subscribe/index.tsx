@@ -4,7 +4,6 @@ import { pageRequireAuthentication } from 'services/routeGuard.service';
 import ContactCard from '@Modules/plans/ContactCard/ContactCard';
 import styles from './subscribe.module.scss';
 import { StandardPlanCard, StarterPlanCard } from '@Modules/plans/plan-cards';
-import { enabledStarterPlan } from 'util/featureFlag';
 
 const Subscribe = () => {
   return (
@@ -16,19 +15,17 @@ const Subscribe = () => {
 
       <main>
         <div className={styles.wrapper}>
-          {!enabledStarterPlan() && (
-            <div className={styles.header}>
-              <h1>Your account has no active hubs</h1>
-              {/* TODO pull pricing from subplat - $20 */}
-              <p>
-                You can begin a new subscription with an Early Access Hub for
-                $20 a month
-              </p>
-            </div>
-          )}
+          <div className={styles.header}>
+            <h1>Your account has no active hubs</h1>
+            {/* TODO pull pricing from subplat - $20 */}
+            <p>
+              You can begin a new subscription with an Early Access Hub for $20
+              a month
+            </p>
+          </div>
 
           <div className={styles.cards}>
-            {enabledStarterPlan() && <StarterPlanCard />}
+            <StarterPlanCard />
             <StandardPlanCard />
             <ContactCard
               email="hubs@mozilla.com"

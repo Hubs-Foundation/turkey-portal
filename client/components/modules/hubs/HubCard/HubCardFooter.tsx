@@ -7,7 +7,6 @@ import {
 import { StorageStateE, HubT, FormattedTierMapT, TierT } from 'types/General';
 import { useState, useEffect, useCallback } from 'react';
 import styles from './HubCardFooter.module.scss';
-import { enabledStarterPlan } from 'util/featureFlag';
 
 type TierPropsT = {
   tier: TierT;
@@ -21,7 +20,7 @@ const Tier = ({ tier }: TierPropsT) => {
         name={FormattedTierMap[tier]}
         category={BadgeCategoriesE.PRIMARY}
       />
-      <div>{enabledStarterPlan() ? 'Hub Plan' : 'Hub Tier'}</div>
+      <p>Hub Plan</p>
     </div>
   );
 };

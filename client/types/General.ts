@@ -6,6 +6,11 @@
 export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
 export type FormattedTierT = 'Mvp' | 'Starter' | 'Early Access' | 'Premium';
 
+export enum PlansE {
+  p0 = 'starter',
+  p1 = 'standard',
+}
+
 export type FormattedTierMapT = {
   [key: string]: FormattedTierT;
 };
