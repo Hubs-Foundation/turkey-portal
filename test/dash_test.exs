@@ -52,7 +52,19 @@ defmodule DashTest do
     end
 
     test "should return :ok, account has previously set email and has hubs, admin emails changed correctly" do
-      expect_ret_patch_update_email()
+      Mox.expect(Dash.HttpMock, :patch, fn url, json, headers, opts ->
+        assert String.starts_with?(url, "https://ret")
+        assert String.ends_with?(url, "/api-internal/v1/change_email_for_login")
+        assert {:ok, payload} = Jason.decode(json)
+        assert @old_email === payload["old_email"]
+        assert @new_email === payload["new_email"]
+        assert "application/json" === :proplists.get_value("content-type", headers)
+        assert :proplists.is_defined("x-ret-dashboard-access-key", headers)
+        assert [hackney: [:insecure]] === opts
+
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
       expect_orch_post()
 
       fxa_uid = "with_email"

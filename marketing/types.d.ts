@@ -60,6 +60,12 @@ export type HeroT = {
   __typename?: string;
 };
 
+export type NavigationT = {
+  bannerText: string;
+  bannerIcon: IconT;
+  links: LinkT;
+};
+
 export type LinkT = {
   href: string;
   label: string;

@@ -150,12 +150,6 @@ defmodule Dash.TestHelpers do
     end)
   end
 
-  def expect_ret_patch_update_email() do
-    Mox.expect(Dash.HttpMock, :patch, fn _url, _body, _headers, _opts ->
-      {:ok, %HTTPoison.Response{status_code: 200}}
-    end)
-  end
-
   # Capability Helpers
   def create_capabilities(account, count) do
     for i <- count..1 do
