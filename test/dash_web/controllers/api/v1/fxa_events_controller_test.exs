@@ -145,12 +145,6 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   end
 
   describe "Subscription changed event" do
-    setup do
-      starter_plan_enabled? = Application.get_env(:dash, :starter_plan_enabled?)
-      Application.put_env(:dash, :starter_plan_enabled?, true)
-      on_exit(fn -> Application.put_env(:dash, :starter_plan_enabled?, starter_plan_enabled?) end)
-    end
-
     test "with an unknown capability", %{conn: conn} do
       unknown = "unknown-capability"
 
@@ -249,34 +243,6 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       refute plan.subscription?
       refute Dash.was_deleted?(fxa_uid)
       assert [_] = Dash.Hub.hubs_for_account(account)
-    end
-
-    test "on expiration, when starter plan feature is disabled", %{conn: conn} do
-      Application.put_env(:dash, :starter_plan_enabled?, false)
-      stub_http_post_200()
-      fxa_uid = "dummy-uid"
-      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      :ok = Dash.subscribe_to_standard_plan(account, DateTime.utc_now())
-
-      token =
-        [
-          fxa_uid: fxa_uid,
-          event: get_subscription_changed_event(event_only: false, is_active: false)
-        ]
-        |> get_generic_fxa_event_struct()
-        |> Jason.encode!()
-
-      expect_orch_delete()
-
-      assert conn
-             |> put_resp_content_type("application/json")
-             |> put_req_header("authorization", "Bearer #{token}")
-             |> post("/api/v1/events/fxa")
-             |> response(200)
-
-      assert {:error, :no_active_plan} === Dash.fetch_active_plan(account)
-      refute Dash.was_deleted?(fxa_uid)
-      assert [] === Dash.Hub.hubs_for_account(account)
     end
   end
 

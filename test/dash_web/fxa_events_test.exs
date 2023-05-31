@@ -10,8 +10,7 @@ defmodule DashWeb.FxaEventsTest do
   end
 
   describe "handle_subscription_changed_event/2" do
-    test "Should delete hub if subscription event is_active is false" do
-      expect_orch_delete()
+    test "Should NOT delete hub if subscription event is_active is false" do
       fxa_uid = get_default_test_uid()
       create_test_account_and_hub()
 
@@ -23,7 +22,7 @@ defmodule DashWeb.FxaEventsTest do
       event = get_subscription_changed_event(is_active: false)
       FxaEvents.handle_subscription_changed_event(fxa_uid, event)
 
-      assert [] === Dash.Hub.hubs_for_account(account)
+      assert [_] = Dash.Hub.hubs_for_account(account)
 
       assert [_] = Dash.get_all_capabilities_for_account(account)
     end

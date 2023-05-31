@@ -7,12 +7,6 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
   @route "/api/v1/account"
 
   describe "GET /api/vi/account" do
-    setup do
-      starter_plan_enabled? = Application.get_env(:dash, :starter_plan_enabled?)
-      Application.put_env(:dash, :starter_plan_enabled?, true)
-      on_exit(fn -> Application.put_env(:dash, :starter_plan_enabled?, starter_plan_enabled?) end)
-    end
-
     test "should error for unauthorized users", %{conn: conn} do
       conn = get(conn, @route)
 
@@ -53,17 +47,6 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
         |> get(@route)
 
       assert json_response(conn, 200)["email"] === "email@fake.com"
-    end
-
-    test "when starter plan feature is disabled", %{conn: conn} do
-      Application.put_env(:dash, :starter_plan_enabled?, false)
-
-      assert :error ===
-               conn
-               |> put_test_token(claims: %{"fxa_subscriptions" => []})
-               |> get(@route)
-               |> json_response(200)
-               |> Map.fetch("hasPlan")
     end
 
     test "when there is no plan", %{conn: conn} do
