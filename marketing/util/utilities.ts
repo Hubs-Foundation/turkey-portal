@@ -18,7 +18,7 @@ const RegionCurrency = {
  * @returns RegionCurrency
  */
 export const getCurrencyMeta = (region: string) => {
-  if (!ACCEPTED_REGION_CODES.includes(region)) {
+  if (!ACCEPTED_REGION_CODES.includes(region as AcceptedRegionCodeT)) {
     return RegionCurrency.US;
   }
 
