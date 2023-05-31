@@ -6,7 +6,6 @@ const isServerSide = typeof window === 'undefined';
 export const {
   AUTH_SERVER,
   DASH_ROOT_DOMAIN,
-  ENABLE_STARTER_PLAN,
   ENV,
   FXA_PAYMENT_URL,
   FXA_SERVER,

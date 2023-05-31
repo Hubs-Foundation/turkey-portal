@@ -22,7 +22,3 @@ export const getCurrencyMeta = (region: RegionsT) => {
     ? RegionCurrency[region]
     : RegionCurrency.US;
 };
-
-export const enabledStarterPlan = (): boolean => {
-  return getEnvVariable('ENABLE_STARTER_PLAN') === 'enabled';
-};
