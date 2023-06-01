@@ -5,7 +5,12 @@
 
 export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
 export type FormattedTierT = 'Mvp' | 'Starter' | 'Early Access' | 'Premium';
-
+export const FormattedTierMap: FormattedTierMapT = {
+  mvp: 'Mvp',
+  premium: 'Premium',
+  p0: 'Starter',
+  p1: 'Early Access',
+};
 export enum PlansE {
   p0 = 'starter',
   p1 = 'standard',
@@ -32,7 +37,7 @@ export enum LastErrorE {
 export type HubT = {
   ccuLimit: number;
   currentCcu: number | null;
-  currentStorageMb: number | null;
+  currentStorageMb: number;
   hubId: string;
   name: string;
   status: StatusE;
@@ -43,6 +48,10 @@ export type HubT = {
 };
 
 // TODO Do we still need this?
+// Seems like update hub T doenst really need to exist.
+// on the back end we just need an object that has the
+// new subdomain on it. No other part of the hub matters
+// or can even be changed?
 export type UpdateHubT = {
   name: string;
   ccuLimit: number;

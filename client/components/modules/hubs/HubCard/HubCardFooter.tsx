@@ -4,12 +4,18 @@ import {
   BadgeCategoriesE,
   Icon,
 } from '@mozilla/lilypad-ui';
-import { StorageStateE, HubT, FormattedTierMapT, TierT } from 'types/General';
-import { useState, useEffect, useCallback } from 'react';
+import {
+  StorageStateE,
+  HubT,
+  FormattedTierMap,
+  FormattedTierT,
+} from 'types/General';
+import Hub from '../Hub';
+import { useState, useEffect } from 'react';
 import styles from './HubCardFooter.module.scss';
 
 type TierPropsT = {
-  tier: TierT;
+  tier: FormattedTierT;
 };
 
 const Tier = ({ tier }: TierPropsT) => {
@@ -17,7 +23,7 @@ const Tier = ({ tier }: TierPropsT) => {
     <div className="text-center">
       <Badge
         classProp="mb-12 block"
-        name={FormattedTierMap[tier]}
+        name={tier}
         category={BadgeCategoriesE.PRIMARY}
       />
       <p>Hub Plan</p>
@@ -30,68 +36,35 @@ type HubCardFooterPropsT = {
   classProp?: string;
 };
 
-const FormattedTierMap: FormattedTierMapT = {
-  mvp: 'Mvp',
-  premium: 'Premium',
-  p0: 'Starter',
-  p1: 'Early Access',
-};
-
-const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
-  const { tier, currentStorageMb, storageLimitMb } = hub;
+const HubCardFooter = ({ hub: _hub, classProp = '' }: HubCardFooterPropsT) => {
   const [storageState, setStorageState] = useState<StorageStateE>(
     StorageStateE.DEFAULT
   );
 
-  /**
-   * Get % Value of MB used
-   */
-  const getStoragePercent = useCallback((): number => {
-    if (currentStorageMb === 0 || currentStorageMb === null) return 0;
-    return Math.min(100, currentStorageMb / storageLimitMb) * 100;
-  }, [currentStorageMb, storageLimitMb]);
-
-  /**
-   * Round number to 2 dec
-   * @param num
-   * @returns num | string
-   */
-  const round = (num: number | null): number | string => {
-    if (num == null) return 'Configuring';
-
-    // TODO - In the future, I guess we'd use i18n routing and useRouter to get the current
-    // locale, but for now default to "en-US".
-    return new Intl.NumberFormat('en-US', {
-      maximumFractionDigits: 2,
-    }).format(num);
-  };
+  const hub = new Hub(_hub);
 
   /**
    * Watch Storage Percentage
    */
   useEffect(() => {
-    const storagePercent = getStoragePercent();
-    let status = StorageStateE.DEFAULT;
-
-    storagePercent > 75 && (status = StorageStateE.WARNING);
-    storagePercent >= 100 && (status = StorageStateE.CRITICAL);
-
-    setStorageState(status);
-  }, [getStoragePercent]);
+    setStorageState(hub.getStorageState());
+  }, [hub]);
 
   return (
     <div className={`${styles.footer} ${classProp}`}>
       {/* Tier Information  */}
       <div className={styles.footer_block}>
-        <Tier tier={tier} />
+        <Tier tier={hub.formattedTier()} />
       </div>
 
       {/* Storage Information  */}
       <div className={styles.footer_block}>
         <div className="text-center">
           <div className={`mb-12 ${styles['status_' + storageState]}`}>
-            <span className="color-text-main">{round(currentStorageMb)}</span>
-            <span>/{storageLimitMb} MB</span>
+            <span className="color-text-main">
+              {hub.roundedCurrentStorageMb()}
+            </span>
+            <span>/{hub.storageLimitMb} MB</span>
           </div>
           <div className="flex-justify-center">
             <div className={styles.progressbar_wrapper}>
@@ -104,7 +77,7 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
                 />
               ) : null}
               <ProgressBar
-                value={getStoragePercent()}
+                value={hub.getStoragePercent()}
                 classValueProp={styles['progressbar_' + storageState]}
               />
             </div>

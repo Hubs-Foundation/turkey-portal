@@ -246,6 +246,10 @@ defmodule Dash.Hub do
   end
 
   def update_hub(hub_id, attrs, %Dash.Account{} = account) do
+
+    IO.inspect('ATTRS')
+    IO.inspect(attrs)
+
     attrs =
       if attrs["subdomain"] do
         Map.put(attrs, "subdomain", attrs["subdomain"] |> String.downcase())
