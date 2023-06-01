@@ -128,7 +128,7 @@ defmodule Dash.Hub do
     name: "Untitled Hub",
     tier: :p1,
     ccu_limit: 25,
-    storage_limit_mb: 2000
+    storage_limit_mb: 999999
   }
 
   def create_default_hub(%Dash.Account{} = account, fxa_email) do
