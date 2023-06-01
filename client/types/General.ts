@@ -5,19 +5,14 @@
 
 export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
 export type FormattedTierT = 'Mvp' | 'Starter' | 'Early Access' | 'Premium';
-export const FormattedTierMap: FormattedTierMapT = {
-  mvp: 'Mvp',
-  premium: 'Premium',
-  p0: 'Starter',
-  p1: 'Early Access',
-};
+
 export enum PlansE {
   p0 = 'starter',
   p1 = 'standard',
 }
 
 export type FormattedTierMapT = {
-  [key: string]: FormattedTierT;
+  [key in TierT]: FormattedTierT;
 };
 
 export enum StatusE {

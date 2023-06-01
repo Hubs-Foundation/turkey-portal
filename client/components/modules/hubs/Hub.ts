@@ -1,7 +1,7 @@
 import {
   TierT,
   FormattedTierT,
-  FormattedTierMap,
+  FormattedTierMapT,
   HubT,
   StorageStateE,
 } from 'types/General';
@@ -10,6 +10,12 @@ export default class Hub {
   tier: TierT;
   currentStorageMb: number;
   storageLimitMb: number;
+  FormattedTierMap: Readonly<FormattedTierMapT> = {
+    mvp: 'Mvp',
+    premium: 'Premium',
+    p0: 'Starter',
+    p1: 'Early Access',
+  };
 
   constructor({ tier, currentStorageMb, storageLimitMb }: HubT) {
     this.tier = tier;
@@ -22,7 +28,7 @@ export default class Hub {
    * @returns FormattedTierT
    */
   formattedTier(): FormattedTierT {
-    return FormattedTierMap[this.tier];
+    return this.FormattedTierMap[this.tier];
   }
 
   /**
