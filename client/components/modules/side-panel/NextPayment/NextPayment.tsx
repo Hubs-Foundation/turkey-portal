@@ -1,8 +1,7 @@
-import { useCallback } from 'react';
 import styles from './NextPayment.module.scss';
 import { SubscriptionT } from 'services/subscription.service';
-import { convertCurrency } from 'util/utilities';
 import { SUBPLAT_SUBSCRIPTIONS_LINK } from 'config';
+import Subscription from 'types/Subscription';
 
 type NextPaymentPropsT = {
   subscription: SubscriptionT;
@@ -21,22 +20,22 @@ const CanceledBlock = () => (
 );
 
 type PaymentBlockPropsT = {
-  subscription: SubscriptionT;
+  amount: string | null;
+  currency: string | null;
+  currencySymbol: string | undefined;
 };
 
-const PaymentBlock = ({ subscription }: PaymentBlockPropsT) => {
-  const { amount, currency } = subscription;
+const PaymentBlock = ({
+  amount,
+  currency,
+  currencySymbol,
+}: PaymentBlockPropsT) => {
   return (
     <>
       <div className="flex-box">
         <span className={styles.price}>
-          {/* TODO - tech debt localization
-          Use something like https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat 
-          or i18next to localize the price here - check with backend if they are already formatting anything since currency is being delivered
-          with response 
-        */}
-          {convertCurrency(currency)}
-          {Number(amount).toFixed(2)}
+          {currencySymbol}
+          {amount}
         </span>
         <span className={styles.currency}>{currency} (+tax)</span>
       </div>
@@ -45,45 +44,38 @@ const PaymentBlock = ({ subscription }: PaymentBlockPropsT) => {
   );
 };
 
-const NextPayment = ({ subscription, classProp = '' }: NextPaymentPropsT) => {
-  const { isCancelled } = subscription;
-
-  /**
-   * Get Formatted Date
-   */
-  const subscriptionDate = useCallback(
-    (fullDate?: boolean) => {
-      const date = new Date(Date.UTC(1970, 0, 1)); // Epoch
-      date.setUTCSeconds(subscription.subscriptionEndTimestampS);
-      const options: Intl.DateTimeFormatOptions = {
-        year: fullDate ? 'numeric' : undefined,
-        month: 'long',
-        day: 'numeric',
-      };
-      // TODO : Tech Debt - when adding localization be sure to update this date format country code
-      return date.toLocaleDateString('US', options);
-    },
-    [subscription]
-  );
+const NextPayment = ({
+  subscription: _subscription,
+  classProp = '',
+}: NextPaymentPropsT) => {
+  const subscription = new Subscription(_subscription);
 
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
       <div className={styles.container}>
         {/* PAYMENT */}
         <div className={styles.content_block}>
-          {isCancelled ? (
+          {subscription.isCancelled ? (
             <CanceledBlock />
           ) : (
-            <PaymentBlock subscription={subscription} />
+            <PaymentBlock
+              currencySymbol={subscription.getCurrencySymbol()}
+              currency={subscription.currency}
+              amount={subscription.moneyFormat()}
+            />
           )}
         </div>
 
         {/* NEXT PAYMENT */}
         <div className={styles.content_block}>
           <div className="flex-box">
-            <p className={styles.month}>{subscriptionDate(false)}</p>
+            <p className={styles.month}>
+              {subscription.getFormattedDate(false)}
+            </p>
             <p className={styles.label}>
-              {isCancelled ? 'Starter Plan Begins' : 'Next Payment'}
+              {subscription.isCancelled
+                ? 'Starter Plan Begins'
+                : 'Next Payment'}
             </p>
           </div>
         </div>

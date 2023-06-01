@@ -4,14 +4,8 @@ import {
   BadgeCategoriesE,
   Icon,
 } from '@mozilla/lilypad-ui';
-import {
-  StorageStateE,
-  HubT,
-  FormattedTierMap,
-  FormattedTierT,
-} from 'types/General';
+import { StorageStateE, HubT, FormattedTierT } from 'types/General';
 import Hub from '../Hub';
-import { useState, useEffect } from 'react';
 import styles from './HubCardFooter.module.scss';
 
 type TierPropsT = {
@@ -37,18 +31,8 @@ type HubCardFooterPropsT = {
 };
 
 const HubCardFooter = ({ hub: _hub, classProp = '' }: HubCardFooterPropsT) => {
-  const [storageState, setStorageState] = useState<StorageStateE>(
-    StorageStateE.DEFAULT
-  );
-
   const hub = new Hub(_hub);
-
-  /**
-   * Watch Storage Percentage
-   */
-  useEffect(() => {
-    setStorageState(hub.getStorageState());
-  }, [hub]);
+  const storageState = hub.getStorageState();
 
   return (
     <div className={`${styles.footer} ${classProp}`}>
