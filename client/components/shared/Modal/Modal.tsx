@@ -12,6 +12,7 @@ import styles from './Modal.module.scss';
 type ModalPropsT = {
   children: ReactNode;
   onClose: MouseEventHandler<HTMLDivElement>;
+  isVisible: Boolean;
   // "hasContainer" gives you the flexibility to put all the children in a pre-formatted modal card, This will be a majority of the time.
   // If you want a custome modal display, set this to false and add whatever you want to the "children"
   hasContainer?: Boolean;
@@ -21,6 +22,7 @@ type ModalPropsT = {
 const Modal = ({
   children,
   onClose,
+  isVisible,
   hasContainer = true,
   classProp = '',
 }: ModalPropsT) => {
@@ -31,6 +33,15 @@ const Modal = ({
     ref.current = document.getElementById('modal_portal') as Element;
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    const overflow = isVisible ? 'hidden' : 'initial';
+    document.body.style.overflow = overflow;
+
+    return () => {
+      document.body.style.overflow = 'initial';
+    };
+  }, [isVisible]);
 
   /**
    * Backdrop Click
@@ -43,7 +54,7 @@ const Modal = ({
     }
   };
 
-  return mounted && ref.current ? (
+  return mounted && ref.current && isVisible ? (
     <>
       {ReactDOM.createPortal(
         <div
