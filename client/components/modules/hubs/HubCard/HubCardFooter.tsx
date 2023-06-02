@@ -1,9 +1,4 @@
-import {
-  Badge,
-  ProgressBar,
-  BadgeCategoriesE,
-  Icon,
-} from '@mozilla/lilypad-ui';
+import { ProgressBar, Icon, Pill } from '@mozilla/lilypad-ui';
 import { StorageStateE, HubT, FormattedTierMapT, TierT } from 'types/General';
 import { useState, useEffect, useCallback } from 'react';
 import styles from './HubCardFooter.module.scss';
@@ -15,10 +10,10 @@ type TierPropsT = {
 const Tier = ({ tier }: TierPropsT) => {
   return (
     <div className="text-center">
-      <Badge
+      <Pill
         classProp="mb-12 block"
-        name={FormattedTierMap[tier]}
-        category={BadgeCategoriesE.PRIMARY}
+        title={FormattedTierMap[tier]}
+        category="primary"
       />
       <p>Hub Plan</p>
     </div>
