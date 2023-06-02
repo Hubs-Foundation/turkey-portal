@@ -1,0 +1,14 @@
+@use 'styles/core/boilerplate' as *;
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 32px 0px;
+}
+
+.container {
+  background-color: $color-interaction-secondary-hover;
+  padding: 24px;
+  margin: 32px 32px 0;
+  border-radius: 20px;
+}

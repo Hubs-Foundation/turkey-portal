@@ -1,0 +1,39 @@
+@use 'styles/core/boilerplate' as *;
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.content {
+  padding-bottom: 8px;
+}
+
+.footer {
+  &_wrapper {
+    display: flex;
+    justify-content: flex-end;
+
+    @include mobile-down {
+      justify-content: center;
+    }
+  }
+
+  &_container {
+    display: flex;
+
+    @include mobile-down {
+      flex-direction: column;
+      text-align: center;
+
+      button:nth-child(2) {
+        order: -1;
+      }
+    }
+  }
+}

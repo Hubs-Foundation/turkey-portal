@@ -14,6 +14,7 @@ import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
 import { RoutesE } from 'types/Routes';
 import { useFormik } from 'formik';
 import validate, { FormValues } from './validate';
+import ConnectDomain from '../ConnectDomain/ConnectDomain';
 
 export type HubFormCardT = {
   name: string;
@@ -222,6 +223,8 @@ const HubFormCard = ({
               </div>
             ) : null}
           </div>
+
+          <ConnectDomain />
           <div className={styles.actions_wrapper}>
             <Button
               label="cancel"
