@@ -23,7 +23,7 @@ const LayoutWrapper = ({ children, componentName }: LayoutWrapperProps) => {
   return (
     // <main data-theme={themeContext.theme}>
     <main data-theme="light">
-      <div id="modal_portal" />
+      <div id="LP_modal_portal" />
       <MainNav showLoggedOutUi={showLoggedOutUi} />
       <div
         className={

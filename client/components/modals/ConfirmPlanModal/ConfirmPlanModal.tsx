@@ -1,8 +1,8 @@
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { Button, ButtonCategoriesE, Modal } from '@mozilla/lilypad-ui';
 import InfoBlock, { InfoBlockPropsT } from '@Shared/InfoBlock/InfoBlock';
 import { StandardPlanInfoCopy } from '@Modules/plans/PlanInfoCopy';
 import styles from './ConfirmPlanModal.module.scss';
-import Modal from '@Shared/Modal/Modal';
+
 import BeginStarterPlanButton from '@Modules/plans/BeginStarterPlanButton/BeginStarterPlanButton';
 
 const createInfoBlock = ({ label, icon }: InfoBlockPropsT, i: number) => {
