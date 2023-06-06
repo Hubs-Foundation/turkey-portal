@@ -50,7 +50,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
      * try and updates the Hub again.
      */
     const updatedHub: UpdateHubT = {
-      ...hub,
+      name: hub.name,
       subdomain: storeContext.lastSubmittedSubdomain.subdomain,
     };
 
@@ -61,10 +61,9 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
    * Submit hub no longer needs to be in reverted state.
    */
   const handleOnCloseError = () => {
-    // patch the hub with lastError =  '' to clear out the error.
     const updatedHub: UpdateHubT = {
-      ...hub,
-      lastError: '',
+      name: hub.name,
+      subdomain: hub.subdomain,
     };
     submit(updatedHub, () => setShowRevertError(false));
   };

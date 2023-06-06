@@ -42,20 +42,7 @@ export type HubT = {
   tier: TierT;
 };
 
-// TODO Do we still need this?
-// Seems like update hub T doenst really need to exist.
-// on the back end we just need an object that has the
-// new subdomain on it. No other part of the hub matters
-// or can even be changed?
-export type UpdateHubT = {
-  name: string;
-  ccuLimit: number;
-  storageLimitMb: number;
-  tier: TierT;
-  subdomain: string;
-  status: StatusE;
-  lastError: LastErrorE | '';
-};
+export type UpdateHubT = Pick<HubT, 'name' | 'subdomain'>;
 
 export type AccountT = {
   displayName: string;

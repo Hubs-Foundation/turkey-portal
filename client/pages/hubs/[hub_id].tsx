@@ -88,7 +88,7 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
        * keep all other data as is
        */
       const updatedHub: UpdateHubT = {
-        ...hub,
+        name: hub.name,
         subdomain: subdomain,
       };
 
