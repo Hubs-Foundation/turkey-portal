@@ -24,7 +24,7 @@ const creatingHub: HubT = {
   hubId: '',
   name: 'Untitled Hub',
   status: StatusE.CREATING,
-  lastError: '',
+  lastError: null,
   storageLimitMb: 0,
   subdomain: '',
   tier: 'premium',

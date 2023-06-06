@@ -24,7 +24,6 @@ export type HubFormCardT = {
 type HubFormCardPropsT = {
   hub: HubFormCardT;
   onSubmit: Function;
-  onError?: Function;
   classProp?: string;
 };
 
@@ -33,12 +32,7 @@ export enum DomainErrorsE {
   SUBDOMAIN_DENIED = 'subdomain_denied',
 }
 
-const HubFormCard = ({
-  hub,
-  onSubmit,
-  onError,
-  classProp = '',
-}: HubFormCardPropsT) => {
+const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
   const [addressErrorMessage, setAddressErrorMessage] = useState<string>('');
   const storeContext = useContext(StoreContext);
   const [isValidDomain, setIsValidDomain] = useState(true);

@@ -4,12 +4,21 @@ import {
   FormattedTierMapT,
   HubT,
   StorageStateE,
+  StatusE,
+  LastErrorE,
 } from 'types/General';
 
 export default class Hub {
-  tier: TierT;
+  ccuLimit: number;
+  currentCcu: number | null;
   currentStorageMb: number;
+  hubId: string;
+  name: string;
+  status: StatusE;
+  lastError: LastErrorE | null;
   storageLimitMb: number;
+  subdomain: string;
+  tier: TierT;
   FormattedTierMap: Readonly<FormattedTierMapT> = {
     mvp: 'Mvp',
     premium: 'Premium',
@@ -17,10 +26,28 @@ export default class Hub {
     p1: 'Early Access',
   };
 
-  constructor({ tier, currentStorageMb, storageLimitMb }: HubT) {
-    this.tier = tier;
+  constructor({
+    ccuLimit,
+    currentCcu,
+    currentStorageMb,
+    hubId,
+    name,
+    status,
+    lastError,
+    storageLimitMb,
+    subdomain,
+    tier,
+  }: HubT) {
+    this.ccuLimit = ccuLimit;
+    this.currentCcu = currentCcu;
     this.currentStorageMb = currentStorageMb;
+    this.hubId = hubId;
+    this.name = name;
+    this.status = status;
+    this.lastError = lastError;
     this.storageLimitMb = storageLimitMb;
+    this.subdomain = subdomain;
+    this.tier = tier;
   }
 
   /**

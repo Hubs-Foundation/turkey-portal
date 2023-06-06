@@ -3,6 +3,7 @@
 @use './ui/dropdown.scss' as *;
 @use './core/theme.scss' as *;
 @use './ui/page.scss' as *;
+@import '@mozilla/lilypad-ui/dist/styles/theme.scss';
 
 html,
 body {

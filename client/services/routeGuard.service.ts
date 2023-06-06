@@ -14,7 +14,6 @@ import {
 } from '../util/redirects';
 import { RoutesE } from '../types/Routes';
 import { CookiesE } from 'types/Cookies';
-import { IncomingMessage } from 'http';
 import { setCookies } from 'cookies-next';
 import { localFeature } from '../util/featureFlag';
 import { AccountT } from 'types/General';
@@ -95,7 +94,9 @@ function handleUnauthenticatedRedirects(
  */
 export function confirmPlanRG(gssp: Function): GetServerSideProps | Redirect {
   return async (context: GetServerSidePropsContext) => {
-    const { req } = context;
+    const { req, query } = context;
+
+    if (localFeature() && shouldNotRedirect(query)) return await gssp(context);
 
     if (didSetTurkeyauthCookie(context)) {
       return redirectToConfirmPlan();
@@ -213,10 +214,7 @@ export function pageRequireAuthentication(gssp: Function): GetServerSideProps {
   return async (context) => {
     const { req, query } = context;
 
-    // Local development only - start
-    if (localFeature() && shouldNotRedirect(req, query))
-      return await gssp(context);
-    // Local development only - end
+    if (localFeature() && shouldNotRedirect(query)) return await gssp(context);
 
     try {
       const account: AccountT = await getAccount(
@@ -243,22 +241,10 @@ export function pageRequireAuthentication(gssp: Function): GetServerSideProps {
 
 /**
  * Local development only
- * Used for pasting document.cookie into the browser for local testing purposes
- * Checks for /subscribe page, then for "?redirect=false" in query params, then if we're on localhost
  *
  * @param req
- * @param query
  * @returns boolean
  */
-function shouldNotRedirect(
-  req: IncomingMessage,
-  query: {
-    redirect?: string;
-  }
-): boolean {
-  return Boolean(
-    (req.url?.includes(RoutesE.CONFIRM_PLAN) ||
-      req.url?.includes(RoutesE.SUBSCRIBE)) &&
-      query.redirect === 'false'
-  );
+function shouldNotRedirect(query: { redirect?: string }): boolean {
+  return Boolean(query.redirect === 'false');
 }

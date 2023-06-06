@@ -1,10 +1,11 @@
 import axios, { AxiosResponse, AxiosRequestHeaders } from 'axios';
 const API_PATH = '/api/v1/subscription';
+import { CurrencyAbbrev } from 'types/Countries';
 import { PUBLIC_API_SERVER } from 'config';
 
 export type SubscriptionT = {
-  currency: string | null; // "USD", "EUR"
-  amount: string | null;
+  currency: CurrencyAbbrev;
+  amount: string;
   subscriptionEndTimestampS: number;
   isCancelled: boolean;
 };

@@ -1,9 +1,10 @@
 import { SubscriptionT } from 'services/subscription.service';
 import { convertCurrency } from 'util/utilities';
+import { CurrencyAbbrev } from 'types/Countries';
 
 export default class Subscription {
-  amount: string | null;
-  currency: string | null;
+  amount: string;
+  currency: CurrencyAbbrev;
   subscriptionEndTimestampS: number;
   isCancelled: boolean;
 
