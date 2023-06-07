@@ -12,16 +12,16 @@ import {
  * @param currency
  * @returns
  */
-export const convertCurrency = (currency: CurrencyAbbrev) => {
+export const convertCurrency = (currency: CurrencyAbbrev | null) => {
   const { US, DE } = RegionCurrency;
 
   switch (currency) {
     case 'EUR':
-      return '€';
+      return DE.symbol;
     case 'USD':
-      return '$';
+      return US.symbol;
     default:
-      return '$';
+      return US.symbol;
   }
 };
 
@@ -53,7 +53,7 @@ export const getCurrencyMeta = (region: string) => {
 export const getRegionPricePageUrl = (regionCode: RegionCodeT) => {
   let planId;
 
-  switch (regionCode) {
+  switch (regionCode as AcceptedRegionCodeT) {
     case 'US':
       planId = PLAN_ID_EA;
       break;

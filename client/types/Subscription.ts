@@ -3,8 +3,8 @@ import { convertCurrency } from 'util/utilities';
 import { CurrencyAbbrev } from 'types/Countries';
 
 export default class Subscription {
-  amount: string;
-  currency: CurrencyAbbrev;
+  amount: string | null;
+  currency: CurrencyAbbrev | null;
   subscriptionEndTimestampS: number;
   isCancelled: boolean;
 
