@@ -5,12 +5,24 @@
 // ---------------------------------
 //   Quick Typograpjhy
 // ---------------------------------
-$fontSizes: 12, 14, 16, 18, 20;
+.font-12 {
+  @include font-size(12);
+}
 
-@each $fontSize in $fontSizes {
-  .font-#{$fontSize} {
-    @include font-size($fontSize);
-  }
+.font-14 {
+  @include font-size(14);
+}
+
+.font-16 {
+  @include font-size(16);
+}
+
+.font-18 {
+  @include font-size(18);
+}
+
+.capitalize {
+  text-transform: capitalize;
 }
 
 // Body Text
@@ -18,21 +30,17 @@ $fontSizes: 12, 14, 16, 18, 20;
   @include body-md();
 }
 
-.body-md-semi-bold {
-  @include body-md-semi-bold();
-}
-
 .body-md-bold {
   @include body-md-bold();
 }
 
-// Paraphraph Text
-.paragraph {
-  @include paragraph();
+.body-sm-bold {
+  @include body-sm-bold();
 }
 
-.paragraph-sm {
-  @include paragraph-sm();
+// Link
+.primary-link {
+  @include primary-link();
 }
 
 // Heading
@@ -64,30 +72,13 @@ $fontSizes: 12, 14, 16, 18, 20;
   @include heading-xxs();
 }
 
-.capitalize {
-  text-transform: capitalize;
-}
-
-.primary-link {
-  @include primary-link();
-}
-
-.secondary-link {
-  @include secondary-link();
-}
-
-// ---------------------------------
-//   Quick Media-Q
-// ---------------------------------
-.no-mobile {
-  @include mobile-down {
-    display: none !important;
-  }
-}
-
 // ---------------------------------
 //   Colors
 // ---------------------------------
+.color-text-reverse {
+  color: $color-text-reverse;
+}
+
 .color-text-main {
   color: $color-text-main;
 }
@@ -140,6 +131,26 @@ $fontSizes: 12, 14, 16, 18, 20;
 //   Misc
 // ---------------------------------
 
+.z-1 {
+  z-index: 1;
+}
+
+.z-2 {
+  z-index: 2;
+}
+
+.z-3 {
+  z-index: 3;
+}
+
+.z-4 {
+  z-index: 4;
+}
+
+.z-5 {
+  z-index: 5;
+}
+
 .sr-only {
   border: 0 !important;
   clip: rect(1px, 1px, 1px, 1px) !important;
@@ -154,8 +165,13 @@ $fontSizes: 12, 14, 16, 18, 20;
   white-space: nowrap !important;
 }
 
-.block {
-  display: block;
+.clear-button {
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
 }
 
 .pointer {
@@ -194,16 +210,6 @@ $fontSizes: 12, 14, 16, 18, 20;
   text-transform: capitalize;
 }
 
-.u-left-absolute {
-  position: absolute;
-  left: 0;
-}
-
-.u-right-absolute {
-  position: absolute;
-  right: 0;
-}
-
 .left-absolute {
   position: absolute;
   left: 0;
@@ -223,10 +229,4 @@ $fontSizes: 12, 14, 16, 18, 20;
   & * {
     box-sizing: content-box;
   }
-}
-
-.button-wrapper {
-  border: 0;
-  background: transparent;
-  padding: 0;
 }

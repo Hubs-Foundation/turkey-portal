@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import { Modal } from '@mozilla/lilypad-ui';
 import SubCard from '../SubCard/SubCard';
-import Modal from '@Shared/Modal/Modal';
 import ContactFormModal from 'components/modals/ContactFormModal/ContactFormModal';
 
 const BasePlanCard = () => {

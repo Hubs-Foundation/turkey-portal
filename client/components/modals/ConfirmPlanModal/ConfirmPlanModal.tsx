@@ -1,8 +1,8 @@
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { Button, ButtonCategoriesE, Modal } from '@mozilla/lilypad-ui';
 import InfoBlock, { InfoBlockPropsT } from '@Shared/InfoBlock/InfoBlock';
 import { StandardPlanInfoCopy } from '@Modules/plans/PlanInfoCopy';
 import styles from './ConfirmPlanModal.module.scss';
-import Modal from '@Shared/Modal/Modal';
+
 import BeginStarterPlanButton from '@Modules/plans/BeginStarterPlanButton/BeginStarterPlanButton';
 
 const createInfoBlock = ({ label, icon }: InfoBlockPropsT, i: number) => {
@@ -11,7 +11,7 @@ const createInfoBlock = ({ label, icon }: InfoBlockPropsT, i: number) => {
 
 const ConfirmPlanModal = () => {
   return (
-    <Modal onClose={() => {}} hasContainer={false}>
+    <Modal onClose={() => {}} hasContainer={false} isVisible={true}>
       <div className={styles.contents}>
         <div className={`${styles.container} ${styles.continue_wrapper} mb-10`}>
           <h2 className="heading-lg mb-32">Let&apos;s build your hub!</h2>
