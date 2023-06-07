@@ -143,6 +143,8 @@ defmodule Dash do
     Repo.delete_all(from c in Capability, where: c.account_id == ^account.account_id)
   end
 
+  # Tech Dept - sending back nil nil to the client doesnt tell much. would be better to set more
+  # specific defaults.
   def currency_and_amount_for_plan(""), do: {nil, nil}
 
   def currency_and_amount_for_plan(plan_id) when is_binary(plan_id) do
