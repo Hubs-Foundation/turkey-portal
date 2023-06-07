@@ -6,7 +6,6 @@ import { SUBPLAT_SUBSCRIPTIONS_LINK } from 'config';
 
 type NextPaymentPropsT = {
   subscription: SubscriptionT;
-  currency?: string;
   price?: number;
   classProp?: string;
 };

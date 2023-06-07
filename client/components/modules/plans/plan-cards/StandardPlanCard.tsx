@@ -3,7 +3,7 @@ import { Button, Checkbox } from '@mozilla/lilypad-ui';
 import { StandardPlanInfoCopy } from '../PlanInfoCopy';
 import { RegionCodeT } from 'types/Countries';
 import BasePlanCard, { Price } from './BasePlanCard';
-import { getRegionPricePageUrl } from 'util/utilities';
+import { getPricePageUrl } from 'util/utilities';
 import { useSelector } from 'react-redux';
 import { selectRegion } from 'store/regionSlice';
 
@@ -16,7 +16,7 @@ const StandardPlanCard = () => {
    * Handle routing user to correct payment plan
    */
   const handleSubscribeClick = useCallback(() => {
-    const url = getRegionPricePageUrl(regionCode);
+    const url = getPricePageUrl(regionCode, 'standard', 'month');
     window.open(url);
   }, [regionCode]);
 
