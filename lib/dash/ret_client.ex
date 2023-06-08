@@ -8,11 +8,11 @@ defmodule Dash.RetClient do
 
   @ret_host_prefix "ret.hc-"
   @ret_host_postfix ".svc.cluster.local"
-  @ret_internal_port "4000"
+  @ret_internal_port "4001"
   defp ret_host_url(%Dash.Hub{} = hub), do: ret_host_url(hub.hub_id)
 
   defp ret_host_url(hub_id) when is_integer(hub_id) do
-    "https://#{@ret_host_prefix}#{hub_id}#{@ret_host_postfix}:#{@ret_internal_port}"
+    "http://#{@ret_host_prefix}#{hub_id}#{@ret_host_postfix}:#{@ret_internal_port}"
   end
 
   @ret_internal_scope "/api-internal/v1/"
@@ -23,7 +23,7 @@ defmodule Dash.RetClient do
     get_http_client().get(
       ret_host_url(hub_id) <> @ret_internal_scope <> endpoint,
       [{"x-ret-dashboard-access-key", get_ret_access_key()}],
-      [hackney: [:insecure]] ++ opts
+      opts
     )
   end
 
@@ -37,8 +37,7 @@ defmodule Dash.RetClient do
       [
         {"x-ret-dashboard-access-key", get_ret_access_key()},
         {"content-type", "application/json"}
-      ],
-      hackney: [:insecure]
+      ]
     )
   end
 
@@ -74,8 +73,7 @@ defmodule Dash.RetClient do
   defp fetch_health_endpoint(%Dash.Hub{} = hub) do
     get_http_client().get(
       ret_host_url(hub) <> @health_endpoint,
-      [],
-      hackney: [:insecure]
+      []
     )
   end
 
@@ -160,7 +158,6 @@ defmodule Dash.RetClient do
         Logger.error(
           "Failed to rewrite assets from: #{old_domain} to #{new_domain}. Error: #{inspect(err)}"
         )
-
         {:error, :rewrite_assets_failed}
     end
   end
@@ -174,8 +171,7 @@ defmodule Dash.RetClient do
         [
           {"x-ret-dashboard-access-key", get_ret_access_key()},
           {"content-type", "application/json"}
-        ],
-        hackney: [:insecure]
+        ]
       )
 
     case response do
