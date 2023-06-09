@@ -1,40 +1,24 @@
-import { FXA_PAYMENT_URL, PLAN_ID_EA, PLAN_ID_EA_DE, PRODUCT_ID } from 'config';
+import { FXA_PAYMENT_URL, PRODUCT_ID } from 'config';
 import {
-  RegionCurrencys,
   RegionCodeT,
-  CurrencyAbbrev,
   AcceptedRegionCodeT,
   ACCEPTED_REGION_CODES,
-  PlanMap,
+  productionPlansIdMap,
+  devPLansIdMap,
 } from 'types/Countries';
+import { localFeature, devFeature } from 'util/featureFlag';
 
 /**
- * Convert abbrev to symbol from subscription
- * @param currency
- * @returns
+ * Get plan map depending on Env
+ * @returns Plan map
  */
-export const convertCurrency = (currency: CurrencyAbbrev) => {
-  let symbol = '$';
-  for (const key in RegionCurrencys) {
-    const RegionCurrency = RegionCurrencys[key as AcceptedRegionCodeT];
-    if (RegionCurrency.abbrev === currency) {
-      symbol = RegionCurrency.symbol;
-    }
-  }
-  return symbol;
-};
-
-/**
- * Get meta data about a region
- * @param region
- * @returns RegionCurrency
- */
-export const getCurrencyMeta = (regionCode: string) => {
-  if (!ACCEPTED_REGION_CODES.includes(regionCode as AcceptedRegionCodeT)) {
-    return RegionCurrencys.US;
+export const getPlanMap = () => {
+  if (localFeature() || devFeature()) {
+    return devPLansIdMap;
   }
 
-  return RegionCurrencys[regionCode as AcceptedRegionCodeT];
+  // Default to production vars
+  return devPLansIdMap;
 };
 
 /**
@@ -44,19 +28,37 @@ export const getCurrencyMeta = (regionCode: string) => {
  * @param duration monthly or yearly payments
  * @returns URL to pricing page
  */
-export const getPricePageUrl = (
+export const getPricePageData = (
   regionCode: RegionCodeT,
   plan: 'standard' | 'pro',
-  duration: 'month' | 'year'
+  billingPeriod: 'monthly' | 'yearly'
 ) => {
-  // If not accepted region or no region set to US plan
+  const planData = getPlanMap();
+  // If not accepted region or no region default to US plan
+  let planUrl = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${planData.US[plan][billingPeriod].planId}`;
+  let planPrice = planData.US[plan][billingPeriod].price;
+  let taxDescription = planData.US.taxDescription;
+  let currencySymbol = planData.US.symbol;
+  let currencyAbbrev = planData.US.abbrev;
+
   if (
-    !ACCEPTED_REGION_CODES.includes(regionCode as AcceptedRegionCodeT) ||
-    !regionCode
+    regionCode &&
+    ACCEPTED_REGION_CODES.includes(regionCode as AcceptedRegionCodeT)
   ) {
-    return `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_EA}`;
+    const planObj = planData[regionCode as AcceptedRegionCodeT];
+    const { planId, price } = planObj[plan][billingPeriod];
+    planUrl = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${planId}`;
+    planPrice = price;
+    taxDescription = planObj.taxDescription;
+    currencySymbol = planObj.symbol;
+    currencyAbbrev = planObj.abbrev;
   }
 
-  const planId = PlanMap[regionCode as AcceptedRegionCodeT][plan][duration];
-  return `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${planId}`;
+  return {
+    planUrl,
+    planPrice,
+    taxDescription,
+    currencySymbol,
+    currencyAbbrev,
+  };
 };

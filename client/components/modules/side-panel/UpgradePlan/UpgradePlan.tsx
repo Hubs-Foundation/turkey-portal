@@ -1,11 +1,12 @@
 import styles from './UpgradePlan.module.scss';
 import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
-import { getPricePageUrl } from 'util/utilities';
+import { getPricePageData } from 'util/utilities';
 import { useSelector } from 'react-redux';
 import { selectRegion } from 'store/regionSlice';
 
 const UpgradePlan = () => {
   const { regionCode } = useSelector(selectRegion);
+  const { planUrl } = getPricePageData(regionCode, 'standard', 'monthly');
 
   return (
     <div className={styles.upgrade_container}>
@@ -21,7 +22,7 @@ const UpgradePlan = () => {
           category={ButtonCategoriesE.SECONDARY_SOLID}
           text="Upgrade"
           label="Upgrade"
-          href={getPricePageUrl(regionCode, 'standard', 'month')}
+          href={planUrl}
         />
       </div>
     </div>

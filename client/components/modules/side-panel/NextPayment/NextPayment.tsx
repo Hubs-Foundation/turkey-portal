@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import styles from './NextPayment.module.scss';
 import { SubscriptionT } from 'services/subscription.service';
-import { convertCurrency } from 'util/utilities';
 import { SUBPLAT_SUBSCRIPTIONS_LINK } from 'config';
+import { CurrencySymbolMap } from 'types/Countries';
 
 type NextPaymentPropsT = {
   subscription: SubscriptionT;
@@ -34,7 +34,7 @@ const PaymentBlock = ({ subscription }: PaymentBlockPropsT) => {
           or i18next to localize the price here - check with backend if they are already formatting anything since currency is being delivered
           with response 
         */}
-          {convertCurrency(currency)}
+          {CurrencySymbolMap[currency]}
           {Number(amount).toFixed(2)}
         </span>
         <span className={styles.currency}>{currency} (+tax)</span>

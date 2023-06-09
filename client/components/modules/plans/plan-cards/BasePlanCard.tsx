@@ -1,37 +1,28 @@
 import { ReactNode } from 'react';
 import { PlanInfoCopyT } from '../PlanInfoCopy';
 import styles from './BasePlanCard.module.scss';
-import { RegionCodeT } from 'types/Countries';
-import { getCurrencyMeta } from 'util/utilities';
 import InfoBlock from '@Shared/InfoBlock/InfoBlock';
 
 // PRICE DISPLAY COMPONENT
 // USED FOR BasePlanCard "PRICE" PROP
 type PricePropsT = {
-  region: RegionCodeT;
   price: string;
-  priceCadence?: string;
+  currencyAbbrev?: string;
+  billingPeriod?: string;
 };
 
-export const Price = ({ region, price, priceCadence }: PricePropsT) => {
-  const currency = region ? getCurrencyMeta(region) : null;
-
+export const Price = ({
+  price,
+  currencyAbbrev,
+  billingPeriod,
+}: PricePropsT) => {
   return (
     <div className={styles.price_container}>
       <div className={styles.price}>
-        {currency ? (
-          <>
-            <h2 className="heading-lg">
-              {currency.symbol}
-              {price}
-            </h2>
-            <p>{currency.abbrev}</p>
-          </>
-        ) : (
-          <h2 className="heading-lg">{price}</h2>
-        )}
+        <h2 className="heading-lg">{price}</h2>
+        <p>{currencyAbbrev}</p>
       </div>
-      {priceCadence && <p className={styles.price_cadence}>{priceCadence}</p>}
+      {billingPeriod && <p className={styles.price_cadence}>{billingPeriod}</p>}
     </div>
   );
 };

@@ -1,9 +1,5 @@
 import { PLAN_ID_EA } from 'config';
 
-export enum CountriesE {
-  GERMANY = 'DE',
-}
-
 export const ACCEPTED_REGION_CODES = [
   'DE',
   'IT',
@@ -36,196 +32,543 @@ export type RegionT = {
   regionCode: RegionCodeT;
 };
 
-const EURO = {
-  abbrev: 'EUR',
-  symbol: '€',
-};
+export enum CurrencySymbolMap {
+  USD = '$',
+  EUR = '€',
+  CHF = 'CHF',
+  SGD = '$',
+  NZD = '$',
+  GBP = '£',
+  CAD = '$',
+}
 
-export const RegionCurrencys = {
-  DE: EURO,
-  IT: EURO,
-  ER: EURO,
-  NL: EURO,
-  IE: EURO,
-  FR: EURO,
-  LU: EURO,
-  BE: EURO,
-  AU: EURO,
-  US: {
-    abbrev: 'USD',
-    symbol: '$',
-  },
-  GB: {
-    abbrev: 'GBP',
-    symbol: '£',
-  },
-  CA: {
-    abbrev: 'CAD',
-    symbol: '$',
-  },
-  CH: {
-    abbrev: 'CHF',
-    symbol: 'CHF',
-  },
-  NZ: {
-    abbrev: 'NZD',
-    symbol: '$',
-  },
-  SG: {
-    abbrev: 'SGD',
-    symbol: '$',
-  },
-};
-
-export const PlanMap = {
+export const productionPlansIdMap = {
   DE: {
     standard: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
     pro: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
   },
   IT: {
     standard: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
     pro: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
   },
   ER: {
     standard: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
     pro: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
   },
   NL: {
     standard: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
     pro: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
   },
   IE: {
     standard: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
     pro: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
   },
   FR: {
     standard: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
     pro: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
   },
   LU: {
     standard: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
     pro: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
   },
   BE: {
     standard: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
     pro: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
   },
   AU: {
     standard: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
     pro: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
   },
   US: {
     standard: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
     pro: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
   },
   GB: {
     standard: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
     pro: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
   },
   CA: {
     standard: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
     pro: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
   },
   CH: {
     standard: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
     pro: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
   },
   NZ: {
     standard: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
     pro: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
   },
   SG: {
     standard: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
     },
     pro: {
-      month: PLAN_ID_EA,
-      year: PLAN_ID_EA,
+      monthly: PLAN_ID_EA,
+      yearly: PLAN_ID_EA,
+    },
+  },
+};
+
+export const devPLansIdMap = {
+  DE: {
+    abbrev: 'EUR',
+    symbol: '€',
+    taxDescription: '',
+    standard: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 22.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 100.22,
+      },
+    },
+    pro: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 400.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 5000.22,
+      },
+    },
+  },
+  IT: {
+    abbrev: 'EUR',
+    symbol: '€',
+    taxDescription: '',
+    standard: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 22.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 100.22,
+      },
+    },
+    pro: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 400.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 5000.22,
+      },
+    },
+  },
+  ER: {
+    abbrev: 'EUR',
+    symbol: '€',
+    taxDescription: '',
+    standard: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 22.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 100.22,
+      },
+    },
+    pro: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 400.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 5000.22,
+      },
+    },
+  },
+  NL: {
+    abbrev: 'EUR',
+    symbol: '€',
+    taxDescription: '',
+    standard: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 22.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 100.22,
+      },
+    },
+    pro: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 400.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 5000.22,
+      },
+    },
+  },
+  IE: {
+    abbrev: 'EUR',
+    symbol: '€',
+    taxDescription: '',
+    standard: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 22.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 100.22,
+      },
+    },
+    pro: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 400.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 5000.22,
+      },
+    },
+  },
+  FR: {
+    abbrev: 'EUR',
+    symbol: '€',
+    taxDescription: '',
+    standard: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 22.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 100.22,
+      },
+    },
+    pro: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 400.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 5000.22,
+      },
+    },
+  },
+  LU: {
+    abbrev: 'EUR',
+    symbol: '€',
+    taxDescription: '',
+    standard: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 22.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 100.22,
+      },
+    },
+    pro: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 400.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 5000.22,
+      },
+    },
+  },
+  BE: {
+    abbrev: 'EUR',
+    symbol: '€',
+    taxDescription: '',
+    standard: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 22.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 100.22,
+      },
+    },
+    pro: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 400.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 5000.22,
+      },
+    },
+  },
+  AU: {
+    abbrev: 'EUR',
+    symbol: '€',
+    taxDescription: '',
+    standard: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 22.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 100.22,
+      },
+    },
+    pro: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 400.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 5000.22,
+      },
+    },
+  },
+  US: {
+    abbrev: 'USD',
+    symbol: '$',
+    taxDescription: ' + tax',
+    standard: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 20.0,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 100.22,
+      },
+    },
+    pro: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 400.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 5000.22,
+      },
+    },
+  },
+  GB: {
+    abbrev: 'USD',
+    symbol: '$',
+    taxDescription: '',
+    standard: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 22.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 100.22,
+      },
+    },
+    pro: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 400.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 5000.22,
+      },
+    },
+  },
+  CA: {
+    abbrev: 'USD',
+    symbol: '$',
+    taxDescription: '',
+    standard: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 22.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 100.22,
+      },
+    },
+    pro: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 400.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 5000.22,
+      },
+    },
+  },
+  CH: {
+    abbrev: 'CHF',
+    symbol: 'CHF',
+    taxDescription: '',
+    standard: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 22.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 100.22,
+      },
+    },
+    pro: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 400.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 5000.22,
+      },
+    },
+  },
+  NZ: {
+    abbrev: 'NZD',
+    symbol: '$',
+    taxDescription: '',
+    standard: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 22.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 100.22,
+      },
+    },
+    pro: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 400.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 5000.22,
+      },
+    },
+  },
+  SG: {
+    abbrev: 'SGD',
+    symbol: '$',
+    taxDescription: '',
+    standard: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 22.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 100.22,
+      },
+    },
+    pro: {
+      monthly: {
+        planId: PLAN_ID_EA,
+        price: 400.22,
+      },
+      yearly: {
+        planId: PLAN_ID_EA,
+        price: 5000.22,
+      },
     },
   },
 };

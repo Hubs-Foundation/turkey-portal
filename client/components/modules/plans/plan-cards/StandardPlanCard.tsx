@@ -1,30 +1,27 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Button, Checkbox } from '@mozilla/lilypad-ui';
 import { StandardPlanInfoCopy } from '../PlanInfoCopy';
-import { RegionCodeT } from 'types/Countries';
 import BasePlanCard, { Price } from './BasePlanCard';
-import { getPricePageUrl } from 'util/utilities';
+import { getPricePageData } from 'util/utilities';
 import { useSelector } from 'react-redux';
 import { selectRegion } from 'store/regionSlice';
 
-const TAX_REGIONS: RegionCodeT[] = ['US'];
 const StandardPlanCard = () => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
   const { regionCode } = useSelector(selectRegion);
+  const { planPrice, planUrl, taxDescription, currencySymbol } =
+    getPricePageData(regionCode, 'standard', 'monthly');
 
   /**
    * Handle routing user to correct payment plan
    */
   const handleSubscribeClick = useCallback(() => {
-    const url = getPricePageUrl(regionCode, 'standard', 'month');
-    window.open(url);
-  }, [regionCode]);
+    window.open(planUrl);
+  }, [planUrl]);
 
   const onToggleLocationConfirmation = useCallback((value: boolean) => {
     setLocationConfirmed(value);
   }, []);
-
-  const hasTax = TAX_REGIONS.includes(regionCode);
 
   return (
     <BasePlanCard
@@ -32,9 +29,8 @@ const StandardPlanCard = () => {
       color="warm"
       price={
         <Price
-          price="20"
-          region={regionCode}
-          priceCadence={`per month${hasTax ? ' + tax' : ''}`}
+          price={`${currencySymbol}${planPrice}`}
+          billingPeriod={`per month${taxDescription}`}
         />
       }
       infoCopyList={StandardPlanInfoCopy}
