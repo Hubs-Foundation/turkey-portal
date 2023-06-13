@@ -1,7 +1,5 @@
 import { ReactNode } from 'react';
 import styles from './BasePlanCard.module.scss';
-import { RegionCodeT } from 'types/Countries';
-import { getCurrencyMeta } from 'util/utilities';
 import { PlanInfoCopyT } from './planInfoCopy';
 import InfoBlock from '../InfoBlock/InfoBlock';
 import { Button } from '@mozilla/lilypad-ui';
@@ -9,30 +7,23 @@ import { Button } from '@mozilla/lilypad-ui';
 // PRICE DISPLAY COMPONENT
 // USED FOR BasePlanCard "PRICE" PROP
 type PricePropsT = {
-  regionCode: RegionCodeT;
   price: string;
-  priceCadence?: string;
+  currencyAbbrev?: string;
+  billingPeriod?: string;
 };
 
-export const Price = ({ regionCode, price, priceCadence }: PricePropsT) => {
-  const currency = regionCode ? getCurrencyMeta(regionCode) : null;
-
+export const Price = ({
+  price,
+  currencyAbbrev,
+  billingPeriod,
+}: PricePropsT) => {
   return (
-    <div className={`${styles.price_container}`}>
+    <div className={styles.price_container}>
       <div className={styles.price}>
-        {currency ? (
-          <>
-            <h2 className="heading-lg">
-              {currency.symbol}
-              {price}
-            </h2>
-            <p>{currency.abbrev}</p>
-          </>
-        ) : (
-          <h2 className="heading-lg">{price}</h2>
-        )}
+        <h2 className="heading-lg">{price}</h2>
+        <p>{currencyAbbrev}</p>
       </div>
-      {priceCadence && <p className={styles.price_cadence}>{priceCadence}</p>}
+      {billingPeriod && <p className={styles.price_cadence}>{billingPeriod}</p>}
     </div>
   );
 };

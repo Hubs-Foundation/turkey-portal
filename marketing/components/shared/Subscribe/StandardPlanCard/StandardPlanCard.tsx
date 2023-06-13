@@ -1,58 +1,33 @@
-import getEnvVariable from 'config';
-import { useCallback, useEffect, useState } from 'react';
-import { getRegion } from 'services/region.service';
-import { CountriesE, RegionCodeT } from 'types/Countries';
+import { useCallback, useState } from 'react';
+import { RegionCodeT, BillingPeriod } from 'types/Countries';
 import { BasePlanCard, Price } from '../BasePlanCard/BasePlanCard';
 import { standardPlanInfoCopy } from '../BasePlanCard/planInfoCopy';
 import { Button, Checkbox } from '@mozilla/lilypad-ui';
+import { getPricePageData } from 'util/utilities';
 
-const TAX_REGIONS: RegionCodeT[] = ['US'];
+type StandardPlanCardPropsT = {
+  billingPeriod: BillingPeriod;
+  regionCode: RegionCodeT;
+};
 
-const StandardPlanCard = () => {
+const StandardPlanCard = ({
+  billingPeriod,
+  regionCode,
+}: StandardPlanCardPropsT) => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
-  // TODO : set up the store and add region to it.
-  const [regionCode, setRegionCode] = useState<RegionCodeT>(null);
-
-  useEffect(() => {
-    const fetchRegion = async () => {
-      try {
-        const data = await getRegion();
-        setRegionCode(data.regionCode);
-      } catch (e) {
-        console.error(e);
-        setRegionCode(null);
-      }
-    };
-    fetchRegion();
-  }, []);
-
-  /**
-   * Check If Euro Region or not
-   * @return Boolean
-   */
-  const isEuro = useCallback((): boolean => {
-    return Boolean(regionCode === CountriesE.GERMANY);
-  }, [regionCode]);
+  const { planPrice, planUrl, taxDescription, currencySymbol } =
+    getPricePageData(regionCode, 'standard', billingPeriod);
 
   /**
    * Handle routing user to correct payment plan
    */
   const handleSubscribeClick = useCallback(() => {
-    // Default to US plan
-    const plan: string = isEuro()
-      ? getEnvVariable('PLAN_ID_EA_DE')
-      : getEnvVariable('PLAN_ID_EA');
-    const url = `${getEnvVariable('FXA_PAYMENT_URL')}/checkout/${getEnvVariable(
-      'PRODUCT_ID'
-    )}?plan=${plan}`;
-    window.open(url);
-  }, [isEuro]);
+    window.open(planUrl);
+  }, [planUrl]);
 
   const onToggleConfirmation = useCallback((value: boolean) => {
     setLocationConfirmed(value);
   }, []);
-
-  const hasTax = TAX_REGIONS.includes(regionCode);
 
   return (
     <BasePlanCard
@@ -60,9 +35,10 @@ const StandardPlanCard = () => {
       color="warm"
       price={
         <Price
-          regionCode={regionCode}
-          price="20"
-          priceCadence={`per month${hasTax ? ' + tax' : ''}`}
+          price={`${currencySymbol}${planPrice}`}
+          billingPeriod={`per ${
+            billingPeriod === 'yearly' ? 'year' : 'month'
+          } ${taxDescription}`}
         />
       }
       infoCopyList={standardPlanInfoCopy}
