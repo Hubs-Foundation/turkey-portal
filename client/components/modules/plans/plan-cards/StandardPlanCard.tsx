@@ -5,8 +5,13 @@ import BasePlanCard, { Price } from './BasePlanCard';
 import { getPricePageData } from 'util/utilities';
 import { useSelector } from 'react-redux';
 import { selectRegion } from 'store/regionSlice';
+import { BillingPeriod } from 'types/Countries';
 
-const StandardPlanCard = () => {
+type StandardPlanCardPropsT = {
+  billingPeriod: BillingPeriod;
+};
+
+const StandardPlanCard = ({ billingPeriod }: StandardPlanCardPropsT) => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
   const { regionCode } = useSelector(selectRegion);
   const { planPrice, planUrl, taxDescription, currencySymbol } =
@@ -30,7 +35,9 @@ const StandardPlanCard = () => {
       price={
         <Price
           price={`${currencySymbol}${planPrice}`}
-          billingPeriod={`per month${taxDescription}`}
+          billingPeriod={`per ${
+            billingPeriod === 'yearly' ? 'year' : 'month'
+          } ${taxDescription}`}
         />
       }
       infoCopyList={StandardPlanInfoCopy}

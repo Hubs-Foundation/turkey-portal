@@ -1,5 +1,7 @@
 import { PLAN_ID_EA } from 'config';
 
+export type BillingPeriod = 'monthly' | 'yearly';
+
 export const ACCEPTED_REGION_CODES = [
   'DE',
   'IT',
@@ -42,160 +44,7 @@ export enum CurrencySymbolMap {
   CAD = '$',
 }
 
-export const productionPlansIdMap = {
-  DE: {
-    standard: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-    pro: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-  },
-  IT: {
-    standard: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-    pro: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-  },
-  ER: {
-    standard: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-    pro: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-  },
-  NL: {
-    standard: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-    pro: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-  },
-  IE: {
-    standard: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-    pro: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-  },
-  FR: {
-    standard: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-    pro: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-  },
-  LU: {
-    standard: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-    pro: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-  },
-  BE: {
-    standard: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-    pro: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-  },
-  AU: {
-    standard: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-    pro: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-  },
-  US: {
-    standard: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-    pro: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-  },
-  GB: {
-    standard: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-    pro: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-  },
-  CA: {
-    standard: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-    pro: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-  },
-  CH: {
-    standard: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-    pro: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-  },
-  NZ: {
-    standard: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-    pro: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-  },
-  SG: {
-    standard: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-    pro: {
-      monthly: PLAN_ID_EA,
-      yearly: PLAN_ID_EA,
-    },
-  },
-};
-
-export const devPLansIdMap = {
+export const PLAN_ID_MAP = {
   DE: {
     abbrev: 'EUR',
     symbol: '€',
@@ -299,7 +148,7 @@ export const devPLansIdMap = {
   IE: {
     abbrev: 'EUR',
     symbol: '€',
-    taxDescription: '',
+    taxDescription: 'i love taxes',
     standard: {
       monthly: {
         planId: PLAN_ID_EA,

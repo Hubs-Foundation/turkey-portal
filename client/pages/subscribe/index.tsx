@@ -26,7 +26,7 @@ const Subscribe = () => {
 
           <div className={styles.cards}>
             <StarterPlanCard />
-            <StandardPlanCard />
+            <StandardPlanCard billingPeriod="monthly" />
             <ContactCard
               email="hubs@mozilla.com"
               subject="Subscription inquiries"

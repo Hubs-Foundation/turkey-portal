@@ -12,7 +12,7 @@ export const getRegion = async () => {
   return axios
     .get(`${PUBLIC_API_SERVER}${API_PATH}`, { withCredentials: true })
     .then((response: AxiosResponse) => {
-      if (localFeature()) response.data.regionCode = 'II';
+      if (localFeature()) response.data.regionCode = 'US';
       return response.data as RegionT;
     });
 };
