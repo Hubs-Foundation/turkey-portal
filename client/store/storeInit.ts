@@ -36,6 +36,9 @@ export const initAccountData = async () => {
   }
 };
 
+/**
+ * Init Region Data
+ */
 const initRegionData = async () => {
   try {
     const region = await getRegion();
