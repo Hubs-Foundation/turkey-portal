@@ -14,7 +14,6 @@ type SubscribePropsT = {
 
 const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
   const [regionCode, setRegionCode] = useState<RegionCodeT>('US');
-  // TODO - set toggle to set yearly and monthly cards.
   const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>('monthly');
 
   useEffect(() => {
@@ -29,27 +28,11 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
     fetchRegion();
   }, []);
 
-  const onPeriodChange = () => {
-    setBillingPeriod((state) => {
-      if (state === 'monthly') {
-        return 'yearly';
-      }
-      return 'monthly';
-    });
-  };
-
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <>
         <Swoosh location="top" />
         <div className={styles.container}>
-          <button
-            onClick={() => {
-              onPeriodChange();
-            }}
-          >
-            click me!!!
-          </button>
           <div className={styles.cards}>
             <StarterPlanCard />
             <StandardPlanCard

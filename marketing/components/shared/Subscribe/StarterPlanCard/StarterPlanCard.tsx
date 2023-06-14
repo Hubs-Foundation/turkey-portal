@@ -14,7 +14,7 @@ const StarterPlanCard = () => {
       isSoldOut={true}
       title="Starter"
       color="silver"
-      price={<Price regionCode={null} price="Free" />}
+      price={<Price price="Free" />}
       infoCopyList={starterPlanInfoCopy}
       confirmButton={
         <Button
