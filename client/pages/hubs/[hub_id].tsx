@@ -17,9 +17,9 @@ import HubFormCard, {
 import type { GetServerSidePropsContext } from 'next';
 import styles from './[hub_id].module.scss';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
-import SidePanel from '@Modules/side-panel';
 import { AxiosRequestHeaders } from 'axios';
 import { StoreContext } from 'contexts/StoreProvider';
+import SidePanelLayout from 'layouts/SidePanelLayout/SidePanelLayout';
 
 type HubDetailsViewPropsT = {
   subscription: SubscriptionT;
@@ -125,23 +125,15 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
         <meta name="description" content="detailed information about a Hub" />
       </Head>
 
-      {!loading && hub !== null ? (
-        <main className={styles.main}>
-          <div className={styles.card_wrapper}>
+      <SidePanelLayout hub={hub} subscription={subscription}>
+        <div className={styles.card_wrapper}>
+          {!loading && hub !== null ? (
             <HubFormCard hub={hub} onSubmit={handleFormSubmit} />
-          </div>
-
-          <SidePanel subdomain={hub.subdomain} subscription={subscription} />
-        </main>
-      ) : (
-        <div className="flex-justify-center">
-          <div className={styles.skeleton_container}>
-            <SkeletonCard qty={3} category="square" />
-            <SkeletonCard qty={3} category="square" />
-            <SkeletonCard qty={3} category="square" />
-          </div>
+          ) : (
+            <SkeletonCard qty={3} category="row" />
+          )}
         </div>
-      )}
+      </SidePanelLayout>
     </div>
   );
 };

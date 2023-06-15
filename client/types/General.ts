@@ -4,6 +4,7 @@ export type FormattedTierT = 'Mvp' | 'Starter' | 'Early Access' | 'Premium';
 export enum PlansE {
   p0 = 'starter',
   p1 = 'standard',
+  p2 = 'pro',
 }
 
 export type FormattedTierMapT = {
@@ -61,7 +62,7 @@ export type AccountT = {
   planName: PlansT;
 };
 
-type PlansT = PlansE.p0 | PlansE.p1 | null;
+type PlansT = PlansE.p0 | PlansE.p1 | PlansE.p2 | null;
 
 export enum StorageStateE {
   DEFAULT = 'default',
