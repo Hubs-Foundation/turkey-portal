@@ -1,0 +1,36 @@
+@use 'styles/core/boilerplate' as *;
+.wrapper {
+  width: 692px;
+  display: flex;
+
+  @include desktop-large-down {
+    width: 100%;
+  }
+
+  @include tablet-down {
+    flex-wrap: wrap;
+  }
+}
+
+.card {
+  margin-bottom: 24px;
+  color: $color-text-reverse;
+
+  &:first-of-type {
+    background-color: $color-brand-3;
+    @include tablet-up {
+      margin-right: 10px;
+    }
+  }
+  &:last-of-type {
+    background-color: $color-brand-1;
+    @include tablet-up {
+      margin-left: 10px;
+    }
+  }
+
+  @include mobile-down {
+    border-radius: 0;
+    margin-bottom: 0;
+  }
+}

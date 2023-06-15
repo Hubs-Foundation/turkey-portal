@@ -6,7 +6,7 @@ import { AxiosRequestHeaders } from 'axios';
 import { Button, ButtonSizesE, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import { HubT } from 'types/General';
 import { RoutesE } from 'types/Routes';
-import { hubIdRG } from 'services/routeGuard.service';
+import { customClientRG } from 'services/routeGuard.service';
 import styles from './custom-client.module.scss';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
 import { getHubs } from 'services/hub.service';
@@ -50,8 +50,11 @@ const CustomClient = ({ subscription }: HubDetailsViewPropsT) => {
   return (
     <div className="page_wrapper">
       <Head>
-        <title>Hub Details View</title>
-        <meta name="description" content="detailed information about a Hub" />
+        <title>Create Custom Client</title>
+        <meta
+          name="description"
+          content="creating a custom client for user on the pro plan"
+        />
       </Head>
 
       <SidePanelLayout
@@ -61,7 +64,7 @@ const CustomClient = ({ subscription }: HubDetailsViewPropsT) => {
       >
         <div className={styles.card_wrapper}>
           <Card size="large" classProp={styles.card}>
-            <div className={styles.card_header}>
+            <div className="flex-align-center mb-12">
               <Button
                 label="cancel"
                 onClick={handleCancelClick}
@@ -79,7 +82,12 @@ const CustomClient = ({ subscription }: HubDetailsViewPropsT) => {
               Dui accumsan sit amet nulla facilisi morbi tempus. Tellus integer
               feugiat scelerisque varius morbi enim nunc faucibus.
             </p>
-            <a href="" className="primary-link">
+            <a
+              className="primary-link"
+              onClick={() => {
+                window.open('mailto:hubs-clientupload@mozilla.com');
+              }}
+            >
               hubs-clientupload@mozilla.com
             </a>
           </Card>
@@ -89,7 +97,7 @@ const CustomClient = ({ subscription }: HubDetailsViewPropsT) => {
   );
 };
 
-export const getServerSideProps = hubIdRG(
+export const getServerSideProps = customClientRG(
   async (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
     try {

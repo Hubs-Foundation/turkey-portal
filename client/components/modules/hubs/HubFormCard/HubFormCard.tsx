@@ -8,12 +8,14 @@ import {
   ButtonSizesE,
   Icon,
   Input,
+  Pill,
 } from '@mozilla/lilypad-ui';
 import { validateHubSubdomain } from 'services/hub.service';
 import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
 import { RoutesE } from 'types/Routes';
 import { useFormik } from 'formik';
 import validate, { FormValues } from './validate';
+import { useIsP2 } from 'hooks/usePlans';
 
 export type HubFormCardT = {
   name: string;
@@ -40,6 +42,7 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
     useState<string>('');
   const [isEditingDomain, setIsEditingDomain] = useState(false);
   const router = useRouter();
+  const isP2 = useIsP2();
 
   /**
    * Init Formik
@@ -216,7 +219,33 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
               </div>
             ) : null}
           </div>
-          <div className={styles.actions_wrapper}>
+
+          {isP2 && (
+            <section className={styles.custom_client_message}>
+              <div className="flex-justify-between mb-12">
+                <h1 className="heading-sm">Custom Client</h1>
+                <Pill title="Beta" category="cool" />
+              </div>
+              <p className="paragraph mb-24">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                Lacinia quis vel eros donec ac. Ultrices gravida dictum fusce
+                ut. Dui accumsan sit amet nulla facilisi morbi tempus. Tellus
+                integer feugiat scelerisque varius morbi enim nunc faucibus.
+              </p>
+
+              <a
+                className="primary-link"
+                onClick={() => {
+                  window.open('mailto:hubs-clientupload@mozilla.com');
+                }}
+              >
+                hubs-clientupload@mozilla.com
+              </a>
+            </section>
+          )}
+
+          <section className={styles.actions_wrapper}>
             <Button
               label="cancel"
               classProp="mr-5"
@@ -231,7 +260,7 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
               category={ButtonCategoriesE.PRIMARY_SOLID}
               text="update"
             />
-          </div>
+          </section>
         </form>
       </div>
     </div>

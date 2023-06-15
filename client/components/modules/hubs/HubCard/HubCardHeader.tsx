@@ -1,5 +1,6 @@
 import { Button, ButtonCategoriesE, Dropdown } from '@mozilla/lilypad-ui';
 import { useRouter } from 'next/router';
+import { RoutesE } from 'types/Routes';
 import { StatusE } from 'types/General';
 import styles from './HubCardHeader.module.scss';
 import { useIsP0, useIsP2 } from 'hooks/usePlans';
@@ -25,7 +26,7 @@ const HubCardHeader = ({
         className="dropdown-link"
         onClick={() => {
           router.push({
-            pathname: '/hubs/[hub_id]',
+            pathname: RoutesE.HUBS,
             query: { hub_id: hubId },
           });
         }}
@@ -37,7 +38,7 @@ const HubCardHeader = ({
           className="dropdown-link mt-14"
           onClick={() => {
             router.push({
-              pathname: '/custom-client',
+              pathname: RoutesE.CUSTOM_CLIENT,
             });
           }}
         >

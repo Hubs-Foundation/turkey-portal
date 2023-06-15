@@ -13,6 +13,8 @@ import { initAccountData as refreshAccountData } from 'store/storeInit';
 import { useSelector } from 'react-redux';
 import { AxiosRequestHeaders } from 'axios';
 import SidePanelLayout from 'layouts/SidePanelLayout/SidePanelLayout';
+import { CustomizeHub } from '@Modules/hubs/CustomizeHub/CustomizeHub';
+import { useIsP2 } from 'hooks/usePlans';
 
 type DashboardPropsT = { subscription: SubscriptionT };
 
@@ -53,6 +55,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
   const [hubs, setHubs] = useState<HubT[]>([]);
   const [hasUpdatingHub, setHasUpdatingHub] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const isP2 = useIsP2();
 
   /**
    * Hubs call failed:
@@ -169,15 +172,18 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
           )}
 
           {!isLoading ? (
-            hubs.map((hub) => {
-              return (
-                <HubCard
-                  key={hub.hubId}
-                  hub={hub}
-                  refreshHubData={refreshHubData}
-                />
-              );
-            })
+            <>
+              {hubs.map((hub) => {
+                return (
+                  <HubCard
+                    key={hub.hubId}
+                    hub={hub}
+                    refreshHubData={refreshHubData}
+                  />
+                );
+              })}
+              {isP2 && <CustomizeHub hub={hubs[0]} />}
+            </>
           ) : (
             <SkeletonCard qty={3} category="row" />
           )}
