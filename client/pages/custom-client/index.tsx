@@ -1,29 +1,17 @@
-import { useState, useEffect, useCallback, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { HubT, UpdateHubT, StatusE } from 'types/General';
-import { RoutesE } from 'types/Routes';
-import { getHub, updateHub } from 'services/hub.service';
-import { hubIdRG } from 'services/routeGuard.service';
 import Head from 'next/head';
-import {
-  NotificationTypesE,
-  NotificationLocationE,
-  CategoryE,
-} from '@mozilla/lilypad-ui';
-import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
-import HubFormCard, {
-  HubFormCardT,
-} from '@Modules/hubs/HubFormCard/HubFormCard';
 import type { GetServerSidePropsContext } from 'next';
+import { AxiosRequestHeaders } from 'axios';
+import { Button, ButtonSizesE, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { HubT } from 'types/General';
+import { RoutesE } from 'types/Routes';
+import { hubIdRG } from 'services/routeGuard.service';
 import styles from './custom-client.module.scss';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
-import SidePanel from '@Modules/side-panel';
-import { AxiosRequestHeaders } from 'axios';
-import { StoreContext } from 'contexts/StoreProvider';
 import { getHubs } from 'services/hub.service';
 import SidePanelLayout from 'layouts/SidePanelLayout/SidePanelLayout';
 import Card from '@Shared/Card/Card';
-import { Button, ButtonSizesE, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 
 type HubDetailsViewPropsT = {
   subscription: SubscriptionT;
@@ -82,15 +70,18 @@ const CustomClient = ({ subscription }: HubDetailsViewPropsT) => {
                 icon="arrow-left"
                 classProp="mr-5"
               />
-              <h1 className={styles.title}>Custom Client</h1>
+              <h1 className="heading-sm">Custom Client</h1>
             </div>
-            <p className="paragraph">
+            <p className="paragraph mb-24">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
               Lacinia quis vel eros donec ac. Ultrices gravida dictum fusce ut.
               Dui accumsan sit amet nulla facilisi morbi tempus. Tellus integer
               feugiat scelerisque varius morbi enim nunc faucibus.
             </p>
+            <a href="" className="primary-link">
+              hubs-clientupload@mozilla.com
+            </a>
           </Card>
         </div>
       </SidePanelLayout>
