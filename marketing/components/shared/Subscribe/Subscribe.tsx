@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { RegionCodeT } from 'types/Countries';
-import StandardPlanCard from './StandardPlanCard/StandardPlanCard';
+import PersonalPlanCard from './PersonalPlanCard/PersonalPlanCard';
 import StarterPlanCard from './StarterPlanCard/StarterPlanCard';
 import BusinessPlanCard from './BusinessPlanCard/BusinessPlanCard';
 import styles from './Subscribe.module.scss';
@@ -35,7 +35,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
         <div className={styles.container}>
           <div className={styles.cards}>
             <StarterPlanCard />
-            <StandardPlanCard
+            <PersonalPlanCard
               regionCode={regionCode}
               billingPeriod={billingPeriod}
             />

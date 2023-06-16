@@ -96,3 +96,5 @@ export type NewContactT = {
   activity: string;
   message: string;
 };
+
+type PlansT = 'starter' | 'personal' | 'professional' | 'business' | null;

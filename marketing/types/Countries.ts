@@ -46,7 +46,7 @@ export const PLAN_ID_MAP = {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
-    standard: {
+    personal: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 22.22,
@@ -56,7 +56,17 @@ export const PLAN_ID_MAP = {
         price: 100.22,
       },
     },
-    pro: {
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 400.22,
@@ -71,7 +81,7 @@ export const PLAN_ID_MAP = {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
-    standard: {
+    personal: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 22.22,
@@ -81,7 +91,17 @@ export const PLAN_ID_MAP = {
         price: 100.22,
       },
     },
-    pro: {
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 400.22,
@@ -96,7 +116,7 @@ export const PLAN_ID_MAP = {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
-    standard: {
+    personal: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 22.22,
@@ -106,7 +126,17 @@ export const PLAN_ID_MAP = {
         price: 100.22,
       },
     },
-    pro: {
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 400.22,
@@ -121,7 +151,7 @@ export const PLAN_ID_MAP = {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
-    standard: {
+    personal: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 22.22,
@@ -131,7 +161,17 @@ export const PLAN_ID_MAP = {
         price: 100.22,
       },
     },
-    pro: {
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 400.22,
@@ -146,7 +186,7 @@ export const PLAN_ID_MAP = {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: ' i love taxes',
-    standard: {
+    personal: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 22.49,
@@ -156,7 +196,17 @@ export const PLAN_ID_MAP = {
         price: 100.22,
       },
     },
-    pro: {
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 400.22,
@@ -171,7 +221,7 @@ export const PLAN_ID_MAP = {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
-    standard: {
+    personal: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 22.22,
@@ -181,7 +231,17 @@ export const PLAN_ID_MAP = {
         price: 100.22,
       },
     },
-    pro: {
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 400.22,
@@ -196,7 +256,7 @@ export const PLAN_ID_MAP = {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
-    standard: {
+    personal: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 22.22,
@@ -206,7 +266,17 @@ export const PLAN_ID_MAP = {
         price: 100.22,
       },
     },
-    pro: {
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 400.22,
@@ -221,7 +291,7 @@ export const PLAN_ID_MAP = {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
-    standard: {
+    personal: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 22.22,
@@ -231,7 +301,17 @@ export const PLAN_ID_MAP = {
         price: 100.22,
       },
     },
-    pro: {
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 400.22,
@@ -246,7 +326,7 @@ export const PLAN_ID_MAP = {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
-    standard: {
+    personal: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 22.22,
@@ -256,7 +336,17 @@ export const PLAN_ID_MAP = {
         price: 100.22,
       },
     },
-    pro: {
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 400.22,
@@ -271,7 +361,7 @@ export const PLAN_ID_MAP = {
     abbrev: 'USD',
     symbol: '$',
     taxDescription: ' + tax',
-    standard: {
+    personal: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 20.0,
@@ -281,7 +371,17 @@ export const PLAN_ID_MAP = {
         price: 100.22,
       },
     },
-    pro: {
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 400.22,
@@ -296,7 +396,7 @@ export const PLAN_ID_MAP = {
     abbrev: 'USD',
     symbol: '$',
     taxDescription: '',
-    standard: {
+    personal: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 22.22,
@@ -306,7 +406,17 @@ export const PLAN_ID_MAP = {
         price: 100.22,
       },
     },
-    pro: {
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 400.22,
@@ -321,7 +431,7 @@ export const PLAN_ID_MAP = {
     abbrev: 'USD',
     symbol: '$',
     taxDescription: '',
-    standard: {
+    personal: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 22.22,
@@ -331,7 +441,17 @@ export const PLAN_ID_MAP = {
         price: 100.22,
       },
     },
-    pro: {
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 400.22,
@@ -346,7 +466,7 @@ export const PLAN_ID_MAP = {
     abbrev: 'CHF',
     symbol: 'CHF',
     taxDescription: '',
-    standard: {
+    personal: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 22.22,
@@ -356,7 +476,17 @@ export const PLAN_ID_MAP = {
         price: 100.22,
       },
     },
-    pro: {
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 400.22,
@@ -371,7 +501,7 @@ export const PLAN_ID_MAP = {
     abbrev: 'NZD',
     symbol: '$',
     taxDescription: '',
-    standard: {
+    personal: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 22.22,
@@ -381,7 +511,17 @@ export const PLAN_ID_MAP = {
         price: 100.22,
       },
     },
-    pro: {
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 400.22,
@@ -396,7 +536,7 @@ export const PLAN_ID_MAP = {
     abbrev: 'SGD',
     symbol: '$',
     taxDescription: '',
-    standard: {
+    personal: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 22.22,
@@ -406,7 +546,17 @@ export const PLAN_ID_MAP = {
         price: 100.22,
       },
     },
-    pro: {
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
       monthly: {
         planId: 'PLAN_ID_EA',
         price: 400.22,
@@ -640,7 +790,7 @@ export const CountryOptions = [
   { value: 'SE', title: 'Sweden' },
   { value: 'CH', title: 'Switzerland' },
   { value: 'SY', title: 'Syrian Arab Republic' },
-  { value: 'TW', title: 'Taiwan, Province of China' },
+  { value: 'TW', title: 'Taiwan, professionalvince of China' },
   { value: 'TJ', title: 'Tajikistan' },
   { value: 'TZ', title: 'Tanzania, United Republic of' },
   { value: 'TH', title: 'Thailand' },

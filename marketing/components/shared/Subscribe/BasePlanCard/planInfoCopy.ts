@@ -24,7 +24,7 @@ export const starterPlanInfoCopy: PlanInfoCopyT[] = [
   },
 ];
 
-export const standardPlanInfoCopy: PlanInfoCopyT[] = [
+export const PersonalPlanInfoCopy: PlanInfoCopyT[] = [
   {
     label: 'Unlimited spaces',
     description: 'Customizable environment and themes',

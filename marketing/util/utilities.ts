@@ -6,6 +6,7 @@ import {
   PLAN_ID_MAP,
   BillingPeriod,
 } from 'types/Countries';
+import { PlansT } from 'types';
 
 /**
  * Get the pricing page URL for a region, return default (US) pricing page if region not found
@@ -16,7 +17,7 @@ import {
  */
 export const getPricePageData = (
   regionCode: RegionCodeT,
-  plan: 'standard' | 'pro',
+  plan: Exclude<PlansT, null | 'starter'>,
   billingPeriod: BillingPeriod
 ) => {
   console.log('regionCode', regionCode);
@@ -42,7 +43,6 @@ export const getPricePageData = (
     taxDescription = planObj.taxDescription;
     currencySymbol = planObj.symbol;
     currencyAbbrev = planObj.abbrev;
-    console.log('currencySymbol', currencySymbol);
   }
 
   return {
