@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useCallback } from 'react';
 import { StatusE } from 'types/General';
 import styles from './HubCardHeader.module.scss';
-import { useIsP0 } from 'hooks/usePlans';
+import { useIsStarter } from 'hooks/usePlans';
 
 type HubCardHeaderPropsT = {
   hubId: string;
@@ -17,7 +17,7 @@ const HubCardHeader = ({
   classProp = '',
 }: HubCardHeaderPropsT) => {
   const router = useRouter();
-  const isP0 = useIsP0();
+  const isStarter = useIsStarter();
 
   /**
    * Handle Setting Click
@@ -38,7 +38,7 @@ const HubCardHeader = ({
   );
 
   const dropdownVisible =
-    !isP0 && status !== StatusE.CREATING && status !== StatusE.UPDATING;
+    !isStarter && status !== StatusE.CREATING && status !== StatusE.UPDATING;
 
   return (
     <div className={`${classProp} ${styles.card_header}`}>

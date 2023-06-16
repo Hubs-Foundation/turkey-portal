@@ -17,7 +17,6 @@ import { CookiesE } from 'types/Cookies';
 import { setCookies } from 'cookies-next';
 import { localFeature } from '../util/featureFlag';
 import { AccountT } from 'types/General';
-import { PlansE } from 'types/General';
 
 type UnauthenticatedResponseT = {
   status: Number | undefined;
@@ -142,8 +141,8 @@ export function hubIdRG(gssp: Function): GetServerSideProps | Redirect {
         req.headers as AxiosRequestHeaders
       );
 
-      // p0 plan doesn't have access to Hub name or subdomain change
-      if (account.planName === PlansE.p0) {
+      // starter plan doesn't have access to Hub name or subdomain change
+      if (account.planName === 'starter') {
         return redirectToDashboard();
       }
 
