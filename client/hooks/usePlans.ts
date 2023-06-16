@@ -14,6 +14,5 @@ export const useIsP1 = (): boolean => {
 
 export const useIsP2 = (): boolean => {
   const account = useSelector(selectAccount);
-  console.log('account', account);
   return account.planName === PlansE.p2;
 };
