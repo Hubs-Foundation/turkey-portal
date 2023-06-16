@@ -4,6 +4,7 @@ import styles from './BasePlanCard.module.scss';
 import { RegionCodeT } from 'types/Countries';
 import { getCurrencyMeta } from 'util/utilities';
 import InfoBlock from '@Shared/InfoBlock/InfoBlock';
+import { Button } from '@mozilla/lilypad-ui';
 
 // PRICE DISPLAY COMPONENT
 // USED FOR BasePlanCard "PRICE" PROP
@@ -45,20 +46,30 @@ type BasePlanCardPropsT = {
   confirmButton: ReactNode;
   footerClassProp?: string;
   color: 'silver' | 'warm';
+  isSoldOut?: boolean;
 };
 
 const BasePlanCard = ({
-  classProp = '',
   title,
   price,
   infoCopyList,
   form,
   confirmButton,
   footerClassProp = '',
+  isSoldOut = false,
   color,
+  classProp = '',
 }: BasePlanCardPropsT) => {
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
+      {isSoldOut && (
+        <div className={styles.sold_out}>
+          <div className="text-center">
+            <h2 className="heading-xl mb-12">Sold Out!</h2>
+            <p>(Temporarily)</p>
+          </div>
+        </div>
+      )}
       <div
         className={`${styles.banner_gradient} ${styles['highlight_' + color]}`}
       />
@@ -89,8 +100,14 @@ const BasePlanCard = ({
 
       {/* FOOTER  */}
       <div className={styles.footer_wrapper}>
-        <div className={`${styles.footer} ${footerClassProp}`}>
-          {confirmButton}
+        <div
+          className={`${styles.footer} ${footerClassProp} flex-justify-center`}
+        >
+          {isSoldOut ? (
+            <Button label="sold out" text="sold out" />
+          ) : (
+            confirmButton
+          )}
         </div>
       </div>
     </div>
