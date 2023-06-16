@@ -4,7 +4,9 @@ import {
   AcceptedRegionCodeT,
   ACCEPTED_REGION_CODES,
   PLAN_ID_MAP,
+  BillingPeriod,
 } from 'types/Countries';
+import { PlansT } from 'types/General';
 
 /**
  * Get the pricing page URL for a region, return default (US) pricing page if region not found
@@ -15,8 +17,8 @@ import {
  */
 export const getPricePageData = (
   regionCode: RegionCodeT,
-  plan: 'standard' | 'pro',
-  billingPeriod: 'monthly' | 'yearly'
+  plan: Exclude<PlansT, null | 'starter'>,
+  billingPeriod: BillingPeriod
 ) => {
   // If not accepted region or no region default to US plan
   let planUrl = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_MAP.US[plan][billingPeriod].planId}`;

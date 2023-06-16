@@ -1,2 +1,2 @@
-export { default as StandardPlanCard } from './StandardPlanCard';
+export { default as PersonalPlanCard } from './PersoanlPlanCard';
 export { default as StarterPlanCard } from './StarterPlanCard';

@@ -1,21 +1,21 @@
 import { useCallback, useState } from 'react';
 import { Button, Checkbox } from '@mozilla/lilypad-ui';
-import { StandardPlanInfoCopy } from '../PlanInfoCopy';
+import { PersonalPlanInfoCopy } from '../PlanInfoCopy';
 import BasePlanCard, { Price } from './BasePlanCard';
 import { getPricePageData } from 'util/utilities';
 import { useSelector } from 'react-redux';
 import { selectRegion } from 'store/regionSlice';
 import { BillingPeriod } from 'types/Countries';
 
-type StandardPlanCardPropsT = {
+type PersonalPlanCardPropsT = {
   billingPeriod: BillingPeriod;
 };
 
-const StandardPlanCard = ({ billingPeriod }: StandardPlanCardPropsT) => {
+const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
   const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
   const { regionCode } = useSelector(selectRegion);
   const { planPrice, planUrl, taxDescription, currencySymbol } =
-    getPricePageData(regionCode, 'standard', 'monthly');
+    getPricePageData(regionCode, 'personal', 'monthly');
 
   /**
    * Handle routing user to correct payment plan
@@ -40,7 +40,7 @@ const StandardPlanCard = ({ billingPeriod }: StandardPlanCardPropsT) => {
           } ${taxDescription}`}
         />
       }
-      infoCopyList={StandardPlanInfoCopy}
+      infoCopyList={PersonalPlanInfoCopy}
       form={
         <form className="content-box mt-16 mb-16">
           <Checkbox
@@ -63,4 +63,4 @@ const StandardPlanCard = ({ billingPeriod }: StandardPlanCardPropsT) => {
   );
 };
 
-export default StandardPlanCard;
+export default PersonalPlanCard;

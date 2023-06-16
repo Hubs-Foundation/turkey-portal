@@ -4,7 +4,7 @@ import type { GetServerSidePropsContext } from 'next';
 import { pageRequireAuthentication } from 'services/routeGuard.service';
 import ContactCard from '@Modules/plans/ContactCard/ContactCard';
 import styles from './subscribe.module.scss';
-import { StandardPlanCard, StarterPlanCard } from '@Modules/plans/plan-cards';
+import { PersonalPlanCard, StarterPlanCard } from '@Modules/plans/plan-cards';
 import { BillingPeriod } from 'types/Countries';
 
 const Subscribe = () => {
@@ -30,7 +30,7 @@ const Subscribe = () => {
 
           <div className={styles.cards}>
             <StarterPlanCard />
-            <StandardPlanCard billingPeriod={billingPeriod} />
+            <PersonalPlanCard billingPeriod={billingPeriod} />
             <ContactCard
               email="hubs@mozilla.com"
               subject="Subscription inquiries"

@@ -56,7 +56,12 @@ export type AccountT = {
   planName: PlansT;
 };
 
-type PlansT = 'starter' | 'personal' | 'professional' | 'business' | null;
+export type PlansT =
+  | 'starter'
+  | 'personal'
+  | 'professional'
+  | 'business'
+  | null;
 
 export enum StorageStateE {
   DEFAULT = 'default',
