@@ -59,20 +59,23 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
    * Toast Error
    * @param errorMessage
    */
-  const launchToastError = (errorMessage: string) => {
-    storeContext.handleDispatchNotification({
-      title: 'Error',
-      description: errorMessage,
-      duration: 8000,
-      type: NotificationTypesE.ERROR,
-      location: NotificationLocationE.TOP_CENTER,
-      pauseOnHover: true,
-      autoClose: true,
-      hasIcon: true,
-      category: CategoryE.TOAST,
-    });
-    setLoading(false);
-  };
+  const launchToastError = useCallback(
+    (errorMessage: string) => {
+      storeContext.handleDispatchNotification({
+        title: 'Error',
+        description: errorMessage,
+        duration: 8000,
+        type: NotificationTypesE.ERROR,
+        location: NotificationLocationE.TOP_CENTER,
+        pauseOnHover: true,
+        autoClose: true,
+        hasIcon: true,
+        category: CategoryE.TOAST,
+      });
+      setLoading(false);
+    },
+    [storeContext]
+  );
 
   /**
    * Handle Form Submit

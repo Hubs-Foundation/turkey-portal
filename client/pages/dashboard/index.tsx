@@ -67,17 +67,6 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
   };
 
   /**
-   * Log raw data for
-   * degub on prod
-   */
-  const logData = () => {
-    console.log('Subscription Data:');
-    console.table([{ ...subscription }]);
-    console.log('Hub Data:');
-    console.table(hubs);
-  };
-
-  /**
    * Get Hubs again and apply data, also check
    * data for updates and fails.
    */
@@ -140,8 +129,19 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
       refreshAccountData();
     }, 2000);
 
+    /**
+     * Log raw data for
+     * degub on prod
+     */
+    const logData = () => {
+      console.log('Subscription Data:');
+      console.table([{ ...subscription }]);
+      console.log('Hub Data:');
+      console.table(hubs);
+    };
+
     logData();
-  }, [logData]);
+  }, [hubs, subscription]);
 
   return (
     <div className="page_wrapper">
