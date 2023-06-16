@@ -9,7 +9,7 @@ import SupportGrid from '../SupportGrid/SupportGrid';
 import { useMobileDown } from 'hooks/useMediaQuery';
 import { useSelector } from 'react-redux';
 import { selectAccount } from 'store/accountSlice';
-import { useIsP0 } from 'hooks/usePlans';
+import { useIsStarter } from 'hooks/usePlans';
 
 export type SidePanelPropsT = {
   subdomain: string;
@@ -24,7 +24,7 @@ const SidePanel = ({
 }: SidePanelPropsT) => {
   const account = useSelector(selectAccount);
   const isMobile = useMobileDown();
-  const isP0 = useIsP0();
+  const isStarter = useIsStarter();
   const hubUrl = `https://${subdomain}.${HUB_ROOT_DOMAIN}`;
 
   return (
@@ -56,7 +56,7 @@ const SidePanel = ({
       {account.hasSubscription && (
         <NextPayment subscription={subscription} classProp={styles.subcard} />
       )}
-      {isP0 && <UpgradePlan />}
+      {isStarter && <UpgradePlan />}
 
       <SupportGrid />
     </section>

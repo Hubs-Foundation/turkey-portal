@@ -1,12 +1,6 @@
 export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
 export type FormattedTierT = 'Mvp' | 'Starter' | 'Early Access' | 'Premium';
 
-export enum PlansE {
-  p0 = 'starter',
-  p1 = 'standard',
-  p2 = 'pro',
-}
-
 export type FormattedTierMapT = {
   [key in TierT]: FormattedTierT;
 };
@@ -62,7 +56,7 @@ export type AccountT = {
   planName: PlansT;
 };
 
-type PlansT = PlansE.p0 | PlansE.p1 | PlansE.p2 | null;
+type PlansT = 'starter' | 'personal' | 'professional' | 'business' | null;
 
 export enum StorageStateE {
   DEFAULT = 'default',

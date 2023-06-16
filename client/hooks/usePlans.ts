@@ -1,18 +1,22 @@
 import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
-import { PlansE } from 'types/General';
 
-export const useIsP0 = (): boolean => {
+export const useIsStarter = (): boolean => {
   const account = useSelector(selectAccount);
-  return account.planName === PlansE.p0;
+  return account.planName === 'starter';
 };
 
-export const useIsP1 = (): boolean => {
+export const useIsPersonal = (): boolean => {
   const account = useSelector(selectAccount);
-  return account.planName === PlansE.p1;
+  return account.planName === 'personal';
 };
 
-export const useIsP2 = (): boolean => {
+export const useIsProfessional = (): boolean => {
   const account = useSelector(selectAccount);
-  return account.planName === PlansE.p2;
+  return account.planName === 'professional';
+};
+
+export const useIsBusiness = (): boolean => {
+  const account = useSelector(selectAccount);
+  return account.planName === 'business';
 };

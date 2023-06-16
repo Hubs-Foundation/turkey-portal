@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { RoutesE } from 'types/Routes';
 import { StatusE } from 'types/General';
 import styles from './HubCardHeader.module.scss';
-import { useIsP0, useIsP2 } from 'hooks/usePlans';
+import { useIsStarter, useIsProfessional } from 'hooks/usePlans';
 
 type HubCardHeaderPropsT = {
   hubId: string;
@@ -17,8 +17,8 @@ const HubCardHeader = ({
   classProp = '',
 }: HubCardHeaderPropsT) => {
   const router = useRouter();
-  const isP0 = useIsP0();
-  const isP2 = useIsP2();
+  const isStarter = useIsStarter();
+  const isProfessional = useIsProfessional();
 
   const DropdownContent = (
     <div className="dropdown_wrapper">
@@ -33,7 +33,7 @@ const HubCardHeader = ({
       >
         Edit Details
       </button>
-      {isP2 && (
+      {isProfessional && (
         <button
           className="dropdown-link mt-14"
           onClick={() => {
@@ -49,7 +49,7 @@ const HubCardHeader = ({
   );
 
   const dropdownVisible =
-    !isP0 && status !== StatusE.CREATING && status !== StatusE.UPDATING;
+    !isStarter && status !== StatusE.CREATING && status !== StatusE.UPDATING;
 
   return (
     <div className={`${classProp} ${styles.card_header}`}>

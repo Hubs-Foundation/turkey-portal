@@ -15,7 +15,7 @@ import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
 import { RoutesE } from 'types/Routes';
 import { useFormik } from 'formik';
 import validate, { FormValues } from './validate';
-import { useIsP2 } from 'hooks/usePlans';
+import { useIsProfessional } from 'hooks/usePlans';
 
 export type HubFormCardT = {
   name: string;
@@ -42,7 +42,7 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
     useState<string>('');
   const [isEditingDomain, setIsEditingDomain] = useState(false);
   const router = useRouter();
-  const isP2 = useIsP2();
+  const isProfessional = useIsProfessional();
 
   /**
    * Init Formik
@@ -220,7 +220,7 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
             ) : null}
           </div>
 
-          {isP2 && (
+          {isProfessional && (
             <section className={styles.custom_client_message}>
               <div className="flex-justify-between mb-12">
                 <h1 className="heading-sm">Custom Client</h1>
