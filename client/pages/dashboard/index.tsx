@@ -141,7 +141,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
     }, 2000);
 
     logData();
-  }, []);
+  }, [logData]);
 
   return (
     <div className="page_wrapper">

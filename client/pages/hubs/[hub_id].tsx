@@ -115,7 +115,7 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
 
       submit();
     },
-    [hub, router]
+    [hub, router, launchToastError]
   );
 
   return (
