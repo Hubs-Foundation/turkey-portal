@@ -3,8 +3,8 @@ defmodule Dash.Repo.Migrations.AddDomainAndRegionColumnsToHubs do
 
   def change do
     alter table(:hubs) do
-      add :domain, :string
-      add :region, :string
+      add :domain, :string, unless_exists: true
+      add :region, :string, unless_exists: true
     end
   end
 end
