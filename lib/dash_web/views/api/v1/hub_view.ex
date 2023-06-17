@@ -43,6 +43,8 @@ defmodule DashWeb.Api.V1.HubView do
       storageLimitMb: hub.storage_limit_mb,
       tier: hub.tier,
       subdomain: hub.subdomain,
+      domain: hub.domain,
+      region: hub.region,
       status: hub.status
     }
     |> Map.merge(maybe_include_usage_stats)
