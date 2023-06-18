@@ -102,7 +102,7 @@ defmodule Dash.PlanStateMachine do
       domain = response_body["domain"]
       changeset = Ecto.Changeset.change(hub, domain: domain)
       Repo.update!(changeset)
-    end    
+    end
     :ok
   end
 
