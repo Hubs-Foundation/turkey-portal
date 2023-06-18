@@ -17,7 +17,17 @@ defmodule Dash.RetClient do
 
   @ret_internal_scope "/api-internal/v1/"
   defp fetch_ret_internal_endpoint(%Dash.Hub{} = hub, endpoint),
-    do: fetch_ret_internal_endpoint(hub.hub_id, endpoint)
+    cond do
+      hub.domain != nil and hub.domain != "" ->
+        get_http_client().get(
+          "https://#{hub.subdomain}.#{hub.domain}" <> @ret_internal_scope <> endpoint,
+          [{"x-ret-dashboard-access-key", get_ret_access_key()}],
+          nil
+        )
+      true ->
+        fetch_ret_internal_endpoint(hub.hub_id, endpoint)
+    end
+  end    
 
   defp fetch_ret_internal_endpoint(hub_id, endpoint, opts \\ []) when is_integer(hub_id) do
     get_http_client().get(
