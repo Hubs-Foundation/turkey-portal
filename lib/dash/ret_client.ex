@@ -16,7 +16,7 @@ defmodule Dash.RetClient do
   end
 
   @ret_internal_scope "/api-internal/v1/"
-  defp fetch_ret_internal_endpoint(%Dash.Hub{} = hub, endpoint),
+  defp fetch_ret_internal_endpoint(%Dash.Hub{} = hub, endpoint) do
     cond do
       hub.domain != nil and hub.domain != "" ->
         get_http_client().get(
