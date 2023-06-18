@@ -97,7 +97,7 @@ defmodule Dash.PlanStateMachine do
       })
     {:ok, response} =
       OrchClient.create_hub(account.email, hub, disable_branding?: true)
-    if response[:status_code] == 200 do
+    if response.status_code == 200 do
       response_body = Jason.decode!(response.body)
       domain = response_body["domain"]
       changeset = Ecto.Changeset.change(hub, domain: domain)
@@ -129,7 +129,7 @@ defmodule Dash.PlanStateMachine do
       })
     {:ok, response} =
       OrchClient.create_hub(account.email, hub)
-    if response[:status_code] == 200 do
+    if response.status_code == 200 do
       response_body = Jason.decode!(response.body)
       domain = response_body["domain"]
       changeset = Ecto.Changeset.change(hub, domain: domain)
