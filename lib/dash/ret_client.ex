@@ -9,34 +9,29 @@ defmodule Dash.RetClient do
   @ret_host_prefix "ret.hc-"
   @ret_host_postfix ".svc.cluster.local"
   @ret_internal_port "4001"
-  defp ret_host_url(%Dash.Hub{} = hub), do: ret_host_url(hub.hub_id)
+  defp ret_host_url(%Dash.Hub{} = hub) do
+    if hub.domain != nil and hub.domain != "" do
+      foreignRetHost="https://#{hub.subdomain}.#{hub.domain}"
+      Logger.info("foreign ret -- #{foreignRetHost}")
+      foreignRetHost
+    else
+      ret_host_url(hub.hub_id)
+    end
+  end
 
   defp ret_host_url(hub_id) when is_integer(hub_id) do
     "http://#{@ret_host_prefix}#{hub_id}#{@ret_host_postfix}:#{@ret_internal_port}"
   end
 
   @ret_internal_scope "/api-internal/v1/"
-  defp fetch_ret_internal_endpoint(%Dash.Hub{} = hub, endpoint) do
-    Logger.info("fetch_ret_internal_endpoint, with hub: #{inspect(hub)}")
-    cond do
-      hub.domain != nil and hub.domain != "" ->
-        url="https://#{hub.subdomain}.#{hub.domain}"
-        Logger.info("fetch_ret_internal_endpoint -- url: #{url}")
-        get_http_client().get(
-          url <> @ret_internal_scope <> endpoint,
-          [{"x-ret-dashboard-access-key", get_ret_access_key()}],
-          nil
-        )
-      true ->
-        fetch_ret_internal_endpoint(hub.hub_id, endpoint)
-    end
-  end    
+  defp fetch_ret_internal_endpoint(%Dash.Hub{} = hub, endpoint),
+    do: fetch_ret_internal_endpoint(hub.hub_id, endpoint)
 
   defp fetch_ret_internal_endpoint(hub_id, endpoint, opts \\ []) when is_integer(hub_id) do
     get_http_client().get(
       ret_host_url(hub_id) <> @ret_internal_scope <> endpoint,
       [{"x-ret-dashboard-access-key", get_ret_access_key()}],
-      opts
+      [hackney: [:insecure]] ++ opts
     )
   end
 
@@ -84,10 +79,10 @@ defmodule Dash.RetClient do
 
   @health_endpoint "/health"
   defp fetch_health_endpoint(%Dash.Hub{} = hub) do
-    url=fetch_ret_internal_endpoint(hub, @health_endpoint)
     get_http_client().get(
-      url,
-      []
+      ret_host_url(hub) <> @health_endpoint,
+      [],
+      hackney: [:insecure]
     )
   end
 
