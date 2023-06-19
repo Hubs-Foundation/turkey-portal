@@ -4,11 +4,12 @@ import { HUB_ROOT_DOMAIN } from 'config';
 
 type HubLinkPropsT = {
   subdomain: string;
+  domain: string;
   classProp?: string;
 };
 
-const HubLink = ({ subdomain, classProp = '' }: HubLinkPropsT) => {
-  const subdomainRootdomain = `https://${subdomain}.${HUB_ROOT_DOMAIN}`;
+const HubLink = ({ subdomain, domain=HUB_ROOT_DOMAIN, classProp = '' }: HubLinkPropsT) => {
+  const subdomainRootdomain = `https://${subdomain}.${domain}`;
 
   return (
     <div className={`flex ${classProp}`}>
