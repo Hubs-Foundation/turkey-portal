@@ -1,6 +1,8 @@
 import { StaticImageData } from 'next/image';
 import { Document } from '@contentful/rich-text-types';
 
+type PlansT = 'starter' | 'personal' | 'professional' | 'business' | null;
+
 /**
  * CONTENFUL MEDIA TYPES
  */
