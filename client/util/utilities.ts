@@ -1,4 +1,5 @@
 import { FXA_PAYMENT_URL, PRODUCT_ID } from 'config';
+import { PlansT } from 'types/General';
 import {
   RegionCodeT,
   AcceptedRegionCodeT,
@@ -15,7 +16,7 @@ import {
  */
 export const getPricePageData = (
   regionCode: RegionCodeT,
-  plan: 'standard' | 'pro',
+  plan: Exclude<PlansT, null | 'starter'>,
   billingPeriod: 'monthly' | 'yearly'
 ) => {
   // If not accepted region or no region default to US plan
