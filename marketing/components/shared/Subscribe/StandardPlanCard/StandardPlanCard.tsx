@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { RegionCodeT, BillingPeriod } from 'types/Countries';
 import { BasePlanCard, Price } from '../BasePlanCard/BasePlanCard';
 import { personalPlanInfoCopy } from '../BasePlanCard/planInfoCopy';
@@ -14,7 +14,6 @@ const StandardPlanCard = ({
   billingPeriod,
   regionCode,
 }: StandardPlanCardPropsT) => {
-  const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
   const { planPrice, planUrl, taxDescription, currencySymbol } =
     getPricePageData(regionCode, 'personal', billingPeriod);
 
@@ -24,20 +23,6 @@ const StandardPlanCard = ({
   const handleSubscribeClick = useCallback(() => {
     window.open(planUrl);
   }, [planUrl]);
-
-  const onToggleConfirmation = useCallback((value: boolean) => {
-    setLocationConfirmed(value);
-  }, []);
-
-  /**
-   * Keep this checkbox for now
-   */
-  // <Checkbox
-  //   classProp="content-box"
-  //   onChange={onToggleConfirmation}
-  //   checked={locationConfirmed}
-  //   label="I'm located in UK, Canada, USA, or Germany"
-  // />;
 
   return (
     <BasePlanCard
@@ -52,20 +37,18 @@ const StandardPlanCard = ({
         />
       }
       infoCopyList={personalPlanInfoCopy}
-      form={
-        <form className="content-box ">
-          <ToolTip description="Available countries include UK, Canada, USA, Germany, Italy, New Zealand, ETC ETC ETC">
-            <div className="flex pt-24 mb-16">
-              <div className="color-interaction-primary">
-                <Icon name="info" classProp="mr-16" color="currentColor" />
-              </div>
-
-              <p className="paragraph-sm">
-                Hubs is currently available in select countries
-              </p>
+      additionalContent={
+        <ToolTip description="Available countries include UK, Canada, USA, Germany, Italy, New Zealand, ETC ETC ETC">
+          <div className="flex pt-24 mb-16">
+            <div className="color-interaction-primary">
+              <Icon name="info" classProp="mr-16" color="currentColor" />
             </div>
-          </ToolTip>
-        </form>
+
+            <p className="paragraph-sm">
+              Hubs is currently available in select countries
+            </p>
+          </div>
+        </ToolTip>
       }
       confirmButton={
         <Button
