@@ -20,7 +20,6 @@ export const getPricePageData = (
   plan: Exclude<PlansT, null | 'starter'>,
   billingPeriod: BillingPeriod
 ) => {
-  console.log('regionCode', regionCode);
   const FXA_PAYMENT_URL = getEnvVariable('FXA_PAYMENT_URL');
   const PRODUCT_ID = getEnvVariable('PRODUCT_ID');
   // If not accepted region or no region default to US plan
@@ -28,8 +27,6 @@ export const getPricePageData = (
   let planPrice = PLAN_ID_MAP.US[plan][billingPeriod].price;
   let taxDescription = PLAN_ID_MAP.US.taxDescription;
   let currencySymbol = PLAN_ID_MAP.US.symbol;
-  console.log('currencySymbol', currencySymbol);
-
   let currencyAbbrev = PLAN_ID_MAP.US.abbrev;
 
   if (
