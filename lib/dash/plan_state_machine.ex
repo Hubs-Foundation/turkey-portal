@@ -91,12 +91,18 @@ defmodule Dash.PlanStateMachine do
         status: :creating,
         storage_limit_mb: @starter_storage_limit_mb,
         subdomain: rand_string(10),
+        domain: "",
+        region: "us",
         tier: :p0
       })
-
-    {:ok, %{status_code: 200}} =
+    {:ok, response} =
       OrchClient.create_hub(account.email, hub, disable_branding?: true)
-
+    if response.status_code == 200 do
+      response_body = Jason.decode!(response.body)
+      domain = response_body["domain"]
+      changeset = Ecto.Changeset.change(hub, domain: domain)
+      Repo.update!(changeset)
+    end
     :ok
   end
 
@@ -117,10 +123,19 @@ defmodule Dash.PlanStateMachine do
         status: :creating,
         storage_limit_mb: @standard_storage_limit_mb,
         subdomain: rand_string(10),
+        domain: "",
+        region: "us",
         tier: :p1
       })
-
-    {:ok, %{status_code: 200}} = OrchClient.create_hub(account.email, hub)
+    {:ok, response} =
+      OrchClient.create_hub(account.email, hub)
+    if response.status_code == 200 do
+      response_body = Jason.decode!(response.body)
+      domain = response_body["domain"]
+      changeset = Ecto.Changeset.change(hub, domain: domain)
+      Repo.update!(changeset)
+    end
+    
     :ok
   end
 
