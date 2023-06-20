@@ -6,7 +6,7 @@ import { selectRegion } from 'store/regionSlice';
 
 const UpgradePlan = () => {
   const { regionCode } = useSelector(selectRegion);
-  const { planUrl } = getPricePageData(regionCode, 'standard', 'monthly');
+  const { planUrl } = getPricePageData(regionCode, 'personal', 'monthly');
 
   return (
     <div className={styles.upgrade_container}>
