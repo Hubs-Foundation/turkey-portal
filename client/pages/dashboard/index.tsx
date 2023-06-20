@@ -28,8 +28,6 @@ const creatingHub: HubT = {
   storageLimitMb: 0,
   subdomain: '',
   tier: 'premium',
-  domain: "myhubs.net",
-  region: "us",
 };
 
 /**
@@ -49,8 +47,6 @@ const ErroringHub: HubT = {
   storageLimitMb: 0,
   subdomain: '',
   tier: 'premium',
-  domain: "myhubs.net",
-  region: "us",
 };
 
 const Dashboard = ({ subscription }: DashboardPropsT) => {

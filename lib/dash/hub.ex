@@ -15,8 +15,6 @@ defmodule Dash.Hub do
     field :status, Ecto.Enum, values: [:creating, :updating, :ready, :subdomain_error, :error]
     field :storage_limit_mb, :integer
     field :subdomain, :string
-    field :domain, :string
-    field :region, :string
     field :tier, Ecto.Enum, values: [:mvp, :p0, :p1]
     belongs_to :account, Dash.Account, references: :account_id
 
@@ -31,7 +29,6 @@ defmodule Dash.Hub do
       :storage_limit_mb,
       :tier,
       :subdomain,
-      :domain,
       :status
     ])
     |> validate_required([
@@ -40,7 +37,6 @@ defmodule Dash.Hub do
       :storage_limit_mb,
       :tier,
       :subdomain,
-      :domain,
       :status
     ])
     |> unique_constraint(:subdomain)

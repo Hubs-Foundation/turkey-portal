@@ -16,7 +16,6 @@ defmodule Dash.OrchClient do
       subdomain: hub.subdomain,
       tier: hub.tier,
       ccu_limit: hub.ccu_limit |> to_string(),
-      region: hub.region,
       storage_limit: (hub.storage_limit_mb / 1024) |> to_string()
     }
 
@@ -53,7 +52,6 @@ defmodule Dash.OrchClient do
         storage_limit: Float.to_string(hub.storage_limit_mb / 1024),
         subdomain: hub.subdomain,
         tier: hub.tier,
-        domain: hub.domain,
         useremail: fxa_email
       }),
       [],
@@ -66,7 +64,6 @@ defmodule Dash.OrchClient do
       orch_hub_endpoint(),
       Jason.encode!(%{
         hub_id: hub.hub_id |> to_string,
-        domain: hub.domain,
         subdomain: hub.subdomain
       }),
       [],
