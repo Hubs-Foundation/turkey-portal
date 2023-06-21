@@ -20,3 +20,8 @@ export const useIsBusiness = (): boolean => {
   const account = useSelector(selectAccount);
   return account.planName === 'business';
 };
+
+export const useIsProfessionalUp = (): boolean => {
+  const account = useSelector(selectAccount);
+  return account.planName === 'personal' || account.planName === 'business';
+};

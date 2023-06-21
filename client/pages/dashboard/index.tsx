@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { AxiosRequestHeaders } from 'axios';
 import SidePanelLayout from 'layouts/SidePanelLayout/SidePanelLayout';
 import { CustomizeHub } from '@Modules/hubs/CustomizeHub/CustomizeHub';
-import { useIsProfessional } from 'hooks/usePlans';
+import { useIsProfessionalUp } from 'hooks/usePlans';
 
 type DashboardPropsT = { subscription: SubscriptionT };
 
@@ -55,7 +55,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
   const [hubs, setHubs] = useState<HubT[]>([]);
   const [hasUpdatingHub, setHasUpdatingHub] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const isProfessional = useIsProfessional();
+  const isProfessionalUp = useIsProfessionalUp();
 
   /**
    * Hubs call failed:
@@ -182,7 +182,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
                   />
                 );
               })}
-              {isProfessional && <CustomizeHub hub={hubs[0]} />}
+              {isProfessionalUp && <CustomizeHub hub={hubs[0]} />}
             </>
           ) : (
             <SkeletonCard qty={3} category="row" />
