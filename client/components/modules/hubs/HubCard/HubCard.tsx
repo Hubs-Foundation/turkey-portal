@@ -18,7 +18,7 @@ type HubCardPropsT = {
 
 const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
   const storeContext = useContext(StoreContext);
-  const { hubId, status, subdomain, domain, lastError } = hub;
+  const { hubId, status, subdomain, lastError } = hub;
   const [showRevertError, setShowRevertError] = useState<boolean>(
     lastError === LastErrorE.SUBDOMAIN_REVERTED
   );
@@ -159,7 +159,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
           )}
 
           {/* Subdomain is ready and available  */}
-          {status === StatusE.READY && <HubLink subdomain={subdomain} domain={domain} />}
+          {status === StatusE.READY && <HubLink subdomain={subdomain} />}
         </div>
 
         {/* FOOTER  */}

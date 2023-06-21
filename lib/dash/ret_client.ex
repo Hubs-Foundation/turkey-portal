@@ -8,19 +8,11 @@ defmodule Dash.RetClient do
 
   @ret_host_prefix "ret.hc-"
   @ret_host_postfix ".svc.cluster.local"
-  @ret_internal_port "4001"
-  defp ret_host_url(%Dash.Hub{} = hub) do
-    if hub.domain != nil and hub.domain != "" do
-      foreignRetHost="https://#{hub.subdomain}.#{hub.domain}"
-      Logger.info("foreign ret -- #{foreignRetHost}")
-      foreignRetHost
-    else
-      ret_host_url(hub.hub_id)
-    end
-  end
+  @ret_internal_port "4000"
+  defp ret_host_url(%Dash.Hub{} = hub), do: ret_host_url(hub.hub_id)
 
   defp ret_host_url(hub_id) when is_integer(hub_id) do
-    "http://#{@ret_host_prefix}#{hub_id}#{@ret_host_postfix}:#{@ret_internal_port}"
+    "https://#{@ret_host_prefix}#{hub_id}#{@ret_host_postfix}:#{@ret_internal_port}"
   end
 
   @ret_internal_scope "/api-internal/v1/"
@@ -45,7 +37,8 @@ defmodule Dash.RetClient do
       [
         {"x-ret-dashboard-access-key", get_ret_access_key()},
         {"content-type", "application/json"}
-      ]
+      ],
+      hackney: [:insecure]
     )
   end
 
@@ -167,6 +160,7 @@ defmodule Dash.RetClient do
         Logger.error(
           "Failed to rewrite assets from: #{old_domain} to #{new_domain}. Error: #{inspect(err)}"
         )
+
         {:error, :rewrite_assets_failed}
     end
   end
@@ -180,7 +174,8 @@ defmodule Dash.RetClient do
         [
           {"x-ret-dashboard-access-key", get_ret_access_key()},
           {"content-type", "application/json"}
-        ]
+        ],
+        hackney: [:insecure]
       )
 
     case response do

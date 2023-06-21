@@ -35,8 +35,6 @@ export type HubT = {
   storageLimitMb: number;
   subdomain: string;
   tier: TierT;
-  domain: string;
-  region: string;
 };
 
 // TODO Do we still need this?
