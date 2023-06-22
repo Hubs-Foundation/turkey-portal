@@ -53,15 +53,20 @@ export type AccountT = {
   hasCreatingHubs: boolean;
   isInitialized: boolean;
   hasPlan: boolean;
-  planName: PlansT;
+  planName: PlansE | null;
 };
 
-export type PlansT =
-  | 'starter'
-  | 'personal'
-  | 'professional'
-  | 'business'
-  | null;
+export enum PlansE {
+  STATER = 'starter',
+  PERSONAL = 'personal',
+  PROFESSIONAL = 'professional',
+  BUSINESS = 'business',
+}
+
+export enum BillingPeriodE {
+  MONTHLY = 'monthly',
+  YEARLY = 'yearly',
+}
 
 export enum StorageStateE {
   DEFAULT = 'default',

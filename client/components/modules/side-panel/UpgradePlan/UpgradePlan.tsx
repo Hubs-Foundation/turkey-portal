@@ -3,10 +3,15 @@ import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import { getPricePageData } from 'util/utilities';
 import { useSelector } from 'react-redux';
 import { selectRegion } from 'store/regionSlice';
+import { PlansE, BillingPeriodE } from 'types/General';
 
 const UpgradePlan = () => {
   const { regionCode } = useSelector(selectRegion);
-  const { planUrl } = getPricePageData(regionCode, 'personal', 'monthly');
+  const { planUrl } = getPricePageData(
+    regionCode,
+    PlansE.PERSONAL,
+    BillingPeriodE.MONTHLY
+  );
 
   return (
     <div className={styles.upgrade_container}>

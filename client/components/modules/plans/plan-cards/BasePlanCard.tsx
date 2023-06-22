@@ -32,7 +32,7 @@ type BasePlanCardPropsT = {
   title: string;
   price: ReactNode;
   infoCopyList: PlanInfoCopyT[];
-  form?: ReactNode;
+  additionalContent?: ReactNode;
   confirmButton: ReactNode;
   footerClassProp?: string;
   color: 'silver' | 'warm';
@@ -43,7 +43,7 @@ const BasePlanCard = ({
   title,
   price,
   infoCopyList,
-  form,
+  additionalContent,
   confirmButton,
   footerClassProp = '',
   color,
@@ -75,7 +75,7 @@ const BasePlanCard = ({
         </div>
 
         {/* LOCATION CONFIRMATION  */}
-        {form}
+        {additionalContent}
       </div>
 
       {/* FOOTER  */}

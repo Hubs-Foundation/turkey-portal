@@ -6,7 +6,7 @@ export type PlanInfoCopyT = {
   icon: HubIconT;
 };
 
-export const StarterPlanInfoCopy: PlanInfoCopyT[] = [
+export const starterPlanInfoCopy: PlanInfoCopyT[] = [
   {
     label: 'Unlimited spaces',
     description: 'With customizable environment and themes',
@@ -24,7 +24,7 @@ export const StarterPlanInfoCopy: PlanInfoCopyT[] = [
   },
 ];
 
-export const PersonalPlanInfoCopy: PlanInfoCopyT[] = [
+export const personalPlanInfoCopy: PlanInfoCopyT[] = [
   {
     label: 'Unlimited spaces',
     description: 'With customizable environment and themes',

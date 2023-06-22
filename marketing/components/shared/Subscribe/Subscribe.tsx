@@ -6,7 +6,7 @@ import BusinessPlanCard from './BusinessPlanCard/BusinessPlanCard';
 import styles from './Subscribe.module.scss';
 import Swoosh from '@Shared/Swoosh/Swoosh';
 import { getRegion } from 'services/region.service';
-import { BillingPeriod } from 'types/Countries';
+import { BillingPeriodE } from 'types/General';
 
 type SubscribePropsT = {
   classProp?: string;
@@ -14,7 +14,9 @@ type SubscribePropsT = {
 
 const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
   const [regionCode, setRegionCode] = useState<RegionCodeT>('US');
-  const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>('monthly');
+  const [billingPeriod, setBillingPeriod] = useState<BillingPeriodE>(
+    BillingPeriodE.MONTHLY
+  );
 
   useEffect(() => {
     const fetchRegion = async () => {

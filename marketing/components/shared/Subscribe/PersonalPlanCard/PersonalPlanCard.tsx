@@ -1,12 +1,13 @@
-import { useCallback, useState } from 'react';
-import { RegionCodeT, BillingPeriod } from 'types/Countries';
+import { useCallback } from 'react';
+import { RegionCodeT } from 'types/Countries';
 import { BasePlanCard, Price } from '../BasePlanCard/BasePlanCard';
-import { PersonalPlanInfoCopy } from '../BasePlanCard/planInfoCopy';
-import { Button, Checkbox } from '@mozilla/lilypad-ui';
+import { personalPlanInfoCopy } from '../BasePlanCard/planInfoCopy';
+import { Button, Icon, ToolTip } from '@mozilla/lilypad-ui';
 import { getPricePageData } from 'util/utilities';
+import { BillingPeriodE, PlansE } from 'types/General';
 
 type PersonalPlanCardPropsT = {
-  billingPeriod: BillingPeriod;
+  billingPeriod: BillingPeriodE;
   regionCode: RegionCodeT;
 };
 
@@ -14,9 +15,8 @@ const PersonalPlanCard = ({
   billingPeriod,
   regionCode,
 }: PersonalPlanCardPropsT) => {
-  const [locationConfirmed, setLocationConfirmed] = useState<boolean>(false);
   const { planPrice, planUrl, taxDescription, currencySymbol } =
-    getPricePageData(regionCode, 'personal', billingPeriod);
+    getPricePageData(regionCode, PlansE.PERSONAL, billingPeriod);
 
   /**
    * Handle routing user to correct payment plan
@@ -24,10 +24,6 @@ const PersonalPlanCard = ({
   const handleSubscribeClick = useCallback(() => {
     window.open(planUrl);
   }, [planUrl]);
-
-  const onToggleConfirmation = useCallback((value: boolean) => {
-    setLocationConfirmed(value);
-  }, []);
 
   return (
     <BasePlanCard
@@ -41,23 +37,25 @@ const PersonalPlanCard = ({
           } ${taxDescription}`}
         />
       }
-      infoCopyList={PersonalPlanInfoCopy}
-      form={
-        <form className="content-box mt-16 mb-16">
-          <Checkbox
-            classProp="content-box"
-            onChange={onToggleConfirmation}
-            checked={locationConfirmed}
-            label="I'm located in UK, Canada, USA, or Germany"
-          />
-        </form>
+      infoCopyList={personalPlanInfoCopy}
+      additionalContent={
+        <ToolTip description="Available countries include UK, Canada, USA, Germany, Italy, New Zealand, ETC ETC ETC">
+          <div className="flex pt-24 mb-16">
+            <div className="color-interaction-primary">
+              <Icon name="info" classProp="mr-16" color="currentColor" />
+            </div>
+
+            <p className="paragraph-sm">
+              Hubs is currently available in select countries
+            </p>
+          </div>
+        </ToolTip>
       }
       confirmButton={
         <Button
           label="Subscribe to hubs"
           text="Subscribe"
           onClick={handleSubscribeClick}
-          disabled={!locationConfirmed}
         />
       }
     />

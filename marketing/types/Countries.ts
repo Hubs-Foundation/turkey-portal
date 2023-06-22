@@ -1,4 +1,3 @@
-export type BillingPeriod = 'monthly' | 'yearly';
 export const ACCEPTED_REGION_CODES = [
   'DE',
   'IT',
