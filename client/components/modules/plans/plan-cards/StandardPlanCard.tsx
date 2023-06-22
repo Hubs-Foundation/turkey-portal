@@ -5,16 +5,16 @@ import BasePlanCard, { Price } from './BasePlanCard';
 import { getPricePageData } from 'util/utilities';
 import { useSelector } from 'react-redux';
 import { selectRegion } from 'store/regionSlice';
-import { BillingPeriod } from 'types/Countries';
+import { BillingPeriodE, PlansE } from 'types/General';
 
 type StandardPlanCardPropsT = {
-  billingPeriod: BillingPeriod;
+  billingPeriod: BillingPeriodE;
 };
 
 const StandardPlanCard = ({ billingPeriod }: StandardPlanCardPropsT) => {
   const { regionCode } = useSelector(selectRegion);
   const { planPrice, planUrl, taxDescription, currencySymbol } =
-    getPricePageData(regionCode, 'personal', 'monthly');
+    getPricePageData(regionCode, PlansE.PERSONAL, BillingPeriodE.MONTHLY);
 
   /**
    * Handle routing user to correct payment plan

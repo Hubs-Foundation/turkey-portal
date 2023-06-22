@@ -5,10 +5,12 @@ import { pageRequireAuthentication } from 'services/routeGuard.service';
 import ContactCard from '@Modules/plans/ContactCard/ContactCard';
 import styles from './subscribe.module.scss';
 import { StandardPlanCard, StarterPlanCard } from '@Modules/plans/plan-cards';
-import { BillingPeriod } from 'types/Countries';
+import { BillingPeriodE } from 'types/General';
 
 const Subscribe = () => {
-  const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>('monthly');
+  const [billingPeriod, setBillingPeriod] = useState<BillingPeriodE>(
+    BillingPeriodE.MONTHLY
+  );
 
   return (
     <div className="page_wrapper">

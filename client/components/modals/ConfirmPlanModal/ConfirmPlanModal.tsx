@@ -6,10 +6,15 @@ import { getPricePageData } from 'util/utilities';
 import { useSelector } from 'react-redux';
 import { selectRegion } from 'store/regionSlice';
 import BeginStarterPlanButton from '@Modules/plans/BeginStarterPlanButton/BeginStarterPlanButton';
+import { PlansE, BillingPeriodE } from 'types/General';
 
 const ConfirmPlanModal = () => {
   const { regionCode } = useSelector(selectRegion);
-  const { planUrl } = getPricePageData(regionCode, 'personal', 'monthly');
+  const { planUrl } = getPricePageData(
+    regionCode,
+    PlansE.PERSONAL,
+    BillingPeriodE.MONTHLY
+  );
 
   return (
     <Modal onClose={() => {}} hasContainer={false} isVisible={true}>

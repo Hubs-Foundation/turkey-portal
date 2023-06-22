@@ -1,7 +1,3 @@
-import { PLAN_ID_EA } from 'config';
-
-export type BillingPeriod = 'monthly' | 'yearly';
-
 export const ACCEPTED_REGION_CODES = [
   'DE',
   'IT',
