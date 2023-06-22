@@ -1,11 +1,10 @@
 import getEnvVariable from 'config';
-import { PlansT } from 'types';
+import { PlansE, BillingPeriodE } from 'types';
 import {
   RegionCodeT,
   AcceptedRegionCodeT,
   ACCEPTED_REGION_CODES,
   PLAN_ID_MAP,
-  BillingPeriod,
 } from 'types/Countries';
 
 /**
@@ -17,8 +16,8 @@ import {
  */
 export const getPricePageData = (
   regionCode: RegionCodeT,
-  plan: Exclude<PlansT, null | 'starter'>,
-  billingPeriod: BillingPeriod
+  plan: Exclude<PlansE, null | 'starter'>,
+  billingPeriod: BillingPeriodE
 ) => {
   const FXA_PAYMENT_URL = getEnvVariable('FXA_PAYMENT_URL');
   const PRODUCT_ID = getEnvVariable('PRODUCT_ID');

@@ -1,12 +1,13 @@
 import { useCallback } from 'react';
-import { RegionCodeT, BillingPeriod } from 'types/Countries';
+import { RegionCodeT } from 'types/Countries';
 import { BasePlanCard, Price } from '../BasePlanCard/BasePlanCard';
 import { personalPlanInfoCopy } from '../BasePlanCard/planInfoCopy';
 import { Button, Icon, ToolTip } from '@mozilla/lilypad-ui';
 import { getPricePageData } from 'util/utilities';
+import { BillingPeriodE, PlansE } from 'types';
 
 type StandardPlanCardPropsT = {
-  billingPeriod: BillingPeriod;
+  billingPeriod: BillingPeriodE;
   regionCode: RegionCodeT;
 };
 
@@ -15,7 +16,7 @@ const StandardPlanCard = ({
   regionCode,
 }: StandardPlanCardPropsT) => {
   const { planPrice, planUrl, taxDescription, currencySymbol } =
-    getPricePageData(regionCode, 'personal', billingPeriod);
+    getPricePageData(regionCode, PlansE.PERSONAL, billingPeriod);
 
   /**
    * Handle routing user to correct payment plan
