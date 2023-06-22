@@ -16,16 +16,6 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: mvp2 - install
-        run: npm ci
-        working-directory: assets
-      - name: mvp2 - lint
-        run: npm run lint
-        working-directory: assets
-      - name: mvp2 - test
-        run: npm run test
-        working-directory: assets
-
       - name: client - install
         run: npm ci
         working-directory: client

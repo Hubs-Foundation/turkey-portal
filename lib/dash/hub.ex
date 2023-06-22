@@ -3,9 +3,10 @@ defmodule Dash.Hub do
   import Ecto.Query
   import Ecto.Changeset
   require Logger
-  alias Dash.{Repo, RetClient, SubdomainDenial, TaskSupervisor}
+  alias Dash.{HubDeployment, Repo, RetClient, SubdomainDenial, TaskSupervisor}
 
-  @type t :: %__MODULE__{}
+  @type id :: pos_integer
+  @type t :: %__MODULE__{account_id: id}
 
   @primary_key {:hub_id, :id, autogenerate: true}
 
@@ -15,7 +16,10 @@ defmodule Dash.Hub do
     field :storage_limit_mb, :integer
     field :subdomain, :string
     field :tier, Ecto.Enum, values: [:mvp, :p0, :p1]
+
     belongs_to :account, Dash.Account, references: :account_id
+
+    has_one :deployment, HubDeployment, foreign_key: :hub_id
 
     timestamps()
   end
@@ -64,7 +68,7 @@ defmodule Dash.Hub do
 
   @spec hubs_for_account(%Dash.Account{}) :: [%Dash.Hub{}]
   def hubs_for_account(%Dash.Account{} = account) do
-    Repo.all(from h in Dash.Hub, where: h.account_id == ^account.account_id)
+    Repo.all(from h in Dash.Hub, where: h.account_id == ^account.account_id, preload: :deployment)
   end
 
   def hubs_with_usage_stats_for_account(%Dash.Account{} = account) do
@@ -89,9 +93,15 @@ defmodule Dash.Hub do
   # Checks if account has at least one hub, if not, creates hub
   # Will wait for hub to be ready before
   def ensure_default_hub_is_ready(%Dash.Account{} = account, email, has_subscription?) do
-    # Need subscription in order to create hub
+    # TODO: test this behavior somewhere
     if has_subscription? and not has_hubs(account), do: create_default_hub(account, email)
-    hub = Repo.one(from h in Dash.Hub, where: h.account_id == ^account.account_id)
+
+    hub =
+      Repo.one(
+        from h in Dash.Hub,
+          where: h.account_id == ^account.account_id,
+          preload: :deployment
+      )
 
     case hub && hub.status do
       # TODO EA make own hub controller endpoint for waiting_until_ready_state
@@ -143,12 +153,22 @@ defmodule Dash.Hub do
       |> Repo.insert!()
 
     case Dash.OrchClient.create_hub(fxa_email, new_hub) do
-      {:ok, %{status_code: 200}} ->
+      {:ok, %{body: json, status_code: 200}} ->
+        domain =
+          json
+          |> Jason.decode!()
+          |> Map.fetch!("domain")
+
+        Dash.Repo.insert!(%Dash.HubDeployment{
+          domain: domain,
+          hub_id: new_hub.hub_id
+        })
+
         {:ok, new_hub}
 
-      {:ok, %{status_code: status_code} = resp} ->
+      {:ok, %{status_code: status_code} = response} ->
         Logger.warn(
-          "Creating default hub Orch request returned status code #{status_code} and response #{inspect(resp)}"
+          "Creating default hub Orch request returned status code #{status_code} and response #{inspect(response)}"
         )
 
         {:ok, new_hub}
@@ -160,11 +180,11 @@ defmodule Dash.Hub do
     end
   end
 
-  def get_hub(hub_id, %Dash.Account{} = account) do
+  defp get_hub(hub_id, %Dash.Account{} = account) do
     Dash.Hub |> Repo.get_by(hub_id: hub_id, account_id: account.account_id)
   end
 
-  def get_hub(_hub_id, nil) do
+  defp get_hub(_hub_id, nil) do
     Logger.error("Can't get_hub() account is nil")
     nil
   end
@@ -249,7 +269,11 @@ defmodule Dash.Hub do
       end
 
     with %Dash.Hub{status: :ready} = hub <- get_hub(hub_id, account),
-         {:ok, updated_hub} <- form_changeset(hub, attrs) |> Dash.Repo.update() do
+         {:ok, updated_hub} <-
+           hub
+           |> Repo.preload(:deployment)
+           |> form_changeset(attrs)
+           |> Dash.Repo.update() do
       if hub.subdomain != updated_hub.subdomain do
         updated_hub =
           updated_hub |> Ecto.Changeset.change(status: :updating) |> Dash.Repo.update!()

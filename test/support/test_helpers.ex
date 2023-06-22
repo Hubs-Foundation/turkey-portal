@@ -89,6 +89,11 @@ defmodule Dash.TestHelpers do
       |> Ecto.Changeset.put_assoc(:account, account)
       |> Dash.Repo.insert!()
 
+    Dash.Repo.insert!(%Dash.HubDeployment{
+      domain: "domain.test",
+      hub_id: hub.hub_id
+    })
+
     if opts[:subscribe?],
       do: subscribe_test_account(opts[:fxa_uid] || @default_test_uid)
 
@@ -139,7 +144,8 @@ defmodule Dash.TestHelpers do
 
   def expect_orch_post() do
     Mox.expect(Dash.HttpMock, :post, fn _url, _body, _headers, _opts ->
-      {:ok, %HTTPoison.Response{status_code: 200}}
+      {:ok,
+       %HTTPoison.Response{body: Jason.encode!(%{domain: "some-domain.test"}), status_code: 200}}
     end)
   end
 

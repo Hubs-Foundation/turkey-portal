@@ -93,10 +93,10 @@ defmodule Dash.PlanStateMachine do
         tier: :p0
       })
 
-    {:ok, %{status_code: 200}} =
+    {:ok, %{body: json, status_code: 200}} =
       OrchClient.create_hub(account.email, hub, disable_branding?: true)
 
-    :ok
+    :ok = put_domain(hub.hub_id, json)
   end
 
   def handle_event(
@@ -118,8 +118,8 @@ defmodule Dash.PlanStateMachine do
         tier: :p1
       })
 
-    {:ok, %{status_code: 200}} = OrchClient.create_hub(account.email, hub)
-    :ok
+    {:ok, %{body: json, status_code: 200}} = OrchClient.create_hub(account.email, hub)
+    :ok = put_domain(hub.hub_id, json)
   end
 
   def handle_event(nil, {:expire_subscription, %DateTime{}}, %Account{}, _data),
@@ -143,6 +143,7 @@ defmodule Dash.PlanStateMachine do
     hub =
       Hub
       |> Repo.get_by!(account_id: account_id)
+      |> Repo.preload(:deployment)
       |> Ecto.Changeset.change(
         ccu_limit: @standard_ccu_limit,
         storage_limit_mb: @standard_storage_limit_mb,
@@ -200,6 +201,7 @@ defmodule Dash.PlanStateMachine do
       hub =
         Hub
         |> Repo.get_by!(account_id: account_id)
+        |> Repo.preload(:deployment)
         |> Ecto.Changeset.change(
           ccu_limit: @starter_ccu_limit,
           status: :updating,
@@ -219,6 +221,21 @@ defmodule Dash.PlanStateMachine do
   @spec get_plan(Account.id()) :: Plan.t() | nil
   defp get_plan(account_id),
     do: Repo.get_by(Plan, account_id: account_id)
+
+  @spec put_domain(Hub.id(), String.t()) :: :ok
+  defp put_domain(hub_id, json) do
+    domain =
+      json
+      |> Jason.decode!()
+      |> Map.fetch!("domain")
+
+    Dash.Repo.insert!(%Dash.HubDeployment{
+      domain: domain,
+      hub_id: hub_id
+    })
+
+    :ok
+  end
 
   @spec subscribe_standard(Plan.id(), DateTime.t()) :: :ok
   defp subscribe_standard(plan_id, %DateTime{} = subscribed_at) when is_integer(plan_id) do

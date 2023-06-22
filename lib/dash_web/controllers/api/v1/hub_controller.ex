@@ -9,10 +9,13 @@ defmodule DashWeb.Api.V1.HubController do
     apply(__MODULE__, action_name(conn), args)
   end
 
-  def show(conn, %{"id" => hub_id}, account) do
-    hub = Hub.get_hub(hub_id, account)
+  def show(conn, %{"id" => id_string}, %Dash.Account{} = account) do
+    hub =
+      id_string
+      |> String.to_integer()
+      |> Dash.get_hub(account)
 
-    conn |> render("show.json", hub: hub)
+    render(conn, "show.json", hub: hub)
   end
 
   # All hubs for 1 account
