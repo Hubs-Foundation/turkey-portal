@@ -18,7 +18,7 @@ type HubCardPropsT = {
 
 const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
   const storeContext = useContext(StoreContext);
-  const { hubId, status, subdomain, lastError } = hub;
+  const { domain, hubId, status, subdomain, lastError } = hub;
   const [showRevertError, setShowRevertError] = useState<boolean>(
     lastError === LastErrorE.SUBDOMAIN_REVERTED
   );
@@ -108,7 +108,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
 
         {/* BODY  */}
         <div className={styles.card_body}>
-          {/* TODO - figure out if a name is applied to a hub off the bat before we put "untitled hub" 
+          {/* TODO - figure out if a name is applied to a hub off the bat before we put "untitled hub"
           here statically, might be able to just pull w/e through  */}
           <div className={`${styles.card_name} ${styles[status]}`}>Hub</div>
 
@@ -123,24 +123,24 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
             />
           )}
 
-          {/* Critical Error 
+          {/* Critical Error
             The user can not try aagin on critical error
-            have the only contact button. 
+            have the only contact button.
           */}
           {lastError === LastErrorE.SUBDOMAIN_ERROR && (
             <ErrorBox message={Message.criticalFailMessage} />
           )}
 
-          {/* Create Error 
-            This error takes place when the hub first tries to build 
+          {/* Create Error
+            This error takes place when the hub first tries to build
             and fails to do so.
           */}
           {lastError === LastErrorE.CREATING_ERROR && (
             <ErrorBox message={Message.createFailMessage} />
           )}
 
-          {/* Default Error 
-            This error takes place if the communication with the server fails (http server error) 
+          {/* Default Error
+            This error takes place if the communication with the server fails (http server error)
             and we need a "catch all" error status to show the user.
           */}
           {lastError === LastErrorE.ERROR && (
@@ -159,7 +159,9 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
           )}
 
           {/* Subdomain is ready and available  */}
-          {status === StatusE.READY && <HubLink subdomain={subdomain} />}
+          {status === StatusE.READY && (
+            <HubLink domain={domain} subdomain={subdomain} />
+          )}
         </div>
 
         {/* FOOTER  */}
