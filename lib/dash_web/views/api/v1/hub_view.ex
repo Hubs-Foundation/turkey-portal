@@ -38,7 +38,6 @@ defmodule DashWeb.Api.V1.HubView do
 
     %{
       hubId: hub.hub_id |> to_string,
-      name: hub.name,
       ccuLimit: hub.ccu_limit,
       storageLimitMb: hub.storage_limit_mb,
       tier: hub.tier,

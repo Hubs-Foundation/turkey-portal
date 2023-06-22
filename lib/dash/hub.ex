@@ -11,7 +11,6 @@ defmodule Dash.Hub do
 
   schema "hubs" do
     field :ccu_limit, :integer
-    field :name, :string
     field :status, Ecto.Enum, values: [:creating, :updating, :ready, :subdomain_error, :error]
     field :storage_limit_mb, :integer
     field :subdomain, :string
@@ -24,7 +23,6 @@ defmodule Dash.Hub do
   def changeset(hub, attrs) do
     hub
     |> cast(attrs, [
-      :name,
       :ccu_limit,
       :storage_limit_mb,
       :tier,
@@ -32,7 +30,6 @@ defmodule Dash.Hub do
       :status
     ])
     |> validate_required([
-      :name,
       :ccu_limit,
       :storage_limit_mb,
       :tier,
@@ -44,8 +41,7 @@ defmodule Dash.Hub do
 
   def form_changeset(hub, attrs) do
     hub
-    |> cast(attrs, [:name, :subdomain])
-    |> validate_length(:name, min: 1, max: 24)
+    |> cast(attrs, [:subdomain])
     |> validate_required(:subdomain)
     |> validate_length(:subdomain, min: 3, max: 63)
     |> validate_format(:subdomain, ~r/^[a-z0-9]/)
@@ -125,7 +121,6 @@ defmodule Dash.Hub do
   end
 
   @hub_defaults %{
-    name: "Untitled Hub",
     tier: :p1,
     ccu_limit: 25,
     storage_limit_mb: 2000

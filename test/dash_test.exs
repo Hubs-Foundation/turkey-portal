@@ -267,7 +267,6 @@ defmodule DashTest do
         Repo.insert!(%Hub{
           account_id: account.account_id,
           ccu_limit: 25,
-          name: "Untitled Hub",
           status: :creating,
           storage_limit_mb: 2_000,
           subdomain: custom_subdomain,

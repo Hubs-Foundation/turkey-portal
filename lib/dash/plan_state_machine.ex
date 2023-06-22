@@ -87,7 +87,6 @@ defmodule Dash.PlanStateMachine do
       Repo.insert!(%Hub{
         account_id: account.account_id,
         ccu_limit: @starter_ccu_limit,
-        name: "Untitled Hub",
         status: :creating,
         storage_limit_mb: @starter_storage_limit_mb,
         subdomain: rand_string(10),
@@ -113,7 +112,6 @@ defmodule Dash.PlanStateMachine do
       Repo.insert!(%Hub{
         account_id: account.account_id,
         ccu_limit: @standard_ccu_limit,
-        name: "Untitled Hub",
         status: :creating,
         storage_limit_mb: @standard_storage_limit_mb,
         subdomain: rand_string(10),

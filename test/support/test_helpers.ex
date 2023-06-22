@@ -80,7 +80,6 @@ defmodule Dash.TestHelpers do
     hub =
       %Dash.Hub{}
       |> Dash.Hub.changeset(%{
-        name: "test hub",
         ccu_limit: 20,
         storage_limit_mb: 100,
         tier: :mvp,
