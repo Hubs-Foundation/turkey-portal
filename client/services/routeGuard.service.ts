@@ -201,7 +201,7 @@ export function requireAuthenticationAndSubscription(
 }
 
 /**
- * Subscription Route Guard
+ * Subscribe Route Guard
  * For authenticated subscribe page,redirect to /dashboard if you have hubs or subscription
  * Authenticated NO hubs AND NO subscription, stay on /subscribe page
  * Authenticated YES hubs OR YES subscription, redirect to /dashboard
@@ -209,7 +209,7 @@ export function requireAuthenticationAndSubscription(
  * @param gssp
  * @returns GetServerSideProps
  */
-export function pageRequireAuthentication(gssp: Function): GetServerSideProps {
+export function SubscribeRG(gssp: Function): GetServerSideProps {
   return async (context) => {
     const { req, query } = context;
 
@@ -219,10 +219,6 @@ export function pageRequireAuthentication(gssp: Function): GetServerSideProps {
       const account: AccountT = await getAccount(
         req.headers as AxiosRequestHeaders
       );
-
-      if (account.hasSubscription || account.hasPlan) {
-        return redirectToDashboard();
-      }
 
       return await gssp(context);
     } catch (error) {
