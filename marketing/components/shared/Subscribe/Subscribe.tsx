@@ -6,7 +6,7 @@ import BusinessPlanCard from './BusinessPlanCard/BusinessPlanCard';
 import styles from './Subscribe.module.scss';
 import Swoosh from '@Shared/Swoosh/Swoosh';
 import { getRegion } from 'services/region.service';
-import { BillingPeriodE } from 'types';
+import { BillingPeriodE } from 'types/General';
 
 type SubscribePropsT = {
   classProp?: string;

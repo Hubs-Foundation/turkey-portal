@@ -1,6 +1,6 @@
 import { Button, ButtonCategoriesE, Modal } from '@mozilla/lilypad-ui';
 import InfoBlock from '@Shared/InfoBlock/InfoBlock';
-import { PERSONAL_COPY } from 'components/modules/plans/Plan.const';
+import { PERSONAL_COPY } from 'components/modules/plans/plan.const';
 import styles from './ConfirmPlanModal.module.scss';
 import { getPricePageData } from 'util/utilities';
 import { useSelector } from 'react-redux';

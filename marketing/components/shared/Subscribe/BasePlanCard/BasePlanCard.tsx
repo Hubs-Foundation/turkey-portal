@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import styles from './BasePlanCard.module.scss';
-import { PlanInfoCopyT } from './planInfoCopy';
+import { PlanInfoCopyT } from '../plan.const';
 import InfoBlock from '../InfoBlock/InfoBlock';
 import { Button } from '@mozilla/lilypad-ui';
 

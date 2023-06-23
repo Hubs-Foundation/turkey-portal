@@ -1,4 +1,4 @@
-import { STARTER_COPY } from '../Plan.const';
+import { STARTER_COPY } from '../plan.const';
 import BasePlanCard, { Price } from './BasePlanCard';
 import BeginStarterPlanButton from '@Modules/plans/BeginStarterPlanButton/BeginStarterPlanButton';
 

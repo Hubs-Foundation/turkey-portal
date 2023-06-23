@@ -1,17 +1,6 @@
 import { StaticImageData } from 'next/image';
 import { Document } from '@contentful/rich-text-types';
 
-export enum PlansE {
-  STATER = 'starter',
-  PERSONAL = 'personal',
-  PROFESSIONAL = 'professional',
-  BUSINESS = 'business',
-}
-
-export enum BillingPeriodE {
-  MONTHLY = 'monthly',
-  YEARLY = 'yearly',
-}
 /**
  * CONTENFUL MEDIA TYPES
  */

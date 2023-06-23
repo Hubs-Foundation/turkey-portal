@@ -5,7 +5,7 @@ import {
   AcceptedRegionCodeT,
   ACCEPTED_REGION_CODES,
 } from 'types/Countries';
-import { PLAN_ID_MAP } from 'components/modules/plans/Plan.const';
+import { PLAN_ID_MAP } from 'components/modules/plans/plan.const';
 
 /**
  * Get the pricing page URL for a region, return default (US) pricing page if region not found

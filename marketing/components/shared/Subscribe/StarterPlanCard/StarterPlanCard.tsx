@@ -1,5 +1,5 @@
 import { Button } from '@mozilla/lilypad-ui';
-import { starterPlanInfoCopy } from '../BasePlanCard/planInfoCopy';
+import { STARTER_COPY } from '../plan.const';
 import { Price, BasePlanCard } from '../BasePlanCard/BasePlanCard';
 import getEnvVariable from 'config';
 
@@ -15,7 +15,7 @@ const StarterPlanCard = () => {
       title="Starter"
       color="silver"
       price={<Price price="Free" />}
-      infoCopyList={starterPlanInfoCopy}
+      infoCopyList={STARTER_COPY}
       confirmButton={
         <Button
           label="Create free hub"

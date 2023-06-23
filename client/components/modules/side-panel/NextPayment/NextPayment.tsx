@@ -10,6 +10,13 @@ type NextPaymentPropsT = {
   classProp?: string;
 };
 
+/**
+ * COMPONENT NOT IN USE
+ *
+ * Note: this component is being phased out. There is a possibility that this component could
+ * come back into play. Keeping around for now. -  06/23/23 NG
+ */
+
 const CanceledBlock = () => (
   <>
     <h3 className="heading-xxs">Subscription Canceled</h3>

@@ -1,11 +1,11 @@
 import getEnvVariable from 'config';
-import { PlansE, BillingPeriodE } from 'types';
+import { PlansE, BillingPeriodE } from 'types/General';
 import {
   RegionCodeT,
   AcceptedRegionCodeT,
   ACCEPTED_REGION_CODES,
-  PLAN_ID_MAP,
 } from 'types/Countries';
+import { PLAN_ID_MAP } from 'components/shared/Subscribe/plan.const';
 
 /**
  * Get the pricing page URL for a region, return default (US) pricing page if region not found

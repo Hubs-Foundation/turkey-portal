@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Button, ToolTip, Icon } from '@mozilla/lilypad-ui';
-import { PERSONAL_COPY } from '../Plan.const';
+import { PERSONAL_COPY } from '../plan.const';
 import BasePlanCard, { Price } from './BasePlanCard';
 import { getPricePageData } from 'util/utilities';
 import { useSelector } from 'react-redux';

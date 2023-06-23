@@ -1,0 +1,29 @@
+@use 'styles/core/boilerplate' as *;
+
+.wrapper {
+  background-color: $color-background-overlay;
+  color: $color-text-reverse;
+  padding: 24px;
+  width: 487px;
+  border-radius: 20px;
+  margin-bottom: 24px;
+
+  @include desktop-large-down {
+    width: 100%;
+    height: auto;
+  }
+
+  @include mobile-down {
+    margin-bottom: 0px;
+    border-radius: 0;
+  }
+}
+
+.container {
+  width: 50%;
+
+  @include mobile-down {
+    display: block;
+    width: auto;
+  }
+}
