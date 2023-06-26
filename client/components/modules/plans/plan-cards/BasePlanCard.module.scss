@@ -76,8 +76,6 @@
 }
 
 .footer {
-  display: flex;
-
   button {
     flex-grow: 1;
   }
@@ -87,4 +85,15 @@
     flex-direction: column;
     justify-content: flex-end;
   }
+}
+
+.sold_out {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: -40px;
 }

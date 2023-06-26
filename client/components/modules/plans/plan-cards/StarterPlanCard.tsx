@@ -1,14 +1,15 @@
-import { starterPlanInfoCopy } from '../PlanInfoCopy';
+import { STARTER_COPY } from '../plan.const';
 import BasePlanCard, { Price } from './BasePlanCard';
 import BeginStarterPlanButton from '@Modules/plans/BeginStarterPlanButton/BeginStarterPlanButton';
 
 const StarterPlanCard = () => {
   return (
     <BasePlanCard
+      isSoldOut={true}
       title="Starter"
       color="silver"
       price={<Price price="Free" />}
-      infoCopyList={starterPlanInfoCopy}
+      infoCopyList={STARTER_COPY}
       confirmButton={<BeginStarterPlanButton text="Create free hub" />}
     />
   );

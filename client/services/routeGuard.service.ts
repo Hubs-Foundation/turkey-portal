@@ -16,7 +16,7 @@ import { RoutesE } from '../types/Routes';
 import { CookiesE } from 'types/Cookies';
 import { setCookies } from 'cookies-next';
 import { localFeature } from '../util/featureFlag';
-import { AccountT } from 'types/General';
+import { AccountT, PlansE } from 'types/General';
 
 type UnauthenticatedResponseT = {
   status: Number | undefined;
@@ -142,7 +142,7 @@ export function hubIdRG(gssp: Function): GetServerSideProps | Redirect {
       );
 
       // starter plan doesn't have access to Hub name or subdomain change
-      if (account.planName === 'starter') {
+      if (account.planName === PlansE.STATER) {
         return redirectToDashboard();
       }
 
@@ -237,15 +237,14 @@ export function requireAuthenticationAndSubscription(
 }
 
 /**
- * Subscription Route Guard
- * For authenticated subscribe page,redirect to /dashboard if you have hubs or subscription
- * Authenticated NO hubs AND NO subscription, stay on /subscribe page
- * Authenticated YES hubs OR YES subscription, redirect to /dashboard
- * NOT Authenticated, redirect to marketing page
+ * Subscribe Route Guard
+ * Note : This page has dual purposes, users who are authenticated but do not have a plan will be routed to this
+ * page, but we will also route users to this page when they want to upgrade so that can choose from
+ * all the plans. So we do not want to route users who have plans away from this path anymore.
  * @param gssp
  * @returns GetServerSideProps
  */
-export function pageRequireAuthentication(gssp: Function): GetServerSideProps {
+export function SubscribeRG(gssp: Function): GetServerSideProps {
   return async (context) => {
     const { req, query } = context;
 
@@ -255,10 +254,6 @@ export function pageRequireAuthentication(gssp: Function): GetServerSideProps {
       const account: AccountT = await getAccount(
         req.headers as AxiosRequestHeaders
       );
-
-      if (account.hasSubscription || account.hasPlan) {
-        return redirectToDashboard();
-      }
 
       return await gssp(context);
     } catch (error) {

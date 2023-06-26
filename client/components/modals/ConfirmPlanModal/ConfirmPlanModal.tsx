@@ -1,6 +1,6 @@
 import { Button, ButtonCategoriesE, Modal } from '@mozilla/lilypad-ui';
 import InfoBlock from '@Shared/InfoBlock/InfoBlock';
-import { personalPlanInfoCopy } from '@Modules/plans/PlanInfoCopy';
+import { PERSONAL_COPY } from 'components/modules/plans/plan.const';
 import styles from './ConfirmPlanModal.module.scss';
 import { getPricePageData } from 'util/utilities';
 import { useSelector } from 'react-redux';
@@ -48,7 +48,7 @@ const ConfirmPlanModal = () => {
             />
           </div>
           <div className={`${styles.info_wrapper}`}>
-            {personalPlanInfoCopy.map(({ icon, label }, i) => (
+            {PERSONAL_COPY.map(({ icon, label }, i) => (
               <InfoBlock key={i} icon={icon} label={label} />
             ))}
           </div>

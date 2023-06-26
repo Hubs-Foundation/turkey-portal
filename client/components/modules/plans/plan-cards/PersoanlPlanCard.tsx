@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Button, ToolTip, Icon } from '@mozilla/lilypad-ui';
-import { personalPlanInfoCopy } from '../PlanInfoCopy';
+import { PERSONAL_COPY } from '../plan.const';
 import BasePlanCard, { Price } from './BasePlanCard';
 import { getPricePageData } from 'util/utilities';
 import { useSelector } from 'react-redux';
@@ -25,17 +25,17 @@ const PersonalPlanCard = ({ billingPeriod }: StandardPlanCardPropsT) => {
 
   return (
     <BasePlanCard
-      title={'Early Access Hub'}
+      title="Personal Hub"
       color="warm"
       price={
         <Price
           price={`${currencySymbol}${planPrice}`}
           billingPeriod={`per ${
-            billingPeriod === 'yearly' ? 'year' : 'month'
+            billingPeriod === BillingPeriodE.YEARLY ? 'year' : 'month'
           } ${taxDescription}`}
         />
       }
-      infoCopyList={personalPlanInfoCopy}
+      infoCopyList={PERSONAL_COPY}
       additionalContent={
         <ToolTip description="Available countries include UK, Canada, USA, Germany, Italy, New Zealand, ETC ETC ETC">
           <div className="flex pt-24 mb-16">

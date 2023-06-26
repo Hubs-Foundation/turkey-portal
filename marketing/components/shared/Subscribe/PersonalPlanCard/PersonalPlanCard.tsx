@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { RegionCodeT } from 'types/Countries';
 import { BasePlanCard, Price } from '../BasePlanCard/BasePlanCard';
-import { personalPlanInfoCopy } from '../BasePlanCard/planInfoCopy';
+import { PERSONAL_COPY } from '../plan.const';
 import { Button, Icon, ToolTip } from '@mozilla/lilypad-ui';
 import { getPricePageData } from 'util/utilities';
 import { BillingPeriodE, PlansE } from 'types/General';
@@ -27,7 +27,7 @@ const PersonalPlanCard = ({
 
   return (
     <BasePlanCard
-      title="Early Access Hub"
+      title="Personal Hub"
       color="warm"
       price={
         <Price
@@ -37,7 +37,7 @@ const PersonalPlanCard = ({
           } ${taxDescription}`}
         />
       }
-      infoCopyList={personalPlanInfoCopy}
+      infoCopyList={PERSONAL_COPY}
       additionalContent={
         <ToolTip description="Available countries include UK, Canada, USA, Germany, Italy, New Zealand, ETC ETC ETC">
           <div className="flex pt-24 mb-16">
