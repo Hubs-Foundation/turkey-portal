@@ -7,11 +7,11 @@ import { useSelector } from 'react-redux';
 import { selectRegion } from 'store/regionSlice';
 import { BillingPeriodE, PlansE } from 'types/General';
 
-type StandardPlanCardPropsT = {
+type PersonalPlanCardPropsT = {
   billingPeriod: BillingPeriodE;
 };
 
-const StandardPlanCard = ({ billingPeriod }: StandardPlanCardPropsT) => {
+const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
   const { regionCode } = useSelector(selectRegion);
   const { planPrice, planUrl, taxDescription, currencySymbol } =
     getPricePageData(regionCode, PlansE.PERSONAL, BillingPeriodE.MONTHLY);
@@ -60,4 +60,4 @@ const StandardPlanCard = ({ billingPeriod }: StandardPlanCardPropsT) => {
   );
 };
 
-export default StandardPlanCard;
+export default PersonalPlanCard;
