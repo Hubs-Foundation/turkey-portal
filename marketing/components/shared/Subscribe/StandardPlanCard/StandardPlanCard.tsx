@@ -27,7 +27,7 @@ const StandardPlanCard = ({
 
   return (
     <BasePlanCard
-      title="Early Access Hub"
+      title="Personal Hub"
       color="warm"
       price={
         <Price

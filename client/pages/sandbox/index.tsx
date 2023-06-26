@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { useRef } from 'react';
 
 type SandboxPropsT = {};
 
@@ -7,6 +8,7 @@ type SandboxPropsT = {};
  * not show up on prod
  */
 const Sandbox = ({}: SandboxPropsT) => {
+  const diRef = useRef<HTMLDialogElement>(null);
   return (
     <div className="page_wrapper">
       <Head>
@@ -15,6 +17,13 @@ const Sandbox = ({}: SandboxPropsT) => {
       <main>
         <h1>Sandbox</h1>
         <div className="p-80"></div>
+        <dialog ref={diRef}>
+          <form method="dialog">
+            hi~!!
+            <button>close</button>
+          </form>
+        </dialog>
+        <button onClick={() => diRef.current?.showModal()}>show modal</button>
       </main>
     </div>
   );

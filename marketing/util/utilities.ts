@@ -16,7 +16,7 @@ import { PLAN_ID_MAP } from 'components/shared/Subscribe/plan.const';
  */
 export const getPricePageData = (
   regionCode: RegionCodeT,
-  plan: Exclude<PlansE, null | 'starter'>,
+  plan: Exclude<PlansE, null | PlansE.STATER>,
   billingPeriod: BillingPeriodE
 ) => {
   const FXA_PAYMENT_URL = getEnvVariable('FXA_PAYMENT_URL');

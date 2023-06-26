@@ -22,7 +22,7 @@ const Subscribe = () => {
       <main>
         <div className={styles.wrapper}>
           <div className={styles.header}>
-            <h1>Choose your new subscription plan</h1>
+            <h1>Choose your subscription plan</h1>
           </div>
 
           <div className={styles.cards}>

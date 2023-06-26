@@ -25,7 +25,7 @@ const StandardPlanCard = ({ billingPeriod }: StandardPlanCardPropsT) => {
 
   return (
     <BasePlanCard
-      title="Early Access Hub"
+      title="Personal Hub"
       color="warm"
       price={
         <Price

@@ -16,7 +16,7 @@ import { PLAN_ID_MAP } from 'components/modules/plans/plan.const';
  */
 export const getPricePageData = (
   regionCode: RegionCodeT,
-  plan: Exclude<PlansE, null | 'starter'>,
+  plan: Exclude<PlansE, null | PlansE.STATER>,
   billingPeriod: BillingPeriodE
 ) => {
   // If not accepted region or no region default to US plan
