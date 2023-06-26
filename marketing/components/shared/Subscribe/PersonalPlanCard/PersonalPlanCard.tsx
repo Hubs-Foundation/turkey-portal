@@ -6,15 +6,15 @@ import { Button, Icon, ToolTip } from '@mozilla/lilypad-ui';
 import { getPricePageData } from 'util/utilities';
 import { BillingPeriodE, PlansE } from 'types/General';
 
-type StandardPlanCardPropsT = {
+type PersonalPlanCardPropsT = {
   billingPeriod: BillingPeriodE;
   regionCode: RegionCodeT;
 };
 
-const StandardPlanCard = ({
+const PersonalPlanCard = ({
   billingPeriod,
   regionCode,
-}: StandardPlanCardPropsT) => {
+}: PersonalPlanCardPropsT) => {
   const { planPrice, planUrl, taxDescription, currencySymbol } =
     getPricePageData(regionCode, PlansE.PERSONAL, billingPeriod);
 
@@ -62,4 +62,4 @@ const StandardPlanCard = ({
   );
 };
 
-export default StandardPlanCard;
+export default PersonalPlanCard;
