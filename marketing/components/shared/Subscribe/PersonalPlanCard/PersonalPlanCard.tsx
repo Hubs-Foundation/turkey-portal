@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { RegionCodeT } from 'types/Countries';
 import { BasePlanCard, Price } from '../BasePlanCard/BasePlanCard';
 import { PERSONAL_COPY } from '../plan.const';
-import { Button, Icon, ToolTip } from '@mozilla/lilypad-ui';
+import { Button, Icon } from '@mozilla/lilypad-ui';
 import { getPricePageData } from 'util/utilities';
 import { BillingPeriodE, PlansE } from 'types/General';
 
@@ -33,13 +33,17 @@ const PersonalPlanCard = ({
         <Price
           price={`${currencySymbol}${planPrice}`}
           billingPeriod={`per ${
-            billingPeriod === 'yearly' ? 'year' : 'month'
+            billingPeriod === BillingPeriodE.YEARLY ? 'year' : 'month'
           } ${taxDescription}`}
         />
       }
       infoCopyList={PERSONAL_COPY}
       additionalContent={
-        <ToolTip description="Available countries include UK, Canada, USA, Germany, Italy, New Zealand, ETC ETC ETC">
+        <a
+          className="primary-link"
+          href="/docs/setup-choosing.html#supported-regions-and-currencies"
+          target="_blank"
+        >
           <div className="flex pt-24 mb-16">
             <div className="color-interaction-primary">
               <Icon name="info" classProp="mr-16" color="currentColor" />
@@ -49,7 +53,7 @@ const PersonalPlanCard = ({
               Hubs is currently available in select countries
             </p>
           </div>
-        </ToolTip>
+        </a>
       }
       confirmButton={
         <Button
