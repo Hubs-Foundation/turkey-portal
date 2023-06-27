@@ -57,7 +57,7 @@ export type AccountT = {
 };
 
 export enum PlansE {
-  STATER = 'starter',
+  STARTER = 'starter',
   PERSONAL = 'personal',
   PROFESSIONAL = 'professional',
   BUSINESS = 'business',

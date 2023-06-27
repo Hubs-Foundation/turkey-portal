@@ -48,18 +48,21 @@ export const PERSONAL_COPY: PlanInfoCopyT[] = [
 ];
 
 export const PLAN_ID_MAP = {
+  /**
+   * Germany
+   */
   DE: {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
     personal: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 22.22,
+        planId: 'price_1NLVpVJNcmPzuWtRfKxTiDOS',
+        price: 7.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 100.22,
+        planId: 'price_1NME89JNcmPzuWtR31reWxf2',
+        price: 84.0,
       },
     },
     professional: {
@@ -83,18 +86,21 @@ export const PLAN_ID_MAP = {
       },
     },
   },
+  /**
+   * Italy
+   */
   IT: {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
     personal: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 22.22,
+        planId: 'price_1NLVuFJNcmPzuWtRb0C1X22W',
+        price: 7.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 100.22,
+        planId: 'price_1NMGW7JNcmPzuWtRLHbN4JM0',
+        price: 84.0,
       },
     },
     professional: {
@@ -118,18 +124,21 @@ export const PLAN_ID_MAP = {
       },
     },
   },
-  ER: {
+  /**
+   *  * Spain
+   */
+  ES: {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
     personal: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 22.22,
+        planId: 'price_1NLVuXJNcmPzuWtRaqLszCnA',
+        price: 7.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 100.22,
+        planId: 'price_1NMGb7JNcmPzuWtReyQ2iDN0',
+        price: 84.0,
       },
     },
     professional: {
@@ -153,18 +162,21 @@ export const PLAN_ID_MAP = {
       },
     },
   },
+  /**
+   * Netherlands
+   */
   NL: {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
     personal: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 22.22,
+        planId: 'price_1NLVunJNcmPzuWtRTWPcYJag',
+        price: 7.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 100.22,
+        planId: 'price_1NMGlgJNcmPzuWtRRV5GSeIH',
+        price: 84.0,
       },
     },
     professional: {
@@ -188,18 +200,21 @@ export const PLAN_ID_MAP = {
       },
     },
   },
+  /**
+   * Ireland
+   */
   IE: {
     abbrev: 'EUR',
     symbol: '€',
-    taxDescription: ' i love taxes',
+    taxDescription: '',
     personal: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 22.49,
+        planId: 'price_1NLVv3JNcmPzuWtRdczg6amm',
+        price: 7.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 100.22,
+        planId: 'price_1NMGm1JNcmPzuWtRWHcxMH0F',
+        price: 84.0,
       },
     },
     professional: {
@@ -223,18 +238,61 @@ export const PLAN_ID_MAP = {
       },
     },
   },
+
+  /**
+   * Finland
+   */
+  FI: {
+    abbrev: 'EUR',
+    symbol: '€',
+    taxDescription: '',
+    personal: {
+      monthly: {
+        planId: 'price_1NLVpmJNcmPzuWtRnBoCQoyk',
+        price: 7.0,
+      },
+      yearly: {
+        planId: 'price_1NME8WJNcmPzuWtR12KKiKhe',
+        price: 84.0,
+      },
+    },
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+  },
+
+  /**
+   * France
+   */
   FR: {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
     personal: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 22.22,
+        planId: 'price_1NLVpmJNcmPzuWtRnBoCQoyk',
+        price: 7.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 100.22,
+        planId: 'price_1NME8WJNcmPzuWtR12KKiKhe',
+        price: 84.0,
       },
     },
     professional: {
@@ -258,18 +316,22 @@ export const PLAN_ID_MAP = {
       },
     },
   },
+
+  /**
+   * Luxembourg
+   */
   LU: {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
     personal: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 22.22,
+        planId: 'price_1N6cvgJNcmPzuWtRxxY3M8oE',
+        price: 7.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 100.22,
+        planId: 'price_1NME8rJNcmPzuWtRn5pbmvk5',
+        price: 84.0,
       },
     },
     professional: {
@@ -293,18 +355,22 @@ export const PLAN_ID_MAP = {
       },
     },
   },
+
+  /**
+   * Belgium
+   */
   BE: {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
     personal: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 22.22,
+        planId: 'price_1N6cyIJNcmPzuWtRquNgkUAJ',
+        price: 7.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 100.22,
+        planId: 'price_1NMENGJNcmPzuWtRoOKokb28',
+        price: 84.0,
       },
     },
     professional: {
@@ -328,18 +394,22 @@ export const PLAN_ID_MAP = {
       },
     },
   },
+
+  /**
+   * Austria
+   */
   AU: {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
     personal: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 22.22,
+        planId: 'price_1NLVqGJNcmPzuWtRcjgAr4jp',
+        price: 7.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 100.22,
+        planId: 'price_1NMENsJNcmPzuWtRhX5vmYsX',
+        price: 84.0,
       },
     },
     professional: {
@@ -363,18 +433,100 @@ export const PLAN_ID_MAP = {
       },
     },
   },
+
+  /**
+   * Malaysia
+   */
+  MY: {
+    abbrev: 'MYR',
+    symbol: 'RM',
+    taxDescription: '',
+    personal: {
+      monthly: {
+        planId: 'price_1NLVx0JNcmPzuWtRxTKTtFVp',
+        price: 7.0,
+      },
+      yearly: {
+        planId: 'price_1NMGpJJNcmPzuWtR1X4dN8T3',
+        price: 84.0,
+      },
+    },
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+  },
+
+  /**
+   * Sweden
+   */
+  SE: {
+    abbrev: 'SEK',
+    symbol: 'kr',
+    taxDescription: '',
+    personal: {
+      monthly: {
+        planId: 'price_1NLVw1JNcmPzuWtRh8SWab0h',
+        price: 7.0,
+      },
+      yearly: {
+        planId: 'price_1NMGomJNcmPzuWtRxbvlH3pV',
+        price: 84.0,
+      },
+    },
+    professional: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+    business: {
+      monthly: {
+        planId: 'PLAN_ID_EA',
+        price: 400.22,
+      },
+      yearly: {
+        planId: 'PLAN_ID_EA',
+        price: 5000.22,
+      },
+    },
+  },
+
+  /**
+   * United States
+   */
   US: {
     abbrev: 'USD',
     symbol: '$',
     taxDescription: ' + tax',
     personal: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 20.0,
+        planId: 'price_1NLVoQJNcmPzuWtR0OYLCGAp',
+        price: 7.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 100.22,
+        planId: 'price_1NME7QJNcmPzuWtRQPW94lst',
+        price: 84.0,
       },
     },
     professional: {
@@ -398,76 +550,88 @@ export const PLAN_ID_MAP = {
       },
     },
   },
+
+  /**
+   * United Kingdom
+   */
   GB: {
     abbrev: 'USD',
     symbol: '$',
     taxDescription: '',
     personal: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 22.22,
+        planId: 'price_1NLVoxJNcmPzuWtRGm6H9IfS',
+        price: 7.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 100.22,
+        planId: 'price_1NMDh3JNcmPzuWtRpywDcgFi',
+        price: 84.0,
       },
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NMDi9JNcmPzuWtRE3kWUvDS',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 5000.22,
+        planId: 'price_1NMDiXJNcmPzuWtRmTaukmmQ',
+        price: 948.0,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NMDjKJNcmPzuWtR6fRWNH6A',
+        price: 479.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 5000.22,
+        planId: 'price_1NMDjuJNcmPzuWtRkGqRNg0e',
+        price: 5748.0,
       },
     },
   },
+
+  /**
+   * Canada
+   */
   CA: {
-    abbrev: 'USD',
+    abbrev: 'CAD',
     symbol: '$',
     taxDescription: '',
     personal: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 22.22,
+        planId: 'price_1NLVpDJNcmPzuWtRw9eEAjYR',
+        price: 7.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 100.22,
+        planId: 'price_1NMDphJNcmPzuWtRCiO8800B',
+        price: 84.0,
       },
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NME4jJNcmPzuWtRBkA6Oikz',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 5000.22,
+        planId: 'price_1NME58JNcmPzuWtRr3tJJNJ9',
+        price: 948.0,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NME5XJNcmPzuWtRpnVLPt1A',
+        price: 479.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 5000.22,
+        planId: 'price_1NME60JNcmPzuWtR2jjTY7pD',
+        price: 5748.0,
       },
     },
   },
+
+  /**
+   * Swiss Franc
+   */
   CH: {
     abbrev: 'CHF',
     symbol: 'CHF',
@@ -503,18 +667,22 @@ export const PLAN_ID_MAP = {
       },
     },
   },
+
+  /**
+   * New Zealand
+   */
   NZ: {
     abbrev: 'NZD',
     symbol: '$',
     taxDescription: '',
     personal: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 22.22,
+        planId: 'price_1NLVvMJNcmPzuWtRX1QBGKSV',
+        price: 7.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 100.22,
+        planId: 'price_1NMGneJNcmPzuWtRTCcwxSwT',
+        price: 84.0,
       },
     },
     professional: {
@@ -538,6 +706,10 @@ export const PLAN_ID_MAP = {
       },
     },
   },
+
+  /**
+   * Singapore
+   */
   SG: {
     abbrev: 'SGD',
     symbol: '$',
@@ -549,7 +721,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'PLAN_ID_EA',
-        price: 100.22,
+        price: 7,
       },
     },
     professional: {

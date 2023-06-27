@@ -142,7 +142,7 @@ export function hubIdRG(gssp: Function): GetServerSideProps | Redirect {
       );
 
       // starter plan doesn't have access to Hub name or subdomain change
-      if (account.planName === PlansE.STATER) {
+      if (account.planName === PlansE.STARTER) {
         return redirectToDashboard();
       }
 

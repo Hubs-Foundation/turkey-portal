@@ -4,7 +4,7 @@ import { PlansE } from 'types/General';
 
 export const useIsStarter = (): boolean => {
   const account = useSelector(selectAccount);
-  return account.planName === PlansE.STATER;
+  return account.planName === PlansE.STARTER;
 };
 
 export const useIsPersonal = (): boolean => {

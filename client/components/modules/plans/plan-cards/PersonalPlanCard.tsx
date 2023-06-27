@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Button, ToolTip, Icon } from '@mozilla/lilypad-ui';
+import { Button, Icon } from '@mozilla/lilypad-ui';
 import { PERSONAL_COPY } from '../plan.const';
 import BasePlanCard, { Price } from './BasePlanCard';
 import { getPricePageData } from 'util/utilities';
@@ -37,17 +37,21 @@ const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
       }
       infoCopyList={PERSONAL_COPY}
       additionalContent={
-        <ToolTip description="Available countries include UK, Canada, USA, Germany, Italy, New Zealand, ETC ETC ETC">
+        <a
+          className="primary-link"
+          href="https://hubs.mozilla.com/docs/setup-choosing.html#supported-regions-and-currencies"
+          target="_blank"
+        >
           <div className="flex pt-24 mb-16">
             <div className="color-interaction-primary">
               <Icon name="info" classProp="mr-16" color="currentColor" />
             </div>
 
             <p className="paragraph-sm">
-              Hubs is currently available in select countries
+              Paid subscription plans are available in select countries
             </p>
           </div>
-        </ToolTip>
+        </a>
       }
       confirmButton={
         <Button
