@@ -65,17 +65,6 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
   };
 
   /**
-   * Log raw data for
-   * degub on prod
-   */
-  const logData = () => {
-    console.log('Subscription Data:');
-    console.table([{ ...subscription }]);
-    console.log('Hub Data:');
-    console.table(hubs);
-  };
-
-  /**
    * Get Hubs again and apply data, also check
    * data for updates and fails.
    */
@@ -119,11 +108,23 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
    */
   useEffect(() => {
     const getData = async () => {
+      /**
+       * Log raw data for
+       * degub on prod
+       */
+      const logData = (hub: HubT) => {
+        console.log('Subscription Data:');
+        console.table([{ ...subscription }]);
+        console.log('Hub Data:');
+        console.table(hub);
+      };
+
       try {
         const hubs = await getHubs();
         setHubs(hubs);
         setHasUpdatingHub(checkIfUpdating(hubs));
         setIsLoading(false);
+        logData(hubs[0]);
       } catch (error) {
         setDefaultErrorStateHub();
         console.error(error);
@@ -137,9 +138,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
     setTimeout(() => {
       refreshAccountData();
     }, 2000);
-
-    logData();
-  }, []);
+  }, [subscription]);
 
   return (
     <div className="page_wrapper">
