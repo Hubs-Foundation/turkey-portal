@@ -21,6 +21,7 @@ const creatingHub: HubT = {
   ccuLimit: 0,
   currentCcu: 0,
   currentStorageMb: 0,
+  domain: '',
   hubId: '',
   name: 'Untitled Hub',
   status: StatusE.CREATING,
@@ -40,6 +41,7 @@ const ErroringHub: HubT = {
   ccuLimit: 0,
   currentCcu: 0,
   currentStorageMb: 0,
+  domain: '',
   hubId: '',
   name: 'Erred Hub',
   status: StatusE.ERROR,
@@ -152,13 +154,13 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
         {/* Hub Cards  */}
         <div className={styles.cards_wrapper}>
           {/* Hub Creating */}
-          {/* TODO (Tech Debt): Right now (EA) we are only dealing with one hub, so, if there are zero 
+          {/* TODO (Tech Debt): Right now (EA) we are only dealing with one hub, so, if there are zero
           hubs and account has "creating hubs" flag as true, we know to show the creating hub
           card. When we have multiple hubs (post EA) we need to transition this on the back end to have
-          a "creating" state accompanied by websockets and not depend on the account data. 
-              Reason being is we are not polling the account api to see if the creating hubs flag has 
+          a "creating" state accompanied by websockets and not depend on the account data.
+              Reason being is we are not polling the account api to see if the creating hubs flag has
           changed, and subsequently remove this creating card, additionally, we can't rely on the hubs.length
-          anymore in the senario of a multi-hub account. So, it would be better to handle this in the scope 
+          anymore in the senario of a multi-hub account. So, it would be better to handle this in the scope
           of the hubs api in the future - NG */}
           {account.hasCreatingHubs && hubs.length === 0 ? (
             <HubCard hub={creatingHub} />
@@ -185,6 +187,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
         <div className={styles.sidep_panel}>
           {!isLoading ? (
             <SidePanel
+              domain={hubs[0].domain}
               subdomain={hubs[0].subdomain}
               subscription={subscription}
             />

@@ -2,7 +2,7 @@ defmodule Dash do
   @moduledoc """
   Boundary of Dash context
   """
-  alias Dash.{Account, Capability, Plan, PlanStateMachine, Repo}
+  alias Dash.{Account, Capability, Hub, Plan, PlanStateMachine, Repo}
   import Dash.Utils, only: [capability_string: 0]
   import Ecto.Query
   require Logger
@@ -29,6 +29,18 @@ defmodule Dash do
           | {:error, :account_not_found | :no_active_plan}
   def fetch_active_plan(%Account{} = account),
     do: PlanStateMachine.handle_event(:fetch_active_plan, account)
+
+  @doc """
+  Gets the hub for the given `account`.
+
+  Returns `nil` if the hub does not exist.
+  """
+  @spec get_hub(Hub.id(), Account.t()) :: Hub.t() | nil
+  def get_hub(hub_id, %Account{account_id: account_id}) when is_integer(hub_id) and hub_id > 0,
+    do:
+      Hub
+      |> Repo.get_by(hub_id: hub_id, account_id: account_id)
+      |> Repo.preload(:deployment)
 
   @doc """
   Creates a starter plan for the given `account`.

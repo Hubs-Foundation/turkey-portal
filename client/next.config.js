@@ -17,7 +17,6 @@ const nextConfig = {
     ENV: process.env.ENV,
     FXA_PAYMENT_URL: process.env.FXA_PAYMENT_URL,
     FXA_SERVER: process.env.FXA_SERVER,
-    HUB_ROOT_DOMAIN: process.env.HUB_ROOT_DOMAIN,
     MARKETING_PAGE_URL: process.env.MARKETING_PAGE_URL,
     PLAN_ID_EA: process.env.PLAN_ID_EA,
     PLAN_ID_EA_DE: process.env.PLAN_ID_EA_DE,

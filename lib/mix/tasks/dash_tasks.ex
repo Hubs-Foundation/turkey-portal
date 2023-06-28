@@ -47,16 +47,15 @@ end
 
 defmodule Mix.Tasks.Dash.CreateHub do
   @shortdoc "Creates a hub"
-  @moduledoc "mix dash.create_hub <fxa_uid> <hub_name>"
+  @moduledoc "mix dash.create_hub <fxa_uid>"
   @requirements ["app.start"]
   use Mix.Task
 
-  def run([fxa_uid, hub_name]) do
+  def run([fxa_uid]) do
     account = Dash.Account |> Dash.Repo.get_by(fxa_uid: fxa_uid)
 
     %Dash.Hub{}
     |> Dash.Hub.changeset(%{
-      name: hub_name,
       subdomain: Dash.Utils.rand_string(10),
       tier: :mvp,
       ccu_limit: 5,

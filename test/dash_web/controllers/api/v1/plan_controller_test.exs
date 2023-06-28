@@ -9,7 +9,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
 
   describe "POST /api/v1/plans?tier=starter" do
     test "returns a 201", %{conn: conn} do
-      stub_http_post_200()
+      expect_orch_post()
 
       assert %{"status" => "created"} ===
                conn

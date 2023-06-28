@@ -64,7 +64,7 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
     test "when the account has a stopped plan"
 
     test "when the account has an active starter plan", %{conn: conn} do
-      stub_http_post_200()
+      expect_orch_post()
 
       :ok =
         get_default_test_uid()
