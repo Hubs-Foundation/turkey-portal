@@ -151,7 +151,7 @@ defmodule Dash.TestHelpers do
 
   def expect_orch_delete() do
     Mox.expect(Dash.HttpMock, :request, fn _, _body, _headers, _opts, _ ->
-      {:ok, %HTTPoison.Response{status_code: 202}}
+      {:ok, %HTTPoison.Response{status_code: 200}}
     end)
   end
 

@@ -224,7 +224,7 @@ defmodule Dash.Hub do
   @spec delete_hub_instance(%Dash.Hub{}) :: :ok | :error
   defp delete_hub_instance(%Dash.Hub{} = hub) do
     case Dash.OrchClient.delete_hub(hub) do
-      {:ok, %{status_code: 202}} ->
+      {:ok, %{status_code: 200}} ->
         :ok
 
       {:ok, %{status_code: status_code} = resp} ->
