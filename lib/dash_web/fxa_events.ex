@@ -90,8 +90,8 @@ defmodule DashWeb.FxaEvents do
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
     if is_active do
-      with {:error, reason} <- Dash.subscribe_to_standard_plan(account, datetime) do
-        Logger.warning("could not subscribe to standard plan for reason: #{reason}")
+      with {:error, reason} <- Dash.subscribe_to_personal_plan(account, datetime) do
+        Logger.warning("could not subscribe to personal plan for reason: #{reason}")
       end
     else
       with {:error, reason} <- Dash.expire_plan_subscription(account, datetime) do
