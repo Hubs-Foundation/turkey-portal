@@ -1,9 +1,5 @@
+// TODO - not sure premium is right here
 export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
-export type FormattedTierT = 'Mvp' | 'Starter' | 'Early Access' | 'Premium';
-
-export type FormattedTierMapT = {
-  [key in TierT]: FormattedTierT;
-};
 
 export enum StatusE {
   CREATING = 'creating',

@@ -110,11 +110,23 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
    */
   useEffect(() => {
     const getData = async () => {
+      /**
+       * Log raw data for
+       * degub on prod
+       */
+      const logData = (hub: HubT) => {
+        console.log('Subscription Data:');
+        console.table([{ ...subscription }]);
+        console.log('Hub Data:');
+        console.table(hub);
+      };
+
       try {
         const hubs = await getHubs();
         setHubs(hubs);
         setHasUpdatingHub(checkIfUpdating(hubs));
         setIsLoading(false);
+        logData(hubs[0]);
       } catch (error) {
         setDefaultErrorStateHub();
         console.error(error);
@@ -128,20 +140,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
     setTimeout(() => {
       refreshAccountData();
     }, 2000);
-
-    /**
-     * Log raw data for
-     * degub on prod
-     */
-    const logData = () => {
-      console.log('Subscription Data:');
-      console.table([{ ...subscription }]);
-      console.log('Hub Data:');
-      console.table(hubs);
-    };
-
-    logData();
-  }, [hubs, subscription]);
+  }, []); // dont add logging deps, they arent critical and cause inf loop
 
   return (
     <div className="page_wrapper">

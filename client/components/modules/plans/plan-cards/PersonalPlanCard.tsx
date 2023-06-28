@@ -41,6 +41,7 @@ const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
           className="primary-link"
           href="https://hubs.mozilla.com/docs/setup-choosing.html#supported-regions-and-currencies"
           target="_blank"
+          rel="noreferrer"
         >
           <div className="flex pt-24 mb-16">
             <div className="color-interaction-primary">
