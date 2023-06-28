@@ -211,7 +211,7 @@ defmodule DashTest do
       expired_at: expired_at
     } do
       expect_orch_post()
-      :ok = Dash.subscribe_to_standard_plan(account, DateTime.add(expired_at, -1, :second))
+      :ok = Dash.subscribe_to_personal_plan(account, DateTime.add(expired_at, -1, :second))
       custom_subdomain = "dummy-subdomain"
 
       %{hub_id: hub_id} =
@@ -309,7 +309,7 @@ defmodule DashTest do
     test "with expired_at earlier than the last state transition, when the account has an active subscription plan",
          %{account: account, expired_at: expired_at} do
       expect_orch_post()
-      :ok = Dash.subscribe_to_standard_plan(account, DateTime.add(expired_at, 1, :second))
+      :ok = Dash.subscribe_to_personal_plan(account, DateTime.add(expired_at, 1, :second))
       custom_subdomain = "dummy-subdomain"
 
       Hub.hubs_for_account(account)
@@ -349,11 +349,11 @@ defmodule DashTest do
       assert {:ok, %Plan{name: "starter", subscription?: false}} = Dash.fetch_active_plan(account)
     end
 
-    test "when the account has an active standard plan", %{account: account} do
+    test "when the account has an active personal plan", %{account: account} do
       expect_orch_post()
-      :ok = Dash.subscribe_to_standard_plan(account, DateTime.utc_now())
+      :ok = Dash.subscribe_to_personal_plan(account, DateTime.utc_now())
 
-      assert {:ok, %Plan{name: "standard", subscription?: true}} = Dash.fetch_active_plan(account)
+      assert {:ok, %Plan{name: "personal", subscription?: true}} = Dash.fetch_active_plan(account)
     end
 
     test "when the account has an active subscription plan (DEPRECATED capability)", %{
@@ -439,7 +439,7 @@ defmodule DashTest do
 
     test "when the account has an active subscription plan", %{account: account} do
       expect_orch_post()
-      :ok = Dash.subscribe_to_standard_plan(account, DateTime.utc_now())
+      :ok = Dash.subscribe_to_personal_plan(account, DateTime.utc_now())
 
       assert {:error, :already_started} === Dash.start_plan(account)
     end
@@ -490,14 +490,14 @@ defmodule DashTest do
     test "when the account has a stopped plan"
   end
 
-  describe "subscribe_to_standard_plan/2" do
+  describe "subscribe_to_personal_plan/2" do
     setup do
       %{account: create_account(), subscribed_at: ~U[1970-01-01 00:00:00.877000Z]}
     end
 
     test "when the account cannot be found", %{subscribed_at: subscribed_at} do
       assert {:error, :account_not_found} ===
-               Dash.subscribe_to_standard_plan(%Account{account_id: 1}, subscribed_at)
+               Dash.subscribe_to_personal_plan(%Account{account_id: 1}, subscribed_at)
     end
 
     test "when the account has an active subscription plan", %{
@@ -505,10 +505,10 @@ defmodule DashTest do
       subscribed_at: subscribed_at
     } do
       expect_orch_post()
-      :ok = Dash.subscribe_to_standard_plan(account, subscribed_at)
+      :ok = Dash.subscribe_to_personal_plan(account, subscribed_at)
 
       assert {:error, :already_started} ===
-               Dash.subscribe_to_standard_plan(account, subscribed_at)
+               Dash.subscribe_to_personal_plan(account, subscribed_at)
     end
 
     test "when the account has an active subscription plan (DEPRECATED capability)", %{
@@ -522,7 +522,7 @@ defmodule DashTest do
       })
 
       assert {:error, :already_started} ===
-               Dash.subscribe_to_standard_plan(account, subscribed_at)
+               Dash.subscribe_to_personal_plan(account, subscribed_at)
     end
 
     test "when the account has no plan", %{
@@ -548,7 +548,7 @@ defmodule DashTest do
         {:ok, %HTTPoison.Response{body: Jason.encode!(%{domain: domain}), status_code: 200}}
       end)
 
-      assert :ok === Dash.subscribe_to_standard_plan(account, subscribed_at)
+      assert :ok === Dash.subscribe_to_personal_plan(account, subscribed_at)
       assert {:ok, %{subscription?: true}} = Dash.fetch_active_plan(account)
       assert [hub] = Hub.hubs_for_account(account)
       assert 25 === hub.ccu_limit
@@ -589,7 +589,7 @@ defmodule DashTest do
         {:ok, %HTTPoison.Response{status_code: 200}}
       end)
 
-      assert :ok === Dash.subscribe_to_standard_plan(account, after_start)
+      assert :ok === Dash.subscribe_to_personal_plan(account, after_start)
       {:ok, plan} = Dash.fetch_active_plan(account)
       assert plan_id === plan.plan_id
       assert plan.subscription?
