@@ -61,6 +61,7 @@ export enum PlansE {
   PERSONAL = 'personal',
   PROFESSIONAL = 'professional',
   BUSINESS = 'business',
+  LEGACY = 'standard',
 }
 
 export enum BillingPeriodE {

@@ -369,8 +369,8 @@ export const PLAN_ID_MAP = {
     taxDescription: ' + tax',
     personal: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 20.0,
+        planId: 'price_1NLVoQJNcmPzuWtR0OYLCGAp',
+        price: 7.0,
       },
       yearly: {
         planId: 'PLAN_ID_EA',

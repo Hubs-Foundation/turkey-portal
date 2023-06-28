@@ -27,7 +27,7 @@ const PersonalPlanCard = ({
 
   return (
     <BasePlanCard
-      title="Personal Hub"
+      title="Personal"
       color="warm"
       price={
         <Price

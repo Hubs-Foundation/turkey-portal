@@ -25,7 +25,7 @@ const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
 
   return (
     <BasePlanCard
-      title="Personal Hub"
+      title="Personal"
       color="warm"
       price={
         <Price
@@ -49,7 +49,7 @@ const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
             </div>
 
             <p className="paragraph-sm">
-              Paid subscription plans are available in select countries
+              Hubs is currently available in select countries
             </p>
           </div>
         </a>
