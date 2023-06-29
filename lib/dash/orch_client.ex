@@ -10,13 +10,14 @@ defmodule Dash.OrchClient do
     disable_branding? = Keyword.get(opts, :disable_branding?, false)
 
     orch_hub_create_params = %{
-      useremail: fxa_email,
+      ccu_limit: Integer.to_string(hub.ccu_limit),
       disable_branding: disable_branding?,
-      hub_id: hub.hub_id |> to_string(),
+      hub_id: Integer.to_string(hub.hub_id),
+      region: "us",
+      storage_limit: Float.to_string(hub.storage_limit_mb / 1024),
       subdomain: hub.subdomain,
       tier: hub.tier,
-      ccu_limit: hub.ccu_limit |> to_string(),
-      storage_limit: (hub.storage_limit_mb / 1024) |> to_string()
+      useremail: fxa_email
     }
 
     http_client().post(
@@ -27,14 +28,10 @@ defmodule Dash.OrchClient do
     )
   end
 
+  # TODO: test this behavior somewhere
   def delete_hub(%Hub{} = hub) do
-    http_client().request(
-      :delete,
-      orch_hub_endpoint(),
-      Jason.encode!(%{hub_id: hub.hub_id |> to_string}),
-      [],
-      hackney: [:insecure]
-    )
+    json = Jason.encode!(identity(hub))
+    http_client().request(:delete, orch_hub_endpoint(), json, [], hackney: [:insecure])
   end
 
   def update_hub(fxa_email, %Hub{} = hub, opts \\ [])
@@ -42,33 +39,35 @@ defmodule Dash.OrchClient do
     disable_branding? = Keyword.get(opts, :disable_branding?, false)
     reset_branding? = Keyword.get(opts, :reset_branding?, false)
 
-    http_client().patch(
-      orch_hub_endpoint(),
-      Jason.encode!(%{
-        ccu_limit: Integer.to_string(hub.ccu_limit),
-        disable_branding: disable_branding?,
-        hub_id: Integer.to_string(hub.hub_id),
-        reset_branding: reset_branding?,
-        storage_limit: Float.to_string(hub.storage_limit_mb / 1024),
-        subdomain: hub.subdomain,
-        tier: hub.tier,
-        useremail: fxa_email
-      }),
-      [],
-      hackney: [:insecure]
-    )
+    params = %{
+      ccu_limit: Integer.to_string(hub.ccu_limit),
+      disable_branding: disable_branding?,
+      reset_branding: reset_branding?,
+      storage_limit: Float.to_string(hub.storage_limit_mb / 1024),
+      subdomain: hub.subdomain,
+      tier: hub.tier,
+      useremail: fxa_email
+    }
+
+    json =
+      params
+      |> Map.merge(identity(hub))
+      |> Jason.encode!()
+
+    http_client().patch(orch_hub_endpoint(), json, [], hackney: [:insecure])
   end
 
   def update_subdomain(%Hub{} = hub) do
-    http_client().patch(
-      orch_hub_endpoint(),
-      Jason.encode!(%{
-        hub_id: hub.hub_id |> to_string,
-        subdomain: hub.subdomain
-      }),
-      [],
-      hackney: [:insecure]
-    )
+    params = %{
+      subdomain: hub.subdomain
+    }
+
+    json =
+      params
+      |> Map.merge(identity(hub))
+      |> Jason.encode!()
+
+    http_client().patch(orch_hub_endpoint(), json, [], hackney: [:insecure])
   end
 
   ## Helpers
@@ -79,6 +78,10 @@ defmodule Dash.OrchClient do
       :dash
       |> Application.get_env(__MODULE__)
       |> Keyword.get(:http_client, HTTPoison)
+
+  @spec identity(Hub.t()) :: %{atom => String.t()}
+  defp identity(%Hub{} = hub),
+    do: %{domain: hub.deployment.domain, hub_id: Integer.to_string(hub.hub_id)}
 
   @spec orch_host :: String.t()
   defp orch_host,

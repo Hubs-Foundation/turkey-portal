@@ -167,7 +167,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     end
 
     test "Should update iat and add capability to account for true", %{conn: conn} do
-      stub_http_post_200()
+      expect_orch_post()
       fxa_uid = get_default_test_uid()
 
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
@@ -189,7 +189,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     end
 
     test "on subscription", %{conn: conn} do
-      stub_http_post_200()
+      expect_orch_post()
       fxa_uid = "dummy-uid"
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
 
@@ -214,7 +214,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     end
 
     test "on expiration", %{conn: conn} do
-      stub_http_post_200()
+      expect_orch_post()
       fxa_uid = "dummy-uid"
       the_past = ~U[1970-01-01 00:00:00.000000Z]
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid, "dummy@test.com")
@@ -298,7 +298,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     end
 
     test "Account is created for subscription changed event", %{conn: conn} do
-      stub_http_post_200()
+      expect_orch_post()
       fxa_uid = get_default_test_uid()
 
       false = Dash.has_account_for_fxa_uid?(fxa_uid)

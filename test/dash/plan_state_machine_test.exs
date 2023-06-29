@@ -1,8 +1,9 @@
 defmodule Dash.PlanStateMachineTest do
   use Dash.DataCase, async: true
 
-  alias Dash.{Account, Capability, HttpMock, Hub, Plan, PlanStateMachine}
+  alias Dash.{Account, Capability, HttpMock, Hub, HubDeployment, Plan, PlanStateMachine}
   import Dash.Utils, only: [capability_string: 0]
+  import Dash.TestHelpers, only: [expect_orch_post: 0]
 
   setup do
     Mox.verify_on_exit!()
@@ -22,9 +23,7 @@ defmodule Dash.PlanStateMachineTest do
     end
 
     test "commits on success", %{account: account} do
-      Mox.expect(HttpMock, :post, fn _url, _json, _headers, _opts ->
-        {:ok, %HTTPoison.Response{status_code: 200}}
-      end)
+      expect_orch_post()
 
       assert :ok === PlanStateMachine.handle_event(:start, account)
       assert {:cont, :starter, _} = PlanStateMachine.init(account)
@@ -90,6 +89,8 @@ defmodule Dash.PlanStateMachineTest do
     end
 
     test "nil -- start ->", %{account: account} do
+      domain = "dummy.test"
+
       Mox.expect(HttpMock, :post, fn url, json, _headers, opts ->
         payload = Jason.decode!(json)
         [hub] = Hub.hubs_for_account(account)
@@ -98,12 +99,13 @@ defmodule Dash.PlanStateMachineTest do
         assert "10" === payload["ccu_limit"]
         assert true === payload["disable_branding"]
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
+        assert "us" === payload["region"]
         assert "0.48828125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p0" === payload["tier"]
         assert account.email === payload["useremail"]
 
-        {:ok, %HTTPoison.Response{status_code: 200}}
+        {:ok, %HTTPoison.Response{body: Jason.encode!(%{domain: domain}), status_code: 200}}
       end)
 
       assert :ok === PlanStateMachine.handle_event(nil, :start, account, nil)
@@ -113,6 +115,7 @@ defmodule Dash.PlanStateMachineTest do
       assert :creating === hub.status
       assert 500 === hub.storage_limit_mb
       assert :p0 === hub.tier
+      assert domain === hub.deployment.domain
 
       assert [plan] = Repo.all(Plan)
       assert account.account_id === plan.account_id
@@ -125,6 +128,8 @@ defmodule Dash.PlanStateMachineTest do
     end
 
     test "nil -- subscribe_standard ->", %{account: account} do
+      domain = "region.root.test"
+
       Mox.expect(HttpMock, :post, fn url, json, _headers, opts ->
         payload = Jason.decode!(json)
         [hub] = Hub.hubs_for_account(account)
@@ -133,12 +138,13 @@ defmodule Dash.PlanStateMachineTest do
         assert "25" === payload["ccu_limit"]
         assert false === payload["disable_branding"]
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
+        assert "us" === payload["region"]
         assert "1.953125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p1" === payload["tier"]
         assert account.email === payload["useremail"]
 
-        {:ok, %HTTPoison.Response{status_code: 200}}
+        {:ok, %HTTPoison.Response{body: Jason.encode!(%{domain: domain}), status_code: 200}}
       end)
 
       assert :ok ===
@@ -154,6 +160,7 @@ defmodule Dash.PlanStateMachineTest do
       assert :creating === hub.status
       assert 2_000 === hub.storage_limit_mb
       assert :p1 === hub.tier
+      assert domain === hub.deployment.domain
 
       assert [plan] = Repo.all(Plan)
       assert account.account_id === plan.account_id
@@ -204,6 +211,7 @@ defmodule Dash.PlanStateMachineTest do
     test "starter -- subscribe_standard ->", %{account: account} do
       :ok = put_in_state(account, :starter)
       %{hub_id: hub_id} = Repo.insert!(%Hub{account_id: account.account_id})
+      Repo.insert!(%HubDeployment{domain: "fake.domain", hub_id: hub_id})
 
       Mox.expect(HttpMock, :patch, 1, fn url, json, _headers, opts ->
         payload = Jason.decode!(json)
@@ -212,6 +220,7 @@ defmodule Dash.PlanStateMachineTest do
         assert [hackney: [:insecure]] === opts
         assert "25" === payload["ccu_limit"]
         assert false === payload["disable_branding"]
+        assert hub.deployment.domain === payload["domain"]
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
         assert false === payload["reset_branding"]
         assert "1.953125" === payload["storage_limit"]
@@ -304,6 +313,8 @@ defmodule Dash.PlanStateMachineTest do
       %{hub_id: hub_id} =
         Repo.insert!(%Hub{account_id: account.account_id, subdomain: custom_subdomain})
 
+      Repo.insert!(%HubDeployment{domain: "dummy.domain", hub_id: hub_id})
+
       Mox.expect(HttpMock, :patch, fn url, json, _headers, opts ->
         payload = Jason.decode!(json)
         [hub] = Hub.hubs_for_account(account)
@@ -311,6 +322,7 @@ defmodule Dash.PlanStateMachineTest do
         assert [hackney: [:insecure]] === opts
         assert "10" === payload["ccu_limit"]
         assert true === payload["disable_branding"]
+        assert hub.deployment.domain === payload["domain"]
         assert Integer.to_string(hub_id) === payload["hub_id"]
         assert true === payload["reset_branding"]
         assert "0.48828125" === payload["storage_limit"]

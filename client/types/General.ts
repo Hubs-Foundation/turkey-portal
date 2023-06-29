@@ -23,6 +23,7 @@ export type HubT = {
   ccuLimit: number;
   currentCcu: number | null;
   currentStorageMb: number | null;
+  domain: string;
   hubId: string;
   name: string;
   status: StatusE;

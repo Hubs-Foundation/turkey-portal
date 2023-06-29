@@ -12,6 +12,79 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     Mox.verify_on_exit!()
   end
 
+  test "GET /api/v1/hubs", %{conn: conn} do
+    stub_ret_get()
+
+    %{account_id: account_id} =
+      Dash.Account.find_or_create_account_for_fxa_uid(get_default_test_uid())
+
+    hub =
+      Dash.Repo.insert!(%Dash.Hub{
+        account_id: account_id,
+        ccu_limit: 1,
+        storage_limit_mb: 2,
+        subdomain: "dummy-subdomain",
+        status: :creating,
+        tier: :p0
+      })
+
+    deployment =
+      Dash.Repo.insert!(%Dash.HubDeployment{
+        domain: "dummy-domain",
+        hub_id: hub.hub_id
+      })
+
+    assert list =
+             conn
+             |> put_test_token()
+             |> get("/api/v1/hubs")
+             |> json_response(:ok)
+
+    assert [element] = list
+    assert hub.ccu_limit === element["ccuLimit"]
+    assert deployment.domain === element["domain"]
+    assert Integer.to_string(hub.hub_id) === element["hubId"]
+    assert "ready" === element["status"]
+    assert hub.storage_limit_mb === element["storageLimitMb"]
+    assert hub.subdomain === element["subdomain"]
+    assert Atom.to_string(hub.tier) === element["tier"]
+  end
+
+  test "GET /api/v1/hubs/:id", %{conn: conn} do
+    %{account_id: account_id} =
+      Dash.Account.find_or_create_account_for_fxa_uid(get_default_test_uid())
+
+    hub =
+      Dash.Repo.insert!(%Dash.Hub{
+        account_id: account_id,
+        ccu_limit: 1,
+        storage_limit_mb: 2,
+        subdomain: "dummy-subdomain",
+        status: :creating,
+        tier: :p0
+      })
+
+    deployment =
+      Dash.Repo.insert!(%Dash.HubDeployment{
+        domain: "dummy-domain",
+        hub_id: hub.hub_id
+      })
+
+    assert payload =
+             conn
+             |> put_test_token()
+             |> get("/api/v1/hubs/#{hub.hub_id}")
+             |> json_response(:ok)
+
+    assert hub.ccu_limit === payload["ccuLimit"]
+    assert deployment.domain === payload["domain"]
+    assert Integer.to_string(hub.hub_id) === payload["hubId"]
+    assert Atom.to_string(hub.status) === payload["status"]
+    assert hub.storage_limit_mb === payload["storageLimitMb"]
+    assert hub.subdomain === payload["subdomain"]
+    assert Atom.to_string(hub.tier) === payload["tier"]
+  end
+
   describe "Hub API" do
     test "should fetch and return usage stats for hubs", %{conn: conn} do
       stub_ret_get()
@@ -25,11 +98,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
         |> json_response(:ok)
 
       %{"currentCcu" => 3, "currentStorageMb" => 10.5} = hub
-    end
-
-    test "should allow access to a user's hub", %{conn: conn} do
-      %{hub: hub} = create_test_account_and_hub(subdomain: "my-hub")
-      %{"subdomain" => "my-hub"} = get_hub(conn, hub)
     end
 
     test "should not return other user's hub", %{conn: conn} do
@@ -50,33 +118,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
         get_hub(conn, hub_one, token_opts: [claims: %{"sub" => user_one}])
     end
 
-    test "should allow changing the name of a hub", %{conn: conn} do
-      %{hub: hub} = create_test_account_and_hub()
-      assert hub.name === "test hub"
-
-      conn |> patch_hub(hub, %{name: "new name"}, expected_status: :ok)
-      %{"name" => "new name"} = get_hub(conn, hub)
-    end
-
-    test "should not allow changing other user's hub", %{conn: conn} do
-      user_one = "test-user-one"
-      user_two = "test-user-two"
-
-      %{hub: hub_one} = create_test_account_and_hub(fxa_uid: user_one)
-      assert hub_one.name === "test hub"
-
-      %{hub: _hub_two} = create_test_account_and_hub(fxa_uid: user_two)
-
-      %{"error" => "update_hub_failed"} =
-        conn
-        |> patch_hub(hub_one, %{name: "new name"},
-          token_opts: [claims: %{"sub" => user_two}],
-          expected_status: :bad_request
-        )
-
-      %{"name" => "test hub"} = get_hub(conn, hub_one, token_opts: [claims: %{"sub" => user_one}])
-    end
-
     test "should ignore changes to the storage limit", %{conn: conn} do
       %{hub: hub} = create_test_account_and_hub()
       assert hub.storage_limit_mb === 100
@@ -84,18 +125,10 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       conn |> patch_hub(hub, %{storageLimitMb: 10000}, expected_status: :ok)
       %{"storageLimitMb" => 100} = get_hub(conn, hub)
     end
-
-    test "should error if name contains too many characters", %{conn: conn} do
-      %{hub: hub} = create_test_account_and_hub()
-
-      long_name = String.duplicate("a", 25)
-      conn |> patch_hub(hub, %{name: long_name}, expected_status: :bad_request)
-    end
   end
 
   describe "Subdomain updates" do
     test "subdomain should always be lower case", %{conn: conn} do
-      stub_ret_rewrite_assets()
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       expect_orch_patch()
 
@@ -107,7 +140,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should submit subdomain change to orchestrator", %{conn: conn} do
-      stub_ret_rewrite_assets()
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       expect_orch_patch()
 
@@ -146,7 +178,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should allow valid subdomains", %{conn: conn} do
-      stub_ret_rewrite_assets()
       stub_ret_health_check()
       stub_orch_patch()
 
@@ -220,7 +251,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should set status to updating while waiting for subdomain change", %{conn: conn} do
-      stub_ret_rewrite_assets()
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       stub_orch_patch_with_pausing(self())
 
@@ -262,7 +292,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     end
 
     test "should not allow updates while hub is already updating", %{conn: conn} do
-      stub_ret_rewrite_assets()
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       stub_orch_patch_with_pausing(self())
 
@@ -283,7 +312,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
   describe "Subdomain validation" do
     test "returns an error for duplicate subdomains", %{conn: conn} do
-      stub_ret_rewrite_assets()
       create_test_account_and_hub(fxa_uid: "dummy-uid1", subdomain: "test-subdomain-one")
 
       %{hub: current_hub} =
@@ -320,12 +348,9 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
   describe "Hub Ready state tests" do
     test "when the hub is creating", %{conn: conn} do
-      Mox.stub(Dash.HttpMock, :post, fn _url, _json, _headers, _opts ->
-        {:ok, %HTTPoison.Response{status_code: 200}}
-      end)
+      expect_orch_post()
 
       Mox.expect(Dash.HttpMock, :get, fn url, _headers, opts ->
-        assert String.starts_with?(url, "https://ret.")
         assert String.ends_with?(url, "/health")
         assert [hackney: [:insecure]] === opts
 
@@ -333,7 +358,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       end)
 
       Mox.expect(Dash.HttpMock, :get, fn url, headers, opts ->
-        assert String.starts_with?(url, "https://ret.")
         assert String.ends_with?(url, "/api-internal/v1/presence")
         assert [{"x-ret-dashboard-access-key", _}] = headers
         assert [hackney: [:insecure]] === opts
@@ -342,7 +366,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       end)
 
       Mox.expect(Dash.HttpMock, :get, fn url, headers, opts ->
-        assert String.starts_with?(url, "https://ret.")
         assert String.ends_with?(url, "/api-internal/v1/storage")
         assert [{"x-ret-dashboard-access-key", _}] = headers
         assert [hackney: [:insecure]] === opts
@@ -511,7 +534,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
 
     test "If account is NOT subscribed, can still update subdomain if has_hubs", %{conn: conn} do
       # TODO EA Ensure before end subscription date!!
-      stub_ret_rewrite_assets()
       expect_ret_wait_on_health(time_until_healthy_ms: 0, max_expected_calls: 1)
       expect_orch_patch()
 
@@ -616,16 +638,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
     )
     |> response(:ok)
     |> Jason.decode!()
-  end
-
-  defp stub_ret_rewrite_assets() do
-    Dash.HttpMock
-    |> Mox.stub(:post, fn url, _body, _headers, _opts ->
-      cond do
-        url =~ ~r/rewrite_assets$/ ->
-          {:ok, %HTTPoison.Response{status_code: 200}}
-      end
-    end)
   end
 
   # Used only in /health tests

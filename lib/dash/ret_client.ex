@@ -2,17 +2,27 @@ defmodule Dash.RetClient do
   @moduledoc """
   This module handles requests to specific hub instance's reticulum backend.
   """
-  require Logger
   use Retry
-  alias Dash.AppConfig
 
-  @ret_host_prefix "ret.hc-"
-  @ret_host_postfix ".svc.cluster.local"
-  @ret_internal_port "4000"
-  defp ret_host_url(%Dash.Hub{} = hub), do: ret_host_url(hub.hub_id)
+  alias Dash.{Hub, Repo}
+  require Logger
 
-  defp ret_host_url(hub_id) when is_integer(hub_id) do
-    "https://#{@ret_host_prefix}#{hub_id}#{@ret_host_postfix}:#{@ret_internal_port}"
+  defp ret_host_url(hub_or_hub_id)
+
+  defp ret_host_url(hub_id) when is_integer(hub_id) and hub_id > 0,
+    do:
+      Hub
+      |> Repo.get!(hub_id)
+      |> Repo.preload(:deployment)
+      |> ret_host_url()
+
+  defp ret_host_url(%Hub{} = hub) do
+    # TODO: test this somewhere
+    if hub.deployment.local? do
+      "http://ret.hc-#{hub.hub_id}.svc.cluster.local:4001"
+    else
+      "https://#{hub.subdomain}.#{hub.deployment.domain}"
+    end
   end
 
   @ret_internal_scope "/api-internal/v1/"
@@ -25,49 +35,6 @@ defmodule Dash.RetClient do
       [{"x-ret-dashboard-access-key", get_ret_access_key()}],
       [hackney: [:insecure]] ++ opts
     )
-  end
-
-  defp post_ret_internal_endpoint(%Dash.Hub{} = hub, endpoint, %{} = body),
-    do: post_ret_internal_endpoint(hub.hub_id, endpoint, body)
-
-  defp post_ret_internal_endpoint(hub_id, endpoint, %{} = body) do
-    get_http_client().post(
-      ret_host_url(hub_id) <> @ret_internal_scope <> endpoint,
-      Jason.encode!(body),
-      [
-        {"x-ret-dashboard-access-key", get_ret_access_key()},
-        {"content-type", "application/json"}
-      ],
-      hackney: [:insecure]
-    )
-  end
-
-  defp post_ret_internal_endpoint_with_retry(%Dash.Hub{} = hub, endpoint, %{} = body),
-    do: post_ret_internal_endpoint_with_retry(hub.hub_id, endpoint, body)
-
-  defp post_ret_internal_endpoint_with_retry(hub_id, endpoint, %{} = body) do
-    retry with: constant_backoff(get_wait_ms()) |> expiry(get_timeout_ms()) do
-      case post_ret_internal_endpoint(hub_id, endpoint, body) do
-        {:ok, %{status_code: 200}} ->
-          :ok
-
-        {:ok, _} ->
-          :error
-
-        {:error, err} ->
-          Logger.error(
-            "Error posting to internal reticulum endpoint. Endpoint: #{endpoint}. Error: #{inspect(err)}"
-          )
-
-          :error
-      end
-    after
-      _ -> {:ok}
-    else
-      _ ->
-        Logger.error("Failed post to reticulum in retry loop. Likely timed out.")
-        {:error, :post_ret_internal_timed_out}
-    end
   end
 
   @health_endpoint "/health"
@@ -140,28 +107,6 @@ defmodule Dash.RetClient do
       _ ->
         Logger.error("Failed getting /health in retry loop. Likely timed out.")
         {:error, :wait_for_ready_state_timed_out}
-    end
-  end
-
-  @rewrite_assets_endpoint "rewrite_assets"
-  def rewrite_assets(%Dash.Hub{} = previous_hub, %Dash.Hub{} = updated_hub) do
-    cluster_domain = AppConfig.cluster_domain()
-    old_domain = "#{previous_hub.subdomain}.#{cluster_domain}"
-    new_domain = "#{updated_hub.subdomain}.#{cluster_domain}"
-
-    case post_ret_internal_endpoint_with_retry(updated_hub, @rewrite_assets_endpoint, %{
-           "old_domain" => old_domain,
-           "new_domain" => new_domain
-         }) do
-      {:ok} ->
-        {:ok}
-
-      {:error, err} ->
-        Logger.error(
-          "Failed to rewrite assets from: #{old_domain} to #{new_domain}. Error: #{inspect(err)}"
-        )
-
-        {:error, :rewrite_assets_failed}
     end
   end
 

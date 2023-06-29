@@ -134,7 +134,11 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
             <HubFormCard hub={hub} onSubmit={handleFormSubmit} />
           </div>
 
-          <SidePanel subdomain={hub.subdomain} subscription={subscription} />
+          <SidePanel
+            domain={hub.domain}
+            subdomain={hub.subdomain}
+            subscription={subscription}
+          />
         </main>
       ) : (
         <div className="flex-justify-center">
