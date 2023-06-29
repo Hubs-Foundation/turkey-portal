@@ -1,15 +1,21 @@
 import { useCallback } from 'react';
 import styles from './NextPayment.module.scss';
 import { SubscriptionT } from 'services/subscription.service';
-import { convertCurrency } from 'util/utilities';
 import { SUBPLAT_SUBSCRIPTIONS_LINK } from 'config';
+import { CurrencySymbolMap } from 'types/Countries';
 
 type NextPaymentPropsT = {
   subscription: SubscriptionT;
-  currency?: string;
   price?: number;
   classProp?: string;
 };
+
+/**
+ * COMPONENT NOT IN USE
+ *
+ * Note: this component is being phased out. There is a possibility that this component could
+ * come back into play. Keeping around for now. -  06/23/23 NG
+ */
 
 const CanceledBlock = () => (
   <>
@@ -35,7 +41,7 @@ const PaymentBlock = ({ subscription }: PaymentBlockPropsT) => {
           or i18next to localize the price here - check with backend if they are already formatting anything since currency is being delivered
           with response 
         */}
-          {convertCurrency(currency)}
+          {CurrencySymbolMap[currency]}
           {Number(amount).toFixed(2)}
         </span>
         <span className={styles.currency}>{currency} (+tax)</span>

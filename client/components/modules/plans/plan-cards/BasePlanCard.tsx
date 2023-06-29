@@ -1,38 +1,29 @@
 import { ReactNode } from 'react';
-import { PlanInfoCopyT } from '../PlanInfoCopy';
+import { PlanInfoCopyT } from '../plan.const';
 import styles from './BasePlanCard.module.scss';
-import { RegionCodeT } from 'types/Countries';
-import { getCurrencyMeta } from 'util/utilities';
 import InfoBlock from '@Shared/InfoBlock/InfoBlock';
 import { Button } from '@mozilla/lilypad-ui';
 
 // PRICE DISPLAY COMPONENT
 // USED FOR BasePlanCard "PRICE" PROP
 type PricePropsT = {
-  region: RegionCodeT;
   price: string;
-  priceCadence?: string;
+  currencyAbbrev?: string;
+  billingPeriod?: string;
 };
 
-export const Price = ({ region, price, priceCadence }: PricePropsT) => {
-  const currency = region ? getCurrencyMeta(region) : null;
-
+export const Price = ({
+  price,
+  currencyAbbrev,
+  billingPeriod,
+}: PricePropsT) => {
   return (
     <div className={styles.price_container}>
       <div className={styles.price}>
-        {currency ? (
-          <>
-            <h2 className="heading-lg">
-              {currency.symbol}
-              {price}
-            </h2>
-            <p>{currency.abbrev}</p>
-          </>
-        ) : (
-          <h2 className="heading-lg">{price}</h2>
-        )}
+        <h2 className="heading-lg">{price}</h2>
+        <p>{currencyAbbrev}</p>
       </div>
-      {priceCadence && <p className={styles.price_cadence}>{priceCadence}</p>}
+      {billingPeriod && <p className={styles.price_cadence}>{billingPeriod}</p>}
     </div>
   );
 };
@@ -42,7 +33,7 @@ type BasePlanCardPropsT = {
   title: string;
   price: ReactNode;
   infoCopyList: PlanInfoCopyT[];
-  form?: ReactNode;
+  additionalContent?: ReactNode;
   confirmButton: ReactNode;
   footerClassProp?: string;
   color: 'silver' | 'warm';
@@ -53,7 +44,7 @@ const BasePlanCard = ({
   title,
   price,
   infoCopyList,
-  form,
+  additionalContent,
   confirmButton,
   footerClassProp = '',
   isSoldOut = false,
@@ -95,7 +86,7 @@ const BasePlanCard = ({
         </div>
 
         {/* LOCATION CONFIRMATION  */}
-        {form}
+        {additionalContent}
       </div>
 
       {/* FOOTER  */}

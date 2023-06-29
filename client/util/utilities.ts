@@ -1,71 +1,49 @@
-import { FXA_PAYMENT_URL, PLAN_ID_EA, PLAN_ID_EA_DE, PRODUCT_ID } from 'config';
+import { FXA_PAYMENT_URL, PRODUCT_ID } from 'config';
+import { PlansE, BillingPeriodE } from 'types/General';
 import {
-  RegionCurrency,
   RegionCodeT,
-  CurrencyAbbrev,
   AcceptedRegionCodeT,
   ACCEPTED_REGION_CODES,
 } from 'types/Countries';
-
-/**
- * Convert abbrev to symbol from subscription
- * @param currency
- * @returns
- */
-export const convertCurrency = (currency: CurrencyAbbrev) => {
-  const { US, DE } = RegionCurrency;
-
-  switch (currency) {
-    case 'EUR':
-      return '€';
-    case 'USD':
-      return '$';
-    default:
-      return '$';
-  }
-};
-
-/**
- * Get meta data about a region
- * @param region
- * @returns RegionCurrency
- */
-export const getCurrencyMeta = (region: string) => {
-  if (!ACCEPTED_REGION_CODES.includes(region as AcceptedRegionCodeT)) {
-    return RegionCurrency.US;
-  }
-
-  switch (region as AcceptedRegionCodeT) {
-    case 'DE':
-      return RegionCurrency.DE;
-    case 'US':
-      return RegionCurrency.US;
-    default:
-      return RegionCurrency.US;
-  }
-};
+import { PLAN_ID_MAP } from 'components/modules/plans/plan.const';
 
 /**
  * Get the pricing page URL for a region, return default (US) pricing page if region not found
  * @param code RegionCodeT
+ * @param plan names of paid plans
+ * @param duration monthly or yearly payments
  * @returns URL to pricing page
  */
-export const getRegionPricePageUrl = (regionCode: RegionCodeT) => {
-  let planId;
+export const getPricePageData = (
+  regionCode: RegionCodeT,
+  plan: Exclude<PlansE, null | PlansE.STARTER | PlansE.LEGACY>,
+  billingPeriod: BillingPeriodE
+) => {
+  // If not accepted region or no region default to US plan
+  let planUrl = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_MAP.US[plan][billingPeriod].planId}`;
+  let planPrice = PLAN_ID_MAP.US[plan][billingPeriod].price;
+  let taxDescription = PLAN_ID_MAP.US.taxDescription;
+  let currencySymbol = PLAN_ID_MAP.US.symbol;
+  let currencyAbbrev = PLAN_ID_MAP.US.abbrev;
 
-  switch (regionCode) {
-    case 'US':
-      planId = PLAN_ID_EA;
-      break;
-
-    case 'DE':
-      planId = PLAN_ID_EA_DE;
-      break;
-
-    default:
-      planId = PLAN_ID_EA;
-      break;
+  if (
+    regionCode &&
+    ACCEPTED_REGION_CODES.includes(regionCode as AcceptedRegionCodeT)
+  ) {
+    const planObj = PLAN_ID_MAP[regionCode as AcceptedRegionCodeT];
+    const { planId, price } = planObj[plan][billingPeriod];
+    planUrl = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${planId}`;
+    planPrice = price;
+    taxDescription = planObj.taxDescription;
+    currencySymbol = planObj.symbol;
+    currencyAbbrev = planObj.abbrev;
   }
 
-  return `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${planId}`;
+  return {
+    planUrl,
+    planPrice,
+    taxDescription,
+    currencySymbol,
+    currencyAbbrev,
+  };
 };

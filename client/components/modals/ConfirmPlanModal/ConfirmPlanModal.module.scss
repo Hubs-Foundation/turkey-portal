@@ -45,13 +45,10 @@
 
 .info_wrapper {
   padding: 20px;
-  @include tablet-down {
-    flex-wrap: wrap;
-  }
-  .first {
-    margin-right: 20px;
-    @include mobile-down {
-      margin-right: 30px;
-    }
+  display: grid;
+  grid-template-columns: 50% 50%;
+
+  @include mobile-down {
+    grid-template-columns: 100%;
   }
 }

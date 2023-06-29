@@ -1,6 +1,6 @@
 import styles from './SidePanel.module.scss';
 import { SubscriptionT } from 'services/subscription.service';
-import NextPayment from '../NextPayment/NextPayment';
+import Resubscribe from '../Resubscribe/Resubscribe';
 import { Icon, HubIcon } from '@mozilla/lilypad-ui';
 import TileButton from '@Shared/TileButton/TileButton';
 import UpgradePlan from '../UpgradePlan/UpgradePlan';
@@ -8,7 +8,7 @@ import SupportGrid from '../SupportGrid/SupportGrid';
 import { useMobileDown } from 'hooks/useMediaQuery';
 import { useSelector } from 'react-redux';
 import { selectAccount } from 'store/accountSlice';
-import { useIsP0 } from 'hooks/usePlans';
+import { useIsStarter } from 'hooks/usePlans';
 
 export type SidePanelPropsT = {
   domain: string;
@@ -25,7 +25,7 @@ const SidePanel = ({
 }: SidePanelPropsT) => {
   const account = useSelector(selectAccount);
   const isMobile = useMobileDown();
-  const isP0 = useIsP0();
+  const isStarter = useIsStarter();
   const hubUrl = `https://${subdomain}.${domain}`;
 
   return (
@@ -54,10 +54,10 @@ const SidePanel = ({
       </div>
 
       {/* PRICE  */}
-      {account.hasSubscription && (
-        <NextPayment subscription={subscription} classProp={styles.subcard} />
+      {account.hasSubscription && subscription.isCancelled && (
+        <Resubscribe classProp={styles.subcard} />
       )}
-      {isP0 && <UpgradePlan />}
+      {isStarter && <UpgradePlan />}
 
       <SupportGrid />
     </section>

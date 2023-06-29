@@ -91,6 +91,21 @@
 }
 
 /*-------------------------------
+  PARAGRPH STYLES
+-------------------------------*/
+@mixin paragraph {
+  @include font-size(16);
+  @include primary-font(500);
+  line-height: 150%;
+}
+
+@mixin paragraph-sm {
+  @include font-size(14);
+  @include primary-font(500);
+  line-height: 150%;
+}
+
+/*-------------------------------
   BODY STYLES
 -------------------------------*/
 @mixin body-lg($weight: 700) {

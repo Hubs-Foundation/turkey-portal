@@ -1,11 +1,17 @@
+import { useState } from 'react';
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
-import { pageRequireAuthentication } from 'services/routeGuard.service';
+import { SubscribeRG } from 'services/routeGuard.service';
 import ContactCard from '@Modules/plans/ContactCard/ContactCard';
 import styles from './subscribe.module.scss';
-import { StandardPlanCard, StarterPlanCard } from '@Modules/plans/plan-cards';
+import { PersonalPlanCard, StarterPlanCard } from '@Modules/plans/plan-cards';
+import { BillingPeriodE } from 'types/General';
 
 const Subscribe = () => {
+  const [billingPeriod, setBillingPeriod] = useState<BillingPeriodE>(
+    BillingPeriodE.MONTHLY
+  );
+
   return (
     <div className="page_wrapper">
       <Head>
@@ -16,17 +22,12 @@ const Subscribe = () => {
       <main>
         <div className={styles.wrapper}>
           <div className={styles.header}>
-            <h1>Your account has no active hubs</h1>
-            {/* TODO pull pricing from subplat - $20 */}
-            <p>
-              You can begin a new subscription with an Early Access Hub for $20
-              a month
-            </p>
+            <h1>Choose your plan</h1>
           </div>
 
           <div className={styles.cards}>
             <StarterPlanCard />
-            <StandardPlanCard />
+            <PersonalPlanCard billingPeriod={billingPeriod} />
             <ContactCard
               email="hubs@mozilla.com"
               subject="Subscription inquiries"
@@ -40,7 +41,7 @@ const Subscribe = () => {
 
 export default Subscribe;
 
-export const getServerSideProps = pageRequireAuthentication(
+export const getServerSideProps = SubscribeRG(
   async (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
     return {

@@ -1,33 +1,51 @@
 import getEnvVariable from 'config';
-import { ACCEPTED_REGION_CODES, AcceptedRegionCodeT } from 'types/Countries';
-
-const RegionCurrency = {
-  DE: {
-    abbrev: 'EUR',
-    symbol: '€',
-  },
-  US: {
-    abbrev: 'USD',
-    symbol: '$',
-  },
-};
+import { PlansE, BillingPeriodE } from 'types/General';
+import {
+  RegionCodeT,
+  AcceptedRegionCodeT,
+  ACCEPTED_REGION_CODES,
+} from 'types/Countries';
+import { PLAN_ID_MAP } from 'components/shared/Subscribe/plan.const';
 
 /**
- * Get meta data about a region
- * @param region
- * @returns RegionCurrency
+ * Get the pricing page URL for a region, return default (US) pricing page if region not found
+ * @param code RegionCodeT
+ * @param plan names of paid plans
+ * @param duration monthly or yearly payments
+ * @returns URL to pricing page
  */
-export const getCurrencyMeta = (region: string) => {
-  if (!ACCEPTED_REGION_CODES.includes(region as AcceptedRegionCodeT)) {
-    return RegionCurrency.US;
+export const getPricePageData = (
+  regionCode: RegionCodeT,
+  plan: Exclude<PlansE, null | PlansE.STARTER>,
+  billingPeriod: BillingPeriodE
+) => {
+  const FXA_PAYMENT_URL = getEnvVariable('FXA_PAYMENT_URL');
+  const PRODUCT_ID = getEnvVariable('PRODUCT_ID');
+  // If not accepted region or no region default to US plan
+  let planUrl = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_MAP.US[plan][billingPeriod].planId}`;
+  let planPrice = PLAN_ID_MAP.US[plan][billingPeriod].price;
+  let taxDescription = PLAN_ID_MAP.US.taxDescription;
+  let currencySymbol = PLAN_ID_MAP.US.symbol;
+  let currencyAbbrev = PLAN_ID_MAP.US.abbrev;
+
+  if (
+    regionCode &&
+    ACCEPTED_REGION_CODES.includes(regionCode as AcceptedRegionCodeT)
+  ) {
+    const planObj = PLAN_ID_MAP[regionCode as AcceptedRegionCodeT];
+    const { planId, price } = planObj[plan][billingPeriod];
+    planUrl = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${planId}`;
+    planPrice = price;
+    taxDescription = planObj.taxDescription;
+    currencySymbol = planObj.symbol;
+    currencyAbbrev = planObj.abbrev;
   }
 
-  switch (region as AcceptedRegionCodeT) {
-    case 'DE':
-      return RegionCurrency.DE;
-    case 'US':
-      return RegionCurrency.US;
-    default:
-      return RegionCurrency.US;
-  }
+  return {
+    planUrl,
+    planPrice,
+    taxDescription,
+    currencySymbol,
+    currencyAbbrev,
+  };
 };

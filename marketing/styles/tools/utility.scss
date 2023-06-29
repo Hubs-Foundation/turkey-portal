@@ -34,8 +34,21 @@
   @include body-md-bold();
 }
 
+.body-sm {
+  @include body-sm();
+}
+
 .body-sm-bold {
   @include body-sm-bold();
+}
+
+// paragraph
+.paragraph {
+  @include paragraph();
+}
+
+.paragraph-sm {
+  @include paragraph-sm();
 }
 
 // Link
@@ -81,6 +94,10 @@
 
 .color-text-main {
   color: $color-text-main;
+}
+
+.color-interaction-primary {
+  color: $color-interaction-primary;
 }
 
 // ---------------------------------
