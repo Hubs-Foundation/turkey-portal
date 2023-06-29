@@ -1,11 +1,11 @@
 import { FXA_PAYMENT_URL, PRODUCT_ID } from 'config';
-import { PlansE, BillingPeriodE } from 'types/General';
+import { PlansE, BillingPeriodE, pricePageDataT } from 'types/General';
 import {
   RegionCodeT,
   AcceptedRegionCodeT,
   ACCEPTED_REGION_CODES,
 } from 'types/Countries';
-import { PLAN_ID_MAP } from 'components/modules/plans/plan.const';
+import { getPlanData } from '../services/plan.service';
 
 /**
  * Get the pricing page URL for a region, return default (US) pricing page if region not found
@@ -14,11 +14,12 @@ import { PLAN_ID_MAP } from 'components/modules/plans/plan.const';
  * @param duration monthly or yearly payments
  * @returns URL to pricing page
  */
-export const getPricePageData = (
+export const getPricePageData = async (
   regionCode: RegionCodeT,
   plan: Exclude<PlansE, null | PlansE.STARTER | PlansE.LEGACY>,
   billingPeriod: BillingPeriodE
 ) => {
+  const PLAN_ID_MAP = await getPlanData();
   // If not accepted region or no region default to US plan
   let planUrl = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_MAP.US[plan][billingPeriod].planId}`;
   let planPrice = PLAN_ID_MAP.US[plan][billingPeriod].price;
@@ -39,11 +40,13 @@ export const getPricePageData = (
     currencyAbbrev = planObj.abbrev;
   }
 
-  return {
+  const planData = {
     planUrl,
     planPrice,
     taxDescription,
     currencySymbol,
     currencyAbbrev,
   };
+
+  return planData as pricePageDataT;
 };

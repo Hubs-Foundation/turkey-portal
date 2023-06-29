@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Button, ButtonCategoriesE, Modal } from '@mozilla/lilypad-ui';
 import InfoBlock from '@Shared/InfoBlock/InfoBlock';
 import { PERSONAL_COPY } from 'components/modules/plans/plan.const';
@@ -6,15 +7,27 @@ import { getPricePageData } from 'util/utilities';
 import { useSelector } from 'react-redux';
 import { selectRegion } from 'store/regionSlice';
 import BeginStarterPlanButton from '@Modules/plans/BeginStarterPlanButton/BeginStarterPlanButton';
-import { PlansE, BillingPeriodE } from 'types/General';
+import { PlansE, BillingPeriodE, pricePageDataT } from 'types/General';
 
 const ConfirmPlanModal = () => {
   const { regionCode } = useSelector(selectRegion);
-  const { planUrl } = getPricePageData(
-    regionCode,
-    PlansE.PERSONAL,
-    BillingPeriodE.MONTHLY
-  );
+  const [pricePageData, setPricePageData] = useState<pricePageDataT>();
+
+  useEffect(() => {
+    const getData = () => {
+      try {
+        getPricePageData(
+          regionCode,
+          PlansE.PERSONAL,
+          BillingPeriodE.MONTHLY
+        ).then((response) => {
+          setPricePageData(response);
+        });
+      } catch (error) {}
+    };
+
+    getData();
+  }, []);
 
   return (
     <Modal onClose={() => {}} hasContainer={false} isVisible={true}>
@@ -40,12 +53,14 @@ const ConfirmPlanModal = () => {
               Looking to take your online communities to the next level?
             </p>
 
-            <Button
-              category={ButtonCategoriesE.SECONDARY_SOLID}
-              text="Upgrade Plan"
-              label="Upgrade Plan"
-              href={planUrl}
-            />
+            {pricePageData && (
+              <Button
+                category={ButtonCategoriesE.SECONDARY_SOLID}
+                text="Upgrade Plan"
+                label="Upgrade Plan"
+                href={pricePageData.planUrl}
+              />
+            )}
           </div>
           <div className={`${styles.info_wrapper}`}>
             {PERSONAL_COPY.map(({ icon, label }, i) => (

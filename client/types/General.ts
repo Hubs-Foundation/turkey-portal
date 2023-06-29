@@ -1,6 +1,6 @@
 export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
 export type FormattedTierT = 'Mvp' | 'Starter' | 'Early Access' | 'Premium';
-
+import { AcceptedRegionCodeT } from './Countries';
 export type FormattedTierMapT = {
   [key in TierT]: FormattedTierT;
 };
@@ -75,3 +75,49 @@ export enum StorageStateE {
   WARNING = 'warning',
   CRITICAL = 'critical',
 }
+
+export type pricePageDataT = {
+  planUrl: string;
+  planPrice: number;
+  taxDescription: string;
+  currencySymbol: string;
+  currencyAbbrev: string;
+};
+
+export type planDataT = {
+  [key in AcceptedRegionCodeT]: {
+    abbrev: string;
+    symbol: string;
+    taxDescription: string;
+    personal: {
+      monthly: {
+        planId: string;
+        price: number;
+      };
+      yearly: {
+        planId: string;
+        price: number;
+      };
+    };
+    professional: {
+      monthly: {
+        planId: string;
+        price: number;
+      };
+      yearly: {
+        planId: string;
+        price: number;
+      };
+    };
+    business: {
+      monthly: {
+        planId: string;
+        price: number;
+      };
+      yearly: {
+        planId: string;
+        price: number;
+      };
+    };
+  };
+};
