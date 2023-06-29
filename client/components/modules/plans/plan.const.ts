@@ -566,7 +566,7 @@ export const PLAN_ID_MAP = {
     personal: {
       monthly: {
         planId: 'price_1NLVvMJNcmPzuWtRX1QBGKSV',
-        price: 7.0,
+        price: 12.0,
       },
       yearly: {
         planId: 'price_1NMGneJNcmPzuWtRTCcwxSwT',
@@ -644,7 +644,7 @@ export const PLAN_ID_MAP = {
     personal: {
       monthly: {
         planId: 'price_1NLVw1JNcmPzuWtRh8SWab0h',
-        price: 7.0,
+        price: 75.0,
       },
       yearly: {
         planId: 'price_1NMGomJNcmPzuWtRxbvlH3pV',
@@ -683,7 +683,7 @@ export const PLAN_ID_MAP = {
     personal: {
       monthly: {
         planId: 'price_1NLVx0JNcmPzuWtRxTKTtFVp',
-        price: 7.0,
+        price: 33.0,
       },
       yearly: {
         planId: 'price_1NMGpJJNcmPzuWtR1X4dN8T3',
@@ -722,7 +722,7 @@ export const PLAN_ID_MAP = {
     personal: {
       monthly: {
         planId: 'price_1NLVyqJNcmPzuWtRpdz9tU6W',
-        price: 22.22,
+        price: 10.0,
       },
       yearly: {
         planId: 'price_1NMGpfJNcmPzuWtRUHrCxkCq',
@@ -761,7 +761,7 @@ export const PLAN_ID_MAP = {
     personal: {
       monthly: {
         planId: 'price_1NLVzHJNcmPzuWtRlZccvg2A',
-        price: 7.0,
+        price: 29.0,
       },
       yearly: {
         planId: 'price_1NMGqMJNcmPzuWtRLlnGy5yt',
@@ -878,7 +878,7 @@ export const PLAN_ID_MAP = {
     personal: {
       monthly: {
         planId: 'price_1NLW4OJNcmPzuWtRAINJv8QW',
-        price: 7.0,
+        price: 48.0,
       },
       yearly: {
         planId: 'price_1NMGraJNcmPzuWtRcbw8vz70',
@@ -917,7 +917,7 @@ export const PLAN_ID_MAP = {
     personal: {
       monthly: {
         planId: 'price_1NLW6dJNcmPzuWtRg1dky1H7',
-        price: 7.0,
+        price: 151.0,
       },
       yearly: {
         planId: 'price_1NMGs3JNcmPzuWtR6gq6sqyJ',

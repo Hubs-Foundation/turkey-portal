@@ -32,7 +32,7 @@ const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
           price={`${currencySymbol}${planPrice}`}
           billingPeriod={`per ${
             billingPeriod === BillingPeriodE.YEARLY ? 'year' : 'month'
-          } ${taxDescription}`}
+          } + tax`}
         />
       }
       infoCopyList={PERSONAL_COPY}
