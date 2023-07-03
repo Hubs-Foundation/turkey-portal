@@ -28,6 +28,7 @@ const StandardPlanCard = () => {
 
   return (
     <BasePlanCard
+      isSoldOut={true}
       title={'Early Access Hub'}
       color="warm"
       price={
