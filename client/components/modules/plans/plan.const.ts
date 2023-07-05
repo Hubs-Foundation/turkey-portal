@@ -31,7 +31,7 @@ export const PERSONAL_COPY: PlanInfoCopyT[] = [
     icon: 'spaces',
   },
   {
-    label: '25 Online guest capacity',
+    label: '20 Online guest capacity',
     description: 'Free for guests to join',
     icon: 'capacity',
   },
