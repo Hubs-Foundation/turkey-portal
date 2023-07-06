@@ -324,7 +324,7 @@ export const PLAN_ID_MAP = {
   /**
    * Austria
    */
-  AU: {
+  AT: {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
