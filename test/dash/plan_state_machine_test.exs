@@ -1,8 +1,7 @@
 defmodule Dash.PlanStateMachineTest do
   use Dash.DataCase, async: true
 
-  alias Dash.{Account, Capability, HttpMock, Hub, HubDeployment, Plan, PlanStateMachine}
-  import Dash.Utils, only: [capability_string: 0]
+  alias Dash.{Account, HttpMock, Hub, HubDeployment, Plan, PlanStateMachine}
   import Dash.TestHelpers, only: [expect_orch_post: 0]
 
   setup do
@@ -53,28 +52,6 @@ defmodule Dash.PlanStateMachineTest do
       put_in_state(account, state)
 
       assert {:cont, state, nil} === PlanStateMachine.init(account)
-    end
-
-    test "when there is an active capability (DEPRECATED)", %{account: account} do
-      Repo.insert!(%Capability{
-        account_id: account.account_id,
-        capability: capability_string(),
-        change_time: DateTime.truncate(DateTime.utc_now(), :second),
-        is_active: true
-      })
-
-      assert {:cont, :personal, nil} === PlanStateMachine.init(account)
-    end
-
-    test "when there is an inactive capability (DEPRECATED)", %{account: account} do
-      Repo.insert!(%Capability{
-        account_id: account.account_id,
-        capability: capability_string(),
-        change_time: DateTime.truncate(DateTime.utc_now(), :second),
-        is_active: false
-      })
-
-      assert {:cont, nil, nil} === PlanStateMachine.init(account)
     end
   end
 

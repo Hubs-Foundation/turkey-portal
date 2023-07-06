@@ -2,7 +2,6 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
   use DashWeb.ConnCase, async: false
 
   import Dash.TestHelpers
-  import Dash.Utils, only: [capability_string: 0]
 
   @unauthorized_redirect Jason.encode!(DashWeb.Plugs.Auth.unauthorized_auth_redirect_struct())
   @route "/api/v1/plans"
@@ -13,19 +12,19 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
 
       assert %{"status" => "created"} ===
                conn
-               |> put_test_token(claims: %{"fxa_subscriptions" => []}, token_expiry: tomorrow())
+               |> put_test_token(token_expiry: tomorrow())
                |> put_req_header("content-type", "application/json")
                |> post(@route, tier: "starter")
                |> json_response(201)
     end
 
     test "when the account has an active plan", %{conn: conn} do
-      stub_http_post_200()
+      expect_orch_post()
 
       assert %{"error" => "already started"} ===
                conn
                |> put_test_token(
-                 claims: %{"fxa_subscriptions" => [capability_string()]},
+                 claims: %{"fxa_subscriptions" => ["managed-hubs"]},
                  token_expiry: tomorrow()
                )
                |> put_req_header("content-type", "application/json")

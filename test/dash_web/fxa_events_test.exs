@@ -1,5 +1,4 @@
 defmodule DashWeb.FxaEventsTest do
-  use ExUnit.Case
   use Dash.DataCase
 
   alias DashWeb.FxaEvents
@@ -17,14 +16,11 @@ defmodule DashWeb.FxaEventsTest do
       account = Dash.Account.account_for_fxa_uid(fxa_uid)
       %Dash.Account{} = account
       [_] = Dash.Hub.hubs_for_account(account)
-      [_] = Dash.get_all_capabilities_for_account(account)
 
       event = get_subscription_changed_event(is_active: false)
       FxaEvents.handle_subscription_changed_event(fxa_uid, event)
 
       assert [_] = Dash.Hub.hubs_for_account(account)
-
-      assert [_] = Dash.get_all_capabilities_for_account(account)
     end
 
     test "should make account if handle subscribed event true and no previous account" do
@@ -39,9 +35,18 @@ defmodule DashWeb.FxaEventsTest do
     end
 
     test "each subscription changed event forces user to log in again" do
-      # iat changed in the account
+      Mox.stub(Dash.HttpMock, :patch, fn _url, _body, _headers, _opts ->
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      expect_orch_post()
       fxa_uid = get_default_test_uid()
-      create_test_account_and_hub()
+
+      :ok =
+        fxa_uid
+        |> Dash.Account.find_or_create_account_for_fxa_uid("dummy@email.test")
+        |> Dash.start_plan()
+
       %{now: now} = now_earlier_later_unix_millisecond()
 
       event = get_subscription_changed_event(change_time: now)

@@ -2,7 +2,6 @@ defmodule DashWeb.FxaEvents do
   @moduledoc """
    Handles events sent from FxA via webhook
   """
-  import Dash.Utils, only: [capability_string: 0]
   require Logger
 
   @type event_data :: %{String.t() => String.t() | [String.t(), ...]}
@@ -81,7 +80,7 @@ defmodule DashWeb.FxaEvents do
         "isActive" => is_active,
         "changeTime" => milliseconds
       }) do
-    if capabilities !== [capability_string()] do
+    if capabilities !== ["managed-hubs"] do
       raise "unknown capabilities for subscription changed event: #{Enum.join(capabilities, ", ")}"
     end
 

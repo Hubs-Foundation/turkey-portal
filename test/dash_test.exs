@@ -1,10 +1,9 @@
 defmodule DashTest do
   use Dash.DataCase
 
-  alias Dash.{Account, Capability, HttpMock, Hub, HubDeployment, Plan}
+  alias Dash.{Account, HttpMock, Hub, Plan}
 
   import Dash.TestHelpers
-  import Dash.Utils, only: [capability_string: 0]
   require Logger
 
   setup do
@@ -159,23 +158,21 @@ defmodule DashTest do
       assert [] = Dash.get_all_active_capabilities_for_account(account)
     end
 
-    test "if has fxa_subscriptions in cookie, capability is created for account" do
+    test "if has fxa_subscriptions in cookie, account is subscribed to personal plan" do
+      expect_orch_post()
       %{now: now} = now_earlier_later_dt_s()
       fxa_uid = "fxa_uid_test"
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      false = Dash.has_capability?(account)
 
       Dash.handle_first_sign_in_initialize_subscriptions(
         account,
-        [capability_string()],
+        ["managed-hubs"],
         now
       )
 
-      assert Dash.has_capability?(account)
-
-      active_capabilities = Dash.get_all_active_capabilities_for_account(account)
-      assert [_] = active_capabilities
-      assert capability_string() in active_capabilities
+      assert {:ok, plan} = Dash.fetch_active_plan(account)
+      assert plan.subscription?
+      assert "personal" === plan.name
     end
   end
 
@@ -219,63 +216,6 @@ defmodule DashTest do
         |> hd()
         |> Ecto.Changeset.change(subdomain: custom_subdomain)
         |> Repo.update!()
-
-      Mox.expect(HttpMock, :patch, fn url, json, _headers, opts ->
-        payload = Jason.decode!(json)
-        [hub] = Hub.hubs_for_account(account)
-        assert String.ends_with?(url, "hc_instance")
-        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
-        assert "10" === payload["ccu_limit"]
-        assert true === payload["disable_branding"]
-        assert hub.deployment.domain === payload["domain"]
-        assert Integer.to_string(hub_id) === payload["hub_id"]
-        assert true === payload["reset_branding"]
-        assert "0.48828125" === payload["storage_limit"]
-        assert hub.subdomain === payload["subdomain"]
-        assert "p0" === payload["tier"]
-        assert account.email === payload["useremail"]
-
-        {:ok, %HTTPoison.Response{status_code: 200}}
-      end)
-
-      assert :ok === Dash.expire_plan_subscription(account, expired_at)
-      assert {:ok, %{subscription?: false}} = Dash.fetch_active_plan(account)
-      assert [hub] = Hub.hubs_for_account(account)
-      assert 10 === hub.ccu_limit
-      assert hub_id === hub.hub_id
-      assert :updating === hub.status
-      assert 500 === hub.storage_limit_mb
-      assert custom_subdomain !== hub.subdomain
-      assert :p0 === hub.tier
-    end
-
-    test "when the account has an active subscription plan (DEPRECATED capability)", %{
-      account: account,
-      expired_at: expired_at
-    } do
-      stub_http_post_200()
-
-      Dash.create_capability!(account, %{
-        capability: capability_string(),
-        change_time: DateTime.add(expired_at, -1, :second),
-        is_active: true
-      })
-
-      custom_subdomain = "dummy-subdomain"
-
-      %{hub_id: hub_id} =
-        Repo.insert!(%Hub{
-          account_id: account.account_id,
-          ccu_limit: 20,
-          status: :creating,
-          storage_limit_mb: 2_000,
-          subdomain: custom_subdomain,
-          tier: :p1
-        })
-        |> Ecto.Changeset.change(subdomain: custom_subdomain)
-        |> Repo.update!()
-
-      Repo.insert!(%HubDeployment{domain: "something", hub_id: hub_id})
 
       Mox.expect(HttpMock, :patch, fn url, json, _headers, opts ->
         payload = Jason.decode!(json)
@@ -356,18 +296,6 @@ defmodule DashTest do
       assert {:ok, %Plan{name: "personal", subscription?: true}} = Dash.fetch_active_plan(account)
     end
 
-    test "when the account has an active subscription plan (DEPRECATED capability)", %{
-      account: account
-    } do
-      Dash.create_capability!(account, %{
-        capability: capability_string(),
-        change_time: DateTime.utc_now(),
-        is_active: true
-      })
-
-      assert {:ok, %Capability{is_active: true}} = Dash.fetch_active_plan(account)
-    end
-
     @tag :skip
     test "when the account has a stopped plan"
   end
@@ -444,18 +372,6 @@ defmodule DashTest do
       assert {:error, :already_started} === Dash.start_plan(account)
     end
 
-    test "when the account has an active subscription plan (DEPRECATED capability)", %{
-      account: account
-    } do
-      Dash.create_capability!(account, %{
-        capability: capability_string(),
-        change_time: DateTime.utc_now(),
-        is_active: true
-      })
-
-      assert {:error, :already_started} === Dash.start_plan(account)
-    end
-
     test "when the account has no plan", %{account: account} do
       domain = "this.here.domain"
 
@@ -506,20 +422,6 @@ defmodule DashTest do
     } do
       expect_orch_post()
       :ok = Dash.subscribe_to_personal_plan(account, subscribed_at)
-
-      assert {:error, :already_started} ===
-               Dash.subscribe_to_personal_plan(account, subscribed_at)
-    end
-
-    test "when the account has an active subscription plan (DEPRECATED capability)", %{
-      account: account,
-      subscribed_at: subscribed_at
-    } do
-      Dash.create_capability!(account, %{
-        capability: capability_string(),
-        change_time: DateTime.utc_now(),
-        is_active: true
-      })
 
       assert {:error, :already_started} ===
                Dash.subscribe_to_personal_plan(account, subscribed_at)

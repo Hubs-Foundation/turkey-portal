@@ -12,8 +12,8 @@ defmodule Dash.PlanStateMachine do
   @personal_ccu_limit 20
   @personal_storage_limit_mb 2_000
 
-  alias Dash.{Account, Capability, Hub, Plan, OrchClient, Repo}
-  import Dash.Utils, only: [capability_string: 0, rand_string: 1]
+  alias Dash.{Account, Hub, Plan, OrchClient, Repo}
+  import Dash.Utils, only: [rand_string: 1]
   import Ecto.Query, only: [from: 2]
 
   @doc """
@@ -49,25 +49,16 @@ defmodule Dash.PlanStateMachine do
       ) && :ok
 
   @spec plan_state(Account.id()) :: String.t() | nil
-  defp plan_state(account_id) when is_integer(account_id) do
-    with nil <-
-           Repo.one(
-             from t in __MODULE__.PlanTransition,
-               join: p in assoc(t, :plan),
-               select: t.new_state,
-               where: p.account_id == ^account_id,
-               order_by: [desc: t.transitioned_at],
-               limit: 1
-           ) do
-      if Repo.exists?(
-           from c in Capability,
-             where: c.account_id == ^account_id,
-             where: c.capability == ^capability_string(),
-             where: c.is_active
-         ),
-         do: :personal
-    end
-  end
+  defp plan_state(account_id) when is_integer(account_id),
+    do:
+      Repo.one(
+        from t in __MODULE__.PlanTransition,
+          join: p in assoc(t, :plan),
+          select: t.new_state,
+          where: p.account_id == ^account_id,
+          order_by: [desc: t.transitioned_at],
+          limit: 1
+      )
 
   @impl Mimzy
   def handle_event(nil, :fetch_active_plan, %Account{}, _data),
@@ -126,7 +117,7 @@ defmodule Dash.PlanStateMachine do
     do: {:error, :no_subscription}
 
   def handle_event(:starter, :fetch_active_plan, %Account{account_id: account_id}, _data),
-    do: {:ok, %{get_plan(account_id) | name: "starter", subscription?: false}}
+    do: {:ok, %{fetch_plan!(account_id) | name: "starter", subscription?: false}}
 
   def handle_event(:starter, :start, %Account{}, _data),
     do: {:error, :already_started}
@@ -137,7 +128,7 @@ defmodule Dash.PlanStateMachine do
         %Account{account_id: account_id, email: email},
         _data
       ) do
-    %{plan_id: plan_id} = get_plan(account_id)
+    %{plan_id: plan_id} = fetch_plan!(account_id)
     :ok = subscribe_personal(plan_id, subscribed_at)
 
     hub =
@@ -159,18 +150,8 @@ defmodule Dash.PlanStateMachine do
   def handle_event(:starter, {:expire_subscription, %DateTime{}}, %Account{}, _data),
     do: {:error, :no_subscription}
 
-  def handle_event(:personal, :fetch_active_plan, %Account{account_id: account_id}, _data) do
-    active_plan =
-      case get_plan(account_id) do
-        nil ->
-          Repo.get_by!(Capability, account_id: account_id)
-
-        plan ->
-          %{plan | name: "personal", subscription?: true}
-      end
-
-    {:ok, active_plan}
-  end
+  def handle_event(:personal, :fetch_active_plan, %Account{account_id: account_id}, _data),
+    do: {:ok, %{fetch_plan!(account_id) | name: "personal", subscription?: true}}
 
   def handle_event(:personal, :start, %Account{}, _data),
     do: {:error, :already_started}
@@ -187,9 +168,7 @@ defmodule Dash.PlanStateMachine do
     if DateTime.compare(expired_at, transitioned_at(account_id)) !== :gt do
       {:error, :superseded}
     else
-      %{plan_id: plan_id} =
-        with nil <- get_plan(account_id),
-             do: Repo.insert!(%Plan{account_id: account_id})
+      %{plan_id: plan_id} = fetch_plan!(account_id)
 
       Repo.insert!(%__MODULE__.PlanTransition{
         event: "expire_subscription",
@@ -218,9 +197,9 @@ defmodule Dash.PlanStateMachine do
     end
   end
 
-  @spec get_plan(Account.id()) :: Plan.t() | nil
-  defp get_plan(account_id),
-    do: Repo.get_by(Plan, account_id: account_id)
+  @spec fetch_plan!(Account.id()) :: Plan.t()
+  defp fetch_plan!(account_id),
+    do: Repo.get_by!(Plan, account_id: account_id)
 
   @spec put_domain(Hub.id(), String.t()) :: :ok
   defp put_domain(hub_id, json) do
@@ -250,23 +229,14 @@ defmodule Dash.PlanStateMachine do
   end
 
   @spec transitioned_at(Account.id()) :: DateTime.t()
-  defp transitioned_at(account_id) when is_integer(account_id) do
-    with nil <-
-           Repo.one(
-             from t in __MODULE__.PlanTransition,
-               join: p in assoc(t, :plan),
-               select: t.transitioned_at,
-               where: p.account_id == ^account_id,
-               order_by: [desc: t.transitioned_at],
-               limit: 1
-           ) do
+  defp transitioned_at(account_id) when is_integer(account_id),
+    do:
       Repo.one!(
-        from c in Capability,
-          select: c.change_time,
-          where: c.account_id == ^account_id,
-          where: c.capability == ^capability_string(),
-          where: c.is_active
+        from t in __MODULE__.PlanTransition,
+          join: p in assoc(t, :plan),
+          select: t.transitioned_at,
+          where: p.account_id == ^account_id,
+          order_by: [desc: t.transitioned_at],
+          limit: 1
       )
-    end
-  end
 end

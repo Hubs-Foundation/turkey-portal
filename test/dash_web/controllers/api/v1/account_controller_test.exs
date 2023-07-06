@@ -2,7 +2,6 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
   use DashWeb.ConnCase, async: false
 
   import Dash.TestHelpers
-  import Dash.Utils, only: [capability_string: 0]
 
   @route "/api/v1/account"
 
@@ -52,7 +51,7 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
     test "when there is no plan", %{conn: conn} do
       assert payload =
                conn
-               |> put_test_token(claims: %{"fxa_subscriptions" => []})
+               |> put_test_token()
                |> get(@route)
                |> json_response(200)
 
@@ -73,7 +72,7 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
 
       assert payload =
                conn
-               |> put_test_token(claims: %{"fxa_subscriptions" => []})
+               |> put_test_token()
                |> get(@route)
                |> json_response(200)
 
@@ -82,11 +81,11 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
     end
 
     test "when the account has an active personal plan", %{conn: conn} do
-      stub_http_post_200()
+      expect_orch_post()
 
       assert payload =
                conn
-               |> put_test_token(claims: %{"fxa_subscriptions" => [capability_string()]})
+               |> put_test_token(claims: %{"fxa_subscriptions" => ["managed-hubs"]})
                |> get(@route)
                |> json_response(200)
 

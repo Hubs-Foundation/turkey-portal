@@ -3,7 +3,6 @@ defmodule Dash do
   Boundary of Dash context
   """
   alias Dash.{Account, Capability, Hub, Plan, PlanStateMachine, Repo}
-  import Dash.Utils, only: [capability_string: 0]
   import Ecto.Query
   require Logger
 
@@ -25,8 +24,7 @@ defmodule Dash do
   Returns `{:ok, plan}` if found.  Otherwise, `{:error, reason}` is returned.
   """
   @spec fetch_active_plan(Account.t()) ::
-          {:ok, Plan.t() | %Capability{is_active: true}}
-          | {:error, :account_not_found | :no_active_plan}
+          {:ok, Plan.t()} | {:error, :account_not_found | :no_active_plan}
   def fetch_active_plan(%Account{} = account),
     do: PlanStateMachine.handle_event(:fetch_active_plan, account)
 
@@ -273,17 +271,19 @@ defmodule Dash do
   end
 
   def handle_first_sign_in_initialize_subscriptions(%Account{} = account, fxa_subscriptions, dt) do
-    if capability_string() in fxa_subscriptions and not Dash.has_capability?(account) do
+    if "managed-hubs" in fxa_subscriptions do
       # Handle special case where FxA does not send a subscription changed fxa event
       # if a user signs up for an FxA account on the same page of signing up for the subscription
       # we need to create a record of that capability in our database
-      Dash.create_capability!(account, %{
-        capability: capability_string(),
-        change_time: dt,
-        is_active: true
-      })
+      with {:error, reason} <- subscribe_to_personal_plan(account, upscale_to_microseconds(dt)) do
+        Logger.warning("could not subscribe to personal plan for reason: #{reason}")
+      end
     end
   end
+
+  @spec upscale_to_microseconds(DateTime.t()) :: DateTime.t()
+  defp upscale_to_microseconds(%DateTime{} = datetime),
+    do: Map.update!(datetime, :microsecond, fn {value, _precision} -> {value, 6} end)
 
   def has_account_for_fxa_uid?(fxa_uid) when is_binary(fxa_uid) do
     Repo.exists?(from a in Account, where: a.fxa_uid == ^fxa_uid)
