@@ -1,7 +1,6 @@
 import { useState, useContext, FocusEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import styles from './HubFormCard.module.scss';
-import { HUB_ROOT_DOMAIN } from 'config';
 import {
   Button,
   ButtonCategoriesE,
@@ -18,6 +17,7 @@ import validate, { FormValues } from './validate';
 import { useIsProfessional } from 'hooks/usePlans';
 
 export type HubFormCardT = {
+  domain: string;
   name: string;
   subdomain: string;
   hubId: string;
@@ -192,7 +192,7 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
                 required={true}
               />
               <div className={styles.address_preview}>
-                .{HUB_ROOT_DOMAIN}
+                .{hub.domain}
                 <div className={styles.icon_wrapper}>
                   {!isEditingDomain && (
                     <div className={styles.icon_container}>

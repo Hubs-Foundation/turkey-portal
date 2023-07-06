@@ -4,7 +4,6 @@ import Resubscribe from '../Resubscribe/Resubscribe';
 import { Icon, HubIcon } from '@mozilla/lilypad-ui';
 import TileButton from '@Shared/TileButton/TileButton';
 import UpgradePlan from '../UpgradePlan/UpgradePlan';
-import { HUB_ROOT_DOMAIN } from 'config';
 import SupportGrid from '../SupportGrid/SupportGrid';
 import { useMobileDown } from 'hooks/useMediaQuery';
 import { useSelector } from 'react-redux';
@@ -12,12 +11,14 @@ import { selectAccount } from 'store/accountSlice';
 import { useIsBusiness } from 'hooks/usePlans';
 
 export type SidePanelPropsT = {
+  domain: string;
   subdomain: string;
   subscription: SubscriptionT;
   classProp?: string;
 };
 
 const SidePanel = ({
+  domain,
   subdomain,
   subscription,
   classProp = '',
@@ -25,7 +26,7 @@ const SidePanel = ({
   const account = useSelector(selectAccount);
   const isMobile = useMobileDown();
   const isBusiness = useIsBusiness();
-  const hubUrl = `https://${subdomain}.${HUB_ROOT_DOMAIN}`;
+  const hubUrl = `https://${subdomain}.${domain}`;
 
   return (
     <section className={`${classProp} ${styles.wrapper}`}>

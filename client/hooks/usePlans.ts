@@ -9,7 +9,9 @@ export const useIsStarter = (): boolean => {
 
 export const useIsPersonal = (): boolean => {
   const account = useSelector(selectAccount);
-  return account.planName === PlansE.PERSONAL;
+  return (
+    account.planName === PlansE.PERSONAL || account.planName === PlansE.LEGACY
+  );
 };
 
 export const useIsProfessional = (): boolean => {

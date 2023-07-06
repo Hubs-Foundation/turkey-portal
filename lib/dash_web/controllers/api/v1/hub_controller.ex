@@ -9,10 +9,13 @@ defmodule DashWeb.Api.V1.HubController do
     apply(__MODULE__, action_name(conn), args)
   end
 
-  def show(conn, %{"id" => hub_id}, account) do
-    hub = Hub.get_hub(hub_id, account)
+  def show(conn, %{"id" => id_string}, %Dash.Account{} = account) do
+    hub =
+      id_string
+      |> String.to_integer()
+      |> Dash.get_hub(account)
 
-    conn |> render("show.json", hub: hub)
+    render(conn, "show.json", hub: hub)
   end
 
   # All hubs for 1 account
@@ -30,36 +33,6 @@ defmodule DashWeb.Api.V1.HubController do
 
       {:error, err} ->
         conn |> send_resp(500, Jason.encode!(%{error: err})) |> halt()
-    end
-  end
-
-  # Create hub with defaults
-  def create(conn, _, account) do
-    fxa_account_info = conn.assigns[:fxa_account_info]
-    fxa_email = fxa_account_info.fxa_email
-    has_subscription? = fxa_account_info.has_subscription?
-
-    if has_subscription? do
-      case Hub.create_default_hub(account, fxa_email) do
-        {:ok, new_hub} ->
-          conn
-          |> render("create.json", hub: new_hub)
-
-        {:error, err} ->
-          conn
-          |> send_resp(400, Jason.encode!(%{error: err}))
-          |> halt()
-      end
-    else
-      conn
-      |> send_resp(
-        403,
-        Jason.encode!(%{
-          error: "forbidden",
-          message: "Can't create new hub, account is not subscribed"
-        })
-      )
-      |> halt()
     end
   end
 

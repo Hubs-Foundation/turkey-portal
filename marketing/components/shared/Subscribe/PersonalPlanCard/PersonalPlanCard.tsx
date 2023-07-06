@@ -27,14 +27,15 @@ const PersonalPlanCard = ({
 
   return (
     <BasePlanCard
-      title="Personal Hub"
+      isSoldOut={true}
+      title="Personal"
       color="warm"
       price={
         <Price
           price={`${currencySymbol}${planPrice}`}
           billingPeriod={`per ${
             billingPeriod === BillingPeriodE.YEARLY ? 'year' : 'month'
-          } ${taxDescription}`}
+          } + tax`}
         />
       }
       infoCopyList={PERSONAL_COPY}
@@ -43,6 +44,7 @@ const PersonalPlanCard = ({
           className="primary-link"
           href="/docs/setup-choosing.html#supported-regions-and-currencies"
           target="_blank"
+          rel="noreferrer"
         >
           <div className="flex pt-24 mb-16">
             <div className="color-interaction-primary">

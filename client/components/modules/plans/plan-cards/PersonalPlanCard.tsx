@@ -25,14 +25,14 @@ const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
 
   return (
     <BasePlanCard
-      title="Personal Hub"
+      title="Personal"
       color="warm"
       price={
         <Price
           price={`${currencySymbol}${planPrice}`}
           billingPeriod={`per ${
             billingPeriod === BillingPeriodE.YEARLY ? 'year' : 'month'
-          } ${taxDescription}`}
+          } + tax`}
         />
       }
       infoCopyList={PERSONAL_COPY}
@@ -49,7 +49,7 @@ const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
             </div>
 
             <p className="paragraph-sm">
-              Paid subscription plans are available in select countries
+              Subscription plans are available in select countries
             </p>
           </div>
         </a>

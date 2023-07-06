@@ -80,7 +80,6 @@ defmodule Dash.TestHelpers do
     hub =
       %Dash.Hub{}
       |> Dash.Hub.changeset(%{
-        name: "test hub",
         ccu_limit: 20,
         storage_limit_mb: 100,
         tier: :mvp,
@@ -89,6 +88,11 @@ defmodule Dash.TestHelpers do
       })
       |> Ecto.Changeset.put_assoc(:account, account)
       |> Dash.Repo.insert!()
+
+    Dash.Repo.insert!(%Dash.HubDeployment{
+      domain: "domain.test",
+      hub_id: hub.hub_id
+    })
 
     if opts[:subscribe?],
       do: subscribe_test_account(opts[:fxa_uid] || @default_test_uid)
@@ -140,13 +144,14 @@ defmodule Dash.TestHelpers do
 
   def expect_orch_post() do
     Mox.expect(Dash.HttpMock, :post, fn _url, _body, _headers, _opts ->
-      {:ok, %HTTPoison.Response{status_code: 200}}
+      {:ok,
+       %HTTPoison.Response{body: Jason.encode!(%{domain: "some-domain.test"}), status_code: 200}}
     end)
   end
 
   def expect_orch_delete() do
     Mox.expect(Dash.HttpMock, :request, fn _, _body, _headers, _opts, _ ->
-      {:ok, %HTTPoison.Response{status_code: 202}}
+      {:ok, %HTTPoison.Response{status_code: 200}}
     end)
   end
 

@@ -19,6 +19,7 @@ export type HubT = {
   ccuLimit: number;
   currentCcu: number | null;
   currentStorageMb: number | null;
+  domain: string;
   hubId: string;
   name: string;
   status: StatusE;
@@ -57,6 +58,7 @@ export enum PlansE {
   PERSONAL = 'personal',
   PROFESSIONAL = 'professional',
   BUSINESS = 'business',
+  LEGACY = 'standard',
 }
 
 export enum BillingPeriodE {

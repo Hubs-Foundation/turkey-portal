@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { RoutesE } from 'types/Routes';
 import { StatusE } from 'types/General';
 import styles from './HubCardHeader.module.scss';
-import { useIsStarter, useIsProfessional } from 'hooks/usePlans';
+import { useIsStarter, useIsBusiness } from 'hooks/usePlans';
 
 type HubCardHeaderPropsT = {
   hubId: string;
@@ -18,7 +18,7 @@ const HubCardHeader = ({
 }: HubCardHeaderPropsT) => {
   const router = useRouter();
   const isStarter = useIsStarter();
-  const isProfessional = useIsProfessional();
+  const isBusiness = useIsBusiness();
 
   const DropdownContent = (
     <div className="dropdown_wrapper">
@@ -33,7 +33,7 @@ const HubCardHeader = ({
       >
         Edit Details
       </button>
-      {isProfessional && (
+      {isBusiness && (
         <button
           className="dropdown-link mt-14"
           onClick={() => {

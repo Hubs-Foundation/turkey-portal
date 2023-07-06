@@ -3,7 +3,6 @@ defmodule Dash.AppConfig do
 
   def to_json() do
     Jason.encode!(%{
-      CLUSTER_DOMAIN: cluster_domain(),
       AUTH_SERVER: auth_server(),
       FXA_SERVER: fxa_server()
     })

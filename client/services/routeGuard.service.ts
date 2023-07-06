@@ -177,8 +177,8 @@ export function customClientRG(gssp: Function): GetServerSideProps | Redirect {
         req.headers as AxiosRequestHeaders
       );
 
-      // only P2 can get to this page
-      if (account.planName !== 'professional') {
+      // only b1 can get to this page
+      if (account.planName !== PlansE.BUSINESS) {
         return redirectToDashboard();
       }
 

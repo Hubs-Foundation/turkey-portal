@@ -26,7 +26,11 @@ const SidePanelLayout = ({
         {/* SIDE PANEL WIDGET  */}
         <div className={styles.sidep_panel}>
           {!isLoading && hub ? (
-            <SidePanel subdomain={hub.subdomain} subscription={subscription} />
+            <SidePanel
+              subdomain={hub.subdomain}
+              domain={hub.subdomain}
+              subscription={subscription}
+            />
           ) : (
             <SkeletonCard
               qty={1}

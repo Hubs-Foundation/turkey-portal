@@ -28,7 +28,7 @@ defmodule DashWeb.FxaEventsTest do
     end
 
     test "if subscribed event, then a later subscribed event, then capability should have the latest" do
-      stub_http_post_200()
+      expect_orch_post()
       fxa_uid = get_default_test_uid()
       %{now: now, later: later} = now_earlier_later_unix_millisecond()
 
@@ -52,7 +52,7 @@ defmodule DashWeb.FxaEventsTest do
     end
 
     test "should make account if handle subscribed event true and no previous account" do
-      stub_http_post_200()
+      expect_orch_post()
       fxa_uid = "fxa-uid"
       nil = Dash.Account.account_for_fxa_uid(fxa_uid)
 

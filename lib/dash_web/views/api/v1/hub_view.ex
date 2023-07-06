@@ -1,11 +1,11 @@
 defmodule DashWeb.Api.V1.HubView do
   use DashWeb, :view
 
-  def render("index.json", %{hubs: hubs}) do
-    hubs |> Enum.map(&render_hub/1)
-  end
+  def render("index.json", %{hubs: hubs}),
+    do: Enum.map(hubs, &render_hub_with_usage_stats/1)
 
-  def render("show.json", %{hub: nil}), do: nil
+  def render("show.json", %{hub: nil}),
+    do: nil
 
   def render("show.json", %{hub: hub}) do
     hub |> render_hub()
@@ -25,26 +25,27 @@ defmodule DashWeb.Api.V1.HubView do
     %{success: true, deletedHub: render_hub(hub)}
   end
 
-  defp render_hub(hub) do
-    # Returns usage stats if included in hubs keys
-    maybe_include_usage_stats =
-      case hub do
-        %{current_ccu: ccu, current_storage_mb: storage} ->
-          %{currentCcu: ccu, currentStorageMb: storage}
-
-        _ ->
-          %{}
-      end
-
-    %{
-      hubId: hub.hub_id |> to_string,
-      name: hub.name,
+  defp render_hub(%Dash.Hub{} = hub),
+    do: %{
       ccuLimit: hub.ccu_limit,
+      domain: hub.deployment.domain,
+      hubId: Integer.to_string(hub.hub_id),
+      status: hub.status,
       storageLimitMb: hub.storage_limit_mb,
-      tier: hub.tier,
       subdomain: hub.subdomain,
-      status: hub.status
+      tier: hub.tier
     }
-    |> Map.merge(maybe_include_usage_stats)
-  end
+
+  defp render_hub_with_usage_stats(map) when is_map(map),
+    do: %{
+      ccuLimit: map.ccu_limit,
+      domain: map.deployment.domain,
+      currentCcu: map.current_ccu,
+      currentStorageMb: map.current_storage_mb,
+      hubId: Integer.to_string(map.hub_id),
+      status: map.status,
+      storageLimitMb: map.storage_limit_mb,
+      subdomain: map.subdomain,
+      tier: map.tier
+    }
 end
