@@ -22,13 +22,11 @@ const PersonalPlanCard = ({
    * Handle routing user to correct payment plan
    */
   const handleSubscribeClick = useCallback(() => {
-    console.log('This plan is temporarily disabled');
-    /* window.open(planUrl); */
+    window.open(planUrl);
   }, [planUrl]);
 
   return (
     <BasePlanCard
-      isSoldOut={true}
       title="Personal"
       color="warm"
       price={
