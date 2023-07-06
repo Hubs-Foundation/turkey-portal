@@ -99,13 +99,6 @@ defmodule DashWeb.FxaEvents do
       end
     end
 
-    Dash.update_or_create_capability_for_changeset(%{
-      fxa_uid: fxa_uid,
-      capability: capability_string(),
-      is_active: is_active,
-      change_time: truncated_datetime
-    })
-
     # We expire the cookie on every subscription changed event because the auth server puts subscription information
     # on the cookie. Such as when the subscription is expiring or if it isn't.
     Dash.Account.set_auth_updated_at(fxa_uid, truncated_datetime)

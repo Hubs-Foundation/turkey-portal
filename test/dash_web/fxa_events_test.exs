@@ -27,30 +27,6 @@ defmodule DashWeb.FxaEventsTest do
       assert [_] = Dash.get_all_capabilities_for_account(account)
     end
 
-    test "if subscribed event, then a later subscribed event, then capability should have the latest" do
-      expect_orch_post()
-      fxa_uid = get_default_test_uid()
-      %{now: now, later: later} = now_earlier_later_unix_millisecond()
-
-      event_now = get_subscription_changed_event(change_time: now)
-      FxaEvents.handle_subscription_changed_event(fxa_uid, event_now)
-
-      event_later = get_subscription_changed_event(change_time: later)
-      FxaEvents.handle_subscription_changed_event(fxa_uid, event_later)
-
-      account = Dash.Account.account_for_fxa_uid(fxa_uid)
-
-      [%Dash.Capability{change_time: change_time}] =
-        Dash.get_all_capabilities_for_account(account)
-
-      later_dt =
-        later
-        |> DateTime.from_unix!(:millisecond)
-        |> DateTime.truncate(:second)
-
-      assert :eq === DateTime.compare(later_dt, change_time)
-    end
-
     test "should make account if handle subscribed event true and no previous account" do
       expect_orch_post()
       fxa_uid = "fxa-uid"
