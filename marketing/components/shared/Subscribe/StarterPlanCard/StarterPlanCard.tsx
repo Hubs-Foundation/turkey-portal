@@ -11,7 +11,7 @@ const StarterPlanCard = () => {
 
   return (
     <BasePlanCard
-      isSoldOut={true}
+      // isSoldOut={true}
       title="Starter"
       color="silver"
       price={<Price regionCode={null} price="Free" />}
