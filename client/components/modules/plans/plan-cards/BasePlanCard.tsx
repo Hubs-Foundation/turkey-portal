@@ -1,4 +1,7 @@
 import { ReactNode } from 'react';
+import { selectAccount } from 'store/accountSlice';
+import { useSelector } from 'react-redux';
+import { PlansE } from 'types/General';
 import { PlanInfoCopyT } from '../plan.const';
 import styles from './BasePlanCard.module.scss';
 import InfoBlock from '@Shared/InfoBlock/InfoBlock';
@@ -51,6 +54,20 @@ const BasePlanCard = ({
   color,
   classProp = '',
 }: BasePlanCardPropsT) => {
+  const account = useSelector(selectAccount);
+  const showCurrentPlan = (): boolean => {
+    let show = false;
+    const planName = title.toLocaleLowerCase();
+
+    if (account.planName === planName) show = true;
+    // If plan name is legacy "Standard" and card is
+    // "Personal" then mark as current plan.
+    if (account.planName === PlansE.LEGACY && planName === PlansE.PERSONAL)
+      show = true;
+
+    return show;
+  };
+
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
       {isSoldOut && (
@@ -96,6 +113,8 @@ const BasePlanCard = ({
         >
           {isSoldOut ? (
             <Button label="sold out" text="sold out" />
+          ) : showCurrentPlan() ? (
+            <span className="body-md-semi-bold">Current Plan*</span>
           ) : (
             confirmButton
           )}
