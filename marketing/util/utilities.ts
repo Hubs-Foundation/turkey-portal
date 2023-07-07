@@ -1,4 +1,3 @@
-import getEnvVariable from 'config';
 import { PlansE, BillingPeriodE } from 'types/General';
 import {
   RegionCodeT,
@@ -9,9 +8,9 @@ import { PLAN_ID_MAP } from 'components/shared/Subscribe/plan.const';
 
 /**
  * Get the pricing page URL for a region, return default (US) pricing page if region not found
- * @param code RegionCodeT
+ * @param regionCode RegionCodeT
  * @param plan names of paid plans
- * @param duration monthly or yearly payments
+ * @param billingPeriod monthly or yearly payments
  * @returns URL to pricing page
  */
 export const getPricePageData = (
@@ -19,10 +18,10 @@ export const getPricePageData = (
   plan: Exclude<PlansE, null | PlansE.STARTER>,
   billingPeriod: BillingPeriodE
 ) => {
-  const FXA_PAYMENT_URL = getEnvVariable('FXA_PAYMENT_URL');
-  const PRODUCT_ID = getEnvVariable('PRODUCT_ID');
+  const BASE_URL =
+    'https://subscriptions.firefox.com/checkout/prod_Mo4tS8uH9y3Mj5';
   // If not accepted region or no region default to US plan
-  let planUrl = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${PLAN_ID_MAP.US[plan][billingPeriod].planId}`;
+  let planUrl = `${BASE_URL}}?plan=${PLAN_ID_MAP.US[plan][billingPeriod].planId}`;
   let planPrice = PLAN_ID_MAP.US[plan][billingPeriod].price;
   let taxDescription = PLAN_ID_MAP.US.taxDescription;
   let currencySymbol = PLAN_ID_MAP.US.symbol;
@@ -34,7 +33,7 @@ export const getPricePageData = (
   ) {
     const planObj = PLAN_ID_MAP[regionCode as AcceptedRegionCodeT];
     const { planId, price } = planObj[plan][billingPeriod];
-    planUrl = `${FXA_PAYMENT_URL}/checkout/${PRODUCT_ID}?plan=${planId}`;
+    planUrl = `${BASE_URL}?plan=${planId}`;
     planPrice = price;
     taxDescription = planObj.taxDescription;
     currencySymbol = planObj.symbol;

@@ -2,17 +2,18 @@ import ExpansionPanel from '@Shared/ExpansionPanel/ExpansionPanel';
 import SupportLink from '@Shared/SupportLink/SupportLink';
 import styles from './SupportGrid.module.scss';
 import mozillaLogo from 'public/mozilla_logo.png';
-
+import { useIsStarter } from 'hooks/usePlans';
 import mailCircle from 'public/mail_circle.png';
 import messageCircle from 'public/message_circle.png';
 import communityCircle from 'public/community_circle.png';
 import BookMeeting from '../BookMeeting/BookMeeting';
 
 const SupportGrid = () => {
+  const isStarter = useIsStarter();
   return (
     <ExpansionPanel title="Support" expanded={true}>
       <section>
-        <BookMeeting />
+        {!isStarter && <BookMeeting />}
 
         <div className={styles.support_links}>
           <SupportLink
