@@ -5,7 +5,6 @@ import BeginStarterPlanButton from '@Modules/plans/BeginStarterPlanButton/BeginS
 const StarterPlanCard = () => {
   return (
     <BasePlanCard
-      isSoldOut={true}
       title="Starter"
       color="silver"
       price={<Price price="Free" />}

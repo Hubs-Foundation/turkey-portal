@@ -6,7 +6,7 @@ export const ACCEPTED_REGION_CODES = [
   'FR',
   'LU',
   'BE',
-  'AU',
+  'AT',
   'CH',
   'IT',
   'ES',

@@ -9,29 +9,25 @@ defmodule Dash.OrchClient do
   def create_hub(fxa_email, %Hub{} = hub, opts \\ []) when is_list(opts) do
     disable_branding? = Keyword.get(opts, :disable_branding?, false)
 
-    orch_hub_create_params = %{
-      ccu_limit: Integer.to_string(hub.ccu_limit),
-      disable_branding: disable_branding?,
-      hub_id: Integer.to_string(hub.hub_id),
-      region: "us",
-      storage_limit: Float.to_string(hub.storage_limit_mb / 1024),
-      subdomain: hub.subdomain,
-      tier: hub.tier,
-      useremail: fxa_email
-    }
+    json =
+      Jason.encode!(%{
+        ccu_limit: Integer.to_string(hub.ccu_limit),
+        disable_branding: disable_branding?,
+        hub_id: Integer.to_string(hub.hub_id),
+        region: "us",
+        storage_limit: Float.to_string(hub.storage_limit_mb / 1024),
+        subdomain: hub.subdomain,
+        tier: hub.tier,
+        useremail: fxa_email
+      })
 
-    http_client().post(
-      orch_hub_endpoint(),
-      Jason.encode!(orch_hub_create_params),
-      [],
-      hackney: [:insecure]
-    )
+    http_client().post(orch_hub_endpoint(), json, [], options())
   end
 
   # TODO: test this behavior somewhere
   def delete_hub(%Hub{} = hub) do
     json = Jason.encode!(identity(hub))
-    http_client().request(:delete, orch_hub_endpoint(), json, [], hackney: [:insecure])
+    http_client().request(:delete, orch_hub_endpoint(), json, [], options())
   end
 
   def update_hub(fxa_email, %Hub{} = hub, opts \\ [])
@@ -54,7 +50,7 @@ defmodule Dash.OrchClient do
       |> Map.merge(identity(hub))
       |> Jason.encode!()
 
-    http_client().patch(orch_hub_endpoint(), json, [], hackney: [:insecure])
+    http_client().patch(orch_hub_endpoint(), json, [], options())
   end
 
   def update_subdomain(%Hub{} = hub) do
@@ -67,7 +63,7 @@ defmodule Dash.OrchClient do
       |> Map.merge(identity(hub))
       |> Jason.encode!()
 
-    http_client().patch(orch_hub_endpoint(), json, [], hackney: [:insecure])
+    http_client().patch(orch_hub_endpoint(), json, [], options())
   end
 
   ## Helpers
@@ -82,6 +78,10 @@ defmodule Dash.OrchClient do
   @spec identity(Hub.t()) :: %{atom => String.t()}
   defp identity(%Hub{} = hub),
     do: %{domain: hub.deployment.domain, hub_id: Integer.to_string(hub.hub_id)}
+
+  @spec options :: Keyword.t()
+  defp options,
+    do: [hackney: [:insecure], recv_timeout: 15_000]
 
   @spec orch_host :: String.t()
   defp orch_host,

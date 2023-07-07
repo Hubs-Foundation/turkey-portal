@@ -27,7 +27,6 @@ const PersonalPlanCard = ({
 
   return (
     <BasePlanCard
-      isSoldOut={true}
       title="Personal"
       color="warm"
       price={

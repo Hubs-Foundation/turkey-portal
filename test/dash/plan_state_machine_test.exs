@@ -95,7 +95,7 @@ defmodule Dash.PlanStateMachineTest do
         payload = Jason.decode!(json)
         [hub] = Hub.hubs_for_account(account)
         assert String.ends_with?(url, "hc_instance")
-        assert [hackney: [:insecure]] === opts
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
         assert "10" === payload["ccu_limit"]
         assert true === payload["disable_branding"]
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
@@ -134,7 +134,7 @@ defmodule Dash.PlanStateMachineTest do
         payload = Jason.decode!(json)
         [hub] = Hub.hubs_for_account(account)
         assert String.ends_with?(url, "hc_instance")
-        assert [hackney: [:insecure]] === opts
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
         assert "25" === payload["ccu_limit"]
         assert false === payload["disable_branding"]
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
@@ -217,7 +217,7 @@ defmodule Dash.PlanStateMachineTest do
         payload = Jason.decode!(json)
         [hub] = Hub.hubs_for_account(account)
         assert String.ends_with?(url, "hc_instance")
-        assert [hackney: [:insecure]] === opts
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
         assert "25" === payload["ccu_limit"]
         assert false === payload["disable_branding"]
         assert hub.deployment.domain === payload["domain"]
@@ -319,7 +319,7 @@ defmodule Dash.PlanStateMachineTest do
         payload = Jason.decode!(json)
         [hub] = Hub.hubs_for_account(account)
         assert String.ends_with?(url, "hc_instance")
-        assert [hackney: [:insecure]] === opts
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
         assert "10" === payload["ccu_limit"]
         assert true === payload["disable_branding"]
         assert hub.deployment.domain === payload["domain"]

@@ -53,7 +53,7 @@ export const PLAN_ID_MAP = {
    */
   GB: {
     abbrev: 'GBP',
-    symbol: '$',
+    symbol: '£',
     taxDescription: '',
     personal: {
       monthly: {
@@ -324,7 +324,7 @@ export const PLAN_ID_MAP = {
   /**
    * Austria
    */
-  AU: {
+  AT: {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
@@ -365,7 +365,7 @@ export const PLAN_ID_MAP = {
    */
   CH: {
     abbrev: 'CHF',
-    symbol: 'CHF',
+    symbol: 'CHF ',
     taxDescription: '',
     personal: {
       monthly: {
@@ -639,7 +639,7 @@ export const PLAN_ID_MAP = {
    */
   SE: {
     abbrev: 'SEK',
-    symbol: 'kr',
+    symbol: 'SEK ',
     taxDescription: '',
     personal: {
       monthly: {
@@ -678,7 +678,7 @@ export const PLAN_ID_MAP = {
    */
   MY: {
     abbrev: 'MYR',
-    symbol: 'RM',
+    symbol: 'RM ',
     taxDescription: '',
     personal: {
       monthly: {
@@ -756,7 +756,7 @@ export const PLAN_ID_MAP = {
    */
   PL: {
     abbrev: 'PLN',
-    symbol: 'zł',
+    symbol: 'PLN ',
     taxDescription: '',
     personal: {
       monthly: {
@@ -873,7 +873,7 @@ export const PLAN_ID_MAP = {
    */
   DK: {
     abbrev: 'DKK',
-    symbol: 'Kr.',
+    symbol: 'DKK ',
     taxDescription: '',
     personal: {
       monthly: {
@@ -912,7 +912,7 @@ export const PLAN_ID_MAP = {
    */
   CZ: {
     abbrev: 'CZK',
-    symbol: 'Kč',
+    symbol: 'CZK ',
     taxDescription: '',
     personal: {
       monthly: {
