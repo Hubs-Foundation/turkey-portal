@@ -1,20 +1,18 @@
 import { ProgressBar, Icon, Pill } from '@mozilla/lilypad-ui';
-import { StorageStateE, HubT, FormattedTierMapT, TierT } from 'types/General';
+import { StorageStateE, HubT, PlansE } from 'types/General';
 import { useState, useEffect, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import { selectAccount } from 'store/accountSlice';
 import styles from './HubCardFooter.module.scss';
 
-type TierPropsT = {
-  tier: TierT;
+type PlanPropsT = {
+  name: PlansE | null;
 };
 
-const Tier = ({ tier }: TierPropsT) => {
+const Plan = ({ name }: PlanPropsT) => {
   return (
     <div className="text-center">
-      <Pill
-        classProp="mb-12 block"
-        title={FormattedTierMap[tier]}
-        category="primary"
-      />
+      {name && <Pill classProp="mb-12 block" title={name} category="primary" />}
       <p>Hub Plan</p>
     </div>
   );
@@ -25,15 +23,9 @@ type HubCardFooterPropsT = {
   classProp?: string;
 };
 
-const FormattedTierMap: FormattedTierMapT = {
-  mvp: 'Mvp',
-  premium: 'Premium',
-  p0: 'Starter',
-  p1: 'Early Access',
-};
-
 const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
-  const { tier, currentStorageMb, storageLimitMb } = hub;
+  const { planName } = useSelector(selectAccount);
+  const { currentStorageMb, storageLimitMb } = hub;
   const [storageState, setStorageState] = useState<StorageStateE>(
     StorageStateE.DEFAULT
   );
@@ -78,7 +70,7 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
     <div className={`${styles.footer} ${classProp}`}>
       {/* Tier Information  */}
       <div className={styles.footer_block}>
-        <Tier tier={tier} />
+        <Plan name={planName} />
       </div>
 
       {/* Storage Information  */}
