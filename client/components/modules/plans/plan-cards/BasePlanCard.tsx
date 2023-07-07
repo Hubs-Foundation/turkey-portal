@@ -56,16 +56,16 @@ const BasePlanCard = ({
 }: BasePlanCardPropsT) => {
   const account = useSelector(selectAccount);
   const showCurrentPlan = (): boolean => {
-    let show = false;
     const planName = title.toLocaleLowerCase();
-
-    if (account.planName === planName) show = true;
+    if (account.planName === planName) {
+      return true;
+    }
     // If plan name is legacy "Standard" and card is
     // "Personal" then mark as current plan.
-    if (account.planName === PlansE.LEGACY && planName === PlansE.PERSONAL)
-      show = true;
-
-    return show;
+    if (account.planName === PlansE.LEGACY && planName === PlansE.PERSONAL) {
+      return true;
+    }
+    return false;
   };
 
   return (
