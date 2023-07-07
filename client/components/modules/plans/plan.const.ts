@@ -53,7 +53,7 @@ export const PLAN_ID_MAP = {
    */
   GB: {
     abbrev: 'GBP',
-    symbol: '$',
+    symbol: '£',
     taxDescription: '',
     personal: {
       monthly: {
