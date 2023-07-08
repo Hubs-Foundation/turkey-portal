@@ -227,12 +227,20 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
                 <Pill title="Beta" category="cool" />
               </div>
               <p className="paragraph mb-24">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                Lacinia quis vel eros donec ac. Ultrices gravida dictum fusce
-                ut. Dui accumsan sit amet nulla facilisi morbi tempus. Tellus
-                integer feugiat scelerisque varius morbi enim nunc faucibus.
+                This plan allows you to manually connect a custom domain to your
+                Hub using the command line. The following documentation walks
+                you through the process, prerequisites, and how to troubleshoot
+                custom domains.
               </p>
+
+              <div className="mb-20 youtube-video">
+                <iframe
+                  className=""
+                  src="https://www.youtube.com/embed/RyS_TbmCcY4"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
 
               <a
                 className="primary-link"
@@ -240,7 +248,7 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
                   window.open('mailto:hubs-clientupload@mozilla.com');
                 }}
               >
-                hubs-clientupload@mozilla.com
+                [Placeholder] Get started with the Hubs Docs
               </a>
             </section>
           )}

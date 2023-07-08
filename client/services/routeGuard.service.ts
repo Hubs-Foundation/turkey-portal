@@ -178,7 +178,7 @@ export function customClientRG(gssp: Function): GetServerSideProps | Redirect {
       );
 
       // only b1 can get to this page
-      if (account.planName !== PlansE.BUSINESS) {
+      if (account.planName !== PlansE.PROFESSIONAL) {
         return redirectToDashboard();
       }
 

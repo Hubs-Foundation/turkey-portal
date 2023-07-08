@@ -76,19 +76,41 @@ const CustomClient = ({ subscription }: HubDetailsViewPropsT) => {
               <h1 className="heading-sm">Custom Client</h1>
             </div>
             <p className="paragraph mb-24">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Lacinia quis vel eros donec ac. Ultrices gravida dictum fusce ut.
-              Dui accumsan sit amet nulla facilisi morbi tempus. Tellus integer
-              feugiat scelerisque varius morbi enim nunc faucibus.
+              This plan allows you to manually upload your own version of the
+              Hubs client including custom code. The following documentation
+              walks you through the process, prerequisites, and how to
+              troubleshooting custom clients. Be advised that uploading a custom
+              client will prevent your hub from receiving automatic updates to
+              the Hubs client. Users who upload a custom client are responsible
+              for ensuring their code is compatible with Mozilla’s regular
+              updates to the Hubs server infrastructure.
             </p>
+
+            <div className="mb-20 youtube-video">
+              <iframe
+                className=""
+                src="https://www.youtube.com/embed/RyS_TbmCcY4"
+                frameBorder="0"
+                allowFullScreen
+              ></iframe>
+            </div>
+
             <a
-              className="primary-link"
+              className="primary-link mb-20 block"
               onClick={() => {
                 window.open('mailto:hubs-clientupload@mozilla.com');
               }}
             >
-              hubs-clientupload@mozilla.com
+              [Placeholder] Get started with the Hubs Docs
+            </a>
+
+            <a
+              className="primary-link block"
+              onClick={() => {
+                window.open('mailto:hubs-clientupload@mozilla.com');
+              }}
+            >
+              Follow our update cycle
             </a>
           </Card>
         </div>
