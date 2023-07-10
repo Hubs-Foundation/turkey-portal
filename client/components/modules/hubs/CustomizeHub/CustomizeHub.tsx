@@ -15,10 +15,11 @@ export const CustomizeHub = ({ hub }: CustomizeHubPropsT) => {
       <Card classProp={`${styles.card}`}>
         <h3 className="body-md-bold mb-12">Customize your web address</h3>
         <p className="paragraph-sm mb-12">
-          (PLACEHOLDER) Boost SEO, Ditch generic URLs, Future-proof your
-          presence on the immersive web
+          Connect a custom domain to your Hub
         </p>
         <Button
+          icon="arrow-right"
+          iconPlacedRight={true}
           text="Edit Domain"
           label="edit domain"
           category={ButtonCategoriesE.SECONDARY_SOLID}
@@ -31,12 +32,11 @@ export const CustomizeHub = ({ hub }: CustomizeHubPropsT) => {
       </Card>
 
       <Card classProp={`${styles.card}`}>
-        <h3 className="body-md-bold mb-12">Customize your web address</h3>
-        <p className="paragraph-sm mb-12">
-          (PLACEHOLDER) Boost SEO, Ditch generic URLs, Future-proof your
-          presence on the immersive web
-        </p>
+        <h3 className="body-md-bold mb-12">Upload a custom client</h3>
+        <p className="paragraph-sm mb-12">Customize your Hub&apos;s code</p>
         <Button
+          icon="arrow-right"
+          iconPlacedRight={true}
           text="Upload Client"
           label="Upload Client"
           category={ButtonCategoriesE.SECONDARY_SOLID}

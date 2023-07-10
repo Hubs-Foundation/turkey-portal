@@ -263,10 +263,10 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
             />
 
             <Button
-              label="update"
+              label="Apply Changes"
               type="submit"
               category={ButtonCategoriesE.PRIMARY_SOLID}
-              text="update"
+              text="Apply Changes"
             />
           </section>
         </form>
