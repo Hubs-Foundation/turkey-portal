@@ -18,7 +18,12 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
 
   return axios
     .get(`${PUBLIC_API_SERVER}${API_PATH}`, config)
-    .then((response) => response.data as AccountT);
+    .then((response) => {
+      response.data.planName = 'professional';
+      // response.data.planName = 'personal';
+      // response.data.planName = 'starter';
+      return response.data as AccountT;
+    });
 };
 
 /**

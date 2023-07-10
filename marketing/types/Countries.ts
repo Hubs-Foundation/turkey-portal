@@ -279,7 +279,7 @@ export const CountryOptions = [
   { value: 'SE', title: 'Sweden' },
   { value: 'CH', title: 'Switzerland' },
   { value: 'SY', title: 'Syrian Arab Republic' },
-  { value: 'TW', title: 'Taiwan, professionalvince of China' },
+  { value: 'TW', title: 'Taiwan, Province of China' },
   { value: 'TJ', title: 'Tajikistan' },
   { value: 'TZ', title: 'Tanzania, United Republic of' },
   { value: 'TH', title: 'Thailand' },
