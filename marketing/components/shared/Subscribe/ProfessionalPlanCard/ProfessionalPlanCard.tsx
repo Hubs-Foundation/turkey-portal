@@ -1,22 +1,22 @@
 import { useCallback } from 'react';
-import { RegionCodeT } from 'types/Countries';
-import { BasePlanCard, Price } from '../BasePlanCard/BasePlanCard';
-import { PERSONAL_COPY } from '../plan.const';
 import { Button } from '@mozilla/lilypad-ui';
+import { PROFESSIONAL_COPY } from '../plan.const';
+import { BasePlanCard, Price } from '../BasePlanCard/BasePlanCard';
 import { getPricePageData } from 'util/utilities';
 import { BillingPeriodE, PlansE } from 'types/General';
+import { RegionCodeT } from 'types/Countries';
 
-type PersonalPlanCardPropsT = {
+type ProfessionalPlanCardPropsT = {
   billingPeriod: BillingPeriodE;
   regionCode: RegionCodeT;
 };
 
-const PersonalPlanCard = ({
+const ProfessionalPlanCard = ({
   billingPeriod,
   regionCode,
-}: PersonalPlanCardPropsT) => {
+}: ProfessionalPlanCardPropsT) => {
   const { planPrice, planUrl, taxDescription, currencySymbol } =
-    getPricePageData(regionCode, PlansE.PERSONAL, billingPeriod);
+    getPricePageData(regionCode, PlansE.PROFESSIONAL, billingPeriod);
 
   /**
    * Handle routing user to correct payment plan
@@ -27,8 +27,8 @@ const PersonalPlanCard = ({
 
   return (
     <BasePlanCard
-      title="Personal"
-      color="warm"
+      title="Professional"
+      color="rainbow"
       price={
         <Price
           price={`${currencySymbol}${planPrice}`}
@@ -37,12 +37,12 @@ const PersonalPlanCard = ({
           } + tax`}
         />
       }
-      infoCopyList={PERSONAL_COPY}
+      infoCopyList={PROFESSIONAL_COPY}
       showDisclaimer={true}
       confirmButton={
         <Button
           label="Subscribe to hubs"
-          text="Subscribe"
+          text="Subscribe now"
           onClick={handleSubscribeClick}
         />
       }
@@ -50,4 +50,4 @@ const PersonalPlanCard = ({
   );
 };
 
-export default PersonalPlanCard;
+export default ProfessionalPlanCard;

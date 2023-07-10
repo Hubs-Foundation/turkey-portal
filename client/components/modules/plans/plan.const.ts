@@ -47,6 +47,39 @@ export const PERSONAL_COPY: PlanInfoCopyT[] = [
   },
 ];
 
+export const PROFESSIONAL_COPY: PlanInfoCopyT[] = [
+  {
+    label: "I'm a place holder",
+    description: 'This is not real, I need to be told what I can do',
+    icon: 'spaces',
+  },
+  {
+    label: "I'm confused",
+    description: 'still waiting',
+    icon: 'spaces',
+  },
+  // {
+  //   label: 'Unlimited spaces',
+  //   description: 'With customizable environment and themes',
+  //   icon: 'spaces',
+  // },
+  // {
+  //   label: '20 Online guest capacity',
+  //   description: 'Free for guests to join',
+  //   icon: 'capacity',
+  // },
+  // {
+  //   label: '2GB Asset storage',
+  //   description: 'For avatars and scenes',
+  //   icon: 'space',
+  // },
+  // {
+  //   label: 'Custom myhubs.net web address',
+  //   description: '',
+  //   icon: 'address',
+  // },
+];
+
 export const PLAN_ID_MAP = {
   /**
    * United Kingdom

@@ -2,10 +2,10 @@ import { ReactNode } from 'react';
 import styles from './BasePlanCard.module.scss';
 import { PlanInfoCopyT } from '../plan.const';
 import InfoBlock from '../InfoBlock/InfoBlock';
-import { Button } from '@mozilla/lilypad-ui';
+import { Button, Icon } from '@mozilla/lilypad-ui';
 
 // PRICE DISPLAY COMPONENT
-// USED FOR BasePlanCard "PRICE" PROP
+// Used for BasePlanCard "price" prop
 type PricePropsT = {
   price: string;
   currencyAbbrev?: string;
@@ -28,15 +28,37 @@ export const Price = ({
   );
 };
 
+export const Disclaimer = () => {
+  return (
+    <a
+      className="primary-link"
+      href="https://hubs.mozilla.com/docs/setup-choosing.html#supported-regions-and-currencies"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <div className="flex pt-24 mb-16">
+        <div className="color-interaction-primary">
+          <Icon name="info" classProp="mr-16" color="currentColor" />
+        </div>
+
+        <p className="paragraph-sm">
+          Subscription plans are available in select countries
+        </p>
+      </div>
+    </a>
+  );
+};
+
 type BasePlanCardPropsT = {
   classProp?: string;
   title: string;
   price: ReactNode;
   infoCopyList: PlanInfoCopyT[];
   additionalContent?: ReactNode;
+  showDisclaimer?: boolean;
   confirmButton: ReactNode;
   footerClassProp?: string;
-  color: 'silver' | 'warm';
+  color: 'silver' | 'warm' | 'rainbow';
   isSoldOut?: boolean;
 };
 
@@ -45,6 +67,7 @@ export const BasePlanCard = ({
   price,
   infoCopyList,
   additionalContent,
+  showDisclaimer = false,
   confirmButton,
   footerClassProp = '',
   color,
@@ -90,6 +113,7 @@ export const BasePlanCard = ({
       {/* FOOTER  */}
 
       <div className={`${styles.footer_wrapper}`}>
+        {showDisclaimer && <Disclaimer />}
         <div
           className={`${styles.footer} ${footerClassProp} flex-justify-center`}
         >

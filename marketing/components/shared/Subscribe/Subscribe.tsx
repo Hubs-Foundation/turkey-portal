@@ -3,6 +3,7 @@ import { RegionCodeT } from 'types/Countries';
 import PersonalPlanCard from './PersonalPlanCard/PersonalPlanCard';
 import StarterPlanCard from './StarterPlanCard/StarterPlanCard';
 import BusinessPlanCard from './BusinessPlanCard/BusinessPlanCard';
+import ProfessionalPlanCard from './ProfessionalPlanCard/ProfessionalPlanCard';
 import styles from './Subscribe.module.scss';
 import Swoosh from '@Shared/Swoosh/Swoosh';
 import { getRegion } from 'services/region.service';
@@ -39,6 +40,10 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
           <div className={styles.cards}>
             <StarterPlanCard />
             <PersonalPlanCard
+              regionCode={regionCode}
+              billingPeriod={billingPeriod}
+            />
+            <ProfessionalPlanCard
               regionCode={regionCode}
               billingPeriod={billingPeriod}
             />

@@ -14,7 +14,7 @@ type PersonalPlanCardPropsT = {
 const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
   const { regionCode } = useSelector(selectRegion);
   const { planPrice, planUrl, taxDescription, currencySymbol } =
-    getPricePageData(regionCode, PlansE.PERSONAL, BillingPeriodE.MONTHLY);
+    getPricePageData(regionCode, PlansE.PERSONAL, billingPeriod);
 
   /**
    * Handle routing user to correct payment plan
@@ -36,24 +36,7 @@ const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
         />
       }
       infoCopyList={PERSONAL_COPY}
-      additionalContent={
-        <a
-          className="primary-link"
-          href="https://hubs.mozilla.com/docs/setup-choosing.html#supported-regions-and-currencies"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <div className="flex pt-24 mb-16">
-            <div className="color-interaction-primary">
-              <Icon name="info" classProp="mr-16" color="currentColor" />
-            </div>
-
-            <p className="paragraph-sm">
-              Subscription plans are available in select countries
-            </p>
-          </div>
-        </a>
-      }
+      showDisclaimer={true}
       confirmButton={
         <Button
           label="Subscribe to hubs"
