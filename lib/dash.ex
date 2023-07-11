@@ -52,17 +52,17 @@ defmodule Dash do
     do: PlanStateMachine.handle_event(:start, account)
 
   @doc """
-  Subscribes the given `account` to a standard plan.
+  Subscribes the given `account` to a personal plan.
 
-  This converts an existing plan to a standard plan or creates one if none
+  This converts an existing plan to a personal plan or creates one if none
   exists.
 
   Returns `:ok` if successful.  Otherwise, `{:error, reason}` is returned.
   """
-  @spec subscribe_to_standard_plan(Account.t(), DateTime.t()) ::
+  @spec subscribe_to_personal_plan(Account.t(), DateTime.t()) ::
           :ok | {:error, :account_not_found | :already_started}
-  def subscribe_to_standard_plan(%Account{} = account, %DateTime{} = subscribed_at),
-    do: PlanStateMachine.handle_event({:subscribe_standard, subscribed_at}, account)
+  def subscribe_to_personal_plan(%Account{} = account, %DateTime{} = subscribed_at),
+    do: PlanStateMachine.handle_event({:subscribe_personal, subscribed_at}, account)
 
   def update_or_create_capability_for_changeset(
         %{

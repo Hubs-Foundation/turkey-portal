@@ -10,6 +10,8 @@ import Config
 config :dash,
   ecto_repos: [Dash.Repo]
 
+config :dash, Dash.Repo.Migrations, http_client: Dash.FakeHttpClient
+
 # Configures the endpoint
 config :dash, DashWeb.Endpoint,
   url: [host: "localhost"],

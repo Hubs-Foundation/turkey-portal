@@ -14,7 +14,7 @@ defmodule DashWeb.Api.V1.AccountController do
           {true, active_subscription?, name}
 
         {:ok, %Dash.Capability{is_active: true}} ->
-          {true, true, "standard"}
+          {true, true, "personal"}
 
         {:error, :no_active_plan} ->
           {false, false, nil}

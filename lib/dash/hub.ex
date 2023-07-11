@@ -10,8 +10,8 @@ defmodule Dash.Hub do
   @type id :: pos_integer
   @type t :: %__MODULE__{account_id: id}
 
-  @standard_ccu_limit 25
-  @standard_storage_limit_mb 2_000
+  @personal_ccu_limit 20
+  @personal_storage_limit_mb 2_000
 
   @primary_key {:hub_id, :id, autogenerate: true}
   schema "hubs" do
@@ -140,9 +140,9 @@ defmodule Dash.Hub do
     hub =
       Repo.insert!(%__MODULE__{
         account_id: account.account_id,
-        ccu_limit: @standard_ccu_limit,
+        ccu_limit: @personal_ccu_limit,
         status: :creating,
-        storage_limit_mb: @standard_storage_limit_mb,
+        storage_limit_mb: @personal_storage_limit_mb,
         subdomain: rand_string(10),
         tier: :p1
       })
