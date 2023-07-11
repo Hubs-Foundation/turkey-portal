@@ -25,7 +25,8 @@ export const CustomizeHub = ({ hub }: CustomizeHubPropsT) => {
           category={ButtonCategoriesE.SECONDARY_SOLID}
           onClick={() => {
             router.push({
-              pathname: '/custom-client',
+              pathname: '/hubs/[hub_id]',
+              query: { hub_id: hub.hubId },
             });
           }}
         />
@@ -42,8 +43,7 @@ export const CustomizeHub = ({ hub }: CustomizeHubPropsT) => {
           category={ButtonCategoriesE.SECONDARY_SOLID}
           onClick={() => {
             router.push({
-              pathname: '/hubs/[hub_id]',
-              query: { hub_id: hub.hubId },
+              pathname: '/custom-client',
             });
           }}
         />

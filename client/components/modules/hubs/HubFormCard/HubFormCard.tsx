@@ -223,20 +223,20 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
           {isProfessional && (
             <section className={styles.custom_client_message}>
               <div className="flex-justify-between mb-12">
-                <h1 className="heading-sm">Custom Client</h1>
+                <h1 className="heading-sm">Custom Domain</h1>
                 <Pill title="Beta" category="cool" />
               </div>
               <p className="paragraph mb-24">
                 This plan allows you to manually connect a custom domain to your
-                Hub using the command line. The following documentation walks
-                you through the process, prerequisites, and how to troubleshoot
-                custom domains.
+                hub using the command line. The following documentation walks
+                you through the process, prerequisites, and how to
+                troubleshooting custom domains.
               </p>
 
               <div className="mb-20 youtube-video">
                 <iframe
                   className=""
-                  src="https://www.youtube.com/embed/RyS_TbmCcY4"
+                  src="https://www.youtube.com/embed/0PTmHNKdZB0"
                   frameBorder="0"
                   allowFullScreen
                 ></iframe>
@@ -244,11 +244,10 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
 
               <a
                 className="primary-link"
-                onClick={() => {
-                  window.open('mailto:hubs-clientupload@mozilla.com');
-                }}
+                href="hubs.mozilla.com/docs/setup-custom-domain.html"
+                target="_blank"
               >
-                [Placeholder] Get started with the Hubs Docs
+                Custom Domain Documentation
               </a>
             </section>
           )}

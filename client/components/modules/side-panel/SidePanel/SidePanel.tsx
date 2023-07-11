@@ -5,6 +5,7 @@ import { Icon, HubIcon } from '@mozilla/lilypad-ui';
 import TileButton from '@Shared/TileButton/TileButton';
 import UpgradePlan from '../UpgradePlan/UpgradePlan';
 import SupportGrid from '../SupportGrid/SupportGrid';
+import GettingStartedPanel from '../GettingStartedPanel/GettingStartedPanel';
 import { useMobileDown } from 'hooks/useMediaQuery';
 import { useSelector } from 'react-redux';
 import { selectAccount } from 'store/accountSlice';
@@ -59,6 +60,7 @@ const SidePanel = ({
       )}
       {!isProfessional && <UpgradePlan />}
 
+      <GettingStartedPanel />
       <SupportGrid />
     </section>
   );

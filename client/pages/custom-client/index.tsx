@@ -50,7 +50,7 @@ const CustomClient = ({ subscription }: HubDetailsViewPropsT) => {
   return (
     <div className="page_wrapper">
       <Head>
-        <title>Create Custom Client</title>
+        <title>Upload A Custom Client</title>
         <meta
           name="description"
           content="creating a custom client for user on the pro plan"
@@ -73,7 +73,7 @@ const CustomClient = ({ subscription }: HubDetailsViewPropsT) => {
                 icon="arrow-left"
                 classProp="mr-5"
               />
-              <h1 className="heading-sm">Custom Client</h1>
+              <h1 className="heading-sm">Upload A Custom Client</h1>
             </div>
             <p className="paragraph mb-24">
               This plan allows you to manually upload your own version of the
@@ -82,35 +82,33 @@ const CustomClient = ({ subscription }: HubDetailsViewPropsT) => {
               troubleshooting custom clients. Be advised that uploading a custom
               client will prevent your hub from receiving automatic updates to
               the Hubs client. Users who upload a custom client are responsible
-              for ensuring their code is compatible with Mozilla’s regular
+              for ensuring their code is compatible with Mozilla&apos;s regular
               updates to the Hubs server infrastructure.
             </p>
 
             <div className="mb-20 youtube-video">
               <iframe
                 className=""
-                src="https://www.youtube.com/embed/RyS_TbmCcY4"
+                src="https://www.youtube.com/embed/dJAy1gk5Ow0"
                 frameBorder="0"
                 allowFullScreen
               ></iframe>
             </div>
 
             <a
+              target="_blank"
               className="primary-link mb-20 block"
-              onClick={() => {
-                window.open('mailto:hubs-clientupload@mozilla.com');
-              }}
+              href="hubs.mozilla.com/docs/setup-custom-client.html"
             >
-              [Placeholder] Get started with the Hubs Docs
+              Custom Client Documentation
             </a>
 
             <a
+              target="_blank"
               className="primary-link block"
-              onClick={() => {
-                window.open('mailto:hubs-clientupload@mozilla.com');
-              }}
+              href="https://github.com/mozilla/hubs/releases"
             >
-              Follow our update cycle
+              Follow Our Regular Development Updates
             </a>
           </Card>
         </div>

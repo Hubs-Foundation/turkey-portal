@@ -1,0 +1,7 @@
+@use 'styles/core/boilerplate' as *;
+
+.support_links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
