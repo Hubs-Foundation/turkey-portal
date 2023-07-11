@@ -50,6 +50,8 @@ config :logger, level: :info
 
 config :dash, Dash.OrchClient, orch_host: "turkeyorch:889"
 
+config :dash, Dash.Repo.Migrations, http_client: :hackney
+
 config :dash, Dash.RetClient,
   timeout_ms: 600_000,
   wait_ms: 2000

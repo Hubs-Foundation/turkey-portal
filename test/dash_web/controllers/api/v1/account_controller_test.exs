@@ -81,7 +81,7 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
       assert "starter" === payload["planName"]
     end
 
-    test "when the account has an active standard plan", %{conn: conn} do
+    test "when the account has an active personal plan", %{conn: conn} do
       stub_http_post_200()
 
       assert payload =
@@ -91,7 +91,7 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
                |> json_response(200)
 
       assert true === payload["hasPlan"]
-      assert "standard" === payload["planName"]
+      assert "personal" === payload["planName"]
     end
   end
 end

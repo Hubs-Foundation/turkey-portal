@@ -218,7 +218,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       fxa_uid = "dummy-uid"
       the_past = ~U[1970-01-01 00:00:00.000000Z]
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid, "dummy@test.com")
-      :ok = Dash.subscribe_to_standard_plan(account, the_past)
+      :ok = Dash.subscribe_to_personal_plan(account, the_past)
 
       token =
         [
