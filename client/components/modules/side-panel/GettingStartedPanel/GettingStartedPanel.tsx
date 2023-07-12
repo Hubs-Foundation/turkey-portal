@@ -26,7 +26,7 @@ const GettingStartedPanel = () => {
           <SupportLink
             title="Hubs YouTube"
             image={playCircle}
-            href="https://youtu.be/tUw_c2Ng-ac "
+            href="https://www.youtube.com/watch?v=tUw_c2Ng-ac&list=PLCxaiaRxTL6_V88JFYb6tOPkHCKjnH2BK&index=5 "
             body="Watch our Discover Hubs series to understand the essentials of using your subscription."
           />
         </div>
