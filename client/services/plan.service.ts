@@ -11,15 +11,9 @@ type PostReturnDataT = { status: 'created' } | { error: 'already started' };
  */
 export const postStarterPlan = async () => {
   return axios
-    .post(
-      PLANS_API_PATH,
-      {
-        tier: 'starter',
-      },
-      {
-        withCredentials: true,
-      }
-    )
+    .post(PLANS_API_PATH, null, {
+      withCredentials: true,
+    })
     .then((response) => {
       return response.data as PostReturnDataT;
     });
