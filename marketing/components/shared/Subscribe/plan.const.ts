@@ -370,7 +370,7 @@ export const PLAN_ID_MAP = {
     personal: {
       monthly: {
         planId: 'price_1NLVqoJNcmPzuWtRZYpDKeLw',
-        price: 22.22,
+        price: 7.0,
       },
       yearly: {
         planId: 'price_1NMGTPJNcmPzuWtRkQnPTHqQ',
