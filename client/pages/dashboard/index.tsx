@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
 import { useEffect, useState, useCallback } from 'react';
-import { HubT, LastErrorE, StatusE } from 'types/General';
+import { HubT, LastErrorE, PlansE, StatusE } from 'types/General';
 import styles from './dashboard.module.scss';
 import HubCard from '@Modules/hubs/HubCard/HubCard';
 import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
@@ -59,6 +59,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const isProfessionalUp = useIsProfessionalUp();
 
+  console.log('account', account);
   /**
    * Hubs call failed:
    * Manually set Error state Hub in UI
@@ -154,7 +155,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
       <SidePanelLayout
         hub={hubs[0]}
         subscription={subscription}
-        isLoading={isLoading}
+        isLoading={isLoading && Boolean(account.planName)}
       >
         <div className={styles.cards_wrapper}>
           {/* Hub Creating */}
