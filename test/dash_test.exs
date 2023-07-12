@@ -190,9 +190,6 @@ defmodule DashTest do
       assert {:error, :no_subscription} === Dash.expire_plan_subscription(account, expired_at)
     end
 
-    @tag :skip
-    test "when the account has a stopped plan"
-
     test "when the account has an active starter plan", %{
       account: account,
       expired_at: expired_at
@@ -295,9 +292,6 @@ defmodule DashTest do
 
       assert {:ok, %Plan{name: "personal", subscription?: true}} = Dash.fetch_active_plan(account)
     end
-
-    @tag :skip
-    test "when the account has a stopped plan"
   end
 
   describe "get_hub/2" do
@@ -401,9 +395,6 @@ defmodule DashTest do
       assert :p0 === hub.tier
       assert domain === hub.deployment.domain
     end
-
-    @tag :skip
-    test "when the account has a stopped plan"
   end
 
   describe "subscribe_to_personal_plan/2" do
@@ -459,9 +450,6 @@ defmodule DashTest do
       assert :p1 === hub.tier
       assert domain === hub.deployment.domain
     end
-
-    @tag :skip
-    test "when the account has a stopped plan"
 
     @tag :skip
     test "with subscribed_at earlier than the last state transition, when the account has a stopped plan"
