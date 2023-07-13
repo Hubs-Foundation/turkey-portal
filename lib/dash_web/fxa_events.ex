@@ -80,26 +80,33 @@ defmodule DashWeb.FxaEvents do
         "isActive" => is_active,
         "changeTime" => milliseconds
       }) do
-    if capabilities !== ["managed-hubs"] do
+    if capabilities not in [["managed-hubs"], ["hubs-professional"]] do
       raise "unknown capabilities for subscription changed event: #{Enum.join(capabilities, ", ")}"
     end
 
-    datetime = DateTime.from_unix!(milliseconds * 1_000, :microsecond)
-    truncated_datetime = unix_to_utc_datetime(milliseconds)
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+    datetime = DateTime.from_unix!(milliseconds * 1_000, :microsecond)
 
-    if is_active do
-      with {:error, reason} <- Dash.subscribe_to_personal_plan(account, datetime) do
-        Logger.warning("could not subscribe to personal plan for reason: #{reason}")
-      end
-    else
-      with {:error, reason} <- Dash.expire_plan_subscription(account, datetime) do
-        Logger.warning("could not expire plan subscription for reason: #{reason}")
-      end
+    cond do
+      not is_active ->
+        with {:error, reason} <- Dash.expire_plan_subscription(account, datetime) do
+          Logger.warning("could not expire plan subscription for reason: #{reason}")
+        end
+
+      capabilities === ["managed-hubs"] ->
+        with {:error, reason} <- Dash.subscribe_to_personal_plan(account, datetime) do
+          Logger.warning("could not subscribe to personal plan for reason: #{reason}")
+        end
+
+      capabilities === ["hubs-professional"] ->
+        with {:error, reason} <- Dash.subscribe_to_professional_plan(account, datetime) do
+          Logger.warning("could not subscribe to professional plan for reason: #{reason}")
+        end
     end
 
     # We expire the cookie on every subscription changed event because the auth server puts subscription information
     # on the cookie. Such as when the subscription is expiring or if it isn't.
+    truncated_datetime = unix_to_utc_datetime(milliseconds)
     Dash.Account.set_auth_updated_at(fxa_uid, truncated_datetime)
     :ok
   end

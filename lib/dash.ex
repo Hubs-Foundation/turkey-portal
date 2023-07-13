@@ -58,9 +58,22 @@ defmodule Dash do
   Returns `:ok` if successful.  Otherwise, `{:error, reason}` is returned.
   """
   @spec subscribe_to_personal_plan(Account.t(), DateTime.t()) ::
-          :ok | {:error, :account_not_found | :already_started}
+          :ok | {:error, :account_not_found | :already_started | :superseded}
   def subscribe_to_personal_plan(%Account{} = account, %DateTime{} = subscribed_at),
     do: PlanStateMachine.handle_event({:subscribe_personal, subscribed_at}, account)
+
+  @doc """
+  Subscribes the given `account` to a professional plan.
+
+  This converts an existing plan to a professional plan or creates one if none
+  exists.
+
+  Returns `:ok` if successful.  Otherwise, `{:error, reason}` is returned.
+  """
+  @spec subscribe_to_professional_plan(Account.t(), DateTime.t()) ::
+          :ok | {:error, :account_not_found | :already_started | :superseded}
+  def subscribe_to_professional_plan(%Account{} = account, %DateTime{} = subscribed_at),
+    do: PlanStateMachine.handle_event({:subscribe_professional, subscribed_at}, account)
 
   def update_or_create_capability_for_changeset(
         %{
