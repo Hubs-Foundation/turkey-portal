@@ -55,7 +55,10 @@ export const getPricePageData = (
  * @param compare
  * @returns
  */
-export const isPlanLessThan = (current: PlansE, compare: PlansE): boolean => {
+export const isPlanLessThan = (
+  current: PlansE,
+  compare: Exclude<PlansE, PlansE.LEGACY>
+): boolean => {
   // Handle Legacy Personal plan
   const currentPlan = current === PlansE.LEGACY ? PlansE.PERSONAL : current;
   const keys = Object.keys(PlansE);

@@ -57,10 +57,10 @@ export type AccountT = {
 // change the order from least to most permissions.
 export enum PlansE {
   STARTER = 'starter',
+  LEGACY = 'standard',
   PERSONAL = 'personal',
   PROFESSIONAL = 'professional',
   BUSINESS = 'business',
-  LEGACY = 'standard',
 }
 
 export enum BillingPeriodE {
