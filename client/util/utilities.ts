@@ -56,13 +56,8 @@ export const getPricePageData = (
  * @returns
  */
 export const isPlanLessThan = (current: PlansE, compare: PlansE): boolean => {
-  let currentPlan = current;
-
   // Handle Legacy Personal plan
-  if (current == PlansE.LEGACY) {
-    currentPlan = PlansE.PERSONAL;
-  }
-
+  const currentPlan = current === PlansE.LEGACY ? PlansE.PERSONAL : current;
   const keys = Object.keys(PlansE);
   const currentIndex = keys.indexOf(currentPlan.toUpperCase());
   const compareIndex = keys.indexOf(compare.toUpperCase());
