@@ -370,7 +370,7 @@ export const PLAN_ID_MAP = {
     personal: {
       monthly: {
         planId: 'price_1NLVqoJNcmPzuWtRZYpDKeLw',
-        price: 22.22,
+        price: 7.0,
       },
       yearly: {
         planId: 'price_1NMGTPJNcmPzuWtRkQnPTHqQ',
@@ -678,7 +678,7 @@ export const PLAN_ID_MAP = {
    */
   MY: {
     abbrev: 'MYR',
-    symbol: 'RM ',
+    symbol: 'MYR ',
     taxDescription: '',
     personal: {
       monthly: {
@@ -717,7 +717,7 @@ export const PLAN_ID_MAP = {
    */
   SG: {
     abbrev: 'SGD',
-    symbol: '$',
+    symbol: 'SGD ',
     taxDescription: '',
     personal: {
       monthly: {

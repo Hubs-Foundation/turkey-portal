@@ -678,7 +678,7 @@ export const PLAN_ID_MAP = {
    */
   MY: {
     abbrev: 'MYR',
-    symbol: 'RM ',
+    symbol: 'MYR ',
     taxDescription: '',
     personal: {
       monthly: {
@@ -717,7 +717,7 @@ export const PLAN_ID_MAP = {
    */
   SG: {
     abbrev: 'SGD',
-    symbol: '$',
+    symbol: 'SGD ',
     taxDescription: '',
     personal: {
       monthly: {
