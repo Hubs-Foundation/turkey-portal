@@ -53,6 +53,8 @@ export type AccountT = {
   planName: PlansE | null;
 };
 
+// The order of this Plan enum matters, do not
+// change the order from least to most permissions.
 export enum PlansE {
   STARTER = 'starter',
   PERSONAL = 'personal',
