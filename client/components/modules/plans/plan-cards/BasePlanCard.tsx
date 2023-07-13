@@ -85,7 +85,7 @@ const BasePlanCard = ({
    * is "current","sold out", or "less than"
    * current plan.
    */
-  const getCTA = useCallback(() => {
+  const getCTA = () => {
     const planName = title.toLocaleLowerCase() as PlansE;
     const SoldOut = <Button label="sold out" text="sold out" />;
     const CurrentPlan = (
@@ -122,7 +122,7 @@ const BasePlanCard = ({
     }
 
     return confirmButton;
-  }, [account]);
+  };
 
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
