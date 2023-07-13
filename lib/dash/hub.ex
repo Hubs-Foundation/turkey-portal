@@ -1,15 +1,19 @@
 defmodule Dash.Hub do
   use Ecto.Schema
-  import Ecto.Query
-  import Ecto.Changeset
-  require Logger
+
   alias Dash.{HubDeployment, Repo, RetClient, SubdomainDenial, TaskSupervisor}
+  import Dash.Utils, only: [rand_string: 1]
+  import Ecto.Changeset
+  import Ecto.Query
+  require Logger
 
   @type id :: pos_integer
   @type t :: %__MODULE__{account_id: id}
 
-  @primary_key {:hub_id, :id, autogenerate: true}
+  @personal_ccu_limit 20
+  @personal_storage_limit_mb 2_000
 
+  @primary_key {:hub_id, :id, autogenerate: true}
   schema "hubs" do
     field :ccu_limit, :integer
     field :status, Ecto.Enum, values: [:creating, :updating, :ready, :subdomain_error, :error]
@@ -94,7 +98,9 @@ defmodule Dash.Hub do
   # Will wait for hub to be ready before
   def ensure_default_hub_is_ready(%Dash.Account{} = account, email, has_subscription?) do
     # TODO: test this behavior somewhere
-    if has_subscription? and not has_hubs(account), do: create_default_hub(account, email)
+    if has_subscription? and not has_hubs(account) do
+      Repo.transaction(fn -> create_default_hub(account, email) end)
+    end
 
     hub =
       Repo.one(
@@ -130,54 +136,30 @@ defmodule Dash.Hub do
     end
   end
 
-  @hub_defaults %{
-    tier: :p1,
-    ccu_limit: 25,
-    storage_limit_mb: 2000
-  }
-
   def create_default_hub(%Dash.Account{} = account, fxa_email) do
-    subdomain = Dash.Utils.rand_string(10)
+    hub =
+      Repo.insert!(%__MODULE__{
+        account_id: account.account_id,
+        ccu_limit: @personal_ccu_limit,
+        status: :creating,
+        storage_limit_mb: @personal_storage_limit_mb,
+        subdomain: rand_string(10),
+        tier: :p1
+      })
 
-    new_hub_params =
-      %{
-        subdomain: subdomain,
-        status: :creating
-      }
-      |> Map.merge(@hub_defaults)
+    {:ok, %{body: json, status_code: 200}} = Dash.OrchClient.create_hub(fxa_email, hub)
 
-    new_hub =
-      %Dash.Hub{}
-      |> Dash.Hub.changeset(new_hub_params)
-      |> Ecto.Changeset.put_assoc(:account, account)
-      |> Repo.insert!()
+    domain =
+      json
+      |> Jason.decode!()
+      |> Map.fetch!("domain")
 
-    case Dash.OrchClient.create_hub(fxa_email, new_hub) do
-      {:ok, %{body: json, status_code: 200}} ->
-        domain =
-          json
-          |> Jason.decode!()
-          |> Map.fetch!("domain")
+    Dash.Repo.insert!(%Dash.HubDeployment{
+      domain: domain,
+      hub_id: hub.hub_id
+    })
 
-        Dash.Repo.insert!(%Dash.HubDeployment{
-          domain: domain,
-          hub_id: new_hub.hub_id
-        })
-
-        {:ok, new_hub}
-
-      {:ok, %{status_code: status_code} = response} ->
-        Logger.warn(
-          "Creating default hub Orch request returned status code #{status_code} and response #{inspect(response)}"
-        )
-
-        {:ok, new_hub}
-
-      {:error, err} ->
-        Logger.error("Failed to create default hub #{inspect(err)}")
-        new_hub |> change(status: :error) |> Dash.Repo.update!()
-        {:error, err}
-    end
+    {:ok, hub}
   end
 
   defp get_hub(hub_id, %Dash.Account{} = account) do

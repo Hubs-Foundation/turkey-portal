@@ -31,7 +31,7 @@ export const PERSONAL_COPY: PlanInfoCopyT[] = [
     icon: 'spaces',
   },
   {
-    label: '25 Online guest capacity',
+    label: '20 Online guest capacity',
     description: 'Free for guests to join',
     icon: 'capacity',
   },
@@ -53,7 +53,7 @@ export const PLAN_ID_MAP = {
    */
   GB: {
     abbrev: 'GBP',
-    symbol: '$',
+    symbol: '£',
     taxDescription: '',
     personal: {
       monthly: {
@@ -324,7 +324,7 @@ export const PLAN_ID_MAP = {
   /**
    * Austria
    */
-  AU: {
+  AT: {
     abbrev: 'EUR',
     symbol: '€',
     taxDescription: '',
@@ -365,12 +365,12 @@ export const PLAN_ID_MAP = {
    */
   CH: {
     abbrev: 'CHF',
-    symbol: 'CHF',
+    symbol: 'CHF ',
     taxDescription: '',
     personal: {
       monthly: {
         planId: 'price_1NLVqoJNcmPzuWtRZYpDKeLw',
-        price: 22.22,
+        price: 7.0,
       },
       yearly: {
         planId: 'price_1NMGTPJNcmPzuWtRkQnPTHqQ',
@@ -566,7 +566,7 @@ export const PLAN_ID_MAP = {
     personal: {
       monthly: {
         planId: 'price_1NLVvMJNcmPzuWtRX1QBGKSV',
-        price: 7.0,
+        price: 12.0,
       },
       yearly: {
         planId: 'price_1NMGneJNcmPzuWtRTCcwxSwT',
@@ -639,12 +639,12 @@ export const PLAN_ID_MAP = {
    */
   SE: {
     abbrev: 'SEK',
-    symbol: 'kr',
+    symbol: 'SEK ',
     taxDescription: '',
     personal: {
       monthly: {
         planId: 'price_1NLVw1JNcmPzuWtRh8SWab0h',
-        price: 7.0,
+        price: 75.0,
       },
       yearly: {
         planId: 'price_1NMGomJNcmPzuWtRxbvlH3pV',
@@ -678,12 +678,12 @@ export const PLAN_ID_MAP = {
    */
   MY: {
     abbrev: 'MYR',
-    symbol: 'RM',
+    symbol: 'MYR ',
     taxDescription: '',
     personal: {
       monthly: {
         planId: 'price_1NLVx0JNcmPzuWtRxTKTtFVp',
-        price: 7.0,
+        price: 33.0,
       },
       yearly: {
         planId: 'price_1NMGpJJNcmPzuWtR1X4dN8T3',
@@ -722,7 +722,7 @@ export const PLAN_ID_MAP = {
     personal: {
       monthly: {
         planId: 'price_1NLVyqJNcmPzuWtRpdz9tU6W',
-        price: 22.22,
+        price: 10.0,
       },
       yearly: {
         planId: 'price_1NMGpfJNcmPzuWtRUHrCxkCq',
@@ -756,12 +756,12 @@ export const PLAN_ID_MAP = {
    */
   PL: {
     abbrev: 'PLN',
-    symbol: 'zł',
+    symbol: 'PLN ',
     taxDescription: '',
     personal: {
       monthly: {
         planId: 'price_1NLVzHJNcmPzuWtRlZccvg2A',
-        price: 7.0,
+        price: 29.0,
       },
       yearly: {
         planId: 'price_1NMGqMJNcmPzuWtRLlnGy5yt',
@@ -873,12 +873,12 @@ export const PLAN_ID_MAP = {
    */
   DK: {
     abbrev: 'DKK',
-    symbol: 'Kr.',
+    symbol: 'DKK ',
     taxDescription: '',
     personal: {
       monthly: {
         planId: 'price_1NLW4OJNcmPzuWtRAINJv8QW',
-        price: 7.0,
+        price: 48.0,
       },
       yearly: {
         planId: 'price_1NMGraJNcmPzuWtRcbw8vz70',
@@ -912,12 +912,12 @@ export const PLAN_ID_MAP = {
    */
   CZ: {
     abbrev: 'CZK',
-    symbol: 'Kč',
+    symbol: 'CZK ',
     taxDescription: '',
     personal: {
       monthly: {
         planId: 'price_1NLW6dJNcmPzuWtRg1dky1H7',
-        price: 7.0,
+        price: 151.0,
       },
       yearly: {
         planId: 'price_1NMGs3JNcmPzuWtR6gq6sqyJ',

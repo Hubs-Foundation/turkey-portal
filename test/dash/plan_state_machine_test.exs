@@ -63,7 +63,7 @@ defmodule Dash.PlanStateMachineTest do
         is_active: true
       })
 
-      assert {:cont, :standard, nil} === PlanStateMachine.init(account)
+      assert {:cont, :personal, nil} === PlanStateMachine.init(account)
     end
 
     test "when there is an inactive capability (DEPRECATED)", %{account: account} do
@@ -95,7 +95,7 @@ defmodule Dash.PlanStateMachineTest do
         payload = Jason.decode!(json)
         [hub] = Hub.hubs_for_account(account)
         assert String.ends_with?(url, "hc_instance")
-        assert [hackney: [:insecure]] === opts
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
         assert "10" === payload["ccu_limit"]
         assert true === payload["disable_branding"]
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
@@ -127,15 +127,15 @@ defmodule Dash.PlanStateMachineTest do
       assert 100 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
     end
 
-    test "nil -- subscribe_standard ->", %{account: account} do
+    test "nil -- subscribe_personal ->", %{account: account} do
       domain = "region.root.test"
 
       Mox.expect(HttpMock, :post, fn url, json, _headers, opts ->
         payload = Jason.decode!(json)
         [hub] = Hub.hubs_for_account(account)
         assert String.ends_with?(url, "hc_instance")
-        assert [hackney: [:insecure]] === opts
-        assert "25" === payload["ccu_limit"]
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
+        assert "20" === payload["ccu_limit"]
         assert false === payload["disable_branding"]
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
         assert "us" === payload["region"]
@@ -150,13 +150,13 @@ defmodule Dash.PlanStateMachineTest do
       assert :ok ===
                PlanStateMachine.handle_event(
                  nil,
-                 {:subscribe_standard, DateTime.utc_now()},
+                 {:subscribe_personal, DateTime.utc_now()},
                  account,
                  nil
                )
 
       assert [hub] = Hub.hubs_for_account(account)
-      assert 25 === hub.ccu_limit
+      assert 20 === hub.ccu_limit
       assert :creating === hub.status
       assert 2_000 === hub.storage_limit_mb
       assert :p1 === hub.tier
@@ -166,8 +166,8 @@ defmodule Dash.PlanStateMachineTest do
       assert account.account_id === plan.account_id
 
       assert [transition] = ordered_transitions()
-      assert "subscribe_standard" === transition.event
-      assert :standard === transition.new_state
+      assert "subscribe_personal" === transition.event
+      assert :personal === transition.new_state
       assert plan.plan_id === transition.plan_id
       assert 100 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
     end
@@ -208,7 +208,7 @@ defmodule Dash.PlanStateMachineTest do
       assert [_] = ordered_transitions()
     end
 
-    test "starter -- subscribe_standard ->", %{account: account} do
+    test "starter -- subscribe_personal ->", %{account: account} do
       :ok = put_in_state(account, :starter)
       %{hub_id: hub_id} = Repo.insert!(%Hub{account_id: account.account_id})
       Repo.insert!(%HubDeployment{domain: "fake.domain", hub_id: hub_id})
@@ -217,8 +217,8 @@ defmodule Dash.PlanStateMachineTest do
         payload = Jason.decode!(json)
         [hub] = Hub.hubs_for_account(account)
         assert String.ends_with?(url, "hc_instance")
-        assert [hackney: [:insecure]] === opts
-        assert "25" === payload["ccu_limit"]
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
+        assert "20" === payload["ccu_limit"]
         assert false === payload["disable_branding"]
         assert hub.deployment.domain === payload["domain"]
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
@@ -234,13 +234,13 @@ defmodule Dash.PlanStateMachineTest do
       assert :ok ===
                PlanStateMachine.handle_event(
                  :starter,
-                 {:subscribe_standard, DateTime.utc_now()},
+                 {:subscribe_personal, DateTime.utc_now()},
                  account,
                  nil
                )
 
       assert [hub] = Hub.hubs_for_account(account)
-      assert 25 === hub.ccu_limit
+      assert 20 === hub.ccu_limit
       assert hub_id === hub.hub_id
       assert :updating === hub.status
       assert 2_000 === hub.storage_limit_mb
@@ -250,8 +250,8 @@ defmodule Dash.PlanStateMachineTest do
       assert account.account_id === plan.account_id
 
       assert [transition, _] = ordered_transitions()
-      assert "subscribe_standard" === transition.event
-      assert :standard === transition.new_state
+      assert "subscribe_personal" === transition.event
+      assert :personal === transition.new_state
       assert plan.plan_id === transition.plan_id
       assert 100 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
     end
@@ -270,11 +270,11 @@ defmodule Dash.PlanStateMachineTest do
       assert [_] = ordered_transitions()
     end
 
-    test "standard -- fetch_active_plan ->", %{account: account} do
-      :ok = put_in_state(account, :standard)
+    test "personal -- fetch_active_plan ->", %{account: account} do
+      :ok = put_in_state(account, :personal)
 
       assert {:ok, plan} =
-               PlanStateMachine.handle_event(:standard, :fetch_active_plan, account, nil)
+               PlanStateMachine.handle_event(:personal, :fetch_active_plan, account, nil)
 
       assert %Plan{} = plan
       assert account.account_id === plan.account_id
@@ -283,22 +283,22 @@ defmodule Dash.PlanStateMachineTest do
       assert [_] = ordered_transitions()
     end
 
-    test "standard -- start ->", %{account: account} do
-      :ok = put_in_state(account, :standard)
+    test "personal -- start ->", %{account: account} do
+      :ok = put_in_state(account, :personal)
 
       assert {:error, :already_started} =
-               PlanStateMachine.handle_event(:standard, :start, account, nil)
+               PlanStateMachine.handle_event(:personal, :start, account, nil)
 
       assert [_] = ordered_transitions()
     end
 
-    test "standard -- subscribe_standard ->", %{account: account} do
-      :ok = put_in_state(account, :standard)
+    test "personal -- subscribe_personal ->", %{account: account} do
+      :ok = put_in_state(account, :personal)
 
       assert {:error, :already_started} =
                PlanStateMachine.handle_event(
-                 :standard,
-                 {:subscribe_standard, DateTime.utc_now()},
+                 :personal,
+                 {:subscribe_personal, DateTime.utc_now()},
                  account,
                  nil
                )
@@ -306,8 +306,8 @@ defmodule Dash.PlanStateMachineTest do
       assert [_] = ordered_transitions()
     end
 
-    test "standard -- expire_subscription ->", %{account: account} do
-      :ok = put_in_state(account, :standard)
+    test "personal -- expire_subscription ->", %{account: account} do
+      :ok = put_in_state(account, :personal)
       custom_subdomain = "dummy-subdomain"
 
       %{hub_id: hub_id} =
@@ -319,7 +319,7 @@ defmodule Dash.PlanStateMachineTest do
         payload = Jason.decode!(json)
         [hub] = Hub.hubs_for_account(account)
         assert String.ends_with?(url, "hc_instance")
-        assert [hackney: [:insecure]] === opts
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
         assert "10" === payload["ccu_limit"]
         assert true === payload["disable_branding"]
         assert hub.deployment.domain === payload["domain"]
@@ -335,7 +335,7 @@ defmodule Dash.PlanStateMachineTest do
 
       assert :ok ===
                PlanStateMachine.handle_event(
-                 :standard,
+                 :personal,
                  {:expire_subscription, DateTime.utc_now()},
                  account,
                  nil
@@ -364,9 +364,9 @@ defmodule Dash.PlanStateMachineTest do
   defp ordered_transitions,
     do: Repo.all(from t in PlanStateMachine.PlanTransition, order_by: [desc: t.transitioned_at])
 
-  @spec put_in_state(Account.t(), :starter | :standard | :stopped) :: :ok
+  @spec put_in_state(Account.t(), :starter | :personal | :stopped) :: :ok
   defp put_in_state(%Account{} = account, state)
-       when state in [:starter, :standard, :stopped] do
+       when state in [:starter, :personal, :stopped] do
     %{plan_id: plan_id} = Repo.insert!(%Plan{account_id: account.account_id})
 
     Repo.insert!(%PlanStateMachine.PlanTransition{

@@ -1,10 +1,6 @@
-export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
-export type FormattedTierT = 'Mvp' | 'Starter' | 'Early Access' | 'Premium';
 import { AcceptedRegionCodeT } from './Countries';
-export type FormattedTierMapT = {
-  [key in TierT]: FormattedTierT;
-};
 
+export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
 export enum StatusE {
   CREATING = 'creating',
   UPDATING = 'updating',

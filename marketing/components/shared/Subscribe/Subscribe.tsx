@@ -22,6 +22,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
     const fetchRegion = async () => {
       try {
         const data = await getRegion();
+        console.log('Region Header: ', data.regionCode);
         setRegionCode(data.regionCode);
       } catch (e) {
         console.error('error fetching region', e);

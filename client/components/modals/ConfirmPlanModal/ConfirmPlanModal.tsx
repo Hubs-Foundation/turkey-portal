@@ -36,7 +36,7 @@ const ConfirmPlanModal = () => {
           <h2 className="heading-lg mb-32">Let&apos;s build your hub!</h2>
           <p className="body-md mb-42">
             Continue with a Starter Plan and begin exploration the many features
-            of your hub. Visit your hub’s home page and create your first
+            of your hub. Visit your hub&apos;s home page and create your first
             virtual room.
           </p>
           <div className="flex-justify-center">

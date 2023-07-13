@@ -9,8 +9,8 @@ defmodule Dash.PlanStateMachine do
 
   @starter_ccu_limit 10
   @starter_storage_limit_mb 500
-  @standard_ccu_limit 25
-  @standard_storage_limit_mb 2_000
+  @personal_ccu_limit 20
+  @personal_storage_limit_mb 2_000
 
   alias Dash.{Account, Capability, Hub, Plan, OrchClient, Repo}
   import Dash.Utils, only: [capability_string: 0, rand_string: 1]
@@ -65,7 +65,7 @@ defmodule Dash.PlanStateMachine do
              where: c.capability == ^capability_string(),
              where: c.is_active
          ),
-         do: :standard
+         do: :personal
     end
   end
 
@@ -101,19 +101,19 @@ defmodule Dash.PlanStateMachine do
 
   def handle_event(
         nil,
-        {:subscribe_standard, %DateTime{} = subscribed_at},
+        {:subscribe_personal, %DateTime{} = subscribed_at},
         %Account{} = account,
         _data
       ) do
     %{plan_id: plan_id} = Repo.insert!(%Plan{account_id: account.account_id})
-    :ok = subscribe_standard(plan_id, subscribed_at)
+    :ok = subscribe_personal(plan_id, subscribed_at)
 
     hub =
       Repo.insert!(%Hub{
         account_id: account.account_id,
-        ccu_limit: @standard_ccu_limit,
+        ccu_limit: @personal_ccu_limit,
         status: :creating,
-        storage_limit_mb: @standard_storage_limit_mb,
+        storage_limit_mb: @personal_storage_limit_mb,
         subdomain: rand_string(10),
         tier: :p1
       })
@@ -133,20 +133,20 @@ defmodule Dash.PlanStateMachine do
 
   def handle_event(
         :starter,
-        {:subscribe_standard, subscribed_at},
+        {:subscribe_personal, subscribed_at},
         %Account{account_id: account_id, email: email},
         _data
       ) do
     %{plan_id: plan_id} = get_plan(account_id)
-    :ok = subscribe_standard(plan_id, subscribed_at)
+    :ok = subscribe_personal(plan_id, subscribed_at)
 
     hub =
       Hub
       |> Repo.get_by!(account_id: account_id)
       |> Repo.preload(:deployment)
       |> Ecto.Changeset.change(
-        ccu_limit: @standard_ccu_limit,
-        storage_limit_mb: @standard_storage_limit_mb,
+        ccu_limit: @personal_ccu_limit,
+        storage_limit_mb: @personal_storage_limit_mb,
         status: :updating,
         tier: :p1
       )
@@ -159,27 +159,27 @@ defmodule Dash.PlanStateMachine do
   def handle_event(:starter, {:expire_subscription, %DateTime{}}, %Account{}, _data),
     do: {:error, :no_subscription}
 
-  def handle_event(:standard, :fetch_active_plan, %Account{account_id: account_id}, _data) do
+  def handle_event(:personal, :fetch_active_plan, %Account{account_id: account_id}, _data) do
     active_plan =
       case get_plan(account_id) do
         nil ->
           Repo.get_by!(Capability, account_id: account_id)
 
         plan ->
-          %{plan | name: "standard", subscription?: true}
+          %{plan | name: "personal", subscription?: true}
       end
 
     {:ok, active_plan}
   end
 
-  def handle_event(:standard, :start, %Account{}, _data),
+  def handle_event(:personal, :start, %Account{}, _data),
     do: {:error, :already_started}
 
-  def handle_event(:standard, {:subscribe_standard, _subscribed_at}, %Account{}, _data),
+  def handle_event(:personal, {:subscribe_personal, _subscribed_at}, %Account{}, _data),
     do: {:error, :already_started}
 
   def handle_event(
-        :standard,
+        :personal,
         {:expire_subscription, %DateTime{} = expired_at},
         %Account{account_id: account_id, email: email},
         _data
@@ -237,11 +237,11 @@ defmodule Dash.PlanStateMachine do
     :ok
   end
 
-  @spec subscribe_standard(Plan.id(), DateTime.t()) :: :ok
-  defp subscribe_standard(plan_id, %DateTime{} = subscribed_at) when is_integer(plan_id) do
+  @spec subscribe_personal(Plan.id(), DateTime.t()) :: :ok
+  defp subscribe_personal(plan_id, %DateTime{} = subscribed_at) when is_integer(plan_id) do
     Repo.insert!(%__MODULE__.PlanTransition{
-      event: "subscribe_standard",
-      new_state: :standard,
+      event: "subscribe_personal",
+      new_state: :personal,
       plan_id: plan_id,
       transitioned_at: subscribed_at
     })
