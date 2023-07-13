@@ -48,7 +48,7 @@ defmodule Dash.PlanStateMachine do
           lock: "FOR UPDATE"
       ) && :ok
 
-  @spec plan_state(Account.id()) :: String.t() | nil
+  @spec plan_state(Account.id()) :: atom | nil
   defp plan_state(account_id) when is_integer(account_id),
     do:
       Repo.one(
