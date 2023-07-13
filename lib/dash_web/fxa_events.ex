@@ -2,7 +2,6 @@ defmodule DashWeb.FxaEvents do
   @moduledoc """
    Handles events sent from FxA via webhook
   """
-  import Dash.Utils, only: [capability_string: 0]
   require Logger
 
   @type event_data :: %{String.t() => String.t() | [String.t(), ...]}
@@ -81,7 +80,7 @@ defmodule DashWeb.FxaEvents do
         "isActive" => is_active,
         "changeTime" => milliseconds
       }) do
-    if capabilities !== [capability_string()] do
+    if capabilities !== ["managed-hubs"] do
       raise "unknown capabilities for subscription changed event: #{Enum.join(capabilities, ", ")}"
     end
 
@@ -98,13 +97,6 @@ defmodule DashWeb.FxaEvents do
         Logger.warning("could not expire plan subscription for reason: #{reason}")
       end
     end
-
-    Dash.update_or_create_capability_for_changeset(%{
-      fxa_uid: fxa_uid,
-      capability: capability_string(),
-      is_active: is_active,
-      change_time: truncated_datetime
-    })
 
     # We expire the cookie on every subscription changed event because the auth server puts subscription information
     # on the cookie. Such as when the subscription is expiring or if it isn't.

@@ -89,8 +89,6 @@ defmodule Mix.Tasks.Dash.GenerateLocalToken do
   """
   use Mix.Task
 
-  import Dash.Utils, only: [capability_string: 0]
-
   def run(args) when length(args) == 0 do
     run([%{}])
   end
@@ -136,9 +134,7 @@ defmodule Mix.Tasks.Dash.GenerateLocalToken do
           "fxa_pic" => "http://localhost:4000/images/local-user.svg",
           "fxa_displayName" => "Local User",
           "iat" => 1_664_659_003,
-          "fxa_subscriptions" => [
-            capability_string()
-          ],
+          "fxa_subscriptions" => ["managed-hubs"],
           "fxa_current_period_end" => in_approx_three_months,
           "fxa_cancel_at_period_end" => false,
           "fxa_plan_id" => "price_123"

@@ -2,7 +2,6 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   use DashWeb.ConnCase
 
   import Dash.TestHelpers
-  import Dash.Utils, only: [capability_string: 0]
   require Logger
 
   # @password_change_struct %{
@@ -148,7 +147,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     test "with an unknown capability", %{conn: conn} do
       unknown = "unknown-capability"
 
-      for capabilities <- [[], [capability_string(), unknown], [unknown]] do
+      for capabilities <- [[], ["managed-hubs", unknown], [unknown]] do
         token =
           [
             fxa_uid: "dummy-uid",
