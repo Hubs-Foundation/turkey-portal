@@ -7,14 +7,6 @@ export type InfoBlockPropsT = {
   description?: string;
 };
 
-/**
- * TECH DEPT - The logic here is list minut request from product for production launch,
- * do to the nature of the scope creep this component has accquired some tech dept.
- *
- * Need to impliment a better way to handle the icons here, for example add more icons
- * to lilypad. In addition, this components parent (subscription card) is getting a re-design
- * and this code may not live for long.
- */
 const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   return (
     <div className={styles.info_wrapper}>
