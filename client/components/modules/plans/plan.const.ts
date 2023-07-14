@@ -3,81 +3,82 @@ import { HubIconT } from '@mozilla/lilypad-ui';
 export type PlanInfoCopyT = {
   label: string;
   description: string;
-  icon: HubIconT;
+  icon: HubIconT | null;
 };
 
 export const STARTER_COPY: PlanInfoCopyT[] = [
   {
-    label: 'Unlimited spaces',
-    description: 'With customizable environment and themes',
-    icon: 'spaces',
-  },
-  {
-    label: '10 Online guest capacity',
+    label: '10 guest capacity',
     description: 'Free for guests to join',
-    icon: 'capacity',
+    icon: null,
   },
   {
     label: '500MB Asset storage',
     description: 'For avatars and scenes',
-    icon: 'space',
+    icon: null,
   },
 ];
 
 export const PERSONAL_COPY: PlanInfoCopyT[] = [
   {
-    label: 'Unlimited spaces',
-    description: 'With customizable environment and themes',
-    icon: 'spaces',
-  },
-  {
-    label: '20 Online guest capacity',
+    label: '20 guest capacity',
     description: 'Free for guests to join',
-    icon: 'capacity',
+    icon: null,
   },
   {
     label: '2GB Asset storage',
     description: 'For avatars and scenes',
-    icon: 'space',
+    icon: null,
   },
   {
-    label: 'Custom myhubs.net web address',
+    label: 'Customize your Hub’s subdomain',
     description: '',
-    icon: 'address',
+    icon: null,
+  },
+  {
+    label: 'Add your own logos',
+    description: '',
+    icon: null,
+  },
+  {
+    label: 'Customize the color scheme of your tools and loading screens',
+    description: '',
+    icon: null,
   },
 ];
 
 export const PROFESSIONAL_COPY: PlanInfoCopyT[] = [
   {
-    label: "I'm a place holder",
-    description: 'This is not real, I need to be told what I can do',
-    icon: 'spaces',
+    label: '50 guest capacity',
+    description: 'Free for guests to join',
+    icon: null,
   },
   {
-    label: "I'm confused",
-    description: 'still waiting',
-    icon: 'spaces',
+    label: '25GB Asset storage',
+    description: 'For avatars and scenes',
+    icon: null,
   },
-  // {
-  //   label: 'Unlimited spaces',
-  //   description: 'With customizable environment and themes',
-  //   icon: 'spaces',
-  // },
-  // {
-  //   label: '20 Online guest capacity',
-  //   description: 'Free for guests to join',
-  //   icon: 'capacity',
-  // },
-  // {
-  //   label: '2GB Asset storage',
-  //   description: 'For avatars and scenes',
-  //   icon: 'space',
-  // },
-  // {
-  //   label: 'Custom myhubs.net web address',
-  //   description: '',
-  //   icon: 'address',
-  // },
+  {
+    label: 'Connect a custom domain to your Hub - **ALPHA**',
+    description: '',
+    icon: null,
+  },
+  {
+    label: 'Add your own logos',
+    description: '',
+    icon: null,
+  },
+  {
+    label: 'Customize the color scheme of your tools and loading screens',
+    description: '',
+    icon: null,
+  },
+  {
+    label:
+      'Fully control your Hub with access to Mozilla’s codebase - **ALPHA**',
+    description: '',
+    icon: null,
+  },
 ];
 
 export const PLAN_ID_MAP = {

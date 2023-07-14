@@ -104,15 +104,14 @@ export const BasePlanCard = ({
               />
             );
           })}
-
-          {/* Additional Content */}
-          {additionalContent}
         </div>
       </div>
 
       {/* FOOTER  */}
 
       <div className={`${styles.footer_wrapper}`}>
+        {additionalContent}
+
         {showDisclaimer && <Disclaimer />}
         <div
           className={`${styles.footer} ${footerClassProp} flex-justify-center`}

@@ -5,6 +5,7 @@ import { BasePlanCard, Price } from '../BasePlanCard/BasePlanCard';
 import { getPricePageData } from 'util/utilities';
 import { BillingPeriodE, PlansE } from 'types/General';
 import { RegionCodeT } from 'types/Countries';
+import styles from '../BasePlanCard/BasePlanCard.module.scss';
 
 type ProfessionalPlanCardPropsT = {
   billingPeriod: BillingPeriodE;
@@ -34,15 +35,21 @@ const ProfessionalPlanCard = ({
           price={`${currencySymbol}${planPrice}`}
           billingPeriod={`per ${
             billingPeriod === BillingPeriodE.YEARLY ? 'year' : 'month'
-          } + tax`}
+          }`}
         />
       }
       infoCopyList={PROFESSIONAL_COPY}
-      showDisclaimer={true}
+      showDisclaimer={false}
+      additionalContent={
+        <div className="flex-align-center my-20">
+          <span className={styles.circle}></span>
+          <span>Always on — no pausing</span>
+        </div>
+      }
       confirmButton={
         <Button
           label="Subscribe to hubs"
-          text="Subscribe now"
+          text="Get Started"
           onClick={handleSubscribeClick}
         />
       }

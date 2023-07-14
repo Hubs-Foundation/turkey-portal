@@ -1,4 +1,3 @@
-import { FXA_PAYMENT_URL, PRODUCT_ID } from 'config';
 import { PlansE, BillingPeriodE } from 'types/General';
 import {
   RegionCodeT,
@@ -48,4 +47,23 @@ export const getPricePageData = (
     currencySymbol,
     currencyAbbrev,
   };
+};
+
+/**
+ * Check if Plan is less than current one
+ * @param current
+ * @param compare
+ * @returns
+ */
+export const isPlanLessThan = (
+  current: PlansE,
+  compare: Exclude<PlansE, PlansE.LEGACY>
+): boolean => {
+  // Handle Legacy Personal plan
+  const currentPlan = current === PlansE.LEGACY ? PlansE.PERSONAL : current;
+  const keys = Object.keys(PlansE);
+  const currentIndex = keys.indexOf(currentPlan.toUpperCase());
+  const compareIndex = keys.indexOf(compare.toUpperCase());
+
+  return currentIndex > compareIndex;
 };

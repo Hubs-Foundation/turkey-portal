@@ -110,3 +110,12 @@
   align-items: center;
   margin: -40px;
 }
+
+.circle {
+  background-color: $color-semantic-success;
+  height: 16px;
+  width: 16px;
+  border-radius: 20px;
+  display: inline-block;
+  margin: 4px 24px 0px 5px;
+}
