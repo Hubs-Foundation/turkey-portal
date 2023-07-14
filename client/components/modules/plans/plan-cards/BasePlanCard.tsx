@@ -1,4 +1,4 @@
-import { ReactNode, useCallback } from 'react';
+import { ReactNode } from 'react';
 import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
 import { PlansE } from 'types/General';
@@ -86,10 +86,13 @@ const BasePlanCard = ({
    * current plan.
    */
   const getCTA = () => {
-    const planName = title.toLocaleLowerCase() as PlansE;
+    const planName = title.toLocaleLowerCase() as Exclude<
+      PlansE,
+      PlansE.LEGACY
+    >;
     const SoldOut = <Button label="sold out" text="sold out" />;
     const CurrentPlan = (
-      <span className="body-md-semi-bold">Current Plan*</span>
+      <span className="body-md-semi-bold p-10">Current Plan*</span>
     );
     const DownGrade = (
       <Button label="Subscribe Now" disabled={true} text="Subscribe Now" />
@@ -157,12 +160,12 @@ const BasePlanCard = ({
             );
           })}
         </div>
-
-        {additionalContent}
       </div>
 
       {/* FOOTER  */}
       <div className={styles.footer_wrapper}>
+        {additionalContent}
+
         {showDisclaimer && <Disclaimer />}
 
         <div

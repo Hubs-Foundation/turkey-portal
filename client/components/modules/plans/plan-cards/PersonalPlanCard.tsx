@@ -32,15 +32,25 @@ const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
           price={`${currencySymbol}${planPrice}`}
           billingPeriod={`per ${
             billingPeriod === BillingPeriodE.YEARLY ? 'year' : 'month'
-          } + tax`}
+          }`}
         />
       }
       infoCopyList={PERSONAL_COPY}
-      showDisclaimer={true}
+      showDisclaimer={false}
+      additionalContent={
+        <div className="flex-align-center my-20">
+          <div>
+            <Icon name="alert-triangle" classProp="mr-25 ml-3" />
+          </div>
+          <span className="body-md">
+            Auto pause after 72 hours of inactivity
+          </span>
+        </div>
+      }
       confirmButton={
         <Button
           label="Subscribe to hubs"
-          text="Subscribe now"
+          text="Get started"
           onClick={handleSubscribeClick}
         />
       }
