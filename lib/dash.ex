@@ -284,13 +284,24 @@ defmodule Dash do
   end
 
   def handle_first_sign_in_initialize_subscriptions(%Account{} = account, fxa_subscriptions, dt) do
-    if "managed-hubs" in fxa_subscriptions do
-      # Handle special case where FxA does not send a subscription changed fxa event
-      # if a user signs up for an FxA account on the same page of signing up for the subscription
-      # we need to create a record of that capability in our database
-      with {:error, reason} <- subscribe_to_personal_plan(account, upscale_to_microseconds(dt)) do
-        Logger.warning("could not subscribe to personal plan for reason: #{reason}")
-      end
+    # TODO: test this
+    # Handle special case where FxA does not send a subscription changed fxa event
+    # if a user signs up for an FxA account on the same page of signing up for the subscription
+    # we need to create a record of that capability in our database
+    cond do
+      "managed-hubs" in fxa_subscriptions ->
+        with {:error, reason} <- subscribe_to_personal_plan(account, upscale_to_microseconds(dt)) do
+          Logger.warning("could not subscribe to personal plan for reason: #{reason}")
+        end
+
+      "hubs-professional" in fxa_subscriptions ->
+        with {:error, reason} <-
+               subscribe_to_professional_plan(account, upscale_to_microseconds(dt)) do
+          Logger.warning("could not subscribe to personal plan for reason: #{reason}")
+        end
+
+      true ->
+        :ok
     end
   end
 
