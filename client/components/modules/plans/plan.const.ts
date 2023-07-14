@@ -180,11 +180,11 @@ export const PLAN_ID_MAP = {
     professional: {
       monthly: {
         planId: 'TODO',
-        price: 400.22,
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
     business: {
