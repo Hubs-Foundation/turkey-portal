@@ -473,7 +473,7 @@ export const PLAN_ID_MAP = {
   },
 
   /**
-   *  * Spain
+   *  Spain
    */
   ES: {
     abbrev: 'EUR',
