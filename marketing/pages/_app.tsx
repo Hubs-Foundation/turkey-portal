@@ -13,6 +13,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeProvider>
       <NotificationProvider>
         <Head>
+          {/* VERSION Pro Plan Launch */}
           <link rel="shortcut icon" href="/favicon.ico" />
           <link rel="apple-touch-icon" sizes="180x180" href={appleTouch.src} />
           <link
