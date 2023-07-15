@@ -53,6 +53,11 @@
   @include heading-lg;
   text-align: center;
   margin: 0 0 16px;
+  width: 210px;
+
+  @include tablet-up {
+    width: 226px;
+  }
 }
 
 .price {

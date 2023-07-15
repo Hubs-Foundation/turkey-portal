@@ -94,9 +94,6 @@ const BasePlanCard = ({
     const CurrentPlan = (
       <span className="body-md-semi-bold p-10">Current Plan*</span>
     );
-    const DownGrade = (
-      <Button label="Subscribe Now" disabled={true} text="Subscribe Now" />
-    );
 
     // Sold Out
     if (isSoldOut) {
@@ -110,7 +107,7 @@ const BasePlanCard = ({
 
     // Disable plans less than current
     if (isPlanLessThan(account.planName, planName)) {
-      return DownGrade;
+      return null;
     }
 
     // Don't  let users click current plan
@@ -143,7 +140,9 @@ const BasePlanCard = ({
       <div>
         {/* HEADER  */}
         <div>
-          <h2 className={styles.title}>{title}</h2>
+          <div className="flex-justify-center">
+            <h2 className={styles.title}>{title}</h2>
+          </div>
           <div className={styles.price_wrapper}>{price}</div>
         </div>
 

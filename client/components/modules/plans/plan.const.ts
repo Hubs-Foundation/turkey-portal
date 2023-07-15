@@ -101,7 +101,7 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'price_1NMDi9JNcmPzuWtRE3kWUvDS',
+        planId: 'price_1NTzZpJNcmPzuWtRgFsq4SRb',
         price: 79.0,
       },
       yearly: {
@@ -140,7 +140,7 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'price_1NME4jJNcmPzuWtRBkA6Oikz',
+        planId: 'price_1NTzZpJNcmPzuWtRp0sSbSOI',
         price: 79.0,
       },
       yearly: {
@@ -179,7 +179,7 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO test',
+        planId: 'price_1NTzZpJNcmPzuWtR7WbVcB5D',
         price: 79.0,
       },
       yearly: {
@@ -218,8 +218,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtR1sN9KUmj',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -257,8 +257,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtRbNkTOvMc',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -296,8 +296,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtRUgo0y9N4',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -335,8 +335,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtR4MSyjrBN',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -374,8 +374,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtRGcrkZqg9',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -413,8 +413,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtRpJR0Gjoe',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -452,8 +452,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtRRe3x0hrF',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -491,8 +491,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtRB0mLplBP',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -530,8 +530,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtR25jMlfmP',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -569,8 +569,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRNX9R1xj4',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -609,8 +609,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRDKEXn7H6',
+        price: 124.0,
       },
       yearly: {
         planId: 'TODO',
@@ -648,8 +648,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRMSiE5Xpf',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -687,8 +687,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRN4D8ISTO',
+        price: 809.0,
       },
       yearly: {
         planId: 'TODO',
@@ -726,8 +726,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRiTkt1BJY',
+        price: 357.0,
       },
       yearly: {
         planId: 'TODO',
@@ -765,8 +765,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRWwZuKkyM',
+        price: 104.0,
       },
       yearly: {
         planId: 'TODO',
@@ -804,8 +804,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRmYIGpOhk',
+        price: 313.0,
       },
       yearly: {
         planId: 'TODO',
@@ -843,8 +843,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRsDesS7fO',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -882,8 +882,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRamhH5qb5',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -921,8 +921,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRI8Ue4z1Y',
+        price: 524.0,
       },
       yearly: {
         planId: 'TODO',
@@ -960,8 +960,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRScwftSfi',
+        price: 1670.0,
       },
       yearly: {
         planId: 'TODO',
@@ -999,8 +999,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRrPSq24gg',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -1038,8 +1038,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtR05xKBSME',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -1077,8 +1077,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtRA3DdowrS',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -1116,8 +1116,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtRGvn9ow0a',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -1155,8 +1155,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtRyCCgDfIh',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -1194,8 +1194,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtR3tnqBB26',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -1233,8 +1233,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtRvCWCu6L2',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -1272,8 +1272,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtRxaHT1eQ1',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -1311,8 +1311,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtRt7BBV8Sb',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',
@@ -1350,8 +1350,8 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtR2qD5KvO6',
+        price: 79.0,
       },
       yearly: {
         planId: 'TODO',

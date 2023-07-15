@@ -88,7 +88,9 @@ export const BasePlanCard = ({
         className={`${styles.banner_gradient} ${styles['highlight_' + color]}`}
       />
       {/* HEADER  */}
-      <h2 className={styles.title}>{title}</h2>
+      <div className="flex-justify-center">
+        <h2 className={styles.title}>{title}</h2>
+      </div>
       <div className={styles.container}>
         <div className={styles.price_wrapper}>{price}</div>
 
