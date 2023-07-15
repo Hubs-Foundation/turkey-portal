@@ -179,7 +179,7 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'TODO',
+        planId: 'TODO test',
         price: 79.0,
       },
       yearly: {
