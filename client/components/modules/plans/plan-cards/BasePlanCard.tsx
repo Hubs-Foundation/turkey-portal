@@ -57,6 +57,7 @@ type BasePlanCardPropsT = {
   classProp?: string;
   title: string;
   price: ReactNode;
+  plan: Exclude<PlansE, PlansE.LEGACY>;
   infoCopyList: PlanInfoCopyT[];
   additionalContent?: ReactNode;
   showDisclaimer?: boolean;
@@ -69,6 +70,7 @@ type BasePlanCardPropsT = {
 const BasePlanCard = ({
   title,
   price,
+  plan,
   infoCopyList,
   additionalContent,
   showDisclaimer = false,
@@ -86,10 +88,6 @@ const BasePlanCard = ({
    * current plan.
    */
   const getCTA = () => {
-    const planName = title.toLocaleLowerCase() as Exclude<
-      PlansE,
-      PlansE.LEGACY
-    >;
     const SoldOut = <Button label="sold out" text="sold out" />;
     const CurrentPlan = (
       <span className="body-md-semi-bold p-10">Current Plan*</span>
@@ -106,18 +104,18 @@ const BasePlanCard = ({
     }
 
     // Disable plans less than current
-    if (isPlanLessThan(account.planName, planName)) {
+    if (isPlanLessThan(account.planName, plan)) {
       return null;
     }
 
     // Don't  let users click current plan
-    if (account.planName === planName) {
+    if (account.planName === plan) {
       return CurrentPlan;
     }
 
     // If plan name is legacy "Standard" and card is
     // "Personal" then mark as current plan.
-    if (account.planName === PlansE.LEGACY && planName === PlansE.PERSONAL) {
+    if (account.planName === PlansE.LEGACY && plan === PlansE.PERSONAL) {
       return CurrentPlan;
     }
 

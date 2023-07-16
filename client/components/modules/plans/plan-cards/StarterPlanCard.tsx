@@ -1,3 +1,4 @@
+import { PlansE } from 'types/General';
 import { STARTER_COPY } from '../plan.const';
 import BasePlanCard, { Price } from './BasePlanCard';
 import BeginStarterPlanButton from '@Modules/plans/BeginStarterPlanButton/BeginStarterPlanButton';
@@ -6,6 +7,7 @@ import { Icon } from '@mozilla/lilypad-ui';
 const StarterPlanCard = () => {
   return (
     <BasePlanCard
+      plan={PlansE.STARTER}
       title="Starter"
       color="silver"
       price={<Price price="Free" />}

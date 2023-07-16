@@ -28,6 +28,7 @@ const ProfessionalPlanCard = ({
 
   return (
     <BasePlanCard
+      plan={PlansE.PROFESSIONAL}
       title="Professional (Early Access)"
       color="rainbow"
       price={

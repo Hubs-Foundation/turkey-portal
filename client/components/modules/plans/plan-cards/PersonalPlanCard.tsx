@@ -25,6 +25,7 @@ const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
 
   return (
     <BasePlanCard
+      plan={PlansE.PERSONAL}
       title="Personal"
       color="warm"
       price={

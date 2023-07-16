@@ -22,7 +22,7 @@ export const getAccount = async (headers?: AxiosRequestHeaders) => {
       // response.data.planName = 'professional';
       // response.data.planName = 'standard';
       // response.data.planName = 'personal';
-      response.data.planName = 'starter';
+      // response.data.planName = 'starter';
       return response.data as AccountT;
     });
 };
