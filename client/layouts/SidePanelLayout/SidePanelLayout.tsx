@@ -28,7 +28,7 @@ const SidePanelLayout = ({
           {!isLoading && hub ? (
             <SidePanel
               subdomain={hub.subdomain}
-              domain={hub.subdomain}
+              domain={hub.domain}
               subscription={subscription}
             />
           ) : (
