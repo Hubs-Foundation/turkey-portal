@@ -1,3 +1,4 @@
+// TODO - not sure premium is right here
 export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
 
 export enum StatusE {
@@ -52,12 +53,14 @@ export type AccountT = {
   planName: PlansE | null;
 };
 
+// The order of this Plan enum matters, do not
+// change the order from least to most permissions.
 export enum PlansE {
   STARTER = 'starter',
+  LEGACY = 'standard',
   PERSONAL = 'personal',
   PROFESSIONAL = 'professional',
   BUSINESS = 'business',
-  LEGACY = 'standard',
 }
 
 export enum BillingPeriodE {

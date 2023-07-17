@@ -1,9 +1,9 @@
 import { Button, ButtonCategoriesE, Dropdown } from '@mozilla/lilypad-ui';
 import { useRouter } from 'next/router';
-import { useCallback } from 'react';
+import { RoutesE } from 'types/Routes';
 import { StatusE } from 'types/General';
 import styles from './HubCardHeader.module.scss';
-import { useIsStarter } from 'hooks/usePlans';
+import { useIsStarter, useIsProfessional } from 'hooks/usePlans';
 
 type HubCardHeaderPropsT = {
   hubId: string;
@@ -18,22 +18,33 @@ const HubCardHeader = ({
 }: HubCardHeaderPropsT) => {
   const router = useRouter();
   const isStarter = useIsStarter();
-
-  /**
-   * Handle Setting Click
-   */
-  const handleSettingClick = useCallback(() => {
-    router.push({
-      pathname: '/hubs/[hub_id]',
-      query: { hub_id: hubId },
-    });
-  }, [hubId, router]);
+  const isProfessional = useIsProfessional();
 
   const DropdownContent = (
     <div className="dropdown_wrapper">
-      <button className="dropdown-link" onClick={handleSettingClick}>
+      <button
+        className="dropdown-link"
+        onClick={() => {
+          router.push({
+            pathname: RoutesE.HUBS,
+            query: { hub_id: hubId },
+          });
+        }}
+      >
         Edit Details
       </button>
+      {isProfessional && (
+        <button
+          className="dropdown-link mt-14"
+          onClick={() => {
+            router.push({
+              pathname: RoutesE.CUSTOM_CLIENT,
+            });
+          }}
+        >
+          Upload Custom Client
+        </button>
+      )}
     </div>
   );
 
@@ -55,7 +66,7 @@ const HubCardHeader = ({
       {dropdownVisible && (
         <Dropdown
           alignment="right"
-          width={164}
+          width={210}
           cta={
             <Button
               icon="more-vertical"

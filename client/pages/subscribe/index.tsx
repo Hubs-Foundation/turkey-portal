@@ -4,7 +4,11 @@ import type { GetServerSidePropsContext } from 'next';
 import { SubscribeRG } from 'services/routeGuard.service';
 import ContactCard from '@Modules/plans/ContactCard/ContactCard';
 import styles from './subscribe.module.scss';
-import { PersonalPlanCard, StarterPlanCard } from '@Modules/plans/plan-cards';
+import {
+  PersonalPlanCard,
+  StarterPlanCard,
+  ProfessionalPlanCard,
+} from '@Modules/plans/plan-cards';
 import { BillingPeriodE } from 'types/General';
 
 const Subscribe = () => {
@@ -28,6 +32,7 @@ const Subscribe = () => {
           <div className={styles.cards}>
             <StarterPlanCard />
             <PersonalPlanCard billingPeriod={billingPeriod} />
+            <ProfessionalPlanCard billingPeriod={billingPeriod} />
             <ContactCard
               email="hubs@mozilla.com"
               subject="Subscription inquiries"

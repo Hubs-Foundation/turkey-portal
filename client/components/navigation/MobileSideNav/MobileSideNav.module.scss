@@ -34,11 +34,6 @@
 
   &_link {
     @include primary-font(700);
-    color: $black;
-
-    &:hover {
-      color: $blue;
-    }
   }
 }
 

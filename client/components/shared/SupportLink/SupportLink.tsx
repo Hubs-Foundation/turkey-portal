@@ -31,13 +31,17 @@ const SupportLink = ({
 
   const LinkContent = () => (
     <Card classProp={`${styles.wrapper} ${classProp}`}>
-      <div className={styles.header}>
+      <section className={styles.icon}>
         <Image src={image} alt={title} height={40} width={40} />
-        <Icon name="external-link" color="currentColor" />
-      </div>
+      </section>
 
-      <h3 className="body-md-bold mb-8">{title}</h3>
-      <p className="paragraph-sm">{body}</p>
+      <section className="flex-grow-1">
+        <div className="flex-justify-between">
+          <h3 className="body-md-bold mb-8">{title}</h3>
+          <Icon name="external-link" color="currentColor" />
+        </div>
+        <p className="paragraph-sm">{body}</p>
+      </section>
     </Card>
   );
 
