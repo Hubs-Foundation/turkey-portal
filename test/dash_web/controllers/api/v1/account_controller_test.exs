@@ -59,9 +59,6 @@ defmodule DashWeb.Api.V1.AccountControllerTest do
       assert nil === payload["planName"]
     end
 
-    @tag :skip
-    test "when the account has a stopped plan"
-
     test "when the account has an active starter plan", %{conn: conn} do
       expect_orch_post()
 

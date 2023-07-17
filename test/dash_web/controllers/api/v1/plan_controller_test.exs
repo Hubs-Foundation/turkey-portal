@@ -6,7 +6,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
   @unauthorized_redirect Jason.encode!(DashWeb.Plugs.Auth.unauthorized_auth_redirect_struct())
   @route "/api/v1/plans"
 
-  describe "POST /api/v1/plans?tier=starter" do
+  describe "POST /api/v1/plans" do
     test "returns a 201", %{conn: conn} do
       expect_orch_post()
 
@@ -14,7 +14,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
                conn
                |> put_test_token(token_expiry: tomorrow())
                |> put_req_header("content-type", "application/json")
-               |> post(@route, tier: "starter")
+               |> post(@route)
                |> json_response(201)
     end
 
@@ -28,7 +28,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
                  token_expiry: tomorrow()
                )
                |> put_req_header("content-type", "application/json")
-               |> post(@route, tier: "starter")
+               |> post(@route)
                |> json_response(409)
     end
 
@@ -36,7 +36,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
       assert @unauthorized_redirect ===
                conn
                |> put_req_header("content-type", "application/json")
-               |> post(@route, tier: "starter")
+               |> post(@route)
                |> response(401)
     end
 
@@ -45,7 +45,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
                conn
                |> put_test_token(token_expiry: tomorrow(), unverified: true)
                |> put_req_header("content-type", "application/json")
-               |> post(@route, tier: "starter")
+               |> post(@route)
                |> response(401)
     end
 
@@ -54,7 +54,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
                conn
                |> put_test_token(token_expiry: ~N[1970-01-01 00:00:00])
                |> put_req_header("content-type", "application/json")
-               |> post(@route, tier: "starter")
+               |> post(@route)
                |> response(401)
     end
   end
