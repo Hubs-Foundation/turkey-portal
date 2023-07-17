@@ -24,7 +24,8 @@ export const getPricePageData = (
   const BASE_URL = `https://subscriptions.firefox.com/checkout/${prodID}`;
 
   // If not accepted region or no region default to US plan
-  let planUrl = `${BASE_URL}}?plan=${PLAN_ID_MAP.US[plan][billingPeriod].planId}`;
+  let planUrl = `${BASE_URL}?plan=${PLAN_ID_MAP.US[plan][billingPeriod].planId}`;
+
   let planPrice = PLAN_ID_MAP.US[plan][billingPeriod].price;
   let taxDescription = PLAN_ID_MAP.US.taxDescription;
   let currencySymbol = PLAN_ID_MAP.US.symbol;
