@@ -99,7 +99,7 @@ const CustomClient = ({ subscription }: HubDetailsViewPropsT) => {
               target="_blank"
               rel="noreferrer"
               className="primary-link mb-20 block"
-              href="hubs.mozilla.com/docs/setup-custom-client.html"
+              href="/docs/setup-custom-client.html"
             >
               Custom Client Documentation
             </a>

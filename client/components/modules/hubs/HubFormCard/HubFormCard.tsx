@@ -244,7 +244,7 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
 
               <a
                 className="primary-link"
-                href="hubs.mozilla.com/docs/setup-custom-domain.html"
+                href="/docs/setup-custom-domain.html"
                 target="_blank"
               >
                 Custom Domain Documentation
