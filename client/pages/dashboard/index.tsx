@@ -59,7 +59,6 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const isProfessionalUp = useIsProfessionalUp();
 
-  console.log('account', account);
   /**
    * Hubs call failed:
    * Manually set Error state Hub in UI
