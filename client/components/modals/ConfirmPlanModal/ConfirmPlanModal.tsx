@@ -2,19 +2,13 @@ import { Button, ButtonCategoriesE, Modal } from '@mozilla/lilypad-ui';
 import InfoBlock from '@Shared/InfoBlock/InfoBlock';
 import { PERSONAL_COPY } from 'components/modules/plans/plan.const';
 import styles from './ConfirmPlanModal.module.scss';
-import { getPricePageData } from 'util/utilities';
 import { useSelector } from 'react-redux';
 import { selectRegion } from 'store/regionSlice';
 import BeginStarterPlanButton from '@Modules/plans/BeginStarterPlanButton/BeginStarterPlanButton';
-import { PlansE, BillingPeriodE } from 'types/General';
+import { RoutesE } from 'types/Routes';
 
 const ConfirmPlanModal = () => {
   const { regionCode } = useSelector(selectRegion);
-  const { planUrl } = getPricePageData(
-    regionCode,
-    PlansE.PERSONAL,
-    BillingPeriodE.MONTHLY
-  );
 
   return (
     <Modal onClose={() => {}} hasContainer={false} isVisible={true}>
@@ -44,7 +38,7 @@ const ConfirmPlanModal = () => {
               category={ButtonCategoriesE.SECONDARY_SOLID}
               text="Upgrade Plan"
               label="Upgrade Plan"
-              href={planUrl}
+              href={RoutesE.SUBSCRIBE}
             />
           </div>
           <div className={`${styles.info_wrapper}`}>
