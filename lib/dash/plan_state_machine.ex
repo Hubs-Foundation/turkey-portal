@@ -26,7 +26,12 @@ defmodule Dash.PlanStateMachine do
   @spec handle_event(:active?, Account.t()) :: {:ok, boolean} | {:error, :account_not_found}
   @spec handle_event(:start, Account.t()) :: :ok | {:error, :account_not_found | :already_started}
   def handle_event(event, %Account{} = account) do
-    {:ok, result} = Repo.transaction(fn -> Mimzy.handle_event(account, event, __MODULE__) end)
+    {:ok, result} =
+      Repo.transaction(
+        fn -> Mimzy.handle_event(account, event, __MODULE__) end,
+        timeout: 30_000
+      )
+
     result
   end
 
