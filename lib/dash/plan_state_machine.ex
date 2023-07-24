@@ -52,7 +52,7 @@ defmodule Dash.PlanStateMachine do
         from l in "plan_transition_locks",
           select: true,
           where: l.account_id == ^account_id,
-          lock: "FOR UPDATE"
+          lock: "FOR UPDATE NOWAIT"
       ) && :ok
 
   @spec plan_state(Account.id()) :: atom | nil
