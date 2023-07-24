@@ -23,8 +23,16 @@ defmodule Dash.PlanStateMachine do
 
   Returns `{:error, :account_not_found}` if the account cannot be located.
   """
-  @spec handle_event(:active?, Account.t()) :: {:ok, boolean} | {:error, :account_not_found}
-  @spec handle_event(:start, Account.t()) :: :ok | {:error, :account_not_found | :already_started}
+  @spec handle_event(:fetch_active_plan, Account.t()) ::
+          {:ok, Plan.t()} | {:error, :account_not_found | :no_active_plan}
+  @spec handle_event(:start, Account.t()) ::
+          :ok | {:error, :account_not_found | :already_started}
+  @spec handle_event({:expire_subscription, DateTime.t()}, Account.t()) ::
+          :ok | {:error, :account_not_found | :no_subscription | :superseded}
+  @spec handle_event({:subscribe_personal, DateTime.t()}, Account.t()) ::
+          :ok | {:error, :account_not_found | :already_started | :superseded}
+  @spec handle_event({:subscribe_professional, DateTime.t()}, Account.t()) ::
+          :ok | {:error, :account_not_found | :already_started | :superseded}
   def handle_event(event, %Account{} = account) do
     {:ok, result} =
       Repo.transaction(
