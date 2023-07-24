@@ -1,7 +1,11 @@
 @use 'styles/core/boilerplate' as *;
 
 .wrapper {
-  background: $gradient-rainbow;
+  background: $gradient-warm;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  padding: 200px 32px 0;
 }
 
 .container {
@@ -16,6 +20,12 @@
   @include mobile-down {
     margin-top: 40px;
   }
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
 }
 
 .cards {

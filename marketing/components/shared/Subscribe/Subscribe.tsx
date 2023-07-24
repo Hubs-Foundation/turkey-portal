@@ -5,9 +5,10 @@ import StarterPlanCard from './StarterPlanCard/StarterPlanCard';
 import BusinessPlanCard from './BusinessPlanCard/BusinessPlanCard';
 import ProfessionalPlanCard from './ProfessionalPlanCard/ProfessionalPlanCard';
 import styles from './Subscribe.module.scss';
-import Swoosh from '@Shared/Swoosh/Swoosh';
+import Snow from '@Shared/Snow/Snow';
 import { getRegion } from 'services/region.service';
 import { BillingPeriodE } from 'types/General';
+import Bar from '@Shared/Bar/Bar';
 
 type SubscribePropsT = {
   classProp?: string;
@@ -34,24 +35,29 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
 
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
-      <>
-        <Swoosh location="top" />
-        <div className={styles.container}>
-          <div className={styles.cards}>
-            <StarterPlanCard />
-            <PersonalPlanCard
-              regionCode={regionCode}
-              billingPeriod={billingPeriod}
-            />
-            <ProfessionalPlanCard
-              regionCode={regionCode}
-              billingPeriod={billingPeriod}
-            />
-            <BusinessPlanCard />
+      <Snow location="top" />
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <div>
+            <Bar />
+            <h2 className="heading-xxl">
+              Choose the plan that fits your needs
+            </h2>
           </div>
         </div>
-        <Swoosh location="bottom" />
-      </>
+        <div className={styles.cards}>
+          <StarterPlanCard />
+          <PersonalPlanCard
+            regionCode={regionCode}
+            billingPeriod={billingPeriod}
+          />
+          <ProfessionalPlanCard
+            regionCode={regionCode}
+            billingPeriod={billingPeriod}
+          />
+          <BusinessPlanCard />
+        </div>
+      </div>
     </section>
   );
 };
