@@ -1,85 +1,104 @@
 import { HubIconT } from '@mozilla/lilypad-ui';
 
-export type PlanInfoCopyT = {
+export type ValueProp = {
   label: string;
   description: string;
   icon: HubIconT | null;
 };
 
-export const STARTER_COPY: PlanInfoCopyT[] = [
-  {
-    label: '10 guest capacity',
-    description: 'Free for guests to join',
-    icon: null,
-  },
-  {
-    label: '500MB Asset storage',
-    description: 'For avatars and scenes',
-    icon: null,
-  },
-];
+export type PlanInfoCopyT = {
+  title: string;
+  subtitle: string;
+  valueProps: ValueProp[];
+};
 
-export const PERSONAL_COPY: PlanInfoCopyT[] = [
-  {
-    label: '20 guest capacity',
-    description: 'Free for guests to join',
-    icon: null,
-  },
-  {
-    label: '2GB Asset storage',
-    description: 'For avatars and scenes',
-    icon: null,
-  },
-  {
-    label: 'Customize your Hub’s subdomain',
-    description: '',
-    icon: null,
-  },
-  {
-    label: 'Add your own logos',
-    description: '',
-    icon: null,
-  },
-  {
-    label: 'Customize the color scheme of your tools and loading screens',
-    description: '',
-    icon: null,
-  },
-];
+export const STARTER_COPY: PlanInfoCopyT = {
+  title: 'Starter',
+  subtitle:
+    'Kickstart your XR journey with a personal, private room — perfect for newcomers.',
+  valueProps: [
+    {
+      label: '10 guest capacity',
+      description: 'Free for guests to join',
+      icon: 'capacity',
+    },
+    {
+      label: '500MB Asset storage',
+      description: 'For avatars and scenes',
+      icon: 'space',
+    },
+  ],
+};
 
-export const PROFESSIONAL_COPY: PlanInfoCopyT[] = [
-  {
-    label: '50 guest capacity',
-    description: 'Free for guests to join',
-    icon: null,
-  },
-  {
-    label: '25GB Asset storage',
-    description: 'For avatars and scenes',
-    icon: null,
-  },
-  {
-    label: 'Connect a custom domain to your Hub - **ALPHA**',
-    description: '',
-    icon: null,
-  },
-  {
-    label: 'Add your own logos',
-    description: '',
-    icon: null,
-  },
-  {
-    label: 'Customize the color scheme of your tools and loading screens',
-    description: '',
-    icon: null,
-  },
-  {
-    label:
-      'Fully control your Hub with access to Mozilla’s codebase - **ALPHA**',
-    description: '',
-    icon: null,
-  },
-];
+export const PERSONAL_COPY: PlanInfoCopyT = {
+  title: 'Personal',
+  subtitle:
+    'Design a personal, private room — ideal for creatives and tinkering innovators.',
+  valueProps: [
+    {
+      label: '20 guest capacity',
+      description: 'Free for guests to join',
+      icon: 'capacity',
+    },
+    {
+      label: '2GB Asset storage',
+      description: 'For avatars and scenes',
+      icon: 'space',
+    },
+  ],
+};
+
+export const PROFESSIONAL_COPY: PlanInfoCopyT = {
+  title: 'Professional',
+  subtitle:
+    'Advanced customization for educators and teams who want increased engagement.',
+  valueProps: [
+    {
+      label: '50 guest capacity',
+      description: 'Free for guests to join',
+      icon: 'capacity',
+    },
+    {
+      label: '25GB Asset storage',
+      description: 'For avatars and scenes',
+      icon: 'space',
+    },
+  ],
+};
+
+// export const PROFESSIONAL_COPY: PlanInfoCopyT[] = [
+//   {
+//     label: '50 guest capacity',
+//     description: 'Free for guests to join',
+//     icon: null,
+//   },
+//   {
+//     label: '25GB Asset storage',
+//     description: 'For avatars and scenes',
+//     icon: null,
+//   },
+//   {
+//     label: 'Connect a custom domain to your Hub - **ALPHA**',
+//     description: '',
+//     icon: null,
+//   },
+//   {
+//     label: 'Add your own logos',
+//     description: '',
+//     icon: null,
+//   },
+//   {
+//     label: 'Customize the color scheme of your tools and loading screens',
+//     description: '',
+//     icon: null,
+//   },
+//   {
+//     label:
+//       'Fully control your Hub with access to Mozilla’s codebase - **ALPHA**',
+//     description: '',
+//     icon: null,
+//   },
+// ];
 
 export const PLAN_ID_MAP = {
   /**

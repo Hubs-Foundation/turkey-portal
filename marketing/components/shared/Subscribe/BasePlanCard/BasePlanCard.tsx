@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import styles from './BasePlanCard.module.scss';
-import { PlanInfoCopyT } from '../plan.const';
+import { ValueProp } from '../plan.const';
 import InfoBlock from '../InfoBlock/InfoBlock';
 import { Button, Icon } from '@mozilla/lilypad-ui';
 
@@ -21,7 +21,7 @@ export const Price = ({
     <div className={styles.price_container}>
       <div className={styles.price}>
         <h2 className="heading-lg">{price}</h2>
-        <p>{currencyAbbrev}</p>
+        {currencyAbbrev && <p className="body-md ml-4">{currencyAbbrev}</p>}
       </div>
       {billingPeriod && <p className={styles.price_cadence}>{billingPeriod}</p>}
     </div>
@@ -49,23 +49,36 @@ export const Disclaimer = () => {
   );
 };
 
+const SoldOut = () => {
+  return (
+    <div className={styles.sold_out}>
+      <div>
+        <h2 className="heading-xl mb-12">Sold Out!</h2>
+        <p>(Temporarily)</p>
+      </div>
+    </div>
+  );
+};
+
 type BasePlanCardPropsT = {
   classProp?: string;
   title: string;
+  subtitle?: string;
   price: ReactNode;
-  infoCopyList: PlanInfoCopyT[];
+  valueProps: ValueProp[];
   additionalContent?: ReactNode;
   showDisclaimer?: boolean;
   confirmButton: ReactNode;
   footerClassProp?: string;
-  color: 'silver' | 'warm' | 'rainbow';
+  color: 'cool' | 'warm' | 'rainbow';
   isSoldOut?: boolean;
 };
 
 export const BasePlanCard = ({
   title,
+  subtitle,
   price,
-  infoCopyList,
+  valueProps,
   additionalContent,
   showDisclaimer = false,
   confirmButton,
@@ -76,38 +89,34 @@ export const BasePlanCard = ({
 }: BasePlanCardPropsT) => {
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
-      {isSoldOut && (
-        <div className={styles.sold_out}>
-          <div className="text-center">
-            <h2 className="heading-xl mb-12">Sold Out!</h2>
-            <p>(Temporarily)</p>
-          </div>
-        </div>
-      )}
+      {isSoldOut && <SoldOut />}
+
       <div
         className={`${styles.banner_gradient} ${styles['highlight_' + color]}`}
       />
       {/* HEADER  */}
-      <div className="flex-justify-center">
-        <h2 className={styles.title}>{title}</h2>
-      </div>
-      <div className={styles.container}>
+      <section className="text-center">
+        <h2 className="mb-8 heading-lg">{title}</h2>
+        <p className="mb-16 body-md px-28">{subtitle}</p>
+      </section>
+
+      <section className={styles.container}>
         <div className={styles.price_wrapper}>{price}</div>
 
-        {/* CONTENT  */}
-        <div className={styles.content}>
-          {infoCopyList.map(({ label, description, icon }, i) => {
-            return (
-              <InfoBlock
-                key={i}
-                icon={icon}
-                label={label}
-                description={description}
-              />
-            );
-          })}
-        </div>
-      </div>
+        {/* VALUE PROPS  */}
+        {valueProps.map(({ label, description, icon }, i) => {
+          return (
+            <InfoBlock
+              key={i}
+              icon={icon}
+              label={label}
+              description={description}
+            />
+          );
+        })}
+      </section>
+
+      <hr className={styles.hr} />
 
       {/* FOOTER  */}
 

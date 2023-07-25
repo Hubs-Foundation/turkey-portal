@@ -1,32 +1,60 @@
 import { useEffect, useState } from 'react';
-import { RegionCodeT } from 'types/Countries';
-import PersonalPlanCard from './PersonalPlanCard/PersonalPlanCard';
-import StarterPlanCard from './StarterPlanCard/StarterPlanCard';
-import BusinessPlanCard from './BusinessPlanCard/BusinessPlanCard';
-import ProfessionalPlanCard from './ProfessionalPlanCard/ProfessionalPlanCard';
 import styles from './Subscribe.module.scss';
-import Snow from '@Shared/Snow/Snow';
 import { getRegion } from 'services/region.service';
-import { BillingPeriodE } from 'types/General';
+import { useTabletDown } from '../../../hooks/useMediaQuery';
+import { RegionCodeT } from 'types/Countries';
+import { BillingPeriodE, PlansE } from 'types/General';
+import { getPricePageData } from 'util/utilities';
+import getEnvVariable from 'config';
+import { STARTER_COPY, PERSONAL_COPY, PROFESSIONAL_COPY } from './plan.const';
+import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
+import { Button } from '@mozilla/lilypad-ui';
+import Snow from '@Shared/Snow/Snow';
 import Bar from '@Shared/Bar/Bar';
+import ButtonToggle from '@Shared/ButtonToggle/ButtonToggle';
+import { Price, BasePlanCard } from './BasePlanCard/BasePlanCard';
 
 type SubscribePropsT = {
   classProp?: string;
 };
 
 const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
+  const [loading, setLoading] = useState(true);
   const [regionCode, setRegionCode] = useState<RegionCodeT>('US');
-  const [billingPeriod, setBillingPeriod] = useState<BillingPeriodE>(
-    BillingPeriodE.MONTHLY
+  const [billingPeriod, setBillingPeriod] = useState(BillingPeriodE.MONTHLY);
+  const isTabletDown = useTabletDown();
+  const BILLING_OPTIONS = [
+    { label: 'Monthly', value: BillingPeriodE.MONTHLY },
+    { label: 'Yearly', value: BillingPeriodE.YEARLY },
+  ];
+  /**
+   * Init Plans Data
+   */
+  // Persoanl Plan
+  const personalPlanData = getPricePageData(
+    regionCode,
+    PlansE.PERSONAL,
+    billingPeriod
   );
 
+  // Professional Plan
+  const professionalPlanData = getPricePageData(
+    regionCode,
+    PlansE.PROFESSIONAL,
+    billingPeriod
+  );
+
+  /**
+   * Init Region Data
+   */
   useEffect(() => {
     const fetchRegion = async () => {
       try {
         const data = await getRegion();
-        console.log('Region Header: ', data.regionCode);
         setRegionCode(data.regionCode);
+        setLoading(false);
       } catch (e) {
+        setLoading(false);
         console.error('error fetching region', e);
       }
     };
@@ -37,26 +65,106 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
     <section className={`${classProp} ${styles.wrapper}`}>
       <Snow location="top" />
       <div className={styles.container}>
-        <div className={styles.header}>
-          <div>
+        {/* Subscription Header  */}
+        <section className={styles.header}>
+          <div className="text-center">
             <Bar />
-            <h2 className="heading-xxl">
+            <h2 className="heading-xxl mb-12">
               Choose the plan that fits your needs
             </h2>
+            <ButtonToggle
+              classProp="mb-12"
+              options={BILLING_OPTIONS}
+              onClick={(value: BillingPeriodE) => {
+                setBillingPeriod(value);
+              }}
+            />
           </div>
-        </div>
-        <div className={styles.cards}>
-          <StarterPlanCard />
-          <PersonalPlanCard
-            regionCode={regionCode}
-            billingPeriod={billingPeriod}
-          />
-          <ProfessionalPlanCard
-            regionCode={regionCode}
-            billingPeriod={billingPeriod}
-          />
-          <BusinessPlanCard />
-        </div>
+        </section>
+
+        <section className={styles.cards}>
+          {loading ? (
+            <SkeletonCard
+              qty={isTabletDown ? 1 : 3}
+              category="square"
+              classProp={styles.loader}
+            />
+          ) : (
+            <>
+              {/* STARTER PLAN  */}
+              <BasePlanCard
+                title={STARTER_COPY.title}
+                subtitle={STARTER_COPY.subtitle}
+                color="warm"
+                price={<Price price="Free" />}
+                valueProps={STARTER_COPY.valueProps}
+                confirmButton={
+                  <Button
+                    label="Create free hub"
+                    text="Get Started"
+                    onClick={() => {
+                      window.open(
+                        getEnvVariable('PUBLIC_API_SERVER') + '/confirm-plan'
+                      );
+                    }}
+                  />
+                }
+              />
+
+              {/* PERSONAL PLAN */}
+              <BasePlanCard
+                title={PERSONAL_COPY.title}
+                subtitle={PERSONAL_COPY.subtitle}
+                color="cool"
+                price={
+                  <Price
+                    price={`${personalPlanData.currencySymbol}${personalPlanData.planPrice}`}
+                    currencyAbbrev={personalPlanData.currencyAbbrev}
+                    billingPeriod={`per ${
+                      billingPeriod === BillingPeriodE.YEARLY ? 'year' : 'month'
+                    }`}
+                  />
+                }
+                valueProps={PERSONAL_COPY.valueProps}
+                confirmButton={
+                  <Button
+                    label="Create Personal hub"
+                    text="Get Started"
+                    onClick={() => {
+                      window.open(personalPlanData.planUrl);
+                    }}
+                  />
+                }
+              />
+
+              {/* PROFESSIONAL PLAN */}
+              <BasePlanCard
+                title={PROFESSIONAL_COPY.title}
+                subtitle={PROFESSIONAL_COPY.subtitle}
+                color="rainbow"
+                price={
+                  <Price
+                    price={`${professionalPlanData.currencySymbol}${professionalPlanData.planPrice}`}
+                    currencyAbbrev={personalPlanData.currencyAbbrev}
+                    billingPeriod={`per ${
+                      billingPeriod === BillingPeriodE.YEARLY ? 'year' : 'month'
+                    }`}
+                  />
+                }
+                valueProps={PROFESSIONAL_COPY.valueProps}
+                confirmButton={
+                  <Button
+                    label="Create Professional hub"
+                    text="Get Started"
+                    onClick={() => {
+                      window.open(professionalPlanData.planUrl);
+                    }}
+                  />
+                }
+              />
+            </>
+          )}
+        </section>
       </div>
     </section>
   );
