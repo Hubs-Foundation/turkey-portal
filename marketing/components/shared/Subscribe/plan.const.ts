@@ -6,10 +6,16 @@ export type ValueProp = {
   icon: HubIconT | null;
 };
 
+export type FeaturesT = {
+  title: string;
+  values: string[];
+};
+
 export type PlanInfoCopyT = {
   title: string;
   subtitle: string;
   valueProps: ValueProp[];
+  features: FeaturesT | null;
 };
 
 export const STARTER_COPY: PlanInfoCopyT = {
@@ -28,6 +34,7 @@ export const STARTER_COPY: PlanInfoCopyT = {
       icon: 'space',
     },
   ],
+  features: null,
 };
 
 export const PERSONAL_COPY: PlanInfoCopyT = {
@@ -46,6 +53,14 @@ export const PERSONAL_COPY: PlanInfoCopyT = {
       icon: 'space',
     },
   ],
+  features: {
+    title: '',
+    values: [
+      'Add your own logos',
+      'Customize the color scheme of your tools and loading screens',
+      `Customize your Hub's subdomain`,
+    ],
+  },
 };
 
 export const PROFESSIONAL_COPY: PlanInfoCopyT = {
@@ -64,6 +79,13 @@ export const PROFESSIONAL_COPY: PlanInfoCopyT = {
       icon: 'space',
     },
   ],
+  features: {
+    title: 'Everything in Personal, plus:',
+    values: [
+      'Connect a custom domain to your Hub',
+      'Fully control your Hub with access to Mozilla Hubs codebase',
+    ],
+  },
 };
 
 // export const PROFESSIONAL_COPY: PlanInfoCopyT[] = [

@@ -8,7 +8,7 @@ import { getPricePageData } from 'util/utilities';
 import getEnvVariable from 'config';
 import { STARTER_COPY, PERSONAL_COPY, PROFESSIONAL_COPY } from './plan.const';
 import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
-import { Button } from '@mozilla/lilypad-ui';
+import { Button, Icon } from '@mozilla/lilypad-ui';
 import Snow from '@Shared/Snow/Snow';
 import Bar from '@Shared/Bar/Bar';
 import ButtonToggle from '@Shared/ButtonToggle/ButtonToggle';
@@ -96,8 +96,16 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                 title={STARTER_COPY.title}
                 subtitle={STARTER_COPY.subtitle}
                 color="warm"
-                price={<Price price="Free" />}
+                price={<Price price="Free" billingPeriod="Always" />}
                 valueProps={STARTER_COPY.valueProps}
+                additionalContent={
+                  <div className="flex-align-center mb-12">
+                    <Icon name="alert-triangle" />
+                    <span className="body-md ml-16">
+                      Sleep after 12 hours of inactivity
+                    </span>
+                  </div>
+                }
                 confirmButton={
                   <Button
                     label="Create free hub"
@@ -126,6 +134,15 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                   />
                 }
                 valueProps={PERSONAL_COPY.valueProps}
+                features={PERSONAL_COPY.features}
+                additionalContent={
+                  <div className="flex-align-center mb-12">
+                    <Icon name="alert-triangle" />
+                    <span className="body-md ml-16">
+                      Sleep after 12 hours of inactivity
+                    </span>
+                  </div>
+                }
                 confirmButton={
                   <Button
                     label="Create Personal hub"
@@ -152,6 +169,15 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                   />
                 }
                 valueProps={PROFESSIONAL_COPY.valueProps}
+                features={PROFESSIONAL_COPY.features}
+                additionalContent={
+                  <div className="flex-align-center mb-12">
+                    <div className={styles.circle} />
+                    <span className="body-md ml-16">
+                      Sleep after 12 hours of inactivity
+                    </span>
+                  </div>
+                }
                 confirmButton={
                   <Button
                     label="Create Professional hub"

@@ -3,6 +3,7 @@ import styles from './BasePlanCard.module.scss';
 import { ValueProp } from '../plan.const';
 import InfoBlock from '../InfoBlock/InfoBlock';
 import { Button, Icon } from '@mozilla/lilypad-ui';
+import { FeaturesT } from '../plan.const';
 
 // PRICE DISPLAY COMPONENT
 // Used for BasePlanCard "price" prop
@@ -28,27 +29,6 @@ export const Price = ({
   );
 };
 
-export const Disclaimer = () => {
-  return (
-    <a
-      className="primary-link"
-      href="https://hubs.mozilla.com/docs/setup-choosing.html#supported-regions-and-currencies"
-      target="_blank"
-      rel="noreferrer"
-    >
-      <div className="flex pt-24 mb-16">
-        <div className="color-interaction-primary">
-          <Icon name="info" classProp="mr-16" color="currentColor" />
-        </div>
-
-        <p className="paragraph-sm">
-          Subscription plans are available in select countries
-        </p>
-      </div>
-    </a>
-  );
-};
-
 const SoldOut = () => {
   return (
     <div className={styles.sold_out}>
@@ -67,10 +47,10 @@ type BasePlanCardPropsT = {
   price: ReactNode;
   valueProps: ValueProp[];
   additionalContent?: ReactNode;
-  showDisclaimer?: boolean;
   confirmButton: ReactNode;
   footerClassProp?: string;
   color: 'cool' | 'warm' | 'rainbow';
+  features?: FeaturesT | null;
   isSoldOut?: boolean;
 };
 
@@ -80,10 +60,9 @@ export const BasePlanCard = ({
   price,
   valueProps,
   additionalContent,
-  showDisclaimer = false,
   confirmButton,
-  footerClassProp = '',
   color,
+  features,
   isSoldOut = false,
   classProp = '',
 }: BasePlanCardPropsT) => {
@@ -96,8 +75,8 @@ export const BasePlanCard = ({
       />
       {/* HEADER  */}
       <section className="text-center">
-        <h2 className="mb-8 heading-lg">{title}</h2>
-        <p className="mb-16 body-md px-28">{subtitle}</p>
+        <h2 className="mb-6 heading-lg">{title}</h2>
+        <p className="mb-12 body-md px-28">{subtitle}</p>
       </section>
 
       <section className={styles.container}>
@@ -118,22 +97,40 @@ export const BasePlanCard = ({
 
       <hr className={styles.hr} />
 
+      {/* FEATURES  */}
+      <section className="body-md mt-10 mb-80">
+        <p className="mb-12">{features?.title}</p>
+        <div>
+          {features?.values.map((value, i) => {
+            return (
+              <div key={i} className="flex mb-12">
+                <div className="color-semantic-success mr-12">
+                  <Icon
+                    color="currentColor"
+                    name="check"
+                    size={24}
+                    classProp={styles.check}
+                  />
+                </div>
+                <p className="pt-2">{value}</p>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
       {/* FOOTER  */}
 
-      <div className={`${styles.footer_wrapper}`}>
+      <footer className={`${styles.footer_wrapper}`}>
         {additionalContent}
-
-        {showDisclaimer && <Disclaimer />}
-        <div
-          className={`${styles.footer} ${footerClassProp} flex-justify-center`}
-        >
+        <div className={styles.footer}>
           {isSoldOut ? (
             <Button label="sold out" text="sold out" />
           ) : (
             confirmButton
           )}
         </div>
-      </div>
+      </footer>
     </div>
   );
 };
