@@ -59,7 +59,7 @@ export const PROFESSIONAL_COPY: PlanInfoCopyT[] = [
     icon: null,
   },
   {
-    label: 'Connect a custom domain to your Hub - **ALPHA**',
+    label: 'Connect a custom domain to your Hub',
     description: '',
     icon: null,
   },
@@ -74,8 +74,7 @@ export const PROFESSIONAL_COPY: PlanInfoCopyT[] = [
     icon: null,
   },
   {
-    label:
-      'Fully control your Hub with access to Mozilla’s codebase - **ALPHA**',
+    label: 'Fully control your Hub with access to Mozilla’s codebase',
     description: '',
     icon: null,
   },
