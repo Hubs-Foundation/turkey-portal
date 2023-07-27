@@ -5,8 +5,6 @@ import InfoBlock from '../InfoBlock/InfoBlock';
 import { Button, Icon } from '@mozilla/lilypad-ui';
 import { FeaturesT } from '../plan.const';
 
-// PRICE DISPLAY COMPONENT
-// Used for BasePlanCard "price" prop
 type PricePropsT = {
   price: string;
   currencyAbbrev?: string;
@@ -25,6 +23,24 @@ export const Price = ({
         {currencyAbbrev && <p className="body-md ml-4">{currencyAbbrev}</p>}
       </div>
       {billingPeriod && <p className={styles.price_cadence}>{billingPeriod}</p>}
+    </div>
+  );
+};
+
+type StatusPropsT = {
+  icon: 'warning' | 'greenLight';
+  message: string;
+};
+
+export const Status = ({ icon, message }: StatusPropsT) => {
+  return (
+    <div className="flex-align-center mb-12">
+      {icon === 'warning' ? (
+        <Icon name="alert-triangle" />
+      ) : (
+        <div className={styles.circle} />
+      )}
+      <span className="body-md ml-16">{message}</span>
     </div>
   );
 };
@@ -76,7 +92,7 @@ export const BasePlanCard = ({
       {/* HEADER  */}
       <section className="text-center">
         <h2 className="mb-6 heading-lg">{title}</h2>
-        <p className="mb-12 body-md px-28">{subtitle}</p>
+        <p className="mb-12 body-md px-28-dt">{subtitle}</p>
       </section>
 
       <section className={styles.container}>
@@ -120,7 +136,6 @@ export const BasePlanCard = ({
       </section>
 
       {/* FOOTER  */}
-
       <footer className={`${styles.footer_wrapper}`}>
         {additionalContent}
         <div className={styles.footer}>

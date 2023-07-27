@@ -16,6 +16,7 @@ export type PlanInfoCopyT = {
   subtitle: string;
   valueProps: ValueProp[];
   features: FeaturesT | null;
+  status: string;
 };
 
 export const STARTER_COPY: PlanInfoCopyT = {
@@ -35,6 +36,7 @@ export const STARTER_COPY: PlanInfoCopyT = {
     },
   ],
   features: null,
+  status: 'Sleep after 12 hours of inactivity',
 };
 
 export const PERSONAL_COPY: PlanInfoCopyT = {
@@ -61,6 +63,7 @@ export const PERSONAL_COPY: PlanInfoCopyT = {
       `Customize your Hub's subdomain`,
     ],
   },
+  status: 'Sleep after 72 hours of inactivity',
 };
 
 export const PROFESSIONAL_COPY: PlanInfoCopyT = {
@@ -86,6 +89,7 @@ export const PROFESSIONAL_COPY: PlanInfoCopyT = {
       'Fully control your Hub with access to Mozilla Hubs codebase',
     ],
   },
+  status: 'Always on — no sleeping',
 };
 
 // export const PROFESSIONAL_COPY: PlanInfoCopyT[] = [
