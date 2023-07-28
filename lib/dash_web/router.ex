@@ -1,14 +1,6 @@
 defmodule DashWeb.Router do
   use DashWeb, :router
 
-  pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :put_root_layout, {DashWeb.LayoutView, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-  end
-
   pipeline :api do
     plug :accepts, ["json"]
     plug DashWeb.ContentTypeRestriction, ["application/json"]
@@ -29,18 +21,6 @@ defmodule DashWeb.Router do
   pipeline :approved_email_auth do
     plug DashWeb.Plugs.ApprovedEmailAuth
   end
-
-  scope "/", DashWeb do
-    pipe_through [:basic_auth, :browser]
-
-    get "/", PageController, :index
-    get "/hubs/*path", PageController, :index
-  end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", DashWeb do
-  #   pipe_through :api
-  # end
 
   scope "/api/v1", DashWeb do
     resources "/region", Api.V1.RegionController, only: [:show], singleton: true
@@ -89,7 +69,7 @@ defmodule DashWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/" do
-      pipe_through :browser
+      pipe_through [:fetch_session, :protect_from_forgery]
 
       live_dashboard "/dashboard", metrics: DashWeb.Telemetry
     end
@@ -101,14 +81,9 @@ defmodule DashWeb.Router do
   # node running the Phoenix server.
   if Mix.env() == :dev do
     scope "/dev" do
-      pipe_through :browser
+      pipe_through [:fetch_session, :protect_from_forgery]
 
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
-  end
-
-  scope "/", DashWeb do
-    pipe_through [:basic_auth, :browser]
-    get "/*path", PageController, :not_found
   end
 end
