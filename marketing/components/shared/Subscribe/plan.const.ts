@@ -92,40 +92,6 @@ export const PROFESSIONAL_COPY: PlanInfoCopyT = {
   status: 'Always on — no sleeping',
 };
 
-// export const PROFESSIONAL_COPY: PlanInfoCopyT[] = [
-//   {
-//     label: '50 guest capacity',
-//     description: 'Free for guests to join',
-//     icon: null,
-//   },
-//   {
-//     label: '25GB Asset storage',
-//     description: 'For avatars and scenes',
-//     icon: null,
-//   },
-//   {
-//     label: 'Connect a custom domain to your Hub - **ALPHA**',
-//     description: '',
-//     icon: null,
-//   },
-//   {
-//     label: 'Add your own logos',
-//     description: '',
-//     icon: null,
-//   },
-//   {
-//     label: 'Customize the color scheme of your tools and loading screens',
-//     description: '',
-//     icon: null,
-//   },
-//   {
-//     label:
-//       'Fully control your Hub with access to Mozilla’s codebase - **ALPHA**',
-//     description: '',
-//     icon: null,
-//   },
-// ];
-
 export const PLAN_ID_MAP = {
   /**
    * United Kingdom
@@ -150,17 +116,17 @@ export const PLAN_ID_MAP = {
         price: 79.0,
       },
       yearly: {
-        planId: 'price_1NMDiXJNcmPzuWtRmTaukmmQ',
+        planId: 'price_1NTzZpJNcmPzuWtRt6JG6pxY',
         price: 948.0,
       },
     },
     business: {
       monthly: {
-        planId: 'price_1NMDjKJNcmPzuWtR6fRWNH6A',
+        planId: 'TODO',
         price: 479.0,
       },
       yearly: {
-        planId: 'price_1NMDjuJNcmPzuWtRkGqRNg0e',
+        planId: 'TODO',
         price: 5748.0,
       },
     },
@@ -189,17 +155,17 @@ export const PLAN_ID_MAP = {
         price: 79.0,
       },
       yearly: {
-        planId: 'price_1NME58JNcmPzuWtRr3tJJNJ9',
+        planId: 'price_1NTzZpJNcmPzuWtRsrI1aBCo',
         price: 948.0,
       },
     },
     business: {
       monthly: {
-        planId: 'price_1NME5XJNcmPzuWtRpnVLPt1A',
+        planId: 'TODO',
         price: 479.0,
       },
       yearly: {
-        planId: 'price_1NME60JNcmPzuWtR2jjTY7pD',
+        planId: 'TODO',
         price: 5748.0,
       },
     },
@@ -228,7 +194,7 @@ export const PLAN_ID_MAP = {
         price: 79.0,
       },
       yearly: {
-        planId: 'TODO',
+        planId: 'price_1NTzZpJNcmPzuWtR7Tz0aZwd',
         price: 948.0,
       },
     },
@@ -239,7 +205,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -267,8 +233,8 @@ export const PLAN_ID_MAP = {
         price: 79.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZpJNcmPzuWtRsJlYMDvy',
+        price: 948.0,
       },
     },
     business: {
@@ -278,7 +244,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -306,8 +272,8 @@ export const PLAN_ID_MAP = {
         price: 79.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZpJNcmPzuWtREpgZ00je',
+        price: 948.0,
       },
     },
     business: {
@@ -317,7 +283,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -345,8 +311,8 @@ export const PLAN_ID_MAP = {
         price: 79.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZpJNcmPzuWtRDH59IOEe',
+        price: 948.0,
       },
     },
     business: {
@@ -356,7 +322,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -384,8 +350,8 @@ export const PLAN_ID_MAP = {
         price: 79.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZpJNcmPzuWtR1keWp00J',
+        price: 948.0,
       },
     },
     business: {
@@ -395,7 +361,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -423,8 +389,8 @@ export const PLAN_ID_MAP = {
         price: 79.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZpJNcmPzuWtRkTbP7JZD',
+        price: 948.0,
       },
     },
     business: {
@@ -434,7 +400,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -462,8 +428,8 @@ export const PLAN_ID_MAP = {
         price: 79.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZpJNcmPzuWtRSZyUNqBj',
+        price: 948.0,
       },
     },
     business: {
@@ -473,7 +439,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -501,8 +467,8 @@ export const PLAN_ID_MAP = {
         price: 79.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZpJNcmPzuWtRwG9IqEyU',
+        price: 948.0,
       },
     },
     business: {
@@ -512,7 +478,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -540,8 +506,8 @@ export const PLAN_ID_MAP = {
         price: 79.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZpJNcmPzuWtRbuToqgDp',
+        price: 948.0,
       },
     },
     business: {
@@ -551,7 +517,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -579,8 +545,8 @@ export const PLAN_ID_MAP = {
         price: 79.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZqJNcmPzuWtRDZWeRzql',
+        price: 948.0,
       },
     },
     business: {
@@ -590,7 +556,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -618,8 +584,8 @@ export const PLAN_ID_MAP = {
         price: 79.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZqJNcmPzuWtRh6iijnSx',
+        price: 948.0,
       },
     },
     business: {
@@ -629,7 +595,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -649,7 +615,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'price_1NMGneJNcmPzuWtRTCcwxSwT',
-        price: 84.0,
+        price: 144.0,
       },
     },
     professional: {
@@ -658,8 +624,8 @@ export const PLAN_ID_MAP = {
         price: 124.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZqJNcmPzuWtR66ZV7hbN',
+        price: 1488.0,
       },
     },
     business: {
@@ -669,7 +635,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -697,8 +663,8 @@ export const PLAN_ID_MAP = {
         price: 79.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZqJNcmPzuWtRsrm6v0Ql',
+        price: 948.0,
       },
     },
     business: {
@@ -708,7 +674,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -727,7 +693,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'price_1NMGomJNcmPzuWtRxbvlH3pV',
-        price: 84.0,
+        price: 900.0,
       },
     },
     professional: {
@@ -736,8 +702,8 @@ export const PLAN_ID_MAP = {
         price: 809.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZqJNcmPzuWtR1t3PUJAW',
+        price: 9708.0,
       },
     },
     business: {
@@ -747,7 +713,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -766,7 +732,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'price_1NMGpJJNcmPzuWtR1X4dN8T3',
-        price: 84.0,
+        price: 396.0,
       },
     },
     professional: {
@@ -775,8 +741,8 @@ export const PLAN_ID_MAP = {
         price: 357.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZqJNcmPzuWtRvqT9Gw6o',
+        price: 4284.0,
       },
     },
     business: {
@@ -786,7 +752,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -805,7 +771,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'price_1NMGpfJNcmPzuWtRUHrCxkCq',
-        price: 7,
+        price: 120.0,
       },
     },
     professional: {
@@ -814,8 +780,8 @@ export const PLAN_ID_MAP = {
         price: 104.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZqJNcmPzuWtRe3wSHa4B',
+        price: 1248.0,
       },
     },
     business: {
@@ -825,7 +791,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -844,7 +810,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'price_1NMGqMJNcmPzuWtRLlnGy5yt',
-        price: 84.0,
+        price: 348.0,
       },
     },
     professional: {
@@ -853,8 +819,8 @@ export const PLAN_ID_MAP = {
         price: 313.0,
       },
       yearly: {
-        planId: 'TODO',
-        price: 5000.22,
+        planId: 'price_1NTzZqJNcmPzuWtRXuOsZ1sT',
+        price: 3756.0,
       },
     },
     business: {
@@ -864,7 +830,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -893,7 +859,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
     business: {
@@ -903,7 +869,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -932,7 +898,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
     business: {
@@ -942,7 +908,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -971,7 +937,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
     business: {
@@ -981,7 +947,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -1010,7 +976,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
     business: {
@@ -1020,7 +986,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -1049,7 +1015,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
     business: {
@@ -1059,7 +1025,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -1088,7 +1054,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
     business: {
@@ -1098,7 +1064,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -1127,7 +1093,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
     business: {
@@ -1137,7 +1103,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -1166,7 +1132,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
     business: {
@@ -1176,7 +1142,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -1205,7 +1171,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
     business: {
@@ -1215,7 +1181,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -1244,7 +1210,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
     business: {
@@ -1254,7 +1220,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -1283,7 +1249,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
     business: {
@@ -1293,7 +1259,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -1322,7 +1288,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
     business: {
@@ -1332,7 +1298,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -1361,7 +1327,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
     business: {
@@ -1371,7 +1337,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },
@@ -1400,7 +1366,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
     business: {
@@ -1410,7 +1376,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'TODO',
-        price: 5000.22,
+        price: 948.0,
       },
     },
   },

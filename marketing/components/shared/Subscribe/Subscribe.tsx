@@ -8,10 +8,11 @@ import { getPricePageData } from 'util/utilities';
 import getEnvVariable from 'config';
 import { STARTER_COPY, PERSONAL_COPY, PROFESSIONAL_COPY } from './plan.const';
 import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
-import { Button } from '@mozilla/lilypad-ui';
+import { Modal, Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import Snow from '@Shared/Snow/Snow';
 import Bar from '@Shared/Bar/Bar';
 import ButtonToggle from '@Shared/ButtonToggle/ButtonToggle';
+import ContactFormModal from 'components/modals/ContactFormModal/ContactFormModal';
 import { Price, Status, BasePlanCard } from './BasePlanCard/BasePlanCard';
 
 type SubscribePropsT = {
@@ -22,6 +23,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
   const [loading, setLoading] = useState(true);
   const [regionCode, setRegionCode] = useState<RegionCodeT>('US');
   const [billingPeriod, setBillingPeriod] = useState(BillingPeriodE.MONTHLY);
+  const [showModal, setShowModal] = useState<Boolean>(false);
   const isTabletDown = useTabletDown();
   const isMobileDown = useMobileDown();
   const BILLING_OPTIONS = [
@@ -62,6 +64,20 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
     fetchRegion();
   }, []);
 
+  /**
+   * Close Modal
+   */
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  /**
+   * Open Modal
+   */
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <Snow location="top" />
@@ -100,6 +116,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
               <>
                 {/* STARTER PLAN  */}
                 <BasePlanCard
+                  classProp={styles.plan_1}
                   title={STARTER_COPY.title}
                   subtitle={STARTER_COPY.subtitle}
                   color="warm"
@@ -123,6 +140,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
 
                 {/* PERSONAL PLAN */}
                 <BasePlanCard
+                  classProp={styles.plan_2}
                   title={PERSONAL_COPY.title}
                   subtitle={PERSONAL_COPY.subtitle}
                   color="cool"
@@ -155,6 +173,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
 
                 {/* PROFESSIONAL PLAN */}
                 <BasePlanCard
+                  classProp={styles.plan_3}
                   title={PROFESSIONAL_COPY.title}
                   subtitle={PROFESSIONAL_COPY.subtitle}
                   color="rainbow"
@@ -187,11 +206,28 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                     />
                   }
                 />
+
+                {/* BUSINESS INQU  classProp={styles.plan_hanger}  */}
+                <div className={styles.hanger_card}>
+                  <div className={styles.banner_gradient}></div>
+                  <Button
+                    onClick={handleOpenModal}
+                    classProp="mr-8"
+                    label="click here"
+                    text="Click here"
+                    category={ButtonCategoriesE.PRIMARY_SOLID}
+                  />
+                  <p className="body-md">for enterprise inquiries</p>
+                </div>
               </>
             )}
           </div>
         </section>
       </div>
+
+      <Modal onClose={handleCloseModal} isVisible={showModal}>
+        <ContactFormModal onClose={handleCloseModal} />
+      </Modal>
     </section>
   );
 };
