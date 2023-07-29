@@ -78,6 +78,21 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
     setShowModal(true);
   };
 
+  const HangerCard = () => (
+    <div className={styles.hanger_card}>
+      <div className={styles.banner_gradient}></div>
+      <button
+        className={styles.hanger_cta}
+        aria-label="click here"
+        type="button"
+        onClick={handleOpenModal}
+      >
+        Click here
+      </button>
+      <p className="body-md">for enterprise inquiries</p>
+    </div>
+  );
+
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <Snow location="top" />
@@ -207,22 +222,14 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                   }
                 />
 
-                {/* BUSINESS INQU  classProp={styles.plan_hanger}  */}
-                <div className={styles.hanger_card}>
-                  <div className={styles.banner_gradient}></div>
-                  <Button
-                    onClick={handleOpenModal}
-                    classProp="mr-8"
-                    label="click here"
-                    text="Click here"
-                    category={ButtonCategoriesE.PRIMARY_SOLID}
-                  />
-                  <p className="body-md">for enterprise inquiries</p>
-                </div>
+                {/* BUSINESS INQU*/}
+                {!isMobileDown && <HangerCard />}
               </>
             )}
           </div>
         </section>
+        {/* BUSINESS INQU*/}
+        {isMobileDown && <HangerCard />}
       </div>
 
       <Modal onClose={handleCloseModal} isVisible={showModal}>

@@ -14,11 +14,12 @@
   flex-grow: 1;
 
   @include tablet-down {
-    padding: 50px 0;
+    padding: 50px 0 120px 0;
   }
 
   @include mobile-down {
     margin-top: 40px;
+    padding: 50px 18px 18px 18px;
   }
 }
 
@@ -109,31 +110,50 @@
   }
 }
 
-.hanger_card {
-  background-color: $color-background-neutral-0;
-  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.15);
-  border-radius: 20px;
-  width: 386px;
-  color: $color-text-main;
-  padding: 40px;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  align-items: center;
-  grid-area: hanger;
+.hanger {
+  &_card {
+    background-color: $color-background-neutral-0;
+    box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    width: 386px;
+    padding: 30px 24px 24px 24px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    grid-area: hanger;
 
-  @include desktop-large-down {
-    width: 100%;
-    max-width: 860px;
+    @include desktop-large-down {
+      max-width: 860px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    @include mobile-down {
+      margin: 24px 8px;
+      width: initial;
+    }
+
+    .banner_gradient {
+      padding: 6px;
+      position: absolute;
+      width: 100%;
+      top: 0;
+      left: 0;
+      background: $gradient-rainbow;
+    }
   }
 
-  .banner_gradient {
-    padding: 6px;
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 0;
-    background: $gradient-rainbow;
+  &_cta {
+    @include body-md();
+    background: transparent;
+    border: 0;
+    padding: 0;
+    margin-right: 8px;
+    color: $color-interaction-primary;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 
