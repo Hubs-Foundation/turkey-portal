@@ -140,7 +140,7 @@ const ContactFormModal = ({
       {!submitting && (
         <form className={styles.form} onSubmit={formik.handleSubmit}>
           {/* MODAL CONTENTS  */}
-          <div className={styles.content}>
+          <div className="mb-16">
             <Input
               id="name"
               name="name"
@@ -239,7 +239,7 @@ const ContactFormModal = ({
             <div className={styles.footer_container}>
               <Button
                 label="cancel"
-                category={ButtonCategoriesE.PRIMARY_CLEAR}
+                category={ButtonCategoriesE.PRIMARY_OUTLINE}
                 text="Nevermind"
                 classProp="mr-10-dt"
                 onClick={handleCloseClick}

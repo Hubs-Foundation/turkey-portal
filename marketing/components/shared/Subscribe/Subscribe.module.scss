@@ -9,7 +9,7 @@
 }
 
 .container {
-  padding: 120px 0;
+  padding: 100px 0;
   flex-wrap: wrap;
   flex-grow: 1;
 
@@ -27,6 +27,12 @@
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+
+  h2 {
+    @include mobile-down {
+      max-width: 300px;
+    }
+  }
 }
 
 .cards {
@@ -120,6 +126,7 @@
     overflow: hidden;
     position: relative;
     display: flex;
+    align-items: center;
     grid-area: hanger;
 
     @include desktop-large-down {
