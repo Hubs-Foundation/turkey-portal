@@ -17,12 +17,16 @@ export const Price = ({
   billingPeriod,
 }: PricePropsT) => {
   return (
-    <div className={styles.price_container}>
-      <div className={styles.price}>
-        <h2 className="heading-lg">{price}</h2>
-        {currencyAbbrev && <p className="body-md ml-4">{currencyAbbrev}</p>}
+    <div className={styles.price_wrapper}>
+      <div className={styles.price_container}>
+        <div className={styles.price}>
+          <h2 className="heading-lg">{price}</h2>
+          {currencyAbbrev && <p className="body-md ml-4">{currencyAbbrev}</p>}
+        </div>
+        {billingPeriod && (
+          <p className={styles.price_cadence}>{billingPeriod}</p>
+        )}
       </div>
-      {billingPeriod && <p className={styles.price_cadence}>{billingPeriod}</p>}
     </div>
   );
 };
@@ -96,7 +100,7 @@ export const BasePlanCard = ({
       </section>
 
       <section className={styles.container}>
-        <div className={styles.price_wrapper}>{price}</div>
+        {price}
 
         {/* VALUE PROPS  */}
         {valueProps.map(({ label, description, icon }, i) => {

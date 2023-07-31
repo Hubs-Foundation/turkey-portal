@@ -135,7 +135,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                   title={STARTER_COPY.title}
                   subtitle={STARTER_COPY.subtitle}
                   color="warm"
-                  price={<Price price="Free" billingPeriod="Always" />}
+                  price={<Price price="Free" />}
                   valueProps={STARTER_COPY.valueProps}
                   additionalContent={
                     <Status icon="warning" message={STARTER_COPY.status} />
