@@ -1,23 +1,5 @@
 @use '../../styles/core/boilerplate' as *;
 
-.main {
-  margin-top: 95px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-
-  @include desktop-large-down {
-    margin-top: 35px;
-    flex-direction: column;
-    padding: 0 24px;
-  }
-
-  @include mobile-down {
-    margin-top: 0;
-    padding: 0;
-  }
-}
-
 .card_wrapper {
   margin-right: 20px;
 
@@ -27,43 +9,5 @@
 
   @include mobile-down {
     margin: 0;
-  }
-}
-
-.settings {
-  &_grid_wrapper {
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: 60% auto;
-    align-items: start;
-    column-gap: 10px;
-    row-gap: 10px;
-    max-width: 1040px;
-    width: 100%;
-
-    @include tablet-down() {
-      grid-template-columns: 100%;
-      grid-template-rows: 100% 100%;
-    }
-  }
-
-  &_form_wrapper {
-    background-color: $white;
-    border-radius: 8px;
-    border: 1px solid $grey;
-    padding: 30px;
-  }
-}
-
-.skeleton {
-  &_container {
-    max-width: 1040px;
-    width: 100%;
-  }
-}
-
-.subcard {
-  @include desktop-large-down {
-    margin-bottom: 24px;
   }
 }

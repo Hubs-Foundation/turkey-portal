@@ -18,10 +18,14 @@ export const getPricePageData = (
   plan: Exclude<PlansE, null | PlansE.STARTER>,
   billingPeriod: BillingPeriodE
 ) => {
-  const BASE_URL =
-    'https://subscriptions.firefox.com/checkout/prod_Mo4tS8uH9y3Mj5';
+  const PersonalProdId = 'prod_Mo4tS8uH9y3Mj5';
+  const ProfessionalProdId = 'prod_OGWdlewqBfGPy0';
+  const prodID = plan === PlansE.PERSONAL ? PersonalProdId : ProfessionalProdId;
+  const BASE_URL = `https://subscriptions.firefox.com/checkout/${prodID}`;
+
   // If not accepted region or no region default to US plan
-  let planUrl = `${BASE_URL}}?plan=${PLAN_ID_MAP.US[plan][billingPeriod].planId}`;
+  let planUrl = `${BASE_URL}?plan=${PLAN_ID_MAP.US[plan][billingPeriod].planId}`;
+
   let planPrice = PLAN_ID_MAP.US[plan][billingPeriod].price;
   let taxDescription = PLAN_ID_MAP.US.taxDescription;
   let currencySymbol = PLAN_ID_MAP.US.symbol;

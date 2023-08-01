@@ -179,7 +179,7 @@ defmodule DashWeb.Plugs.AuthTest do
   describe "account was deleted tests" do
     test "returns 401, if account was deleted", %{conn: conn} do
       fxa_uid = get_default_test_uid()
-      Dash.fxa_uid_to_deleted_list!(fxa_uid)
+      Dash.fxa_uid_to_deleted_list(fxa_uid)
 
       conn =
         conn

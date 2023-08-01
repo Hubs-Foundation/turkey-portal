@@ -34,11 +34,15 @@ defmodule Dash.OrchClient do
       when is_binary(fxa_email) and is_list(opts) do
     disable_branding? = Keyword.get(opts, :disable_branding?, false)
     reset_branding? = Keyword.get(opts, :reset_branding?, false)
+    reset_client? = Keyword.get(opts, :reset_client?, false)
+    reset_domain? = Keyword.get(opts, :reset_domain?, false)
 
     params = %{
       ccu_limit: Integer.to_string(hub.ccu_limit),
       disable_branding: disable_branding?,
       reset_branding: reset_branding?,
+      reset_client: reset_client?,
+      reset_domain: reset_domain?,
       storage_limit: Float.to_string(hub.storage_limit_mb / 1024),
       subdomain: hub.subdomain,
       tier: hub.tier,

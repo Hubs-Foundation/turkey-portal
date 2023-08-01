@@ -7,12 +7,14 @@ import {
   ButtonSizesE,
   Icon,
   Input,
+  Pill,
 } from '@mozilla/lilypad-ui';
 import { validateHubSubdomain } from 'services/hub.service';
 import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
 import { RoutesE } from 'types/Routes';
 import { useFormik } from 'formik';
 import validate, { FormValues } from './validate';
+import { useIsProfessional } from 'hooks/usePlans';
 
 export type HubFormCardT = {
   domain: string;
@@ -40,6 +42,7 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
     useState<string>('');
   const [isEditingDomain, setIsEditingDomain] = useState(false);
   const router = useRouter();
+  const isProfessional = useIsProfessional();
 
   /**
    * Init Formik
@@ -216,7 +219,41 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
               </div>
             ) : null}
           </div>
-          <div className={styles.actions_wrapper}>
+
+          {isProfessional && (
+            <section className={styles.custom_client_message}>
+              <div className="flex-justify-between mb-12">
+                <h1 className="heading-sm">Custom Domain</h1>
+                <Pill title="Beta" category="cool" />
+              </div>
+              <p className="paragraph mb-24">
+                This plan allows you to manually connect a custom domain to your
+                hub using the command line. The following documentation walks
+                you through the process, prerequisites, and how to
+                troubleshooting custom domains.
+              </p>
+
+              <div className="mb-20 youtube-video">
+                <iframe
+                  className=""
+                  src="https://www.youtube.com/embed/0PTmHNKdZB0"
+                  frameBorder="0"
+                  allowFullScreen
+                ></iframe>
+              </div>
+
+              <a
+                className="primary-link"
+                rel="noreferrer"
+                href="https://hubs.mozilla.com/docs/setup-custom-domain.html"
+                target="_blank"
+              >
+                Custom Domain Documentation
+              </a>
+            </section>
+          )}
+
+          <section className={styles.actions_wrapper}>
             <Button
               label="cancel"
               classProp="mr-5"
@@ -226,12 +263,12 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
             />
 
             <Button
-              label="update"
+              label="Apply Changes"
               type="submit"
               category={ButtonCategoriesE.PRIMARY_SOLID}
-              text="update"
+              text="Apply Changes"
             />
-          </div>
+          </section>
         </form>
       </div>
     </div>

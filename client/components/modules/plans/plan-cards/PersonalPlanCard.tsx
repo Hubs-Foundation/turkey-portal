@@ -43,6 +43,7 @@ const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
     <>
       {pricePageData && (
         <BasePlanCard
+          plan={PlansE.PERSONAL}
           title="Personal"
           color="warm"
           price={

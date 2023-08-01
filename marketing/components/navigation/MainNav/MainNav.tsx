@@ -69,7 +69,7 @@ const MainNav = ({
                 </a>
 
                 <a
-                  href="/Pvg5MMt/hubs-demo"
+                  href="/E4e8oLx/hubs-demo-promenade"
                   target="_blank"
                   className={styles.main_nav_link}
                 >

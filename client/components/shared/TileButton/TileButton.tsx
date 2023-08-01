@@ -7,6 +7,7 @@ export type TileButtonPropsT = {
   color: '--color-brand-1' | '--color-brand-2' | '--color-brand-4';
   link: string;
   title: string;
+  target?: '_blank' | '_self' | '_parent' | '_top' | 'framename';
   classProp?: string;
 };
 
@@ -15,10 +16,11 @@ const TileButton = ({
   color = '--color-brand-1',
   link,
   title,
+  target = '_blank',
   classProp = '',
 }: TileButtonPropsT) => {
   return (
-    <a href={link} className="flex">
+    <a href={link} className="flex" target={target}>
       <section className={`${styles.wrapper} ${classProp}`}>
         <div className={styles.container}>
           <div

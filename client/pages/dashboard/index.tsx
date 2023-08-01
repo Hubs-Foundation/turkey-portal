@@ -1,19 +1,20 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
 import { useEffect, useState, useCallback } from 'react';
-import { HubT, LastErrorE, StatusE } from 'types/General';
+import { HubT, LastErrorE, PlansE, StatusE } from 'types/General';
 import styles from './dashboard.module.scss';
 import HubCard from '@Modules/hubs/HubCard/HubCard';
-import SidePanel from '@Modules/side-panel';
 import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
 import { requireAuthenticationAndSubscription } from 'services/routeGuard.service';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
 import { getHubs } from 'services/hub.service';
-import FeedbackBanner from '@Shared/FeedbackBanner/FeedbackBanner';
 import { selectAccount } from 'store/accountSlice';
 import { initAccountData as refreshAccountData } from 'store/storeInit';
 import { useSelector } from 'react-redux';
 import { AxiosRequestHeaders } from 'axios';
+import SidePanelLayout from 'layouts/SidePanelLayout/SidePanelLayout';
+import { CustomizeHub } from '@Modules/hubs/CustomizeHub/CustomizeHub';
+import { useIsProfessionalUp } from 'hooks/usePlans';
 
 type DashboardPropsT = { subscription: SubscriptionT };
 
@@ -56,6 +57,7 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
   const [hubs, setHubs] = useState<HubT[]>([]);
   const [hasUpdatingHub, setHasUpdatingHub] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const isProfessionalUp = useIsProfessionalUp();
 
   /**
    * Hubs call failed:
@@ -149,8 +151,11 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
         <meta name="description" content="general profile page" />
       </Head>
 
-      <section className={styles.hubs_wrapper}>
-        {/* Hub Cards  */}
+      <SidePanelLayout
+        hub={hubs[0]}
+        subscription={subscription}
+        isLoading={isLoading && Boolean(account.planName)}
+      >
         <div className={styles.cards_wrapper}>
           {/* Hub Creating */}
           {/* TODO (Tech Debt): Right now (EA) we are only dealing with one hub, so, if there are zero
@@ -168,41 +173,23 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
           )}
 
           {!isLoading ? (
-            hubs.map((hub) => {
-              return (
-                <HubCard
-                  key={hub.hubId}
-                  hub={hub}
-                  refreshHubData={refreshHubData}
-                />
-              );
-            })
+            <>
+              {hubs.map((hub) => {
+                return (
+                  <HubCard
+                    key={hub.hubId}
+                    hub={hub}
+                    refreshHubData={refreshHubData}
+                  />
+                );
+              })}
+              {isProfessionalUp && <CustomizeHub hub={hubs[0]} />}
+            </>
           ) : (
             <SkeletonCard qty={3} category="row" />
           )}
         </div>
-
-        {/* SIDE PANEL WIDGET  */}
-        <div className={styles.sidep_panel}>
-          {!isLoading ? (
-            <SidePanel
-              domain={hubs[0].domain}
-              subdomain={hubs[0].subdomain}
-              subscription={subscription}
-            />
-          ) : (
-            <SkeletonCard
-              qty={1}
-              category="square"
-              classProp={styles.sidep_panel_skeleton}
-            />
-          )}
-        </div>
-      </section>
-
-      <footer>
-        <FeedbackBanner />
-      </footer>
+      </SidePanelLayout>
     </div>
   );
 };

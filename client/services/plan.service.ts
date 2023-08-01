@@ -13,9 +13,7 @@ export const postStarterPlan = async () => {
   return axios
     .post(
       PLANS_API_PATH,
-      {
-        tier: 'starter',
-      },
+      {},
       {
         withCredentials: true,
       }

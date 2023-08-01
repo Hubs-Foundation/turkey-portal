@@ -18,10 +18,12 @@ export const getPricePageData = async (
   plan: Exclude<PlansE, null | PlansE.STARTER | PlansE.LEGACY>,
   billingPeriod: BillingPeriodE
 ) => {
+  const PersonalProdId = 'prod_Mo4tS8uH9y3Mj5';
+  const ProfessionalProdId = 'prod_OGWdlewqBfGPy0';
+  const prodID = plan === PlansE.PERSONAL ? PersonalProdId : ProfessionalProdId;
+  const BASE_URL = `https://subscriptions.firefox.com/checkout/${prodID}`;
   const PLAN_ID_MAP = await getPlanData();
-  // If not accepted region or no region default to US plan
-  const BASE_URL =
-    'https://subscriptions.firefox.com/checkout/prod_Mo4tS8uH9y3Mj5';
+
   // If not accepted region or no region default to US plan
   let planUrl = `${BASE_URL}?plan=${PLAN_ID_MAP.US[plan][billingPeriod].planId}`;
   let planPrice = PLAN_ID_MAP.US[plan][billingPeriod].price;
@@ -51,4 +53,23 @@ export const getPricePageData = async (
   };
 
   return planData as pricePageDataT;
+};
+
+/**
+ * Check if Plan is less than current one
+ * @param current
+ * @param compare
+ * @returns
+ */
+export const isPlanLessThan = (
+  current: PlansE,
+  compare: Exclude<PlansE, PlansE.LEGACY>
+): boolean => {
+  // Handle Legacy Personal plan
+  const currentPlan = current === PlansE.LEGACY ? PlansE.PERSONAL : current;
+  const keys = Object.keys(PlansE);
+  const currentIndex = keys.indexOf(currentPlan.toUpperCase());
+  const compareIndex = keys.indexOf(compare.toUpperCase());
+
+  return currentIndex > compareIndex;
 };

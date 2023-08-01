@@ -1,5 +1,4 @@
 defmodule Dash.AccountTest do
-  use ExUnit.Case
   use Dash.DataCase
 
   import Dash.TestHelpers

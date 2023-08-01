@@ -5,10 +5,11 @@ import { PlansE } from 'types/General';
 import { PlanInfoCopyT } from '../plan.const';
 import styles from './BasePlanCard.module.scss';
 import InfoBlock from '@Shared/InfoBlock/InfoBlock';
-import { Button } from '@mozilla/lilypad-ui';
+import { Button, Icon } from '@mozilla/lilypad-ui';
+import { isPlanLessThan } from 'util/utilities';
 
 // PRICE DISPLAY COMPONENT
-// USED FOR BasePlanCard "PRICE" PROP
+// Used for BasePlanCard "price" prop
 type PricePropsT = {
   price: string;
   currencyAbbrev?: string;
@@ -31,23 +32,48 @@ export const Price = ({
   );
 };
 
+export const Disclaimer = () => {
+  return (
+    <a
+      className="primary-link"
+      href="https://hubs.mozilla.com/docs/setup-choosing.html#supported-regions-and-currencies"
+      target="_blank"
+      rel="noreferrer"
+    >
+      <div className="flex pt-24 mb-16">
+        <div className="color-interaction-primary">
+          <Icon name="info" classProp="mr-16" color="currentColor" />
+        </div>
+
+        <p className="paragraph-sm">
+          Subscription plans are available in select countries
+        </p>
+      </div>
+    </a>
+  );
+};
+
 type BasePlanCardPropsT = {
   classProp?: string;
   title: string;
   price: ReactNode;
+  plan: Exclude<PlansE, PlansE.LEGACY>;
   infoCopyList: PlanInfoCopyT[];
   additionalContent?: ReactNode;
+  showDisclaimer?: boolean;
   confirmButton: ReactNode;
   footerClassProp?: string;
-  color: 'silver' | 'warm';
+  color: 'silver' | 'warm' | 'rainbow';
   isSoldOut?: boolean;
 };
 
 const BasePlanCard = ({
   title,
   price,
+  plan,
   infoCopyList,
   additionalContent,
+  showDisclaimer = false,
   confirmButton,
   footerClassProp = '',
   isSoldOut = false,
@@ -55,17 +81,45 @@ const BasePlanCard = ({
   classProp = '',
 }: BasePlanCardPropsT) => {
   const account = useSelector(selectAccount);
-  const showCurrentPlan = (): boolean => {
-    const planName = title.toLocaleLowerCase();
-    if (account.planName === planName) {
-      return true;
+
+  /**
+   * getCTA disects the logic so show if plan
+   * is "current","sold out", or "less than"
+   * current plan.
+   */
+  const getCTA = () => {
+    const SoldOut = <Button label="sold out" text="sold out" />;
+    const CurrentPlan = (
+      <span className="body-md-semi-bold p-10">Current Plan*</span>
+    );
+
+    // Sold Out
+    if (isSoldOut) {
+      return SoldOut;
     }
+
+    // Defualt Confirm Button
+    if (!account.planName) {
+      return confirmButton;
+    }
+
+    // Disable plans less than current
+    if (isPlanLessThan(account.planName, plan)) {
+      return null;
+    }
+
+    // Don't  let users click current plan
+    if (account.planName === plan) {
+      return CurrentPlan;
+    }
+
     // If plan name is legacy "Standard" and card is
     // "Personal" then mark as current plan.
-    if (account.planName === PlansE.LEGACY && planName === PlansE.PERSONAL) {
-      return true;
+    if (account.planName === PlansE.LEGACY && plan === PlansE.PERSONAL) {
+      return CurrentPlan;
     }
-    return false;
+
+    return confirmButton;
   };
 
   return (
@@ -84,7 +138,9 @@ const BasePlanCard = ({
       <div>
         {/* HEADER  */}
         <div>
-          <h2 className={styles.title}>{title}</h2>
+          <div className="flex-justify-center">
+            <h2 className={styles.title}>{title}</h2>
+          </div>
           <div className={styles.price_wrapper}>{price}</div>
         </div>
 
@@ -101,23 +157,18 @@ const BasePlanCard = ({
             );
           })}
         </div>
-
-        {/* LOCATION CONFIRMATION  */}
-        {additionalContent}
       </div>
 
       {/* FOOTER  */}
       <div className={styles.footer_wrapper}>
+        {additionalContent}
+
+        {showDisclaimer && <Disclaimer />}
+
         <div
           className={`${styles.footer} ${footerClassProp} flex-justify-center`}
         >
-          {isSoldOut ? (
-            <Button label="sold out" text="sold out" />
-          ) : showCurrentPlan() ? (
-            <span className="body-md-semi-bold">Current Plan*</span>
-          ) : (
-            confirmButton
-          )}
+          {getCTA()}
         </div>
       </div>
     </div>

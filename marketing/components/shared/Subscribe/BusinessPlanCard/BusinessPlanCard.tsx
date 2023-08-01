@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Modal } from '@mozilla/lilypad-ui';
-import SubCard from '../SubCard/SubCard';
+import { Modal, Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import ContactFormModal from 'components/modals/ContactFormModal/ContactFormModal';
+import styles from './BusinessPlanCard.module.scss';
 
-const BasePlanCard = () => {
+const BusinessPlanCard = () => {
   const [showModal, setShowModal] = useState<Boolean>(false);
 
   /**
@@ -22,9 +22,21 @@ const BasePlanCard = () => {
 
   return (
     <>
-      <SubCard title="Business" cta="Contact us" onCtaClick={handleOpenModal}>
-        <p>Need dedicated infrastructure, custom clients, or something else?</p>
-      </SubCard>
+      <div className={styles.wrapper}>
+        <div className={styles.content}>
+          <h2 className="heading-lg mb-24">Business</h2>
+          <p>
+            Need dedicated infrastructure, custom clients, or something else?
+          </p>
+
+          <Button
+            onClick={handleOpenModal}
+            label="Contact us"
+            text="Contact us"
+            category={ButtonCategoriesE.SECONDARY_SOLID}
+          />
+        </div>
+      </div>
       <Modal onClose={handleCloseModal} isVisible={showModal}>
         <ContactFormModal onClose={handleCloseModal} />
       </Modal>
@@ -32,4 +44,4 @@ const BasePlanCard = () => {
   );
 };
 
-export default BasePlanCard;
+export default BusinessPlanCard;

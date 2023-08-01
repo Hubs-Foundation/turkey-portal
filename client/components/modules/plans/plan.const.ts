@@ -3,47 +3,80 @@ import { HubIconT } from '@mozilla/lilypad-ui';
 export type PlanInfoCopyT = {
   label: string;
   description: string;
-  icon: HubIconT;
+  icon: HubIconT | null;
 };
 
 export const STARTER_COPY: PlanInfoCopyT[] = [
   {
-    label: 'Unlimited spaces',
-    description: 'With customizable environment and themes',
-    icon: 'spaces',
-  },
-  {
-    label: '10 Online guest capacity',
+    label: '10 guest capacity',
     description: 'Free for guests to join',
-    icon: 'capacity',
+    icon: null,
   },
   {
     label: '500MB Asset storage',
     description: 'For avatars and scenes',
-    icon: 'space',
+    icon: null,
   },
 ];
 
 export const PERSONAL_COPY: PlanInfoCopyT[] = [
   {
-    label: 'Unlimited spaces',
-    description: 'With customizable environment and themes',
-    icon: 'spaces',
-  },
-  {
-    label: '20 Online guest capacity',
+    label: '20 guest capacity',
     description: 'Free for guests to join',
-    icon: 'capacity',
+    icon: null,
   },
   {
     label: '2GB Asset storage',
     description: 'For avatars and scenes',
-    icon: 'space',
+    icon: null,
   },
   {
-    label: 'Custom myhubs.net web address',
+    label: 'Customize your Hub’s subdomain',
     description: '',
-    icon: 'address',
+    icon: null,
+  },
+  {
+    label: 'Add your own logos',
+    description: '',
+    icon: null,
+  },
+  {
+    label: 'Customize the color scheme of your tools and loading screens',
+    description: '',
+    icon: null,
+  },
+];
+
+export const PROFESSIONAL_COPY: PlanInfoCopyT[] = [
+  {
+    label: '50 guest capacity',
+    description: 'Free for guests to join',
+    icon: null,
+  },
+  {
+    label: '25GB Asset storage',
+    description: 'For avatars and scenes',
+    icon: null,
+  },
+  {
+    label: 'Connect a custom domain to your Hub',
+    description: '',
+    icon: null,
+  },
+  {
+    label: 'Add your own logos',
+    description: '',
+    icon: null,
+  },
+  {
+    label: 'Customize the color scheme of your tools and loading screens',
+    description: '',
+    icon: null,
+  },
+  {
+    label: 'Fully control your Hub with access to Mozilla’s codebase',
+    description: '',
+    icon: null,
   },
 ];
 
@@ -67,7 +100,7 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'price_1NMDi9JNcmPzuWtRE3kWUvDS',
+        planId: 'price_1NTzZpJNcmPzuWtRgFsq4SRb',
         price: 79.0,
       },
       yearly: {
@@ -106,7 +139,7 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'price_1NME4jJNcmPzuWtRBkA6Oikz',
+        planId: 'price_1NTzZpJNcmPzuWtRp0sSbSOI',
         price: 79.0,
       },
       yearly: {
@@ -145,21 +178,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtR7WbVcB5D',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
-        price: 5000.22,
+        planId: 'TODO',
+        price: 948.0,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -184,21 +217,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtR1sN9KUmj',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -223,21 +256,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtRbNkTOvMc',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -262,21 +295,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtRUgo0y9N4',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -301,21 +334,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtR4MSyjrBN',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -340,21 +373,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtRGcrkZqg9',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -379,21 +412,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtRpJR0Gjoe',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -418,28 +451,28 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtRRe3x0hrF',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
   },
 
   /**
-   *  * Spain
+   *  Spain
    */
   ES: {
     abbrev: 'EUR',
@@ -457,21 +490,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtRB0mLplBP',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -496,21 +529,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZpJNcmPzuWtR25jMlfmP',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -535,21 +568,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRNX9R1xj4',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -575,21 +608,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRDKEXn7H6',
+        price: 124.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -614,21 +647,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRMSiE5Xpf',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -653,21 +686,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRN4D8ISTO',
+        price: 809.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -692,21 +725,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRiTkt1BJY',
+        price: 357.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -717,7 +750,7 @@ export const PLAN_ID_MAP = {
    */
   SG: {
     abbrev: 'SGD',
-    symbol: '$',
+    symbol: 'SGD ',
     taxDescription: '',
     personal: {
       monthly: {
@@ -731,21 +764,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRWwZuKkyM',
+        price: 104.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -770,21 +803,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRmYIGpOhk',
+        price: 313.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -809,21 +842,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRsDesS7fO',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -848,21 +881,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRamhH5qb5',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -887,21 +920,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRI8Ue4z1Y',
+        price: 524.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -926,21 +959,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRScwftSfi',
+        price: 1670.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -965,21 +998,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZqJNcmPzuWtRrPSq24gg',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -1004,21 +1037,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtR05xKBSME',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -1043,21 +1076,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtRA3DdowrS',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -1082,21 +1115,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtRGvn9ow0a',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -1121,21 +1154,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtRyCCgDfIh',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -1160,21 +1193,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtR3tnqBB26',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -1199,21 +1232,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtRvCWCu6L2',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -1238,21 +1271,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtRxaHT1eQ1',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -1277,21 +1310,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtRt7BBV8Sb',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
@@ -1316,21 +1349,21 @@ export const PLAN_ID_MAP = {
     },
     professional: {
       monthly: {
-        planId: 'PLAN_ID_EA',
-        price: 400.22,
+        planId: 'price_1NTzZrJNcmPzuWtR2qD5KvO6',
+        price: 79.0,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
     business: {
       monthly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 400.22,
       },
       yearly: {
-        planId: 'PLAN_ID_EA',
+        planId: 'TODO',
         price: 5000.22,
       },
     },
