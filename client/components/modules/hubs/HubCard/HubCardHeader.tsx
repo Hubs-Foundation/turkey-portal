@@ -1,4 +1,4 @@
-import { Button, ButtonCategoriesE, Dropdown } from '@mozilla/lilypad-ui';
+import { Button, Dropdown } from '@mozilla/lilypad-ui';
 import { useRouter } from 'next/router';
 import { RoutesE } from 'types/Routes';
 import { StatusE } from 'types/General';
@@ -71,7 +71,7 @@ const HubCardHeader = ({
             <Button
               icon="more-vertical"
               label="toggle"
-              category={ButtonCategoriesE.PRIMARY_CLEAR}
+              category="primary_clear"
             />
           }
           content={DropdownContent}
