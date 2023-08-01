@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import styles from './Hero.module.scss';
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { Button } from '@mozilla/lilypad-ui';
 import { useMobileDown } from 'hooks/useMediaQuery';
 import { HeroT } from 'types';
 
@@ -43,7 +43,7 @@ const Hero = ({
                 href={ctaHref}
                 label={ctaTitle}
                 text={ctaTitle}
-                category={ButtonCategoriesE.PRIMARY_SOLID}
+                category="primary_solid"
               />
             )}
 
@@ -54,7 +54,7 @@ const Hero = ({
                 label={cta2Title}
                 text={cta2Title}
                 classProp="ml-10"
-                category={ButtonCategoriesE.PRIMARY_OUTLINE}
+                category="primary_outline"
               />
             )}
           </div>

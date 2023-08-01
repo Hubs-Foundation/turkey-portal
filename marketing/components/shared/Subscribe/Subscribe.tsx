@@ -8,7 +8,7 @@ import { getPricePageData } from 'util/utilities';
 import getEnvVariable from 'config';
 import { STARTER_COPY, PERSONAL_COPY, PROFESSIONAL_COPY } from './plan.const';
 import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
-import { Modal, Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { Modal, Button } from '@mozilla/lilypad-ui';
 import Snow from '@Shared/Snow/Snow';
 import Bar from '@Shared/Bar/Bar';
 import ButtonToggle from '@Shared/ButtonToggle/ButtonToggle';
