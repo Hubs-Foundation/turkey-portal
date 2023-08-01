@@ -4,7 +4,7 @@ import styles from './ButtonToggle.module.scss';
 
 export type ButtonToggleOptionsT = {
   label: string;
-  value: string | number;
+  value: any;
 };
 
 type ButtonTogglePropsT = {

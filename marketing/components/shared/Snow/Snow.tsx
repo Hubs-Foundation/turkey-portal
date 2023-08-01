@@ -8,9 +8,9 @@ type SnowPropsT = {
   classProp?: string;
 };
 
-const Snow = ({ location = 'top' }: SnowPropsT) => {
+const Snow = ({ location = 'top', classProp = '' }: SnowPropsT) => {
   return (
-    <div className={styles[`snow_${location}`]}>
+    <div className={`${styles[`snow_${location}`]} ${classProp}`}>
       <Image
         src={location === 'top' ? snowTop : snowBottom}
         alt="snow background"

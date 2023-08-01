@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import styles from './BasePlanCard.module.scss';
 import { ValueProp } from '../plan.const';
 import InfoBlock from '../InfoBlock/InfoBlock';
-import { Button, Icon } from '@mozilla/lilypad-ui';
+import { Icon } from '@mozilla/lilypad-ui';
 import { FeaturesT } from '../plan.const';
 
 type PricePropsT = {
@@ -17,7 +17,7 @@ export const Price = ({
   billingPeriod,
 }: PricePropsT) => {
   return (
-    <div className={styles.price_wrapper}>
+    <section className={styles.price_wrapper}>
       <div className={styles.price_container}>
         <div className={styles.price}>
           <h2 className="heading-lg">{price}</h2>
@@ -27,7 +27,7 @@ export const Price = ({
           <p className={styles.price_cadence}>{billingPeriod}</p>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 
@@ -38,25 +38,14 @@ type StatusPropsT = {
 
 export const Status = ({ icon, message }: StatusPropsT) => {
   return (
-    <div className="flex-align-center mb-12">
+    <section className="flex-align-center mb-12">
       {icon === 'warning' ? (
         <Icon name="alert-triangle" />
       ) : (
         <div className={styles.circle} />
       )}
       <span className="body-md ml-16">{message}</span>
-    </div>
-  );
-};
-
-const SoldOut = () => {
-  return (
-    <div className={styles.sold_out}>
-      <div>
-        <h2 className="heading-xl mb-12">Sold Out!</h2>
-        <p>(Temporarily)</p>
-      </div>
-    </div>
+    </section>
   );
 };
 
@@ -71,7 +60,6 @@ type BasePlanCardPropsT = {
   footerClassProp?: string;
   color: 'cool' | 'warm' | 'rainbow';
   features?: FeaturesT | null;
-  isSoldOut?: boolean;
 };
 
 export const BasePlanCard = ({
@@ -83,13 +71,10 @@ export const BasePlanCard = ({
   confirmButton,
   color,
   features,
-  isSoldOut = false,
   classProp = '',
 }: BasePlanCardPropsT) => {
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
-      {isSoldOut && <SoldOut />}
-
       <div
         className={`${styles.banner_gradient} ${styles['highlight_' + color]}`}
       />
@@ -142,13 +127,7 @@ export const BasePlanCard = ({
       {/* FOOTER  */}
       <footer className={`${styles.footer_wrapper}`}>
         {additionalContent}
-        <div className={styles.footer}>
-          {isSoldOut ? (
-            <Button label="sold out" text="sold out" />
-          ) : (
-            confirmButton
-          )}
-        </div>
+        <div className={styles.footer}>{confirmButton}</div>
       </footer>
     </div>
   );

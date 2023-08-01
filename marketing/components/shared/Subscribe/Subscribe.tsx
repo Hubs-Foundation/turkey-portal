@@ -83,7 +83,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
       <div className={styles.banner_gradient}></div>
       <button
         className={styles.hanger_cta}
-        aria-label="click here"
+        aria-label="click here to open contact form"
         type="button"
         onClick={handleOpenModal}
       >
