@@ -1,7 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { AcceptedRegionCodeT, ACCEPTED_REGION_CODES } from 'types/Countries';
+import { planDataT } from 'types/General';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const PLAN_ID_MAP = {
+  const PLAN_ID_MAP: planDataT = {
     /**
      * United Kingdom
      */
@@ -1290,6 +1292,19 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       },
     },
   };
+  console.log('req', req.query);
 
-  res.status(200).json(PLAN_ID_MAP);
+  let key: AcceptedRegionCodeT = 'US';
+
+  if ('region' in req.query && req.query.region !== '') {
+    if (
+      !ACCEPTED_REGION_CODES.includes(req.query.region as AcceptedRegionCodeT)
+    ) {
+      res.status(404).json({ error: 'Region not found' });
+    }
+
+    key = req.query.region as AcceptedRegionCodeT;
+  }
+
+  res.status(200).json(PLAN_ID_MAP[key]);
 }

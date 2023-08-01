@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { PUBLIC_API_SERVER } from 'config';
+import { AcceptedRegionCodeT } from 'types/Countries';
 import { planDataT } from 'types/General';
 const PLANS_API_PATH = `${PUBLIC_API_SERVER}/api/v1/plans`;
 
@@ -23,8 +24,8 @@ export const postStarterPlan = async () => {
     });
 };
 
-export const getPlanData = async () => {
-  return axios.get('/api/plans').then((response) => {
+export const getPlanData = async (region: AcceptedRegionCodeT) => {
+  return axios.get(`/api/plans?region=${region}`).then((response) => {
     return response.data as planDataT;
   });
 };

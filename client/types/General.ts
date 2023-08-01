@@ -83,39 +83,41 @@ export type pricePageDataT = {
 };
 
 export type planDataT = {
-  [key in AcceptedRegionCodeT]: {
-    abbrev: string;
-    symbol: string;
-    taxDescription: string;
-    personal: {
-      monthly: {
-        planId: string;
-        price: number;
-      };
-      yearly: {
-        planId: string;
-        price: number;
-      };
+  abbrev: string;
+  symbol: string;
+  taxDescription: string;
+  personal: {
+    monthly: {
+      planId: string;
+      price: number;
     };
-    professional: {
-      monthly: {
-        planId: string;
-        price: number;
-      };
-      yearly: {
-        planId: string;
-        price: number;
-      };
-    };
-    business: {
-      monthly: {
-        planId: string;
-        price: number;
-      };
-      yearly: {
-        planId: string;
-        price: number;
-      };
+    yearly: {
+      planId: string;
+      price: number;
     };
   };
+  professional: {
+    monthly: {
+      planId: string;
+      price: number;
+    };
+    yearly: {
+      planId: string;
+      price: number;
+    };
+  };
+  business: {
+    monthly: {
+      planId: string;
+      price: number;
+    };
+    yearly: {
+      planId: string;
+      price: number;
+    };
+  };
+};
+
+export type plansDataT = {
+  [key in AcceptedRegionCodeT]: planDataT;
 };
