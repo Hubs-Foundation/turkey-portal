@@ -2,40 +2,40 @@ import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
 import { useState } from 'react';
 import styles from './ButtonToggle.module.scss';
 
-export type ButtonToggleOptionsT = {
+export type ButtonToggleOptions<T> = {
   label: string;
-  value: any;
+  value: T;
 };
 
-type ButtonTogglePropsT = {
-  options: ButtonToggleOptionsT[];
-  onClick?: (value: any) => void;
+type ButtonTogglePropsT<T> = {
+  options: ButtonToggleOptions<T>[];
+  onClick?: (value: T) => void;
   classProp?: string;
 };
 
-const ButtonToggle = ({
+const ButtonToggle = <T,>({
   options,
   onClick,
   classProp = '',
-}: ButtonTogglePropsT) => {
+}: ButtonTogglePropsT<T>) => {
   const [currentValue, setCurrentValue] = useState(options[0].value);
 
   /**
    * Handle Button Click
    * @param value
    */
-  const handleButtonClick = (value: any) => {
+  const handleButtonClick = (value: T) => {
     setCurrentValue(value);
     onClick && onClick(value);
   };
 
   return (
     <div className={`${classProp} ${styles.wrapper}`}>
-      {options.map(({ value, label }, i) => (
+      {options.map(({ value, label }) => (
         <Button
           label={label}
           text={label}
-          key={i}
+          key={label}
           onClick={() => {
             handleButtonClick(value);
           }}

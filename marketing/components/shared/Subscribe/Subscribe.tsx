@@ -55,10 +55,10 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
       try {
         const data = await getRegion();
         setRegionCode(data.regionCode);
-        setLoading(false);
       } catch (e) {
-        setLoading(false);
         console.error('error fetching region', e);
+      } finally {
+        setLoading(false);
       }
     };
     fetchRegion();
@@ -106,7 +106,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
             <h2 className="heading-xxl mb-60">
               Choose the plan that fits your needs
             </h2>
-            <ButtonToggle
+            <ButtonToggle<BillingPeriodE>
               classProp="mb-8"
               options={BILLING_OPTIONS}
               onClick={(value: BillingPeriodE) => {
