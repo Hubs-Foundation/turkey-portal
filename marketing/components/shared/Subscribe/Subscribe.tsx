@@ -47,6 +47,8 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
     billingPeriod
   );
 
+  const loadingCards = isTabletDown ? [1] : [1, 2, 3];
+
   /**
    * Init Region Data
    */
@@ -116,18 +118,26 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
           </div>
         </section>
 
+        {loading && (
+          <section className={styles.loader_wrapper}>
+            <div className={styles.loader_container}>
+              {loadingCards.map(() => (
+                <SkeletonCard
+                  qty={1}
+                  category="square"
+                  classProp={styles.loader}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
         <section className={styles.cards_wrapper}>
           <div
             className={styles.cards}
             style={isMobileDown ? { minWidth: PLAN_QTY * 304 } : undefined}
           >
-            {loading ? (
-              <SkeletonCard
-                qty={isTabletDown ? 1 : 3}
-                category="square"
-                classProp={styles.loader}
-              />
-            ) : (
+            {!loading && (
               <>
                 {/* STARTER PLAN  */}
                 <BasePlanCard

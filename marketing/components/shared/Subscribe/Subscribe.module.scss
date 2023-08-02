@@ -81,12 +81,20 @@
 .loader {
   width: 100%;
   max-width: 1200px;
-  padding: 0 40px;
   @include tablet-down {
     padding: 0;
   }
   & > div {
     height: 500px;
+  }
+  &_wrapper {
+    display: flex;
+    justify-content: center;
+  }
+  &_container {
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
   }
 }
 
