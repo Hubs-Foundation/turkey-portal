@@ -47,10 +47,7 @@ config :dash, DashWeb.Endpoint,
   code_reloader: true,
   debug_errors: true,
   secret_key_base: "PAg4b9J2Hq5u9H28jtxURymTJntRERKlYvJQqg7CYjbu4tag2AYbhUwv36v6qJCf",
-  watchers: [
-    # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
-  ]
+  watchers: []
 
 config :dash, Dash.AppConfig,
   host: "dashboard.cluster.turkey.local",
@@ -111,17 +108,6 @@ config :dash, DashWeb.Endpoint, cors_origins: ["http://localhost:3000"]
 # If desired, both `http:` and `https:` keys can be
 # configured to run both http and https servers on
 # different ports.
-
-# Watch static and templates for browser reloading.
-config :dash, DashWeb.Endpoint,
-  live_reload: [
-    patterns: [
-      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
-      ~r"priv/gettext/.*(po)$",
-      ~r"lib/dash_web/(live|views)/.*(ex)$",
-      ~r"lib/dash_web/templates/.*(eex)$"
-    ]
-  ]
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"

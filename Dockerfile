@@ -28,12 +28,7 @@ RUN mkdir config
 COPY config/config.exs config/$MIX_ENV.exs config/
 RUN mix deps.compile
 COPY priv priv
-COPY assets assets
-RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
-    && apt-get install nodejs
-RUN cd assets && npm install react react-dom && cd ..
-RUN mix phx.digest
-COPY lib ./lib
+COPY lib lib
 RUN mix compile
 COPY config/runtime.exs config/
 # COPY rel rel
