@@ -5,11 +5,6 @@ import { RoutesE } from 'types/Routes';
 import { getHub, updateHub } from 'services/hub.service';
 import { hubIdRG } from 'services/routeGuard.service';
 import Head from 'next/head';
-import {
-  NotificationTypesE,
-  NotificationLocationE,
-  CategoryE,
-} from '@mozilla/lilypad-ui';
 import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
 import HubFormCard, {
   HubFormCardT,
@@ -65,12 +60,12 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
         title: 'Error',
         description: errorMessage,
         duration: 8000,
-        type: NotificationTypesE.ERROR,
-        location: NotificationLocationE.TOP_CENTER,
+        type: 'error',
+        location: 'top_center',
         pauseOnHover: true,
         autoClose: true,
         hasIcon: true,
-        category: CategoryE.TOAST,
+        category: 'toast',
       });
       setLoading(false);
     },

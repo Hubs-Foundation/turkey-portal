@@ -1,15 +1,11 @@
-import { Button, ButtonCategoriesE, Modal } from '@mozilla/lilypad-ui';
+import { Button, Modal } from '@mozilla/lilypad-ui';
 import InfoBlock from '@Shared/InfoBlock/InfoBlock';
 import { PERSONAL_COPY } from 'components/modules/plans/plan.const';
 import styles from './ConfirmPlanModal.module.scss';
-import { useSelector } from 'react-redux';
-import { selectRegion } from 'store/regionSlice';
 import BeginStarterPlanButton from '@Modules/plans/BeginStarterPlanButton/BeginStarterPlanButton';
 import { RoutesE } from 'types/Routes';
 
 const ConfirmPlanModal = () => {
-  const { regionCode } = useSelector(selectRegion);
-
   return (
     <Modal onClose={() => {}} hasContainer={false} isVisible={true}>
       <div className={styles.contents}>
@@ -17,7 +13,7 @@ const ConfirmPlanModal = () => {
           <h2 className="heading-lg mb-32">Let&apos;s build your hub!</h2>
           <p className="body-md mb-42">
             Continue with a Starter Plan and begin exploration the many features
-            of your hub. Visit your hub’s home page and create your first
+            of your hub. Visit your hub&apos;s home page and create your first
             virtual room.
           </p>
           <div className="flex-justify-center">
@@ -35,7 +31,7 @@ const ConfirmPlanModal = () => {
             </p>
 
             <Button
-              category={ButtonCategoriesE.SECONDARY_SOLID}
+              category="secondary_solid"
               text="Upgrade Plan"
               label="Upgrade Plan"
               href={RoutesE.SUBSCRIBE}

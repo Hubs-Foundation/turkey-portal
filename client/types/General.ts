@@ -1,6 +1,6 @@
-// TODO - not sure premium is right here
-export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
+import { AcceptedRegionCodeT } from './Countries';
 
+export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
 export enum StatusE {
   CREATING = 'creating',
   UPDATING = 'updating',
@@ -73,3 +73,51 @@ export enum StorageStateE {
   WARNING = 'warning',
   CRITICAL = 'critical',
 }
+
+export type pricePageDataT = {
+  planUrl: string;
+  planPrice: number;
+  taxDescription: string;
+  currencySymbol: string;
+  currencyAbbrev: string;
+};
+
+export type planDataT = {
+  abbrev: string;
+  symbol: string;
+  taxDescription: string;
+  personal: {
+    monthly: {
+      planId: string;
+      price: number;
+    };
+    yearly: {
+      planId: string;
+      price: number;
+    };
+  };
+  professional: {
+    monthly: {
+      planId: string;
+      price: number;
+    };
+    yearly: {
+      planId: string;
+      price: number;
+    };
+  };
+  business: {
+    monthly: {
+      planId: string;
+      price: number;
+    };
+    yearly: {
+      planId: string;
+      price: number;
+    };
+  };
+};
+
+export type plansDataT = {
+  [key in AcceptedRegionCodeT]: planDataT;
+};

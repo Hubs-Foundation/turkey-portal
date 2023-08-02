@@ -1,10 +1,10 @@
-import { PlansE, BillingPeriodE } from 'types/General';
+import { PlansE, BillingPeriodE, pricePageDataT } from 'types/General';
 import {
   RegionCodeT,
   AcceptedRegionCodeT,
   ACCEPTED_REGION_CODES,
 } from 'types/Countries';
-import { PLAN_ID_MAP } from 'components/modules/plans/plan.const';
+import { getPlanData } from '../services/plan.service';
 
 /**
  * Get the pricing page URL for a region, return default (US) pricing page if region not found
@@ -13,7 +13,7 @@ import { PLAN_ID_MAP } from 'components/modules/plans/plan.const';
  * @param duration monthly or yearly payments
  * @returns URL to pricing page
  */
-export const getPricePageData = (
+export const getPricePageData = async (
   regionCode: RegionCodeT,
   plan: Exclude<PlansE, null | PlansE.STARTER | PlansE.LEGACY>,
   billingPeriod: BillingPeriodE
@@ -23,33 +23,33 @@ export const getPricePageData = (
   const prodID = plan === PlansE.PERSONAL ? PersonalProdId : ProfessionalProdId;
   const BASE_URL = `https://subscriptions.firefox.com/checkout/${prodID}`;
 
-  // If not accepted region or no region default to US plan
-  let planUrl = `${BASE_URL}?plan=${PLAN_ID_MAP.US[plan][billingPeriod].planId}`;
-  let planPrice = PLAN_ID_MAP.US[plan][billingPeriod].price;
-  let taxDescription = PLAN_ID_MAP.US.taxDescription;
-  let currencySymbol = PLAN_ID_MAP.US.symbol;
-  let currencyAbbrev = PLAN_ID_MAP.US.abbrev;
-
   if (
     regionCode &&
     ACCEPTED_REGION_CODES.includes(regionCode as AcceptedRegionCodeT)
   ) {
-    const planObj = PLAN_ID_MAP[regionCode as AcceptedRegionCodeT];
-    const { planId, price } = planObj[plan][billingPeriod];
-    planUrl = `${BASE_URL}?plan=${planId}`;
-    planPrice = price;
-    taxDescription = planObj.taxDescription;
-    currencySymbol = planObj.symbol;
-    currencyAbbrev = planObj.abbrev;
-  }
+    const PLAN_ID_MAP = await getPlanData(regionCode as AcceptedRegionCodeT);
+    const { planId, price } = PLAN_ID_MAP[plan][billingPeriod];
 
-  return {
-    planUrl,
-    planPrice,
-    taxDescription,
-    currencySymbol,
-    currencyAbbrev,
-  };
+    return {
+      planUrl: `${BASE_URL}?plan=${planId}`,
+      planPrice: price,
+      taxDescription: PLAN_ID_MAP.taxDescription,
+      currencySymbol: PLAN_ID_MAP.symbol,
+      currencyAbbrev: PLAN_ID_MAP.abbrev,
+    };
+  } else {
+    // If not accepted region or no region default to US plan
+    const PLAN_ID_MAP = await getPlanData('US');
+    const { planId, price } = PLAN_ID_MAP[plan][billingPeriod];
+
+    return {
+      planUrl: `${BASE_URL}?plan=${planId}`,
+      planPrice: price,
+      taxDescription: PLAN_ID_MAP.taxDescription,
+      currencySymbol: PLAN_ID_MAP.symbol,
+      currencyAbbrev: PLAN_ID_MAP.abbrev,
+    };
+  }
 };
 
 /**

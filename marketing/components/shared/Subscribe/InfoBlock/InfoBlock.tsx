@@ -13,7 +13,7 @@ const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
       {icon && (
         <HubIcon
           name={icon}
-          size={30}
+          size={24}
           classProp={`mr-20 ${description ? 'mt-2' : styles.icon}`}
         />
       )}

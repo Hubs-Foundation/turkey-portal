@@ -94,9 +94,7 @@
   }
 
   &_bar {
-    /* LIGHT/Brand/ducks-beak */
-    // TODO get CSS VAR for this color.
-    background: #ff806f;
+    background: $color-brand-1;
     width: 82px;
     padding: 4px;
     border-radius: 100px;
