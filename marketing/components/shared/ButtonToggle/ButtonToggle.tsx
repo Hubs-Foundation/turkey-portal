@@ -1,4 +1,4 @@
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { Button } from '@mozilla/lilypad-ui';
 import { useState } from 'react';
 import styles from './ButtonToggle.module.scss';
 
@@ -39,11 +39,7 @@ const ButtonToggle = <T,>({
           onClick={() => {
             handleButtonClick(value);
           }}
-          category={
-            value === currentValue
-              ? ButtonCategoriesE.PRIMARY_SOLID
-              : ButtonCategoriesE.PRIMARY_CLEAR
-          }
+          category={value === currentValue ? 'primary_solid' : 'primary_clear'}
         />
       ))}
     </div>

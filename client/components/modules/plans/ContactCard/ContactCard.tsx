@@ -1,4 +1,4 @@
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { Button } from '@mozilla/lilypad-ui';
 import styles from './ContactCard.module.scss';
 
 type ContactCardPropsT = {
@@ -21,7 +21,7 @@ const ContactCard = ({ email, subject, classProp = '' }: ContactCardPropsT) => {
           label="contact us"
           text="Contact us"
           onClick={handleContactClick}
-          category={ButtonCategoriesE.SECONDARY_SOLID}
+          category="secondary_solid"
         />
       </div>
     </div>

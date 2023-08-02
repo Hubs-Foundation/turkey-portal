@@ -3,15 +3,11 @@ import { useCallback, useState, useContext } from 'react';
 import ErrorBox from '@Shared/ErrorBox/ErrorBox';
 import {
   Button,
-  ButtonCategoriesE,
   Input,
   Select,
   OptionT,
   TextArea,
   NewNotificationT,
-  NotificationTypesE,
-  NotificationLocationE,
-  CategoryE,
 } from '@mozilla/lilypad-ui';
 import { NewContactT } from 'types';
 import { CountryOptions } from 'types/Countries';
@@ -49,12 +45,12 @@ const ContactFormModal = ({
       title: 'Successfully Sent',
       description: 'We will get back to you within the next two weeks.',
       duration: 8000,
-      type: NotificationTypesE.SUCCESS,
-      location: NotificationLocationE.TOP_RIGHT,
+      type: 'success',
+      location: 'top_right',
       pauseOnHover: true,
       autoClose: true,
       hasIcon: true,
-      category: CategoryE.TOAST,
+      category: 'toast',
     } as NewNotificationT);
   }, [notificationContext]);
 
@@ -239,14 +235,14 @@ const ContactFormModal = ({
             <div className={styles.footer_container}>
               <Button
                 label="cancel"
-                category={ButtonCategoriesE.PRIMARY_OUTLINE}
+                category="primary_outline"
                 text="Nevermind"
                 classProp="mr-10-dt"
                 onClick={handleCloseClick}
               />
               <Button
                 label="submit"
-                category={ButtonCategoriesE.PRIMARY_SOLID}
+                category="primary_solid"
                 classProp="mb-24-mb"
                 text="Submit"
                 type="submit"
