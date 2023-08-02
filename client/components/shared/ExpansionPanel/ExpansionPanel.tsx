@@ -1,6 +1,6 @@
 import React, { ReactNode, useState, useCallback } from 'react';
 import styles from './ExpansionPanel.module.scss';
-import { Icon, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { Icon } from '@mozilla/lilypad-ui';
 import FadeIn from '@Util/FadeIn';
 
 export type ExpansionPanelPropsT = {

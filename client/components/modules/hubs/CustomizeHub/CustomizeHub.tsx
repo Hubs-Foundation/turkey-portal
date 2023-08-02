@@ -1,6 +1,6 @@
 import styles from './CustomizeHub.module.scss';
 import { useRouter } from 'next/router';
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { Button } from '@mozilla/lilypad-ui';
 import Card from '@Shared/Card/Card';
 import { HubT } from 'types/General';
 
@@ -22,7 +22,7 @@ export const CustomizeHub = ({ hub }: CustomizeHubPropsT) => {
           iconPlacedRight={true}
           text="Edit Domain"
           label="edit domain"
-          category={ButtonCategoriesE.SECONDARY_SOLID}
+          category="secondary_solid"
           onClick={() => {
             router.push({
               pathname: '/hubs/[hub_id]',
@@ -40,7 +40,7 @@ export const CustomizeHub = ({ hub }: CustomizeHubPropsT) => {
           iconPlacedRight={true}
           text="Upload Client"
           label="Upload Client"
-          category={ButtonCategoriesE.SECONDARY_SOLID}
+          category="secondary_solid"
           onClick={() => {
             router.push({
               pathname: '/custom-client',

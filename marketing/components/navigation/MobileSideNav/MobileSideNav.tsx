@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Button, ButtonCategoriesE, ButtonSizesE } from '@mozilla/lilypad-ui';
+import { Button } from '@mozilla/lilypad-ui';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
 import { useRouter } from 'next/router';
 import styles from './MobileSideNav.module.scss';
@@ -50,8 +50,8 @@ const MobileSideNav = ({
           <div className="flex-justify-end p-20">
             <Button
               label="close mobile navigation"
-              category={ButtonCategoriesE.PRIMARY_CLEAR}
-              size={ButtonSizesE.LARGE}
+              category="primary_clear"
+              size="large"
               icon="x"
               onClick={handleMobileMenuClick}
               classProp={styles.menu_button}
@@ -102,7 +102,7 @@ const MobileSideNav = ({
               <Button
                 label="Go to your hubs dashboard"
                 classProp="flex-grow-1 "
-                category={ButtonCategoriesE.PRIMARY_OUTLINE}
+                category="primary_outline"
                 href={`https://${getEnvVariable('DASH_ROOT_DOMAIN')}/dashboard`}
                 text="Go to my Dashboard"
               />

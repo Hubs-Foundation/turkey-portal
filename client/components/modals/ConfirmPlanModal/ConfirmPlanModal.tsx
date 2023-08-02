@@ -1,4 +1,4 @@
-import { Button, ButtonCategoriesE, Modal } from '@mozilla/lilypad-ui';
+import { Button, Modal } from '@mozilla/lilypad-ui';
 import InfoBlock from '@Shared/InfoBlock/InfoBlock';
 import { PERSONAL_COPY } from 'components/modules/plans/plan.const';
 import styles from './ConfirmPlanModal.module.scss';
@@ -31,7 +31,7 @@ const ConfirmPlanModal = () => {
             </p>
 
             <Button
-              category={ButtonCategoriesE.SECONDARY_SOLID}
+              category="secondary_solid"
               text="Upgrade Plan"
               label="Upgrade Plan"
               href={RoutesE.SUBSCRIBE}
