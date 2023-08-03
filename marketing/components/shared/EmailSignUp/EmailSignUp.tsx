@@ -1,6 +1,12 @@
 import { useState, useCallback } from 'react';
 import styles from './EmailSignUp.module.scss';
-import { Checkbox, RadioButton, Input, Button } from '@mozilla/lilypad-ui';
+import {
+  Checkbox,
+  RadioButton,
+  Input,
+  Button,
+  Modal,
+} from '@mozilla/lilypad-ui';
 import Image from 'next/image';
 import Success from './Success/Success';
 import Error from './Error/Error';
@@ -26,7 +32,7 @@ const EmailSignUp = () => {
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [responseStatus, setResponseStatus] = useState<boolean>(false);
   const isDesktopDown = useDesktopDown();
-
+  const [showModal, setShowModal] = useState<Boolean>(false);
   /**
    * On Form Error
    */
@@ -98,6 +104,20 @@ const EmailSignUp = () => {
   }, []);
 
   /**
+   * Close Modal
+   */
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  /**
+   * Open Modal
+   */
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  /**
    * Checkbox Label
    * @returns JSX
    */
@@ -117,107 +137,128 @@ const EmailSignUp = () => {
     );
   };
 
+  const EmailForm = () => (
+    <div className={styles.card_wrapper}>
+      <div className={styles.card_header}>
+        {isDesktopDown && (
+          <div className={styles.bar_wrapper}>
+            <div className={styles.bar}></div>
+          </div>
+        )}
+        <h2 className="heading-lg mb-16">Get immersed in Hubs!</h2>
+        <p className="body-md mb-32">
+          Sign up here to get updates on what is new with Hubs and we will keep
+          you up to date with the latest {!isDesktopDown && <br />} news,
+          updates, and product offerings. We can&apos;t wait to show you what we
+          have been working on!
+        </p>
+      </div>
+
+      <div className={styles.card_contents}>
+        {/* IMAGE  */}
+        {!isDesktopDown && (
+          <div className={styles.card_image}>
+            <Image width={440} src={donutMailMan} alt="donut mail man" />
+          </div>
+        )}
+
+        {/* FORM  */}
+        <form className={styles.form} onSubmit={formik.handleSubmit}>
+          {submitted ? (
+            responseStatus ? (
+              <Success />
+            ) : (
+              <Error />
+            )
+          ) : (
+            <div className="flex-box">
+              {/* EMAIL  INPUT*/}
+
+              <Input
+                id="email"
+                name="email"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+                type="email"
+                label="Email Address"
+                placeholder="name@email.com"
+                required={true}
+                classProp="margin-bottom-16"
+              />
+
+              {/* EMAIL FORMAT RADIO SELECT  */}
+              <fieldset
+                id="email_format"
+                onChange={formik.handleChange}
+                className="margin-bottom-16"
+              >
+                <legend className={styles.form_legend}>Format</legend>
+                <div className="flex">
+                  <RadioButton
+                    groupValue={formik.values.email_format}
+                    label="HTML"
+                    value="html"
+                    id="html_id"
+                    groupName="email_format"
+                  />
+                  <RadioButton
+                    groupValue={formik.values.email_format}
+                    label="Text"
+                    value="text"
+                    id="text_id"
+                    groupName="email_format"
+                  />
+                </div>
+              </fieldset>
+
+              {/* CONFIRMATION CHECKBOX  */}
+              <Checkbox
+                classProp="content-box ml-13"
+                onChange={onConfirm}
+                checked={confirm}
+                label={<Label />}
+              />
+
+              <div className="mt-16 gap-16">
+                {/* SUBMIT  */}
+                <Button
+                  classProp="mt-16"
+                  label="submit"
+                  type="submit"
+                  disabled={!confirm}
+                  text="Join the Mailing List"
+                />
+
+                <Button
+                  type="button"
+                  onClick={handleCloseModal}
+                  category="primary_outline"
+                  classProp="mt-16"
+                  text="Nevermind"
+                />
+              </div>
+            </div>
+          )}
+        </form>
+      </div>
+    </div>
+  );
+
   return (
     <section className={styles.section_wrapper}>
       {!isDesktopDown && <Swoosh />}
 
       <div className={styles.section_container}>
-        <div className={styles.card_wrapper}>
-          <div className={styles.card_header}>
-            {isDesktopDown && (
-              <div className={styles.bar_wrapper}>
-                <div className={styles.bar}></div>
-              </div>
-            )}
-            <h2 className="heading-lg mb-16">Get immersed in Hubs!</h2>
-            <p className="body-md mb-32">
-              Sign up here to get updates on what is new with Hubs and we will
-              keep you up to date with the latest {!isDesktopDown && <br />}{' '}
-              news, updates, and product offerings. We can&apos;t wait to show
-              you what we have been working on!
-            </p>
-          </div>
-
-          <div className={styles.card_contents}>
-            {/* IMAGE  */}
-            {!isDesktopDown && (
-              <div className={styles.card_image}>
-                <Image width={440} src={donutMailMan} alt="donut mail man" />
-              </div>
-            )}
-
-            {/* FORM  */}
-            <form className={styles.form} onSubmit={formik.handleSubmit}>
-              {submitted ? (
-                responseStatus ? (
-                  <Success />
-                ) : (
-                  <Error />
-                )
-              ) : (
-                <div className="flex-box">
-                  {/* EMAIL  INPUT*/}
-
-                  <Input
-                    id="email"
-                    name="email"
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.email}
-                    type="email"
-                    label="Email Address"
-                    placeholder="name@email.com"
-                    required={true}
-                    classProp="margin-bottom-16"
-                  />
-
-                  {/* EMAIL FORMAT RADIO SELECT  */}
-                  <fieldset
-                    id="email_format"
-                    onChange={formik.handleChange}
-                    className="margin-bottom-16"
-                  >
-                    <legend className={styles.form_legend}>Format</legend>
-                    <div className="flex">
-                      <RadioButton
-                        groupValue={formik.values.email_format}
-                        label="HTML"
-                        value="html"
-                        id="html_id"
-                        groupName="email_format"
-                      />
-                      <RadioButton
-                        groupValue={formik.values.email_format}
-                        label="Text"
-                        value="text"
-                        id="text_id"
-                        groupName="email_format"
-                      />
-                    </div>
-                  </fieldset>
-
-                  {/* CONFIRMATION CHECKBOX  */}
-                  <Checkbox
-                    classProp="content-box ml-13"
-                    onChange={onConfirm}
-                    checked={confirm}
-                    label={<Label />}
-                  />
-
-                  {/* SUBMIT  */}
-                  <Button
-                    classProp="mt-16"
-                    label="submit"
-                    type="submit"
-                    disabled={!confirm}
-                    text="Join the Mailing List"
-                  />
-                </div>
-              )}
-            </form>
-          </div>
-        </div>
+        <Button text="click me" onClick={handleOpenModal} />
       </div>
+      <Modal
+        onClose={handleCloseModal}
+        isVisible={showModal}
+        classProp={styles.modal}
+      >
+        <EmailForm />
+      </Modal>
     </section>
   );
 };

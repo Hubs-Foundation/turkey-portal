@@ -39,19 +39,6 @@
 **/
 .card {
   &_wrapper {
-    padding: 32px 32px 32px 71px;
-    max-width: $container-max-width;
-    width: $container-max-width;
-    background-color: $color-background-neutral-0;
-    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.32);
-    border-radius: 20px;
-
-    @include desktop-down {
-      padding: 0px;
-      width: 390px;
-      box-shadow: none;
-      border-radius: 0;
-    }
   }
 
   &_header {
@@ -85,4 +72,8 @@
     display: flex;
     justify-content: center;
   }
+}
+
+div.modal {
+  width: 100%;
 }
