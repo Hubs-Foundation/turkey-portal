@@ -57,6 +57,9 @@ export const createSectionsQuery = (name: string, id: string) => {
 const sectionsCollection = `
 sectionsCollection {
   items {
+    ... on Grid {
+      __typename
+    }
     ... on EmailSignUp {
       __typename
     }

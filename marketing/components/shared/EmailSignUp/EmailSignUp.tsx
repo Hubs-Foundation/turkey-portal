@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styles from './EmailSignUp.module.scss';
 import Image from 'next/image';
 import { Button, Modal } from '@mozilla/lilypad-ui';
-import Legacy from 'components/modules/Legacy';
+import Legacy from 'components/modules/Legacy/Legacy';
 import EmailForm from './EmailForm/EmailForm';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import donutMailMan from 'public/donut_mail_man.png';
