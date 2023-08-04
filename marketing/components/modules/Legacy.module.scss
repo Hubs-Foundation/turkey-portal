@@ -1,0 +1,49 @@
+@use 'styles/core/boilerplate' as *;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+
+  @include desktop-large-down {
+    padding: 16px 18px 20px;
+  }
+
+  @include desktop-down {
+    flex-direction: column;
+    background: $gradient-rainbow;
+  }
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
+
+  @include desktop-down {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.content {
+  margin-left: 24px;
+
+  @include desktop-down {
+    margin-left: 0;
+  }
+
+  h4 {
+    @include heading-xs;
+    @include desktop-down {
+      color: $color-text-reverse;
+    }
+  }
+
+  a {
+    @include desktop-down {
+      color: $color-text-reverse;
+    }
+  }
+}

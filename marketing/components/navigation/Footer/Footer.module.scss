@@ -30,38 +30,6 @@
   }
 }
 
-.header {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 44px;
-
-  @include desktop-down {
-    flex-direction: column;
-  }
-
-  h4 {
-    @include heading-sm;
-    color: $color-text-reverse;
-    margin: 0 0 10px;
-
-    @include desktop-down {
-      line-height: 24px;
-      margin: 0;
-      @include font-size(16);
-    }
-  }
-
-  &_content {
-    text-align: center;
-    margin-left: 24px;
-    padding-top: 4px;
-
-    @include desktop-down {
-      margin: 0;
-    }
-  }
-}
-
 .link {
   @include body-md();
   color: $color-text-reverse;
@@ -102,16 +70,6 @@
       margin: 4px 0 14px;
       color: $color-text-reverse;
     }
-  }
-}
-
-.legacy_link {
-  @include body-md;
-  color: #2f80ed;
-  text-decoration-line: underline;
-
-  @include desktop-down {
-    @include font-size(12);
   }
 }
 

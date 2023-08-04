@@ -265,10 +265,10 @@ $start: 0;
 $end: 50;
 $array: '';
 $unit: 'px';
+$array: set-nth($array, 1, $start);
 
 @for $i from $start + 1 through $end {
   $array: append($array, $i, comma);
-  $array: set-nth($array, 1, $start);
 }
 
 @each $size in $array {

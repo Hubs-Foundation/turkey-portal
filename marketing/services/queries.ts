@@ -120,11 +120,15 @@ sectionsCollection {
       __typename
       title
       subtitle
+      background
+      adornment
       ctaTitle
       ctaHref
+      ctaStyle
       richText {
         json
        }
+      textColor
       accentImage {
         url
         description
