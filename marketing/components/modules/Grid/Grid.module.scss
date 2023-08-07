@@ -19,7 +19,7 @@
   }
 
   &_container {
-    @include tablet-down {
+    @include desktop-down {
       text-align: center;
     }
     h2 {
@@ -35,7 +35,7 @@
 }
 
 .bar_wrapper {
-  @include tablet-down {
+  @include desktop-down {
     display: flex;
     justify-content: center;
   }

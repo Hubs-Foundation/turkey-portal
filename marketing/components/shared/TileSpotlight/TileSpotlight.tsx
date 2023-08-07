@@ -5,6 +5,7 @@ import snowBottom from '../../../public/snow-bottom.png';
 import { SpotlightTile, TileSpotlightT } from 'types';
 import Swoosh from '@Shared/Swoosh/Swoosh';
 import { Button } from '@mozilla/lilypad-ui';
+import Bar from '@Shared/Bar/Bar';
 
 interface TileSpotlightPropsI extends TileSpotlightT {
   classProp?: string;
@@ -83,12 +84,18 @@ const TileSpotlight = ({
           </div>
         )}
 
-        <div className={styles.container}>
-          {/* HEADER  */}
-          <div className={`${styles.header} ${styles[textColor]}`}>
-            <h2>{title}</h2>
-            <p>{body}</p>
-          </div>
+        <section className={styles.container}>
+          <section className={`${styles[textColor]} mb-16`}>
+            <div className="flex-justify-center">
+              <div className={styles.header_container}>
+                <div className={styles.bar_wrapper}>
+                  <Bar />
+                </div>
+                <h2 className="heading-xxl mt-4 mb-18">{title}</h2>
+              </div>
+            </div>
+            {body && <p className={styles.body}>{body}</p>}
+          </section>
 
           {/* TILES */}
           <div className={styles.tiles}>
@@ -96,7 +103,7 @@ const TileSpotlight = ({
               return <Tile key={i} {...props} />;
             })}
           </div>
-        </div>
+        </section>
         {adornment === 'snow' && (
           <div className={styles.snow_bottom}>
             <Image
