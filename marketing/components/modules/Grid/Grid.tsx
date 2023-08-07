@@ -1,24 +1,30 @@
+import { useMemo } from 'react';
 import styles from './Grid.module.scss';
 import Image from 'next/image';
 import Bar from '@Shared/Bar/Bar';
 import { useMobileDown } from 'hooks/useMediaQuery';
 import MobileCarousel, { SlideT } from '@Shared/MobileCarousel/MobileCarousel';
+// Assets
 import GridImage from 'public/grid_X3.png';
-import openRoom from 'public/open-room.png';
+import slideTV from 'public/slide-tv.png';
+import slideFort from 'public/slide-fort.png';
+import slideTree from 'public/slide-tree.png';
+import slideRoom from 'public/slide-room.png';
+import slideForest from 'public/slide-forest.png';
+import slideBasketball from 'public/slide-basketball.png';
 
 const Grid = () => {
   const isMobileDown = useMobileDown();
-  const slides: SlideT[] = [
-    { alt: 'open room', src: openRoom },
-    { alt: 'open room', src: openRoom },
-    { alt: 'open room', src: openRoom },
-    { alt: 'open room', src: openRoom },
-    { alt: 'open room', src: openRoom },
-    { alt: 'open room', src: openRoom },
-    { alt: 'open room', src: openRoom },
-    { alt: 'open room', src: openRoom },
-    { alt: 'open room', src: openRoom },
-  ];
+  const slides: SlideT[] = useMemo(() => {
+    return [
+      { alt: 'in a forest', src: slideFort },
+      { alt: 'large tree', src: slideTree },
+      { alt: 'open room', src: slideRoom },
+      { alt: 'green forst', src: slideForest },
+      { alt: 'basketball court', src: slideBasketball },
+      { alt: 'watching TV', src: slideTV },
+    ];
+  }, []);
 
   return (
     <section className={styles.wrapper}>
