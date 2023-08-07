@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import { useEffect } from 'react';
 
 type SandboxPropsT = {};
 
@@ -7,6 +8,10 @@ type SandboxPropsT = {};
  * not show up on prod
  */
 const Sandbox = ({}: SandboxPropsT) => {
+  // useEffect(() => {
+
+  // }, []);
+
   return (
     <div className="page_wrapper">
       <Head>

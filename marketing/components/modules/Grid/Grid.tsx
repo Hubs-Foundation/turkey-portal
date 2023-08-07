@@ -1,11 +1,24 @@
 import styles from './Grid.module.scss';
 import Image from 'next/image';
 import Bar from '@Shared/Bar/Bar';
-import GridImage from 'public/grid_X3.png';
 import { useMobileDown } from 'hooks/useMediaQuery';
+import MobileCarousel, { SlideT } from '@Shared/MobileCarousel/MobileCarousel';
+import GridImage from 'public/grid_X3.png';
+import openRoom from 'public/open-room.png';
 
 const Grid = () => {
   const isMobileDown = useMobileDown();
+  const slides: SlideT[] = [
+    { alt: 'open room', src: openRoom },
+    { alt: 'open room', src: openRoom },
+    { alt: 'open room', src: openRoom },
+    { alt: 'open room', src: openRoom },
+    { alt: 'open room', src: openRoom },
+    { alt: 'open room', src: openRoom },
+    { alt: 'open room', src: openRoom },
+    { alt: 'open room', src: openRoom },
+    { alt: 'open room', src: openRoom },
+  ];
 
   return (
     <section className={styles.wrapper}>
@@ -23,10 +36,15 @@ const Grid = () => {
         </section>
 
         {isMobileDown ? (
-          <div>I'm mobile</div>
+          <MobileCarousel slides={slides} />
         ) : (
           <section className={styles.grid_wrapper}>
-            <Image src={GridImage} width={1200} height={546} />
+            <Image
+              src={GridImage}
+              width={1200}
+              height={546}
+              alt="grid of images of hubs"
+            />
           </section>
         )}
       </div>

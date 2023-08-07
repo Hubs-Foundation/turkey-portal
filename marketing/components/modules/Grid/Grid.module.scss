@@ -6,6 +6,9 @@
   @include desktop-large-down {
     padding: 40px 18px;
   }
+  @include mobile-down {
+    padding: 40px 0;
+  }
 }
 
 .header {
