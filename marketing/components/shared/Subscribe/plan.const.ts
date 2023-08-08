@@ -419,7 +419,7 @@ export const PLAN_ID_MAP = {
       },
       yearly: {
         planId: 'price_1NMGTPJNcmPzuWtRkQnPTHqQ',
-        price: 100.22,
+        price: 84.0,
       },
     },
     professional: {
