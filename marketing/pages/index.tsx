@@ -45,7 +45,7 @@ export async function getStaticProps() {
       'iUw7LHBaBcgGaKydU2qKJ'
     );
 
-    const navData = await getNavigationLinksEntry('4FsGf6XPSDTPppGDlyFYm9');
+    const navData = await getNavigationLinksEntry();
 
     return {
       props: {

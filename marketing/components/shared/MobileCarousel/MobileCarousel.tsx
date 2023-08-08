@@ -1,4 +1,3 @@
-import styles from './MobileCarousel.module.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Image, { StaticImageData } from 'next/image';
 import 'swiper/css';
@@ -14,14 +13,17 @@ type MobileCarouselPropsT = {
 
 const MobileCarousel = ({ slides }: MobileCarouselPropsT) => {
   return (
-    <section className={styles.wrapper}>
-      <Swiper loop={true} slidesPerView={1.25}>
+    <section>
+      <Swiper
+        loop={true}
+        slidesPerView={1.25}
+        spaceBetween={18}
+        centeredSlides={true}
+      >
         {slides.map(({ src, alt }) => {
           return (
             <SwiperSlide key={alt}>
-              <div className={styles.image}>
-                <Image src={src} height={500} width={500} alt={alt} />
-              </div>
+              <Image src={src} height={500} width={500} alt={alt} />
             </SwiperSlide>
           );
         })}

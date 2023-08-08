@@ -1,0 +1,11 @@
+@use 'styles/core/boilerplate' as *;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  width: 100%;
+  max-width: $container-max-width;
+}

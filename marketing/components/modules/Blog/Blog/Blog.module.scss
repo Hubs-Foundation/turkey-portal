@@ -1,0 +1,17 @@
+@use 'styles/core/boilerplate' as *;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 0 18px;
+}
+
+.container {
+  width: 100%;
+  max-width: $container-max-width;
+}
+
+.header {
+  padding: 60px 0 40px;
+  border-bottom: 2px solid $color-background-overlay;
+}

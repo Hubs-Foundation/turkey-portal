@@ -72,11 +72,10 @@ export const getStaticPathEntries = async (
  * @param id
  * @returns NavigationT[]
  */
-export const getNavigationLinksEntry = async (
-  id: string
-): Promise<NavigationT> => {
+export const getNavigationLinksEntry = async (): Promise<NavigationT> => {
+  const NAV_ID = '4FsGf6XPSDTPppGDlyFYm9';
   const { data, statusText } = await axios
-    .post(URL, { query: createNavigationQuery(id) }, { ...PROTOCOLS })
+    .post(URL, { query: createNavigationQuery(NAV_ID) }, { ...PROTOCOLS })
     .then(({ data }: AxiosResponse) => data);
 
   // Query is wrong
