@@ -1,11 +1,8 @@
 @use 'styles/core/boilerplate' as *;
 
 .wrapper {
-  padding: 40px 0;
+  padding: 40px 18px;
 
-  @include desktop-large-down {
-    padding: 40px 18px;
-  }
   @include mobile-down {
     padding: 40px 0;
   }
@@ -28,10 +25,6 @@
       }
     }
   }
-}
-
-.grid_wrapper {
-  text-align: center;
 }
 
 .bar_wrapper {

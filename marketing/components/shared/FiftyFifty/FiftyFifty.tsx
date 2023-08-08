@@ -28,7 +28,7 @@ const FiftyFifty = ({
   background = 'background-neutral',
   title,
   subtitle,
-  ctaStyle = 'secondary_outline',
+  ctaStyle = 'primary_solid',
   ctaHref,
   ctaTitle,
   richText,

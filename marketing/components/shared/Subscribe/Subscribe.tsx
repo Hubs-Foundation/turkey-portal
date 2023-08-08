@@ -121,7 +121,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
         {loading && (
           <section className={styles.loader_wrapper}>
             <div className={styles.loader_container}>
-              {loadingCards.map((_x, i) => (
+              {loadingCards.map((i) => (
                 <SkeletonCard
                   key={i}
                   qty={1}

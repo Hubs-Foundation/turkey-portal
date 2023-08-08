@@ -17,12 +17,12 @@ const Grid = () => {
   const isMobileDown = useMobileDown();
   const slides: SlideT[] = useMemo(() => {
     return [
-      { alt: 'in a forest', src: slideFort },
-      { alt: 'large tree', src: slideTree },
-      { alt: 'open room', src: slideRoom },
-      { alt: 'green forst', src: slideForest },
-      { alt: 'basketball court', src: slideBasketball },
-      { alt: 'watching TV', src: slideTV },
+      { alt: 'In a forest', src: slideFort },
+      { alt: 'Large tree', src: slideTree },
+      { alt: 'Open room', src: slideRoom },
+      { alt: 'Green forest', src: slideForest },
+      { alt: 'Basketball court', src: slideBasketball },
+      { alt: 'Watching TV', src: slideTV },
     ];
   }, []);
 
@@ -44,7 +44,7 @@ const Grid = () => {
         {isMobileDown ? (
           <MobileCarousel slides={slides} />
         ) : (
-          <section className={styles.grid_wrapper}>
+          <section className="text-center">
             <Image
               src={GridImage}
               width={1200}

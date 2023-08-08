@@ -3,14 +3,9 @@
 .wrapper {
   display: flex;
   justify-content: center;
-  padding: 8px 0;
-
-  @include desktop-large-down {
-    padding: 16px 18px 20px;
-  }
+  padding: 16px 18px 20px;
 
   @include desktop-down {
-    flex-direction: column;
     background: $gradient-rainbow;
   }
 }
@@ -20,25 +15,13 @@
   align-items: center;
   max-width: $container-max-width;
   width: 100%;
+  gap: 16px;
 
   @include desktop-down {
+    gap: 0;
     flex-direction: column;
     text-align: center;
-  }
-}
-
-.content {
-  margin-left: 24px;
-
-  @include desktop-down {
-    margin-left: 0;
-  }
-
-  h4 {
-    @include heading-xs;
-    @include desktop-down {
-      color: $color-text-reverse;
-    }
+    color: $color-text-reverse;
   }
 
   a {

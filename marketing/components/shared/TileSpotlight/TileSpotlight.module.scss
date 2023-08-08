@@ -21,8 +21,6 @@
 }
 
 .background {
-  // These css names are mapped to
-  // form values in Contentful
   &_gradient-rainbow {
     background: $gradient-rainbow;
   }
@@ -64,12 +62,8 @@
 .tile {
   &s {
     display: grid;
-    grid-template-columns: 385px 385px 385px;
-    column-gap: 23px;
-
-    @include desktop-large-down {
-      grid-template-columns: 32% 32% 32%;
-    }
+    grid-template-columns: 32% 32% 32%;
+    column-gap: 2%;
 
     @include tablet-down {
       grid-template-columns: 100%;
@@ -130,6 +124,13 @@
   }
 }
 
+.bar_wrapper {
+  @include desktop-down {
+    display: flex;
+    justify-content: center;
+  }
+}
+
 // These classes are contentful values
 .color-text {
   &-main {
@@ -156,12 +157,5 @@
 
   &_bottom {
     bottom: 0;
-  }
-}
-
-.bar_wrapper {
-  @include desktop-down {
-    display: flex;
-    justify-content: center;
   }
 }

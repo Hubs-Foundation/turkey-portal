@@ -132,7 +132,7 @@ const EmailForm = ({ handleClose }: EmailFormPropsT) => {
           />
         </div>
       )}
-      <div className={styles.header}>
+      <div className="text-center">
         {isDesktopDown && (
           <div className={styles.bar_wrapper}>
             <div className={styles.bar}></div>
@@ -218,7 +218,6 @@ const EmailForm = ({ handleClose }: EmailFormPropsT) => {
                 label={<Label />}
               />
 
-              {/* mt-16 gap-16 justify-content-center-tb-down */}
               <div className={styles.form_cta}>
                 {/* SUBMIT  */}
                 <Button
