@@ -1,7 +1,5 @@
-defmodule DashWeb.Api.V1.AccountView do
-  use DashWeb, :view
-
-  def render("show.json", %{
+defmodule DashWeb.Api.V1.AccountJSON do
+  def show(%{
         active_plan?: active_plan?,
         active_subscription?: active_subscription?,
         creating_hubs?: creating_hubs?,

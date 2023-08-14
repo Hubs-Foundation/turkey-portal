@@ -15,7 +15,7 @@ defmodule DashWeb.Api.V1.HubController do
       |> String.to_integer()
       |> Dash.get_hub(account)
 
-    render(conn, "show.json", hub: hub)
+    render(conn, :show, hub: hub)
   end
 
   # All hubs for 1 account
@@ -29,7 +29,7 @@ defmodule DashWeb.Api.V1.HubController do
     case Hub.ensure_default_hub_is_ready(account, fxa_email, has_subscription?) do
       :ok ->
         hubs = Hub.hubs_with_usage_stats_for_account(account)
-        conn |> render("index.json", hubs: hubs)
+        render(conn, :index, hubs: hubs)
 
       {:error, err} ->
         conn |> send_resp(500, Jason.encode!(%{error: err})) |> halt()
@@ -40,8 +40,7 @@ defmodule DashWeb.Api.V1.HubController do
     # this verifies that the account has a hub with this id
     case Hub.update_hub(hub_id, json_camel_to_snake(attrs), account) do
       {:ok, updated_hub} ->
-        conn
-        |> render("show.json", hub: updated_hub)
+        render(conn, :show, hub: updated_hub)
 
       {:error, err} ->
         conn
@@ -63,7 +62,7 @@ defmodule DashWeb.Api.V1.HubController do
     # TODO EA call to orchestrator to delete the hub
     deleted_hub = Hub.delete_hub(hub_id, account)
 
-    conn |> render("delete.json", deleted_hub: deleted_hub)
+    render(conn, :delete, deleted_hub: deleted_hub)
   end
 
   def validate_subdomain(
