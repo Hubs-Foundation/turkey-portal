@@ -14,4 +14,25 @@
 .header {
   padding: 60px 0 40px;
   border-bottom: 2px solid $color-background-overlay;
+
+  @include tablet-down {
+    padding: 40px 0 20px;
+  }
+}
+
+.posts {
+  &_wrapper {
+    @include tablet-down {
+      display: flex;
+      justify-content: center;
+    }
+  }
+  &_container {
+    @include tablet-down {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      max-width: 540px;
+    }
+  }
 }

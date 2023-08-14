@@ -5,7 +5,41 @@
   justify-content: center;
 }
 
+.header {
+  a {
+    @include primary-link;
+    @include body-sm;
+  }
+}
+
+.bread_crumb {
+  margin-bottom: 24px;
+}
+
 .container {
   width: 100%;
   max-width: $container-max-width;
+  padding: 40px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.attributes {
+  display: flex;
+  justify-content: space-between;
+  @include body-md-semi-bold;
+  @include tablet-down {
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.post {
+  @include body-md();
+
+  & > p {
+    margin-bottom: 12px;
+    text-indent: 40px;
+  }
 }

@@ -1,22 +1,32 @@
 import Head from 'next/head';
-import { NavigationT } from 'types';
+import { BlogT, NavigationT } from 'types';
 import LayoutWrapper from 'layouts/LayoutWrapper/LayoutWrapper';
-import { getNavigationLinksEntry } from 'services/contentful.service';
+import {
+  getBlogData,
+  getNavigationLinksEntry,
+} from 'services/contentful.service';
 import Blog from '@Modules/Blog';
 
 type HomePropsT = {
   navData: NavigationT;
+  blogData: BlogT;
 };
 
-const Page = ({ navData }: HomePropsT) => {
+const Page = ({ navData, blogData }: HomePropsT) => {
   return (
     <LayoutWrapper navData={navData}>
       <div className="page_wrapper">
         <Head>
-          <title>Hubs - blog, what's new</title>
+          <title>{blogData ? blogData.name : 'Hubs Blog'}</title>
         </Head>
         <main>
-          <Blog />
+          {blogData ? (
+            <Blog blogData={blogData} />
+          ) : (
+            <div className="text-center p-60">
+              There was a problem loading the blog
+            </div>
+          )}
         </main>
       </div>
     </LayoutWrapper>
@@ -27,11 +37,12 @@ export default Page;
 
 export async function getStaticProps() {
   try {
+    const blogData = await getBlogData('blog', '4NssSFRY8TUWetnJjH9gwF');
     const navData = await getNavigationLinksEntry();
-
     return {
       props: {
         navData,
+        blogData,
       },
     };
   } catch (error) {
@@ -39,6 +50,7 @@ export async function getStaticProps() {
     return {
       props: {
         navData: {},
+        blogData: {},
       },
     };
   }

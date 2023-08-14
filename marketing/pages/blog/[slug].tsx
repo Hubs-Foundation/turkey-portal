@@ -1,24 +1,27 @@
-import { CustomSectionsT } from 'types';
+import { BlogPostT, GetStaticPropsT } from 'types';
 import Head from 'next/head';
 import { NavigationT } from 'types';
 import LayoutWrapper from 'layouts/LayoutWrapper/LayoutWrapper';
-import { getNavigationLinksEntry } from 'services/contentful.service';
 import BlogPost from '@Modules/Blog/BlogPost/BlogPost';
-import { getStaticPathEntries } from 'services/contentful.service';
+import {
+  getStaticPathEntries,
+  getBlogPageData,
+} from 'services/contentful.service';
 
-type HomePropsT = {
-  navData: NavigationT;
+type PagePropsT = {
+  navigation: NavigationT;
+  post: BlogPostT;
 };
 
-const Page = ({ navData }: HomePropsT) => {
+const Page = ({ navigation, post }: PagePropsT) => {
   return (
-    <LayoutWrapper navData={navData}>
+    <LayoutWrapper navData={navigation}>
       <div className="page_wrapper">
         <Head>
-          <title>Hubs - blog post</title>
+          <title>{post.title}</title>
         </Head>
         <main>
-          <BlogPost />
+          <BlogPost post={post} />
         </main>
       </div>
     </LayoutWrapper>
@@ -27,13 +30,14 @@ const Page = ({ navData }: HomePropsT) => {
 
 export default Page;
 
-export async function getStaticProps() {
+export async function getStaticProps({ params }: GetStaticPropsT) {
   try {
-    const navData = await getNavigationLinksEntry();
+    const { navigation, post } = await getBlogPageData(params.slug);
 
     return {
       props: {
-        navData,
+        navigation,
+        post,
       },
     };
   } catch (error) {
@@ -48,7 +52,7 @@ export async function getStaticProps() {
 
 export async function getStaticPaths() {
   // Get Entries
-  const entries = await getStaticPathEntries('customPage');
+  const entries = await getStaticPathEntries('blogPost');
   // Create Paths Object
   const paths = entries.items.map((item) => {
     return { params: { slug: item.fields.slug } };

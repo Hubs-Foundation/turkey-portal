@@ -1,11 +1,20 @@
 import axios, { AxiosResponse } from 'axios';
 import { createClient } from 'contentful';
-import { NavigationT, HeroT, CustomSectionsT, PathCollectionT } from 'types';
+import {
+  NavigationT,
+  HeroT,
+  CustomSectionsT,
+  PathCollectionT,
+  BlogT,
+  BlogPageT,
+} from 'types';
 import { Entry, EntryCollection } from 'contentful';
 import {
   createNavigationQuery,
   createSectionsQuery,
   createCustomPageQuery,
+  createBlogQuery,
+  createBlogPageQuery,
 } from './queries';
 
 const CONTENTFUL_ENV = process.env.ENV === 'prod' ? 'master' : 'development';
@@ -20,6 +29,7 @@ const PROTOCOLS = {
     authorization: `Bearer ${process.env.CONTENTFUL_TOKEN}`,
   },
 };
+const NAV_ID = '4FsGf6XPSDTPppGDlyFYm9';
 
 /**
  * Init Contentful Client
@@ -73,7 +83,6 @@ export const getStaticPathEntries = async (
  * @returns NavigationT[]
  */
 export const getNavigationLinksEntry = async (): Promise<NavigationT> => {
-  const NAV_ID = '4FsGf6XPSDTPppGDlyFYm9';
   const { data, statusText } = await axios
     .post(URL, { query: createNavigationQuery(NAV_ID) }, { ...PROTOCOLS })
     .then(({ data }: AxiosResponse) => data);
@@ -114,6 +123,30 @@ export const getSectionsData = async (
 };
 
 /**
+ * Get Blog Data
+ * @param name
+ * @param id
+ * @returns BlogT
+ */
+export const getBlogData = async (name: string, id: string): Promise<BlogT> => {
+  const { data, statusText } = await axios
+    .post(URL, { query: createBlogQuery(name, id) }, { ...PROTOCOLS })
+    .then(({ data }: AxiosResponse) => data);
+
+  // Query is wrong
+  if (handleBadRequest(statusText)) {
+    throw statusText;
+  }
+
+  const { name: blogName, blogPostCollection: post } = data[name];
+  const blog: BlogT = {
+    name: blogName,
+    posts: post.items,
+  };
+  return blog;
+};
+
+/**
  * Get Custom Page Data
  * @param slug
  * @returns
@@ -131,4 +164,33 @@ export const getCustomPageData = async (
   }
 
   return data.customPageCollection.items[0].sectionsCollection;
+};
+
+/**
+ * Get Custom Page Data
+ * @param slug
+ * @returns
+ */
+export const getBlogPageData = async (slug: string): Promise<BlogPageT> => {
+  const { data, statusText } = await axios
+    .post(URL, { query: createBlogPageQuery(slug, NAV_ID) }, { ...PROTOCOLS })
+    .then(({ data }: AxiosResponse) => data);
+
+  // Query is wrong
+  if (handleBadRequest(statusText)) {
+    throw statusText;
+  }
+
+  const { linksCollection, bannerText, bannerIcon } = data.navigation;
+
+  const blogPageData: BlogPageT = {
+    navigation: {
+      bannerText,
+      bannerIcon,
+      links: linksCollection.items,
+    },
+    post: data.blogPostCollection.items[0],
+  };
+
+  return blogPageData;
 };

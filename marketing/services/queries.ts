@@ -6,17 +6,7 @@
 export const createNavigationQuery = (id: string) => {
   return `{
     navigation(id: "${id}") {
-      linksCollection {
-        items {
-          ... on Link {
-            href
-            label
-            text
-          }
-        }
-      }
-      bannerText 
-      bannerIcon
+      ${navCollection}
     }
   }
 `;
@@ -41,6 +31,55 @@ export const createCustomPageQuery = (slug: string) => {
   `;
 };
 
+export const createBlogPageQuery = (slug: string, navId: string) => {
+  return `{
+    navigation(id: "${navId}") {
+      ${navCollection}
+    }
+    blogPostCollection(limit:1,where:{slug:"${slug}"}){
+      items {
+        ... on BlogPost {
+          ${blogCollection}
+          post {
+            json
+           }
+          featuredImage {
+            url
+          }
+        }
+      }  
+    }
+  }`;
+};
+
+/**
+ * Create Blog Query
+ * @param name
+ * @param id
+ * @returns query
+ */
+export const createBlogQuery = (name: string, id: string) => {
+  return `query {${name}(id: "${id}") { 
+    name
+    blogPostCollection {
+      items {
+        ... on BlogPost {
+          ${blogCollection}
+          thumbnailImage {
+            url (transform: {
+              width: 800,
+              height: 800,
+              resizeStrategy: FILL,
+              resizeFocus: CENTER,
+              cornerRadius: 20,
+            })
+          }
+        }
+      }
+    }
+   }}`;
+};
+
 /**
  * Create Section Collection Query
  * @param name
@@ -54,6 +93,31 @@ export const createSectionsQuery = (name: string, id: string) => {
 /**
  * Query Bank
  */
+const blogCollection = `
+sys {
+  id
+}
+slug
+title
+subtitle
+date
+preview
+imageAlt
+`;
+
+const navCollection = `
+linksCollection {
+  items {
+    ... on Link {
+      href
+      label
+      text
+    }
+  }
+}
+bannerText 
+bannerIcon`;
+
 const sectionsCollection = `
 sectionsCollection {
   items {
@@ -109,7 +173,9 @@ sectionsCollection {
         description
       }
       desktopImage{
-        url
+        url(transform: {
+          width: 500,
+          height: 300})
         description
       }
       body
