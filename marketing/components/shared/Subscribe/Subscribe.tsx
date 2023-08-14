@@ -28,7 +28,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
   const isMobileDown = useMobileDown();
   const BILLING_OPTIONS = [
     { label: 'Monthly', value: BillingPeriodE.MONTHLY },
-    { label: 'Yearly', value: BillingPeriodE.YEARLY },
+    { label: 'Annually', value: BillingPeriodE.ANNUALLY },
   ];
   const PLAN_QTY = 3;
   /**
@@ -175,7 +175,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                       price={`${personalPlanData.currencySymbol}${personalPlanData.planPrice}`}
                       currencyAbbrev={personalPlanData.currencyAbbrev}
                       billingPeriod={`per ${
-                        billingPeriod === BillingPeriodE.YEARLY
+                        billingPeriod === BillingPeriodE.ANNUALLY
                           ? 'year'
                           : 'month'
                       }`}
@@ -208,7 +208,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                       price={`${professionalPlanData.currencySymbol}${professionalPlanData.planPrice}`}
                       currencyAbbrev={personalPlanData.currencyAbbrev}
                       billingPeriod={`per ${
-                        billingPeriod === BillingPeriodE.YEARLY
+                        billingPeriod === BillingPeriodE.ANNUALLY
                           ? 'year'
                           : 'month'
                       }`}

@@ -7,5 +7,5 @@ export enum PlansE {
 
 export enum BillingPeriodE {
   MONTHLY = 'monthly',
-  YEARLY = 'yearly',
+  ANNUALLY = 'annually',
 }
