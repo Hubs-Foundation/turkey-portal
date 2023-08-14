@@ -13,11 +13,11 @@ const Blog = ({ blogData }: BlogPropsT) => (
         <h1 className="heading-xxl">{blogData.name}</h1>
       </section>
 
-      <section className={styles.posts_wrapper}>
-        <div className={styles.posts_container}>
-          {blogData.posts.map((post) => {
-            return <BlogPreview key={post.sys.id} post={post} />;
-          })}
+      <section className={styles.preview_wrapper}>
+        <div className={styles.preview_container}>
+          {blogData.posts.map((post) => (
+            <BlogPreview key={post.sys.id} post={post} />
+          ))}
         </div>
       </section>
     </div>

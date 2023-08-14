@@ -13,7 +13,7 @@ const BlogPost = ({ post, rootLink = 'Blog' }: BlogPostPropsT) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
-        <div className={styles.header}>
+        <section className={styles.header}>
           <div className={styles.bread_crumb}>
             <Link className="primary-link" href="/blog">
               {rootLink}
@@ -29,20 +29,20 @@ const BlogPost = ({ post, rootLink = 'Blog' }: BlogPostPropsT) => {
             <p>{post.subtitle}</p>
             <p>{post.date}</p>
           </div>
-        </div>
+        </section>
 
-        <div className={styles.image}>
+        <section className={styles.image}>
           <Image
             src={post.featuredImage.url}
             height={550}
             width={1200}
             alt={post.imageAlt}
           />
-        </div>
+        </section>
 
-        <div className={styles.post}>
+        <section className={styles.post}>
           {documentToReactComponents(post.post.json)}
-        </div>
+        </section>
       </div>
     </div>
   );

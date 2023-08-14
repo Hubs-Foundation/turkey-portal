@@ -8,38 +8,36 @@ type BlogPreviewPropsT = {
   post: BlogPostPreviewT;
 };
 
-const BlogPreview = ({ post }: BlogPreviewPropsT) => {
-  return (
-    <Link href={`/blog/${post.slug}`}>
-      <div className={styles.wrapper}>
-        <div className={styles.container}>
-          <div className={styles.image}>
-            <Image
-              src={post.thumbnailImage.url}
-              alt={post.imageAlt}
-              width={550}
-              height={550}
+const BlogPreview = ({ post }: BlogPreviewPropsT) => (
+  <Link href={`/blog/${post.slug}`}>
+    <div className={styles.wrapper}>
+      <div className={styles.container}>
+        <div className={styles.image}>
+          <Image
+            src={post.thumbnailImage.url}
+            alt={post.imageAlt}
+            width={550}
+            height={550}
+          />
+        </div>
+        <div className={styles.content}>
+          <h3 className="heading-lg">{post.title}</h3>
+          <p className="body-md-bold">{post.subtitle}</p>
+          <p className="body-sm">{post.date}</p>
+          <p className="body-md">{post.preview}</p>
+          <div className={styles.cta}>
+            <Button
+              classProp="width-100"
+              text="Read More"
+              label="presentational"
+              category="primary_outline"
+              type="submit"
             />
-          </div>
-          <div className={styles.content}>
-            <h3 className="heading-lg">{post.title}</h3>
-            <p className="body-md-bold">{post.subtitle}</p>
-            <p className="body-sm">{post.date}</p>
-            <p className="body-md">{post.preview}</p>
-            <div className={styles.cta}>
-              <Button
-                classProp="width-100"
-                text="Read More"
-                label="presentational"
-                category="primary_outline"
-                type="submit"
-              />
-            </div>
           </div>
         </div>
       </div>
-    </Link>
-  );
-};
+    </div>
+  </Link>
+);
 
 export default BlogPreview;
