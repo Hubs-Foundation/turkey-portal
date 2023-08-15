@@ -36,7 +36,7 @@ defmodule Dash.MixProject do
       {:hackney, "~> 1.18"},
       {:httpoison, "~> 1.8"},
       {:jason, "~> 1.2"},
-      {:jose, "~> 1.11.2"},
+      {:jose, "~> 1.11"},
       {:mimzy, "~> 2.1"},
       {:mox, "~> 1.0", only: :test},
       {:phoenix, "~> 1.7.7"},
