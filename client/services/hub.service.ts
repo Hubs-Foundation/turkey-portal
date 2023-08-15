@@ -1,7 +1,12 @@
 import axios, { AxiosResponse } from 'axios';
 import { PUBLIC_API_SERVER } from 'config';
-import { UpdateHubT } from 'types/General';
+import { HubT } from 'types/General';
 const API_PATH = '/api/v1/hubs';
+
+export type validationResponseT = {
+  error: string;
+  success: boolean;
+};
 
 /**
  * Get All Hubs
@@ -42,7 +47,7 @@ export const getHub = async (hubId: string) => {
 export const validateHubSubdomain = async (
   hubId: string,
   subdomain: string
-) => {
+): Promise<validationResponseT> => {
   return axios
     .post(
       `${PUBLIC_API_SERVER}${API_PATH}/validate_subdomain`,
@@ -67,7 +72,7 @@ export const validateHubSubdomain = async (
  * Update Hub By Id
  * @param hubId string
  */
-export const updateHub = async (hubId: string, hub: UpdateHubT) => {
+export const updateHub = async (hubId: string, hub: HubT) => {
   if (!hub) return;
 
   return axios
