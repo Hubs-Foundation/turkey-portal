@@ -28,7 +28,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
   const isMobileDown = useMobileDown();
   const BILLING_OPTIONS = [
     { label: 'Monthly', value: BillingPeriodE.MONTHLY },
-    { label: 'Annually', value: BillingPeriodE.ANNUALLY },
+    { label: 'Annual', value: BillingPeriodE.ANNUAL },
   ];
   const PLAN_QTY = 3;
   /**
@@ -108,13 +108,13 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
             <h2 className="heading-xxl mb-60">
               Choose the plan that fits your needs
             </h2>
-            <ButtonToggle<BillingPeriodE>
+            {/* <ButtonToggle<BillingPeriodE>
               classProp="mb-8"
               options={BILLING_OPTIONS}
               onClick={(value: BillingPeriodE) => {
                 setBillingPeriod(value);
               }}
-            />
+            /> */}
           </div>
         </section>
 
@@ -175,7 +175,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                       price={`${personalPlanData.currencySymbol}${personalPlanData.planPrice}`}
                       currencyAbbrev={personalPlanData.currencyAbbrev}
                       billingPeriod={`per ${
-                        billingPeriod === BillingPeriodE.ANNUALLY
+                        billingPeriod === BillingPeriodE.ANNUAL
                           ? 'year'
                           : 'month'
                       }`}
@@ -208,7 +208,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                       price={`${professionalPlanData.currencySymbol}${professionalPlanData.planPrice}`}
                       currencyAbbrev={personalPlanData.currencyAbbrev}
                       billingPeriod={`per ${
-                        billingPeriod === BillingPeriodE.ANNUALLY
+                        billingPeriod === BillingPeriodE.ANNUAL
                           ? 'year'
                           : 'month'
                       }`}
