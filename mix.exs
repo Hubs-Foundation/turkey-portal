@@ -48,7 +48,6 @@ defmodule Dash.MixProject do
       {:quantum, "~> 3.5.0"},
       {:retry, "~> 0.16"},
       {:sentry, "~> 8.0"},
-      {:swoosh, "~> 1.3"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"}
     ]
