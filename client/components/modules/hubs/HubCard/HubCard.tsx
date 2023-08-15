@@ -1,6 +1,6 @@
 import { useContext, useMemo, useState } from 'react';
 import styles from './HubCard.module.scss';
-import { HubT, UpdateHubT, LastErrorE, StatusE } from 'types/General';
+import { HubT, LastErrorE, StatusE } from 'types/General';
 import { Message } from './Message';
 import { StoreContext } from 'contexts/StoreProvider';
 import { updateHub } from 'services/hub.service';
@@ -28,7 +28,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
    * @param updatedHub
    * @param callback
    */
-  const submit = async (updatedHub: UpdateHubT, callback: Function) => {
+  const submit = async (updatedHub: HubT, callback: Function) => {
     try {
       const resp = await updateHub(hub.hubId, updatedHub);
       if (resp?.status === 200) {
@@ -49,7 +49,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
      * Note: use session data 'storeContext.lastSubmittedSubdomain' and
      * try and updates the Hub again.
      */
-    const updatedHub: UpdateHubT = {
+    const updatedHub: HubT = {
       ...hub,
       subdomain: storeContext.lastSubmittedSubdomain.subdomain,
     };
@@ -62,9 +62,9 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
    */
   const handleOnCloseError = () => {
     // patch the hub with lastError =  '' to clear out the error.
-    const updatedHub: UpdateHubT = {
+    const updatedHub: HubT = {
       ...hub,
-      lastError: '',
+      lastError: null,
     };
     submit(updatedHub, () => setShowRevertError(false));
   };
