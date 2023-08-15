@@ -80,7 +80,7 @@
 
 .loader {
   width: 100%;
-  max-width: 1200px;
+  max-width: $container-max-width;
   @include tablet-down {
     padding: 0;
   }
@@ -93,7 +93,7 @@
   }
   &_container {
     display: flex;
-    max-width: 1200px;
+    max-width: $container-max-width;
     width: 100%;
   }
 }

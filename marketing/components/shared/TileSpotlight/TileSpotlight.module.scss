@@ -21,8 +21,6 @@
 }
 
 .background {
-  // These css names are mapped to
-  // form values in Contentful
   &_gradient-rainbow {
     background: $gradient-rainbow;
   }
@@ -39,33 +37,33 @@
 }
 
 .header {
-  color: $color-text-main;
-  text-align: center;
-
-  h2 {
-    @include heading-xxl;
-    margin: 0 0 16px;
-  }
-
-  p {
-    @include body-md;
-    margin: 0 100px 64px;
-
-    @include tablet-down {
-      margin: 0 24px 64px;
+  &_container {
+    @include desktop-down {
+      text-align: center;
     }
+    h2 {
+      @include mobile-down {
+        max-width: 300px;
+      }
+    }
+  }
+}
+
+.body {
+  @include body-md;
+  text-align: center;
+  margin-bottom: 64px;
+
+  @include tablet-down {
+    margin: 0 24px 64px;
   }
 }
 
 .tile {
   &s {
     display: grid;
-    grid-template-columns: 385px 385px 385px;
-    column-gap: 23px;
-
-    @include desktop-large-down {
-      grid-template-columns: 32% 32% 32%;
-    }
+    grid-template-columns: 32% 32% 32%;
+    column-gap: 2%;
 
     @include tablet-down {
       grid-template-columns: 100%;
@@ -123,6 +121,13 @@
     display: flex;
     justify-content: center;
     margin-top: 12px;
+  }
+}
+
+.bar_wrapper {
+  @include desktop-down {
+    display: flex;
+    justify-content: center;
   }
 }
 

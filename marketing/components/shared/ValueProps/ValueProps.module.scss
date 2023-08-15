@@ -3,7 +3,7 @@
 .wrapper {
   display: flex;
   justify-content: center;
-  padding: 40px 32px;
+  padding: 100px 32px;
   position: relative;
 }
 
@@ -21,7 +21,7 @@
       grid-template-columns: 32% 32% 32%;
     }
 
-    @include tablet-down {
+    @include desktop-down {
       grid-template-columns: 100%;
       row-gap: 23px;
     }
@@ -68,7 +68,7 @@
   border-radius: 20px;
   margin: 0 32px;
 
-  @include tablet-down {
+  @include desktop-down {
     display: block;
   }
 }
