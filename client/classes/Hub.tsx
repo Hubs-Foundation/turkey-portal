@@ -15,6 +15,7 @@ export default class Hub {
   lastError: LastErrorE | null;
   storageLimitMb: number;
   subdomain: string;
+  domain: string;
   tier: TierT;
 
   constructor({
@@ -27,6 +28,7 @@ export default class Hub {
     lastError,
     storageLimitMb,
     subdomain,
+    domain,
     tier,
   }: HubT) {
     this.ccuLimit = ccuLimit;
@@ -38,6 +40,7 @@ export default class Hub {
     this.lastError = lastError;
     this.storageLimitMb = storageLimitMb;
     this.subdomain = subdomain;
+    this.domain = domain;
     this.tier = tier;
   }
 

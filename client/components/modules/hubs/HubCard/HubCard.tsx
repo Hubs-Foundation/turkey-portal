@@ -3,74 +3,45 @@ import styles from './HubCard.module.scss';
 import { HubT, LastErrorE, StatusE } from 'types/General';
 import { Message } from './Message';
 import { StoreContext } from 'contexts/StoreProvider';
-import { updateHub } from 'services/hub.service';
 import ErrorBox from './ErrorBox';
 import HubLink from './HubLink';
 import HubLoading from './HubLoading';
 import HubCardHeader from './HubCardHeader';
 import HubCardFooter from './HubCardFooter';
+import Hub from 'classes/Hub';
 
 type HubCardPropsT = {
-  hub: HubT;
+  _hub: HubT;
   refreshHubData?: Function;
   classProp?: string;
 };
 
-const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
+const HubCard = ({ _hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
   const storeContext = useContext(StoreContext);
-  const { domain, hubId, status, subdomain, lastError } = hub;
+  const hub = new Hub(_hub);
   const [showRevertError, setShowRevertError] = useState<boolean>(
-    lastError === LastErrorE.SUBDOMAIN_REVERTED
+    hub.lastError === LastErrorE.SUBDOMAIN_REVERTED
   );
-
-  /**
-   * Submit Update Hub
-   * @param updatedHub
-   * @param callback
-   */
-  const submit = async (updatedHub: HubT, callback: Function) => {
-    try {
-      const resp = await updateHub(hub.hubId, updatedHub);
-      if (resp?.status === 200) {
-        callback();
-      } else {
-        handleError();
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   /**
    * Updating Hub has failed - try again
    */
-  const onTryReupdate = () => {
+  const onTryReupdate = async () => {
     /**
      * Note: use session data 'storeContext.lastSubmittedSubdomain' and
      * try and updates the Hub again.
      */
-    const updatedHub: HubT = {
-      ...hub,
-      subdomain: storeContext.lastSubmittedSubdomain.subdomain,
-    };
-
-    submit(updatedHub, () => refreshHubData && refreshHubData());
-  };
-
-  /**
-   * Submit hub no longer needs to be in reverted state.
-   */
-  const handleOnCloseError = () => {
-    // patch the hub with lastError =  '' to clear out the error.
-    const updatedHub: HubT = {
-      ...hub,
-      lastError: null,
-    };
-    submit(updatedHub, () => setShowRevertError(false));
-  };
-
-  const handleError = () => {
-    console.error('Sorry, there was an error updating this Hub.');
+    try {
+      const resp = await hub.updateSubdomain(
+        storeContext.lastSubmittedSubdomain.subdomain
+      );
+      // Refresh data after update.
+      if (resp?.status === 200) {
+        () => refreshHubData && refreshHubData();
+      } else {
+        console.error('Sorry, there was an error updating this Hub.');
+      }
+    } catch (error) {}
   };
 
   /**
@@ -81,36 +52,29 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
   const canTryAgain = (): boolean => {
     const { subdomain: _subdomain, hubId: _hubId } =
       storeContext.lastSubmittedSubdomain;
-    if (_subdomain === '' || _hubId !== hubId) return false;
+    if (_subdomain === '' || _hubId !== hub.hubId) return false;
 
     return true;
   };
 
   /**
-   * Hide / Show Card Footer
-   */
-  const footerVisible = useMemo(() => {
-    return status === StatusE.READY;
-  }, [status]);
-
-  /**
    * Hide / Show Loader
    */
-  const loadingVisible = useMemo(() => {
-    return status === StatusE.CREATING || status === StatusE.UPDATING;
-  }, [status]);
+  const loadingVisible = () => {
+    return hub.status === StatusE.CREATING || hub.status === StatusE.UPDATING;
+  };
 
   return (
     <div className={`${styles.card_wrapper} ${classProp}`}>
       <div className={styles.card_container}>
         {/* HEADER  */}
-        <HubCardHeader status={status} hubId={hubId} />
+        <HubCardHeader status={hub.status} hubId={hub.hubId} />
 
         {/* BODY  */}
         <div className={styles.card_body}>
           {/* TODO - figure out if a name is applied to a hub off the bat before we put "untitled hub"
           here statically, might be able to just pull w/e through  */}
-          <div className={`${styles.card_name} ${styles[status]}`}>Hub</div>
+          <div className={`${styles.card_name} ${styles[hub.status]}`}>Hub</div>
 
           {/* Did Revert Error  */}
           {showRevertError && (
@@ -119,7 +83,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
               message={Message.updateSubdomainErrorMessage}
               onTryAgainClick={onTryReupdate}
               canTryAgain={canTryAgain()}
-              onClose={handleOnCloseError}
+              onClose={() => setShowRevertError(false)}
             />
           )}
 
@@ -127,7 +91,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
             The user can not try aagin on critical error
             have the only contact button.
           */}
-          {lastError === LastErrorE.SUBDOMAIN_ERROR && (
+          {hub.lastError === LastErrorE.SUBDOMAIN_ERROR && (
             <ErrorBox message={Message.criticalFailMessage} />
           )}
 
@@ -135,7 +99,7 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
             This error takes place when the hub first tries to build
             and fails to do so.
           */}
-          {lastError === LastErrorE.CREATING_ERROR && (
+          {hub.lastError === LastErrorE.CREATING_ERROR && (
             <ErrorBox message={Message.createFailMessage} />
           )}
 
@@ -143,15 +107,15 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
             This error takes place if the communication with the server fails (http server error)
             and we need a "catch all" error status to show the user.
           */}
-          {lastError === LastErrorE.ERROR && (
+          {hub.lastError === LastErrorE.ERROR && (
             <ErrorBox message={Message.errorMessage} />
           )}
 
           {/* Loading Subdomain Updates  */}
-          {loadingVisible && (
+          {loadingVisible() && (
             <HubLoading
               loadingMessage={
-                status === StatusE.CREATING
+                hub.status === StatusE.CREATING
                   ? Message.creatingMessage
                   : Message.updatingMessage
               }
@@ -159,16 +123,16 @@ const HubCard = ({ hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
           )}
 
           {/* Subdomain is ready and available  */}
-          {status === StatusE.READY && (
-            <HubLink domain={domain} subdomain={subdomain} />
+          {hub.status === StatusE.READY && (
+            <HubLink domain={hub.domain} subdomain={hub.subdomain} />
           )}
         </div>
 
         {/* FOOTER  */}
-        {footerVisible && (
+        {hub.status === StatusE.READY && (
           <>
             <hr className={styles.card_hr} />
-            <HubCardFooter hub={hub} />
+            <HubCardFooter hub={_hub} />
           </>
         )}
       </div>
