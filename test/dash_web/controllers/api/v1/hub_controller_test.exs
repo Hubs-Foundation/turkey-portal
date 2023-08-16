@@ -647,7 +647,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
           {:ok, %HTTPoison.Response{status_code: code(opts[:status_code])}}
 
         true ->
-          Logger.warn(
+          Logger.warning(
             "Inside test, hit stub set up in stub_hub_health_check/1, but GET request URL did not match /health, did you mean to do that?"
           )
       end

@@ -46,6 +46,7 @@ defmodule Dash.MixProject do
       {:poison, "~> 5.0"},
       {:postgrex, ">= 0.0.0"},
       {:quantum, "~> 3.5.0"},
+      {:ranch, ">= 0.0.0", manager: :rebar3, override: true},
       {:retry, "~> 0.18"},
       {:sentry, "~> 8.1"},
       {:telemetry_metrics, "~> 0.6"},
