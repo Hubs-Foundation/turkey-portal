@@ -34,7 +34,7 @@ defmodule Dash.MixProject do
       {:ecto_sql, "~> 3.10"},
       {:gettext, "~> 0.20"},
       {:hackney, "~> 1.18"},
-      {:httpoison, "~> 1.8"},
+      {:httpoison, "~> 2.1"},
       {:jason, "~> 1.2"},
       {:jose, "~> 1.11"},
       {:mimzy, "~> 2.1"},
