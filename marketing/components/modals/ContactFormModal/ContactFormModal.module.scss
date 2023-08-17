@@ -34,6 +34,7 @@
     @include mobile-down {
       flex-direction: column;
       text-align: center;
+      width: 100%;
 
       button:nth-child(2) {
         order: -1;

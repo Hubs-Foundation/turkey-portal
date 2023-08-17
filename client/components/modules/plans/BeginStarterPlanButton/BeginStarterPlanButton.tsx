@@ -1,10 +1,4 @@
-import {
-  Button,
-  CategoryE,
-  NewNotificationT,
-  NotificationLocationE,
-  NotificationTypesE,
-} from '@mozilla/lilypad-ui';
+import { Button } from '@mozilla/lilypad-ui';
 import { StoreContext } from 'contexts/StoreProvider';
 import { useRouter } from 'next/router';
 import { useCallback, useContext, useState } from 'react';
@@ -29,13 +23,13 @@ const BeginStarterPlanButton = ({
       title: 'Error',
       description: 'Failed to create Starter Hub, please try again.',
       duration: 8000,
-      type: NotificationTypesE.ERROR,
-      location: NotificationLocationE.TOP_RIGHT,
+      type: 'error',
+      location: 'top_right',
       pauseOnHover: true,
       autoClose: true,
       hasIcon: true,
-      category: CategoryE.TOAST,
-    } as NewNotificationT);
+      category: 'toast',
+    });
   }, [storeContext]);
 
   const startStarterPlan = async () => {
