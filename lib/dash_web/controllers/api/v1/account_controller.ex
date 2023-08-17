@@ -20,7 +20,7 @@ defmodule DashWeb.Api.V1.AccountController do
           {false, false, nil}
       end
 
-    render(conn, "show.json",
+    render(conn, :show,
       active_plan?: active_plan?,
       active_subscription?: active_subscription?,
       creating_hubs?: Dash.Hub.has_creating_hubs(account),
