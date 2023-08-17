@@ -65,7 +65,7 @@ const TileSpotlight = ({
   return (
     <section
       className={`${classProp}${styles['background_' + background]} ${
-        adornment === 'none' && 'my-100'
+        adornment === 'none' ? 'my-100' : 'my-2'
       }`}
     >
       {adornment === 'swoosh' && <Swoosh />}
