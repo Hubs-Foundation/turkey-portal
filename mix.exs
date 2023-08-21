@@ -34,9 +34,9 @@ defmodule Dash.MixProject do
       {:ecto_sql, "~> 3.10"},
       {:gettext, "~> 0.20"},
       {:hackney, "~> 1.18"},
-      {:httpoison, "~> 1.8"},
+      {:httpoison, "~> 2.1"},
       {:jason, "~> 1.2"},
-      {:jose, "~> 1.11.2"},
+      {:jose, "~> 1.11"},
       {:mimzy, "~> 2.1"},
       {:mox, "~> 1.0", only: :test},
       {:phoenix, "~> 1.7.7"},
@@ -46,8 +46,9 @@ defmodule Dash.MixProject do
       {:poison, "~> 5.0"},
       {:postgrex, ">= 0.0.0"},
       {:quantum, "~> 3.5.0"},
-      {:retry, "~> 0.16"},
-      {:sentry, "~> 8.0"},
+      {:ranch, ">= 0.0.0", manager: :rebar3, override: true},
+      {:retry, "~> 0.18"},
+      {:sentry, "~> 8.1"},
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 1.0"}
     ]
