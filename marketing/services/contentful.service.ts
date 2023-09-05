@@ -15,7 +15,7 @@ import {
   createCustomPageQuery,
   createBlogQuery,
   createBlogPageQuery,
-} from './queries';
+} from './queries.service';
 
 const CONTENTFUL_ENV = process.env.ENV === 'prod' ? 'master' : 'development';
 const SPACE = 'p5qj0ed8ji31';
