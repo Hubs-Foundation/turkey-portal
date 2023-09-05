@@ -14,6 +14,8 @@
 
 .bread_crumb {
   margin-bottom: 24px;
+  display: flex;
+  align-items: center;
 }
 
 .container {
@@ -41,5 +43,13 @@
   & > p {
     margin-bottom: 12px;
     text-indent: 40px;
+  }
+}
+
+.back_button {
+  margin-right: 18px;
+
+  @include tablet-down {
+    display: none;
   }
 }

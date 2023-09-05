@@ -1,13 +1,11 @@
 @use 'styles/core/boilerplate' as *;
 
-$image-size: 250px;
-
 .wrapper {
   display: flex;
   justify-content: center;
 
   @include tablet-down {
-    width: $image-size;
+    width: 250px;
   }
 
   @include mobile-down {
@@ -37,14 +35,14 @@ $image-size: 250px;
 
     .image {
       @include tablet-up {
-        transform: scale(1.1);
+        transform: scale(1.03);
         transition: 0.5s ease;
       }
     }
 
     .content {
       @include tablet-up {
-        margin-left: 25px;
+        margin-left: 15px;
       }
     }
   }
@@ -64,10 +62,9 @@ $image-size: 250px;
 }
 
 .image {
-  max-width: $image-size;
-  max-height: $image-size;
-  min-width: $image-size;
-  min-height: $image-size;
+  flex-shrink: 0;
+  width: 250px;
+  height: 250px;
   transition: 0.5s ease;
 
   @include tablet-up {
@@ -75,10 +72,8 @@ $image-size: 250px;
   }
 
   @include mobile-down {
-    max-width: initial;
-    max-height: initial;
-    min-width: initial;
-    min-height: initial;
+    flex-shrink: 1;
+    height: 100%;
     width: 100%;
   }
 }

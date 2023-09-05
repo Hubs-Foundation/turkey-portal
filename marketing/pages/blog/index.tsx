@@ -37,8 +37,7 @@ export default Page;
 
 export async function getStaticProps() {
   try {
-    const blogContentfulId = '4NssSFRY8TUWetnJjH9gwF';
-    const blogData = await getBlogData('blog', blogContentfulId);
+    const blogData = await getBlogData();
     const navData = await getNavigationLinksEntry();
     return {
       props: {
