@@ -173,9 +173,7 @@ sectionsCollection {
         description
       }
       desktopImage{
-        url(transform: {
-          width: 500,
-          height: 300})
+        url
         description
       }
       body

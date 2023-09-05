@@ -2,8 +2,6 @@ import Config
 
 config :dash, Dash.OrchClient, http_client: Dash.HttpMock, orch_host: "orch.test"
 
-# Configure your database
-#
 # The MIX_TEST_PARTITION environment variable can be used
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
@@ -16,8 +14,6 @@ config :dash, Dash.Repo,
 
 config :dash, Dash.RetClient, http_client: Dash.HttpMock
 
-# We don't run a server during test. If one is required,
-# you can enable the server option below.
 config :dash, DashWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "+Zm3JIfo2DSCREfgIyagAsR48QVEh/l6LR+jDuNaLqVDByGe7U5GTdNHZ0lOWHsw",
@@ -37,19 +33,16 @@ config :dash, DashWeb.Plugs.Auth,
 
 config :dash, Dash.ApprovedEmail, enabled: false
 
-# In test we don't send emails.
-config :dash, Dash.Mailer, adapter: Swoosh.Adapters.Test
-
 config :dash, Dash.RetClient,
   timeout_ms: 3_000,
   wait_ms: 500
+
+config :dash, Dash.HubStat, enable_hub_stats: true
+
+config :dash, DashWeb.Plugs.FxaEventsParser, fxa_jwk_string: "test-aC2KtiGDxtqvNmv"
 
 # Print only logs that are critical and above
 config :logger, level: :critical
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
-
-config :dash, Dash.HubStat, enable_hub_stats: true
-
-config :dash, DashWeb.Plugs.FxaEventsParser, fxa_jwk_string: "test-aC2KtiGDxtqvNmv"

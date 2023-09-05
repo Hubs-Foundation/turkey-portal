@@ -38,7 +38,7 @@ const FiftyFifty = ({
 }: FiftyFiftyPropsI) => {
   const isDesktopDown = useDesktopDown();
   return (
-    <section className={`${classProp}   ${background} `}>
+    <section className={`${classProp}   ${background} my-2`}>
       <div className="flex-justify-center">
         <div className={`${styles.container} ${styles['container_' + layout]}`}>
           {/* Image  */}

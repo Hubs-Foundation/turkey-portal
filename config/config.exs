@@ -12,25 +12,14 @@ config :dash,
 
 config :dash, Dash.Repo.Migrations, http_client: Dash.FakeHttpClient
 
-# Configures the endpoint
 config :dash, DashWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: DashWeb.ErrorView, accepts: ~w(json), layout: false],
+  render_errors: [
+    formats: [json: DashWeb.ErrorJSON],
+    layout: false
+  ],
   pubsub_server: Dash.PubSub,
-  # Required for LiveDashboard
   live_view: [signing_salt: "ZgDeMeHP"]
-
-# Configures the mailer
-#
-# By default it uses the "Local" adapter which stores the emails
-# locally. You can see the emails in your browser, at "/dev/mailbox".
-#
-# For production it's recommended to configure a different adapter
-# at the `config/runtime.exs`.
-config :dash, Dash.Mailer, adapter: Swoosh.Adapters.Local
-
-# Swoosh API client is needed for adapters other than SMTP.
-config :swoosh, :api_client, false
 
 # Configures Elixir's Logger
 config :logger, :console,
