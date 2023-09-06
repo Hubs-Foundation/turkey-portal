@@ -21,7 +21,7 @@ defmodule DashWeb.Plugs.FxaEventsParser do
       conn |> assign(:fxa_event, claims)
     else
       _ ->
-        Logger.warn(
+        Logger.warning(
           "Warn: FxaEventsParser issue parsing authorization header in verify_authorization_header/1"
         )
 
@@ -50,7 +50,7 @@ defmodule DashWeb.Plugs.FxaEventsParser do
         {:ok, claims}
 
       _ ->
-        Logger.warn("Warn: FxaEventsParser issue verifying token in parse_token/2")
+        Logger.warning("Warn: FxaEventsParser issue verifying token in parse_token/2")
         :error
     end
   end

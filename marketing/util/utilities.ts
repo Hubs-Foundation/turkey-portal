@@ -18,7 +18,7 @@ export type PricePageDataT = {
  * Get the pricing page URL for a region, return default (US) pricing page if region not found
  * @param regionCode RegionCodeT
  * @param plan names of paid plans
- * @param billingPeriod monthly or yearly payments
+ * @param billingPeriod monthly or annual payments
  * @returns URL to pricing page
  */
 export const getPricePageData = (

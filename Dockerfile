@@ -2,9 +2,9 @@
 ARG SRC_DIR=/src
 
 # ---- dev stage ----
-ARG ALPINE_LINUX_VERSION=3.16.2
-ARG ELIXIR_VERSION=1.13.4
-ARG ERLANG_VERSION=25.1.1
+ARG ALPINE_LINUX_VERSION=3.18.2
+ARG ELIXIR_VERSION=1.15.4
+ARG ERLANG_VERSION=26.0.2
 
 FROM hexpm/elixir:$ELIXIR_VERSION-erlang-$ERLANG_VERSION-alpine-$ALPINE_LINUX_VERSION AS dev
 RUN mix do local.hex --force, local.rebar --force
@@ -14,7 +14,7 @@ RUN apk add --no-cache \
 COPY container/trapped-mix /usr/local/bin/trapped-mix
 
 # ---- build stage ----
-FROM elixir:1.13 AS builder
+FROM elixir:1.15.4 AS builder
 ARG SRC_DIR
 RUN apt-get update -y && apt-get install -y build-essential git \
     && apt-get clean && rm -f /var/lib/apt/lists/*_*

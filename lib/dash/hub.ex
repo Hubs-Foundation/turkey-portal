@@ -210,7 +210,7 @@ defmodule Dash.Hub do
         :ok
 
       {:ok, %{status_code: status_code} = resp} ->
-        Logger.warn(
+        Logger.warning(
           "Deleting hub Orch request returned status code #{status_code} and response #{inspect(resp)}"
         )
 

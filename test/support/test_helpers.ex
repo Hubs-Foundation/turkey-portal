@@ -134,7 +134,7 @@ defmodule Dash.TestHelpers do
           {:ok, %HTTPoison.Response{status_code: 200}}
 
         true ->
-          Logger.warn(
+          Logger.warning(
             "Inside test, hit set up in stub_ret_get/0, but GET request URL did not match either condition, did you mean to do that?"
           )
       end
