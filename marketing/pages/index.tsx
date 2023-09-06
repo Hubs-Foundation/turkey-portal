@@ -40,11 +40,7 @@ export default Home;
 
 export async function getStaticProps() {
   try {
-    const sectionsData = await getSectionsData(
-      'homePage',
-      'iUw7LHBaBcgGaKydU2qKJ'
-    );
-
+    const sectionsData = await getSectionsData();
     const navData = await getNavigationLinksEntry();
 
     return {

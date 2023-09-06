@@ -3,13 +3,11 @@
  * @param id
  * @returns
  */
-export const createNavigationQuery = (id: string) => {
-  return `{
-    navigation(id: "${id}") {
+export const createNavigationQuery = () => {
+  const id = '4FsGf6XPSDTPppGDlyFYm9';
+  return `navigation(id: "${id}") {
       ${navCollection}
-    }
-  }
-`;
+    }`;
 };
 
 /**
@@ -31,11 +29,14 @@ export const createCustomPageQuery = (slug: string) => {
   `;
 };
 
-export const createBlogPageQuery = (slug: string, navId: string) => {
+/**
+ * Create Blog Page Query
+ * @param slug
+ * @returns
+ */
+export const createBlogPageQuery = (slug: string) => {
   return `{
-    navigation(id: "${navId}") {
-      ${navCollection}
-    }
+    ${createNavigationQuery()}
     blogPostCollection(limit:1,where:{slug:"${slug}"}){
       items {
         ... on BlogPost {
@@ -55,10 +56,11 @@ export const createBlogPageQuery = (slug: string, navId: string) => {
 /**
  * Create Blog Query
  * @param name
- * @param id
  * @returns query
  */
-export const createBlogQuery = (name: string, id: string) => {
+export const createBlogQuery = (name: string) => {
+  const id = '4NssSFRY8TUWetnJjH9gwF';
+
   return `query {${name}(id: "${id}") { 
     name
     blogPostCollection {
@@ -83,10 +85,11 @@ export const createBlogQuery = (name: string, id: string) => {
 /**
  * Create Section Collection Query
  * @param name
- * @param id
  * @returns query
  */
-export const createSectionsQuery = (name: string, id: string) => {
+export const createSectionsQuery = (name: string) => {
+  const id = 'iUw7LHBaBcgGaKydU2qKJ';
+
   return `query {${name}(id: "${id}") { ${sectionsCollection} }}`;
 };
 
@@ -173,9 +176,7 @@ sectionsCollection {
         description
       }
       desktopImage{
-        url(transform: {
-          width: 500,
-          height: 300})
+        url
         description
       }
       body

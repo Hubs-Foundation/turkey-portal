@@ -15,7 +15,7 @@ import {
   createCustomPageQuery,
   createBlogQuery,
   createBlogPageQuery,
-} from './queries';
+} from './queries.service';
 
 const CONTENTFUL_ENV = process.env.ENV === 'prod' ? 'master' : 'development';
 const SPACE = 'p5qj0ed8ji31';
@@ -29,7 +29,6 @@ const PROTOCOLS = {
     authorization: `Bearer ${process.env.CONTENTFUL_TOKEN}`,
   },
 };
-const NAV_ID = '4FsGf6XPSDTPppGDlyFYm9';
 
 /**
  * Init Contentful Client
@@ -79,12 +78,11 @@ export const getStaticPathEntries = async (
 
 /**
  * Get Navigation Content
- * @param id
  * @returns NavigationT[]
  */
 export const getNavigationLinksEntry = async (): Promise<NavigationT> => {
   const { data, statusText } = await axios
-    .post(URL, { query: createNavigationQuery(NAV_ID) }, { ...PROTOCOLS })
+    .post(URL, { query: `{${createNavigationQuery()} }` }, { ...PROTOCOLS })
     .then(({ data }: AxiosResponse) => data);
 
   // Query is wrong
@@ -103,16 +101,12 @@ export const getNavigationLinksEntry = async (): Promise<NavigationT> => {
 
 /**
  * Get Sections Data
- * @param name
- * @param id
- * @returns
+ * @returns CustomSectionsT
  */
-export const getSectionsData = async (
-  name: string,
-  id: string
-): Promise<CustomSectionsT> => {
+export const getSectionsData = async (): Promise<CustomSectionsT> => {
+  const name = 'homePage';
   const { data, statusText } = await axios
-    .post(URL, { query: createSectionsQuery(name, id) }, { ...PROTOCOLS })
+    .post(URL, { query: createSectionsQuery(name) }, { ...PROTOCOLS })
     .then(({ data }: AxiosResponse) => data);
 
   // Query is wrong
@@ -124,13 +118,13 @@ export const getSectionsData = async (
 
 /**
  * Get Blog Data
- * @param name
- * @param id
  * @returns BlogT
  */
-export const getBlogData = async (name: string, id: string): Promise<BlogT> => {
+export const getBlogData = async (): Promise<BlogT> => {
+  const name = 'blog';
+
   const { data, statusText } = await axios
-    .post(URL, { query: createBlogQuery(name, id) }, { ...PROTOCOLS })
+    .post(URL, { query: createBlogQuery(name) }, { ...PROTOCOLS })
     .then(({ data }: AxiosResponse) => data);
 
   // Query is wrong
@@ -149,7 +143,7 @@ export const getBlogData = async (name: string, id: string): Promise<BlogT> => {
 /**
  * Get Custom Page Data
  * @param slug
- * @returns
+ * @returns CustomSectionsT
  */
 export const getCustomPageData = async (
   slug: string
@@ -169,11 +163,11 @@ export const getCustomPageData = async (
 /**
  * Get Custom Page Data
  * @param slug
- * @returns
+ * @returns BlogPageT
  */
 export const getBlogPageData = async (slug: string): Promise<BlogPageT> => {
   const { data, statusText } = await axios
-    .post(URL, { query: createBlogPageQuery(slug, NAV_ID) }, { ...PROTOCOLS })
+    .post(URL, { query: createBlogPageQuery(slug) }, { ...PROTOCOLS })
     .then(({ data }: AxiosResponse) => data);
 
   // Query is wrong
