@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { ProgressBar, Icon, Pill } from '@mozilla/lilypad-ui';
 import { StorageStateE, HubT, PlansE } from 'types/General';
 import { useSelector } from 'react-redux';
@@ -25,7 +26,7 @@ type HubCardFooterPropsT = {
 
 const HubCardFooter = ({ hub: _hub, classProp = '' }: HubCardFooterPropsT) => {
   const { planName } = useSelector(selectAccount);
-  const hub = new Hub(_hub);
+  const hub = useMemo(() => new Hub(_hub), [_hub]);
   const storageState = hub.getStorageState();
 
   return (

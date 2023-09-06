@@ -5,6 +5,20 @@ import {
   updateHub,
 } from 'services/hub.service';
 
+export const loadingHub: HubT = {
+  ccuLimit: 0,
+  currentCcu: 0,
+  currentStorageMb: 0,
+  domain: '',
+  hubId: '',
+  name: 'Untitled Hub',
+  status: StatusE.CREATING,
+  lastError: null,
+  storageLimitMb: 0,
+  subdomain: '',
+  tier: 'premium',
+};
+
 export default class Hub {
   ccuLimit: number;
   currentCcu: number | null;
@@ -16,6 +30,7 @@ export default class Hub {
   storageLimitMb: number;
   subdomain: string;
   domain: string;
+  fullDomain: string;
   tier: TierT;
 
   constructor({
@@ -41,6 +56,7 @@ export default class Hub {
     this.storageLimitMb = storageLimitMb;
     this.subdomain = subdomain;
     this.domain = domain;
+    this.fullDomain = `https://${subdomain}.${domain}`;
     this.tier = tier;
   }
 
@@ -72,19 +88,30 @@ export default class Hub {
    */
   getStorageState(): StorageStateE {
     const storagePercent = this.getStoragePercent();
+    const warningThreshold = 75;
+    const criticalThreshold = 100;
     let status = StorageStateE.DEFAULT;
 
-    storagePercent > 75 && (status = StorageStateE.WARNING);
-    storagePercent >= 100 && (status = StorageStateE.CRITICAL);
+    storagePercent > warningThreshold && (status = StorageStateE.WARNING);
+    storagePercent >= criticalThreshold && (status = StorageStateE.CRITICAL);
 
     return status;
   }
 
+  /**
+   * Validate subdomain for bad words or already in use
+   * @param value
+   * @returns Promise<validationResponseT>
+   */
   async validateHubSubdomain(value: string): Promise<validationResponseT> {
-    const response = await validateSubdomain(this.hubId, value);
-    return response;
+    return await validateSubdomain(this.hubId, value);
   }
 
+  /**
+   * Update Hub Subdomain
+   * @param value
+   * @returns response status
+   */
   async updateSubdomain(
     value: string
   ): Promise<{ status: number | undefined }> {

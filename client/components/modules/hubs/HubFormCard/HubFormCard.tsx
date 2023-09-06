@@ -1,4 +1,10 @@
-import { useState, useContext, FocusEventHandler, useCallback } from 'react';
+import {
+  useState,
+  useContext,
+  FocusEventHandler,
+  useCallback,
+  useMemo,
+} from 'react';
 import { useRouter } from 'next/router';
 import styles from './HubFormCard.module.scss';
 import { Button, Icon, Input, Pill } from '@mozilla/lilypad-ui';
@@ -29,7 +35,7 @@ const HubFormCard = ({ hub: _hub, classProp = '' }: HubFormCardPropsT) => {
   const [isEditingDomain, setIsEditingDomain] = useState(false);
   const router = useRouter();
   const isProfessional = useIsProfessional();
-  const hub = new Hub(_hub);
+  const hub = useMemo(() => new Hub(_hub), [_hub]);
 
   /**
    * Toast Error
@@ -66,7 +72,6 @@ const HubFormCard = ({ hub: _hub, classProp = '' }: HubFormCardPropsT) => {
       const submit = async () => {
         const errorMessage = 'Sorry, there was an error updating this Hub.';
         try {
-          // const resp = await updateHub(hub.hubId, updatedHub);
           const resp = await hub.updateSubdomain(subdomain);
           if (resp?.status === 200) {
             router.push({

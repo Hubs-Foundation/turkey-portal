@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { HubT, StatusE } from 'types/General';
 import { RoutesE } from 'types/Routes';
@@ -19,7 +19,7 @@ type HubDetailsViewPropsT = {
 
 const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
   const router = useRouter();
-  const [hub, setHub] = useState<HubT | null>(null);
+  const [hub, setHub] = useState<HubT>();
   const [loading, setLoading] = useState(true);
   const { hub_id } = router.query;
 
@@ -56,7 +56,7 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
 
       <SidePanelLayout hub={hub} subscription={subscription}>
         <div className={styles.card_wrapper}>
-          {!loading && hub !== null ? (
+          {!loading && hub != null ? (
             <HubFormCard hub={hub} />
           ) : (
             <SkeletonCard qty={3} category="row" />

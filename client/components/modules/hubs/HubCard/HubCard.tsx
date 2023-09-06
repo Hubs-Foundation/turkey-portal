@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useState, useMemo } from 'react';
 import styles from './HubCard.module.scss';
 import { HubT, LastErrorE, StatusE } from 'types/General';
 import { Message } from './Message';
@@ -11,14 +11,14 @@ import HubCardFooter from './HubCardFooter';
 import Hub from 'classes/Hub';
 
 type HubCardPropsT = {
-  _hub: HubT;
+  hub: HubT;
   refreshHubData?: Function;
   classProp?: string;
 };
 
-const HubCard = ({ _hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
+const HubCard = ({ hub: _hub, refreshHubData, classProp }: HubCardPropsT) => {
   const storeContext = useContext(StoreContext);
-  const hub = new Hub(_hub);
+  const hub = useMemo(() => new Hub(_hub), [_hub]);
   const [showRevertError, setShowRevertError] = useState<boolean>(
     hub.lastError === LastErrorE.SUBDOMAIN_REVERTED
   );
@@ -50,9 +50,8 @@ const HubCard = ({ _hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
    * @returns Boolean
    */
   const canTryAgain = (): boolean => {
-    const { subdomain: _subdomain, hubId: _hubId } =
-      storeContext.lastSubmittedSubdomain;
-    if (_subdomain === '' || _hubId !== hub.hubId) return false;
+    const { subdomain, hubId } = storeContext.lastSubmittedSubdomain;
+    if (subdomain === '' || hubId !== hub.hubId) return false;
 
     return true;
   };
@@ -123,9 +122,7 @@ const HubCard = ({ _hub, refreshHubData, classProp = '' }: HubCardPropsT) => {
           )}
 
           {/* Subdomain is ready and available  */}
-          {hub.status === StatusE.READY && (
-            <HubLink domain={hub.domain} subdomain={hub.subdomain} />
-          )}
+          {hub.status === StatusE.READY && <HubLink url={hub.fullDomain} />}
         </div>
 
         {/* FOOTER  */}

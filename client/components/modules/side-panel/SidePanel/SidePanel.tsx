@@ -12,22 +12,19 @@ import { selectAccount } from 'store/accountSlice';
 import { useIsProfessional } from 'hooks/usePlans';
 
 export type SidePanelPropsT = {
-  domain: string;
-  subdomain: string;
+  fullDomain: string;
   subscription: SubscriptionT;
   classProp?: string;
 };
 
 const SidePanel = ({
-  domain,
-  subdomain,
+  fullDomain,
   subscription,
   classProp = '',
 }: SidePanelPropsT) => {
   const account = useSelector(selectAccount);
   const isMobile = useMobileDown();
   const isProfessional = useIsProfessional();
-  const hubUrl = `https://${subdomain}.${domain}`;
 
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
@@ -36,7 +33,7 @@ const SidePanel = ({
           title="Admin Panel"
           color="--color-brand-4"
           icon={<Icon name="settings" color="currentColor" />}
-          link={`${hubUrl}/admin`}
+          link={`${fullDomain}/admin`}
         />
         {!isMobile && (
           <TileButton
@@ -49,7 +46,7 @@ const SidePanel = ({
                 color="currentColor"
               />
             }
-            link={`${hubUrl}/spoke/projects`}
+            link={`${fullDomain}/spoke/projects`}
           />
         )}
       </div>
