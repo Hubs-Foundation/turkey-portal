@@ -207,7 +207,6 @@ defmodule Dash do
   def change_email(nil, _email), do: :ok
 
   def change_email(%Dash.Account{email: nil} = account, email) when is_binary(email) do
-    [] = Dash.Hub.hubs_for_account(account)
     update_email(account, email)
   end
 
