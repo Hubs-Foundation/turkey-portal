@@ -1,14 +1,22 @@
+import { useContext } from 'react';
 import Head from 'next/head';
 import Card from '@Shared/Card/Card';
 import { Button, Select } from '@mozilla/lilypad-ui';
-import { doCallOrWhatever } from 'services/qa.service';
+import { submitPlam } from 'services/qa.service';
 import { selectAccount } from 'store/accountSlice';
 import { useSelector } from 'react-redux';
 import { PlansE } from 'types/General';
+import { useFormik } from 'formik';
+import { StoreContext } from 'contexts/StoreProvider';
 
 type QaPropsT = {};
 
+export interface FormValues {
+  plan: PlansE;
+}
+
 const Page = ({}: QaPropsT) => {
+  const storeContext = useContext(StoreContext);
   const account = useSelector(selectAccount);
   const accountDisplayData: { key: string; value: string | null }[] = [
     {
@@ -55,13 +63,46 @@ const Page = ({}: QaPropsT) => {
     return options;
   };
 
-  const submit = async () => {
+  const submit = async (data: FormValues) => {
     try {
-      const resp = await doCallOrWhatever();
+      // Work with Bryan on this API
+      // const resp = await submitPlam(data.plan);
+      storeContext.handleDispatchNotification({
+        title: 'Success',
+        description: 'Your plan has been successfully updated.',
+        duration: 8000,
+        category: 'toast',
+        type: 'success',
+        location: 'top_center',
+        pauseOnHover: true,
+        autoClose: true,
+        hasIcon: true,
+      });
     } catch (error) {
+      storeContext.handleDispatchNotification({
+        title: 'Error',
+        description: `Your plan failed to updated. Error: ${error}`,
+        duration: 8000,
+        category: 'toast',
+        type: 'error',
+        location: 'top_center',
+        pauseOnHover: true,
+        autoClose: true,
+        hasIcon: true,
+      });
       console.error(error);
     }
   };
+
+  /**
+   * Init Formik
+   */
+  const formik = useFormik({
+    initialValues: {
+      plan: planOptions()[0].value,
+    },
+    onSubmit: submit,
+  });
 
   return (
     <div className="page_wrapper">
@@ -72,35 +113,33 @@ const Page = ({}: QaPropsT) => {
         <section className="container-max-width">
           <div className="flex gap-12">
             <Card size="large">
-              <form onSubmit={submit}>
+              <form onSubmit={formik.handleSubmit}>
                 <h2 className="mb-12">Change Plan</h2>
                 <p className="mb-12">
                   Select plan in drop down to change your current plan.
                 </p>
-                {/* onChange={formik.handleChange}
-                   onBlur={formik.handleBlur}
-                   value={formik.values.country} */}
+
                 <Select
-                  id="country"
-                  name="country"
-                  onChange={() => {}}
-                  onBlur={() => {}}
-                  value={'plan'}
+                  id="plan"
+                  name="plan"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.plan}
                   label="Select Plan"
                   classProp="mb-16"
                   required={true}
                   options={planOptions()}
                 />
-                <Button text="Submit" label="submit" />
+                <Button text="Submit" label="submit" type="submit" />
               </form>
             </Card>
 
             <Card size="large">
               <h2>Account Data</h2>
               <ul className="pl-15">
-                {accountDisplayData.map(({ key, value }) => {
+                {accountDisplayData.map(({ key, value }, i) => {
                   return (
-                    <li className="mb-8">
+                    <li className="mb-8" key={i}>
                       {key}: <b>{value}</b>
                     </li>
                   );

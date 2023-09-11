@@ -31,6 +31,7 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
    * Get Hub By ID
    */
   useEffect(() => {
+    launchToastError('test');
     const getData = async () => {
       try {
         const hub: HubT = await getHub(`${hub_id}`);
