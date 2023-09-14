@@ -29,7 +29,7 @@ const creatingHub: HubT = {
   lastError: null,
   storageLimitMb: 0,
   subdomain: '',
-  tier: 'premium',
+  tier: 'p0',
 };
 
 /**
@@ -49,7 +49,7 @@ const ErroringHub: HubT = {
   lastError: LastErrorE.ERROR,
   storageLimitMb: 0,
   subdomain: '',
-  tier: 'premium',
+  tier: 'p0',
 };
 
 const Dashboard = ({ subscription }: DashboardPropsT) => {

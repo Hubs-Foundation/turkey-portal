@@ -1,5 +1,4 @@
-// TODO - not sure premium is right here
-export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
+export type TierT = 'p0' | 'p1' | 'b0';
 
 export enum StatusE {
   CREATING = 'creating',

@@ -16,7 +16,7 @@ export const loadingHub: HubT = {
   lastError: null,
   storageLimitMb: 0,
   subdomain: '',
-  tier: 'premium',
+  tier: 'p0',
 };
 
 export default class Hub {
