@@ -75,7 +75,7 @@ export const validateHubSubdomain = async (
 
 /**
  * Warning: this has been confirmed on the backend, this API only
- * alows you ro update the subdomain, nothing else. Consider renaming
+ * allows you to update the subdomain, nothing else. Consider renaming
  * this function in the future if no additional values can be changed
  */
 export const updateHub = async (hubId: string, hub: HubT) => {

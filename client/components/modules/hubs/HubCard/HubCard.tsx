@@ -41,7 +41,9 @@ const HubCard = ({ hub: _hub, refreshHubData, classProp }: HubCardPropsT) => {
       } else {
         console.error('Sorry, there was an error updating this Hub.');
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   /**
