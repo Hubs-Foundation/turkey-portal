@@ -37,6 +37,10 @@
 .flex-grow-1 {
   flex-grow: 1;
 }
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
 
 .flex-box {
   // This is a CSS class to signify the need for a wrapper container due to

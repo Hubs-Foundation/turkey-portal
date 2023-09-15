@@ -2,87 +2,38 @@
 
 .section {
   &_wrapper {
-    background: $gradient-warm;
+    background: $gradient-rainbow;
+    display: flex;
+    justify-content: center;
+    padding: 24px 0;
 
     @include desktop-down {
       background: $color-background-neutral-0;
+    }
+    @include desktop-large-down {
+      padding: 24px 18px;
     }
   }
 
   &_container {
     display: flex;
-    justify-content: center;
-    padding: 142px 20px 127px;
-    @include desktop-down {
-      padding: 0 20px 20px;
-    }
-  }
-}
-
-/**
- FORM STYLES
-**/
-.form {
-  display: flex;
-  justify-content: center;
-  max-width: 540px;
-  flex-grow: 1;
-
-  &_legend {
-    padding: 0;
-    margin-bottom: 10px;
-  }
-}
-
-/**
- CARD STYLES
-**/
-.card {
-  &_wrapper {
-    padding: 32px 32px 32px 71px;
+    color: $color-text-reverse;
+    justify-content: space-between;
     max-width: $container-max-width;
-    width: $container-max-width;
-    background-color: $color-background-neutral-0;
-    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.32);
-    border-radius: 20px;
-
-    @include desktop-down {
-      padding: 0px;
-      width: 390px;
-      box-shadow: none;
-      border-radius: 0;
-    }
-  }
-
-  &_header {
-    text-align: center;
+    position: relative;
   }
 
   &_contents {
-    display: flex;
-    flex-direction: column;
-
-    @include tablet-large-up {
-      flex-direction: row;
-    }
+    width: 50%;
   }
 
   &_image {
-    width: 440px;
-    margin: 40px 90px 0 0;
+    position: absolute;
+    top: -50px;
+    right: 0;
   }
 }
 
-.bar {
-  padding: 4px;
-  background: $gradient-warm;
-  border-radius: 20px;
-  margin-bottom: 16px;
-  max-width: 300px;
+div.modal {
   width: 100%;
-
-  &_wrapper {
-    display: flex;
-    justify-content: center;
-  }
 }

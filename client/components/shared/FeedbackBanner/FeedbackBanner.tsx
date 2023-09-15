@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import styles from './FeedbackBanner.module.scss';
-import { Button, ButtonCategoriesE, Icon } from '@mozilla/lilypad-ui';
+import { Button, Icon } from '@mozilla/lilypad-ui';
 import FadeIn from '@Util/FadeIn';
 
 type FeedbackBannerPropsT = {
@@ -50,7 +50,7 @@ const FeedbackBanner = ({ classProp = '' }: FeedbackBannerPropsT) => {
               label="give feedback"
               href="https://connect.mozilla.org/t5/ideas/idb-p/ideas/label-name/hubs"
               classProp={styles.button}
-              category={ButtonCategoriesE.SECONDARY_OUTLINE}
+              category="secondary_outline"
               target="_blank"
               text="Give Feedback"
             />

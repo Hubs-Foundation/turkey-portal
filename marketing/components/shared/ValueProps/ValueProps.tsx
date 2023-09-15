@@ -23,7 +23,9 @@ const Tile = ({ icon, title, description, children }: TilePropsT) => {
         {icon && <div className={styles.tile_icon}>{icon}</div>}
 
         <div className={styles.tile_content}>
-          <h3>{title}</h3>
+          <div className="flex-justify-center">
+            <h3>{title}</h3>
+          </div>
           {description && <p>{description}</p>}
           {children && <div className="body-md">{children}</div>}
         </div>
@@ -39,31 +41,22 @@ const ValueProps = ({ classProp = '' }: ValuePropsPropsT) => {
       <div className={styles.container}>
         <div className={styles.tiles}>
           <Tile
-            icon={<Icon name="shield" size={64} />}
-            title="Private by design"
-            description="You control access to your Hubs, so worlds are only discoverable to people you share the link with."
+            icon={<HubIcon name="cross-device" size={64} />}
+            title="Universal Accessibility"
+            description="Connect from your phone, computer, or headset. No software download needed."
           />
 
           <Tile
-            icon={<HubIcon name="cross-device" size={64} />}
-            title="Works across devices"
-            description="Guests can join from any device with a modern browser — no downloads required."
+            icon={<Icon name="code" size={64} />}
+            title="Full Customization"
+            description='Choose from pre-made environments and avatars, or create your own."'
           />
 
-          <Tile icon={<Icon name="code" size={64} />} title="Open Source">
-            <p>
-              Hubs is built in the open — you can check out the source code{' '}
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://github.com/mozilla/hubs"
-                className="primary-link"
-              >
-                here
-              </a>
-              .
-            </p>
-          </Tile>
+          <Tile
+            icon={<Icon name="shield" size={64} />}
+            title="Privacy-First Promise"
+            description="Your personal data is never collected and you control access to your worlds."
+          />
         </div>
       </div>
     </section>

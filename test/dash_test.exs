@@ -29,16 +29,6 @@ defmodule DashTest do
       assert :ok === result
     end
 
-    test "should raise, account has no previously set email, has hubs" do
-      expect_orch_post()
-
-      fxa_uid = "no_email"
-      account_without_email = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      Dash.Hub.create_default_hub(account_without_email, @old_email)
-
-      assert_raise MatchError, fn -> Dash.change_email(account_without_email, @new_email) end
-    end
-
     test "should return :ok, account has previously set email and has no hubs" do
       fxa_uid = "with_email"
       account_with_email = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid, @old_email)
@@ -95,7 +85,7 @@ defmodule DashTest do
   describe "was_deleted?/1" do
     test "if on deleted list, should return true" do
       fxa_uid = "fxa_uid_test"
-      Dash.fxa_uid_to_deleted_list!(fxa_uid)
+      Dash.fxa_uid_to_deleted_list(fxa_uid)
 
       assert true === Dash.was_deleted?(fxa_uid)
     end
@@ -107,12 +97,12 @@ defmodule DashTest do
     end
   end
 
-  describe "fxa_uid_to_deleted_list!/1" do
+  describe "fxa_uid_to_deleted_list/1" do
     test "adds fxa_uid to the deleted list" do
       fxa_uid = "fxa_uid_test"
       false = Dash.was_deleted?(fxa_uid)
 
-      Dash.fxa_uid_to_deleted_list!(fxa_uid)
+      Dash.fxa_uid_to_deleted_list(fxa_uid)
       assert Dash.was_deleted?(fxa_uid)
     end
   end

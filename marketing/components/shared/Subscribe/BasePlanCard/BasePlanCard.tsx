@@ -1,11 +1,10 @@
 import { ReactNode } from 'react';
 import styles from './BasePlanCard.module.scss';
-import { PlanInfoCopyT } from '../plan.const';
+import { ValueProp } from '../plan.const';
 import InfoBlock from '../InfoBlock/InfoBlock';
-import { Button, Icon } from '@mozilla/lilypad-ui';
+import { Icon } from '@mozilla/lilypad-ui';
+import { FeaturesT } from '../plan.const';
 
-// PRICE DISPLAY COMPONENT
-// Used for BasePlanCard "price" prop
 type PricePropsT = {
   price: string;
   currencyAbbrev?: string;
@@ -18,113 +17,118 @@ export const Price = ({
   billingPeriod,
 }: PricePropsT) => {
   return (
-    <div className={styles.price_container}>
-      <div className={styles.price}>
-        <h2 className="heading-lg">{price}</h2>
-        <p>{currencyAbbrev}</p>
+    <section className={styles.price_wrapper}>
+      <div className={styles.price_container}>
+        <div className={styles.price}>
+          <h2 className="heading-lg">{price}</h2>
+          {currencyAbbrev && <p className="body-md ml-4">{currencyAbbrev}</p>}
+        </div>
+        {billingPeriod && (
+          <p className={styles.price_cadence}>{billingPeriod}</p>
+        )}
       </div>
-      {billingPeriod && <p className={styles.price_cadence}>{billingPeriod}</p>}
-    </div>
+    </section>
   );
 };
 
-export const Disclaimer = () => {
-  return (
-    <a
-      className="primary-link"
-      href="https://hubs.mozilla.com/docs/setup-choosing.html#supported-regions-and-currencies"
-      target="_blank"
-      rel="noreferrer"
-    >
-      <div className="flex pt-24 mb-16">
-        <div className="color-interaction-primary">
-          <Icon name="info" classProp="mr-16" color="currentColor" />
-        </div>
+type StatusPropsT = {
+  icon: 'warning' | 'greenLight';
+  message: string;
+};
 
-        <p className="paragraph-sm">
-          Subscription plans are available in select countries
-        </p>
-      </div>
-    </a>
+export const Status = ({ icon, message }: StatusPropsT) => {
+  return (
+    <section className="flex-align-center mb-12">
+      {icon === 'warning' ? (
+        <Icon name="alert-triangle" />
+      ) : (
+        <div className={styles.circle} />
+      )}
+      <span className="body-md ml-16">{message}</span>
+    </section>
   );
 };
 
 type BasePlanCardPropsT = {
   classProp?: string;
   title: string;
+  subtitle?: string;
   price: ReactNode;
-  infoCopyList: PlanInfoCopyT[];
+  valueProps: ValueProp[];
   additionalContent?: ReactNode;
-  showDisclaimer?: boolean;
   confirmButton: ReactNode;
   footerClassProp?: string;
-  color: 'silver' | 'warm' | 'rainbow';
-  isSoldOut?: boolean;
+  color: 'cool' | 'warm' | 'rainbow';
+  features?: FeaturesT | null;
 };
 
 export const BasePlanCard = ({
   title,
+  subtitle,
   price,
-  infoCopyList,
+  valueProps,
   additionalContent,
-  showDisclaimer = false,
   confirmButton,
-  footerClassProp = '',
   color,
-  isSoldOut = false,
+  features,
   classProp = '',
 }: BasePlanCardPropsT) => {
   return (
     <div className={`${styles.wrapper} ${classProp}`}>
-      {isSoldOut && (
-        <div className={styles.sold_out}>
-          <div className="text-center">
-            <h2 className="heading-xl mb-12">Sold Out!</h2>
-            <p>(Temporarily)</p>
-          </div>
-        </div>
-      )}
       <div
         className={`${styles.banner_gradient} ${styles['highlight_' + color]}`}
       />
       {/* HEADER  */}
-      <div className="flex-justify-center">
-        <h2 className={styles.title}>{title}</h2>
-      </div>
-      <div className={styles.container}>
-        <div className={styles.price_wrapper}>{price}</div>
+      <section className="text-center">
+        <h2 className="mb-6 heading-lg">{title}</h2>
+        <p className="mb-12 body-md px-28-dt">{subtitle}</p>
+      </section>
 
-        {/* CONTENT  */}
-        <div className={styles.content}>
-          {infoCopyList.map(({ label, description, icon }, i) => {
+      <section className={styles.container}>
+        {price}
+
+        {/* VALUE PROPS  */}
+        {valueProps.map(({ label, description, icon }, i) => {
+          return (
+            <InfoBlock
+              key={i}
+              icon={icon}
+              label={label}
+              description={description}
+            />
+          );
+        })}
+      </section>
+
+      <hr className={styles.hr} />
+
+      {/* FEATURES  */}
+      <section className="body-md mt-10 mb-80">
+        <p className="mb-12">{features?.title}</p>
+        <div>
+          {features?.values.map((value, i) => {
             return (
-              <InfoBlock
-                key={i}
-                icon={icon}
-                label={label}
-                description={description}
-              />
+              <div key={i} className="flex mb-12">
+                <div className="color-semantic-success mr-12">
+                  <Icon
+                    color="currentColor"
+                    name="check"
+                    size={24}
+                    classProp={styles.check}
+                  />
+                </div>
+                <p className="pt-2">{value}</p>
+              </div>
             );
           })}
         </div>
-      </div>
+      </section>
 
       {/* FOOTER  */}
-
-      <div className={`${styles.footer_wrapper}`}>
+      <footer className={`${styles.footer_wrapper}`}>
         {additionalContent}
-
-        {showDisclaimer && <Disclaimer />}
-        <div
-          className={`${styles.footer} ${footerClassProp} flex-justify-center`}
-        >
-          {isSoldOut ? (
-            <Button label="sold out" text="sold out" />
-          ) : (
-            confirmButton
-          )}
-        </div>
-      </div>
+        <div className={styles.footer}>{confirmButton}</div>
+      </footer>
     </div>
   );
 };

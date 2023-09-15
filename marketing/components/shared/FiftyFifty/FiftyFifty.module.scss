@@ -1,9 +1,5 @@
 @use 'styles/core/boilerplate' as *;
 
-.wrapper {
-  display: flex;
-  justify-content: center;
-}
 .container {
   display: flex;
   position: relative;
@@ -41,6 +37,9 @@
   ol {
     padding-left: 15px;
     text-align: left;
+  }
+  & > p {
+    margin-bottom: 12px;
   }
 }
 

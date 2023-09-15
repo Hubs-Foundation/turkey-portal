@@ -16,8 +16,8 @@ defmodule DashWeb.Api.V1.FxaEventsController do
     fxa_event = conn.assigns.fxa_event
     %{"events" => events, "sub" => fxa_uid} = fxa_event
     [{event, event_data}] = Map.to_list(events)
-    Logger.warn("Testing event_data #{event} and FULL fxa_event is: #{inspect(fxa_event)}")
-    Logger.warn("Passing in event_data #{inspect(event_data)}")
+    Logger.warning("Testing event_data #{event} and FULL fxa_event is: #{inspect(fxa_event)}")
+    Logger.warning("Passing in event_data #{inspect(event_data)}")
 
     result =
       cond do
@@ -34,7 +34,7 @@ defmodule DashWeb.Api.V1.FxaEventsController do
           FxaEvents.handle_subscription_changed_event(fxa_uid, event_data)
 
         true ->
-          Logger.warn(
+          Logger.warning(
             "FxaEventsController create: No events matched for the given FxA event. Event is #{event} #{inspect(event_data)}"
           )
 
@@ -50,7 +50,7 @@ defmodule DashWeb.Api.V1.FxaEventsController do
       _ ->
         # Webhook event handlers errored
         # If response other than 200 is returned, FxA will retry
-        Logger.warn("FxaEventsController hit random error: FxA will retry")
+        Logger.warning("FxaEventsController hit random error: FxA will retry")
 
         conn
         |> send_resp(500, "Internal Server Error")

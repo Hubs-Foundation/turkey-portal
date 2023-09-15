@@ -1,14 +1,7 @@
 import { useState, useContext, FocusEventHandler } from 'react';
 import { useRouter } from 'next/router';
 import styles from './HubFormCard.module.scss';
-import {
-  Button,
-  ButtonCategoriesE,
-  ButtonSizesE,
-  Icon,
-  Input,
-  Pill,
-} from '@mozilla/lilypad-ui';
+import { Button, Icon, Input, Pill } from '@mozilla/lilypad-ui';
 import { validateHubSubdomain } from 'services/hub.service';
 import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
 import { RoutesE } from 'types/Routes';
@@ -162,8 +155,8 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
           <Button
             label="cancel"
             onClick={handleCancelClick}
-            size={ButtonSizesE.LARGE}
-            category={ButtonCategoriesE.PRIMARY_CLEAR}
+            size="large"
+            category="primary_clear"
             icon="arrow-left"
             classProp="mr-5"
           />
@@ -244,7 +237,8 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
 
               <a
                 className="primary-link"
-                href="/docs/setup-custom-domain.html"
+                rel="noreferrer"
+                href="https://hubs.mozilla.com/docs/setup-custom-domain.html"
                 target="_blank"
               >
                 Custom Domain Documentation
@@ -257,14 +251,14 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
               label="cancel"
               classProp="mr-5"
               onClick={handleCancelClick}
-              category={ButtonCategoriesE.PRIMARY_CLEAR}
+              category="primary_clear"
               text="Cancel"
             />
 
             <Button
               label="Apply Changes"
               type="submit"
-              category={ButtonCategoriesE.PRIMARY_SOLID}
+              category="primary_solid"
               text="Apply Changes"
             />
           </section>
