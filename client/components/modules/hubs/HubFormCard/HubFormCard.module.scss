@@ -103,3 +103,10 @@
   border-top: 2px solid $color-border-1;
   padding: 24px 32px;
 }
+
+.warning {
+  background: $color-semantic-warning;
+  margin: 0 32px;
+  padding: 24px;
+  border-radius: 20px;
+}
