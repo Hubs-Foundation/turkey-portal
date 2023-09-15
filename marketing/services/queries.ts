@@ -57,6 +57,9 @@ export const createSectionsQuery = (name: string, id: string) => {
 const sectionsCollection = `
 sectionsCollection {
   items {
+    ... on Grid {
+      __typename
+    }
     ... on EmailSignUp {
       __typename
     }
@@ -120,11 +123,15 @@ sectionsCollection {
       __typename
       title
       subtitle
+      background
+      adornment
       ctaTitle
       ctaHref
+      ctaStyle
       richText {
         json
        }
+      textColor
       accentImage {
         url
         description

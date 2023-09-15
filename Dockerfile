@@ -2,9 +2,9 @@
 ARG SRC_DIR=/src
 
 # ---- dev stage ----
-ARG ALPINE_LINUX_VERSION=3.16.2
-ARG ELIXIR_VERSION=1.13.4
-ARG ERLANG_VERSION=25.1.1
+ARG ALPINE_LINUX_VERSION=3.18.2
+ARG ELIXIR_VERSION=1.15.4
+ARG ERLANG_VERSION=26.0.2
 
 FROM hexpm/elixir:$ELIXIR_VERSION-erlang-$ERLANG_VERSION-alpine-$ALPINE_LINUX_VERSION AS dev
 RUN mix do local.hex --force, local.rebar --force
@@ -14,7 +14,7 @@ RUN apk add --no-cache \
 COPY container/trapped-mix /usr/local/bin/trapped-mix
 
 # ---- build stage ----
-FROM elixir:1.13 AS builder
+FROM elixir:1.15.4 AS builder
 ARG SRC_DIR
 RUN apt-get update -y && apt-get install -y build-essential git \
     && apt-get clean && rm -f /var/lib/apt/lists/*_*
@@ -28,12 +28,7 @@ RUN mkdir config
 COPY config/config.exs config/$MIX_ENV.exs config/
 RUN mix deps.compile
 COPY priv priv
-COPY assets assets
-RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
-    && apt-get install nodejs
-RUN cd assets && npm install react react-dom && cd ..
-RUN mix phx.digest
-COPY lib ./lib
+COPY lib lib
 RUN mix compile
 COPY config/runtime.exs config/
 # COPY rel rel

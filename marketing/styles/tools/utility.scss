@@ -104,6 +104,14 @@
   color: $color-semantic-success;
 }
 
+.background-neutral {
+  background: $color-background-neutral-0;
+}
+
+.background-rainbow {
+  background: $gradient-rainbow;
+}
+
 // ---------------------------------
 //   Visibility
 // ---------------------------------
@@ -249,5 +257,33 @@
   &,
   & * {
     box-sizing: content-box;
+  }
+}
+
+// Create Size Value Array
+$start: 0;
+$end: 50;
+$array: '';
+$unit: 'px';
+$array: set-nth($array, 1, $start);
+
+@for $i from $start + 1 through $end {
+  $array: append($array, $i, comma);
+}
+
+@each $size in $array {
+  .gap-#{$size} {
+    display: flex;
+    gap: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        gap: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        gap: #{$size}#{$unit};
+      }
+    }
   }
 }

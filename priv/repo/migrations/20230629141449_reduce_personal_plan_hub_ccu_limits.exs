@@ -2,6 +2,7 @@ defmodule Dash.Repo.Migrations.ReducePersonalPlanHubCcuLimits do
   use Ecto.Migration
 
   alias Dash.Repo
+  alias Dash.Repo.Migrations
   import Ecto.Query, only: [from: 2]
 
   def up,
@@ -16,6 +17,13 @@ defmodule Dash.Repo.Migrations.ReducePersonalPlanHubCcuLimits do
   defp hub(hub_id) when is_integer(hub_id) and hub_id > 0 do
     from h in "hubs", where: h.hub_id == ^hub_id
   end
+
+  @spec http_client :: module
+  defp http_client,
+    do:
+      :dash
+      |> Application.fetch_env!(Migrations)
+      |> Keyword.fetch!(:http_client)
 
   @spec personal_hubs :: Ecto.Query.t()
   defp personal_hubs do
@@ -39,11 +47,9 @@ defmodule Dash.Repo.Migrations.ReducePersonalPlanHubCcuLimits do
 
   @spec put_personal_plan_hub_ccu_limit(pos_integer) :: :ok
   defp put_personal_plan_hub_ccu_limit(ccu_limit) do
-    http_client = :hackney
-
     for %{domain: domain, hub_id: hub_id} <- Repo.all(personal_hubs()) do
       {:ok, 200, _, _} =
-        http_client.patch(
+        http_client().patch(
           "https://turkeyorch:889/hc_instance",
           [],
           Jason.encode!(%{

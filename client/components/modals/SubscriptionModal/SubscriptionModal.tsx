@@ -1,6 +1,6 @@
 import styles from './SubscriptionModal.module.scss';
 import { useCallback } from 'react';
-import { Icon, Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { Icon, Button } from '@mozilla/lilypad-ui';
 import { FXA_SERVER } from 'config';
 
 type SubscriptionModalT = {
@@ -70,7 +70,7 @@ const SubscriptionModal = ({
         <div className={styles.footer_container}>
           <Button
             label="cancel"
-            category={ButtonCategoriesE.PRIMARY_CLEAR}
+            category="primary_clear"
             text="Nevermind"
             classProp="mr-10-dt"
             onClick={handleCloseClick}
@@ -78,7 +78,7 @@ const SubscriptionModal = ({
           <Button
             label="continue to firefox account"
             onClick={onManageAccountClick}
-            category={ButtonCategoriesE.PRIMARY_SOLID}
+            category="primary_solid"
             classProp="mb-24-mb"
             text="Continue to Firefox Account"
             target="_blank"

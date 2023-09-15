@@ -1,5 +1,5 @@
 import styles from './UpgradePlan.module.scss';
-import { Button, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { Button } from '@mozilla/lilypad-ui';
 import { RoutesE } from 'types/Routes';
 
 const UpgradePlan = () => {
@@ -14,7 +14,7 @@ const UpgradePlan = () => {
       </div>
       <div className="mt-12-mb">
         <Button
-          category={ButtonCategoriesE.SECONDARY_SOLID}
+          category="secondary_solid"
           text="Upgrade"
           label="Upgrade"
           href={RoutesE.SUBSCRIBE}

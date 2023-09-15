@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
 import { AxiosRequestHeaders } from 'axios';
-import { Button, ButtonSizesE, ButtonCategoriesE } from '@mozilla/lilypad-ui';
+import { Button } from '@mozilla/lilypad-ui';
 import { HubT } from 'types/General';
 import { RoutesE } from 'types/Routes';
 import { customClientRG } from 'services/routeGuard.service';
@@ -68,8 +68,8 @@ const CustomClient = ({ subscription }: HubDetailsViewPropsT) => {
               <Button
                 label="cancel"
                 onClick={handleCancelClick}
-                size={ButtonSizesE.LARGE}
-                category={ButtonCategoriesE.PRIMARY_CLEAR}
+                size="large"
+                category="primary_clear"
                 icon="arrow-left"
                 classProp="mr-5"
               />
@@ -99,7 +99,7 @@ const CustomClient = ({ subscription }: HubDetailsViewPropsT) => {
               target="_blank"
               rel="noreferrer"
               className="primary-link mb-20 block"
-              href="/docs/setup-custom-client.html"
+              href="https://hubs.mozilla.com/docs/setup-custom-client.html"
             >
               Custom Client Documentation
             </a>
