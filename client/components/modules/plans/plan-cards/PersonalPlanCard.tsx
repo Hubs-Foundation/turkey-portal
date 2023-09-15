@@ -14,7 +14,7 @@ type PersonalPlanCardPropsT = {
 const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
   const { regionCode } = useSelector(selectRegion);
   const { planPrice, planUrl, taxDescription, currencySymbol } =
-    getPricePageData(regionCode, PlansE.PERSONAL, BillingPeriodE.MONTHLY);
+    getPricePageData(regionCode, PlansE.PERSONAL, billingPeriod);
 
   /**
    * Handle routing user to correct payment plan
@@ -25,6 +25,7 @@ const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
 
   return (
     <BasePlanCard
+      plan={PlansE.PERSONAL}
       title="Personal"
       color="warm"
       price={
@@ -32,32 +33,25 @@ const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
           price={`${currencySymbol}${planPrice}`}
           billingPeriod={`per ${
             billingPeriod === BillingPeriodE.YEARLY ? 'year' : 'month'
-          } + tax`}
+          }`}
         />
       }
       infoCopyList={PERSONAL_COPY}
+      showDisclaimer={false}
       additionalContent={
-        <a
-          className="primary-link"
-          href="https://hubs.mozilla.com/docs/setup-choosing.html#supported-regions-and-currencies"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <div className="flex pt-24 mb-16">
-            <div className="color-interaction-primary">
-              <Icon name="info" classProp="mr-16" color="currentColor" />
-            </div>
-
-            <p className="paragraph-sm">
-              Hubs is currently available in select countries
-            </p>
+        <div className="flex-align-center my-20">
+          <div>
+            <Icon name="alert-triangle" classProp="mr-25 ml-3" />
           </div>
-        </a>
+          <span className="body-md">
+            Auto pause after 72 hours of inactivity
+          </span>
+        </div>
       }
       confirmButton={
         <Button
           label="Subscribe to hubs"
-          text="Subscribe now"
+          text="Get started"
           onClick={handleSubscribeClick}
         />
       }

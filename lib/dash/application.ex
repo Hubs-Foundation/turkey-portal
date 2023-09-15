@@ -11,18 +11,15 @@ defmodule Dash.Application do
     {:ok, _} = EctoBootMigration.migrate(:dash)
 
     children = [
-      # Start the Ecto repository
-      Dash.Repo,
       # Start the Telemetry supervisor
       DashWeb.Telemetry,
-      # Supervisor for async tasks
-      {Task.Supervisor, name: Dash.TaskSupervisor},
+      # Start the Ecto repository
+      Dash.Repo,
       # Start the PubSub system
       {Phoenix.PubSub, name: Dash.PubSub},
       # Start the Endpoint (http/https)
       DashWeb.Endpoint,
-      # Start a worker by calling: Dash.Worker.start_link(arg)
-      # {Dash.Worker, arg}
+      {Task.Supervisor, name: Dash.TaskSupervisor},
       Dash.Scheduler
     ]
 

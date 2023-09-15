@@ -1,10 +1,9 @@
 defmodule DashTest do
   use Dash.DataCase
 
-  alias Dash.{Account, Capability, HttpMock, Hub, HubDeployment, Plan}
+  alias Dash.{Account, HttpMock, Hub, Plan}
 
   import Dash.TestHelpers
-  import Dash.Utils, only: [capability_string: 0]
   require Logger
 
   setup do
@@ -28,16 +27,6 @@ defmodule DashTest do
       updated_account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
       assert @new_email = updated_account.email
       assert :ok === result
-    end
-
-    test "should raise, account has no previously set email, has hubs" do
-      expect_orch_post()
-
-      fxa_uid = "no_email"
-      account_without_email = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      Dash.Hub.create_default_hub(account_without_email, @old_email)
-
-      assert_raise MatchError, fn -> Dash.change_email(account_without_email, @new_email) end
     end
 
     test "should return :ok, account has previously set email and has no hubs" do
@@ -96,7 +85,7 @@ defmodule DashTest do
   describe "was_deleted?/1" do
     test "if on deleted list, should return true" do
       fxa_uid = "fxa_uid_test"
-      Dash.fxa_uid_to_deleted_list!(fxa_uid)
+      Dash.fxa_uid_to_deleted_list(fxa_uid)
 
       assert true === Dash.was_deleted?(fxa_uid)
     end
@@ -108,12 +97,12 @@ defmodule DashTest do
     end
   end
 
-  describe "fxa_uid_to_deleted_list!/1" do
+  describe "fxa_uid_to_deleted_list/1" do
     test "adds fxa_uid to the deleted list" do
       fxa_uid = "fxa_uid_test"
       false = Dash.was_deleted?(fxa_uid)
 
-      Dash.fxa_uid_to_deleted_list!(fxa_uid)
+      Dash.fxa_uid_to_deleted_list(fxa_uid)
       assert Dash.was_deleted?(fxa_uid)
     end
   end
@@ -159,23 +148,21 @@ defmodule DashTest do
       assert [] = Dash.get_all_active_capabilities_for_account(account)
     end
 
-    test "if has fxa_subscriptions in cookie, capability is created for account" do
+    test "if has fxa_subscriptions in cookie, account is subscribed to personal plan" do
+      expect_orch_post()
       %{now: now} = now_earlier_later_dt_s()
       fxa_uid = "fxa_uid_test"
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-      false = Dash.has_capability?(account)
 
       Dash.handle_first_sign_in_initialize_subscriptions(
         account,
-        [capability_string()],
+        ["managed-hubs"],
         now
       )
 
-      assert Dash.has_capability?(account)
-
-      active_capabilities = Dash.get_all_active_capabilities_for_account(account)
-      assert [_] = active_capabilities
-      assert capability_string() in active_capabilities
+      assert {:ok, plan} = Dash.fetch_active_plan(account)
+      assert plan.subscription?
+      assert "personal" === plan.name
     end
   end
 
@@ -193,20 +180,15 @@ defmodule DashTest do
       assert {:error, :no_subscription} === Dash.expire_plan_subscription(account, expired_at)
     end
 
-    @tag :skip
-    test "when the account has a stopped plan"
-
-    test "when the account has an active starter plan", %{
-      account: account,
-      expired_at: expired_at
-    } do
+    test "when the account has an active starter plan", %{account: account} do
       expect_orch_post()
       :ok = Dash.start_plan(account)
 
-      assert {:error, :no_subscription} === Dash.expire_plan_subscription(account, expired_at)
+      assert {:error, :no_subscription} ===
+               Dash.expire_plan_subscription(account, DateTime.utc_now())
     end
 
-    test "when the account has an active subscription plan", %{
+    test "when the account has an active personal plan", %{
       account: account,
       expired_at: expired_at
     } do
@@ -230,6 +212,8 @@ defmodule DashTest do
         assert hub.deployment.domain === payload["domain"]
         assert Integer.to_string(hub_id) === payload["hub_id"]
         assert true === payload["reset_branding"]
+        refute payload["reset_client"]
+        refute payload["reset_domain"]
         assert "0.48828125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p0" === payload["tier"]
@@ -239,7 +223,7 @@ defmodule DashTest do
       end)
 
       assert :ok === Dash.expire_plan_subscription(account, expired_at)
-      assert {:ok, %{subscription?: false}} = Dash.fetch_active_plan(account)
+      assert {:ok, %{name: "starter", subscription?: false}} = Dash.fetch_active_plan(account)
       assert [hub] = Hub.hubs_for_account(account)
       assert 10 === hub.ccu_limit
       assert hub_id === hub.hub_id
@@ -249,33 +233,19 @@ defmodule DashTest do
       assert :p0 === hub.tier
     end
 
-    test "when the account has an active subscription plan (DEPRECATED capability)", %{
+    test "when the account has an active professional plan", %{
       account: account,
       expired_at: expired_at
     } do
-      stub_http_post_200()
-
-      Dash.create_capability!(account, %{
-        capability: capability_string(),
-        change_time: DateTime.add(expired_at, -1, :second),
-        is_active: true
-      })
-
+      expect_orch_post()
+      :ok = Dash.subscribe_to_professional_plan(account, DateTime.add(expired_at, -1, :second))
       custom_subdomain = "dummy-subdomain"
 
       %{hub_id: hub_id} =
-        Repo.insert!(%Hub{
-          account_id: account.account_id,
-          ccu_limit: 20,
-          status: :creating,
-          storage_limit_mb: 2_000,
-          subdomain: custom_subdomain,
-          tier: :p1
-        })
+        Hub.hubs_for_account(account)
+        |> hd()
         |> Ecto.Changeset.change(subdomain: custom_subdomain)
         |> Repo.update!()
-
-      Repo.insert!(%HubDeployment{domain: "something", hub_id: hub_id})
 
       Mox.expect(HttpMock, :patch, fn url, json, _headers, opts ->
         payload = Jason.decode!(json)
@@ -287,6 +257,8 @@ defmodule DashTest do
         assert hub.deployment.domain === payload["domain"]
         assert Integer.to_string(hub_id) === payload["hub_id"]
         assert true === payload["reset_branding"]
+        assert true === payload["reset_client"]
+        assert true === payload["reset_domain"]
         assert "0.48828125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p0" === payload["tier"]
@@ -296,7 +268,7 @@ defmodule DashTest do
       end)
 
       assert :ok === Dash.expire_plan_subscription(account, expired_at)
-      assert {:ok, %{subscription?: false}} = Dash.fetch_active_plan(account)
+      assert {:ok, %{name: "starter", subscription?: false}} = Dash.fetch_active_plan(account)
       assert [hub] = Hub.hubs_for_account(account)
       assert 10 === hub.ccu_limit
       assert hub_id === hub.hub_id
@@ -306,7 +278,25 @@ defmodule DashTest do
       assert :p0 === hub.tier
     end
 
-    test "with expired_at earlier than the last state transition, when the account has an active subscription plan",
+    test "with expired_at earlier than the last state transition, when the account has an active starter plan",
+         %{account: account} do
+      expect_orch_post()
+      :ok = Dash.start_plan(account)
+
+      Mox.expect(HttpMock, :patch, 0, fn _url, _json, _headers, _opts -> nil end)
+
+      assert {:error, :superseded} ===
+               Dash.expire_plan_subscription(account, ~U[1970-01-01 00:00:00.877000Z])
+
+      assert {:ok, %{name: "starter", subscription?: false}} = Dash.fetch_active_plan(account)
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 10 === hub.ccu_limit
+      assert :updating !== hub.status
+      assert 500 === hub.storage_limit_mb
+      assert :p0 === hub.tier
+    end
+
+    test "with expired_at earlier than the last state transition, when the account has an active personal plan",
          %{account: account, expired_at: expired_at} do
       expect_orch_post()
       :ok = Dash.subscribe_to_personal_plan(account, DateTime.add(expired_at, 1, :second))
@@ -319,7 +309,29 @@ defmodule DashTest do
 
       Mox.expect(HttpMock, :patch, 0, fn _url, _json, _headers, _opts -> nil end)
       assert {:error, :superseded} === Dash.expire_plan_subscription(account, expired_at)
-      assert {:ok, %{subscription?: true}} = Dash.fetch_active_plan(account)
+      assert {:ok, %{name: "personal", subscription?: true}} = Dash.fetch_active_plan(account)
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 10 !== hub.ccu_limit
+      assert :updating !== hub.status
+      assert 500 !== hub.storage_limit_mb
+      assert custom_subdomain === hub.subdomain
+      assert :p0 !== hub.tier
+    end
+
+    test "with expired_at earlier than the last state transition, when the account has an active professional plan",
+         %{account: account, expired_at: expired_at} do
+      expect_orch_post()
+      :ok = Dash.subscribe_to_professional_plan(account, DateTime.add(expired_at, 1, :second))
+      custom_subdomain = "dummy-subdomain"
+
+      Hub.hubs_for_account(account)
+      |> hd()
+      |> Ecto.Changeset.change(subdomain: custom_subdomain)
+      |> Repo.update!()
+
+      Mox.expect(HttpMock, :patch, 0, fn _url, _json, _headers, _opts -> nil end)
+      assert {:error, :superseded} === Dash.expire_plan_subscription(account, expired_at)
+      assert {:ok, %{name: "professional", subscription?: true}} = Dash.fetch_active_plan(account)
       assert [hub] = Hub.hubs_for_account(account)
       assert 10 !== hub.ccu_limit
       assert :updating !== hub.status
@@ -355,21 +367,6 @@ defmodule DashTest do
 
       assert {:ok, %Plan{name: "personal", subscription?: true}} = Dash.fetch_active_plan(account)
     end
-
-    test "when the account has an active subscription plan (DEPRECATED capability)", %{
-      account: account
-    } do
-      Dash.create_capability!(account, %{
-        capability: capability_string(),
-        change_time: DateTime.utc_now(),
-        is_active: true
-      })
-
-      assert {:ok, %Capability{is_active: true}} = Dash.fetch_active_plan(account)
-    end
-
-    @tag :skip
-    test "when the account has a stopped plan"
   end
 
   describe "get_hub/2" do
@@ -444,18 +441,6 @@ defmodule DashTest do
       assert {:error, :already_started} === Dash.start_plan(account)
     end
 
-    test "when the account has an active subscription plan (DEPRECATED capability)", %{
-      account: account
-    } do
-      Dash.create_capability!(account, %{
-        capability: capability_string(),
-        change_time: DateTime.utc_now(),
-        is_active: true
-      })
-
-      assert {:error, :already_started} === Dash.start_plan(account)
-    end
-
     test "when the account has no plan", %{account: account} do
       domain = "this.here.domain"
 
@@ -468,6 +453,9 @@ defmodule DashTest do
         assert true === payload["disable_branding"]
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
         assert "us" === payload["region"]
+        refute payload["reset_branding"]
+        refute payload["reset_client"]
+        refute payload["reset_domain"]
         assert "0.48828125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p0" === payload["tier"]
@@ -477,7 +465,7 @@ defmodule DashTest do
       end)
 
       assert :ok === Dash.start_plan(account)
-      assert {:ok, %{subscription?: false}} = Dash.fetch_active_plan(account)
+      assert {:ok, %{name: "starter", subscription?: false}} = Dash.fetch_active_plan(account)
       assert [hub] = Hub.hubs_for_account(account)
       assert 10 === hub.ccu_limit
       assert :creating === hub.status
@@ -485,9 +473,6 @@ defmodule DashTest do
       assert :p0 === hub.tier
       assert domain === hub.deployment.domain
     end
-
-    @tag :skip
-    test "when the account has a stopped plan"
   end
 
   describe "subscribe_to_personal_plan/2" do
@@ -500,26 +485,12 @@ defmodule DashTest do
                Dash.subscribe_to_personal_plan(%Account{account_id: 1}, subscribed_at)
     end
 
-    test "when the account has an active subscription plan", %{
+    test "when the account has an active personal plan", %{
       account: account,
       subscribed_at: subscribed_at
     } do
       expect_orch_post()
-      :ok = Dash.subscribe_to_personal_plan(account, subscribed_at)
-
-      assert {:error, :already_started} ===
-               Dash.subscribe_to_personal_plan(account, subscribed_at)
-    end
-
-    test "when the account has an active subscription plan (DEPRECATED capability)", %{
-      account: account,
-      subscribed_at: subscribed_at
-    } do
-      Dash.create_capability!(account, %{
-        capability: capability_string(),
-        change_time: DateTime.utc_now(),
-        is_active: true
-      })
+      :ok = Dash.subscribe_to_personal_plan(account, DateTime.add(subscribed_at, -1, :second))
 
       assert {:error, :already_started} ===
                Dash.subscribe_to_personal_plan(account, subscribed_at)
@@ -540,6 +511,9 @@ defmodule DashTest do
         assert false === payload["disable_branding"]
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
         assert "us" === payload["region"]
+        refute payload["reset_branding"]
+        refute payload["reset_client"]
+        refute payload["reset_domain"]
         assert "1.953125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p1" === payload["tier"]
@@ -549,7 +523,7 @@ defmodule DashTest do
       end)
 
       assert :ok === Dash.subscribe_to_personal_plan(account, subscribed_at)
-      assert {:ok, %{subscription?: true}} = Dash.fetch_active_plan(account)
+      assert {:ok, %{name: "personal", subscription?: true}} = Dash.fetch_active_plan(account)
       assert [hub] = Hub.hubs_for_account(account)
       assert 20 === hub.ccu_limit
       assert :creating === hub.status
@@ -557,12 +531,6 @@ defmodule DashTest do
       assert :p1 === hub.tier
       assert domain === hub.deployment.domain
     end
-
-    @tag :skip
-    test "when the account has a stopped plan"
-
-    @tag :skip
-    test "with subscribed_at earlier than the last state transition, when the account has a stopped plan"
 
     test "when the account has an active starter plan", %{account: account} do
       expect_orch_post()
@@ -581,6 +549,8 @@ defmodule DashTest do
         assert hub.deployment.domain === payload["domain"]
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
         assert false === payload["reset_branding"]
+        refute payload["reset_client"]
+        refute payload["reset_domain"]
         assert "1.953125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p1" === payload["tier"]
@@ -592,6 +562,7 @@ defmodule DashTest do
       assert :ok === Dash.subscribe_to_personal_plan(account, after_start)
       {:ok, plan} = Dash.fetch_active_plan(account)
       assert plan_id === plan.plan_id
+      assert "personal" === plan.name
       assert plan.subscription?
       assert [hub] = Hub.hubs_for_account(account)
       assert 20 === hub.ccu_limit
@@ -599,6 +570,252 @@ defmodule DashTest do
       assert :updating === hub.status
       assert 2_000 === hub.storage_limit_mb
       assert :p1 === hub.tier
+    end
+
+    test "when the account has an active professional plan", %{
+      account: account,
+      subscribed_at: subscribed_at
+    } do
+      expect_orch_post()
+      :ok = Dash.subscribe_to_professional_plan(account, DateTime.add(subscribed_at, -1, :second))
+      {:ok, %{plan_id: plan_id}} = Dash.fetch_active_plan(account)
+      [%{hub_id: hub_id}] = Hub.hubs_for_account(account)
+
+      Mox.expect(HttpMock, :patch, 1, fn url, json, _headers, opts ->
+        payload = Jason.decode!(json)
+        [hub] = Hub.hubs_for_account(account)
+        assert String.ends_with?(url, "hc_instance")
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
+        assert "20" === payload["ccu_limit"]
+        assert false === payload["disable_branding"]
+        assert hub.deployment.domain === payload["domain"]
+        assert Integer.to_string(hub.hub_id) === payload["hub_id"]
+        assert false === payload["reset_branding"]
+        assert true === payload["reset_client"]
+        assert true === payload["reset_domain"]
+        assert "1.953125" === payload["storage_limit"]
+        assert hub.subdomain === payload["subdomain"]
+        assert "p1" === payload["tier"]
+        assert account.email === payload["useremail"]
+
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert :ok === Dash.subscribe_to_personal_plan(account, subscribed_at)
+      {:ok, plan} = Dash.fetch_active_plan(account)
+      assert plan_id === plan.plan_id
+      assert plan.subscription?
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 20 === hub.ccu_limit
+      assert hub_id === hub.hub_id
+      assert :updating === hub.status
+      assert 2_000 === hub.storage_limit_mb
+      assert :p1 === hub.tier
+    end
+
+    test "with subscribed_at earlier than the last state transition, when the account has an active starter plan",
+         %{account: account} do
+      expect_orch_post()
+      :ok = Dash.start_plan(account)
+
+      Mox.expect(HttpMock, :patch, 0, fn _url, _json, _headers, _opts -> nil end)
+
+      assert {:error, :superseded} ===
+               Dash.subscribe_to_personal_plan(account, ~U[1970-01-01 00:00:00.877000Z])
+
+      assert {:ok, %{name: "starter", subscription?: false}} = Dash.fetch_active_plan(account)
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 20 !== hub.ccu_limit
+      assert :updating !== hub.status
+      assert 2_000 !== hub.storage_limit_mb
+      assert :p1 !== hub.tier
+    end
+
+    test "with subscribed_at earlier than the last state transition, when the account has an active professional plan",
+         %{account: account, subscribed_at: subscribed_at} do
+      expect_orch_post()
+      :ok = Dash.subscribe_to_professional_plan(account, DateTime.add(subscribed_at, 1, :second))
+
+      Mox.expect(HttpMock, :patch, 0, fn _url, _json, _headers, _opts -> nil end)
+      assert {:error, :superseded} === Dash.subscribe_to_personal_plan(account, subscribed_at)
+      assert {:ok, %{name: "professional", subscription?: true}} = Dash.fetch_active_plan(account)
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 20 !== hub.ccu_limit
+      assert :updating !== hub.status
+      assert 2_000 !== hub.storage_limit_mb
+      assert :p1 !== hub.tier
+    end
+  end
+
+  describe "subscribe_to_professional_plan/2" do
+    setup do
+      %{account: create_account(), subscribed_at: ~U[1970-01-01 00:00:00.877000Z]}
+    end
+
+    test "when the account cannot be found", %{subscribed_at: subscribed_at} do
+      assert {:error, :account_not_found} ===
+               Dash.subscribe_to_professional_plan(%Account{account_id: 1}, subscribed_at)
+    end
+
+    test "when the account has an active professional plan", %{
+      account: account,
+      subscribed_at: subscribed_at
+    } do
+      expect_orch_post()
+      :ok = Dash.subscribe_to_professional_plan(account, DateTime.add(subscribed_at, -1, :second))
+
+      assert {:error, :already_started} ===
+               Dash.subscribe_to_professional_plan(account, subscribed_at)
+    end
+
+    test "when the account has no plan", %{
+      account: account,
+      subscribed_at: subscribed_at
+    } do
+      domain = "testdomain.example"
+
+      Mox.expect(HttpMock, :post, fn url, json, _headers, opts ->
+        payload = Jason.decode!(json)
+        [hub] = Hub.hubs_for_account(account)
+        assert String.ends_with?(url, "hc_instance")
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
+        assert "50" === payload["ccu_limit"]
+        assert false === payload["disable_branding"]
+        assert Integer.to_string(hub.hub_id) === payload["hub_id"]
+        assert "us" === payload["region"]
+        refute payload["reset_branding"]
+        refute payload["reset_client"]
+        refute payload["reset_domain"]
+        assert "24.4140625" === payload["storage_limit"]
+        assert hub.subdomain === payload["subdomain"]
+        assert "b0" === payload["tier"]
+        assert account.email === payload["useremail"]
+
+        {:ok, %HTTPoison.Response{body: Jason.encode!(%{domain: domain}), status_code: 200}}
+      end)
+
+      assert :ok === Dash.subscribe_to_professional_plan(account, subscribed_at)
+      assert {:ok, %{name: "professional", subscription?: true}} = Dash.fetch_active_plan(account)
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 50 === hub.ccu_limit
+      assert :creating === hub.status
+      assert 25_000 === hub.storage_limit_mb
+      assert :b0 === hub.tier
+      assert domain === hub.deployment.domain
+    end
+
+    test "when the account has an active starter plan", %{account: account} do
+      expect_orch_post()
+      :ok = Dash.start_plan(account)
+      after_start = DateTime.utc_now()
+      {:ok, %{plan_id: plan_id}} = Dash.fetch_active_plan(account)
+      [%{hub_id: hub_id}] = Hub.hubs_for_account(account)
+
+      Mox.expect(HttpMock, :patch, 1, fn url, json, _headers, opts ->
+        payload = Jason.decode!(json)
+        [hub] = Hub.hubs_for_account(account)
+        assert String.ends_with?(url, "hc_instance")
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
+        assert "50" === payload["ccu_limit"]
+        assert false === payload["disable_branding"]
+        assert hub.deployment.domain === payload["domain"]
+        assert Integer.to_string(hub.hub_id) === payload["hub_id"]
+        assert false === payload["reset_branding"]
+        refute payload["reset_client"]
+        refute payload["reset_domain"]
+        assert "24.4140625" === payload["storage_limit"]
+        assert hub.subdomain === payload["subdomain"]
+        assert "b0" === payload["tier"]
+        assert account.email === payload["useremail"]
+
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert :ok === Dash.subscribe_to_professional_plan(account, after_start)
+      {:ok, plan} = Dash.fetch_active_plan(account)
+      assert plan_id === plan.plan_id
+      assert "professional" === plan.name
+      assert plan.subscription?
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 50 === hub.ccu_limit
+      assert hub_id === hub.hub_id
+      assert :updating === hub.status
+      assert 25_000 === hub.storage_limit_mb
+      assert :b0 === hub.tier
+    end
+
+    test "when the account has an active personal plan", %{
+      account: account,
+      subscribed_at: subscribed_at
+    } do
+      expect_orch_post()
+      :ok = Dash.subscribe_to_personal_plan(account, DateTime.add(subscribed_at, -1, :second))
+      {:ok, %{plan_id: plan_id}} = Dash.fetch_active_plan(account)
+      [%{hub_id: hub_id}] = Hub.hubs_for_account(account)
+
+      Mox.expect(HttpMock, :patch, 1, fn url, json, _headers, opts ->
+        payload = Jason.decode!(json)
+        [hub] = Hub.hubs_for_account(account)
+        assert String.ends_with?(url, "hc_instance")
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
+        assert "50" === payload["ccu_limit"]
+        assert false === payload["disable_branding"]
+        assert hub.deployment.domain === payload["domain"]
+        assert Integer.to_string(hub.hub_id) === payload["hub_id"]
+        refute payload["reset_branding"]
+        refute payload["reset_client"]
+        refute payload["reset_domain"]
+        assert "24.4140625" === payload["storage_limit"]
+        assert hub.subdomain === payload["subdomain"]
+        assert "b0" === payload["tier"]
+        assert account.email === payload["useremail"]
+
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert :ok === Dash.subscribe_to_professional_plan(account, subscribed_at)
+      {:ok, plan} = Dash.fetch_active_plan(account)
+      assert plan_id === plan.plan_id
+      assert plan.subscription?
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 50 === hub.ccu_limit
+      assert hub_id === hub.hub_id
+      assert :updating === hub.status
+      assert 25_000 === hub.storage_limit_mb
+      assert :b0 === hub.tier
+    end
+
+    test "with subscribed_at earlier than the last state transition, when the account has an active starter plan",
+         %{account: account} do
+      expect_orch_post()
+      :ok = Dash.start_plan(account)
+
+      Mox.expect(HttpMock, :patch, 0, fn _url, _json, _headers, _opts -> nil end)
+
+      assert {:error, :superseded} ===
+               Dash.subscribe_to_professional_plan(account, ~U[1970-01-01 00:00:00.877000Z])
+
+      assert {:ok, %{name: "starter", subscription?: false}} = Dash.fetch_active_plan(account)
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 50 !== hub.ccu_limit
+      assert :updating !== hub.status
+      assert 25_000 !== hub.storage_limit_mb
+      assert :b0 !== hub.tier
+    end
+
+    test "with subscribed_at earlier than the last state transition, when the account has an active personal plan",
+         %{account: account, subscribed_at: subscribed_at} do
+      expect_orch_post()
+      :ok = Dash.subscribe_to_personal_plan(account, DateTime.add(subscribed_at, 1, :second))
+
+      Mox.expect(HttpMock, :patch, 0, fn _url, _json, _headers, _opts -> nil end)
+      assert {:error, :superseded} === Dash.subscribe_to_professional_plan(account, subscribed_at)
+      assert {:ok, %{name: "personal", subscription?: true}} = Dash.fetch_active_plan(account)
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 50 !== hub.ccu_limit
+      assert :updating !== hub.status
+      assert 25_000 !== hub.storage_limit_mb
+      assert :b0 !== hub.tier
     end
   end
 

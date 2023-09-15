@@ -2,7 +2,6 @@ defmodule DashWeb.FxaEvents do
   @moduledoc """
    Handles events sent from FxA via webhook
   """
-  import Dash.Utils, only: [capability_string: 0]
   require Logger
 
   @type event_data :: %{String.t() => String.t() | [String.t(), ...]}
@@ -47,14 +46,14 @@ defmodule DashWeb.FxaEvents do
 
     case account do
       nil ->
-        Logger.warn("FxA account deletion error: No account for fxa_uid to delete")
+        Logger.warning("FxA account deletion error: No account for fxa_uid to delete")
 
-        Dash.fxa_uid_to_deleted_list!(fxa_uid)
+        Dash.fxa_uid_to_deleted_list(fxa_uid)
         :ok
 
       %Dash.Account{} ->
         Dash.Account.delete_account_and_hubs(account)
-        Dash.fxa_uid_to_deleted_list!(fxa_uid)
+        Dash.fxa_uid_to_deleted_list(fxa_uid)
     end
   end
 
@@ -81,33 +80,33 @@ defmodule DashWeb.FxaEvents do
         "isActive" => is_active,
         "changeTime" => milliseconds
       }) do
-    if capabilities !== [capability_string()] do
+    if capabilities not in [["managed-hubs"], ["hubs-professional"]] do
       raise "unknown capabilities for subscription changed event: #{Enum.join(capabilities, ", ")}"
     end
 
-    datetime = DateTime.from_unix!(milliseconds * 1_000, :microsecond)
-    truncated_datetime = unix_to_utc_datetime(milliseconds)
     account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+    datetime = DateTime.from_unix!(milliseconds * 1_000, :microsecond)
 
-    if is_active do
-      with {:error, reason} <- Dash.subscribe_to_personal_plan(account, datetime) do
-        Logger.warning("could not subscribe to personal plan for reason: #{reason}")
-      end
-    else
-      with {:error, reason} <- Dash.expire_plan_subscription(account, datetime) do
-        Logger.warning("could not expire plan subscription for reason: #{reason}")
-      end
+    cond do
+      not is_active ->
+        with {:error, reason} <- Dash.expire_plan_subscription(account, datetime) do
+          Logger.warning("could not expire plan subscription for reason: #{reason}")
+        end
+
+      capabilities === ["managed-hubs"] ->
+        with {:error, reason} <- Dash.subscribe_to_personal_plan(account, datetime) do
+          Logger.warning("could not subscribe to personal plan for reason: #{reason}")
+        end
+
+      capabilities === ["hubs-professional"] ->
+        with {:error, reason} <- Dash.subscribe_to_professional_plan(account, datetime) do
+          Logger.warning("could not subscribe to professional plan for reason: #{reason}")
+        end
     end
-
-    Dash.update_or_create_capability_for_changeset(%{
-      fxa_uid: fxa_uid,
-      capability: capability_string(),
-      is_active: is_active,
-      change_time: truncated_datetime
-    })
 
     # We expire the cookie on every subscription changed event because the auth server puts subscription information
     # on the cookie. Such as when the subscription is expiring or if it isn't.
+    truncated_datetime = unix_to_utc_datetime(milliseconds)
     Dash.Account.set_auth_updated_at(fxa_uid, truncated_datetime)
     :ok
   end

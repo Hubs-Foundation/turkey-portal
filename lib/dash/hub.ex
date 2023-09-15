@@ -19,7 +19,7 @@ defmodule Dash.Hub do
     field :status, Ecto.Enum, values: [:creating, :updating, :ready, :subdomain_error, :error]
     field :storage_limit_mb, :integer
     field :subdomain, :string
-    field :tier, Ecto.Enum, values: [:mvp, :p0, :p1]
+    field :tier, Ecto.Enum, values: [:mvp, :p0, :p1, :b0]
 
     belongs_to :account, Dash.Account, references: :account_id
 
@@ -210,7 +210,7 @@ defmodule Dash.Hub do
         :ok
 
       {:ok, %{status_code: status_code} = resp} ->
-        Logger.warn(
+        Logger.warning(
           "Deleting hub Orch request returned status code #{status_code} and response #{inspect(resp)}"
         )
 

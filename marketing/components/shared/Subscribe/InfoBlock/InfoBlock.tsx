@@ -1,23 +1,32 @@
-import { HubIcon, HubIconT } from '@mozilla/lilypad-ui';
+import { HubIcon, HubIconT, Icon } from '@mozilla/lilypad-ui';
 import styles from './InfoBlock.module.scss';
 
-type InfoBlockPropsT = {
-  icon: HubIconT;
+export type InfoBlockPropsT = {
+  icon?: HubIconT | null;
   label: string;
-  description: string;
+  description?: string;
 };
 
-// INFO BLOCK COMPONENT
 const InfoBlock = ({ icon, label, description }: InfoBlockPropsT) => {
   return (
     <div className={styles.info_wrapper}>
-      <div className="flex-box">
-        <HubIcon name={icon} size={30} classProp="mr-20 mt-2 " />
-      </div>
-      <div className="body-md">
-        <p>
-          <span className="body-md-bold">{label}</span> <br /> {description}
-        </p>
+      {icon && (
+        <HubIcon
+          name={icon}
+          size={24}
+          classProp={`mr-20 ${description ? 'mt-2' : styles.icon}`}
+        />
+      )}
+
+      {!icon && (
+        <div className="color-semantic-success">
+          <Icon color="currentColor" name="check" classProp="mr-25 ml-3" />
+        </div>
+      )}
+
+      <div className={`body-md ${description ? '' : 'mb-16'}`}>
+        <span className="body-md-bold">{label}</span>
+        {description && <p>{description}</p>}
       </div>
     </div>
   );

@@ -1,5 +1,4 @@
 defmodule Dash.TestHelpers do
-  import Dash.Utils, only: [capability_string: 0]
   import Phoenix.ConnTest
   require Logger
   require Integer
@@ -11,7 +10,7 @@ defmodule Dash.TestHelpers do
     "fxa_email" => @test_email,
     "fxa_pic" => "https://fake.com/pic.jpg",
     "fxa_displayName" => "Faker McFakerson",
-    "fxa_subscriptions" => [capability_string()],
+    "fxa_subscriptions" => [],
     "iat" => 1_633_040_007,
     "fxa_current_period_end" => 0,
     "fxa_cancel_at_period_end" => false,
@@ -105,7 +104,7 @@ defmodule Dash.TestHelpers do
 
     Dash.update_or_create_capability_for_changeset(%{
       fxa_uid: fxa_uid,
-      capability: capability_string(),
+      capability: "managed-hubs",
       change_time: DateTime.truncate(DateTime.utc_now(), :second),
       is_active: true
     })
@@ -135,7 +134,7 @@ defmodule Dash.TestHelpers do
           {:ok, %HTTPoison.Response{status_code: 200}}
 
         true ->
-          Logger.warn(
+          Logger.warning(
             "Inside test, hit set up in stub_ret_get/0, but GET request URL did not match either condition, did you mean to do that?"
           )
       end
@@ -174,7 +173,7 @@ defmodule Dash.TestHelpers do
     %{now: now} = now_earlier_later_unix_millisecond()
     change_time = opts[:change_time] || now
 
-    capabilities = opts[:capabilities] || [capability_string()]
+    capabilities = opts[:capabilities] || ["managed-hubs"]
 
     event = %{
       "capabilities" => capabilities,
@@ -208,11 +207,4 @@ defmodule Dash.TestHelpers do
 
     %{now: now, earlier: earlier, later: later}
   end
-
-  @spec stub_http_post_200 :: HttpMock
-  def stub_http_post_200,
-    do:
-      Mox.stub(Dash.HttpMock, :post, fn _url, _json, _headers, _opts ->
-        {:ok, %HTTPoison.Response{status_code: 200}}
-      end)
 end

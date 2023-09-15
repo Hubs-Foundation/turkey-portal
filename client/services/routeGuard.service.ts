@@ -163,6 +163,42 @@ export function hubIdRG(gssp: Function): GetServerSideProps | Redirect {
 }
 
 /**
+ * Custom Client Route Guard
+ * @param gssp
+ * @returns
+ */
+export function customClientRG(gssp: Function): GetServerSideProps | Redirect {
+  return async (context: GetServerSidePropsContext) => {
+    const { req } = context;
+
+    // If no errors user is authenticated
+    try {
+      const account: AccountT = await getAccount(
+        req.headers as AxiosRequestHeaders
+      );
+
+      // only b1 can get to this page
+      if (account.planName !== PlansE.PROFESSIONAL) {
+        return redirectToDashboard();
+      }
+
+      // User has subscription
+      if (account.hasSubscription) {
+        return await gssp(context);
+      }
+
+      // Authenticated but no subscription
+      return redirectToSubscribe();
+    } catch (error) {
+      return handleUnauthenticatedRedirects(
+        error as AxiosError,
+        req.url as RoutesE
+      );
+    }
+  };
+}
+
+/**
  * Dashboard Route Guard
  * @param gssp
  * @returns

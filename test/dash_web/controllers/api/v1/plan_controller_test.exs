@@ -2,34 +2,33 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
   use DashWeb.ConnCase, async: false
 
   import Dash.TestHelpers
-  import Dash.Utils, only: [capability_string: 0]
 
   @unauthorized_redirect Jason.encode!(DashWeb.Plugs.Auth.unauthorized_auth_redirect_struct())
   @route "/api/v1/plans"
 
-  describe "POST /api/v1/plans?tier=starter" do
+  describe "POST /api/v1/plans" do
     test "returns a 201", %{conn: conn} do
       expect_orch_post()
 
       assert %{"status" => "created"} ===
                conn
-               |> put_test_token(claims: %{"fxa_subscriptions" => []}, token_expiry: tomorrow())
+               |> put_test_token(token_expiry: tomorrow())
                |> put_req_header("content-type", "application/json")
-               |> post(@route, tier: "starter")
+               |> post(@route)
                |> json_response(201)
     end
 
     test "when the account has an active plan", %{conn: conn} do
-      stub_http_post_200()
+      expect_orch_post()
 
       assert %{"error" => "already started"} ===
                conn
                |> put_test_token(
-                 claims: %{"fxa_subscriptions" => [capability_string()]},
+                 claims: %{"fxa_subscriptions" => ["managed-hubs"]},
                  token_expiry: tomorrow()
                )
                |> put_req_header("content-type", "application/json")
-               |> post(@route, tier: "starter")
+               |> post(@route)
                |> json_response(409)
     end
 
@@ -37,7 +36,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
       assert @unauthorized_redirect ===
                conn
                |> put_req_header("content-type", "application/json")
-               |> post(@route, tier: "starter")
+               |> post(@route)
                |> response(401)
     end
 
@@ -46,7 +45,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
                conn
                |> put_test_token(token_expiry: tomorrow(), unverified: true)
                |> put_req_header("content-type", "application/json")
-               |> post(@route, tier: "starter")
+               |> post(@route)
                |> response(401)
     end
 
@@ -55,7 +54,7 @@ defmodule DashWeb.Api.V1.PlanControllerTest do
                conn
                |> put_test_token(token_expiry: ~N[1970-01-01 00:00:00])
                |> put_req_header("content-type", "application/json")
-               |> post(@route, tier: "starter")
+               |> post(@route)
                |> response(401)
     end
   end

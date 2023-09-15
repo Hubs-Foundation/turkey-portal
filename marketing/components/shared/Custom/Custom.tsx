@@ -7,6 +7,7 @@ import Subscribe from '@Shared/Subscribe/Subscribe';
 import Testimonial from '@Shared/Testimonial/Testimonial';
 import ValueProps from '@Shared/ValueProps/ValueProps';
 import TileSpotlight from '@Shared/TileSpotlight/TileSpotlight';
+import Grid from '@Modules/Grid/Grid';
 
 type CustomPropT = {
   data: HeroT | TitleDescriptionT | FiftyfiftyT | TileSpotlightT;
@@ -21,6 +22,7 @@ enum SectionsNamesE {
   VALUE_PROPS = 'ValueProps',
   TILE_SPOTLIGHT = 'TileSpotlight',
   TESTIMONIAL = 'Testimonial',
+  GRID = 'Grid',
 }
 
 const Custom = ({ data }: CustomPropT) => {
@@ -55,6 +57,8 @@ const Custom = ({ data }: CustomPropT) => {
         return <ValueProps />;
       case SectionsNamesE.TESTIMONIAL:
         return <Testimonial />;
+      case SectionsNamesE.GRID:
+        return <Grid />;
       default:
         return <div className="error-message">Section does not exist</div>;
     }

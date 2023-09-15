@@ -15,6 +15,7 @@ $backup-font: 'Arial';
   **/
 $color-brand-1: var(--color-brand-1);
 $color-brand-2: var(--color-brand-2);
+$color-brand-3: var(--color-brand-3);
 $color-brand-4: var(--color-brand-4);
 
 /**
@@ -134,8 +135,6 @@ $color-interactions-menu-hover: var(--color-interactions-menu-hover);
 $color-interactions-menu-inactive: var(--color-interactions-menu-inactive);
 
 // ---- Primary Brand Colors ---------------------
-$black: #231f20;
-$blue: #0d73a6;
 $gradient-warm: radial-gradient(
   147.61% 1186.51% at 110.24% -15.63%,
   #ff806f 36.82%,
@@ -165,6 +164,7 @@ $breakpoint-hd: 1312px;
 $container-max-width: 1440px;
 
 // ---- Misc ---------------------
+$black: #231f20;
 $drop-shadow: 0 3px 8px rgba($black, 0.3);
 $drop-shadow-right: 3px 3px 8px rgba($black, 0.3);
 $drop-shadow-light: 0 3px 8px rgba($black, 0.05);

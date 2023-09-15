@@ -23,3 +23,11 @@ export const useIsBusiness = (): boolean => {
   const account = useSelector(selectAccount);
   return account.planName === PlansE.BUSINESS;
 };
+
+export const useIsProfessionalUp = (): boolean => {
+  const account = useSelector(selectAccount);
+  return (
+    account.planName === PlansE.PROFESSIONAL ||
+    account.planName === PlansE.BUSINESS
+  );
+};

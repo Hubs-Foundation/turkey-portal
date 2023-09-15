@@ -1,6 +1,6 @@
 import { StaticImageData } from 'next/image';
 import { Document } from '@contentful/rich-text-types';
-
+import { ButtonCategoriesT } from '@mozilla/lilypad-ui';
 /**
  * CONTENFUL MEDIA TYPES
  */
@@ -10,13 +10,17 @@ export type CustomSectionsT = {
 };
 
 export type FiftyfiftyT = {
+  adornment: 'swoosh' | 'none';
   desktopImage: ImageT;
   mobileImage: ImageT;
   imageAlt: string;
   accentImage?: ImageT | null;
   accentImageAlt?: string;
+  textColor?: 'color-text-reverse' | 'color-text-main';
+  background?: 'background-neutral' | 'background-rainbow';
   title?: string;
   subtitle?: string;
+  ctaStyle?: ButtonCategoriesT;
   ctaTitle?: string;
   ctaHref?: string;
   richText?: {
@@ -96,3 +100,5 @@ export type NewContactT = {
   activity: string;
   message: string;
 };
+
+type PlansT = 'starter' | 'personal' | 'professional' | 'business' | null;

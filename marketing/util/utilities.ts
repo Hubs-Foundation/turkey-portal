@@ -6,22 +6,34 @@ import {
 } from 'types/Countries';
 import { PLAN_ID_MAP } from 'components/shared/Subscribe/plan.const';
 
+export type PricePageDataT = {
+  planUrl: string;
+  planPrice: number;
+  taxDescription: string;
+  currencySymbol: string;
+  currencyAbbrev: string;
+};
+
 /**
  * Get the pricing page URL for a region, return default (US) pricing page if region not found
  * @param regionCode RegionCodeT
  * @param plan names of paid plans
- * @param billingPeriod monthly or yearly payments
+ * @param billingPeriod monthly or annual payments
  * @returns URL to pricing page
  */
 export const getPricePageData = (
   regionCode: RegionCodeT,
   plan: Exclude<PlansE, null | PlansE.STARTER>,
   billingPeriod: BillingPeriodE
-) => {
-  const BASE_URL =
-    'https://subscriptions.firefox.com/checkout/prod_Mo4tS8uH9y3Mj5';
+): PricePageDataT => {
+  const PersonalProdId = 'prod_Mo4tS8uH9y3Mj5';
+  const ProfessionalProdId = 'prod_OGWdlewqBfGPy0';
+  const prodID = plan === PlansE.PERSONAL ? PersonalProdId : ProfessionalProdId;
+  const BASE_URL = `https://subscriptions.firefox.com/checkout/${prodID}`;
+
   // If not accepted region or no region default to US plan
-  let planUrl = `${BASE_URL}}?plan=${PLAN_ID_MAP.US[plan][billingPeriod].planId}`;
+  let planUrl = `${BASE_URL}?plan=${PLAN_ID_MAP.US[plan][billingPeriod].planId}`;
+
   let planPrice = PLAN_ID_MAP.US[plan][billingPeriod].price;
   let taxDescription = PLAN_ID_MAP.US.taxDescription;
   let currencySymbol = PLAN_ID_MAP.US.symbol;

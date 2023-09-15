@@ -34,13 +34,6 @@
     margin-left: 50px;
   }
 
-  &_link {
-    @include font-size(14);
-    font-weight: 700;
-    border-bottom: solid $black 2px;
-    padding-bottom: 0;
-  }
-
   &_account {
     display: flex;
     margin: 10px;

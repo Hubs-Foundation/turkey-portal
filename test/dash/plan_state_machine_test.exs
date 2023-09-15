@@ -1,8 +1,7 @@
 defmodule Dash.PlanStateMachineTest do
   use Dash.DataCase, async: true
 
-  alias Dash.{Account, Capability, HttpMock, Hub, HubDeployment, Plan, PlanStateMachine}
-  import Dash.Utils, only: [capability_string: 0]
+  alias Dash.{Account, HttpMock, Hub, HubDeployment, Plan, PlanStateMachine}
   import Dash.TestHelpers, only: [expect_orch_post: 0]
 
   setup do
@@ -49,32 +48,10 @@ defmodule Dash.PlanStateMachineTest do
     end
 
     test "when there is a plan transition", %{account: account} do
-      state = :stopped
+      state = :starter
       put_in_state(account, state)
 
       assert {:cont, state, nil} === PlanStateMachine.init(account)
-    end
-
-    test "when there is an active capability (DEPRECATED)", %{account: account} do
-      Repo.insert!(%Capability{
-        account_id: account.account_id,
-        capability: capability_string(),
-        change_time: DateTime.truncate(DateTime.utc_now(), :second),
-        is_active: true
-      })
-
-      assert {:cont, :personal, nil} === PlanStateMachine.init(account)
-    end
-
-    test "when there is an inactive capability (DEPRECATED)", %{account: account} do
-      Repo.insert!(%Capability{
-        account_id: account.account_id,
-        capability: capability_string(),
-        change_time: DateTime.truncate(DateTime.utc_now(), :second),
-        is_active: false
-      })
-
-      assert {:cont, nil, nil} === PlanStateMachine.init(account)
     end
   end
 
@@ -100,6 +77,9 @@ defmodule Dash.PlanStateMachineTest do
         assert true === payload["disable_branding"]
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
         assert "us" === payload["region"]
+        refute payload["reset_branding"]
+        refute payload["reset_client"]
+        refute payload["reset_domain"]
         assert "0.48828125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p0" === payload["tier"]
@@ -139,6 +119,9 @@ defmodule Dash.PlanStateMachineTest do
         assert false === payload["disable_branding"]
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
         assert "us" === payload["region"]
+        refute payload["reset_branding"]
+        refute payload["reset_client"]
+        refute payload["reset_domain"]
         assert "1.953125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p1" === payload["tier"]
@@ -172,6 +155,54 @@ defmodule Dash.PlanStateMachineTest do
       assert 100 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
     end
 
+    test "nil -- subscribe_professional ->", %{account: account} do
+      domain = "region.root.test"
+
+      Mox.expect(HttpMock, :post, fn url, json, _headers, opts ->
+        payload = Jason.decode!(json)
+        [hub] = Hub.hubs_for_account(account)
+        assert String.ends_with?(url, "hc_instance")
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
+        assert "50" === payload["ccu_limit"]
+        assert false === payload["disable_branding"]
+        assert Integer.to_string(hub.hub_id) === payload["hub_id"]
+        assert "us" === payload["region"]
+        refute payload["reset_branding"]
+        refute payload["reset_client"]
+        refute payload["reset_domain"]
+        assert "24.4140625" === payload["storage_limit"]
+        assert hub.subdomain === payload["subdomain"]
+        assert "b0" === payload["tier"]
+        assert account.email === payload["useremail"]
+
+        {:ok, %HTTPoison.Response{body: Jason.encode!(%{domain: domain}), status_code: 200}}
+      end)
+
+      assert :ok ===
+               PlanStateMachine.handle_event(
+                 nil,
+                 {:subscribe_professional, DateTime.utc_now()},
+                 account,
+                 nil
+               )
+
+      assert [hub] = Hub.hubs_for_account(account)
+      assert 50 === hub.ccu_limit
+      assert :creating === hub.status
+      assert 25_000 === hub.storage_limit_mb
+      assert :b0 === hub.tier
+      assert domain === hub.deployment.domain
+
+      assert [plan] = Repo.all(Plan)
+      assert account.account_id === plan.account_id
+
+      assert [transition] = ordered_transitions()
+      assert "subscribe_professional" === transition.event
+      assert :professional === transition.new_state
+      assert plan.plan_id === transition.plan_id
+      assert 100 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
+    end
+
     test "nil -- expire_subscription ->", %{account: account} do
       assert {:error, :no_subscription} ===
                PlanStateMachine.handle_event(
@@ -194,6 +225,7 @@ defmodule Dash.PlanStateMachineTest do
 
       assert %Plan{} = plan
       assert account.account_id === plan.account_id
+      assert "starter" === plan.name
       assert false === plan.subscription?
 
       assert [_] = ordered_transitions()
@@ -222,7 +254,9 @@ defmodule Dash.PlanStateMachineTest do
         assert false === payload["disable_branding"]
         assert hub.deployment.domain === payload["domain"]
         assert Integer.to_string(hub.hub_id) === payload["hub_id"]
-        assert false === payload["reset_branding"]
+        refute payload["reset_branding"]
+        refute payload["reset_client"]
+        refute payload["reset_domain"]
         assert "1.953125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p1" === payload["tier"]
@@ -240,8 +274,8 @@ defmodule Dash.PlanStateMachineTest do
                )
 
       assert [hub] = Hub.hubs_for_account(account)
-      assert 20 === hub.ccu_limit
       assert hub_id === hub.hub_id
+      assert 20 === hub.ccu_limit
       assert :updating === hub.status
       assert 2_000 === hub.storage_limit_mb
       assert :p1 === hub.tier
@@ -254,6 +288,106 @@ defmodule Dash.PlanStateMachineTest do
       assert :personal === transition.new_state
       assert plan.plan_id === transition.plan_id
       assert 100 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
+    end
+
+    test "<- subscribe_personal -- starter", %{account: account} do
+      :ok = put_in_state(account, :starter)
+      %{hub_id: hub_id} = Repo.insert!(%Hub{account_id: account.account_id})
+      Repo.insert!(%HubDeployment{domain: "fake.domain", hub_id: hub_id})
+
+      Mox.expect(HttpMock, :patch, 0, fn _url, _json, _headers, _opts -> nil end)
+
+      assert {:error, :superseded} ===
+               PlanStateMachine.handle_event(
+                 :starter,
+                 {:subscribe_personal, yesterday()},
+                 account,
+                 nil
+               )
+
+      assert [hub] = Hub.hubs_for_account(account)
+      assert hub_id === hub.hub_id
+      assert 20 !== hub.ccu_limit
+      assert :updating !== hub.status
+      assert 2_000 !== hub.storage_limit_mb
+      assert :p1 !== hub.tier
+
+      assert [_] = ordered_transitions()
+    end
+
+    test "starter -- subscribe_professional ->", %{account: account} do
+      :ok = put_in_state(account, :starter)
+      %{hub_id: hub_id} = Repo.insert!(%Hub{account_id: account.account_id})
+      Repo.insert!(%HubDeployment{domain: "fake.domain", hub_id: hub_id})
+
+      Mox.expect(HttpMock, :patch, 1, fn url, json, _headers, opts ->
+        payload = Jason.decode!(json)
+        [hub] = Hub.hubs_for_account(account)
+        assert String.ends_with?(url, "hc_instance")
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
+        assert "50" === payload["ccu_limit"]
+        assert false === payload["disable_branding"]
+        assert hub.deployment.domain === payload["domain"]
+        assert Integer.to_string(hub.hub_id) === payload["hub_id"]
+        refute payload["reset_branding"]
+        refute payload["reset_client"]
+        refute payload["reset_domain"]
+        assert "24.4140625" === payload["storage_limit"]
+        assert hub.subdomain === payload["subdomain"]
+        assert "b0" === payload["tier"]
+        assert account.email === payload["useremail"]
+
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert :ok ===
+               PlanStateMachine.handle_event(
+                 :starter,
+                 {:subscribe_professional, DateTime.utc_now()},
+                 account,
+                 nil
+               )
+
+      assert [hub] = Hub.hubs_for_account(account)
+      assert hub_id === hub.hub_id
+      assert 50 === hub.ccu_limit
+      assert :updating === hub.status
+      assert 25_000 === hub.storage_limit_mb
+      assert :b0 === hub.tier
+
+      assert [plan] = Repo.all(Plan)
+      assert account.account_id === plan.account_id
+
+      assert [transition, _] = ordered_transitions()
+      assert "subscribe_professional" === transition.event
+      assert :professional === transition.new_state
+      assert plan.plan_id === transition.plan_id
+      assert 100 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
+    end
+
+    test "<- subscribe_professional -- starter", %{account: account} do
+      :ok = put_in_state(account, :starter)
+      %{hub_id: hub_id} = Repo.insert!(%Hub{account_id: account.account_id})
+      Repo.insert!(%HubDeployment{domain: "fake.domain", hub_id: hub_id})
+
+      Mox.expect(HttpMock, :patch, 0, fn _url, _json, _headers, _opts -> nil end)
+
+      assert {:error, :superseded} ===
+               PlanStateMachine.handle_event(
+                 :starter,
+                 {:subscribe_professional, yesterday()},
+                 account,
+                 nil
+               )
+
+      assert [hub] = Hub.hubs_for_account(account)
+      assert hub_id === hub.hub_id
+      assert 50 !== hub.ccu_limit
+      assert :updating !== hub.status
+      assert 25_000 !== hub.storage_limit_mb
+      assert :b0 !== hub.tier
+
+      assert [_] = ordered_transitions()
     end
 
     test "starter -- expire_subscription ->", %{account: account} do
@@ -270,6 +404,20 @@ defmodule Dash.PlanStateMachineTest do
       assert [_] = ordered_transitions()
     end
 
+    test "<- expire_subscription -- starter", %{account: account} do
+      :ok = put_in_state(account, :starter)
+
+      assert {:error, :superseded} ===
+               PlanStateMachine.handle_event(
+                 :starter,
+                 {:expire_subscription, yesterday()},
+                 account,
+                 nil
+               )
+
+      assert [_] = ordered_transitions()
+    end
+
     test "personal -- fetch_active_plan ->", %{account: account} do
       :ok = put_in_state(account, :personal)
 
@@ -278,6 +426,7 @@ defmodule Dash.PlanStateMachineTest do
 
       assert %Plan{} = plan
       assert account.account_id === plan.account_id
+      assert "personal" === plan.name
       assert true === plan.subscription?
 
       assert [_] = ordered_transitions()
@@ -306,6 +455,95 @@ defmodule Dash.PlanStateMachineTest do
       assert [_] = ordered_transitions()
     end
 
+    test "<- subscribe_personal -- personal", %{account: account} do
+      :ok = put_in_state(account, :personal)
+
+      assert {:error, :superseded} =
+               PlanStateMachine.handle_event(
+                 :personal,
+                 {:subscribe_personal, yesterday()},
+                 account,
+                 nil
+               )
+
+      assert [_] = ordered_transitions()
+    end
+
+    test "personal -- subscribe_professional ->", %{account: account} do
+      :ok = put_in_state(account, :personal)
+      %{hub_id: hub_id} = Repo.insert!(%Hub{account_id: account.account_id})
+      Repo.insert!(%HubDeployment{domain: "fake.domain", hub_id: hub_id})
+
+      Mox.expect(HttpMock, :patch, 1, fn url, json, _headers, opts ->
+        payload = Jason.decode!(json)
+        [hub] = Hub.hubs_for_account(account)
+        assert String.ends_with?(url, "hc_instance")
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
+        assert "50" === payload["ccu_limit"]
+        assert false === payload["disable_branding"]
+        assert hub.deployment.domain === payload["domain"]
+        assert Integer.to_string(hub.hub_id) === payload["hub_id"]
+        refute payload["reset_branding"]
+        refute payload["reset_client"]
+        refute payload["reset_domain"]
+        assert "24.4140625" === payload["storage_limit"]
+        assert hub.subdomain === payload["subdomain"]
+        assert "b0" === payload["tier"]
+        assert account.email === payload["useremail"]
+
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert :ok ===
+               PlanStateMachine.handle_event(
+                 :personal,
+                 {:subscribe_professional, DateTime.utc_now()},
+                 account,
+                 nil
+               )
+
+      assert [hub] = Hub.hubs_for_account(account)
+      assert hub_id === hub.hub_id
+      assert 50 === hub.ccu_limit
+      assert :updating === hub.status
+      assert 25_000 === hub.storage_limit_mb
+      assert :b0 === hub.tier
+
+      assert [plan] = Repo.all(Plan)
+      assert account.account_id === plan.account_id
+
+      assert [transition, _] = ordered_transitions()
+      assert "subscribe_professional" === transition.event
+      assert :professional === transition.new_state
+      assert plan.plan_id === transition.plan_id
+      assert 100 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
+    end
+
+    test "<- subscribe_professional -- personal", %{account: account} do
+      :ok = put_in_state(account, :personal)
+      %{hub_id: hub_id} = Repo.insert!(%Hub{account_id: account.account_id})
+      Repo.insert!(%HubDeployment{domain: "fake.domain", hub_id: hub_id})
+
+      Mox.expect(HttpMock, :patch, 0, fn _url, _json, _headers, _opts -> nil end)
+
+      assert {:error, :superseded} ===
+               PlanStateMachine.handle_event(
+                 :personal,
+                 {:subscribe_professional, yesterday()},
+                 account,
+                 nil
+               )
+
+      assert [hub] = Hub.hubs_for_account(account)
+      assert hub_id === hub.hub_id
+      assert 50 !== hub.ccu_limit
+      assert :updating !== hub.status
+      assert 25_000 !== hub.storage_limit_mb
+      assert :b0 !== hub.tier
+
+      assert [_] = ordered_transitions()
+    end
+
     test "personal -- expire_subscription ->", %{account: account} do
       :ok = put_in_state(account, :personal)
       custom_subdomain = "dummy-subdomain"
@@ -315,7 +553,7 @@ defmodule Dash.PlanStateMachineTest do
 
       Repo.insert!(%HubDeployment{domain: "dummy.domain", hub_id: hub_id})
 
-      Mox.expect(HttpMock, :patch, fn url, json, _headers, opts ->
+      Mox.expect(HttpMock, :patch, 1, fn url, json, _headers, opts ->
         payload = Jason.decode!(json)
         [hub] = Hub.hubs_for_account(account)
         assert String.ends_with?(url, "hc_instance")
@@ -325,6 +563,8 @@ defmodule Dash.PlanStateMachineTest do
         assert hub.deployment.domain === payload["domain"]
         assert Integer.to_string(hub_id) === payload["hub_id"]
         assert true === payload["reset_branding"]
+        refute payload["reset_client"]
+        refute payload["reset_domain"]
         assert "0.48828125" === payload["storage_limit"]
         assert hub.subdomain === payload["subdomain"]
         assert "p0" === payload["tier"]
@@ -342,8 +582,8 @@ defmodule Dash.PlanStateMachineTest do
                )
 
       assert [hub] = Hub.hubs_for_account(account)
-      assert 10 === hub.ccu_limit
       assert hub_id === hub.hub_id
+      assert 10 === hub.ccu_limit
       assert :updating === hub.status
       assert 500 === hub.storage_limit_mb
       assert custom_subdomain !== hub.subdomain
@@ -358,15 +598,256 @@ defmodule Dash.PlanStateMachineTest do
       assert plan.plan_id === transition.plan_id
       assert 100 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
     end
+
+    test "<- expire_subscription -- personal", %{account: account} do
+      :ok = put_in_state(account, :personal)
+      custom_subdomain = "dummy-subdomain"
+
+      %{hub_id: hub_id} =
+        Repo.insert!(%Hub{account_id: account.account_id, subdomain: custom_subdomain})
+
+      Repo.insert!(%HubDeployment{domain: "dummy.domain", hub_id: hub_id})
+
+      Mox.expect(HttpMock, :patch, 0, fn _url, _json, _headers, _opts -> nil end)
+
+      assert {:error, :superseded} ===
+               PlanStateMachine.handle_event(
+                 :personal,
+                 {:expire_subscription, yesterday()},
+                 account,
+                 nil
+               )
+
+      assert [hub] = Hub.hubs_for_account(account)
+      assert hub_id === hub.hub_id
+      assert 10 !== hub.ccu_limit
+      assert :updating !== hub.status
+      assert 500 !== hub.storage_limit_mb
+      assert custom_subdomain === hub.subdomain
+      assert :p0 !== hub.tier
+
+      assert [_] = ordered_transitions()
+    end
+
+    test "professional -- fetch_active_plan ->", %{account: account} do
+      :ok = put_in_state(account, :professional)
+
+      assert {:ok, plan} =
+               PlanStateMachine.handle_event(:professional, :fetch_active_plan, account, nil)
+
+      assert %Plan{} = plan
+      assert account.account_id === plan.account_id
+      assert "professional" === plan.name
+      assert true === plan.subscription?
+
+      assert [_] = ordered_transitions()
+    end
+
+    test "professional -- start ->", %{account: account} do
+      :ok = put_in_state(account, :professional)
+
+      assert {:error, :already_started} =
+               PlanStateMachine.handle_event(:professional, :start, account, nil)
+
+      assert [_] = ordered_transitions()
+    end
+
+    test "professional -- subscribe_personal ->", %{account: account} do
+      :ok = put_in_state(account, :professional)
+      %{hub_id: hub_id} = Repo.insert!(%Hub{account_id: account.account_id})
+      Repo.insert!(%HubDeployment{domain: "fake.domain", hub_id: hub_id})
+
+      Mox.expect(HttpMock, :patch, 1, fn url, json, _headers, opts ->
+        payload = Jason.decode!(json)
+        [hub] = Hub.hubs_for_account(account)
+        assert String.ends_with?(url, "hc_instance")
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
+        assert "20" === payload["ccu_limit"]
+        assert false === payload["disable_branding"]
+        assert hub.deployment.domain === payload["domain"]
+        assert Integer.to_string(hub.hub_id) === payload["hub_id"]
+        refute payload["reset_branding"]
+        assert true === payload["reset_client"]
+        assert true === payload["reset_domain"]
+        assert "1.953125" === payload["storage_limit"]
+        assert hub.subdomain === payload["subdomain"]
+        assert "p1" === payload["tier"]
+        assert account.email === payload["useremail"]
+
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert :ok ===
+               PlanStateMachine.handle_event(
+                 :professional,
+                 {:subscribe_personal, DateTime.utc_now()},
+                 account,
+                 nil
+               )
+
+      assert [hub] = Hub.hubs_for_account(account)
+      assert hub_id === hub.hub_id
+      assert 20 === hub.ccu_limit
+      assert :updating === hub.status
+      assert 2_000 === hub.storage_limit_mb
+      assert :p1 === hub.tier
+
+      assert [plan] = Repo.all(Plan)
+      assert account.account_id === plan.account_id
+
+      assert [transition, _] = ordered_transitions()
+      assert "subscribe_personal" === transition.event
+      assert :personal === transition.new_state
+      assert plan.plan_id === transition.plan_id
+      assert 100 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
+    end
+
+    test "<- subscribe_personal -- professional", %{account: account} do
+      :ok = put_in_state(account, :professional)
+      %{hub_id: hub_id} = Repo.insert!(%Hub{account_id: account.account_id})
+      Repo.insert!(%HubDeployment{domain: "fake.domain", hub_id: hub_id})
+
+      Mox.expect(HttpMock, :patch, 0, fn _url, _json, _headers, _opts -> nil end)
+
+      assert {:error, :superseded} ===
+               PlanStateMachine.handle_event(
+                 :professional,
+                 {:subscribe_personal, yesterday()},
+                 account,
+                 nil
+               )
+
+      assert [hub] = Hub.hubs_for_account(account)
+      assert hub_id === hub.hub_id
+      assert 20 !== hub.ccu_limit
+      assert :updating !== hub.status
+      assert 2_000 !== hub.storage_limit_mb
+      assert :p1 !== hub.tier
+
+      assert [_] = ordered_transitions()
+    end
+
+    test "professional -- subscribe_professional ->", %{account: account} do
+      :ok = put_in_state(account, :professional)
+
+      assert {:error, :already_started} =
+               PlanStateMachine.handle_event(
+                 :professional,
+                 {:subscribe_professional, DateTime.utc_now()},
+                 account,
+                 nil
+               )
+
+      assert [_] = ordered_transitions()
+    end
+
+    test "<- subscribe_professional -- professional", %{account: account} do
+      :ok = put_in_state(account, :professional)
+
+      assert {:error, :superseded} =
+               PlanStateMachine.handle_event(
+                 :professional,
+                 {:subscribe_professional, yesterday()},
+                 account,
+                 nil
+               )
+
+      assert [_] = ordered_transitions()
+    end
+
+    test "professional -- expire_subscription ->", %{account: account} do
+      :ok = put_in_state(account, :professional)
+      custom_subdomain = "dummy-subdomain"
+
+      %{hub_id: hub_id} =
+        Repo.insert!(%Hub{account_id: account.account_id, subdomain: custom_subdomain})
+
+      Repo.insert!(%HubDeployment{domain: "dummy.domain", hub_id: hub_id})
+
+      Mox.expect(HttpMock, :patch, 1, fn url, json, _headers, opts ->
+        payload = Jason.decode!(json)
+        [hub] = Hub.hubs_for_account(account)
+        assert String.ends_with?(url, "hc_instance")
+        assert [hackney: [:insecure], recv_timeout: 15_000] === opts
+        assert "10" === payload["ccu_limit"]
+        assert true === payload["disable_branding"]
+        assert hub.deployment.domain === payload["domain"]
+        assert Integer.to_string(hub_id) === payload["hub_id"]
+        assert true === payload["reset_branding"]
+        assert true === payload["reset_client"]
+        assert true === payload["reset_domain"]
+        assert "0.48828125" === payload["storage_limit"]
+        assert hub.subdomain === payload["subdomain"]
+        assert "p0" === payload["tier"]
+        assert account.email === payload["useremail"]
+
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert :ok ===
+               PlanStateMachine.handle_event(
+                 :professional,
+                 {:expire_subscription, DateTime.utc_now()},
+                 account,
+                 nil
+               )
+
+      assert [hub] = Hub.hubs_for_account(account)
+      assert hub_id === hub.hub_id
+      assert 10 === hub.ccu_limit
+      assert :updating === hub.status
+      assert 500 === hub.storage_limit_mb
+      assert custom_subdomain !== hub.subdomain
+      assert :p0 === hub.tier
+
+      assert [plan] = Repo.all(Plan)
+      assert account.account_id === plan.account_id
+
+      assert [transition, _] = ordered_transitions()
+      assert "expire_subscription" === transition.event
+      assert :starter === transition.new_state
+      assert plan.plan_id === transition.plan_id
+      assert 100 > DateTime.diff(DateTime.utc_now(), transition.transitioned_at, :millisecond)
+    end
+
+    test "<- expire_subscription -- professional", %{account: account} do
+      :ok = put_in_state(account, :professional)
+      custom_subdomain = "dummy-subdomain"
+
+      %{hub_id: hub_id} =
+        Repo.insert!(%Hub{account_id: account.account_id, subdomain: custom_subdomain})
+
+      Repo.insert!(%HubDeployment{domain: "dummy.domain", hub_id: hub_id})
+
+      Mox.expect(HttpMock, :patch, 0, fn _url, _json, _headers, _opts -> nil end)
+
+      assert {:error, :superseded} ===
+               PlanStateMachine.handle_event(
+                 :professional,
+                 {:expire_subscription, yesterday()},
+                 account,
+                 nil
+               )
+
+      assert [hub] = Hub.hubs_for_account(account)
+      assert hub_id === hub.hub_id
+      assert 10 !== hub.ccu_limit
+      assert :updating !== hub.status
+      assert 500 !== hub.storage_limit_mb
+      assert custom_subdomain === hub.subdomain
+      assert :p0 !== hub.tier
+
+      assert [_] = ordered_transitions()
+    end
   end
 
   @spec ordered_transitions :: [%PlanStateMachine.PlanTransition{}]
   defp ordered_transitions,
     do: Repo.all(from t in PlanStateMachine.PlanTransition, order_by: [desc: t.transitioned_at])
 
-  @spec put_in_state(Account.t(), :starter | :personal | :stopped) :: :ok
+  @spec put_in_state(Account.t(), :starter | :personal | :professional) :: :ok
   defp put_in_state(%Account{} = account, state)
-       when state in [:starter, :personal, :stopped] do
+       when state in [:starter, :personal, :professional] do
     %{plan_id: plan_id} = Repo.insert!(%Plan{account_id: account.account_id})
 
     Repo.insert!(%PlanStateMachine.PlanTransition{
@@ -378,4 +859,8 @@ defmodule Dash.PlanStateMachineTest do
 
     :ok
   end
+
+  @spec yesterday :: DateTime.t()
+  defp yesterday,
+    do: DateTime.add(DateTime.utc_now(), -1 * 60 * 60 * 24)
 end

@@ -2,7 +2,6 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
   use DashWeb.ConnCase
 
   import Dash.TestHelpers
-  import Dash.Utils, only: [capability_string: 0]
   require Logger
 
   # @password_change_struct %{
@@ -148,7 +147,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
     test "with an unknown capability", %{conn: conn} do
       unknown = "unknown-capability"
 
-      for capabilities <- [[], [capability_string(), unknown], [unknown]] do
+      for capabilities <- [[], ["managed-hubs", unknown], [unknown]] do
         token =
           [
             fxa_uid: "dummy-uid",
@@ -166,37 +165,21 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       end
     end
 
-    test "Should update iat and add capability to account for true", %{conn: conn} do
-      expect_orch_post()
-      fxa_uid = get_default_test_uid()
-
-      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-
-      nil = account.auth_updated_at
-
-      event_struct = get_subscription_changed_event(event_only: false)
-      body = get_generic_fxa_event_struct(fxa_uid: fxa_uid, event: event_struct)
-
-      conn =
-        conn
-        |> put_resp_content_type("application/json")
-        |> put_req_header("authorization", "Bearer #{Jason.encode!(body)}")
-        |> post("/api/v1/events/fxa")
-
-      assert response(conn, 200)
-      account = Dash.Account.account_for_fxa_uid(fxa_uid)
-      assert account.auth_updated_at
-    end
-
-    test "on subscription", %{conn: conn} do
+    test "on subscription to personal plan", %{conn: conn} do
       expect_orch_post()
       fxa_uid = "dummy-uid"
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+      nil = account.auth_updated_at
 
       token =
         [
           fxa_uid: fxa_uid,
-          event: get_subscription_changed_event(event_only: false, is_active: true)
+          event:
+            get_subscription_changed_event(
+              capabilities: ["managed-hubs"],
+              event_only: false,
+              is_active: true
+            )
         ]
         |> get_generic_fxa_event_struct()
         |> Jason.encode!()
@@ -207,8 +190,88 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
              |> post("/api/v1/events/fxa")
              |> response(200)
 
+      assert fxa_uid
+             |> Dash.Account.account_for_fxa_uid()
+             |> Map.fetch!(:auth_updated_at)
+
       assert {:ok, plan} = Dash.fetch_active_plan(account)
-      assert %Dash.Plan{} = plan
+      assert "personal" === plan.name
+      assert plan.subscription?
+      assert [_] = Dash.Hub.hubs_for_account(account)
+    end
+
+    test "on subscription to professional plan", %{conn: conn} do
+      expect_orch_post()
+      fxa_uid = "dummy-uid"
+      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
+      nil = account.auth_updated_at
+
+      token =
+        [
+          fxa_uid: fxa_uid,
+          event:
+            get_subscription_changed_event(
+              capabilities: ["hubs-professional"],
+              event_only: false,
+              is_active: true
+            )
+        ]
+        |> get_generic_fxa_event_struct()
+        |> Jason.encode!()
+
+      assert conn
+             |> put_resp_content_type("application/json")
+             |> put_req_header("authorization", "Bearer #{token}")
+             |> post("/api/v1/events/fxa")
+             |> response(200)
+
+      assert fxa_uid
+             |> Dash.Account.account_for_fxa_uid()
+             |> Map.fetch!(:auth_updated_at)
+
+      assert {:ok, plan} = Dash.fetch_active_plan(account)
+      assert "professional" === plan.name
+      assert plan.subscription?
+      assert [_] = Dash.Hub.hubs_for_account(account)
+    end
+
+    test "on plan change", %{conn: conn} do
+      expect_orch_post()
+      fxa_uid = "dummy-uid"
+      the_past = ~U[1970-01-01 00:00:00.000000Z]
+      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid, "dummy@test.com")
+      nil = account.auth_updated_at
+      :ok = Dash.subscribe_to_personal_plan(account, the_past)
+
+      token =
+        [
+          fxa_uid: fxa_uid,
+          event:
+            get_subscription_changed_event(
+              capabilities: ["hubs-professional"],
+              event_only: false,
+              is_active: true
+            )
+        ]
+        |> get_generic_fxa_event_struct()
+        |> Jason.encode!()
+
+      Mox.stub(Dash.HttpMock, :patch, fn _url, _json, _headers, _opts ->
+        {:ok, %HTTPoison.Response{status_code: 200}}
+      end)
+
+      assert conn
+             |> put_resp_content_type("application/json")
+             |> put_req_header("authorization", "Bearer #{token}")
+             |> post("/api/v1/events/fxa")
+             |> response(200)
+
+      assert fxa_uid
+             |> Dash.Account.account_for_fxa_uid()
+             |> Map.fetch!(:auth_updated_at)
+
+      assert {:ok, plan} = Dash.fetch_active_plan(account)
+      assert "professional" === plan.name
       assert plan.subscription?
       assert [_] = Dash.Hub.hubs_for_account(account)
     end
@@ -218,6 +281,7 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
       fxa_uid = "dummy-uid"
       the_past = ~U[1970-01-01 00:00:00.000000Z]
       account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid, "dummy@test.com")
+      nil = account.auth_updated_at
       :ok = Dash.subscribe_to_personal_plan(account, the_past)
 
       token =
@@ -239,10 +303,13 @@ defmodule DashWeb.Api.V1.FxaEventsControllerTest do
              |> post("/api/v1/events/fxa")
              |> response(200)
 
+      assert fxa_uid
+             |> Dash.Account.account_for_fxa_uid()
+             |> Map.fetch!(:auth_updated_at)
+
       assert {:ok, plan} = Dash.fetch_active_plan(account)
+      assert "starter" === plan.name
       refute plan.subscription?
-      refute Dash.was_deleted?(fxa_uid)
-      assert [_] = Dash.Hub.hubs_for_account(account)
     end
   end
 

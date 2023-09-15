@@ -3,7 +3,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
   use Retry
 
   import Dash.TestHelpers
-  import Dash.Utils, only: [capability_string: 0]
   import Plug.Conn.Status, only: [code: 1]
   require Logger
   alias Dash.Hub
@@ -374,7 +373,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       end)
 
       assert conn
-             |> put_test_token()
+             |> put_test_token(claims: %{"fxa_subscriptions" => ["managed-hubs"]})
              |> get("/api/v1/hubs")
              |> json_response(:ok)
 
@@ -458,28 +457,6 @@ defmodule DashWeb.Api.V1.HubControllerTest do
       account = get_test_account()
 
       assert !Hub.has_hubs(account)
-    end
-
-    test "capability is_active=false, do NOT make default hub and return 200 with empty array", %{
-      conn: conn
-    } do
-      fxa_uid = "not-have-active-subscription"
-      account = Dash.Account.find_or_create_account_for_fxa_uid(fxa_uid)
-
-      Dash.create_capability!(account, %{
-        capability: capability_string(),
-        is_active: false,
-        change_time: DateTime.utc_now()
-      })
-
-      conn =
-        conn
-        |> put_test_token(claims: %{fxa_subscriptions: []}, sub: fxa_uid)
-        |> get("/api/v1/hubs")
-
-      assert Jason.encode!([]) == response(conn, 200)
-
-      assert not Hub.has_hubs(account)
     end
 
     # TODO for some reason the FeatureFlags are not allowing for POST request to be enabled inside setup or test block
@@ -670,7 +647,7 @@ defmodule DashWeb.Api.V1.HubControllerTest do
           {:ok, %HTTPoison.Response{status_code: code(opts[:status_code])}}
 
         true ->
-          Logger.warn(
+          Logger.warning(
             "Inside test, hit stub set up in stub_hub_health_check/1, but GET request URL did not match /health, did you mean to do that?"
           )
       end
