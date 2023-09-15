@@ -1,0 +1,8 @@
+@use 'styles/core/boilerplate' as *;
+
+.bar {
+  background: $color-brand-1;
+  width: 82px;
+  padding: 4px;
+  border-radius: 100px;
+}

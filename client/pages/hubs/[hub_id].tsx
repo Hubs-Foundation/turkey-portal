@@ -5,11 +5,6 @@ import { RoutesE } from 'types/Routes';
 import { getHub, updateHub } from 'services/hub.service';
 import { hubIdRG } from 'services/routeGuard.service';
 import Head from 'next/head';
-import {
-  NotificationTypesE,
-  NotificationLocationE,
-  CategoryE,
-} from '@mozilla/lilypad-ui';
 import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
 import HubFormCard, {
   HubFormCardT,
@@ -17,9 +12,9 @@ import HubFormCard, {
 import type { GetServerSidePropsContext } from 'next';
 import styles from './[hub_id].module.scss';
 import { getSubscription, SubscriptionT } from 'services/subscription.service';
-import SidePanel from '@Modules/side-panel';
 import { AxiosRequestHeaders } from 'axios';
 import { StoreContext } from 'contexts/StoreProvider';
+import SidePanelLayout from 'layouts/SidePanelLayout/SidePanelLayout';
 
 type HubDetailsViewPropsT = {
   subscription: SubscriptionT;
@@ -65,12 +60,12 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
         title: 'Error',
         description: errorMessage,
         duration: 8000,
-        type: NotificationTypesE.ERROR,
-        location: NotificationLocationE.TOP_CENTER,
+        type: 'error',
+        location: 'top_center',
         pauseOnHover: true,
         autoClose: true,
         hasIcon: true,
-        category: CategoryE.TOAST,
+        category: 'toast',
       });
       setLoading(false);
     },
@@ -128,27 +123,15 @@ const HubDetailsView = ({ subscription }: HubDetailsViewPropsT) => {
         <meta name="description" content="detailed information about a Hub" />
       </Head>
 
-      {!loading && hub !== null ? (
-        <main className={styles.main}>
-          <div className={styles.card_wrapper}>
+      <SidePanelLayout hub={hub} subscription={subscription}>
+        <div className={styles.card_wrapper}>
+          {!loading && hub !== null ? (
             <HubFormCard hub={hub} onSubmit={handleFormSubmit} />
-          </div>
-
-          <SidePanel
-            domain={hub.domain}
-            subdomain={hub.subdomain}
-            subscription={subscription}
-          />
-        </main>
-      ) : (
-        <div className="flex-justify-center">
-          <div className={styles.skeleton_container}>
-            <SkeletonCard qty={3} category="square" />
-            <SkeletonCard qty={3} category="square" />
-            <SkeletonCard qty={3} category="square" />
-          </div>
+          ) : (
+            <SkeletonCard qty={3} category="row" />
+          )}
         </div>
-      )}
+      </SidePanelLayout>
     </div>
   );
 };

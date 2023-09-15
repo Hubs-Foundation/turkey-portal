@@ -8,12 +8,10 @@ defmodule DashWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_dash_key",
-    signing_salt: "Ke6bG2r4"
+    signing_salt: "Ke6bG2r4",
+    same_site: "Lax"
   ]
 
-  def get_cors_origins, do: Application.get_env(:dash, __MODULE__)[:cors_origins]
-
-  # Required for LiveDashboard
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
@@ -29,13 +27,11 @@ defmodule DashWeb.Endpoint do
         do: "public, max-age=31536000",
         else: "public"
       ),
-    only: ~w(assets fonts images favicon.ico robots.txt)
+    only: DashWeb.static_paths()
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
-    socket "/phoenix/live_reload/socket", Phoenix.LiveReloader.Socket
-    plug Phoenix.LiveReloader
     plug Phoenix.CodeReloader
     plug Phoenix.Ecto.CheckRepoStatus, otp_app: :dash
   end
@@ -58,4 +54,7 @@ defmodule DashWeb.Endpoint do
   plug CORSPlug, origin: &DashWeb.Endpoint.get_cors_origins/0
   plug Sentry.PlugContext
   plug DashWeb.Router
+
+  def get_cors_origins,
+    do: Application.get_env(:dash, __MODULE__)[:cors_origins]
 end

@@ -1,0 +1,20 @@
+@use 'styles/core/boilerplate' as *;
+
+.snow {
+  &_top,
+  &_bottom {
+    position: absolute;
+    height: 300px;
+    width: 100%;
+    background: transparent;
+    background-position: center;
+  }
+
+  &_top {
+    top: 0;
+  }
+
+  &_bottom {
+    bottom: 0;
+  }
+}

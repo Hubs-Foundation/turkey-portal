@@ -1,0 +1,32 @@
+@use 'styles/core/boilerplate' as *;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 16px 18px 20px;
+
+  @include desktop-down {
+    background: $gradient-rainbow;
+  }
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  max-width: $container-max-width;
+  width: 100%;
+  gap: 16px;
+
+  @include desktop-down {
+    gap: 0;
+    flex-direction: column;
+    text-align: center;
+    color: $color-text-reverse;
+  }
+
+  a {
+    @include desktop-down {
+      color: $color-text-reverse;
+    }
+  }
+}

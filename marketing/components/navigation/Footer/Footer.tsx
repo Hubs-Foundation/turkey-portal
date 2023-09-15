@@ -1,7 +1,6 @@
 import styles from './Footer.module.scss';
 import HubsLogo, { LogoCategoryE } from '@Logos/HubsLogo/HubsLogo';
 import Image from 'next/image';
-import hubDuck from '../../../public/hub_duck.svg';
 import mozillaLogo from '../../../public/mozilla_logo.svg';
 import twitch from '../../../public/twitch.svg';
 import youtube from '../../../public/youtube.svg';
@@ -23,23 +22,6 @@ const Footer = ({ classProp = '' }: FooterPropsT) => {
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
       <div className={styles.container}>
-        {/* HEADER  */}
-        <div className={styles.header}>
-          <Image
-            src={hubDuck}
-            width={isDesktopDown ? 60 : 100}
-            height={isDesktopDown ? 60 : 100}
-            alt="Hub Yellow Duck"
-          />
-          <div className={styles.header_content}>
-            <h4>Looking for your old rooms?</h4>
-            {/* TODO - GET THIS LINK!!  */}
-            <a className={styles.legacy_link} href="/demo">
-              visit the legacy hubs.mozilla.com site
-            </a>
-          </div>
-        </div>
-
         {/* LINKS  */}
         <div className={styles.link_blocks}>
           {/* HUBS  */}

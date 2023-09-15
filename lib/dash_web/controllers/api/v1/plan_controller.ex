@@ -1,7 +1,7 @@
 defmodule DashWeb.Api.V1.PlanController do
   use DashWeb, :controller
 
-  def create(conn, %{"tier" => "starter"}) do
+  def create(conn, _params) do
     case Dash.start_plan(conn.assigns.account) do
       :ok ->
         conn

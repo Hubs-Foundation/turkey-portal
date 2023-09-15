@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import styles from './MainNav.module.scss';
 import HubsLogo from '@Logos/HubsLogo/HubsLogo';
-import { Button, ButtonCategoriesE, Icon } from '@mozilla/lilypad-ui';
+import { Button, Icon } from '@mozilla/lilypad-ui';
 import { useDesktopDown } from 'hooks/useMediaQuery';
 import getEnvVariable from 'config';
 import { NavigationT } from 'types';
@@ -69,7 +69,7 @@ const MainNav = ({
                 </a>
 
                 <a
-                  href="/Pvg5MMt/hubs-demo"
+                  href="/E4e8oLx/hubs-demo-promenade"
                   target="_blank"
                   className={styles.main_nav_link}
                 >
@@ -85,7 +85,7 @@ const MainNav = ({
             {isDesktopDown && (
               <Button
                 label="Menu"
-                category={ButtonCategoriesE.PRIMARY_CLEAR}
+                category="primary_clear"
                 icon="menu"
                 onClick={handleMobileMenuClick}
                 classProp={styles.mobile_menu}
@@ -97,7 +97,7 @@ const MainNav = ({
                 <Button
                   label="Go to your hubs dashboard"
                   classProp="mr-10"
-                  category={ButtonCategoriesE.PRIMARY_OUTLINE}
+                  category="primary_outline"
                   href={`https://${getEnvVariable(
                     'DASH_ROOT_DOMAIN'
                   )}/dashboard`}
@@ -105,7 +105,7 @@ const MainNav = ({
                 />
                 <Button
                   label="See Pricing and subscribe to Hubs"
-                  category={ButtonCategoriesE.PRIMARY_SOLID}
+                  category="primary_solid"
                   href="/#subscribe"
                   text="See Pricing"
                 />

@@ -5,10 +5,11 @@ import { Icon, HubIcon } from '@mozilla/lilypad-ui';
 import TileButton from '@Shared/TileButton/TileButton';
 import UpgradePlan from '../UpgradePlan/UpgradePlan';
 import SupportGrid from '../SupportGrid/SupportGrid';
+import GettingStartedPanel from '../GettingStartedPanel/GettingStartedPanel';
 import { useMobileDown } from 'hooks/useMediaQuery';
 import { useSelector } from 'react-redux';
 import { selectAccount } from 'store/accountSlice';
-import { useIsStarter } from 'hooks/usePlans';
+import { useIsProfessional } from 'hooks/usePlans';
 
 export type SidePanelPropsT = {
   domain: string;
@@ -25,7 +26,7 @@ const SidePanel = ({
 }: SidePanelPropsT) => {
   const account = useSelector(selectAccount);
   const isMobile = useMobileDown();
-  const isStarter = useIsStarter();
+  const isProfessional = useIsProfessional();
   const hubUrl = `https://${subdomain}.${domain}`;
 
   return (
@@ -57,8 +58,9 @@ const SidePanel = ({
       {account.hasSubscription && subscription.isCancelled && (
         <Resubscribe classProp={styles.subcard} />
       )}
-      {isStarter && <UpgradePlan />}
+      {!isProfessional && <UpgradePlan />}
 
+      <GettingStartedPanel />
       <SupportGrid />
     </section>
   );

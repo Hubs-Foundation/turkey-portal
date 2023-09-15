@@ -1,0 +1,35 @@
+@use 'styles/core/boilerplate' as *;
+
+.wrapper {
+  padding: 40px 18px;
+
+  @include mobile-down {
+    padding: 40px 0;
+  }
+}
+
+.header {
+  &_wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  &_container {
+    @include desktop-down {
+      text-align: center;
+    }
+    h2 {
+      @include mobile-down {
+        max-width: 300px;
+      }
+    }
+  }
+}
+
+.bar_wrapper {
+  @include desktop-down {
+    display: flex;
+    justify-content: center;
+  }
+}

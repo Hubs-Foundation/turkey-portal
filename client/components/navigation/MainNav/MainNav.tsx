@@ -14,7 +14,6 @@ import {
 import {
   Button,
   Avatar,
-  ButtonCategoriesE,
   Icon,
   Dropdown,
   dropdownT,
@@ -138,7 +137,7 @@ const MainNav = ({
               <Button
                 label="edit dashboard"
                 classProp={styles.exit_button}
-                category={ButtonCategoriesE.SECONDARY_OUTLINE}
+                category="secondary_outline"
                 text="Exit Dashboard"
                 onClick={onLogOutClick}
               />
@@ -170,7 +169,7 @@ const MainNav = ({
           {showLoggedOutUi && (
             <Button
               label="sign in"
-              category={ButtonCategoriesE.SECONDARY_OUTLINE}
+              category="secondary_outline"
               text="Sign In"
               href={`https://${AUTH_SERVER}/login?idp=fxa&client=https://${DASH_ROOT_DOMAIN}`}
             />

@@ -58,9 +58,22 @@ defmodule Dash do
   Returns `:ok` if successful.  Otherwise, `{:error, reason}` is returned.
   """
   @spec subscribe_to_personal_plan(Account.t(), DateTime.t()) ::
-          :ok | {:error, :account_not_found | :already_started}
+          :ok | {:error, :account_not_found | :already_started | :superseded}
   def subscribe_to_personal_plan(%Account{} = account, %DateTime{} = subscribed_at),
     do: PlanStateMachine.handle_event({:subscribe_personal, subscribed_at}, account)
+
+  @doc """
+  Subscribes the given `account` to a professional plan.
+
+  This converts an existing plan to a professional plan or creates one if none
+  exists.
+
+  Returns `:ok` if successful.  Otherwise, `{:error, reason}` is returned.
+  """
+  @spec subscribe_to_professional_plan(Account.t(), DateTime.t()) ::
+          :ok | {:error, :account_not_found | :already_started | :superseded}
+  def subscribe_to_professional_plan(%Account{} = account, %DateTime{} = subscribed_at),
+    do: PlanStateMachine.handle_event({:subscribe_professional, subscribed_at}, account)
 
   def update_or_create_capability_for_changeset(
         %{
@@ -194,7 +207,6 @@ defmodule Dash do
   def change_email(nil, _email), do: :ok
 
   def change_email(%Dash.Account{email: nil} = account, email) when is_binary(email) do
-    [] = Dash.Hub.hubs_for_account(account)
     update_email(account, email)
   end
 
@@ -260,9 +272,9 @@ defmodule Dash do
     :ok
   end
 
-  @spec fxa_uid_to_deleted_list!(String.t()) :: :ok
-  def fxa_uid_to_deleted_list!(fxa_uid) when is_binary(fxa_uid) do
-    Dash.Repo.insert!(%Dash.DeletedFxaAccount{fxa_uid: fxa_uid})
+  @spec fxa_uid_to_deleted_list(String.t()) :: :ok
+  def fxa_uid_to_deleted_list(fxa_uid) when is_binary(fxa_uid) do
+    Dash.Repo.insert!(%Dash.DeletedFxaAccount{fxa_uid: fxa_uid}, on_conflict: :nothing)
     :ok
   end
 
@@ -271,13 +283,24 @@ defmodule Dash do
   end
 
   def handle_first_sign_in_initialize_subscriptions(%Account{} = account, fxa_subscriptions, dt) do
-    if "managed-hubs" in fxa_subscriptions do
-      # Handle special case where FxA does not send a subscription changed fxa event
-      # if a user signs up for an FxA account on the same page of signing up for the subscription
-      # we need to create a record of that capability in our database
-      with {:error, reason} <- subscribe_to_personal_plan(account, upscale_to_microseconds(dt)) do
-        Logger.warning("could not subscribe to personal plan for reason: #{reason}")
-      end
+    # TODO: test this
+    # Handle special case where FxA does not send a subscription changed fxa event
+    # if a user signs up for an FxA account on the same page of signing up for the subscription
+    # we need to create a record of that capability in our database
+    cond do
+      "managed-hubs" in fxa_subscriptions ->
+        with {:error, reason} <- subscribe_to_personal_plan(account, upscale_to_microseconds(dt)) do
+          Logger.warning("could not subscribe to personal plan for reason: #{reason}")
+        end
+
+      "hubs-professional" in fxa_subscriptions ->
+        with {:error, reason} <-
+               subscribe_to_professional_plan(account, upscale_to_microseconds(dt)) do
+          Logger.warning("could not subscribe to personal plan for reason: #{reason}")
+        end
+
+      true ->
+        :ok
     end
   end
 
