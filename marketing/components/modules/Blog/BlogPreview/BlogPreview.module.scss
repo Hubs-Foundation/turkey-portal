@@ -1,0 +1,88 @@
+@use 'styles/core/boilerplate' as *;
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+
+  @include tablet-down {
+    width: 250px;
+  }
+
+  @include mobile-down {
+    width: 100%;
+  }
+}
+
+.container {
+  background: transparent;
+  text-align: left;
+  border: 0;
+  margin-top: 20px;
+  width: 100%;
+  max-width: $container-max-width;
+  display: flex;
+  transition: 0.5s ease;
+
+  @include tablet-down {
+    flex-direction: column;
+  }
+
+  &:hover {
+    cursor: pointer;
+    @include tablet-up {
+      color: $color-interaction-primary;
+    }
+
+    .image {
+      @include tablet-up {
+        transform: scale(1.03);
+        transition: 0.5s ease;
+      }
+    }
+
+    .content {
+      @include tablet-up {
+        margin-left: 15px;
+      }
+    }
+  }
+}
+
+.content {
+  margin: 20px 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  transition: 0.5s ease;
+
+  @include tablet-down {
+    gap: 8px;
+  }
+}
+
+.image {
+  flex-shrink: 0;
+  width: 250px;
+  height: 250px;
+  transition: 0.5s ease;
+
+  @include tablet-up {
+    margin: 20px 20px 20px 0;
+  }
+
+  @include mobile-down {
+    flex-shrink: 1;
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.cta {
+  display: none;
+  @include tablet-down {
+    display: initial;
+    text-align: center;
+    margin-top: 20px;
+  }
+}

@@ -5,8 +5,37 @@ import { ButtonCategoriesT } from '@mozilla/lilypad-ui';
  * CONTENFUL MEDIA TYPES
  */
 export type CustomSectionsT = {
-  //Expoand the item type as we add more custom sections
+  //Expand the item type as we add more custom sections
   items: TitleDescriptionT[] | FiftyfiftyT[] | HeroT[] | TileSpotlightT[];
+};
+
+export type BlogPageT = {
+  navigation: NavigationT;
+  post: BlogPostT;
+};
+
+export type BlogT = {
+  name: string;
+  posts: BlogPostPreviewT[];
+};
+
+export type BlogPostPreviewT = Omit<BlogPostT, 'richText' | 'featuredImage'>;
+
+export type BlogPostT = {
+  sys: {
+    id: string;
+  };
+  slug: string;
+  title: string;
+  subtitle: string;
+  date: string;
+  featuredImage: ImageT;
+  thumbnailImage: ImageT;
+  imageAlt: string;
+  preview: string;
+  post: {
+    json: Document;
+  };
 };
 
 export type FiftyfiftyT = {
@@ -102,3 +131,9 @@ export type NewContactT = {
 };
 
 type PlansT = 'starter' | 'personal' | 'professional' | 'business' | null;
+
+export type GetStaticPropsT = {
+  params: {
+    slug: string;
+  };
+};

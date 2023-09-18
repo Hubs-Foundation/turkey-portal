@@ -10,7 +10,7 @@
   font-size: rem($size);
 }
 
-@mixin primary-font($weight: 600) {
+@mixin primary-font($weight: 500) {
   font-family: $primary-font, $backup-font;
   font-weight: $weight;
 }
@@ -131,10 +131,24 @@
   }
 }
 
+@mixin body-md-semi-bold {
+  @include primary-font(600);
+  @include font-size(16);
+  line-height: 24px;
+
+  @include tablet-down {
+    @include font-size(14);
+  }
+}
+
 @mixin body-md-bold {
   @include primary-font(700);
   @include font-size(16);
   line-height: 24px;
+
+  @include tablet-down {
+    @include font-size(14);
+  }
 }
 
 @mixin body-sm {

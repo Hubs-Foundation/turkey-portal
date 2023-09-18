@@ -3,23 +3,11 @@
  * @param id
  * @returns
  */
-export const createNavigationQuery = (id: string) => {
-  return `{
-    navigation(id: "${id}") {
-      linksCollection {
-        items {
-          ... on Link {
-            href
-            label
-            text
-          }
-        }
-      }
-      bannerText 
-      bannerIcon
-    }
-  }
-`;
+export const createNavigationQuery = () => {
+  const id = '4FsGf6XPSDTPppGDlyFYm9';
+  return `navigation(id: "${id}") {
+      ${navCollection}
+    }`;
 };
 
 /**
@@ -42,18 +30,97 @@ export const createCustomPageQuery = (slug: string) => {
 };
 
 /**
- * Create Section Collection Query
+ * Create Blog Page Query
+ * @param slug
+ * @returns
+ */
+export const createBlogPageQuery = (slug: string) => {
+  return `{
+    ${createNavigationQuery()}
+    blogPostCollection(limit:1,where:{slug:"${slug}"}){
+      items {
+        ... on BlogPost {
+          ${blogCollection}
+          post {
+            json
+           }
+          featuredImage {
+            url
+          }
+        }
+      }  
+    }
+  }`;
+};
+
+/**
+ * Create Blog Query
  * @param name
- * @param id
  * @returns query
  */
-export const createSectionsQuery = (name: string, id: string) => {
+export const createBlogQuery = (name: string) => {
+  const id = '4NssSFRY8TUWetnJjH9gwF';
+
+  return `query {${name}(id: "${id}") { 
+    name
+    blogPostCollection {
+      items {
+        ... on BlogPost {
+          ${blogCollection}
+          thumbnailImage {
+            url (transform: {
+              width: 800,
+              height: 800,
+              resizeStrategy: FILL,
+              resizeFocus: CENTER,
+              cornerRadius: 20,
+            })
+          }
+        }
+      }
+    }
+   }}`;
+};
+
+/**
+ * Create Section Collection Query
+ * @param name
+ * @returns query
+ */
+export const createSectionsQuery = (name: string) => {
+  const id = 'iUw7LHBaBcgGaKydU2qKJ';
+
   return `query {${name}(id: "${id}") { ${sectionsCollection} }}`;
 };
 
 /**
  * Query Bank
  */
+const blogCollection = `
+sys {
+  id
+}
+slug
+title
+subtitle
+date
+preview
+imageAlt
+`;
+
+const navCollection = `
+linksCollection {
+  items {
+    ... on Link {
+      href
+      label
+      text
+    }
+  }
+}
+bannerText 
+bannerIcon`;
+
 const sectionsCollection = `
 sectionsCollection {
   items {

@@ -1,34 +1,31 @@
 import Head from 'next/head';
-import Custom from '@Shared/Custom/Custom';
-import { CustomSectionsT, NavigationT } from 'types';
+import { BlogT, NavigationT } from 'types';
 import LayoutWrapper from 'layouts/LayoutWrapper/LayoutWrapper';
-// Services
 import {
+  getBlogData,
   getNavigationLinksEntry,
-  getSectionsData,
 } from 'services/contentful.service';
+import Blog from '@Modules/Blog';
 
 type HomePropsT = {
   navData: NavigationT;
-  sectionsData: CustomSectionsT;
+  blogData: BlogT;
 };
 
-const Home = ({ navData, sectionsData }: HomePropsT) => {
+const Page = ({ navData, blogData }: HomePropsT) => {
   return (
     <LayoutWrapper navData={navData}>
       <div className="page_wrapper">
         <Head>
-          <title>Hubs - Private, virtual 3D worlds in your browser</title>
+          <title>{blogData ? blogData.name : 'Hubs Blog'}</title>
         </Head>
         <main>
-          {sectionsData.items ? (
-            <div>
-              {sectionsData.items.map((section, i) => {
-                return <Custom key={i} data={section} />;
-              })}
-            </div>
+          {blogData ? (
+            <Blog blogData={blogData} />
           ) : (
-            <div>There was a problem loading this page. please refresh.</div>
+            <div className="text-center p-60">
+              There was a problem loading the blog
+            </div>
           )}
         </main>
       </div>
@@ -36,25 +33,24 @@ const Home = ({ navData, sectionsData }: HomePropsT) => {
   );
 };
 
-export default Home;
+export default Page;
 
 export async function getStaticProps() {
   try {
-    const sectionsData = await getSectionsData();
+    const blogData = await getBlogData();
     const navData = await getNavigationLinksEntry();
-
     return {
       props: {
-        sectionsData,
         navData,
+        blogData,
       },
     };
   } catch (error) {
     console.error('ERROR', error);
     return {
       props: {
-        sectionsData: {},
         navData: {},
+        blogData: {},
       },
     };
   }
