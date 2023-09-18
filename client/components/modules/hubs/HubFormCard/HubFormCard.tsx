@@ -148,6 +148,29 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
     return true;
   };
 
+  const Warning = () => (
+    <div className={styles.warning}>
+      <div className="flex-align-center mb-12">
+        <Icon name="alert-triangle" classProp="flex-shrink-0 mr-12" />
+        <h3>Be Advised</h3>
+      </div>
+      <p className="mb-24">
+        Due to temporary system instability, customizing a subdomain or
+        connecting a custom domain may impact Spoke and the Admin panel. If you
+        experience any issues with these features, please contact us.
+      </p>
+
+      <div className="flex-justify-end ">
+        <Button
+          onClick={() => {
+            window.open('mailto:hubs-feedback@mozilla.com');
+          }}
+          text="Contact"
+        />
+      </div>
+    </div>
+  );
+
   return (
     <div className={`${styles.card_wrapper} ${classProp}`}>
       <div className={styles.card_container}>
@@ -162,6 +185,8 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
           />
           <h1 className={styles.title}>Hub Details</h1>
         </div>
+
+        <Warning />
 
         <form onSubmit={formik.handleSubmit}>
           <div className={styles.form_contents}>
@@ -228,7 +253,6 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
 
               <div className="mb-20 youtube-video">
                 <iframe
-                  className=""
                   src="https://www.youtube.com/embed/0PTmHNKdZB0"
                   frameBorder="0"
                   allowFullScreen
