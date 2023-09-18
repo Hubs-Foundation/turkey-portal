@@ -237,7 +237,7 @@ const HubFormCard = ({ hub: _hub, classProp = '' }: HubFormCardPropsT) => {
                 required={true}
               />
               <div className={styles.address_preview}>
-                .{_hub.domain}
+                .{hub.domain}
                 <div className={styles.icon_wrapper}>
                   {!isEditingDomain && (
                     <div className={styles.icon_container}>

@@ -37,7 +37,7 @@ const HubCard = ({ hub: _hub, refreshHubData, classProp }: HubCardPropsT) => {
       );
       // Refresh data after update.
       if (resp?.status === 200) {
-        () => refreshHubData && refreshHubData();
+        refreshHubData && refreshHubData();
       } else {
         console.error('Sorry, there was an error updating this Hub.');
       }
