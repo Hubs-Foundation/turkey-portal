@@ -156,9 +156,8 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
       </div>
       <p className="mb-24">
         Due to temporary system instability, customizing a subdomain or
-        connecting a custom domain may temporarily impact Spoke and the Admin
-        panel. If you experience any issues with these features, please contact
-        us.
+        connecting a custom domain may impact Spoke and the Admin panel. If you
+        experience any issues with these features, please contact us.
       </p>
 
       <div className="flex-justify-end ">
