@@ -1,5 +1,4 @@
-// TODO - not sure premium is right here
-export type TierT = 'mvp' | 'premium' | 'p0' | 'p1';
+export type TierT = 'p0' | 'p1' | 'b0';
 
 export enum StatusE {
   CREATING = 'creating',
@@ -23,7 +22,7 @@ export type HubT = {
   hubId: string;
   name: string;
   status: StatusE;
-  lastError: LastErrorE | '';
+  lastError: LastErrorE | null;
   storageLimitMb: number;
   subdomain: string;
   tier: TierT;
@@ -37,7 +36,7 @@ export type UpdateHubT = {
   tier: TierT;
   subdomain: string;
   status: StatusE;
-  lastError: LastErrorE | '';
+  lastError: LastErrorE | null;
 };
 
 export type AccountT = {

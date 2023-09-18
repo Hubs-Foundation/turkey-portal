@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import type { GetServerSidePropsContext } from 'next';
 import { useEffect, useState, useCallback } from 'react';
-import { HubT, LastErrorE, PlansE, StatusE } from 'types/General';
+import { HubT, LastErrorE, StatusE } from 'types/General';
 import styles from './dashboard.module.scss';
 import HubCard from '@Modules/hubs/HubCard/HubCard';
 import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
@@ -26,10 +26,10 @@ const creatingHub: HubT = {
   hubId: '',
   name: 'Untitled Hub',
   status: StatusE.CREATING,
-  lastError: '',
+  lastError: null,
   storageLimitMb: 0,
   subdomain: '',
-  tier: 'premium',
+  tier: 'p0',
 };
 
 /**
@@ -49,7 +49,7 @@ const ErroringHub: HubT = {
   lastError: LastErrorE.ERROR,
   storageLimitMb: 0,
   subdomain: '',
-  tier: 'premium',
+  tier: 'p0',
 };
 
 const Dashboard = ({ subscription }: DashboardPropsT) => {

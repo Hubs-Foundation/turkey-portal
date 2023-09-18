@@ -2,8 +2,10 @@
 
 .card_wrapper {
   margin-right: 20px;
+  min-width: 692px;
 
   @include desktop-large-down {
+    min-width: initial;
     margin: 0 0 24px;
   }
 

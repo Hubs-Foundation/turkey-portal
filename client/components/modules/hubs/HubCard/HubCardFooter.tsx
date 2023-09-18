@@ -1,9 +1,10 @@
+import { useMemo } from 'react';
 import { ProgressBar, Icon, Pill } from '@mozilla/lilypad-ui';
 import { StorageStateE, HubT, PlansE } from 'types/General';
-import { useState, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAccount } from 'store/accountSlice';
 import styles from './HubCardFooter.module.scss';
+import Hub from 'classes/Hub';
 
 type PlanPropsT = {
   name: PlansE | null;
@@ -23,52 +24,14 @@ type HubCardFooterPropsT = {
   classProp?: string;
 };
 
-const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
+const HubCardFooter = ({ hub: _hub, classProp = '' }: HubCardFooterPropsT) => {
   const { planName } = useSelector(selectAccount);
-  const { currentStorageMb, storageLimitMb } = hub;
-  const [storageState, setStorageState] = useState<StorageStateE>(
-    StorageStateE.DEFAULT
-  );
-
-  /**
-   * Get % Value of MB used
-   */
-  const getStoragePercent = useCallback((): number => {
-    if (currentStorageMb === 0 || currentStorageMb === null) return 0;
-    return Math.min(100, currentStorageMb / storageLimitMb) * 100;
-  }, [currentStorageMb, storageLimitMb]);
-
-  /**
-   * Round number to 2 dec
-   * @param num
-   * @returns num | string
-   */
-  const round = (num: number | null): number | string => {
-    if (num == null) return 'Configuring';
-
-    // TODO - In the future, I guess we'd use i18n routing and useRouter to get the current
-    // locale, but for now default to "en-US".
-    return new Intl.NumberFormat('en-US', {
-      maximumFractionDigits: 2,
-    }).format(num);
-  };
-
-  /**
-   * Watch Storage Percentage
-   */
-  useEffect(() => {
-    const storagePercent = getStoragePercent();
-    let status = StorageStateE.DEFAULT;
-
-    storagePercent > 75 && (status = StorageStateE.WARNING);
-    storagePercent >= 100 && (status = StorageStateE.CRITICAL);
-
-    setStorageState(status);
-  }, [getStoragePercent]);
+  const hub = useMemo(() => new Hub(_hub), [_hub]);
+  const storageState = hub.getStorageState();
 
   return (
     <div className={`${styles.footer} ${classProp}`}>
-      {/* Tier Information  */}
+      {/* Plan Information  */}
       <div className={styles.footer_block}>
         <Plan name={planName} />
       </div>
@@ -77,8 +40,10 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
       <div className={styles.footer_block}>
         <div className="text-center">
           <div className={`mb-12 ${styles['status_' + storageState]}`}>
-            <span className="color-text-main">{round(currentStorageMb)}</span>
-            <span>/{storageLimitMb} MB</span>
+            <span className="color-text-main">
+              {hub.roundedCurrentStorageMb()}
+            </span>
+            <span>/{hub.storageLimitMb} MB</span>
           </div>
           <div className="flex-justify-center">
             <div className={styles.progressbar_wrapper}>
@@ -91,7 +56,7 @@ const HubCardFooter = ({ hub, classProp = '' }: HubCardFooterPropsT) => {
                 />
               ) : null}
               <ProgressBar
-                value={getStoragePercent()}
+                value={hub.getStoragePercent()}
                 classValueProp={styles['progressbar_' + storageState]}
               />
             </div>

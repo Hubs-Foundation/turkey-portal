@@ -1,24 +1,23 @@
-import { useState, useContext, FocusEventHandler } from 'react';
+import {
+  useState,
+  useContext,
+  FocusEventHandler,
+  useCallback,
+  useMemo,
+} from 'react';
 import { useRouter } from 'next/router';
 import styles from './HubFormCard.module.scss';
 import { Button, Icon, Input, Pill } from '@mozilla/lilypad-ui';
-import { validateHubSubdomain } from 'services/hub.service';
 import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
 import { RoutesE } from 'types/Routes';
 import { useFormik } from 'formik';
 import validate, { FormValues } from './validate';
 import { useIsProfessional } from 'hooks/usePlans';
-
-export type HubFormCardT = {
-  domain: string;
-  name: string;
-  subdomain: string;
-  hubId: string;
-};
+import Hub from 'classes/Hub';
+import { HubT } from 'types/General';
 
 type HubFormCardPropsT = {
-  hub: HubFormCardT;
-  onSubmit: Function;
+  hub: HubT;
   classProp?: string;
 };
 
@@ -27,7 +26,7 @@ export enum DomainErrorsE {
   SUBDOMAIN_DENIED = 'subdomain_denied',
 }
 
-const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
+const HubFormCard = ({ hub: _hub, classProp = '' }: HubFormCardPropsT) => {
   const [addressErrorMessage, setAddressErrorMessage] = useState<string>('');
   const storeContext = useContext(StoreContext);
   const [isValidDomain, setIsValidDomain] = useState(true);
@@ -36,6 +35,61 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
   const [isEditingDomain, setIsEditingDomain] = useState(false);
   const router = useRouter();
   const isProfessional = useIsProfessional();
+  const hub = useMemo(() => new Hub(_hub), [_hub]);
+
+  /**
+   * Toast Error
+   * @param errorMessage
+   */
+  const launchToastError = useCallback(
+    (errorMessage: string) => {
+      storeContext.handleDispatchNotification({
+        title: 'Error',
+        description: errorMessage,
+        duration: 8000,
+        type: 'error',
+        location: 'top_center',
+        pauseOnHover: true,
+        autoClose: true,
+        hasIcon: true,
+        category: 'toast',
+      });
+    },
+    [storeContext]
+  );
+
+  /**
+   * Handle Form Submit
+   */
+  const handleFormSubmit = useCallback(
+    ({ subdomain }: FormValues) => {
+      /** No hub launch error toast */
+      if (!hub) {
+        launchToastError('Sorry, there was an error locating this Hub.');
+        return;
+      }
+
+      const submit = async () => {
+        const errorMessage = 'Sorry, there was an error updating this Hub.';
+        try {
+          const resp = await hub.updateSubdomain(subdomain);
+          if (resp?.status === 200) {
+            router.push({
+              pathname: RoutesE.DASHBOARD,
+            });
+          } else {
+            launchToastError(errorMessage);
+          }
+        } catch (error) {
+          launchToastError(errorMessage);
+          console.error(error);
+        }
+      };
+
+      submit();
+    },
+    [hub, router, launchToastError]
+  );
 
   /**
    * Init Formik
@@ -49,10 +103,10 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
       // Domain does not pass serverside validation
       if (!isValidDomain) return;
 
-      onSubmit && onSubmit(data);
+      handleFormSubmit(data);
       // Store away the last submitted subdomain incase we need to re-try.
       const subdomain: SubdomainRetryT = {
-        subdomain: data.subdomain,
+        subdomain: hub.subdomain,
         hubId: hub.hubId,
       };
       storeContext.handleSubdomainChange(subdomain);
@@ -97,10 +151,8 @@ const HubFormCard = ({ hub, onSubmit, classProp = '' }: HubFormCardPropsT) => {
     const setValidation = async () => {
       try {
         // Validate subdomain
-        const { error: validateError, success } = await validateHubSubdomain(
-          hub.hubId,
-          value
-        );
+        const { error: validateError, success } =
+          await hub.validateHubSubdomain(value);
 
         // On Error
         if (validateError) {

@@ -33,6 +33,8 @@ const BeginStarterPlanButton = ({
   }, [storeContext]);
 
   const startStarterPlan = async () => {
+    if (loading) return;
+
     try {
       setLoading(true);
       await postStarterPlan();

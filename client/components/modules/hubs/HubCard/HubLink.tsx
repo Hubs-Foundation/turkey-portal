@@ -2,25 +2,18 @@ import { CopyButton } from '@mozilla/lilypad-ui';
 import ExternalLink from '@Shared/ExternalLink/ExternalLink';
 
 type HubLinkPropsT = {
-  domain: string;
-  subdomain: string;
+  url: string;
   classProp?: string;
 };
 
-const HubLink = ({ domain, subdomain, classProp = '' }: HubLinkPropsT) => {
-  const subdomainRootdomain = `https://${subdomain}.${domain}`;
-
+const HubLink = ({ url, classProp = '' }: HubLinkPropsT) => {
   return (
     <div className={`flex ${classProp}`}>
-      <ExternalLink
-        target="_blank"
-        href={subdomainRootdomain}
-        classProp="mr-20"
-      >
-        {subdomainRootdomain}
+      <ExternalLink target="_blank" href={url} classProp="mr-20">
+        {url}
       </ExternalLink>
 
-      <CopyButton value={subdomainRootdomain} />
+      <CopyButton value={url} />
     </div>
   );
 };
