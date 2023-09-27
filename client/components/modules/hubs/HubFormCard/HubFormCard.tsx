@@ -15,6 +15,9 @@ import validate, { FormValues } from './validate';
 import { useIsProfessional } from 'hooks/usePlans';
 import Hub from 'classes/Hub';
 import { HubT } from 'types/General';
+import SecretCopy from '@Shared/SecretCopy/SecretCopy';
+import { CookiesE } from 'types/Cookies';
+import { getCookie } from 'cookies-next';
 
 type HubFormCardPropsT = {
   hub: HubT;
@@ -303,6 +306,11 @@ const HubFormCard = ({ hub: _hub, classProp = '' }: HubFormCardPropsT) => {
                 troubleshooting custom domains.
               </p>
 
+              <SecretCopy
+                secret={getCookie(CookiesE.TurkeyAuthToken) as string}
+                classProp="mb-24"
+              />
+
               <div className="mb-20 youtube-video">
                 <iframe
                   src="https://www.youtube.com/embed/0PTmHNKdZB0"
@@ -321,7 +329,6 @@ const HubFormCard = ({ hub: _hub, classProp = '' }: HubFormCardPropsT) => {
               </a>
             </section>
           )}
-
           <section className={styles.actions_wrapper}>
             <Button
               label="cancel"
