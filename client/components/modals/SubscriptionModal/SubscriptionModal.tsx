@@ -60,7 +60,7 @@ const SubscriptionModal = ({
         </ul>
 
         <p className="body-md">
-          If you are happy to proceed, please continue to your Firefox Accounts
+          If you are happy to proceed, please continue to your Mozilla Accounts
           page where you can finish cancelling your subscription.
         </p>
       </div>
@@ -76,11 +76,11 @@ const SubscriptionModal = ({
             onClick={handleCloseClick}
           />
           <Button
-            label="continue to firefox account"
+            label="continue to mozilla account"
             onClick={onManageAccountClick}
             category="primary_solid"
             classProp="mb-24-mb"
-            text="Continue to Firefox Account"
+            text="Continue to Mozilla Account"
             target="_blank"
           />
         </div>

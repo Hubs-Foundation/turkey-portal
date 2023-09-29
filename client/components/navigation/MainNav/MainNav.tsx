@@ -82,7 +82,7 @@ const MainNav = ({
             name="fx-account"
             size={24}
           />
-          Manage Your Firefox Account
+          Manage Your Mozilla Account
         </button>
 
         <button

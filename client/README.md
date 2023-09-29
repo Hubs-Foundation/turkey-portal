@@ -42,7 +42,7 @@ See [/README.md](/README.md) 'README' in root project.
 
 - PUBLIC_API_SERVER - public server url ( todo more info here )
 - AUTH_SERVER - Server used for login links. e.g. "auth.myhubs.net"
-- FXA_SERVER - Firefox Accounts server used for account management links. e.g. "accounts.firefox.com"
+- FXA_SERVER - Mozilla Accounts (previously Firefox Accounts) server used for account management links. e.g. "accounts.firefox.com"
 - MARKETING_PAGE_URL - URL to the marketing page that we use as logged out homepage for the Dashboard e.g. "https://marketing.page"
 - FXA_PAYMENT_URL - subscription payment url
 - PRODUCT_ID - subscription payment ID
