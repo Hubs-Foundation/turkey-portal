@@ -76,11 +76,11 @@ const SubscriptionModal = ({
             onClick={handleCloseClick}
           />
           <Button
-            label="continue to mozilla account"
+            label="continue to account"
             onClick={onManageAccountClick}
             category="primary_solid"
             classProp="mb-24-mb"
-            text="Continue to Mozilla Account"
+            text="Continue to Account"
             target="_blank"
           />
         </div>
