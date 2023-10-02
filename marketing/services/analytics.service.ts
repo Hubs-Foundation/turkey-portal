@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-export const GA_TRACKING_ID = 'UA-77033033-12';
+export const GA_TRACKING_ID = 'G-4W4Q68ZFMX';
 
 // Function to track page views
 export const pageview = (url: string) => {
