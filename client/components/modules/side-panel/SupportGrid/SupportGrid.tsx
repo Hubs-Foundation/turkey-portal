@@ -36,7 +36,7 @@ const SupportGrid = () => {
             title="Help"
             image={questionCircle}
             href="https://support.mozilla.org/en-US/products/hubs "
-            body="Get help managing your subscription and mozilla account."
+            body="Get help managing your subscription and account."
           />
         </div>
       </section>
