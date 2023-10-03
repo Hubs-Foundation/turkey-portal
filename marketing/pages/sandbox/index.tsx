@@ -1,5 +1,5 @@
 import Head from 'next/head';
-
+import LayoutWrapper from 'layouts/LayoutWrapper/LayoutWrapper';
 type SandboxPropsT = {};
 
 /**
@@ -8,14 +8,16 @@ type SandboxPropsT = {};
  */
 const Sandbox = ({}: SandboxPropsT) => {
   return (
-    <div className="page_wrapper">
-      <Head>
-        <title>Sandbox</title>
-      </Head>
-      <main>
-        <h1>Sandbox</h1>
-      </main>
-    </div>
+    <LayoutWrapper>
+      <div className="page_wrapper">
+        <Head>
+          <title>Sandbox</title>
+        </Head>
+        <main>
+          <h1>Sandbox</h1>
+        </main>
+      </div>
+    </LayoutWrapper>
   );
 };
 
