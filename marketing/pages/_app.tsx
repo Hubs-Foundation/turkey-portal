@@ -10,12 +10,18 @@ import appleTouch from '../public/apple-touch-icon.png';
 import { pageview } from 'services/analytics.service';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
+import getEnvVariable from 'config';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
   useEffect(() => {
-    const handleRouteChange = (url: string) => pageview(url);
+    const root = getEnvVariable('DASH_ROOT_DOMAIN');
+    pageview(root + router.route);
+
+    const handleRouteChange = (url: string) => {
+      pageview(root + url);
+    };
 
     // Listen for route changes and call the handler
     router.events.on('routeChangeComplete', handleRouteChange);
