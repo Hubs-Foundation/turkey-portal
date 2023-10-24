@@ -76,13 +76,7 @@ const MainNav = ({
             onManageAccountClick();
           }}
         >
-          <HubIcon
-            classProp="mr-10"
-            color="currentColor"
-            name="fx-account"
-            size={24}
-          />
-          Manage Your Firefox Account
+          Manage Your Account
         </button>
 
         <button

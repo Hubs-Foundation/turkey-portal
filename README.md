@@ -112,6 +112,6 @@ Run `mix dash` and `mix help dash.<task_name>` for more info.
 - CORS_ORIGINS - Comma separated list of origins to allow CORS requests.
 - DASHBOARD_ACCESS_KEY - Access key for communicating with reticulum. Should be a strong secret that is shared with reticulum.
 - FXA_JWK_STRING - Used to verify token in FxA webhook, the payload from the Subplat/FxA endpoint with the live public keys is stringified by Jason.encode!()
-- FXA_SERVER - Firefox Accounts server used for account management links. e.g. "accounts.firefox.com"
+- FXA_SERVER - Mozilla Accounts (previously Firefox Accounts) server used for account management links. e.g. "accounts.firefox.com"
 - SECRET_KEY_BASE - Base secret key. This should be a strong cryptographcially generated secret.
 - PLANS - Used in getting currency and amount, MUST BE IN THIS FORMAT: "plan_id1,USD,10;plan_id2,EUR,20"
