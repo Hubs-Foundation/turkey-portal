@@ -33,6 +33,7 @@ const StoreProvider = ({ children }: StoreProviderProps) => {
   const notificationRef = useRef<NotificationInterfaceT>();
 
   const handleDispatchNotification = (notifcation: NewNotificationT) => {
+    console.log('hi', notificationRef.current);
     notificationRef.current?.dispatchNotification(notifcation);
   };
 
