@@ -315,36 +315,30 @@ defmodule Dash do
   def subdomain_wait(),
     do: Application.get_env(:dash, __MODULE__)[:subdomain_wait_time]
 
-
   defp clean_date_string(date) do
     date
     |> String.trim_leading("~U[")
     |> String.trim_trailing("]")
   end
 
-  def get_hubs_by_date(start_date,end_date) do
-     
-    clean_start_date = start_date |>
-      clean_date_string()
-    
-    clean_end_date = end_date |>
-      clean_date_string()
+  def get_hubs_by_date(start_date, end_date) do
+    clean_start_date =
+      start_date
+      |> clean_date_string()
 
-    # query = 
-    #   from hub in Hub,
-    #     join: stat in assoc(hub, :hub_stats), # Correctly using the association name
-    #     where: stat.measured_at == ^clean_date,
-    #     select: hub
+    clean_end_date =
+      end_date
+      |> clean_date_string()
 
     query =
-      from hub in Hub,
+      from(hub in Hub,
         join: stat in assoc(hub, :hub_stats),
         where: stat.measured_at >= ^clean_start_date and stat.measured_at <= ^clean_end_date,
         select: hub
+      )
 
     Repo.all(query)
   end
-    
 end
 
 

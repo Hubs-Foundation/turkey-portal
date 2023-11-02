@@ -89,7 +89,6 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
     const compareHubsP1Set = new Set(compareHubs.p1);
     const compareHubsB0Set = new Set(compareHubs.b0);
 
-    // Check how many id's did not make it to the compare set
     const p0Persistant = hubs.p0.filter((id) => compareHubsP0Set.has(id));
     const p0Gained = compareHubs.p0.filter((id) => !hubsP0Set.has(id));
 

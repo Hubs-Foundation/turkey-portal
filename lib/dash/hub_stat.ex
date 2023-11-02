@@ -2,7 +2,6 @@ defmodule Dash.HubStat do
   use Ecto.Schema
   alias Dash.{HubStat, Repo, Hub, RetClient}
 
-
   @primary_key false
   schema "hub_stats" do
     field :measured_at, :utc_datetime
