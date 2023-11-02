@@ -63,21 +63,17 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
   });
 
   const filterHubs = (hubs: HubStat[]): TierStatsT => {
-    let tierP0: number[] = [];
-    let tierP1: number[] = [];
-    let tierB0: number[] = [];
+    const data: TierStatsT = {
+      p0: [],
+      p1: [],
+      b0: [],
+    };
 
     hubs.forEach((hub) => {
-      if (hub.tier === 'p0') tierP0.push(hub.hub_id);
-      if (hub.tier === 'p1') tierP1.push(hub.hub_id);
-      if (hub.tier === 'b0') tierB0.push(hub.hub_id);
+      data[hub.tier].push(hub.hub_id);
     });
 
-    return {
-      p0: tierP0,
-      p1: tierP1,
-      b0: tierB0,
-    };
+    return data;
   };
 
   const analyzeData = (hubs: TierStatsT, compareHubs: TierStatsT) => {
@@ -274,7 +270,7 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
                 <tbody>
                   <tr>
                     <td>
-                      <b>p0</b>
+                      <Pill title="P0" category="rainbow" />
                     </td>
                     <td>{analyzedData.p0.persistent}</td>
                     <td>{analyzedData.p0.dropped}</td>
@@ -282,7 +278,7 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
                   </tr>
                   <tr>
                     <td>
-                      <b>p1</b>
+                      <Pill title="P1" category="rainbow" />
                     </td>
                     <td>{analyzedData.p1.persistent}</td>
                     <td>{analyzedData.p1.dropped}</td>
@@ -290,7 +286,7 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
                   </tr>
                   <tr>
                     <td>
-                      <b>b0</b>
+                      <Pill title="B0" category="rainbow" />
                     </td>
                     <td>{analyzedData.b0.persistent}</td>
                     <td>{analyzedData.b0.dropped}</td>

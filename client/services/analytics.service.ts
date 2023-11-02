@@ -10,7 +10,7 @@ export type HubStat = {
 };
 
 export const getAnalytics = async (startDate: string, endDate: string) => {
-  const path = `/?start_date=~U[${startDate}T00:00:00Z]&end_date=~U[${endDate}T00:00:00Z]`;
+  const path = `/?start_date=${startDate}T00:00:00Z&end_date=${endDate}T00:00:00Z`;
 
   return axios
     .get(`${PUBLIC_API_SERVER}${API_PATH}${path}`, {
