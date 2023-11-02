@@ -340,7 +340,3 @@ defmodule Dash do
     Repo.all(query)
   end
 end
-
-
-
- 
