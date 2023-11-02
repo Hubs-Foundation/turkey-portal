@@ -7,7 +7,6 @@ defmodule DashWeb.Api.V1.AnalyticsController do
     hubs = Dash.get_hubs_by_date(start_date, end_date)
 
     conn
-    |> put_resp_header("access-control-allow-origin", "http://localhost:3000")
     |> json(%{hubs: hubs})
   end
 end
