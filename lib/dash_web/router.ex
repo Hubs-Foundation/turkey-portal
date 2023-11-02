@@ -26,6 +26,8 @@ defmodule DashWeb.Router do
     resources "/region", Api.V1.RegionController, only: [:show], singleton: true
   end
 
+  
+
   scope "/api/v1", DashWeb do
     pipe_through :basic_auth
     resources "/logout", LogoutController, only: [:index]
@@ -37,7 +39,10 @@ defmodule DashWeb.Router do
     resources "/account", Api.V1.AccountController, only: [:show], singleton: true
     resources "/plans", Api.V1.PlanController, only: [:create]
     resources "/subscription", Api.V1.SubscriptionController, only: [:show], singleton: true
+    resources "/analytics", Api.V1.AnalyticsController, only: [:show], singleton: true
   end
+
+  
 
   scope "/api/v1", DashWeb do
     pipe_through [:api, :basic_auth, :jwt_authenticated, :approved_email_auth]
@@ -51,6 +56,9 @@ defmodule DashWeb.Router do
 
     post "/hubs/validate_subdomain", Api.V1.HubController, :validate_subdomain
   end
+
+
+  
 
   scope "/api/v1", DashWeb do
     pipe_through :fxa_events_parser

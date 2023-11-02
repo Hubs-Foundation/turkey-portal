@@ -1,7 +1,7 @@
 defmodule Dash.Hub do
   use Ecto.Schema
 
-  alias Dash.{HubDeployment, Repo, RetClient, SubdomainDenial, TaskSupervisor}
+  alias Dash.{HubDeployment, Repo, RetClient, SubdomainDenial, TaskSupervisor, HubStat}
   import Dash.Utils, only: [rand_string: 1]
   import Ecto.Changeset
   import Ecto.Query
@@ -9,6 +9,8 @@ defmodule Dash.Hub do
 
   @type id :: pos_integer
   @type t :: %__MODULE__{account_id: id}
+  @derive {Jason.Encoder, only: [:tier,:hub_id]}
+  
 
   @personal_ccu_limit 20
   @personal_storage_limit_mb 2_000
@@ -24,7 +26,7 @@ defmodule Dash.Hub do
     belongs_to :account, Dash.Account, references: :account_id
 
     has_one :deployment, HubDeployment, foreign_key: :hub_id
-
+    has_many :hub_stats, HubStat, foreign_key: :hub_id
     timestamps()
   end
 

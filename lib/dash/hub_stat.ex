@@ -2,11 +2,12 @@ defmodule Dash.HubStat do
   use Ecto.Schema
   alias Dash.{HubStat, Repo, Hub, RetClient}
 
+
   @primary_key false
   schema "hub_stats" do
     field :measured_at, :utc_datetime
     field :storage_mb, :integer
-    field :hub_id, :integer
+    belongs_to :hub, Hub, foreign_key: :hub_id
   end
 
   defp hub_stat_for_hub_id(hub_id, measured_at) do
