@@ -18,6 +18,7 @@ import { HubT } from 'types/General';
 import SecretCopy from '@Shared/SecretCopy/SecretCopy';
 import { CookiesE } from 'types/Cookies';
 import { getCookie } from 'cookies-next';
+import Warning from '@Shared/Warning/Warning';
 
 type HubFormCardPropsT = {
   hub: HubT;
@@ -203,29 +204,6 @@ const HubFormCard = ({ hub: _hub, classProp = '' }: HubFormCardPropsT) => {
     return true;
   };
 
-  const Warning = () => (
-    <div className={styles.warning}>
-      <div className="flex-align-center mb-12">
-        <Icon name="alert-triangle" classProp="flex-shrink-0 mr-12" />
-        <h3>Be Advised</h3>
-      </div>
-      <p className="mb-24">
-        Due to temporary system instability, customizing a subdomain or
-        connecting a custom domain may impact Spoke and the Admin panel. If you
-        experience any issues with these features, please contact us.
-      </p>
-
-      <div className="flex-justify-end ">
-        <Button
-          onClick={() => {
-            window.open('mailto:hubs-feedback@mozilla.com');
-          }}
-          text="Contact"
-        />
-      </div>
-    </div>
-  );
-
   return (
     <div className={`${styles.card_wrapper} ${classProp}`}>
       <div className={styles.card_container}>
@@ -241,7 +219,17 @@ const HubFormCard = ({ hub: _hub, classProp = '' }: HubFormCardPropsT) => {
           <h1 className={styles.title}>Hub Details</h1>
         </div>
 
-        <Warning />
+        <div className="mx-32">
+          <Warning
+            title="Be Advised"
+            message=" Due to temporary system instability, customizing a subdomain or
+        connecting a custom domain may impact Spoke and the Admin panel. If you
+        experience any issues with these features, please contact us."
+            onClick={() => {
+              window.open('mailto:hubs-feedback@mozilla.com');
+            }}
+          />
+        </div>
 
         <form onSubmit={formik.handleSubmit}>
           <div className={styles.form_contents}>
