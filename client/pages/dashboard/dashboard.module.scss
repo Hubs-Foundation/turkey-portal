@@ -9,11 +9,3 @@
     min-width: initial;
   }
 }
-
-.warning {
-  max-width: 1200px;
-  margin-bottom: 24px;
-  @include tablet-down {
-    max-width: 100%;
-  }
-}

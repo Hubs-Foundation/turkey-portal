@@ -1,7 +1,7 @@
 @use '../../styles/core/boilerplate' as *;
 
 .layout_wrapper {
-  margin-top: 95px;
+  margin-top: 20px;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -37,5 +37,13 @@
 
   @include mobile-down {
     margin-bottom: 0;
+  }
+}
+
+.warning {
+  max-width: 1200px;
+  margin-bottom: 24px;
+  @include tablet-down {
+    max-width: 100%;
   }
 }

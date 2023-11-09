@@ -157,16 +157,6 @@ const Dashboard = ({ subscription }: DashboardPropsT) => {
         subscription={subscription}
         isLoading={isLoading && Boolean(account.planName)}
       >
-        <div className={styles.warning}>
-          <Warning
-            title="Be Advised"
-            message="We are aware of an outage currently impacting Starter and Personal plans in one of our service regions. If your assigned URL contains 'us1' you may be affected by this outage. Our team is actively working to resolve the issue, and we appreciate your patience. We apologize for any inconvenience this may cause. If you have any questions regarding this issue, please contact us,"
-            onClick={() => {
-              window.open('mailto:hubs-feedback@mozilla.com');
-            }}
-          />
-        </div>
-
         <div className={styles.cards_wrapper}>
           {/* Hub Creating */}
           {/* TODO (Tech Debt): Right now (EA) we are only dealing with one hub, so, if there are zero
