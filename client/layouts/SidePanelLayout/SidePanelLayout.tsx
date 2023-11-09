@@ -28,7 +28,7 @@ const SidePanelLayout = ({
 
   return (
     <>
-      <div className="flex-justify-center mt-20 px-20">
+      {/* <div className="flex-justify-center mt-20 px-20">
         <div className={styles.warning}>
           <Warning
             title="Be Advised"
@@ -38,7 +38,7 @@ const SidePanelLayout = ({
             }}
           />
         </div>
-      </div>
+      </div> */}
       <section className={styles.layout_wrapper}>
         {children}
         {/* SIDE PANEL WIDGET  */}
