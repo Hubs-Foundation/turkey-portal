@@ -85,7 +85,7 @@ defmodule Dash.OrchClient do
 
   @spec options :: Keyword.t()
   defp options,
-    do: [hackney: [:insecure], recv_timeout: 15_000]
+    do: [hackney: [:insecure], recv_timeout: 300_000]
 
   @spec orch_host :: String.t()
   defp orch_host,
