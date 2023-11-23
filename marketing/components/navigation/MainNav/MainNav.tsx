@@ -64,8 +64,8 @@ const MainNav = ({
                   Creator Labs
                 </a>
 
-                <a href="/cloud" className={styles.main_nav_link}>
-                  Hubs Cloud
+                <a href="/docs" className={styles.main_nav_link}>
+                  Docs
                 </a>
 
                 <a
