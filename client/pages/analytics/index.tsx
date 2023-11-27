@@ -3,7 +3,7 @@ import styles from './analytics.module.scss';
 import Card from '@Shared/Card/Card';
 import { getAnalytics, HubStat } from 'services/analytics.service';
 import { Button, Input, Pill } from '@mozilla/lilypad-ui';
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 
 type SandboxPropsT = {
   analytics: {};
@@ -148,7 +148,9 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
                 <Input
                   type="date"
                   value={firstStartDate}
-                  onChange={(e) => setFirstStartDate(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setFirstStartDate(e.target.value)
+                  }
                   label="Start Date"
                   placeholder="date"
                   name="start_date"
@@ -157,7 +159,9 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
                 <Input
                   type="date"
                   value={firstEndDate}
-                  onChange={(e) => setFirstEndDate(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setFirstEndDate(e.target.value)
+                  }
                   label="End Date"
                   placeholder="date"
                   name="end_date"
@@ -174,7 +178,9 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
                 <Input
                   type="date"
                   value={secondStartDate}
-                  onChange={(e) => setSecondStartDate(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setSecondStartDate(e.target.value)
+                  }
                   label="Start Date"
                   placeholder="date"
                   name="start_date"
@@ -183,7 +189,9 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
                 <Input
                   type="date"
                   value={secondEndDate}
-                  onChange={(e) => setSecondEndDate(e.target.value)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setSecondEndDate(e.target.value)
+                  }
                   label="End Date"
                   placeholder="date"
                   name="end_date"
