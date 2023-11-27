@@ -28,17 +28,20 @@ const SidePanelLayout = ({
 
   return (
     <>
-      {/* <div className="flex-justify-center mt-20 px-20">
-        <div className={styles.warning}>
-          <Warning
-            title="Be Advised"
-            message="We are aware of an outage currently impacting Starter and Personal plans in one of our service regions. If your assigned URL contains 'us1' you may be affected by this outage. Our team is actively working to resolve the issue, and we appreciate your patience. We apologize for any inconvenience this may cause. If you have any questions regarding this issue, please contact us,"
-            onClick={() => {
-              window.open('mailto:hubs-feedback@mozilla.com');
-            }}
-          />
+      {hub.hasReachedMaxStorage() && (
+        <div className="flex-justify-center mt-20 px-20">
+          <div className={styles.warning}>
+            <Warning
+              title="Storage Maximum Reached"
+              message="Be Advised - The content storage has exceted the alloted maximum. Stored data may be affected. Contact us if you have any questions."
+              onClick={() => {
+                window.open('mailto:hubs-feedback@mozilla.com');
+              }}
+            />
+          </div>
         </div>
-      </div> */}
+      )}
+
       <section className={styles.layout_wrapper}>
         {children}
         {/* SIDE PANEL WIDGET  */}
