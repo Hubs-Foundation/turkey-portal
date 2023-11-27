@@ -252,8 +252,8 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
                 If a hub is active it is logged to the HubStat table. This query
                 leverages the HubStat table to see what hubs are active on
                 specific dates. <b>Persistent</b> is how many hubs remained in
-                the two date ranges, <b>Dropped</b> is how many hub id's where
-                in the first date range but not in the second.
+                the two date ranges, <b>Dropped</b> is how many hub id&apos;s
+                where in the first date range but not in the second.
                 <b> Gained</b> are active Hubs in the second date range but not
                 in the first.
               </p>
