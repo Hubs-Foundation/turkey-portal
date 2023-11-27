@@ -11,7 +11,7 @@ export type HubStat = {
 
 export const getAnalytics = async (startDate: string, endDate: string) => {
   const path = `/?start_date=${startDate}T00:00:00Z&end_date=${endDate}T00:00:00Z`;
-
+  console.log('https://dashboard.dev.myhubs.net');
   return axios
     .get(`https://dashboard.dev.myhubs.net${API_PATH}${path}`, {
       withCredentials: true,
