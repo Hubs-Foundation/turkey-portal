@@ -314,4 +314,14 @@ defmodule Dash do
 
   def subdomain_wait(),
     do: Application.get_env(:dash, __MODULE__)[:subdomain_wait_time]
+
+  def get_hubs_by_date(start_date, end_date) do
+    query =
+      from(hub in Hub,
+        join: stat in assoc(hub, :hub_stats),
+        where: stat.measured_at >= ^start_date and stat.measured_at <= ^end_date
+      )
+
+    Repo.all(query)
+  end
 end

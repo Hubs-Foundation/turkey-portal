@@ -37,6 +37,7 @@ defmodule DashWeb.Router do
     resources "/account", Api.V1.AccountController, only: [:show], singleton: true
     resources "/plans", Api.V1.PlanController, only: [:create]
     resources "/subscription", Api.V1.SubscriptionController, only: [:show], singleton: true
+    resources "/analytics", Api.V1.AnalyticsController, only: [:show], singleton: true
   end
 
   scope "/api/v1", DashWeb do
