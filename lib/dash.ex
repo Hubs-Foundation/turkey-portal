@@ -320,7 +320,6 @@ defmodule Dash do
       from(hub in Hub,
         join: stat in assoc(hub, :hub_stats),
         where: stat.measured_at >= ^start_date and stat.measured_at <= ^end_date,
-        select: hub
       )
 
     Repo.all(query)

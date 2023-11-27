@@ -6,7 +6,7 @@ defmodule Dash.HubStat do
   schema "hub_stats" do
     field :measured_at, :utc_datetime
     field :storage_mb, :integer
-    belongs_to :hub, Hub, foreign_key: :hub_id
+    belongs_to :hub, Hub, references: :hub_id
   end
 
   defp hub_stat_for_hub_id(hub_id, measured_at) do
