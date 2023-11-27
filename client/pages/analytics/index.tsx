@@ -102,12 +102,12 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
       },
       p1: {
         persistent: p1Persistant.length,
-        dropped: hubs.p1.length - p0Persistant.length,
+        dropped: hubs.p1.length - p1Persistant.length,
         gained: p1Gained.length,
       },
       b0: {
         persistent: b0Persistant.length,
-        dropped: hubs.b0.length - p0Persistant.length,
+        dropped: hubs.b0.length - b0Persistant.length,
         gained: b0Gained.length,
       },
     };
