@@ -9,11 +9,20 @@ type SandboxPropsT = {
   analytics: {};
 };
 
-/**
- * This modal is used to sandbox code. feel free to play, this will
- * not show up on prod
- */
+type TierStatsT = {
+  p0: string[];
+  p1: string[];
+  b0: string[];
+};
+
+const initTiers = {
+  p0: [],
+  p1: [],
+  b0: [],
+};
+
 const Sandbox = ({ analytics }: SandboxPropsT) => {
+  // Fromat Date Util
   const getFormattedDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -22,28 +31,17 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
     return `${year}-${month}-${date}`;
   };
 
+  const [showReadout, setShowReadout] = useState(false);
+
+  // Form Date Data
   const [firstStartDate, setFirstStartDate] = useState(getFormattedDate());
   const [firstEndDate, setFirstEndDate] = useState(getFormattedDate());
-
   const [secondStartDate, setSecondStartDate] = useState(getFormattedDate());
   const [secondEndDate, setSecondEndDate] = useState(getFormattedDate());
 
-  type TierStatsT = {
-    p0: number[];
-    p1: number[];
-    b0: number[];
-  };
-
-  const initTiers = {
-    p0: [],
-    p1: [],
-    b0: [],
-  };
-
+  // Hubs Compare Data
   const [tiers, setTiers] = useState<TierStatsT>(initTiers);
-
   const [compareTiers, setCompareTiers] = useState<TierStatsT>(initTiers);
-
   const [analyzedData, setAnalyzedData] = useState({
     p0: {
       persistent: 0,
@@ -70,7 +68,7 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
     };
 
     hubs.forEach((hub) => {
-      data[hub.tier].push(hub.hub_id);
+      data[hub.tier].push(String(hub.hub_id));
     });
 
     return data;
@@ -125,6 +123,7 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
       analyzeData(filteredHub, compareFilteredHub);
       setTiers(filteredHub);
       setCompareTiers(compareFilteredHub);
+      setShowReadout(true);
     } catch (error) {
       console.log(error);
     }
@@ -207,102 +206,107 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
               </div>
             </section>
 
-            <hr className="my-20" />
-            <section>
-              <h3 className="mb-12">Active Hubs</h3>
-              <div className="mb-20">
-                <p className="mb-20">
-                  From: <b>{firstStartDate}</b> to <b>{firstEndDate}</b>
-                </p>
-                <div className="flex">
-                  <Pill
-                    classProp="mr-12"
-                    title={`P0: ${tiers.p0.length}`}
-                    category="cool"
-                  />
-                  <Pill
-                    classProp="mr-12"
-                    title={`P1: ${tiers.p1.length}`}
-                    category="cool"
-                  />
-                  <Pill
-                    classProp="mr-12"
-                    title={`B0: ${tiers.b0.length}`}
-                    category="cool"
-                  />
-                </div>
-              </div>
-              <div className="mb-40">
-                <p className="mb-20">
-                  From: <b>{secondStartDate}</b> to <b>{secondEndDate}</b>
-                </p>
-                <div className="flex">
-                  <Pill
-                    classProp="mr-12"
-                    title={`P0: ${compareTiers.p0.length}`}
-                    category="cool"
-                  />
-                  <Pill
-                    classProp="mr-12"
-                    title={`P1: ${compareTiers.p1.length}`}
-                    category="cool"
-                  />
-                  <Pill
-                    classProp="mr-12"
-                    title={`B0: ${compareTiers.b0.length}`}
-                    category="cool"
-                  />
-                </div>
-              </div>
-              <h3 className="mb-12">Hub Behaviour</h3>
-              <p className="paragraph mb-24">
-                The follow data comes form the HubStat table and the Hubs table.
-                If a hub is active it is logged to the HubStat table. This query
-                leverages the HubStat table to see what hubs are active on
-                specific dates. <b>Persistent</b> is how many hubs remained in
-                the two date ranges, <b>Dropped</b> is how many hub id&apos;s
-                where in the first date range but not in the second.
-                <b> Gained</b> are active Hubs in the second date range but not
-                in the first.
-              </p>
+            {showReadout && (
+              <>
+                <hr className="my-20" />
+                <section>
+                  <h3 className="mb-12">Active Hubs</h3>
+                  <div className="mb-20">
+                    <p className="mb-20">
+                      From: <b>{firstStartDate}</b> to <b>{firstEndDate}</b>
+                    </p>
+                    <div className="flex">
+                      <Pill
+                        classProp="mr-12"
+                        title={`P0: ${tiers.p0.length}`}
+                        category="cool"
+                      />
+                      <Pill
+                        classProp="mr-12"
+                        title={`P1: ${tiers.p1.length}`}
+                        category="cool"
+                      />
+                      <Pill
+                        classProp="mr-12"
+                        title={`B0: ${tiers.b0.length}`}
+                        category="cool"
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-40">
+                    <p className="mb-20">
+                      From: <b>{secondStartDate}</b> to <b>{secondEndDate}</b>
+                    </p>
+                    <div className="flex">
+                      <Pill
+                        classProp="mr-12"
+                        title={`P0: ${compareTiers.p0.length}`}
+                        category="cool"
+                      />
+                      <Pill
+                        classProp="mr-12"
+                        title={`P1: ${compareTiers.p1.length}`}
+                        category="cool"
+                      />
+                      <Pill
+                        classProp="mr-12"
+                        title={`B0: ${compareTiers.b0.length}`}
+                        category="cool"
+                      />
+                    </div>
+                  </div>
+                  <h3 className="mb-12">Hub Behaviour</h3>
+                  <p className="paragraph mb-24">
+                    The follow data comes form the HubStat table and the Hubs
+                    table. If a hub is active it is logged to the HubStat table.
+                    This query leverages the HubStat table to see what hubs are
+                    active on specific dates. <b>Persistent</b> is how many hubs
+                    remained in the two date ranges, <b>Dropped</b> is how many
+                    hub id&apos;s where in the first date range but not in the
+                    second.
+                    <b> Gained</b> are active Hubs in the second date range but
+                    not in the first.
+                  </p>
 
-              <table className={styles.data_table}>
-                <thead>
-                  <tr>
-                    <th>Tier</th>
-                    <th>Persistent</th>
-                    <th>Dropped</th>
-                    <th>Gained</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <Pill title="P0" category="rainbow" />
-                    </td>
-                    <td>{analyzedData.p0.persistent}</td>
-                    <td>{analyzedData.p0.dropped}</td>
-                    <td>{analyzedData.p0.gained}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Pill title="P1" category="rainbow" />
-                    </td>
-                    <td>{analyzedData.p1.persistent}</td>
-                    <td>{analyzedData.p1.dropped}</td>
-                    <td>{analyzedData.p1.gained}</td>
-                  </tr>
-                  <tr>
-                    <td>
-                      <Pill title="B0" category="rainbow" />
-                    </td>
-                    <td>{analyzedData.b0.persistent}</td>
-                    <td>{analyzedData.b0.dropped}</td>
-                    <td>{analyzedData.b0.gained}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </section>
+                  <table className={styles.data_table}>
+                    <thead>
+                      <tr>
+                        <th>Tier</th>
+                        <th>Persistent</th>
+                        <th>Dropped</th>
+                        <th>Gained</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <Pill title="P0" category="rainbow" />
+                        </td>
+                        <td>{analyzedData.p0.persistent}</td>
+                        <td>{analyzedData.p0.dropped}</td>
+                        <td>{analyzedData.p0.gained}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <Pill title="P1" category="rainbow" />
+                        </td>
+                        <td>{analyzedData.p1.persistent}</td>
+                        <td>{analyzedData.p1.dropped}</td>
+                        <td>{analyzedData.p1.gained}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <Pill title="B0" category="rainbow" />
+                        </td>
+                        <td>{analyzedData.b0.persistent}</td>
+                        <td>{analyzedData.b0.dropped}</td>
+                        <td>{analyzedData.b0.gained}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              </>
+            )}
           </Card>
         </div>
       </main>
@@ -313,7 +317,7 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
 export default Sandbox;
 
 export async function getStaticProps() {
-  if (process.env.ENV === 'prod') {
+  if (process.env.ENV === 'production') {
     return { notFound: true };
   }
 

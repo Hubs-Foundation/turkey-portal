@@ -9,7 +9,7 @@ defmodule Dash.Hub do
 
   @type id :: pos_integer
   @type t :: %__MODULE__{account_id: id}
-  @derive {Jason.Encoder, only: [:tier, :hub_id]}
+  # @derive {Jason.Encoder, only: [:tier, :hub_id]}
   @personal_ccu_limit 20
   @personal_storage_limit_mb 2_000
 
