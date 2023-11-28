@@ -5,7 +5,7 @@ import { TierT } from 'types/General';
 const API_PATH = '/api/v1/analytics';
 
 export type HubStat = {
-  hub_id: number;
+  hubId: string;
   tier: TierT;
 };
 
