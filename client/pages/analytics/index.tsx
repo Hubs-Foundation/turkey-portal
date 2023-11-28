@@ -4,6 +4,8 @@ import Card from '@Shared/Card/Card';
 import { getAnalytics, HubStat } from 'services/analytics.service';
 import { Button, Input, Pill } from '@mozilla/lilypad-ui';
 import { useState, ChangeEvent } from 'react';
+import { requireAuthenticationAndSubscription } from 'services/routeGuard.service';
+import type { GetServerSidePropsContext } from 'next';
 
 type SandboxPropsT = {
   analytics: {};
@@ -316,12 +318,17 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
 
 export default Sandbox;
 
-export async function getStaticProps() {
-  if (process.env.ENV === 'production') {
-    return { notFound: true };
-  }
+export async function getS() {}
 
-  return {
-    props: {},
-  };
-}
+export const getServerSideProps = requireAuthenticationAndSubscription(
+  (context: GetServerSidePropsContext) => {
+    // Your normal `getServerSideProps` code here
+    if (process.env.ENV === 'production') {
+      return { notFound: true };
+    }
+
+    return {
+      props: {},
+    };
+  }
+);
