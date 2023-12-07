@@ -238,7 +238,7 @@ const HubFormCard = ({ hub: _hub, classProp = '' }: HubFormCardPropsT) => {
           <h1 className={styles.title}>Hub Details</h1>
         </div>
 
-        <Warning />
+        {/* <Warning /> */}
 
         <form onSubmit={formik.handleSubmit}>
           <div className={styles.form_contents}>
