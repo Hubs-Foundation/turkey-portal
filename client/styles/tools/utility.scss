@@ -249,3 +249,31 @@ $fontSizes: 12, 14, 16, 18, 20;
     height: 100%;
   }
 }
+
+// Create Size Value Array
+$start: 0;
+$end: 50;
+$array: '';
+$unit: 'px';
+$array: set-nth($array, 1, $start);
+
+@for $i from $start + 1 through $end {
+  $array: append($array, $i, comma);
+}
+
+@each $size in $array {
+  .gap-#{$size} {
+    display: flex;
+    gap: #{$size}#{$unit};
+    &-dt {
+      @include mobile-up {
+        gap: #{$size}#{$unit};
+      }
+    }
+    &-mb {
+      @include mobile-down {
+        gap: #{$size}#{$unit};
+      }
+    }
+  }
+}
