@@ -7,6 +7,7 @@ import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
 import { SubscriptionT } from 'services/subscription.service';
 import Hub, { loadingHub } from 'classes/Hub';
 import Warning from '@Shared/Warning/Warning';
+import { Button } from '@mozilla/lilypad-ui';
 
 type SidePanelLayoutProps = {
   children: ReactNode;
@@ -32,12 +33,23 @@ const SidePanelLayout = ({
         <div className="flex-justify-center mt-20 px-20">
           <div className={styles.warning}>
             <Warning
-              title="Storage Maximum Reached"
-              message="Be Advised - The content storage has exceted the alloted maximum. Stored data may be affected. Contact us if you have any questions."
-              onClick={() => {
-                window.open('mailto:hubs-feedback@mozilla.com');
-              }}
-            />
+              title="Content Storage Limit Exceeded"
+              message="You’ve reached the maximum data capacity for your current plan. To avoid performance issues with your Hub, please upgrade your plan or delete content from your Hub."
+            >
+              <div className="flex-justify-end ">
+                <Button
+                  href="/subscribe"
+                  text="Upgrade Now"
+                  classProp="mr-12"
+                />
+                <Button
+                  href="https://hubs.mozilla.com/docs/setup-faq.html"
+                  text="More info"
+                  category="primary_outline"
+                  target="_blank"
+                />
+              </div>
+            </Warning>
           </div>
         </div>
       )}
