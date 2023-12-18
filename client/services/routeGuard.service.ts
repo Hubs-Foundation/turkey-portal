@@ -265,6 +265,42 @@ export function SubscribeRG(gssp: Function): GetServerSideProps {
   };
 }
 
+export function analyticsRG(gssp: Function): GetServerSideProps | Redirect {
+  return async (context: GetServerSidePropsContext) => {
+    const { req } = context;
+
+    if (didSetTurkeyauthCookie(context)) {
+      return redirectToDashboard();
+    }
+
+    // If no errors user is authenticated
+    try {
+      const account: AccountT = await getAccount(
+        req.headers as AxiosRequestHeaders
+      );
+
+      const emails = [
+        'jacobkyle88@gmail.com',
+        'mmorran@mozilla.com',
+        'ngrato@gmail.com',
+        'local-user@turkey.local',
+      ];
+
+      // User is authenticated
+      if (emails.includes(account.email)) {
+        return await gssp(context);
+      }
+
+      return redirectToDashboard();
+    } catch (error) {
+      return handleUnauthenticatedRedirects(
+        error as AxiosError,
+        req.url as RoutesE
+      );
+    }
+  };
+}
+
 /**************************
  *  LOCAL DEV UTILITIES
  **************************/

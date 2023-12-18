@@ -2,8 +2,8 @@
 
 .wrapper {
   margin-top: 50px;
-  flex-wrap: wrap;
-  flex-grow: 1;
+  display: flex;
+  justify-content: center;
 
   @include mobile-down {
     margin-top: 40px;
@@ -21,10 +21,4 @@
     text-align: center;
     margin: 0 0 40px;
   }
-}
-
-.cards {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
 }

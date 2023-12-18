@@ -4,7 +4,7 @@ import Card from '@Shared/Card/Card';
 import { getAnalytics, HubStat } from 'services/analytics.service';
 import { Button, Input, Pill } from '@mozilla/lilypad-ui';
 import { useState, ChangeEvent } from 'react';
-import { requireAuthenticationAndSubscription } from 'services/routeGuard.service';
+import { analyticsRG } from 'services/routeGuard.service';
 import type { GetServerSidePropsContext } from 'next';
 
 type SandboxPropsT = {
@@ -29,7 +29,7 @@ const initTiers = {
   b0: 0,
 };
 
-const Sandbox = ({ analytics }: SandboxPropsT) => {
+const Analytics = ({ analytics }: SandboxPropsT) => {
   // Fromat Date Util
   const getFormattedDate = () => {
     const today = new Date();
@@ -367,17 +367,11 @@ const Sandbox = ({ analytics }: SandboxPropsT) => {
   );
 };
 
-export default Sandbox;
+export default Analytics;
 
-export async function getS() {}
-
-export const getServerSideProps = requireAuthenticationAndSubscription(
+export const getServerSideProps = analyticsRG(
   (context: GetServerSidePropsContext) => {
     // Your normal `getServerSideProps` code here
-    if (process.env.ENV === 'production') {
-      return { notFound: true };
-    }
-
     return {
       props: {},
     };

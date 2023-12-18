@@ -92,6 +92,33 @@ export const PROFESSIONAL_COPY: PlanInfoCopyT = {
   status: 'Always on — no sleeping',
 };
 
+export const BUSINESS_COPY: PlanInfoCopyT = {
+  title: 'Business',
+  subtitle:
+    'Scale your community with a robust Hub for large events and vibrant exhibitions.',
+  valueProps: [
+    {
+      label: '400 guest capacity',
+      description: 'Free for guests to join',
+      icon: 'capacity',
+    },
+    {
+      label: '200 GB asset storage',
+      description: 'For avatars and scenes',
+      icon: 'space',
+    },
+  ],
+  features: {
+    title: 'Everything in Personal, plus:',
+    values: [
+      'Support emails answered within 12 business hours',
+      '90 minutes of synchronous support per month',
+      '60 minutes of assisted Hubs Cloud data migration',
+    ],
+  },
+  status: 'Always on — no sleeping',
+};
+
 export const PLAN_ID_MAP = {
   /**
    * United Kingdom
@@ -201,7 +228,7 @@ export const PLAN_ID_MAP = {
     business: {
       monthly: {
         planId: 'TODO',
-        price: 400.22,
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',

@@ -6,7 +6,12 @@ import { RegionCodeT } from 'types/Countries';
 import { BillingPeriodE, PlansE } from 'types/General';
 import { getPricePageData } from 'util/utilities';
 import getEnvVariable from 'config';
-import { STARTER_COPY, PERSONAL_COPY, PROFESSIONAL_COPY } from './plan.const';
+import {
+  STARTER_COPY,
+  PERSONAL_COPY,
+  PROFESSIONAL_COPY,
+  BUSINESS_COPY,
+} from './plan.const';
 import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
 import { Modal, Button } from '@mozilla/lilypad-ui';
 import Snow from '@Shared/Snow/Snow';
@@ -30,7 +35,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
     { label: 'Monthly', value: BillingPeriodE.MONTHLY },
     { label: 'Annual', value: BillingPeriodE.ANNUAL },
   ];
-  const PLAN_QTY = 3;
+  const PLAN_QTY = 4;
   /**
    * Init Plans Data
    */
@@ -47,7 +52,13 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
     billingPeriod
   );
 
-  const loadingCards = isTabletDown ? [1] : [1, 2, 3];
+  const businessPlanData = getPricePageData(
+    regionCode,
+    PlansE.BUSINESS,
+    billingPeriod
+  );
+
+  const loadingCards = isTabletDown ? [1] : [1, 2, 3, 4];
 
   /**
    * Init Region Data
@@ -228,6 +239,39 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                       text="Get Started"
                       onClick={() => {
                         window.open(professionalPlanData.planUrl);
+                      }}
+                    />
+                  }
+                />
+
+                {/* BUSINESS_COPY PLAN */}
+                <BasePlanCard
+                  classProp={styles.plan_3}
+                  title={BUSINESS_COPY.title}
+                  subtitle={BUSINESS_COPY.subtitle}
+                  color="rainbow"
+                  price={
+                    <Price
+                      price={`${businessPlanData.currencySymbol}${businessPlanData.planPrice}`}
+                      currencyAbbrev={businessPlanData.currencyAbbrev}
+                      billingPeriod={`per ${
+                        billingPeriod === BillingPeriodE.ANNUAL
+                          ? 'year'
+                          : 'month'
+                      }`}
+                    />
+                  }
+                  valueProps={BUSINESS_COPY.valueProps}
+                  features={BUSINESS_COPY.features}
+                  additionalContent={
+                    <Status icon="greenLight" message={BUSINESS_COPY.status} />
+                  }
+                  confirmButton={
+                    <Button
+                      label="Create Professional hub"
+                      text="Get Started"
+                      onClick={() => {
+                        window.open(businessPlanData.planUrl);
                       }}
                     />
                   }

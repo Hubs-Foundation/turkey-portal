@@ -2,9 +2,9 @@
 
 .wrapper {
   background-color: $color-background-overlay;
-  width: 375px;
+  width: 100%;
   border-radius: 20px;
-  padding: 65px;
+  padding: 25px;
   overflow: hidden;
   position: relative;
   margin: 0px 17px 24px;
@@ -24,7 +24,7 @@
 
   h2 {
     @include heading-lg;
-    margin: 0 0 24px;
+    margin: 0 0 12px;
   }
 
   p {
