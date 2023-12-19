@@ -1,34 +1,61 @@
+import { useState, useEffect, useMemo } from 'react';
 import ExpansionPanel from '@Shared/ExpansionPanel/ExpansionPanel';
 import SupportLink from '@Shared/SupportLink/SupportLink';
 import styles from './SupportGrid.module.scss';
-import {
-  useIsProfessionalUp,
-  useIsBusiness,
-  useIsProfessional,
-} from 'hooks/usePlans';
+import { useIsProfessionalUp } from 'hooks/usePlans';
+import { PlansE } from 'types/General';
 import mailCircle from 'public/mail_circle.png';
 import messageCircle from 'public/message_circle.png';
 import questionCircle from 'public/question_circle.png';
 import BookMeeting from '../BookMeeting/BookMeeting';
+import { selectAccount } from 'store/accountSlice';
+import { useSelector } from 'react-redux';
+
+type PlanContactInfoT = {
+  email: string;
+  calendar: string;
+};
+
+type ContactDataT = {
+  [key in PlansE]: PlanContactInfoT;
+};
 
 const SupportGrid = () => {
+  const account = useSelector(selectAccount);
   const isProfessionalUp = useIsProfessionalUp();
-  const isBusiness = useIsBusiness();
-  const isProfessional = useIsProfessional();
-  const businessCal = 'https://calendly.com/mhmorran/onboarding/busi';
-  const professionalCal = 'https://calendly.com/mhmorran/onboarding/pers';
+  const [contactData, setContactData] = useState<PlanContactInfoT>({
+    email: '',
+    calendar: '',
+  });
 
-  const meetingHref = () => {
-    let href = '';
-    if (isBusiness) href = businessCal;
-    if (isProfessional) href = professionalCal;
-    return href;
-  };
+  const contactsData: ContactDataT = useMemo(() => {
+    const defualtContactData: PlanContactInfoT = {
+      email: 'mailto:hubs-feedback@mozilla.com',
+      calendar: '',
+    };
+    return {
+      business: {
+        email: 'mailto:hubs-business@mozilla.com',
+        calendar: 'https://calendly.com/mhmorran/hubs-subscription-support',
+      },
+      professional: {
+        email: 'mailto:hubs-professional@mozilla.com',
+        calendar: 'https://calendly.com/mhmorran/hubs-subscription-support',
+      },
+      personal: defualtContactData,
+      starter: defualtContactData,
+      standard: defualtContactData,
+    };
+  }, []);
+
+  useEffect(() => {
+    setContactData(contactsData[account.planName as PlansE]);
+  }, [contactsData, account]);
 
   return (
     <ExpansionPanel title="Support" expanded={true}>
       <section>
-        {isProfessionalUp && <BookMeeting href={meetingHref()} />}
+        {isProfessionalUp && <BookMeeting href={contactData.calendar} />}
         <div className={styles.support_links}>
           <SupportLink
             title="Message Us"
@@ -42,7 +69,7 @@ const SupportGrid = () => {
             image={mailCircle}
             // Firefox does not honor "_bank" on "mailtos"
             onClick={() => {
-              window.open('mailto:hubs-feedback@mozilla.com');
+              window.open(contactData.email);
             }}
             body="Contact us via email with your questions."
           />

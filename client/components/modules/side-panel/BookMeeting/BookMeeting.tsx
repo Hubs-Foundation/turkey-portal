@@ -11,12 +11,14 @@ const BookMeeting = ({ href }: { href: string }) => (
         </p>
       </div>
       <div className="mt-12-mb">
-        <Button
-          text="Book Now"
-          label="book meeting with team"
-          target="_blank"
-          href={href}
-        />
+        {Boolean(href) && (
+          <Button
+            text="Book Now"
+            label="book meeting with team"
+            target="_blank"
+            href={href as string}
+          />
+        )}
       </div>
     </div>
   </Card>
