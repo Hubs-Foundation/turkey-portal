@@ -413,7 +413,6 @@ defmodule Dash.PlanStateMachine do
   end
 
   # BUSINESS PLAN 
-
   def handle_event(
         nil,
         {:subscribe_business, %DateTime{} = subscribed_at},

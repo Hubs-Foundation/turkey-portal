@@ -171,14 +171,16 @@ export function customClientRG(gssp: Function): GetServerSideProps | Redirect {
   return async (context: GetServerSidePropsContext) => {
     const { req } = context;
 
+    // Only these plans can see custom client screen
+    const approvedPlans = [PlansE.PROFESSIONAL, PlansE.BUSINESS];
+
     // If no errors user is authenticated
     try {
       const account: AccountT = await getAccount(
         req.headers as AxiosRequestHeaders
       );
 
-      // only b1 can get to this page
-      if (account.planName !== PlansE.PROFESSIONAL) {
+      if (!approvedPlans.includes(account.planName as PlansE)) {
         return redirectToDashboard();
       }
 

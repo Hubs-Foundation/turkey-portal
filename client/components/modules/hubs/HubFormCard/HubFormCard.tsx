@@ -12,7 +12,7 @@ import { StoreContext, SubdomainRetryT } from 'contexts/StoreProvider';
 import { RoutesE } from 'types/Routes';
 import { useFormik } from 'formik';
 import validate, { FormValues } from './validate';
-import { useIsProfessional } from 'hooks/usePlans';
+import { useIsProfessionalUp } from 'hooks/usePlans';
 import Hub from 'classes/Hub';
 import { HubT } from 'types/General';
 import SecretCopy from '@Shared/SecretCopy/SecretCopy';
@@ -38,7 +38,7 @@ const HubFormCard = ({ hub: _hub, classProp = '' }: HubFormCardPropsT) => {
     useState<string>('');
   const [isEditingDomain, setIsEditingDomain] = useState(false);
   const router = useRouter();
-  const isProfessional = useIsProfessional();
+  const isProfessionalUp = useIsProfessionalUp();
   const hub = useMemo(() => new Hub(_hub), [_hub]);
 
   /**
@@ -281,7 +281,7 @@ const HubFormCard = ({ hub: _hub, classProp = '' }: HubFormCardPropsT) => {
             ) : null}
           </div>
 
-          {isProfessional && (
+          {isProfessionalUp && (
             <section className={styles.custom_client_message}>
               <div className="flex-justify-between mb-12">
                 <h1 className="heading-sm">Custom Domain</h1>
