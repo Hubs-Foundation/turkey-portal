@@ -8,6 +8,7 @@ import {
   PersonalPlanCard,
   StarterPlanCard,
   ProfessionalPlanCard,
+  BusinessPlanCard,
 } from '@Modules/plans/plan-cards';
 import { BillingPeriodE } from 'types/General';
 
@@ -25,18 +26,27 @@ const Subscribe = () => {
 
       <main>
         <div className={styles.wrapper}>
-          <div className={styles.header}>
-            <h1>Choose your plan</h1>
-          </div>
+          <div>
+            <div className={styles.header}>
+              <h1>Choose your plan</h1>
+            </div>
 
-          <div className={styles.cards}>
-            <StarterPlanCard />
-            <PersonalPlanCard billingPeriod={billingPeriod} />
-            <ProfessionalPlanCard billingPeriod={billingPeriod} />
-            <ContactCard
-              email="hubs@mozilla.com"
-              subject="Subscription inquiries"
-            />
+            <div className="flex-justify-center flex-wrap">
+              <div className="flex-justify-center flex-wrap">
+                <StarterPlanCard />
+                <PersonalPlanCard billingPeriod={billingPeriod} />
+              </div>
+              <div className="flex-justify-center flex-wrap">
+                <ProfessionalPlanCard billingPeriod={billingPeriod} />
+                <BusinessPlanCard billingPeriod={billingPeriod} />
+              </div>
+            </div>
+            <div className="flex">
+              <ContactCard
+                email="hubs@mozilla.com"
+                subject="Subscription inquiries"
+              />
+            </div>
           </div>
         </div>
       </main>

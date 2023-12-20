@@ -46,18 +46,21 @@
   &_3 {
     grid-area: '3';
   }
+  &_4 {
+    grid-area: '4';
+  }
 }
 
 .cards {
   display: grid;
-  grid-template-columns: 386px 386px 386px;
+  grid-template-columns: 288px 288px 288px 288px;
   grid-template-rows: auto auto;
   column-gap: 18px;
   gap: 18px;
   margin: 0 8px;
-  grid-template-areas: '1 2 3' '. . hanger';
+  grid-template-areas: '1 2 3 4' '. . hanger hanger';
   @include desktop-large-down {
-    grid-template-areas: '1' '2' '3' 'hanger';
+    grid-template-areas: '1' '2' '3' '4' 'hanger';
     grid-template-columns: 100%;
   }
   @include mobile-down {
@@ -110,7 +113,6 @@
     background-color: $color-background-neutral-0;
     box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.15);
     border-radius: 20px;
-    width: 386px;
     padding: 30px 24px 24px 24px;
     overflow: hidden;
     position: relative;

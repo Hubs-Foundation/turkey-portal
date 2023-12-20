@@ -13,6 +13,8 @@ defmodule Dash.PlanStateMachine do
   @personal_storage_limit_mb 2_000
   @professional_ccu_limit 50
   @professional_storage_limit_mb 25_000
+  @business_ccu_limit 400
+  @business_storage_limit_mb 200_000
 
   alias Dash.{Account, Hub, Plan, OrchClient, Repo}
   import Dash.Utils, only: [rand_string: 1]
@@ -410,6 +412,128 @@ defmodule Dash.PlanStateMachine do
     end
   end
 
+  # BUSINESS PLAN 
+  def handle_event(
+        nil,
+        {:subscribe_business, %DateTime{} = subscribed_at},
+        %Account{} = account,
+        _data
+      ) do
+    %{plan_id: plan_id} = Repo.insert!(%Plan{account_id: account.account_id})
+    :ok = subscribe_business(plan_id, subscribed_at)
+
+    hub =
+      Repo.insert!(%Hub{
+        account_id: account.account_id,
+        ccu_limit: @business_ccu_limit,
+        status: :creating,
+        storage_limit_mb: @business_storage_limit_mb,
+        subdomain: rand_string(10),
+        tier: :b2
+      })
+
+    {:ok, %{body: json, status_code: 200}} = OrchClient.create_hub(account.email, hub)
+    :ok = put_domain(hub.hub_id, json)
+  end
+
+  # EXPIRED SUBSCRIPTION 
+  def handle_event(
+        :business,
+        {:expire_subscription, %DateTime{} = expired_at},
+        %Account{account_id: account_id, email: email},
+        _data
+      ) do
+    if DateTime.compare(expired_at, transitioned_at(account_id)) !== :gt do
+      {:error, :superseded}
+    else
+      %{plan_id: plan_id} = fetch_plan!(account_id)
+
+      Repo.insert!(%__MODULE__.PlanTransition{
+        event: "expire_subscription",
+        new_state: :starter,
+        plan_id: plan_id,
+        transitioned_at: expired_at
+      })
+
+      hub =
+        Hub
+        |> Repo.get_by!(account_id: account_id)
+        |> Repo.preload(:deployment)
+        |> Ecto.Changeset.change(
+          ccu_limit: @starter_ccu_limit,
+          status: :updating,
+          storage_limit_mb: @starter_storage_limit_mb,
+          subdomain: rand_string(10),
+          tier: :p0
+        )
+        |> Repo.update!()
+
+      {:ok, %{status_code: 200}} =
+        OrchClient.update_hub(email, hub,
+          disable_branding?: true,
+          reset_branding?: true,
+          reset_client?: true,
+          reset_domain?: true
+        )
+
+      :ok
+    end
+  end
+
+  # CHANGES SUBSCRIPTION TO PERSONAL 
+  def handle_event(
+        :business,
+        {:subscribe_personal, subscribed_at},
+        %Account{account_id: account_id, email: email},
+        _data
+      ) do
+    if DateTime.compare(subscribed_at, transitioned_at(account_id)) !== :gt do
+      {:error, :superseded}
+    else
+      %{plan_id: plan_id} = fetch_plan!(account_id)
+      :ok = subscribe_personal(plan_id, subscribed_at)
+
+      hub =
+        Hub
+        |> Repo.get_by!(account_id: account_id)
+        |> Repo.preload(:deployment)
+        |> Ecto.Changeset.change(
+          ccu_limit: @personal_ccu_limit,
+          storage_limit_mb: @personal_storage_limit_mb,
+          status: :updating,
+          tier: :p1
+        )
+        |> Repo.update!()
+
+      {:ok, %{status_code: 200}} =
+        OrchClient.update_hub(email, hub, reset_client?: true, reset_domain?: true)
+
+      :ok
+    end
+  end
+
+  # ATEMPT TO SUBSCRIPT TO BUSINESS AGAIN 
+  def handle_event(
+        :business,
+        {:subscribe_professional, %DateTime{} = subscribed_at},
+        %Account{account_id: account_id},
+        _data
+      ) do
+    if DateTime.compare(subscribed_at, transitioned_at(account_id)) !== :gt do
+      {:error, :superseded}
+    else
+      {:error, :already_started}
+    end
+  end
+
+  # ALREADY STARTED 
+  def handle_event(:business, :start, %Account{}, _data),
+    do: {:error, :already_started}
+
+  # FETCH ACTIVE PLAN 
+  def handle_event(:business, :fetch_active_plan, %Account{account_id: account_id}, _data),
+    do: {:ok, %{fetch_plan!(account_id) | name: "business", subscription?: true}}
+
   @spec fetch_plan!(Account.id()) :: Plan.t()
   defp fetch_plan!(account_id),
     do: Repo.get_by!(Plan, account_id: account_id)
@@ -446,6 +570,18 @@ defmodule Dash.PlanStateMachine do
     Repo.insert!(%__MODULE__.PlanTransition{
       event: "subscribe_professional",
       new_state: :professional,
+      plan_id: plan_id,
+      transitioned_at: subscribed_at
+    })
+
+    :ok
+  end
+
+  @spec subscribe_business(Plan.id(), DateTime.t()) :: :ok
+  defp subscribe_business(plan_id, %DateTime{} = subscribed_at) when is_integer(plan_id) do
+    Repo.insert!(%__MODULE__.PlanTransition{
+      event: "subscribe_business",
+      new_state: :business,
       plan_id: plan_id,
       transitioned_at: subscribed_at
     })

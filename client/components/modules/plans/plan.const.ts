@@ -80,6 +80,39 @@ export const PROFESSIONAL_COPY: PlanInfoCopyT[] = [
   },
 ];
 
+export const BUSINESS_COPY: PlanInfoCopyT[] = [
+  {
+    label: '400 guest capacity',
+    description: 'Free for guests to join',
+    icon: null,
+  },
+  {
+    label: '200GB Asset storage',
+    description: 'For avatars and scenes',
+    icon: null,
+  },
+  {
+    label: 'Everything in Professional',
+    description: '',
+    icon: null,
+  },
+  {
+    label: 'Support emails answered within 12 business hours',
+    description: '',
+    icon: null,
+  },
+  {
+    label: '90 minutes of synchronous support per month',
+    description: '',
+    icon: null,
+  },
+  {
+    label: '60 minutes of assisted Hubs Cloud data migration',
+    description: '',
+    icon: null,
+  },
+];
+
 export const PLAN_ID_MAP = {
   /**
    * United Kingdom
@@ -189,7 +222,7 @@ export const PLAN_ID_MAP = {
     business: {
       monthly: {
         planId: 'TODO',
-        price: 400.22,
+        price: 499.0,
       },
       yearly: {
         planId: 'TODO',

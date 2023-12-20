@@ -171,14 +171,16 @@ export function customClientRG(gssp: Function): GetServerSideProps | Redirect {
   return async (context: GetServerSidePropsContext) => {
     const { req } = context;
 
+    // Only these plans can see custom client screen
+    const approvedPlans = [PlansE.PROFESSIONAL, PlansE.BUSINESS];
+
     // If no errors user is authenticated
     try {
       const account: AccountT = await getAccount(
         req.headers as AxiosRequestHeaders
       );
 
-      // only b1 can get to this page
-      if (account.planName !== PlansE.PROFESSIONAL) {
+      if (!approvedPlans.includes(account.planName as PlansE)) {
         return redirectToDashboard();
       }
 
@@ -256,6 +258,42 @@ export function SubscribeRG(gssp: Function): GetServerSideProps {
       );
 
       return await gssp(context);
+    } catch (error) {
+      return handleUnauthenticatedRedirects(
+        error as AxiosError,
+        req.url as RoutesE
+      );
+    }
+  };
+}
+
+export function analyticsRG(gssp: Function): GetServerSideProps | Redirect {
+  return async (context: GetServerSidePropsContext) => {
+    const { req } = context;
+
+    if (didSetTurkeyauthCookie(context)) {
+      return redirectToDashboard();
+    }
+
+    // If no errors user is authenticated
+    try {
+      const account: AccountT = await getAccount(
+        req.headers as AxiosRequestHeaders
+      );
+
+      const emails = [
+        'jacobkyle88@gmail.com',
+        'mmorran@mozilla.com',
+        'ngrato@gmail.com',
+        'local-user@turkey.local',
+      ];
+
+      // User is authenticated
+      if (emails.includes(account.email)) {
+        return await gssp(context);
+      }
+
+      return redirectToDashboard();
     } catch (error) {
       return handleUnauthenticatedRedirects(
         error as AxiosError,

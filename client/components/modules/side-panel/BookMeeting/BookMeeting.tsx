@@ -2,7 +2,7 @@ import styles from './BookMeeting.module.scss';
 import Card from '@Shared/Card/Card';
 import { Button } from '@mozilla/lilypad-ui';
 
-const BookMeeting = () => (
+const BookMeeting = ({ href }: { href: string }) => (
   <Card classProp="mb-16">
     <div className={styles.wrapper}>
       <div className="mr-20-dt mr-12-mb">
@@ -11,12 +11,14 @@ const BookMeeting = () => (
         </p>
       </div>
       <div className="mt-12-mb">
-        <Button
-          text="Book Now"
-          label="book meeting with team"
-          target="_blank"
-          href="https://calendly.com/mhmorran/onboarding "
-        />
+        {Boolean(href) && (
+          <Button
+            text="Book Now"
+            label="book meeting with team"
+            target="_blank"
+            href={href as string}
+          />
+        )}
       </div>
     </div>
   </Card>

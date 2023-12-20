@@ -9,7 +9,7 @@ import GettingStartedPanel from '../GettingStartedPanel/GettingStartedPanel';
 import { useMobileDown } from 'hooks/useMediaQuery';
 import { useSelector } from 'react-redux';
 import { selectAccount } from 'store/accountSlice';
-import { useIsProfessional } from 'hooks/usePlans';
+import { useIsBusiness } from 'hooks/usePlans';
 
 export type SidePanelPropsT = {
   fullDomain: string;
@@ -24,7 +24,7 @@ const SidePanel = ({
 }: SidePanelPropsT) => {
   const account = useSelector(selectAccount);
   const isMobile = useMobileDown();
-  const isProfessional = useIsProfessional();
+  const isBusiness = useIsBusiness();
 
   return (
     <section className={`${classProp} ${styles.wrapper}`}>
@@ -55,7 +55,7 @@ const SidePanel = ({
       {account.hasSubscription && subscription.isCancelled && (
         <Resubscribe classProp={styles.subcard} />
       )}
-      {!isProfessional && <UpgradePlan />}
+      {!isBusiness && <UpgradePlan />}
 
       <GettingStartedPanel />
       <SupportGrid />
