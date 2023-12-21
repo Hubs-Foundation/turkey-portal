@@ -63,7 +63,7 @@ type BasePlanCardPropsT = {
   showDisclaimer?: boolean;
   confirmButton: ReactNode;
   footerClassProp?: string;
-  color: 'silver' | 'warm' | 'rainbow';
+  color: 'silver' | 'warm' | 'rainbow' | 'tree';
   isSoldOut?: boolean;
 };
 

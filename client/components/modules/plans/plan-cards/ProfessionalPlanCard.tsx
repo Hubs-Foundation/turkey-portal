@@ -16,7 +16,7 @@ const ProfessionalPlanCard = ({
   billingPeriod,
 }: ProfessionalPlanCardPropsT) => {
   const { regionCode } = useSelector(selectRegion);
-  const { planPrice, planUrl, taxDescription, currencySymbol } =
+  const { planPrice, planUrl, taxDescription, currencySymbol, currencyAbbrev } =
     getPricePageData(regionCode, PlansE.PROFESSIONAL, billingPeriod);
 
   /**
@@ -34,6 +34,7 @@ const ProfessionalPlanCard = ({
       price={
         <Price
           price={`${currencySymbol}${planPrice}`}
+          currencyAbbrev={currencyAbbrev}
           billingPeriod={`per ${
             billingPeriod === BillingPeriodE.YEARLY ? 'year' : 'month'
           }`}

@@ -13,8 +13,23 @@ export const STARTER_COPY: PlanInfoCopyT[] = [
     icon: null,
   },
   {
-    label: '500MB Asset storage',
+    label: '500MB asset storage',
     description: 'For avatars and scenes',
+    icon: null,
+  },
+  {
+    label: 'Publish scenes',
+    description: '',
+    icon: null,
+  },
+  {
+    label: 'Manage avatars, scenes, and identities',
+    description: '',
+    icon: null,
+  },
+  {
+    label: 'Support emails answered weekly',
+    description: '',
     icon: null,
   },
 ];
@@ -26,12 +41,12 @@ export const PERSONAL_COPY: PlanInfoCopyT[] = [
     icon: null,
   },
   {
-    label: '2GB Asset storage',
+    label: '2GB asset storage',
     description: 'For avatars and scenes',
     icon: null,
   },
   {
-    label: 'Customize your Hub’s subdomain',
+    label: 'Everything in Starter, plus',
     description: '',
     icon: null,
   },
@@ -41,7 +56,13 @@ export const PERSONAL_COPY: PlanInfoCopyT[] = [
     icon: null,
   },
   {
-    label: 'Customize the color scheme of your tools and loading screens',
+    label: 'Customize your Hub’s color scheme',
+    description: '',
+    icon: null,
+  },
+
+  {
+    label: 'Customize your subdomain',
     description: '',
     icon: null,
   },
@@ -54,27 +75,32 @@ export const PROFESSIONAL_COPY: PlanInfoCopyT[] = [
     icon: null,
   },
   {
-    label: '25GB Asset storage',
+    label: '25GB asset storage',
     description: 'For avatars and scenes',
     icon: null,
   },
   {
-    label: 'Connect a custom domain to your Hub',
+    label: 'Everything in Personal, plus',
     description: '',
     icon: null,
   },
   {
-    label: 'Add your own logos',
+    label: 'Connect a fully custom domain',
     description: '',
     icon: null,
   },
   {
-    label: 'Customize the color scheme of your tools and loading screens',
+    label: 'Deploy a custom version of the Hubs code base',
     description: '',
     icon: null,
   },
   {
-    label: 'Fully control your Hub with access to Mozilla’s codebase',
+    label: 'Support emails answered within 24 business hours',
+    description: '',
+    icon: null,
+  },
+  {
+    label: '30 minutes of synchronous support per month',
     description: '',
     icon: null,
   },
@@ -87,12 +113,12 @@ export const BUSINESS_COPY: PlanInfoCopyT[] = [
     icon: null,
   },
   {
-    label: '200GB Asset storage',
+    label: '200GB asset storage',
     description: 'For avatars and scenes',
     icon: null,
   },
   {
-    label: 'Everything in Professional',
+    label: 'Everything in Professional, plus',
     description: '',
     icon: null,
   },
@@ -102,7 +128,7 @@ export const BUSINESS_COPY: PlanInfoCopyT[] = [
     icon: null,
   },
   {
-    label: '90 minutes of synchronous support per month',
+    label: '60 minutes of synchronous support per month',
     description: '',
     icon: null,
   },
