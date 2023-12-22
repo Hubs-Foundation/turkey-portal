@@ -156,9 +156,10 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                   classProp={styles.plan_1}
                   title={STARTER_COPY.title}
                   subtitle={STARTER_COPY.subtitle}
-                  color="warm"
+                  color="silver"
                   price={<Price price="Free" />}
                   valueProps={STARTER_COPY.valueProps}
+                  features={STARTER_COPY.features}
                   additionalContent={
                     <Status icon="warning" message={STARTER_COPY.status} />
                   }
@@ -180,7 +181,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                   classProp={styles.plan_2}
                   title={PERSONAL_COPY.title}
                   subtitle={PERSONAL_COPY.subtitle}
-                  color="cool"
+                  color="warm"
                   price={
                     <Price
                       price={`${personalPlanData.currencySymbol}${personalPlanData.planPrice}`}
@@ -249,7 +250,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                   classProp={styles.plan_3}
                   title={BUSINESS_COPY.title}
                   subtitle={BUSINESS_COPY.subtitle}
-                  color="rainbow"
+                  color="tree"
                   price={
                     <Price
                       price={`${businessPlanData.currencySymbol}${businessPlanData.planPrice}`}

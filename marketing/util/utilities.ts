@@ -28,8 +28,14 @@ export const getPricePageData = (
 ): PricePageDataT => {
   const PersonalProdId = 'prod_Mo4tS8uH9y3Mj5';
   const ProfessionalProdId = 'prod_OGWdlewqBfGPy0';
-  const prodID = plan === PlansE.PERSONAL ? PersonalProdId : ProfessionalProdId;
-  const BASE_URL = `https://subscriptions.firefox.com/checkout/${prodID}`;
+  const BusinessProdId = 'prod_Mo4tS8uH9y3Mj5';
+  const ProductIds = {
+    [PlansE.PERSONAL]: PersonalProdId,
+    [PlansE.PROFESSIONAL]: ProfessionalProdId,
+    [PlansE.BUSINESS]: BusinessProdId,
+  };
+
+  const BASE_URL = `https://subscriptions.firefox.com/checkout/${ProductIds[plan]}`;
 
   // If not accepted region or no region default to US plan
   let planUrl = `${BASE_URL}?plan=${PLAN_ID_MAP.US[plan][billingPeriod].planId}`;

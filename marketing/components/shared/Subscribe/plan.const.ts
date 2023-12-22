@@ -22,7 +22,7 @@ export type PlanInfoCopyT = {
 export const STARTER_COPY: PlanInfoCopyT = {
   title: 'Starter',
   subtitle:
-    'Kickstart your XR journey with a personal, private Hub — perfect for newcomers.',
+    'Kickstart your XR journey with a free private Hub — perfect for newcomers.',
   valueProps: [
     {
       label: '10 guest capacity',
@@ -35,14 +35,21 @@ export const STARTER_COPY: PlanInfoCopyT = {
       icon: 'space',
     },
   ],
-  features: null,
+  features: {
+    title: '',
+    values: [
+      'Publish scenes',
+      'Manage avatars, scenes, and identities',
+      'Support emails answered weekly',
+    ],
+  },
   status: 'Sleep after 12 hours of inactivity',
 };
 
 export const PERSONAL_COPY: PlanInfoCopyT = {
   title: 'Personal',
   subtitle:
-    'Design a personal, private Hub — ideal for creatives and tinkering innovators.',
+    'Fill your Hub with engaging content — ideal for creatives and tinkering innovators.',
   valueProps: [
     {
       label: '20 guest capacity',
@@ -56,11 +63,11 @@ export const PERSONAL_COPY: PlanInfoCopyT = {
     },
   ],
   features: {
-    title: '',
+    title: 'Everything in Starter, plus:',
     values: [
       'Add your own logos',
-      'Customize the color scheme of your tools and loading screens',
-      `Customize your Hub's subdomain`,
+      'Customize your Hub’s color scheme',
+      'Customize your subdomain',
     ],
   },
   status: 'Sleep after 72 hours of inactivity',
@@ -69,7 +76,7 @@ export const PERSONAL_COPY: PlanInfoCopyT = {
 export const PROFESSIONAL_COPY: PlanInfoCopyT = {
   title: 'Professional',
   subtitle:
-    'Advanced customization for educators and teams who want increased engagement.',
+    'Craft detailed  experiences that boost engagement with advanced features.',
   valueProps: [
     {
       label: '50 guest capacity',
@@ -85,8 +92,10 @@ export const PROFESSIONAL_COPY: PlanInfoCopyT = {
   features: {
     title: 'Everything in Personal, plus:',
     values: [
-      'Connect a custom domain to your Hub',
-      'Fully control your Hub by adding custom code',
+      'Connect a fully custom domain',
+      'Deploy a custom version of the Hubs code base',
+      'Support emails answered within 24 business hours',
+      '30 minutes of synchronous support per month',
     ],
   },
   status: 'Always on — no sleeping',
@@ -112,7 +121,7 @@ export const BUSINESS_COPY: PlanInfoCopyT = {
     title: 'Everything in Personal, plus:',
     values: [
       'Support emails answered within 12 business hours',
-      '90 minutes of synchronous support per month',
+      '60 minutes of synchronous support per month',
       '60 minutes of assisted Hubs Cloud data migration',
     ],
   },
