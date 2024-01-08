@@ -92,7 +92,7 @@ const MobileSideNav = ({
             <li>
               <a
                 className={styles.nav_link}
-                href="/Pvg5MMt/hubs-demo"
+                href="/E4e8oLx/hubs-demo-promenade"
                 target="_blank"
               >
                 Explore Hubs
