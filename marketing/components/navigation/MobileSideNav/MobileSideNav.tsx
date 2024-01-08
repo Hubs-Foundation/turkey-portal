@@ -81,10 +81,11 @@ const MobileSideNav = ({
               </a>
             </li>
             <li>
-              <a 
-                className={styles.nav_link} 
+              <a
+                className={styles.nav_link}
                 href="https://github.com/mozilla/hubs-cloud/tree/master/community-edition"
                 target="_blank"
+                rel="noreferrer"
               >
                 Community Edition
               </a>
@@ -94,6 +95,7 @@ const MobileSideNav = ({
                 className={styles.nav_link}
                 href="/E4e8oLx/hubs-demo-promenade"
                 target="_blank"
+                rel="noreferrer"
               >
                 Explore Hubs
               </a>

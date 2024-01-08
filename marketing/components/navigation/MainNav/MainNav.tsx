@@ -75,6 +75,7 @@ const MainNav = ({
                 <a
                   href="https://github.com/mozilla/hubs-cloud/tree/master/community-edition"
                   target="_blank"
+                  rel="noreferrer"
                   className={styles.main_nav_link}
                 >
                   Community Edition
@@ -83,6 +84,7 @@ const MainNav = ({
                 <a
                   href="/E4e8oLx/hubs-demo-promenade"
                   target="_blank"
+                  rel="noreferrer"
                   className={styles.main_nav_link}
                 >
                   Explore Hubs
