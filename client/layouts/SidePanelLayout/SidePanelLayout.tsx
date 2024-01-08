@@ -7,6 +7,7 @@ import SkeletonCard from '@Shared/SkeletonCard/SkeletonCard';
 import { SubscriptionT } from 'services/subscription.service';
 import Hub, { loadingHub } from 'classes/Hub';
 import Warning from '@Shared/Warning/Warning';
+import { Button } from '@mozilla/lilypad-ui';
 
 type SidePanelLayoutProps = {
   children: ReactNode;
@@ -28,17 +29,31 @@ const SidePanelLayout = ({
 
   return (
     <>
-      {/* <div className="flex-justify-center mt-20 px-20">
-        <div className={styles.warning}>
-          <Warning
-            title="Be Advised"
-            message="We are aware of an outage currently impacting Starter and Personal plans in one of our service regions. If your assigned URL contains 'us1' you may be affected by this outage. Our team is actively working to resolve the issue, and we appreciate your patience. We apologize for any inconvenience this may cause. If you have any questions regarding this issue, please contact us,"
-            onClick={() => {
-              window.open('mailto:hubs-feedback@mozilla.com');
-            }}
-          />
+      {hub.hasReachedMaxStorage() && (
+        <div className="flex-justify-center mt-20 px-20">
+          <div className={styles.warning}>
+            <Warning
+              title="Content Storage Limit Exceeded"
+              message="You’ve reached the maximum data capacity for your current plan. To avoid performance issues with your Hub, please upgrade your plan or delete content from your Hub."
+            >
+              <div className="flex-justify-end ">
+                <Button
+                  href="/subscribe"
+                  text="Upgrade Now"
+                  classProp="mr-12"
+                />
+                <Button
+                  href="https://hubs.mozilla.com/docs/setup-faq.html"
+                  text="More info"
+                  category="primary_outline"
+                  target="_blank"
+                />
+              </div>
+            </Warning>
+          </div>
         </div>
-      </div> */}
+      )}
+
       <section className={styles.layout_wrapper}>
         {children}
         {/* SIDE PANEL WIDGET  */}
