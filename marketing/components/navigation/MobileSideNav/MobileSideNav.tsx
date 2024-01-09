@@ -71,16 +71,31 @@ const MobileSideNav = ({
               </a>
             </li>
             <li>
-              <a className={styles.nav_link} href="/cloud">
-                Hubs Cloud
+              <a className={styles.nav_link} href="/docs">
+                Docs
               </a>
             </li>
             <li>
-              {/* TODO get demo url?  */}
+              <a className={styles.nav_link} href="/spoke">
+                Spoke
+              </a>
+            </li>
+            <li>
               <a
                 className={styles.nav_link}
-                href="/Pvg5MMt/hubs-demo"
+                href="https://github.com/mozilla/hubs-cloud/tree/master/community-edition"
                 target="_blank"
+                rel="noreferrer"
+              >
+                Community Edition
+              </a>
+            </li>
+            <li>
+              <a
+                className={styles.nav_link}
+                href="/E4e8oLx/hubs-demo-promenade"
+                target="_blank"
+                rel="noreferrer"
               >
                 Explore Hubs
               </a>
