@@ -80,7 +80,7 @@ defmodule DashWeb.FxaEvents do
         "isActive" => is_active,
         "changeTime" => milliseconds
       }) do
-    if capabilities not in [["managed-hubs"], ["hubs-professional"]] do
+    if capabilities not in [["managed-hubs"], ["hubs-professional"], ["hubs-business"]] do
       raise "unknown capabilities for subscription changed event: #{Enum.join(capabilities, ", ")}"
     end
 
@@ -102,6 +102,9 @@ defmodule DashWeb.FxaEvents do
         with {:error, reason} <- Dash.subscribe_to_professional_plan(account, datetime) do
           Logger.warning("could not subscribe to professional plan for reason: #{reason}")
         end
+
+      capabilities === ["hubs-business"] ->
+        Logger.warning("capabilities === hubs-business requested but not yet coded")
     end
 
     # We expire the cookie on every subscription changed event because the auth server puts subscription information
