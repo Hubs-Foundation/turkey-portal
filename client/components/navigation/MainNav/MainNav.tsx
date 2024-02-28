@@ -104,7 +104,32 @@ const MainNav = ({
    */
   return (
     <nav className={`${styles.main_nav} ${classProp}`}>
-      <div className={styles.banner_gradient} />
+      <div className={styles.banner_gradient}>
+        <div className={styles.marquee_container}>
+          <div className={styles.marquee}>
+            <section className={styles.banner_text}>
+              <div className="flex-align-center">
+                <div>
+                  <Icon name="info" classProp="mr-10 mt-3" />
+                </div>
+                <p className="body-sm-bold ">
+                  Important Notice: Mozilla Hubs will shut down on May 31, 2024.
+                  For more information about the shutdown and how you can
+                  support Hubs' life beyond Mozilla, please read{' '}
+                  <a
+                    target="_blank"
+                    href="https://hubs.mozilla.com/labs/sunset/"
+                    className="primary-link"
+                  >
+                    this article
+                  </a>
+                  .
+                </p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
 
       <div className={styles.main_nav_wrapper}>
         <div className={styles.main_nav_container}>
