@@ -13,7 +13,7 @@ type PersonalPlanCardPropsT = {
 
 const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
   const { regionCode } = useSelector(selectRegion);
-  const { planPrice, planUrl, taxDescription, currencySymbol } =
+  const { planPrice, planUrl, taxDescription, currencySymbol, currencyAbbrev } =
     getPricePageData(regionCode, PlansE.PERSONAL, billingPeriod);
 
   /**
@@ -34,6 +34,7 @@ const PersonalPlanCard = ({ billingPeriod }: PersonalPlanCardPropsT) => {
           billingPeriod={`per ${
             billingPeriod === BillingPeriodE.YEARLY ? 'year' : 'month'
           }`}
+          currencyAbbrev={currencyAbbrev}
         />
       }
       infoCopyList={PERSONAL_COPY}
