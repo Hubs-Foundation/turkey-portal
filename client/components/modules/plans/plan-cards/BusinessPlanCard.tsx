@@ -27,8 +27,8 @@ const BusinessPlanCard = ({ billingPeriod }: BusinessPlanCardPropsT) => {
   return (
     <BasePlanCard
       plan={PlansE.BUSINESS}
-      title="Business"
-      color="tree"
+      title="Professional"
+      color="rainbow"
       price={
         <Price
           price={`${currencySymbol}${planPrice}`}

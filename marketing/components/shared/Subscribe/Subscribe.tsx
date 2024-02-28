@@ -245,39 +245,6 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                   }
                 />
 
-                {/* BUSINESS_COPY PLAN */}
-                {/* <BasePlanCard
-                  classProp={styles.plan_3}
-                  title={BUSINESS_COPY.title}
-                  subtitle={BUSINESS_COPY.subtitle}
-                  color="tree"
-                  price={
-                    <Price
-                      price={`${businessPlanData.currencySymbol}${businessPlanData.planPrice}`}
-                      currencyAbbrev={businessPlanData.currencyAbbrev}
-                      billingPeriod={`per ${
-                        billingPeriod === BillingPeriodE.ANNUAL
-                          ? 'year'
-                          : 'month'
-                      }`}
-                    />
-                  }
-                  valueProps={BUSINESS_COPY.valueProps}
-                  features={BUSINESS_COPY.features}
-                  additionalContent={
-                    <Status icon="greenLight" message={BUSINESS_COPY.status} />
-                  }
-                  confirmButton={
-                    <Button
-                      label="Create Professional hub"
-                      text="Get Started"
-                      onClick={() => {
-                        window.open(businessPlanData.planUrl);
-                      }}
-                    />
-                  }
-                /> */}
-
                 {!isMobileDown && <HangerCard />}
               </>
             )}

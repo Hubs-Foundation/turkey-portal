@@ -58,7 +58,7 @@ type BasePlanCardPropsT = {
   additionalContent?: ReactNode;
   confirmButton: ReactNode;
   footerClassProp?: string;
-  color: 'silver' | 'warm' | 'rainbow' | 'tree';
+  color: 'silver' | 'warm' | 'rainbow';
   features?: FeaturesT | null;
 };
 
