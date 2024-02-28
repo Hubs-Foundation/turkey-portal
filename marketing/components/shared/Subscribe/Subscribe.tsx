@@ -246,7 +246,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                 />
 
                 {/* BUSINESS_COPY PLAN */}
-                <BasePlanCard
+                {/* <BasePlanCard
                   classProp={styles.plan_3}
                   title={BUSINESS_COPY.title}
                   subtitle={BUSINESS_COPY.subtitle}
@@ -276,9 +276,8 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                       }}
                     />
                   }
-                />
+                /> */}
 
-                {/* BUSINESS INQU*/}
                 {!isMobileDown && <HangerCard />}
               </>
             )}

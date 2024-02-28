@@ -28,11 +28,9 @@ export const getPricePageData = (
 ): PricePageDataT => {
   const PersonalProdId = 'prod_Mo4tS8uH9y3Mj5';
   const ProfessionalProdId = 'prod_OGWdlewqBfGPy0';
-  const BusinessProdId = 'prod_Mo4tS8uH9y3Mj5';
   const ProductIds = {
     [PlansE.PERSONAL]: PersonalProdId,
     [PlansE.PROFESSIONAL]: ProfessionalProdId,
-    [PlansE.BUSINESS]: BusinessProdId,
   };
 
   const BASE_URL = `https://subscriptions.firefox.com/checkout/${ProductIds[plan]}`;
