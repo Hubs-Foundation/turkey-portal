@@ -115,7 +115,7 @@ const MainNav = ({
                 <p className="body-sm-bold ">
                   Important Notice: Mozilla Hubs will shut down on May 31, 2024.
                   For more information about the shutdown and how you can
-                  support Hubs' life beyond Mozilla, please read{' '}
+                  support Hubs&apos; life beyond Mozilla, please read{' '}
                   <a
                     target="_blank"
                     href="https://hubs.mozilla.com/labs/sunset/"
