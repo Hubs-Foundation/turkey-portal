@@ -47,6 +47,7 @@ const MainNav = ({
                     target="_blank"
                     href="https://hubs.mozilla.com/labs/sunset/"
                     className="primary-link"
+                    rel="noreferrer"
                   >
                     this article
                   </a>
