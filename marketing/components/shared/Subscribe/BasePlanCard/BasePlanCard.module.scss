@@ -31,14 +31,17 @@
 }
 
 .highlight {
+  &_silver {
+    background: $color-background-subtle-callout;
+  }
   &_warm {
     background: $gradient-warm;
   }
-  &_cool {
-    background: $gradient-cool;
-  }
   &_rainbow {
     background: $gradient-rainbow;
+  }
+  &_tree {
+    background: $gradient-tree;
   }
 }
 

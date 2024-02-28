@@ -14,7 +14,7 @@ type BusinessPlanCardPropsT = {
 
 const BusinessPlanCard = ({ billingPeriod }: BusinessPlanCardPropsT) => {
   const { regionCode } = useSelector(selectRegion);
-  const { planPrice, planUrl, taxDescription, currencySymbol } =
+  const { planPrice, planUrl, taxDescription, currencySymbol, currencyAbbrev } =
     getPricePageData(regionCode, PlansE.BUSINESS, billingPeriod);
 
   /**
@@ -32,6 +32,7 @@ const BusinessPlanCard = ({ billingPeriod }: BusinessPlanCardPropsT) => {
       price={
         <Price
           price={`${currencySymbol}${planPrice}`}
+          currencyAbbrev={currencyAbbrev}
           billingPeriod={`per ${
             billingPeriod === BillingPeriodE.YEARLY ? 'year' : 'month'
           }`}

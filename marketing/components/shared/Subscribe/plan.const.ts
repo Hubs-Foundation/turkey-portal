@@ -22,7 +22,7 @@ export type PlanInfoCopyT = {
 export const STARTER_COPY: PlanInfoCopyT = {
   title: 'Starter',
   subtitle:
-    'Kickstart your XR journey with a personal, private Hub — perfect for newcomers.',
+    'Kickstart your XR journey with a free private Hub — perfect for newcomers.',
   valueProps: [
     {
       label: '10 guest capacity',
@@ -35,14 +35,21 @@ export const STARTER_COPY: PlanInfoCopyT = {
       icon: 'space',
     },
   ],
-  features: null,
+  features: {
+    title: '',
+    values: [
+      'Publish scenes',
+      'Manage avatars, scenes, and identities',
+      'Support emails answered weekly',
+    ],
+  },
   status: 'Sleep after 12 hours of inactivity',
 };
 
 export const PERSONAL_COPY: PlanInfoCopyT = {
   title: 'Personal',
   subtitle:
-    'Design a personal, private Hub — ideal for creatives and tinkering innovators.',
+    'Fill your Hub with engaging content — ideal for creatives and tinkering innovators.',
   valueProps: [
     {
       label: '20 guest capacity',
@@ -56,11 +63,11 @@ export const PERSONAL_COPY: PlanInfoCopyT = {
     },
   ],
   features: {
-    title: '',
+    title: 'Everything in Starter, plus:',
     values: [
       'Add your own logos',
-      'Customize the color scheme of your tools and loading screens',
-      `Customize your Hub's subdomain`,
+      'Customize your Hub’s color scheme',
+      'Customize your subdomain',
     ],
   },
   status: 'Sleep after 72 hours of inactivity',
@@ -69,7 +76,7 @@ export const PERSONAL_COPY: PlanInfoCopyT = {
 export const PROFESSIONAL_COPY: PlanInfoCopyT = {
   title: 'Professional',
   subtitle:
-    'Advanced customization for educators and teams who want increased engagement.',
+    'Craft detailed  experiences that boost engagement with advanced features.',
   valueProps: [
     {
       label: '50 guest capacity',
@@ -85,8 +92,10 @@ export const PROFESSIONAL_COPY: PlanInfoCopyT = {
   features: {
     title: 'Everything in Personal, plus:',
     values: [
-      'Connect a custom domain to your Hub',
-      'Fully control your Hub by adding custom code',
+      'Connect a fully custom domain',
+      'Deploy a custom version of the Hubs code base',
+      'Support emails answered within 24 business hours',
+      '30 minutes of synchronous support per month',
     ],
   },
   status: 'Always on — no sleeping',
@@ -112,7 +121,7 @@ export const BUSINESS_COPY: PlanInfoCopyT = {
     title: 'Everything in Personal, plus:',
     values: [
       'Support emails answered within 12 business hours',
-      '90 minutes of synchronous support per month',
+      '60 minutes of synchronous support per month',
       '60 minutes of assisted Hubs Cloud data migration',
     ],
   },
@@ -149,8 +158,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 479.0,
+        planId: 'price_1OPt6YJNcmPzuWtRcrp2Mb9B',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -188,7 +197,7 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
+        planId: 'price_1OPt5gJNcmPzuWtRf1Kjf4GB',
         price: 479.0,
       },
       annual: {
@@ -227,7 +236,7 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
+        planId: 'price_1OQDFlJNcmPzuWtRlmsBACh1',
         price: 499.0,
       },
       annual: {
@@ -266,8 +275,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OQDFlJNcmPzuWtRlmsBACh1',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -305,8 +314,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPt7oJNcmPzuWtRXZdMSTPs',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -344,8 +353,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPt81JNcmPzuWtRFfsYpiVb',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -383,8 +392,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPt8TJNcmPzuWtRkXcNnBGD',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -422,8 +431,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPt8eJNcmPzuWtRnXBwLKx2',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -461,8 +470,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPt8rJNcmPzuWtRdri04UM7',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -500,8 +509,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPt91JNcmPzuWtRsGuIDfMg',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -539,8 +548,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPt9EJNcmPzuWtR7gAFZY6Y',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -578,8 +587,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPt9TJNcmPzuWtRbFP6bOSm',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -617,8 +626,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPt9mJNcmPzuWtR46DRFKxv',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -657,8 +666,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtA8JNcmPzuWtRHR9MyMJW',
+        price: 792.37,
       },
       annual: {
         planId: 'TODO',
@@ -696,8 +705,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtASJNcmPzuWtRIiYb4aw0',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -735,8 +744,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtAnJNcmPzuWtRqY7iJ9f5',
+        price: 4997.03,
       },
       annual: {
         planId: 'TODO',
@@ -774,8 +783,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtBCJNcmPzuWtR0TgZ8k42',
+        price: 2323.09,
       },
       annual: {
         planId: 'TODO',
@@ -813,8 +822,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtBRJNcmPzuWtRnmZi4znV',
+        price: 660.7,
       },
       annual: {
         planId: 'TODO',
@@ -852,8 +861,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtBfJNcmPzuWtRru5onIy4',
+        price: 1964.76,
       },
       annual: {
         planId: 'TODO',
@@ -891,8 +900,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtBsJNcmPzuWtRlDJ1QhSU',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -930,8 +939,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtCAJNcmPzuWtRlfD9wLST',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -969,8 +978,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtCQJNcmPzuWtRgLzRGbbI',
+        price: 3377.77,
       },
       annual: {
         planId: 'TODO',
@@ -1008,8 +1017,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtCjJNcmPzuWtRb1o28lVb',
+        price: 11136.46,
       },
       annual: {
         planId: 'TODO',
@@ -1047,8 +1056,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtCyJNcmPzuWtRzuFuTH79',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -1086,8 +1095,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtDDJNcmPzuWtRnom1cmfz',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -1125,8 +1134,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtDPJNcmPzuWtRENG5wfAm',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -1164,8 +1173,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtDvJNcmPzuWtRI3ZuXzZV',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -1203,8 +1212,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtE8JNcmPzuWtRVZjGmkpG',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -1242,8 +1251,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtEUJNcmPzuWtRGvwz5oOa',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -1281,8 +1290,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtEdJNcmPzuWtREGeSeGji',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -1320,8 +1329,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtEnJNcmPzuWtRUbfdgTtK',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -1359,8 +1368,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtF1JNcmPzuWtR70Z7aCVX',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
@@ -1398,8 +1407,8 @@ export const PLAN_ID_MAP = {
     },
     business: {
       monthly: {
-        planId: 'TODO',
-        price: 400.22,
+        planId: 'price_1OPtFDJNcmPzuWtRfkRlHx1G',
+        price: 499.0,
       },
       annual: {
         planId: 'TODO',
