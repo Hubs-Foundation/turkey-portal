@@ -168,7 +168,8 @@ const BasePlanCard = ({
         <div
           className={`${styles.footer} ${footerClassProp} flex-justify-center`}
         >
-          {getCTA()}
+          {/* {getCTA()} */}
+          <Button label="Subscribe" text="Subscribe" disabled={true} />
         </div>
       </div>
     </div>
