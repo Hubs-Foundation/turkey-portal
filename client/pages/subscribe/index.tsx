@@ -8,7 +8,6 @@ import {
   PersonalPlanCard,
   StarterPlanCard,
   ProfessionalPlanCard,
-  BusinessPlanCard,
 } from '@Modules/plans/plan-cards';
 import { BillingPeriodE } from 'types/General';
 
@@ -38,7 +37,7 @@ const Subscribe = () => {
               </div>
               <div className="flex-justify-center flex-wrap">
                 <ProfessionalPlanCard billingPeriod={billingPeriod} />
-                <BusinessPlanCard billingPeriod={billingPeriod} />
+                {/* <BusinessPlanCard billingPeriod={billingPeriod} /> */}
               </div>
             </div>
             <div className="flex">

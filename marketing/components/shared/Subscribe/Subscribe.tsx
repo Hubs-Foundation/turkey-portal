@@ -52,11 +52,11 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
     billingPeriod
   );
 
-  const businessPlanData = getPricePageData(
-    regionCode,
-    PlansE.BUSINESS,
-    billingPeriod
-  );
+  // const businessPlanData = getPricePageData(
+  //   regionCode,
+  //   PlansE.BUSINESS,
+  //   billingPeriod
+  // );
 
   const loadingCards = isTabletDown ? [1] : [1, 2, 3, 4];
 
@@ -245,7 +245,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                 />
 
                 {/* BUSINESS_COPY PLAN */}
-                <BasePlanCard
+                {/* <BasePlanCard
                   classProp={styles.plan_3}
                   title={BUSINESS_COPY.title}
                   subtitle={BUSINESS_COPY.subtitle}
@@ -275,7 +275,7 @@ const Subscribe = ({ classProp = '' }: SubscribePropsT) => {
                       }}
                     />
                   }
-                />
+                /> */}
 
                 {/* BUSINESS INQU*/}
                 {!isMobileDown && <HangerCard />}
