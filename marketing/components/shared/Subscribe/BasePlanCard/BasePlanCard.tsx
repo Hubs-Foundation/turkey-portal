@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import styles from './BasePlanCard.module.scss';
 import { ValueProp } from '../plan.const';
 import InfoBlock from '../InfoBlock/InfoBlock';
-import { Icon } from '@mozilla/lilypad-ui';
+import { Icon, Button } from '@mozilla/lilypad-ui';
 import { FeaturesT } from '../plan.const';
 
 type PricePropsT = {
@@ -127,7 +127,9 @@ export const BasePlanCard = ({
       {/* FOOTER  */}
       <footer className={`${styles.footer_wrapper}`}>
         {additionalContent}
-        <div className={styles.footer}>{confirmButton}</div>
+        <div className={styles.footer}>
+          <Button label="Subscribe" disabled={true} text="Subscribe" />
+        </div>
       </footer>
     </div>
   );
