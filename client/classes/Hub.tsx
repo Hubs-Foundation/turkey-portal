@@ -83,6 +83,14 @@ export default class Hub {
   }
 
   /**
+   * Check if user has gone over storage max
+   * @returns Boolean
+   */
+  hasReachedMaxStorage(): boolean {
+    return this.storageLimitMb < Number(this.currentStorageMb);
+  }
+
+  /**
    * Storage State
    * @returns StorageStateE
    */

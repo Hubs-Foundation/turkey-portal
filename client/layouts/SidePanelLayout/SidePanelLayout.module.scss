@@ -42,8 +42,6 @@
 
 .warning {
   max-width: 1200px;
+  width: 100%;
   margin-bottom: 24px;
-  @include tablet-down {
-    max-width: 100%;
-  }
 }
