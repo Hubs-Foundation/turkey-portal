@@ -301,7 +301,7 @@ const HubFormCard = ({ hub: _hub, classProp = '' }: HubFormCardPropsT) => {
 
               <div className="mb-20 youtube-video">
                 <iframe
-                  src="https://www.youtube.com/embed/0PTmHNKdZB0"
+                  src="https://www.youtube.com/embed/yARtWNlmBzw"
                   frameBorder="0"
                   allowFullScreen
                 ></iframe>
